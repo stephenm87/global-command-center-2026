@@ -164,96 +164,98 @@ function App() {
 
     return (
         <div className="command-center">
-            {/* Header */}
-            <div className="header">
-                <div className="logo">
-                    <span className="logo-icon">⬢</span>
-                    <span className="logo-text">GLOBAL COMMAND CENTER</span>
-                </div>
-                <div className="date-time">
-                    <span className="date">2026 FORECASTS</span>
-                    <span className="live-indicator">● LIVE</span>
-                </div>
-            </div>
-
-            {/* Main Content */}
-            <div className="main-content">
-                {/* Globe Center Stage */}
-                <div className="globe-container">
-                    <div ref={globeContainer} style={{ width: '100%', height: '100%' }} />
-                    <div className="globe-overlay">
-                        <div className="globe-title">GLOBAL THREAT MATRIX</div>
+            <div className="dashboard-view">
+                {/* Header */}
+                <div className="header">
+                    <div className="logo">
+                        <span className="logo-icon">⬢</span>
+                        <span className="logo-text">GLOBAL COMMAND CENTER</span>
+                    </div>
+                    <div className="date-time">
+                        <span className="date">2026 FORECASTS</span>
+                        <span className="live-indicator">● LIVE</span>
                     </div>
                 </div>
 
-                {/* Right Sidebar - Intel Feed */}
-                <div className={`intel-feed ${sidebarCollapsed ? 'collapsed' : ''}`}>
-                    <button
-                        className="sidebar-toggle"
-                        onClick={() => setSidebarCollapsed(!sidebarCollapsed)}
-                        title={sidebarCollapsed ? 'Expand Intel Feed (Space)' : 'Collapse Intel Feed (Space)'}
-                        aria-label={sidebarCollapsed ? 'Expand sidebar' : 'Collapse sidebar'}
-                    />
-                    <div className="intel-header">
-                        <span className="intel-title">INTEL FEED</span>
-                        <select
-                            className="category-filter"
-                            value={selectedCategory}
-                            onChange={(e) => setSelectedCategory(e.target.value)}
-                        >
-                            <option value="All">ALL SECTORS</option>
-                            {Object.keys(categoryColors).map(cat => (
-                                <option key={cat} value={cat}>{cat.toUpperCase()}</option>
-                            ))}
-                        </select>
+                {/* Main Content */}
+                <div className="main-content">
+                    {/* Globe Center Stage */}
+                    <div className="globe-container">
+                        <div ref={globeContainer} style={{ width: '100%', height: '100%' }} />
+                        <div className="globe-overlay">
+                            <div className="globe-title">GLOBAL THREAT MATRIX</div>
+                        </div>
                     </div>
 
-                    <div className="intel-cards">
-                        {filteredForecasts.slice(0, 20).map((forecast, idx) => (
-                            <div
-                                key={idx}
-                                className={`intel-card ${selectedForecast === forecast ? 'selected' : ''}`}
-                                onClick={() => setSelectedForecast(forecast)}
-                                style={{ borderLeftColor: categoryColors[forecast.Broad_Category] }}
+                    {/* Right Sidebar - Intel Feed */}
+                    <div className={`intel-feed ${sidebarCollapsed ? 'collapsed' : ''}`}>
+                        <button
+                            className="sidebar-toggle"
+                            onClick={() => setSidebarCollapsed(!sidebarCollapsed)}
+                            title={sidebarCollapsed ? 'Expand Intel Feed (Space)' : 'Collapse Intel Feed (Space)'}
+                            aria-label={sidebarCollapsed ? 'Expand sidebar' : 'Collapse sidebar'}
+                        />
+                        <div className="intel-header">
+                            <span className="intel-title">INTEL FEED</span>
+                            <select
+                                className="category-filter"
+                                value={selectedCategory}
+                                onChange={(e) => setSelectedCategory(e.target.value)}
                             >
-                                <div className="card-category" style={{ color: categoryColors[forecast.Broad_Category] }}>
-                                    {forecast.Broad_Category}
+                                <option value="All">ALL SECTORS</option>
+                                {Object.keys(categoryColors).map(cat => (
+                                    <option key={cat} value={cat}>{cat.toUpperCase()}</option>
+                                ))}
+                            </select>
+                        </div>
+
+                        <div className="intel-cards">
+                            {filteredForecasts.slice(0, 20).map((forecast, idx) => (
+                                <div
+                                    key={idx}
+                                    className={`intel-card ${selectedForecast === forecast ? 'selected' : ''}`}
+                                    onClick={() => setSelectedForecast(forecast)}
+                                    style={{ borderLeftColor: categoryColors[forecast.Broad_Category] }}
+                                >
+                                    <div className="card-category" style={{ color: categoryColors[forecast.Broad_Category] }}>
+                                        {forecast.Broad_Category}
+                                    </div>
+                                    <div className="card-title">{forecast['Topic/Sector']}</div>
+                                    <div className="card-timeline">⏱ {forecast.Timeline}</div>
+                                    <div className="card-impact">{forecast['Expected Impact/Value']?.substring(0, 120)}...</div>
                                 </div>
-                                <div className="card-title">{forecast['Topic/Sector']}</div>
-                                <div className="card-timeline">⏱ {forecast.Timeline}</div>
-                                <div className="card-impact">{forecast['Expected Impact/Value']?.substring(0, 120)}...</div>
-                            </div>
-                        ))}
+                            ))}
+                        </div>
                     </div>
                 </div>
-            </div>
 
-            {/* Bottom Bar - Key Metrics */}
-            <div className="metrics-bar">
-                <div className="metric-item">
-                    <span className="metric-label">TOTAL EVENTS</span>
-                    <span className="metric-value">{keyMetrics.totalEvents || 0}</span>
-                </div>
-                <div className="metric-item">
-                    <span className="metric-label">GOLD FORECAST</span>
-                    <span className="metric-value gold">{keyMetrics.goldPrice}</span>
-                </div>
-                <div className="metric-item">
-                    <span className="metric-label">GLOBAL GROWTH</span>
-                    <span className="metric-value">{keyMetrics.globalGrowth}</span>
-                </div>
-                <div className="metric-item">
-                    <span className="metric-label">DEFENSE SPENDING</span>
-                    <span className="metric-value red">{keyMetrics.defenseSpending}</span>
-                </div>
-                <div className="metric-item tension-meter">
-                    <span className="metric-label">CONFLICT EVENT RATIO</span>
-                    <div className="tension-bar">
-                        <div
-                            className="tension-fill"
-                            style={{ width: `${tensionMeter}%` }}
-                        ></div>
-                        <span className="tension-value">{tensionMeter}%</span>
+                {/* Bottom Bar - Key Metrics */}
+                <div className="metrics-bar">
+                    <div className="metric-item">
+                        <span className="metric-label">TOTAL EVENTS</span>
+                        <span className="metric-value">{keyMetrics.totalEvents || 0}</span>
+                    </div>
+                    <div className="metric-item">
+                        <span className="metric-label">GOLD FORECAST</span>
+                        <span className="metric-value gold">{keyMetrics.goldPrice}</span>
+                    </div>
+                    <div className="metric-item">
+                        <span className="metric-label">GLOBAL GROWTH</span>
+                        <span className="metric-value">{keyMetrics.globalGrowth}</span>
+                    </div>
+                    <div className="metric-item">
+                        <span className="metric-label">DEFENSE SPENDING</span>
+                        <span className="metric-value red">{keyMetrics.defenseSpending}</span>
+                    </div>
+                    <div className="metric-item tension-meter">
+                        <span className="metric-label">CONFLICT EVENT RATIO</span>
+                        <div className="tension-bar">
+                            <div
+                                className="tension-fill"
+                                style={{ width: `${tensionMeter}%` }}
+                            ></div>
+                            <span className="tension-value">{tensionMeter}%</span>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -264,7 +266,9 @@ function App() {
                 background: '#000',
                 borderTop: '4px solid #00ffff',
                 marginTop: '60px',
-                boxShadow: '0 -20px 50px rgba(0, 255, 255, 0.2)'
+                boxShadow: '0 -20px 50px rgba(0, 255, 255, 0.2)',
+                position: 'relative',
+                zIndex: 5
             }}>
                 <div style={{ marginBottom: '30px', maxWidth: '600px', margin: '0 auto 30px auto' }}>
                     <p style={{ color: '#00ffff', fontSize: '12px', fontWeight: 'bold', letterSpacing: '2px', marginBottom: '10px' }}>NON-COMMERCIAL ACADEMIC TOOL</p>
