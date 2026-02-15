@@ -539,6 +539,51 @@
     }
 }
 
+/* Navigation & Attribution */
+.credits-link {
+    background: transparent;
+    border: 1px solid #00ffff;
+    color: #00ffff;
+    font-family: 'Roboto Mono', monospace;
+    font-size: 0.75rem;
+    padding: 2px 8px;
+    cursor: pointer;
+    letter-spacing: 1px;
+    transition: all 0.3s;
+    text-transform: uppercase;
+    font-weight: 700;
+    margin: 0 15px;
+}
+
+.credits-link:hover {
+    background: rgba(0, 255, 255, 0.2);
+    box-shadow: 0 0 10px #00ffff;
+    border-color: #00ff88;
+    color: #00ff88;
+}
+
+.back-to-top {
+    background: #000;
+    border: 2px solid #ff00ff;
+    color: #ff00ff;
+    font-family: 'Orbitron', sans-serif;
+    font-size: 0.9rem;
+    padding: 12px 24px;
+    cursor: pointer;
+    letter-spacing: 2px;
+    transition: all 0.3s;
+    font-weight: 900;
+    box-shadow: 0 0 15px rgba(255, 0, 255, 0.3);
+    text-transform: uppercase;
+}
+
+.back-to-top:hover {
+    background: #ff00ff;
+    color: #fff;
+    box-shadow: 0 0 30px #ff00ff;
+    transform: translateY(-5px);
+}
+
 @media (max-width: 1024px) {
     .intel-feed {
         width: 300px;

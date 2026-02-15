@@ -21,6 +21,8 @@ function App() {
     const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
     const globeEl = useRef();
     const globeContainer = useRef();
+    const attributionRef = useRef();
+    const dashboardRef = useRef();
 
     // Initialize globe
     useEffect(() => {
@@ -164,7 +166,7 @@ function App() {
 
     return (
         <div className="command-center">
-            <div className="dashboard-view">
+            <div className="dashboard-view" ref={dashboardRef}>
                 {/* Header */}
                 <div className="header">
                     <div className="logo">
@@ -173,6 +175,12 @@ function App() {
                     </div>
                     <div className="date-time">
                         <span className="date">2026 FORECASTS</span>
+                        <button
+                            className="credits-link"
+                            onClick={() => attributionRef.current?.scrollIntoView({ behavior: 'smooth' })}
+                        >
+                            CREDITS & LICENSE
+                        </button>
                         <span className="live-indicator">● LIVE</span>
                     </div>
                 </div>
@@ -260,7 +268,7 @@ function App() {
                 </div>
             </div>
 
-            <div className="netlify-attribution" style={{
+            <div className="netlify-attribution" ref={attributionRef} style={{
                 textAlign: 'center',
                 padding: '40px 10px',
                 background: '#000',
@@ -316,6 +324,14 @@ function App() {
                         style={{ height: '35px', width: 'auto' }}
                     />
                 </a>
+                <div style={{ marginTop: '40px' }}>
+                    <button
+                        className="back-to-top"
+                        onClick={() => dashboardRef.current?.scrollIntoView({ behavior: 'smooth' })}
+                    >
+                        ⏶ BACK TO COMMAND CENTER
+                    </button>
+                </div>
             </div>
 
             {/* Detail Modal */}
