@@ -1,0 +1,62 @@
+[
+    {
+        "Topic/Sector": "Geopolitics / Conflict",
+        "Entity/Subject": "U.S.-Iran Escalation",
+        "Key Player/Organization": "EU, IRGC, Iran",
+        "Timeline": "LIVE - Feb 2026",
+        "Expected Impact/Value": "EU officially designates Iran's IRGC as a terrorist organization; Iran retaliates by labeling all EU militaries as terrorists.",
+        "Source": "Al Jazeera",
+        "url": "https://www.aljazeera.com/news/2026/1/29/iran-slams-selective-outrage-after-eu-labels-irgc-a-terrorist-group",
+        "Latitude": "32.4279",
+        "Longitude": "53.6880",
+        "Broad_Category": "Geopolitics & Conflict"
+    },
+    {
+        "Topic/Sector": "Geopolitics / Conflict",
+        "Entity/Subject": "Munich Security Conference 2026",
+        "Key Player/Organization": "Zelenskyy, Rubio, Merz, Starmer",
+        "Timeline": "LIVE - Feb 2026",
+        "Expected Impact/Value": "Global leaders debate 'Under Destruction' theme; German Chancellor Merz calls for integrated European NATO.",
+        "Source": "Munich Security Conference",
+        "url": "https://securityconference.org/en/publications/munich-security-report/",
+        "Latitude": "48.1351",
+        "Longitude": "11.5820",
+        "Broad_Category": "Geopolitics & Conflict"
+    },
+    {
+        "Topic/Sector": "Geopolitics / Strategy",
+        "Entity/Subject": "New START Expiration",
+        "Key Player/Organization": "U.S., Russia, UN",
+        "Timeline": "LIVE - Feb 2026",
+        "Expected Impact/Value": "Last nuclear treaty expires; UN Secretary-General Guterres warns of 'grave moment' for global security.",
+        "Source": "Arms Control Association",
+        "url": "https://www.armscontrol.org/factsheets/NewSTART",
+        "Latitude": "55.7558",
+        "Longitude": "37.6173",
+        "Broad_Category": "Geopolitics & Conflict"
+    },
+    {
+        "Topic/Sector": "Human Rights / Sudan",
+        "Entity/Subject": "Sudan Atrocities Inquiry",
+        "Key Player/Organization": "UN News, Volker Türk",
+        "Timeline": "LIVE - Feb 2026",
+        "Expected Impact/Value": "UN human rights chief warns of 'apocalyptic' atrocities in Darfur; calls for urgent international intervention.",
+        "Source": "UN News",
+        "url": "https://news.un.org/en/focus/sudan-conflict",
+        "Latitude": "12.8628",
+        "Longitude": "30.2176",
+        "Broad_Category": "Geopolitics & Conflict"
+    },
+    {
+        "Topic/Sector": "Human Rights / Global",
+        "Entity/Subject": "HRW World Report 2026",
+        "Key Player/Organization": "Human Rights Watch",
+        "Timeline": "LIVE - Feb 2026",
+        "Expected Impact/Value": "Annual report highlights 'global system in peril'; details 72% of world living under autocracy.",
+        "Source": "Human Rights Watch",
+        "url": "https://www.hrw.org/world-report/2026",
+        "Latitude": "25.2854",
+        "Longitude": "51.5310",
+        "Broad_Category": "Geopolitics & Conflict"
+    }
+]

@@ -107,6 +107,29 @@
     letter-spacing: 2px;
 }
 
+/* Companion Button */
+.companion-btn {
+    background: linear-gradient(90deg, #ff00ff, #00ffff);
+    color: #fff;
+    padding: 0.5rem 1rem;
+    border-radius: 4px;
+    font-family: 'Orbitron', sans-serif;
+    font-size: 0.75rem;
+    font-weight: 900;
+    text-decoration: none;
+    letter-spacing: 1px;
+    box-shadow: 0 0 10px rgba(255, 0, 255, 0.5);
+    transition: all 0.3s ease;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    margin: 0 1rem;
+}
+
+.companion-btn:hover {
+    transform: scale(1.05);
+    box-shadow: 0 0 20px rgba(255, 0, 255, 0.8), 0 0 30px rgba(0, 255, 255, 0.4);
+    filter: brightness(1.2);
+}
+
 .live-indicator {
     color: #ff0066;
     font-size: 0.85rem;
@@ -123,6 +146,31 @@
     50% {
         opacity: 0.3;
     }
+}
+
+/* Admin Controls & Pin Button */
+.admin-controls {
+    margin-left: auto;
+}
+
+.pin-toggle-btn {
+    background: transparent;
+    border: 1px solid #ff00ff;
+    color: #ff00ff;
+    font-family: 'Orbitron', sans-serif;
+    font-size: 0.7rem;
+    padding: 6px 12px;
+    cursor: pointer;
+    font-weight: 900;
+    letter-spacing: 1px;
+    transition: all 0.3s;
+    box-shadow: 0 0 5px rgba(255, 0, 255, 0.3);
+}
+
+.pin-toggle-btn:hover {
+    background: #ff00ff;
+    color: #fff;
+    box-shadow: 0 0 15px #ff00ff;
 }
 
 /* Main Content */
@@ -167,6 +215,126 @@
     padding: 0.5rem 1.5rem;
     background: rgba(0, 0, 0, 0.7);
     backdrop-filter: blur(10px);
+}
+
+.pin-form {
+    background: rgba(10, 14, 26, 0.95);
+    border: 2px solid #ff00ff;
+    padding: 1.5rem;
+    margin-top: 20px;
+    width: 300px;
+    box-shadow: 0 0 30px rgba(255, 0, 255, 0.4);
+    animation: slideDown 0.3s ease-out;
+    position: relative;
+}
+
+.pin-form-close {
+    position: absolute;
+    top: 8px;
+    right: 8px;
+    background: transparent;
+    border: 1px solid rgba(255, 0, 255, 0.4);
+    color: #ff00ff;
+    width: 28px;
+    height: 28px;
+    font-size: 14px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: 0.2s;
+    padding: 0;
+}
+
+.pin-form-close:hover {
+    background: #ff00ff;
+    color: #fff;
+    box-shadow: 0 0 10px #ff00ff;
+}
+
+@keyframes slideDown {
+    from {
+        transform: translateY(-20px);
+        opacity: 0;
+    }
+
+    to {
+        transform: translateY(0);
+        opacity: 1;
+    }
+}
+
+.pin-form h3 {
+    font-family: 'Orbitron', sans-serif;
+    color: #ff00ff;
+    font-size: 0.9rem;
+    margin-bottom: 1rem;
+    letter-spacing: 2px;
+}
+
+.form-group {
+    display: flex;
+    gap: 0.5rem;
+    margin-bottom: 0.5rem;
+}
+
+.pin-form input,
+.pin-form textarea {
+    background: rgba(0, 0, 0, 0.5);
+    border: 1px solid rgba(255, 0, 255, 0.5);
+    color: #fff;
+    padding: 8px;
+    font-family: 'Roboto Mono', monospace;
+    font-size: 0.75rem;
+}
+
+.pin-form input:focus,
+.pin-form textarea:focus {
+    border-color: #ff00ff;
+    outline: none;
+    background: rgba(255, 0, 255, 0.05);
+}
+
+.pin-form textarea {
+    width: 100%;
+    height: 60px;
+    resize: none;
+    margin-bottom: 1rem;
+}
+
+.pin-form-actions {
+    display: flex;
+    gap: 0.5rem;
+}
+
+.pin-cancel-btn {
+    flex: 1;
+    background: transparent !important;
+    border: 1px solid rgba(255, 0, 255, 0.4) !important;
+    color: #ff00ff !important;
+}
+
+.pin-cancel-btn:hover {
+    background: rgba(255, 0, 255, 0.15) !important;
+    box-shadow: none !important;
+}
+
+.pin-form button[type="submit"] {
+    flex: 1;
+    background: #ff00ff;
+    color: #fff;
+    border: none;
+    padding: 10px;
+    font-family: 'Orbitron', sans-serif;
+    font-weight: 900;
+    cursor: pointer;
+    letter-spacing: 2px;
+    transition: 0.3s;
+}
+
+.pin-form button[type="submit"]:hover {
+    filter: brightness(1.2);
+    box-shadow: 0 0 15px #ff00ff;
 }
 
 /* Intel Feed */
@@ -332,6 +500,29 @@
     font-size: 0.8rem;
     color: #aaaaaa;
     line-height: 1.4;
+    margin-bottom: 0.75rem;
+}
+
+.card-link {
+    display: inline-block;
+    color: #00ffff;
+    font-family: 'Roboto Mono', monospace;
+    font-size: 0.7rem;
+    font-weight: 900;
+    text-decoration: none;
+    border: 1px solid #00ffff;
+    padding: 4px 8px;
+    border-radius: 2px;
+    background: rgba(0, 255, 255, 0.05);
+    transition: all 0.2s;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.card-link:hover {
+    background: #00ffff;
+    color: #000;
+    box-shadow: 0 0 10px #00ffff;
 }
 
 /* Metrics Bar */
@@ -382,6 +573,52 @@
 .tension-meter {
     flex: 1.5;
 }
+
+.stress-control {
+    flex: 2;
+    background: rgba(255, 51, 0, 0.05);
+    border-left: 1px solid rgba(255, 51, 0, 0.3);
+}
+
+.stress-slider {
+    -webkit-appearance: none;
+    width: 100%;
+    height: 4px;
+    background: #333;
+    outline: none;
+    margin-top: 10px;
+}
+
+.stress-slider::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 20px;
+    height: 20px;
+    background: #ff3300;
+    cursor: pointer;
+    border-radius: 0;
+    border: 2px solid #fff;
+    box-shadow: 0 0 10px #ff3300;
+}
+
+.stress-subtitle {
+    font-size: 0.6rem;
+    color: #888;
+    font-style: italic;
+    margin-top: 2px;
+    letter-spacing: 0.5px;
+}
+
+.stress-level-label {
+    font-family: 'Orbitron', sans-serif;
+    font-size: 0.7rem;
+    font-weight: 900;
+    color: #ff3300;
+    letter-spacing: 2px;
+    margin-top: 6px;
+    text-shadow: 0 0 8px rgba(255, 51, 0, 0.5);
+}
+
 
 .tension-bar {
     width: 100%;
@@ -524,6 +761,129 @@
 .modal-row span:last-child {
     color: #ffffff;
     line-height: 1.6;
+}
+
+.modal-action {
+    margin-top: 1rem;
+    padding-top: 1.5rem;
+    border-top: 1px solid rgba(0, 255, 255, 0.2);
+    display: flex;
+    justify-content: center;
+}
+
+/* Theory Overlay Styles */
+.theory-overlay {
+    margin-top: 1.5rem;
+    padding-top: 1.5rem;
+    border-top: 1px solid rgba(0, 255, 255, 0.2);
+}
+
+.theory-buttons {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    margin: 1rem 0;
+}
+
+.theory-btn {
+    background: rgba(0, 0, 0, 0.5);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    color: #aaa;
+    padding: 6px 10px;
+    font-family: 'Roboto Mono', monospace;
+    font-size: 0.65rem;
+    cursor: pointer;
+    transition: all 0.2s;
+    letter-spacing: 1px;
+}
+
+.theory-btn:hover {
+    border-color: var(--theory-color);
+    color: #fff;
+}
+
+.theory-btn.active {
+    background: var(--theory-color);
+    border-color: var(--theory-color);
+    color: #000;
+    font-weight: 700;
+    box-shadow: 0 0 10px var(--theory-color);
+}
+
+.theory-content {
+    background: rgba(255, 255, 255, 0.03);
+    border-left: 4px solid #fff;
+    padding: 1.5rem;
+    margin-top: 1rem;
+}
+
+.theory-meta {
+    margin-bottom: 1rem;
+}
+
+.theory-name {
+    font-family: 'Orbitron', sans-serif;
+    font-size: 1.1rem;
+    font-weight: 900;
+    letter-spacing: 2px;
+}
+
+.theory-desc {
+    font-size: 0.8rem;
+    color: #999;
+    font-style: italic;
+    margin-top: 4px;
+}
+
+.theory-interpretation {
+    font-size: 0.95rem;
+    color: #fff;
+    line-height: 1.5;
+}
+
+.theory-interpretation strong {
+    color: #00ffff;
+    letter-spacing: 1px;
+}
+
+.live-report-btn {
+    background: #000;
+    color: #00ffff;
+    border: 2px solid #00ffff;
+    padding: 12px 24px;
+    font-family: 'Orbitron', sans-serif;
+    font-size: 0.8rem;
+    font-weight: 900;
+    text-decoration: none;
+    letter-spacing: 2px;
+    text-shadow: 0 0 10px rgba(0, 255, 255, 0.5);
+    box-shadow: 0 0 15px rgba(0, 255, 255, 0.3);
+    transition: all 0.3s ease;
+    animation: neon-pulse 2s infinite;
+}
+
+.live-report-btn:hover {
+    background: #00ffff;
+    color: #000;
+    box-shadow: 0 0 40px #00ffff;
+    transform: translateY(-3px);
+}
+
+@keyframes neon-pulse {
+    0% {
+        box-shadow: 0 0 10px rgba(0, 255, 255, 0.2);
+        border-color: #00ffff;
+    }
+
+    50% {
+        box-shadow: 0 0 25px rgba(0, 255, 255, 0.6);
+        border-color: #00ff88;
+    }
+
+    100% {
+        box-shadow: 0 0 10px rgba(0, 255, 255, 0.2);
+        border-color: #00ffff;
+    }
 }
 
 /* Responsive */
