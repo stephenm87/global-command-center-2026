@@ -76,7 +76,13 @@ async function fetchSerper(query, apiKey, numResults = 8) {
             'Topic/Sector': SECTOR_LABELS[category],
             'Entity/Subject': item.title,
             'Key Player/Organization': item.source || 'Global News',
-            'Timeline': `LIVE - ${new Date(item.date || Date.now()).toLocaleString('en-US', { month: 'short', year: 'numeric' })}`,
+            'Timeline': (() => {
+                if (!item.date) return 'LIVE - Feb 2026';
+                const parsed = new Date(item.date);
+                if (!isNaN(parsed)) return `LIVE - ${parsed.toLocaleString('en-US', { month: 'short', year: 'numeric' })}`;
+                // Serper sometimes returns relative strings like "2 days ago" — use as-is
+                return `LIVE - ${item.date}`;
+            })(),
             'Expected Impact/Value': item.snippet || item.title,
             'Source': item.source || 'Google News',
             'url': item.link,
