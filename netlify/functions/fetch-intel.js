@@ -65,7 +65,7 @@ async function fetchSerper(query, apiKey, numResults = 8) {
             'X-API-KEY': apiKey,
             'Content-Type': 'application/json'
         },
-        body: JSON.stringify({ q: query, num: numResults, gl: 'us', hl: 'en' })
+        body: JSON.stringify({ q: query, num: numResults, gl: 'us', hl: 'en', tbs: 'qdr:m' })
     });
     if (!res.ok) throw new Error(`Serper error: ${res.status}`);
     const data = await res.json();
@@ -136,14 +136,15 @@ exports.handler = async (event) => {
 
         let intelItems = [];
 
-        // PRIMARY: Serper (Google News quality results)
+        // PRIMARY: Serper — scoped to past month (tbs:qdr:m), targeting latest + ongoing conflicts
         if (serperKey) {
-            const [conflictNews, econNews, techNews] = await Promise.all([
-                fetchSerper('geopolitics war conflict military 2025', serperKey, 8),
-                fetchSerper('global economy trade sanctions inflation', serperKey, 5),
-                fetchSerper('cybersecurity AI technology surveillance', serperKey, 4)
+            const [breakingConflict, ongoingWars, geoecon, techSec] = await Promise.all([
+                fetchSerper('breaking geopolitics crisis conflict 2026 latest update', serperKey, 8),
+                fetchSerper('Ukraine Gaza Sudan Taiwan ceasefire offensive latest development 2026', serperKey, 7),
+                fetchSerper('global economy sanctions trade war tariffs 2026', serperKey, 5),
+                fetchSerper('cyber attack AI surveillance military technology 2026', serperKey, 4)
             ]);
-            intelItems = [...conflictNews, ...econNews, ...techNews];
+            intelItems = [...breakingConflict, ...ongoingWars, ...geoecon, ...techSec];
         }
 
         // BACKUP: GNews (if Serper unavailable or too few results)
