@@ -1,0 +1,1469 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI-Powered Project Building — A Teacher's Guide</title>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;900&family=JetBrains+Mono:wght@400;500&display=swap"
+        rel="stylesheet">
+    <style>
+        :root {
+            --bg: #ffffff;
+            --text: #1a1a2e;
+            --accent: #0066cc;
+            --accent-light: #e8f0fe;
+            --border: #d0d7de;
+            --muted: #57606a;
+            --code-bg: #f6f8fa;
+            --warning-bg: #fff8e1;
+            --warning-border: #f9a825;
+            --tip-bg: #e8f5e9;
+            --tip-border: #43a047;
+            --case-bg: #f3e8ff;
+            --case-border: #7c3aed;
+            --showcase-bg: #f0f7ff;
+            --showcase-border: #2563eb;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        @page {
+            size: A4;
+            margin: 1.5cm 2cm;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            color: var(--text);
+            background: var(--bg);
+            line-height: 1.7;
+            font-size: 11pt;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 40px 20px;
+        }
+
+        /* COVER */
+        .cover {
+            text-align: center;
+            padding: 60px 20px 50px;
+            page-break-after: always;
+            min-height: 90vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .cover-icon {
+            font-size: 72px;
+            margin-bottom: 24px;
+        }
+
+        .cover h1 {
+            font-size: 2.2rem;
+            font-weight: 900;
+            line-height: 1.2;
+            margin-bottom: 12px;
+        }
+
+        .cover h2 {
+            font-size: 1.05rem;
+            font-weight: 400;
+            color: var(--muted);
+            margin-bottom: 30px;
+        }
+
+        .cover-meta {
+            font-size: 0.85rem;
+            color: var(--muted);
+            border-top: 2px solid var(--border);
+            padding-top: 24px;
+            margin-top: 20px;
+        }
+
+        .cover-meta strong {
+            color: var(--text);
+        }
+
+        /* HEADERS */
+        h1 {
+            font-size: 1.6rem;
+            font-weight: 900;
+            border-bottom: 3px solid var(--accent);
+            padding-bottom: 10px;
+            margin: 50px 0 20px;
+        }
+
+        h2 {
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: var(--accent);
+            margin: 30px 0 12px;
+        }
+
+        h3 {
+            font-size: 1rem;
+            font-weight: 600;
+            margin: 20px 0 8px;
+        }
+
+        p {
+            margin-bottom: 12px;
+        }
+
+        /* PHASE BLOCKS */
+        .phase {
+            page-break-inside: avoid;
+            margin: 24px 0;
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            overflow: hidden;
+        }
+
+        .phase-header {
+            background: var(--accent);
+            color: white;
+            padding: 12px 20px;
+            font-weight: 700;
+            font-size: 1rem;
+        }
+
+        .phase-body {
+            padding: 18px 20px;
+        }
+
+        /* STEPS */
+        .step {
+            display: flex;
+            gap: 14px;
+            margin-bottom: 18px;
+            page-break-inside: avoid;
+        }
+
+        .step-number {
+            flex-shrink: 0;
+            width: 30px;
+            height: 30px;
+            background: var(--accent);
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 0.82rem;
+            margin-top: 2px;
+        }
+
+        .step-content {
+            flex: 1;
+        }
+
+        .step-content h4 {
+            font-size: 0.95rem;
+            font-weight: 700;
+            margin-bottom: 4px;
+        }
+
+        .step-content p {
+            font-size: 0.9rem;
+            color: var(--muted);
+            margin-bottom: 4px;
+        }
+
+        /* CODE */
+        code {
+            font-family: 'JetBrains Mono', monospace;
+            background: var(--code-bg);
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-size: 0.85em;
+            color: #c7254e;
+        }
+
+        pre {
+            background: #1e1e2e;
+            color: #cdd6f4;
+            padding: 14px 18px;
+            border-radius: 8px;
+            overflow-x: auto;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.8rem;
+            line-height: 1.6;
+            margin: 10px 0 14px;
+            page-break-inside: avoid;
+        }
+
+        pre code {
+            background: none;
+            color: inherit;
+            padding: 0;
+        }
+
+        /* CALLOUTS */
+        .callout {
+            padding: 12px 16px;
+            border-radius: 6px;
+            margin: 14px 0;
+            font-size: 0.9rem;
+            page-break-inside: avoid;
+        }
+
+        .callout-warning {
+            background: var(--warning-bg);
+            border-left: 4px solid var(--warning-border);
+        }
+
+        .callout-tip {
+            background: var(--tip-bg);
+            border-left: 4px solid var(--tip-border);
+        }
+
+        .callout-info {
+            background: var(--accent-light);
+            border-left: 4px solid var(--accent);
+        }
+
+        .callout strong {
+            display: block;
+            margin-bottom: 4px;
+        }
+
+        /* CASE STUDY */
+        .case-study {
+            background: var(--case-bg);
+            border-left: 4px solid var(--case-border);
+            padding: 12px 16px;
+            border-radius: 0 6px 6px 0;
+            margin: 14px 0;
+            font-size: 0.9rem;
+            page-break-inside: avoid;
+        }
+
+        .case-study strong {
+            color: var(--case-border);
+            display: block;
+            margin-bottom: 4px;
+        }
+
+        /* TABLES */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 14px 0;
+            font-size: 0.88rem;
+        }
+
+        th,
+        td {
+            border: 1px solid var(--border);
+            padding: 8px 12px;
+            text-align: left;
+        }
+
+        th {
+            background: var(--code-bg);
+            font-weight: 700;
+            font-size: 0.82rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        /* LISTS */
+        ul,
+        ol {
+            margin: 8px 0 12px 24px;
+        }
+
+        li {
+            margin-bottom: 5px;
+            font-size: 0.92rem;
+        }
+
+        a {
+            color: var(--accent);
+            text-decoration: none;
+        }
+
+        a:hover {
+            text-decoration: underline;
+        }
+
+        /* TIMELINE */
+        .timeline {
+            position: relative;
+            padding-left: 28px;
+            margin: 18px 0;
+        }
+
+        .timeline::before {
+            content: '';
+            position: absolute;
+            left: 8px;
+            top: 0;
+            bottom: 0;
+            width: 2px;
+            background: var(--border);
+        }
+
+        .timeline-item {
+            position: relative;
+            margin-bottom: 20px;
+            page-break-inside: avoid;
+        }
+
+        .timeline-item::before {
+            content: '';
+            position: absolute;
+            left: -24px;
+            top: 6px;
+            width: 12px;
+            height: 12px;
+            background: var(--accent);
+            border-radius: 50%;
+            border: 2px solid white;
+        }
+
+        .timeline-item h4 {
+            font-size: 0.93rem;
+            font-weight: 700;
+            margin-bottom: 4px;
+        }
+
+        .timeline-item p {
+            font-size: 0.88rem;
+            color: var(--muted);
+        }
+
+        /* TOC */
+        .toc {
+            page-break-after: always;
+        }
+
+        .toc ul {
+            list-style: none;
+            margin: 0;
+            padding: 0;
+        }
+
+        .toc li {
+            padding: 7px 0;
+            border-bottom: 1px dotted var(--border);
+        }
+
+        .toc li a {
+            font-weight: 600;
+        }
+
+        .toc li span {
+            color: var(--muted);
+            font-size: 0.85rem;
+            display: block;
+            margin-top: 2px;
+        }
+
+        /* IDEA GRID */
+        .idea-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+            margin: 14px 0;
+        }
+
+        .idea-card {
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 14px;
+            page-break-inside: avoid;
+        }
+
+        .idea-card h4 {
+            font-size: 0.9rem;
+            margin-bottom: 6px;
+        }
+
+        .idea-card p {
+            font-size: 0.82rem;
+            color: var(--muted);
+            margin: 0;
+        }
+
+        .idea-card .emoji {
+            font-size: 1.4rem;
+            margin-bottom: 6px;
+            display: block;
+        }
+
+        /* SCREENSHOTS / EVOLUTION */
+        .screenshot-gallery {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 20px;
+            margin: 20px 0;
+        }
+
+        .screenshot-item {
+            page-break-inside: avoid;
+        }
+
+        .screenshot-item img {
+            width: 100%;
+            border-radius: 8px;
+            border: 2px solid var(--border);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+
+        .screenshot-item .caption {
+            font-size: 0.82rem;
+            color: var(--muted);
+            text-align: center;
+            margin-top: 8px;
+            font-style: italic;
+        }
+
+        .screenshot-item .stage-label {
+            display: inline-block;
+            background: var(--accent);
+            color: white;
+            padding: 3px 10px;
+            border-radius: 4px;
+            font-size: 0.75rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 8px;
+        }
+
+        .screenshot-pair {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 14px;
+            margin: 14px 0;
+        }
+
+        .screenshot-pair img {
+            width: 100%;
+            border-radius: 8px;
+            border: 2px solid var(--border);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+
+        /* SHOWCASE CALLOUT */
+        .showcase {
+            background: var(--showcase-bg);
+            border: 2px solid var(--showcase-border);
+            border-radius: 10px;
+            padding: 20px;
+            margin: 20px 0;
+            page-break-inside: avoid;
+        }
+
+        .showcase h3 {
+            color: var(--showcase-border);
+            margin-top: 0;
+            margin-bottom: 12px;
+            font-size: 1.05rem;
+        }
+
+        .showcase img {
+            width: 100%;
+            border-radius: 6px;
+            margin: 10px 0;
+            border: 1px solid var(--border);
+        }
+
+        /* UTILITIES */
+        .page-break {
+            page-break-before: always;
+        }
+
+        .avoid-break {
+            page-break-inside: avoid;
+        }
+
+        .text-muted {
+            color: var(--muted);
+        }
+
+        .text-small {
+            font-size: 0.85rem;
+        }
+
+        hr {
+            border: none;
+            border-top: 1px solid var(--border);
+            margin: 28px 0;
+        }
+
+        .footer {
+            margin-top: 50px;
+            padding-top: 18px;
+            border-top: 2px solid var(--border);
+            text-align: center;
+            font-size: 0.8rem;
+            color: var(--muted);
+        }
+
+        .checklist {
+            list-style: none;
+            margin-left: 0;
+            padding: 0;
+        }
+
+        .checklist li {
+            padding: 5px 0 5px 28px;
+            position: relative;
+        }
+
+        .checklist li::before {
+            content: '☐';
+            position: absolute;
+            left: 0;
+            font-size: 1.1rem;
+        }
+
+        @media print {
+            body {
+                padding: 0;
+            }
+
+            .cover {
+                min-height: auto;
+                padding: 50px 0;
+            }
+
+            pre {
+                font-size: 0.78rem;
+            }
+
+            .idea-grid {
+                grid-template-columns: 1fr 1fr;
+            }
+
+            .screenshot-pair {
+                grid-template-columns: 1fr 1fr;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- ============================== -->
+    <!-- COVER                          -->
+    <!-- ============================== -->
+    <div class="cover">
+        <div class="cover-icon">🚀</div>
+        <h1>Build Anything with AI</h1>
+        <h2>A Teacher's Guide to Creating Interactive Web Projects<br>Using Antigravity &amp; AI-Assisted Coding</h2>
+
+        <div class="cover-meta">
+            <p><strong>Author:</strong> Stephen Martinez</p>
+            <p><strong>Subject:</strong> Educational Technology · Project-Based Learning</p>
+            <p><strong>Date:</strong> February 2026</p>
+            <p><strong>Case Study:</strong> <a href="https://globalcommandcenter2026.netlify.app/">The Global Command
+                    Center</a> — a cyberpunk 3D politics dashboard</p>
+            <br>
+            <p class="text-small">This guide teaches the general process for building, deploying, and maintaining<br>
+                any interactive web project from scratch — no prior coding experience required.<br>
+                The Global Command Center is used as a worked example throughout.</p>
+        </div>
+    </div>
+
+    <!-- ============================== -->
+    <!-- TABLE OF CONTENTS              -->
+    <!-- ============================== -->
+    <div class="toc">
+        <h1 style="margin-top:0;">Table of Contents</h1>
+        <ul>
+            <li>
+                <a href="#philosophy">The Big Idea: Teachers as Architects, AI as Builder</a>
+                <span>Why this matters and what's possible</span>
+            </li>
+            <li>
+                <a href="#inspiration">What's Really Possible — A Creativity Showcase</a>
+                <span>Project ideas across every subject, with real examples</span>
+            </li>
+            <li>
+                <a href="#antigravity">Phase 1 — Setting Up Antigravity</a>
+                <span>Your AI coding environment, MCP servers, and API keys</span>
+            </li>
+            <li>
+                <a href="#scaffold">Phase 2 — Scaffolding Your Project</a>
+                <span>Creating the project skeleton</span>
+            </li>
+            <li>
+                <a href="#prompting">Phase 3 — Building with AI Prompts</a>
+                <span>How to describe what you want and iterate toward it</span>
+            </li>
+            <li>
+                <a href="#data">Phase 4 — Connecting Your Data &amp; APIs</a>
+                <span>CSV files, JSON feeds, news search protocols</span>
+            </li>
+            <li>
+                <a href="#deploy">Phase 5 — GitHub + Netlify: Go Live for Free</a>
+                <span>Version control, deployment, and the education plan</span>
+            </li>
+            <li>
+                <a href="#iterate">Phase 6 — The Iteration Cycle</a>
+                <span>How a project evolves through feedback and refinement</span>
+            </li>
+            <li>
+                <a href="#casestudy">Case Study: Building the Global Command Center</a>
+                <span>The complete timeline with screenshots from every stage</span>
+            </li>
+            <li>
+                <a href="#troubleshooting">Troubleshooting &amp; FAQ</a>
+                <span>Common issues and their solutions</span>
+            </li>
+            <li>
+                <a href="#appendix">Appendix: Tech Stack &amp; API Reference</a>
+                <span>Everything under the hood</span>
+            </li>
+        </ul>
+    </div>
+
+    <!-- ============================== -->
+    <!-- THE BIG IDEA                   -->
+    <!-- ============================== -->
+    <h1 id="philosophy">The Big Idea: Teachers as Architects, AI as Builder</h1>
+
+    <p>You don't need to learn to code. You need to learn to <strong>describe what you want</strong>.</p>
+
+    <p>Modern AI coding assistants can write, debug, and deploy entire web applications from natural-language
+        descriptions. Your role as a teacher is the most important one: you provide the <strong>pedagogical
+            vision</strong> — what students should see, explore, analyze, and create. The AI handles the syntax, the
+        libraries, and the build pipeline.</p>
+
+    <p>This guide walks you through the complete process of turning an idea into a live, interactive web tool that your
+        students can access from any device.</p>
+
+    <div class="callout callout-info">
+        <strong>ℹ️ What You'll End Up With</strong>
+        A live website, hosted for free, that auto-updates every time you push new code — accessible to every student
+        and parent via a simple URL.
+    </div>
+
+    <!-- ============================== -->
+    <!-- INSPIRATION / CREATIVITY       -->
+    <!-- ============================== -->
+    <h1 id="inspiration" class="page-break">What's Really Possible — A Creativity Showcase</h1>
+
+    <p>The workflow in this guide isn't limited to one type of project. Here's a taste of what teachers across
+        <strong>every subject area</strong> can build — all from natural-language descriptions, all hosted for free:</p>
+
+    <div class="idea-grid">
+        <div class="idea-card">
+            <span class="emoji">🌍</span>
+            <h4>Global Politics Dashboard</h4>
+            <p>A 3D interactive globe with 85+ geo-coded forecasts, live verified news from Serper API, 7 theoretical
+                lenses (Realist, Feminist, Marxist…), and a crisis escalation simulator with animated threat arcs.
+                <em>(Our case study — see below)</em></p>
+        </div>
+        <div class="idea-card">
+            <span class="emoji">🧬</span>
+            <h4>Biology Lab Simulator</h4>
+            <p>A dark-themed virtual lab with a 3D DNA helix, clickable cell organelle explorer, embedded quizzes, and a
+                virtual microscope. Students zoom into mitochondria, run virtual PCR experiments, and see real-time data
+                visualizations of population genetics.</p>
+        </div>
+        <div class="idea-card">
+            <span class="emoji">📚</span>
+            <h4>Literature Timeline</h4>
+            <p>An elegant horizontal timeline spanning Renaissance to Postmodernism, with author portraits, key
+                excerpts, and thematic link maps. Click Shakespeare, and a detail card appears with biography, famous
+                quotes, and connections to modern adaptations.</p>
+        </div>
+        <div class="idea-card">
+            <span class="emoji">🗺️</span>
+            <h4>Historical Map Explorer</h4>
+            <p>Interactive maps showing territory changes across centuries with primary source quotes per province.
+                Click a region and see who controlled it, their army size, and a contemporary account. <strong>Already
+                    built — see below.</strong></p>
+        </div>
+        <div class="idea-card">
+            <span class="emoji">📊</span>
+            <h4>Economics Simulator</h4>
+            <p>An animated supply-demand dashboard where students adjust policy sliders (tax rate, interest rate, trade
+                tariffs) and watch GDP, inflation, and unemployment gauges respond in real-time. Includes a mock stock
+                ticker and simulated news feed of economic events.</p>
+        </div>
+        <div class="idea-card">
+            <span class="emoji">🎵</span>
+            <h4>Music Theory Playground</h4>
+            <p>An interactive piano keyboard that highlights chords when played, with a staff view showing notation in
+                real-time. Includes a chord progression builder with drag-and-drop blocks and a waveform visualizer that
+                dances to the audio output.</p>
+        </div>
+        <div class="idea-card">
+            <span class="emoji">🧮</span>
+            <h4>Math Visualizer</h4>
+            <p>An animated graphing calculator where students drag sliders to transform parabolas, sine waves, and
+                exponential functions. Split-screen shows the math equation updating alongside a real-world application
+                — projectile motion, population growth, or compound interest.</p>
+        </div>
+        <div class="idea-card">
+            <span class="emoji">🌡️</span>
+            <h4>Climate Data Explorer</h4>
+            <p>A 3D globe with environmental heat map overlays — temperature anomalies, sea level rise, deforestation. A
+                time slider scrubs from 1900 to 2100 showing projected changes. Side panels show CO₂ levels, ice sheet
+                area, and species displacement data.</p>
+        </div>
+    </div>
+
+    <!-- REAL EXAMPLE: Warlord Map -->
+    <div class="showcase">
+        <h3>🗺️ Real Example — China's Warlord Era Map</h3>
+        <p>This interactive history project was built in a single conversation using the same workflow described in this
+            guide.
+            Students click on provinces of 1920s China to explore which warlord clique controlled each region, their
+            army strength, and primary source quotes from the era.</p>
+        <img src="guide-images/example-history-warlord-map.png"
+            alt="Interactive map of China's Warlord Era showing clickable provinces with historical data">
+        <p class="text-small text-muted" style="text-align:center; margin-top:6px;">Built in one session: React +
+            interactive SVG overlays + NotebookLM historical sources</p>
+    </div>
+
+    <div class="callout callout-tip">
+        <strong>💡 The Pattern Is Always the Same</strong>
+        No matter what you build, the workflow is identical: set up your environment → describe the project to AI →
+        connect your data → push to GitHub → deploy on Netlify. The content changes; the process doesn't.
+    </div>
+
+    <div class="callout callout-info">
+        <strong>ℹ️ Imagine Your Subject</strong>
+        Think about what your students struggle with most. What concept would come alive if they could <em>interact</em>
+        with it instead of just read about it? That's your project idea. You don't need to know how to build it — you
+        just need to describe it clearly.
+    </div>
+
+    <!-- ============================== -->
+    <!-- PHASE 1: ANTIGRAVITY           -->
+    <!-- ============================== -->
+    <h1 id="antigravity" class="page-break">Phase 1 — Setting Up Antigravity</h1>
+
+    <p><strong>Antigravity</strong> is the AI-powered coding environment where all the magic happens. Think of it as a
+        "mission control" for building software — you type what you want in natural language; the AI writes and runs the
+        code.</p>
+
+    <h2>What's Inside Antigravity</h2>
+
+    <ul>
+        <li><strong>A code editor</strong> — where your project files live</li>
+        <li><strong>A terminal</strong> — for running build commands, installing packages, and deploying</li>
+        <li><strong>A browser</strong> — so the AI can visually verify what it built</li>
+        <li><strong>MCP servers</strong> — plug-in connections to external services (see below)</li>
+    </ul>
+
+    <h2>MCP Servers: Extending AI's Reach</h2>
+
+    <p>MCP (Model Context Protocol) servers let the AI assistant access external tools and APIs. They're configured in a
+        <code>mcp_config.json</code> file:
+    </p>
+
+    <table>
+        <thead>
+            <tr>
+                <th>Server</th>
+                <th>Purpose</th>
+                <th>API Key Required?</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td><strong>GitHub</strong></td>
+                <td>Version control — push code, create repos, manage files</td>
+                <td>Yes — Personal Access Token</td>
+            </tr>
+            <tr>
+                <td><strong>Serper</strong></td>
+                <td>Google search API — fetches real-time news headlines and links</td>
+                <td>Yes — <a href="https://serper.dev">serper.dev</a> (2,500 free searches)</td>
+            </tr>
+            <tr>
+                <td><strong>Firecrawl</strong></td>
+                <td>Web scraping — verifies links and extracts content</td>
+                <td>Yes — <a href="https://firecrawl.dev">firecrawl.dev</a> (500 free pages)</td>
+            </tr>
+            <tr>
+                <td><strong>NotebookLM</strong></td>
+                <td>Google's research tool — query your uploaded sources for citation-backed answers</td>
+                <td>Google account authentication</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <div class="callout callout-warning">
+        <strong>⚠️ API Keys = Small Costs (Mostly Free)</strong>
+        Most APIs offer free tiers sufficient for educational use. GitHub and NotebookLM are free. <strong>Monitor your
+            usage</strong> on API dashboards.
+    </div>
+
+    <h2>The News Search Protocol</h2>
+
+    <p>If your project includes live news or current events, here's the pipeline:</p>
+
+    <div class="phase">
+        <div class="phase-header">News Search → Verified Intel Pipeline</div>
+        <div class="phase-body">
+            <div class="step">
+                <div class="step-number">1</div>
+                <div class="step-content">
+                    <h4>Search via Serper API</h4>
+                    <p>AI runs Google searches for current news on your topic (e.g., "Sudan ceasefire 2026").</p>
+                </div>
+            </div>
+            <div class="step">
+                <div class="step-number">2</div>
+                <div class="step-content">
+                    <h4>Scrape &amp; Verify via Firecrawl</h4>
+                    <p>Candidate links are scraped to verify they're accessible and non-paywalled. Broken links are
+                        discarded.</p>
+                </div>
+            </div>
+            <div class="step">
+                <div class="step-number">3</div>
+                <div class="step-content">
+                    <h4>Curate into JSON</h4>
+                    <p>Verified links become a <code>live_intel.json</code> file with structured fields (title, source,
+                        URL, coordinates).</p>
+                </div>
+            </div>
+            <div class="step">
+                <div class="step-number">4</div>
+                <div class="step-content">
+                    <h4>Display in Your App</h4>
+                    <p>The app fetches the JSON and renders it — as sidebar cards, map pins, or news tickers.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="callout callout-tip">
+        <strong>💡 No API Needed for Static Data</strong>
+        If your project uses historical data or teacher-curated material (not live news), you don't need Serper or
+        Firecrawl. Just create your data as a CSV or JSON file in the <code>public/</code> folder.
+    </div>
+
+    <!-- ============================== -->
+    <!-- PHASE 2: SCAFFOLD              -->
+    <!-- ============================== -->
+    <h1 id="scaffold" class="page-break">Phase 2 — Scaffolding Your Project</h1>
+
+    <p>Every project starts the same way: create a folder, install tools, start a local server.</p>
+
+    <div class="phase">
+        <div class="phase-header">Install Once (Before Your First Project)</div>
+        <div class="phase-body">
+            <ul>
+                <li><strong>Node.js</strong> (v18+) — <a href="https://nodejs.org">nodejs.org</a></li>
+                <li><strong>Git</strong> — <a href="https://git-scm.com/downloads">git-scm.com</a> <span
+                        class="text-muted text-small">(may already be installed on macOS)</span></li>
+                <li><strong>GitHub Account</strong> — <a href="https://github.com/signup">github.com/signup</a></li>
+                <li><strong>Netlify Account</strong> — <a href="https://app.netlify.com/signup">app.netlify.com</a>
+                    <span class="text-muted text-small">(sign up with GitHub)</span>
+                </li>
+            </ul>
+        </div>
+    </div>
+
+    <h2>Create Your Project</h2>
+
+    <pre><code># 1. Create the project folder
+mkdir my-awesome-project && cd my-awesome-project
+
+# 2. Scaffold a React + Vite app
+npx -y create-vite@latest ./ -- --template react
+
+# 3. Install dependencies & start dev server
+npm install && npm run dev</code></pre>
+
+    <p>Open <code>http://localhost:5173</code> — you'll see a blank React page ready to customize.</p>
+
+    <div class="case-study">
+        <strong>📌 Command Center Example</strong>
+        We also installed <code>npm install globe.gl papaparse</code> — <code>globe.gl</code> for the 3D Earth and
+        <code>papaparse</code>
+        for reading CSV data. Every project will have its own special libraries.
+    </div>
+
+    <!-- ============================== -->
+    <!-- PHASE 3: PROMPTING             -->
+    <!-- ============================== -->
+    <h1 id="prompting" class="page-break">Phase 3 — Building with AI Prompts</h1>
+
+    <p>This is the creative core. You describe what you want; the AI writes the code. The quality of your prompts
+        determines the quality of the result.</p>
+
+    <h2>The Prompt Formula</h2>
+
+    <p>Effective prompts have three layers: <strong>Structure</strong> (layout, components), <strong>Content</strong>
+        (what data to show, where it comes from), and <strong>Aesthetics</strong> (visual style, animations, fonts).</p>
+
+    <div class="case-study">
+        <strong>📌 Example First Prompt</strong>
+        "Build a full-screen dashboard with a 3D globe in the center showing 85 geo-coded events from a CSV file. Add a
+        sidebar on the right showing a scrollable Intel Feed with filter dropdown. Use a dark cyberpunk theme with
+        Orbitron font and neon cyan accents. Bottom bar should show key metrics: Total Events, Gold Forecast, Global
+        Growth, and a tension meter."
+    </div>
+
+    <h2>Initial vs. Iteration Prompts</h2>
+
+    <p><strong>Initial prompt</strong> — Long and detailed. Sets the vision for the entire project.</p>
+
+    <p><strong>Iteration prompts</strong> — Short and targeted. Change one thing at a time:</p>
+
+    <ul>
+        <li><em>"Add a filter dropdown for the categories"</em></li>
+        <li><em>"Make that animation slower — 1 second to 4 seconds"</em></li>
+        <li><em>"When I click an event, show it through 7 different theoretical perspectives"</em></li>
+        <li><em>"Remove the student pin feature entirely"</em></li>
+    </ul>
+
+    <div class="callout callout-tip">
+        <strong>💡 The Golden Rule of Iteration</strong>
+        Change one thing, verify it works, then change the next thing. If you ask for 10 changes at once and something
+        breaks, you won't know which change caused it.
+    </div>
+
+    <!-- ============================== -->
+    <!-- PHASE 4: DATA                  -->
+    <!-- ============================== -->
+    <h1 id="data" class="page-break">Phase 4 — Connecting Your Data &amp; APIs</h1>
+
+    <p>Every educational project needs data. Two options:</p>
+
+    <table>
+        <thead>
+            <tr>
+                <th>Approach</th>
+                <th>Best For</th>
+                <th>How</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td><strong>Static files</strong> (CSV / JSON)</td>
+                <td>Historical data, teacher-curated content, quiz questions</td>
+                <td>Place files in <code>public/</code> folder — Vite copies them to build output automatically</td>
+            </tr>
+            <tr>
+                <td><strong>Live APIs</strong> (Serper + Firecrawl)</td>
+                <td>Current events, live scores, real-time news</td>
+                <td>Search → scrape → verify → save as JSON (see Phase 1 pipeline)</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <div class="callout callout-warning">
+        <strong>⚠️ API Keys Are Sensitive</strong>
+        Never commit API keys to your public GitHub repository. For client-side apps, run the API
+        search locally, save results to a JSON file, and commit the JSON (not the key). For server-side apps, use
+        environment variables.
+    </div>
+
+    <h3>Verifying Your Sources</h3>
+
+    <ul class="checklist">
+        <li>Test every URL in an incognito browser window</li>
+        <li>Reject paywalled sources — students can't access them</li>
+        <li>Prefer official sources (UN, WHO, government sites, .org/.edu)</li>
+        <li>Re-verify periodically — news links go stale</li>
+    </ul>
+
+    <!-- ============================== -->
+    <!-- PHASE 5: GITHUB + NETLIFY      -->
+    <!-- ============================== -->
+    <h1 id="deploy" class="page-break">Phase 5 — GitHub + Netlify: Go Live for Free</h1>
+
+    <p>GitHub stores your code online. Netlify hosts it as a live website. Together, they give you a <strong>one-command
+            deployment pipeline</strong>: push code → site auto-updates.</p>
+
+    <h2>First-Time Setup</h2>
+
+    <pre><code># 1. Create a repo at github.com/new (set to Public)
+
+# 2. Initialize and push
+git init
+git add .
+git commit -m "Initial commit"
+git remote add origin https://github.com/YOUR-USERNAME/project-name.git
+git branch -M main
+git push -u origin main
+
+# 3. On Netlify: Add new site → Import from GitHub
+#    Build command: npm run build
+#    Publish directory: dist</code></pre>
+
+    <h2>Daily Workflow (3 Commands)</h2>
+
+    <pre><code>git add .                                    # Stage changes
+git commit -m "Describe what you changed"    # Save snapshot
+git push origin main                         # Push → auto-deploys</code></pre>
+
+    <h2>Why the Education / Open Source Plan Matters</h2>
+
+    <table>
+        <thead>
+            <tr>
+                <th>Resource</th>
+                <th>Starter (Free)</th>
+                <th>Education / Open Source</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>Bandwidth</td>
+                <td>100 GB / month</td>
+                <td><strong>Effectively unlimited</strong> for edu projects</td>
+            </tr>
+            <tr>
+                <td>Build minutes</td>
+                <td>300 min / month</td>
+                <td><strong>Extended</strong> — frequent deploys OK</td>
+            </tr>
+            <tr>
+                <td>Serverless Functions</td>
+                <td>125K invocations</td>
+                <td>Extended</td>
+            </tr>
+            <tr>
+                <td>Cost</td>
+                <td>Free (with limits)</td>
+                <td><strong>Free</strong> (with relaxed limits)</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <p><strong>Why this matters:</strong> A class of 30 students visiting a ~2 MB page daily can approach the 100 GB
+        Starter limit within a month. The education plan prevents surprise shutdowns or overage charges mid-semester.
+    </p>
+
+    <h3>How to Qualify — Compliance Checklist</h3>
+
+    <div class="phase">
+        <div class="phase-header">Add These to Your Repository</div>
+        <div class="phase-body">
+            <ul class="checklist">
+                <li><strong>OSI-Approved License</strong> — Create a <code>LICENSE</code> file with the MIT License text
+                </li>
+                <li><strong>Code of Conduct</strong> — Create a <code>CODE_OF_CONDUCT.md</code> (use the <a
+                        href="https://www.contributor-covenant.org/version/2/1/code_of_conduct/">Contributor
+                        Covenant</a> template)</li>
+                <li><strong>Public Repository</strong> — GitHub repo must be Public</li>
+                <li><strong>"Powered by Netlify" Badge</strong> — Visible attribution in your site's footer</li>
+                <li><strong>Non-Commercial declaration</strong> — Note that the project is educational</li>
+            </ul>
+        </div>
+    </div>
+
+    <!-- ============================== -->
+    <!-- PHASE 6: ITERATION             -->
+    <!-- ============================== -->
+    <h1 id="iterate" class="page-break">Phase 6 — The Iteration Cycle</h1>
+
+    <p>No project is finished after the first build. Real development is a loop:</p>
+
+    <pre><code>  ┌──────────────────────────────────────────────┐
+  │                                              │
+  │    Describe → Build → Verify → Refine → ↩    │
+  │                                              │
+  └──────────────────────────────────────────────┘</code></pre>
+
+    <table>
+        <thead>
+            <tr>
+                <th>Step</th>
+                <th>You Do</th>
+                <th>AI Does</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td><strong>Describe</strong></td>
+                <td>Tell the AI what you want to change</td>
+                <td>—</td>
+            </tr>
+            <tr>
+                <td><strong>Build</strong></td>
+                <td>—</td>
+                <td>Writes/modifies code</td>
+            </tr>
+            <tr>
+                <td><strong>Verify</strong></td>
+                <td>Check the result in your browser</td>
+                <td>Can also verify via browser automation</td>
+            </tr>
+            <tr>
+                <td><strong>Refine</strong></td>
+                <td>Provide feedback ("slower", "bigger", "different color")</td>
+                <td>Adjusts code</td>
+            </tr>
+            <tr>
+                <td><strong>Deploy</strong></td>
+                <td>Say "push this live"</td>
+                <td>Runs <code>git add</code>, <code>commit</code>, <code>push</code></td>
+            </tr>
+        </tbody>
+    </table>
+
+    <p><strong>Common iteration types:</strong> feature additions, bug fixes, UX improvements, content updates, visual
+        polish, and feature removal (sometimes a feature doesn't serve students as well as expected).</p>
+
+    <div class="callout callout-info">
+        <strong>ℹ️ Each Iteration = One Conversation</strong>
+        Inside Antigravity, each refinement can be its own conversation. The AI retains context through knowledge items
+        and conversation history, so you can pick up where you left off days or weeks later.
+    </div>
+
+    <!-- ============================== -->
+    <!-- CASE STUDY                     -->
+    <!-- ============================== -->
+    <h1 id="casestudy" class="page-break">Case Study: Building the Global Command Center</h1>
+
+    <p>Here's the complete timeline — from blank folder to live deployment — using the exact process above. Every step
+        was done inside Antigravity.</p>
+
+    <h2>The Vision</h2>
+
+    <p>An interactive cyberpunk-themed dashboard for IB Global Politics: 85+ geopolitical forecasts on a 3D globe,
+        category filtering, 7 theoretical lenses, and crisis escalation simulation.</p>
+
+    <h2>Evolution: From First Build to Final Product</h2>
+
+    <p>Real projects don't emerge fully formed. Here's what the Command Center actually looked like at each stage:</p>
+
+    <div class="screenshot-gallery">
+        <div class="screenshot-item">
+            <span class="stage-label">Stage 1 — Day 1: Initial Build</span>
+            <img src="guide-images/evolution-1-early.png"
+                alt="Early build showing globe with basic pink dots and no sidebar">
+            <p class="caption">First working version: 3D globe with basic dots, metrics bar at bottom, but no Intel Feed
+                sidebar yet. The globe rotates and shows geo-coded events, but the UI is minimal.</p>
+        </div>
+        <div class="screenshot-item">
+            <span class="stage-label">Stage 2 — Day 1: Intel Feed Added</span>
+            <img src="guide-images/evolution-2-intel-feed.png"
+                alt="Dashboard with Intel Feed sidebar showing categorized event cards">
+            <p class="caption">After one iteration prompt, the Intel Feed sidebar appears with category filtering.
+                Events now show as scrollable cards with "Economy & Trade" filter active. The layout is functional but
+                still evolving.</p>
+        </div>
+        <div class="screenshot-item">
+            <span class="stage-label">Stage 3 — Day 4: Final Version</span>
+            <img src="guide-images/evolution-3-final.png"
+                alt="Complete dashboard with all features, colored globe dots, stress test, and full Intel Feed">
+            <p class="caption">Final build: Color-coded threat dots on the globe, live intel feed with "VIEW LIVE
+                REPORT" links, Global Stress Test meter, "Launch Glopo Companion" button, Credits & License link, and
+                the Analyst Pin tool. 90 events tracked with 41% conflict ratio.</p>
+        </div>
+    </div>
+
+    <h2>Feature Close-Ups</h2>
+
+    <p>Beyond the main dashboard, individual features were added through simple iteration prompts:</p>
+
+    <div class="screenshot-pair">
+        <div class="screenshot-item">
+            <img src="guide-images/feature-theoretical-lens.png"
+                alt="Theoretical lens modal showing Feminism analysis of an Iran event">
+            <p class="caption"><strong>Theoretical Lenses:</strong> Click any event → choose from 7 IR perspectives →
+                get event-specific analysis</p>
+        </div>
+        <div class="screenshot-item">
+            <img src="guide-images/feature-student-pin.png" alt="Student observation pin form overlaid on the globe">
+            <p class="caption"><strong>Student Pins:</strong> Lat/long input form for student observations (later
+                removed to keep focus on verified data)</p>
+        </div>
+    </div>
+
+    <div class="screenshot-item" style="margin: 14px 0;">
+        <img src="guide-images/feature-compliance.png"
+            alt="Netlify compliance footer with badge, Code of Conduct, and Back to Command Center button">
+        <p class="caption"><strong>Compliance Footer:</strong> Non-commercial disclaimer, Netlify badge, Code of Conduct
+            link, and "Back to Command Center" return button — all required for the free education hosting plan.</p>
+    </div>
+
+    <h2>Build Timeline</h2>
+
+    <div class="timeline">
+        <div class="timeline-item">
+            <h4>Day 1 — Initial Build</h4>
+            <p>Scaffolded React + Vite. Installed <code>globe.gl</code> and <code>papaparse</code>. Gave a detailed
+                prompt describing the full dashboard: 3D globe, Intel Feed, metrics bar, cyberpunk aesthetic. AI
+                generated <code>App.jsx</code> (~530 lines) and <code>App.css</code> (~980 lines).</p>
+        </div>
+        <div class="timeline-item">
+            <h4>Day 1 — Dependency Fix</h4>
+            <p><code>react-globe.gl</code> had Three.js conflicts. Switched to vanilla <code>globe.gl</code> with
+                React's <code>useRef</code>. The AI pivoted approaches within minutes.</p>
+        </div>
+        <div class="timeline-item">
+            <h4>Day 1 — First Deployment</h4>
+            <p>Created GitHub repo, pushed code, connected Netlify. Site live at
+                <code>globalcommandcenter2026.netlify.app</code>.</p>
+        </div>
+        <div class="timeline-item">
+            <h4>Day 2 — CSV 404 Fix</h4>
+            <p>Dashboard loaded but showed 0 events. CSV was in root, not <code>public/</code>. Moved it → rebuilt →
+                redeployed. <strong>Lesson:</strong> Vite only serves files from <code>public/</code>.</p>
+        </div>
+        <div class="timeline-item">
+            <h4>Day 2 — Live Intel Integration</h4>
+            <p>Used Serper API → browser verification → <code>live_intel.json</code> with 5 verified stories from Sudan,
+                arms control, climate policy, and human rights.</p>
+        </div>
+        <div class="timeline-item">
+            <h4>Day 3 — Netlify Compliance</h4>
+            <p>Added MIT License, Code of Conduct, Netlify badge, and "NON-COMMERCIAL ACADEMIC TOOL" disclaimer.</p>
+        </div>
+        <div class="timeline-item">
+            <h4>Day 3 — Layout Fixes</h4>
+            <p>Compliance elements were covering the globe. Moved to a scrollable section below. Added "CREDITS &
+                LICENSE" header link and "BACK TO COMMAND CENTER" button.</p>
+        </div>
+        <div class="timeline-item">
+            <h4>Day 4 — Theoretical Lenses</h4>
+            <p>Added 7 IR perspectives (Realist, Liberal, Marxist, Structuralist, Constructivist, Feminist,
+                Postcolonial) to the detail modal. Each generates event-specific analysis.</p>
+        </div>
+        <div class="timeline-item">
+            <h4>Day 4 — Crisis Simulation</h4>
+            <p>Added "Scenario Simulator" slider: atmosphere shifts blue→orange→red, conflict arcs connect nodes at high
+                tension. Labels: BASELINE / LOW TENSION / ELEVATED / CRITICAL.</p>
+        </div>
+        <div class="timeline-item">
+            <h4>Day 4 — Feature Cleanup &amp; Final Push</h4>
+            <p>Removed analyst pin feature to keep the globe focused on verified data. Committed all changes → GitHub →
+                Netlify auto-deployed. Live site updated within 2 minutes.</p>
+        </div>
+    </div>
+
+    <h2>Final Architecture</h2>
+
+    <pre><code>global-command-center/
+├── index.html                              # Entry point
+├── package.json                            # Dependencies
+├── .gitignore                              # Excludes node_modules, dist, .DS_Store
+├── LICENSE                                 # MIT (OSI-approved)
+├── CODE_OF_CONDUCT.md                      # Contributor Covenant
+├── public/
+│   ├── Global_Forecasts_2026_Enriched.csv  # 85 forecast events
+│   ├── live_intel.json                     # Verified news links
+│   └── news_brief.json                     # Headlines
+└── src/
+    ├── App.jsx                             # Main component
+    ├── App.css                             # Cyberpunk styling
+    └── theories.js                         # 7 IR theoretical lenses</code></pre>
+
+    <!-- ============================== -->
+    <!-- TROUBLESHOOTING                -->
+    <!-- ============================== -->
+    <h1 id="troubleshooting" class="page-break">Troubleshooting &amp; FAQ</h1>
+
+    <table>
+        <thead>
+            <tr>
+                <th>Problem</th>
+                <th>Cause</th>
+                <th>Solution</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>Dashboard loads but shows 0 events</td>
+                <td>Data file not in <code>public/</code></td>
+                <td>Move CSV/JSON to <code>public/</code> and redeploy</td>
+            </tr>
+            <tr>
+                <td><code>npm install</code> fails</td>
+                <td>Dependency version conflicts</td>
+                <td>Delete <code>node_modules</code> and <code>package-lock.json</code>, run <code>npm install</code>
+                    again</td>
+            </tr>
+            <tr>
+                <td>Netlify build fails</td>
+                <td>Wrong build settings</td>
+                <td>Build command: <code>npm run build</code> · Publish: <code>dist</code></td>
+            </tr>
+            <tr>
+                <td>External links return 404</td>
+                <td>News articles moved/deleted</td>
+                <td>Re-verify in incognito; use official organization pages</td>
+            </tr>
+            <tr>
+                <td>Approaching bandwidth limit</td>
+                <td>High traffic on Starter plan</td>
+                <td>Apply for Netlify's Education plan</td>
+            </tr>
+            <tr>
+                <td>AI gives wrong code</td>
+                <td>Ambiguous prompt</td>
+                <td>Be more specific; reference exact file names</td>
+            </tr>
+            <tr>
+                <td>Visualization library conflicts</td>
+                <td>React wrapper incompatible</td>
+                <td>Use vanilla JS library with React <code>useRef</code> instead</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <h2>Frequently Asked Questions</h2>
+
+    <h3>Do I need to learn to code?</h3>
+    <p>No. The AI writes the code. You need to describe what you want clearly. Over time, you'll naturally start to
+        understand patterns — but it's not required.</p>
+
+    <h3>Is this really free?</h3>
+    <p>The core stack is free: GitHub, Netlify (education plan), Node.js, React, Vite. The AI assistant (e.g., Claude
+        Code, Cursor) requires a subscription. API keys for live news have free tiers sufficient for educational use.
+    </p>
+
+    <h3>Can students contribute?</h3>
+    <p>Yes! Add them as GitHub collaborators. They can fork, modify, and submit pull requests — a real-world skill.</p>
+
+    <h3>How do I update content after launch?</h3>
+    <p>Edit your data files (CSV/JSON), commit, and push. For bigger changes, open a new Antigravity conversation.</p>
+
+    <!-- ============================== -->
+    <!-- APPENDIX                       -->
+    <!-- ============================== -->
+    <h1 id="appendix" class="page-break">Appendix: Tech Stack &amp; API Reference</h1>
+
+    <h2>Core Technologies (All Free)</h2>
+
+    <table>
+        <thead>
+            <tr>
+                <th>Tool</th>
+                <th>What It Does</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td><strong>Node.js + npm</strong></td>
+                <td>JavaScript runtime & package manager</td>
+            </tr>
+            <tr>
+                <td><strong>Vite</strong></td>
+                <td>Build tool & dev server with fast refresh</td>
+            </tr>
+            <tr>
+                <td><strong>React</strong></td>
+                <td>UI framework — component-based</td>
+            </tr>
+            <tr>
+                <td><strong>Git + GitHub</strong></td>
+                <td>Version control & cloud code hosting</td>
+            </tr>
+            <tr>
+                <td><strong>Netlify</strong></td>
+                <td>Free web hosting with auto-deploy from GitHub</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <h2>MCP Servers &amp; APIs</h2>
+
+    <table>
+        <thead>
+            <tr>
+                <th>Server</th>
+                <th>npm Package</th>
+                <th>API Key Source</th>
+                <th>Free Tier</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td><strong>GitHub</strong></td>
+                <td><code>@modelcontextprotocol/server-github</code></td>
+                <td>GitHub Settings → Tokens</td>
+                <td>Unlimited</td>
+            </tr>
+            <tr>
+                <td><strong>Serper</strong></td>
+                <td><code>serper-search-scrape-mcp-server</code></td>
+                <td><a href="https://serper.dev">serper.dev</a></td>
+                <td>2,500 searches</td>
+            </tr>
+            <tr>
+                <td><strong>Firecrawl</strong></td>
+                <td><code>@modelcontextprotocol/server-firecrawl</code></td>
+                <td><a href="https://firecrawl.dev">firecrawl.dev</a></td>
+                <td>500 pages</td>
+            </tr>
+            <tr>
+                <td><strong>NotebookLM</strong></td>
+                <td><code>notebooklm-mcp</code> (via uvx)</td>
+                <td>Google account login</td>
+                <td>Free</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <h2>Recommended Libraries by Project Type</h2>
+
+    <table>
+        <thead>
+            <tr>
+                <th>Project Type</th>
+                <th>Library</th>
+                <th>Install Command</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>3D Globe / Map</td>
+                <td>globe.gl, Leaflet, Mapbox GL</td>
+                <td><code>npm install globe.gl</code></td>
+            </tr>
+            <tr>
+                <td>Data Charts</td>
+                <td>Chart.js, D3.js, Recharts</td>
+                <td><code>npm install chart.js</code></td>
+            </tr>
+            <tr>
+                <td>CSV Parsing</td>
+                <td>PapaParse</td>
+                <td><code>npm install papaparse</code></td>
+            </tr>
+            <tr>
+                <td>Markdown Rendering</td>
+                <td>react-markdown</td>
+                <td><code>npm install react-markdown</code></td>
+            </tr>
+            <tr>
+                <td>Animations</td>
+                <td>Framer Motion, GSAP</td>
+                <td><code>npm install framer-motion</code></td>
+            </tr>
+            <tr>
+                <td>Audio / Music</td>
+                <td>Tone.js</td>
+                <td><code>npm install tone</code></td>
+            </tr>
+        </tbody>
+    </table>
+
+    <hr>
+
+    <div class="footer">
+        <p><strong>Build Anything with AI — A Teacher's Guide</strong></p>
+        <p>Created by Stephen Martinez · February 2026</p>
+        <p>Built with Antigravity · Hosted free on Netlify · Open source on GitHub</p>
+        <p class="text-small" style="margin-top:8px;">This guide is open-source. Adapt it for your department, share it
+            with colleagues, or build on it with your students.</p>
+    </div>
+
+</body>
+
+</html>

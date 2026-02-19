@@ -23,6 +23,9 @@ function App() {
     const [stressLevel, setStressLevel] = useState(0);
     const [keyMetrics, setKeyMetrics] = useState({});
     const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
+    const [intelLastUpdated, setIntelLastUpdated] = useState(null);
+    const [deepScanResult, setDeepScanResult] = useState(null);
+    const [deepScanLoading, setDeepScanLoading] = useState(false);
     const globeEl = useRef();
     const globeContainer = useRef();
     const attributionRef = useRef();
@@ -78,9 +81,14 @@ function App() {
                 });
             });
 
-        const fetchLive = fetch('/live_intel.json')
-            .then(response => response.ok ? response.json() : [])
-            .catch(() => []);
+        // Try live scraper function first, fall back to static file
+        const fetchLive = fetch('/.netlify/functions/fetch-intel')
+            .then(res => res.ok ? res.json() : [])
+            .catch(() =>
+                fetch('/live_intel.json')
+                    .then(r => r.ok ? r.json() : [])
+                    .catch(() => [])
+            );
 
         Promise.all([fetchCSV, fetchLive]).then(([csvData, liveData]) => {
             const combinedData = [
@@ -115,8 +123,29 @@ function App() {
                     });
             }
             extractMetrics(combinedData);
+            setIntelLastUpdated(new Date());
         });
     }, []);
+
+    // Deep Scan: Firecrawl-powered article extractor
+    const handleDeepScan = async (url) => {
+        if (!url) return;
+        setDeepScanResult(null);
+        setDeepScanLoading(true);
+        try {
+            const res = await fetch('/.netlify/functions/deep-scan', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ url })
+            });
+            const data = await res.json();
+            setDeepScanResult(data);
+        } catch (e) {
+            setDeepScanResult({ error: 'Deep scan unavailable' });
+        } finally {
+            setDeepScanLoading(false);
+        }
+    };
 
     // Load Student Pins from LocalStorage
     useEffect(() => {
@@ -287,6 +316,11 @@ function App() {
                         />
                         <div className="intel-header">
                             <span className="intel-title">INTEL FEED</span>
+                            {intelLastUpdated && (
+                                <span style={{ fontSize: '0.6rem', color: '#00ff8880', display: 'block', marginTop: '2px' }}>
+                                    ⟳ SCRAPED {intelLastUpdated.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' })}
+                                </span>
+                            )}
                             <select
                                 className="category-filter"
                                 value={selectedCategory}
@@ -438,9 +472,9 @@ function App() {
             {/* Detail Modal */}
             {
                 selectedForecast && (
-                    <div className="detail-modal" onClick={() => setSelectedForecast(null)}>
+                    <div className="detail-modal" onClick={() => { setSelectedForecast(null); setDeepScanResult(null); }}>
                         <div className="modal-content" onClick={(e) => e.stopPropagation()}>
-                            <button className="close-btn" onClick={() => setSelectedForecast(null)}>✕</button>
+                            <button className="close-btn" onClick={() => { setSelectedForecast(null); setDeepScanResult(null); }}>✕</button>
                             <div
                                 className="modal-header"
                                 style={{ borderBottomColor: categoryColors[selectedForecast.Broad_Category] }}
@@ -505,6 +539,35 @@ function App() {
                                         >
                                             OPEN SOURCE INTELLIGENCE REPORT ↗
                                         </a>
+                                        {selectedForecast.isScraped && (
+                                            <button
+                                                className="deep-scan-btn"
+                                                onClick={() => handleDeepScan(selectedForecast.url)}
+                                                disabled={deepScanLoading}
+                                                style={{
+                                                    display: 'block', marginTop: '8px', width: '100%',
+                                                    background: 'transparent', border: '1px solid #ff9900',
+                                                    color: '#ff9900', fontFamily: 'Roboto Mono', fontSize: '0.7rem',
+                                                    padding: '6px 10px', cursor: 'pointer', letterSpacing: '0.1em',
+                                                    opacity: deepScanLoading ? 0.5 : 1
+                                                }}
+                                            >
+                                                {deepScanLoading ? '⟳ SCANNING...' : '⚡ DEEP SCAN (FIRECRAWL)'}
+                                            </button>
+                                        )}
+                                        {deepScanResult && (
+                                            <div style={{
+                                                marginTop: '10px', background: 'rgba(255,153,0,0.07)',
+                                                border: '1px solid #ff990044', borderRadius: '4px',
+                                                padding: '10px', fontSize: '0.72rem', color: '#ccc',
+                                                lineHeight: '1.6', maxHeight: '180px', overflowY: 'auto'
+                                            }}>
+                                                {deepScanResult.error
+                                                    ? <span style={{ color: '#ff4444' }}>{deepScanResult.error}</span>
+                                                    : deepScanResult.content
+                                                }
+                                            </div>
+                                        )}
                                     </div>
                                 )}
                             </div>
