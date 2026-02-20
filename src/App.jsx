@@ -1,7 +1,9 @@
 import React, { useState, useEffect, useRef } from 'react';
 import Globe from 'globe.gl';
 import Papa from 'papaparse';
+import * as topojson from 'topojson-client';
 import { theories, getTheoryInterpretation } from './theories';
+import { generate5W1H, getGlobalChallenges, CHALLENGE_ICONS } from './eventAnalysis';
 import './App.css';
 
 const categoryColors = {
@@ -22,6 +24,8 @@ function App() {
 
     const [stressLevel, setStressLevel] = useState(0);
     const [keyMetrics, setKeyMetrics] = useState({});
+    const [minerals, setMinerals] = useState({});
+    const [showMineralsModal, setShowMineralsModal] = useState(false);
     const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
     const [intelLastUpdated, setIntelLastUpdated] = useState(null);
     const [deepScanResult, setDeepScanResult] = useState(null);
@@ -39,9 +43,39 @@ function App() {
             .globeImageUrl('//unpkg.com/three-globe/example/img/earth-night.jpg')
             .backgroundImageUrl('//unpkg.com/three-globe/example/img/night-sky.png')
             .atmosphereColor('#0088ff')
-            .atmosphereAltitude(0.15);
+            .atmosphereAltitude(0.15)
+            .showGraticules(false);
 
         globeEl.current = globe;
+
+        // Load country boundaries GeoJSON
+        fetch('https://cdn.jsdelivr.net/npm/world-atlas@2/countries-110m.json')
+            .then(res => res.json())
+            .then(worldData => {
+                const countries = topojson.feature(worldData, worldData.objects.countries).features;
+                if (countries.length > 0) {
+                    globe
+                        .polygonsData(countries)
+                        .polygonAltitude(0.005)
+                        .polygonCapColor(() => 'rgba(0, 255, 255, 0.02)')
+                        .polygonSideColor(() => 'rgba(0, 255, 255, 0.05)')
+                        .polygonStrokeColor(() => 'rgba(0, 255, 255, 0.3)');
+                }
+            })
+            .catch(() => {
+                // Fallback: try GeoJSON directly
+                fetch('https://raw.githubusercontent.com/datasets/geo-countries/master/data/countries.geojson')
+                    .then(r => r.json())
+                    .then(geoData => {
+                        globe
+                            .polygonsData(geoData.features)
+                            .polygonAltitude(0.005)
+                            .polygonCapColor(() => 'rgba(0, 255, 255, 0.02)')
+                            .polygonSideColor(() => 'rgba(0, 255, 255, 0.05)')
+                            .polygonStrokeColor(() => 'rgba(0, 255, 255, 0.3)');
+                    })
+                    .catch(e => console.log('Country borders unavailable:', e.message));
+            });
     }, []);
 
     // Keyboard shortcuts
@@ -83,14 +117,19 @@ function App() {
 
         // Try live scraper function first, fall back to static file
         const fetchLive = fetch('/.netlify/functions/fetch-intel')
-            .then(res => res.ok ? res.json() : [])
+            .then(res => res.ok ? res.json() : { items: [], minerals: {} })
             .catch(() =>
                 fetch('/live_intel.json')
-                    .then(r => r.ok ? r.json() : [])
-                    .catch(() => [])
+                    .then(r => r.ok ? r.json().then(d => ({ items: d, minerals: {} })) : { items: [], minerals: {} })
+                    .catch(() => ({ items: [], minerals: {} }))
             );
 
-        Promise.all([fetchCSV, fetchLive]).then(([csvData, liveData]) => {
+        Promise.all([fetchCSV, fetchLive]).then(([csvData, liveResponse]) => {
+            // Support both old (array) and new ({items, minerals}) response formats
+            const liveData = Array.isArray(liveResponse) ? liveResponse : (liveResponse.items || []);
+            const mineralData = Array.isArray(liveResponse) ? {} : (liveResponse.minerals || {});
+            if (Object.keys(mineralData).length > 0) setMinerals(mineralData);
+
             const combinedData = [
                 ...liveData.map(item => ({ ...item, isLive: true })),
                 ...csvData
@@ -372,9 +411,22 @@ function App() {
                         <span className="metric-label">TOTAL EVENTS</span>
                         <span className="metric-value">{keyMetrics.totalEvents || 0}</span>
                     </div>
-                    <div className="metric-item">
-                        <span className="metric-label">GOLD FORECAST</span>
-                        <span className="metric-value gold">{keyMetrics.goldPrice}</span>
+                    <div className="metric-item minerals-panel" onClick={() => setShowMineralsModal(true)} style={{ cursor: 'pointer' }}>
+                        <span className="metric-label">⛏️ CRITICAL MINERALS</span>
+                        <div className="minerals-grid">
+                            <div className="mineral-item">
+                                <span className="mineral-symbol">Au</span>
+                                <span className="mineral-price gold">{minerals.gold?.price || 'N/A'}</span>
+                            </div>
+                            <div className="mineral-item">
+                                <span className="mineral-symbol">Ag</span>
+                                <span className="mineral-price silver">{minerals.silver?.price || 'N/A'}</span>
+                            </div>
+                            <div className="mineral-item">
+                                <span className="mineral-symbol">+4</span>
+                                <span className="mineral-price" style={{ color: '#888', fontSize: '0.6rem' }}>VIEW ALL</span>
+                            </div>
+                        </div>
                     </div>
                     <div className="metric-item tension-meter">
                         <span className="metric-label">CONFLICT EVENT RATIO</span>
@@ -485,22 +537,53 @@ function App() {
                                 <h2>{selectedForecast['Topic/Sector']}</h2>
                             </div>
                             <div className="modal-body">
-                                <div className="modal-row">
-                                    <span className="modal-label">ENTITY:</span>
-                                    <span>{selectedForecast['Entity/Subject']}</span>
-                                </div>
-                                <div className="modal-row">
-                                    <span className="modal-label">KEY PLAYERS:</span>
-                                    <span>{selectedForecast['Key Player/Organization']}</span>
-                                </div>
-                                <div className="modal-row">
-                                    <span className="modal-label">TIMELINE:</span>
-                                    <span>{selectedForecast.Timeline}</span>
-                                </div>
-                                <div className="modal-row">
-                                    <span className="modal-label">EXPECTED IMPACT:</span>
-                                    <span>{selectedForecast['Expected Impact/Value']}</span>
-                                </div>
+                                {/* 5W1H Analysis Section */}
+                                {(() => {
+                                    const analysis = generate5W1H(selectedForecast);
+                                    if (!analysis) return null;
+                                    return (
+                                        <div className="fivewh-section">
+                                            <div className="section-label">📋 5W1H ANALYSIS</div>
+                                            <div className="fivewh-grid">
+                                                {[
+                                                    { key: 'who', label: 'WHO', icon: '👤' },
+                                                    { key: 'what', label: 'WHAT', icon: '📌' },
+                                                    { key: 'where', label: 'WHERE', icon: '📍' },
+                                                    { key: 'when', label: 'WHEN', icon: '⏱' },
+                                                    { key: 'why', label: 'WHY', icon: '❓' },
+                                                    { key: 'how', label: 'HOW', icon: '⚙️' }
+                                                ].map(item => (
+                                                    <div className="fivewh-row" key={item.key}>
+                                                        <span className="fivewh-label">{item.icon} {item.label}</span>
+                                                        <span className="fivewh-value">{analysis[item.key]}</span>
+                                                    </div>
+                                                ))}
+                                            </div>
+                                        </div>
+                                    );
+                                })()}
+
+                                {/* Global Challenges Section */}
+                                {(() => {
+                                    const challenges = getGlobalChallenges(selectedForecast);
+                                    if (!challenges || Object.keys(challenges).length === 0) return null;
+                                    return (
+                                        <div className="challenges-section">
+                                            <div className="section-label">⚠️ HL GLOBAL CHALLENGES</div>
+                                            <div className="challenges-grid">
+                                                {Object.entries(challenges).map(([name, analysis]) => (
+                                                    <div className="challenge-card" key={name}>
+                                                        <div className="challenge-header">
+                                                            <span className="challenge-icon">{CHALLENGE_ICONS[name] || '📋'}</span>
+                                                            <span className="challenge-name">{name}</span>
+                                                        </div>
+                                                        <p className="challenge-analysis">{analysis}</p>
+                                                    </div>
+                                                ))}
+                                            </div>
+                                        </div>
+                                    );
+                                })()}
 
                                 <div className="theory-overlay">
                                     <div className="theory-selector">
@@ -539,33 +622,42 @@ function App() {
                                         >
                                             OPEN SOURCE INTELLIGENCE REPORT ↗
                                         </a>
-                                        {selectedForecast.isScraped && (
-                                            <button
-                                                className="deep-scan-btn"
-                                                onClick={() => handleDeepScan(selectedForecast.url)}
-                                                disabled={deepScanLoading}
-                                                style={{
-                                                    display: 'block', marginTop: '8px', width: '100%',
-                                                    background: 'transparent', border: '1px solid #ff9900',
-                                                    color: '#ff9900', fontFamily: 'Roboto Mono', fontSize: '0.7rem',
-                                                    padding: '6px 10px', cursor: 'pointer', letterSpacing: '0.1em',
-                                                    opacity: deepScanLoading ? 0.5 : 1
-                                                }}
-                                            >
-                                                {deepScanLoading ? '⟳ SCANNING...' : '⚡ DEEP SCAN (FIRECRAWL)'}
-                                            </button>
-                                        )}
+                                    </div>
+                                )}
+
+                                {selectedForecast.url && (
+                                    <div className="deep-scan-section">
+                                        <button
+                                            className="deep-scan-btn"
+                                            onClick={() => handleDeepScan(selectedForecast.url)}
+                                            disabled={deepScanLoading}
+                                        >
+                                            {deepScanLoading
+                                                ? <><span className="scan-spinner">⟳</span> EXTRACTING ARTICLE...</>
+                                                : '📰 EXTRACT FULL ARTICLE'
+                                            }
+                                        </button>
+
                                         {deepScanResult && (
-                                            <div style={{
-                                                marginTop: '10px', background: 'rgba(255,153,0,0.07)',
-                                                border: '1px solid #ff990044', borderRadius: '4px',
-                                                padding: '10px', fontSize: '0.72rem', color: '#ccc',
-                                                lineHeight: '1.6', maxHeight: '180px', overflowY: 'auto'
-                                            }}>
-                                                {deepScanResult.error
-                                                    ? <span style={{ color: '#ff4444' }}>{deepScanResult.error}</span>
-                                                    : deepScanResult.content
-                                                }
+                                            <div className="deep-scan-result">
+                                                {deepScanResult.error ? (
+                                                    <div className="scan-error">
+                                                        <span>⚠</span> {deepScanResult.error}
+                                                    </div>
+                                                ) : (
+                                                    <>
+                                                        {deepScanResult.title && (
+                                                            <h4 className="scan-title">{deepScanResult.title}</h4>
+                                                        )}
+                                                        {deepScanResult.description && (
+                                                            <p className="scan-description">{deepScanResult.description}</p>
+                                                        )}
+                                                        <div className="scan-content">{deepScanResult.content}</div>
+                                                        <div className="scan-meta">
+                                                            Extracted {new Date(deepScanResult.scrapedAt).toLocaleTimeString()}
+                                                        </div>
+                                                    </>
+                                                )}
                                             </div>
                                         )}
                                     </div>
@@ -575,6 +667,65 @@ function App() {
                     </div>
                 )
             }
+
+            {/* Critical Minerals Matrix Modal */}
+            {showMineralsModal && (
+                <div className="detail-modal" onClick={() => setShowMineralsModal(false)}>
+                    <div className="modal-content minerals-matrix-modal" onClick={e => e.stopPropagation()}>
+                        <button className="close-btn" onClick={() => setShowMineralsModal(false)}>✕</button>
+                        <div className="modal-header" style={{ borderBottomColor: '#ffd700' }}>
+                            <span className="modal-category" style={{ color: '#ffd700' }}>STRATEGIC RESOURCES</span>
+                            <h2>⛏️ CRITICAL MINERALS MATRIX</h2>
+                        </div>
+                        <div className="modal-body">
+                            <table className="minerals-table">
+                                <thead>
+                                    <tr>
+                                        <th>SYMBOL</th>
+                                        <th>MINERAL</th>
+                                        <th>LIVE PRICE</th>
+                                        <th>PRIMARY ORIGINS</th>
+                                        <th>MAJOR PLAYERS</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {[
+                                        { key: 'gold', name: 'Gold', color: '#ffd700' },
+                                        { key: 'silver', name: 'Silver', color: '#c0c0c0' },
+                                        { key: 'lithium', name: 'Lithium', color: '#00ccff' },
+                                        { key: 'cobalt', name: 'Cobalt', color: '#9966ff' },
+                                        { key: 'copper', name: 'Copper', color: '#ff9900' },
+                                        { key: 'rareEarths', name: 'Rare Earths', color: '#00ff88' }
+                                    ].map(m => (
+                                        <tr key={m.key}>
+                                            <td>
+                                                <span className="table-symbol" style={{ color: m.color, textShadow: `0 0 8px ${m.color}44` }}>
+                                                    {minerals[m.key]?.symbol || m.key.substring(0, 2).toUpperCase()}
+                                                </span>
+                                            </td>
+                                            <td className="mineral-name">{m.name}</td>
+                                            <td>
+                                                <span className="table-price" style={{ color: m.color }}>
+                                                    {minerals[m.key]?.price || 'N/A'}
+                                                    {minerals[m.key]?.unit && minerals[m.key]?.price && !minerals[m.key]?.price?.includes('/') && (
+                                                        <span className="price-unit">{minerals[m.key].unit}</span>
+                                                    )}
+                                                </span>
+                                            </td>
+                                            <td className="origins-cell">{minerals[m.key]?.origins || '—'}</td>
+                                            <td className="players-cell">{minerals[m.key]?.players || '—'}</td>
+                                        </tr>
+                                    ))}
+                                </tbody>
+                            </table>
+                            <div className="minerals-footer">
+                                <span>⟳ Prices scraped via Serper API • 30-min cache</span>
+                                <span>Data for educational purposes only</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            )}
         </div >
     );
 }

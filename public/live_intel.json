@@ -12,7 +12,7 @@
         "Broad_Category": "Geopolitics & Conflict"
     },
     {
-        "Topic/Sector": "Geopolitics / Conflict",
+        "Topic/Sector": "Geopolitics / Security",
         "Entity/Subject": "Munich Security Conference 2026",
         "Key Player/Organization": "Zelenskyy, Rubio, Merz, Starmer",
         "Timeline": "LIVE - Feb 2026",
@@ -28,7 +28,7 @@
         "Entity/Subject": "New START Expiration",
         "Key Player/Organization": "U.S., Russia, UN",
         "Timeline": "LIVE - Feb 2026",
-        "Expected Impact/Value": "Last nuclear treaty expires; UN Secretary-General Guterres warns of 'grave moment' for global security.",
+        "Expected Impact/Value": "Last nuclear arms treaty expires; UN Secretary-General Guterres warns of 'grave moment' for global security.",
         "Source": "Arms Control Association",
         "url": "https://www.armscontrol.org/factsheets/NewSTART",
         "Latitude": "55.7558",
@@ -58,5 +58,65 @@
         "Latitude": "25.2854",
         "Longitude": "51.5310",
         "Broad_Category": "Geopolitics & Conflict"
+    },
+    {
+        "Topic/Sector": "Economy / Global Growth",
+        "Entity/Subject": "Global Economy Growth Surge",
+        "Key Player/Organization": "IMF, China, India, Indonesia",
+        "Timeline": "LIVE - Feb 2026",
+        "Expected Impact/Value": "China (26.6%) and India (17%) drive global GDP growth in 2026; global economy races ahead despite geopolitical turbulence.",
+        "Source": "Reuters",
+        "url": "https://www.reuters.com/markets/roaring-global-growth-train-emerging-2026-fog-2026-02-10/",
+        "Latitude": "39.9042",
+        "Longitude": "116.4074",
+        "Broad_Category": "Economy & Trade"
+    },
+    {
+        "Topic/Sector": "Environment / Climate Policy",
+        "Entity/Subject": "U.S. Clean Air Act Rollbacks",
+        "Key Player/Organization": "EPA, EDF, Coal Industry",
+        "Timeline": "LIVE - Feb 2026",
+        "Expected Impact/Value": "Trump administration grants sweeping Clean Air Act exemptions to coal plants; environmental groups challenge legality in court.",
+        "Source": "Environmental Defense Fund",
+        "url": "https://www.edf.org/media/trump-administration-handed-out-sweeping-free-passes-pollute-more-extreme-and-dangerous-what",
+        "Latitude": "38.9072",
+        "Longitude": "-77.0369",
+        "Broad_Category": "Environment & Energy"
+    },
+    {
+        "Topic/Sector": "Health / Climate-Health Nexus",
+        "Entity/Subject": "Extreme Heat Crisis — South Asia",
+        "Key Player/Organization": "WHO, WMO, India, Pakistan, Bangladesh",
+        "Timeline": "LIVE - Feb 2026",
+        "Expected Impact/Value": "New WMO-WHO initiatives launched to address extreme heat mortality in South Asia; region faces 50°C+ forecasts by summer 2026.",
+        "Source": "World Meteorological Organization",
+        "url": "https://wmo.int/media/news/new-initiatives-launched-address-extreme-heat-south-asia",
+        "Latitude": "28.6139",
+        "Longitude": "77.2090",
+        "Broad_Category": "Health & Society"
+    },
+    {
+        "Topic/Sector": "Technology / AI Governance",
+        "Entity/Subject": "EU AI Act Full Enforcement",
+        "Key Player/Organization": "European Commission, Meta, OpenAI, Google",
+        "Timeline": "LIVE - Feb 2026",
+        "Expected Impact/Value": "EU AI Act enters full enforcement; high-risk AI systems now require conformity assessments. Tech giants scramble to comply or face €35M fines.",
+        "Source": "European Commission",
+        "url": "https://digital-strategy.ec.europa.eu/en/policies/regulatory-framework-ai",
+        "Latitude": "50.8503",
+        "Longitude": "4.3517",
+        "Broad_Category": "Technology & Science"
+    },
+    {
+        "Topic/Sector": "Environment / Biodiversity",
+        "Entity/Subject": "Deep-Sea Mining Moratorium Debate",
+        "Key Player/Organization": "ISA, Pacific Island Nations, China, Norway",
+        "Timeline": "LIVE - Feb 2026",
+        "Expected Impact/Value": "International Seabed Authority faces showdown: Pacific Island nations demand moratorium while China and Norway push for commercial extraction licenses.",
+        "Source": "Carbon Brief",
+        "url": "https://www.carbonbrief.org/cropped-11-february-2026-aftershocks-of-us-withdrawals-biodiversity-and-business-risks-deep-sea-mining-tensions/",
+        "Latitude": "-14.2756",
+        "Longitude": "-170.7020",
+        "Broad_Category": "Environment & Energy"
     }
 ]
