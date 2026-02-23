@@ -1,0 +1,610 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Application Review: Global Command Center</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Inter', sans-serif;
+            background: #0a0a0f;
+            color: #e0e0e0;
+            line-height: 1.7;
+        }
+
+        /* Navigation */
+        nav {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            background: rgba(10, 10, 15, 0.95);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border-bottom: 1px solid rgba(0, 255, 255, 0.1);
+            z-index: 100;
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        nav .logo {
+            font-weight: 800;
+            font-size: 0.85rem;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            color: #00ccff;
+        }
+        nav .nav-links {
+            display: flex;
+            gap: 2rem;
+        }
+        nav a {
+            color: #888;
+            text-decoration: none;
+            font-size: 0.8rem;
+            font-weight: 600;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            transition: color 0.3s;
+        }
+        nav a:hover, nav a.active { color: #00ccff; }
+
+        /* Hero */
+        .hero {
+            padding: 8rem 4rem 4rem;
+            text-align: center;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        }
+        .hero h1 {
+            font-size: 2.8rem;
+            font-weight: 800;
+            letter-spacing: -1px;
+            margin-bottom: 1rem;
+        }
+        .hero h1 .accent { color: #00ccff; }
+        .hero p {
+            font-size: 1.1rem;
+            color: #888;
+            max-width: 700px;
+            margin: 0 auto;
+        }
+        .hero .tag {
+            display: inline-block;
+            background: rgba(0, 255, 255, 0.08);
+            border: 1px solid rgba(0, 255, 255, 0.2);
+            color: #00ccff;
+            padding: 0.3rem 1rem;
+            border-radius: 20px;
+            font-size: 0.7rem;
+            font-weight: 700;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            margin-bottom: 1.5rem;
+        }
+
+        /* Sections */
+        .section {
+            padding: 4rem;
+            max-width: 1100px;
+            margin: 0 auto;
+        }
+        .section-header {
+            margin-bottom: 3rem;
+        }
+        .section-header h2 {
+            font-size: 1.6rem;
+            font-weight: 800;
+            margin-bottom: 0.5rem;
+        }
+        .section-header .divider {
+            width: 60px;
+            height: 3px;
+            background: #00ccff;
+            margin-bottom: 1rem;
+        }
+        .section-header p {
+            color: #888;
+            font-size: 0.95rem;
+        }
+
+        /* Feature Cards */
+        .feature-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+            margin-bottom: 3rem;
+        }
+        .feature-card {
+            background: rgba(255, 255, 255, 0.02);
+            border: 1px solid rgba(255, 255, 255, 0.06);
+            border-radius: 10px;
+            padding: 1.8rem;
+            transition: all 0.3s;
+        }
+        .feature-card:hover {
+            border-color: rgba(0, 255, 255, 0.2);
+            background: rgba(0, 255, 255, 0.02);
+        }
+        .feature-card h3 {
+            font-size: 1rem;
+            font-weight: 700;
+            margin-bottom: 0.6rem;
+            color: #fff;
+        }
+        .feature-card p {
+            font-size: 0.85rem;
+            color: #999;
+            line-height: 1.6;
+        }
+        .feature-card .badge {
+            display: inline-block;
+            background: rgba(0, 255, 255, 0.1);
+            color: #00ccff;
+            padding: 0.15rem 0.6rem;
+            border-radius: 4px;
+            font-size: 0.65rem;
+            font-weight: 700;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            margin-bottom: 0.8rem;
+        }
+        .feature-card .badge.amber {
+            background: rgba(255, 153, 0, 0.1);
+            color: #ff9900;
+        }
+        .feature-card .badge.green {
+            background: rgba(0, 255, 136, 0.1);
+            color: #00ff88;
+        }
+        .feature-card .badge.red {
+            background: rgba(255, 51, 0, 0.1);
+            color: #ff3300;
+        }
+
+        /* Screenshot */
+        .screenshot {
+            margin: 2rem 0;
+            border-radius: 10px;
+            overflow: hidden;
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+        }
+        .screenshot img {
+            width: 100%;
+            display: block;
+        }
+        .screenshot-caption {
+            background: rgba(255, 255, 255, 0.03);
+            padding: 0.8rem 1.5rem;
+            font-size: 0.75rem;
+            color: #666;
+            border-top: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        /* Split layout */
+        .split {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 3rem;
+            align-items: start;
+            margin: 3rem 0;
+        }
+        .split .text-col h3 {
+            font-size: 1.1rem;
+            font-weight: 700;
+            margin-bottom: 0.8rem;
+            color: #fff;
+        }
+        .split .text-col p {
+            font-size: 0.88rem;
+            color: #999;
+            margin-bottom: 1rem;
+        }
+
+        /* Tech Stack */
+        .tech-row {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            margin-top: 1rem;
+        }
+        .tech-tag {
+            background: rgba(255, 255, 255, 0.04);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            padding: 0.3rem 0.8rem;
+            border-radius: 4px;
+            font-size: 0.7rem;
+            color: #aaa;
+            font-weight: 600;
+        }
+
+        /* Page divider */
+        .page-break {
+            border-top: 2px solid rgba(255, 255, 255, 0.05);
+            margin: 4rem 0;
+            position: relative;
+        }
+        .page-break::after {
+            content: '';
+            position: absolute;
+            top: -1px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 80px;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, #00ccff, transparent);
+        }
+
+        /* Stats */
+        .stats-row {
+            display: flex;
+            gap: 2rem;
+            justify-content: center;
+            margin: 2rem 0;
+        }
+        .stat-box {
+            text-align: center;
+        }
+        .stat-box .num {
+            font-size: 2rem;
+            font-weight: 800;
+            color: #00ccff;
+        }
+        .stat-box .label {
+            font-size: 0.7rem;
+            color: #666;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-top: 0.3rem;
+        }
+
+        /* Footer */
+        footer {
+            text-align: center;
+            padding: 3rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.05);
+            font-size: 0.75rem;
+            color: #444;
+        }
+
+        @media (max-width: 768px) {
+            .feature-grid, .split { grid-template-columns: 1fr; }
+            .section { padding: 2rem; }
+            .hero { padding: 6rem 2rem 3rem; }
+            .hero h1 { font-size: 1.8rem; }
+            .stats-row { flex-wrap: wrap; }
+        }
+    </style>
+</head>
+<body>
+    <nav>
+        <span class="logo">IB Global Politics Suite</span>
+        <div class="nav-links">
+            <a href="#command-center" class="active">Command Center</a>
+            <a href="#companion">GloPo Companion</a>
+        </div>
+    </nav>
+
+    <!-- ==================== PAGE 1: GLOBAL COMMAND CENTER ==================== -->
+    <section id="command-center">
+        <div class="hero">
+            <div class="tag">Application Review</div>
+            <h1>2026 <span class="accent">Global Command Center</span></h1>
+            <p>A real-time intelligence dashboard for IB Global Politics students, featuring a 3D globe, live news scraping, theoretical analysis, and critical minerals tracking.</p>
+        </div>
+
+        <div class="section">
+            <div class="stats-row">
+                <div class="stat-box"><span class="num">10</span><span class="label">Live Intel Events</span></div>
+                <div class="stat-box"><span class="num">6</span><span class="label">Critical Minerals</span></div>
+                <div class="stat-box"><span class="num">6</span><span class="label">Categories Tracked</span></div>
+                <div class="stat-box"><span class="num">5</span><span class="label">IR Theory Lenses</span></div>
+            </div>
+        </div>
+
+        <div class="section">
+            <div class="section-header">
+                <div class="divider"></div>
+                <h2>Dashboard Overview</h2>
+                <p>The main interface combines a 3D interactive globe, live intel feed, and metrics bar into a unified command view. Country boundaries are rendered as cyan polygon outlines loaded from Natural Earth GeoJSON data.</p>
+            </div>
+            <div class="screenshot">
+                <img src="img/gcc_dashboard.png" alt="Global Command Center Dashboard">
+                <div class="screenshot-caption">Full dashboard view: interactive globe with country boundaries, live intel sidebar, and metrics bar with critical minerals, scenario simulator, and event counters.</div>
+            </div>
+        </div>
+
+        <div class="section">
+            <div class="section-header">
+                <div class="divider"></div>
+                <h2>Core Features</h2>
+            </div>
+            <div class="feature-grid">
+                <div class="feature-card">
+                    <div class="badge">Real-Time Data</div>
+                    <h3>Live Intel Scraping</h3>
+                    <p>Serverless Netlify function scrapes live news via Serper API, enriching the globe with real-time geopolitical events. Falls back to 10 curated static events when offline.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="badge green">New</div>
+                    <h3>5W1H Analysis Framework</h3>
+                    <p>Every event generates a structured Who, What, Where, When, Why, and How breakdown to scaffold student analysis, mirroring the GloPo Companion case library format.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="badge amber">IB Aligned</div>
+                    <h3>HL Global Challenges</h3>
+                    <p>Events are automatically mapped to relevant IB Higher Level Global Challenges (Security, Borders, Identity, Technology, Environment, Health, Poverty) with contextual analysis.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="badge">Interactive</div>
+                    <h3>Scenario Simulator</h3>
+                    <p>A "what-if" slider models escalation from Baseline through Low Tension, Elevated, and Critical states, visually filtering the geopolitical landscape.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="badge green">New</div>
+                    <h3>Critical Minerals Matrix</h3>
+                    <p>Tracks 6 strategic minerals (Gold, Silver, Lithium, Cobalt, Copper, Rare Earths) with live pricing, origin countries, and major industry players in a clickable modal grid.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="badge">Analysis</div>
+                    <h3>Theoretical Lenses</h3>
+                    <p>Each event is analyzed through Realism, Liberalism, Structuralism, and Constructivism lenses, helping students apply IR theory to real-world developments.</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="section">
+            <div class="section-header">
+                <div class="divider"></div>
+                <h2>Event Detail Modal: 5W1H Analysis</h2>
+                <p>Clicking any event opens a detailed modal with structured analysis scaffolding.</p>
+            </div>
+            <div class="split">
+                <div class="screenshot">
+                    <img src="img/gcc_5w1h.png" alt="5W1H Analysis in Event Modal">
+                    <div class="screenshot-caption">5W1H Analysis section -- Who, What, Where, When, Why, How generated from event data.</div>
+                </div>
+                <div class="text-col">
+                    <h3>Structured Analysis Scaffolding</h3>
+                    <p>The 5W1H framework provides students with a consistent analytical structure across all events. Each dimension is auto-generated from the event's entity, key players, timeline, geographic coordinates, and category data.</p>
+                    <p>This mirrors the case library format in the GloPo Companion, creating a unified learning experience across both platforms.</p>
+                    <h3>Pedagogical Value</h3>
+                    <p>Students learn to decompose complex geopolitical events into their component parts before attempting theoretical analysis. The WHO identifies actors and power dynamics; the WHY connects to structural causes; the HOW reveals mechanisms of action.</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="section">
+            <div class="section-header">
+                <div class="divider"></div>
+                <h2>HL Global Challenges</h2>
+                <p>Each event is linked to 3 relevant IB Global Challenges with contextual analysis.</p>
+            </div>
+            <div class="split">
+                <div class="text-col">
+                    <h3>Category-Mapped Challenge Analysis</h3>
+                    <p>Events in "Geopolitics and Conflict" map to Security, Borders, and Identity challenges. "Economy and Trade" events map to Poverty, Equality, and Environment. Each mapping includes a paragraph of contextualized analysis specific to that event.</p>
+                    <p>This helps Higher Level students connect real-world developments to the IB curriculum's seven global challenges: Security, Borders, Identity, Technology, Environment, Health, and Poverty.</p>
+                </div>
+                <div class="screenshot">
+                    <img src="img/gcc_challenges.png" alt="HL Global Challenges Section">
+                    <div class="screenshot-caption">Global Challenges cards showing Security, Borders, and Identity analysis for a geopolitical event.</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="section">
+            <div class="section-header">
+                <div class="divider"></div>
+                <h2>Critical Minerals Matrix</h2>
+                <p>A clickable strategic resources panel expands into a detailed matrix modal.</p>
+            </div>
+            <div class="screenshot">
+                <img src="img/gcc_minerals.png" alt="Critical Minerals Matrix Modal">
+                <div class="screenshot-caption">Full minerals matrix showing Gold, Silver, Lithium, Cobalt, Copper, and Rare Earths with origin data and major industry players. Live pricing populated via Serper API.</div>
+            </div>
+        </div>
+
+        <div class="section">
+            <div class="section-header">
+                <div class="divider"></div>
+                <h2>Technology Stack</h2>
+            </div>
+            <div class="tech-row">
+                <span class="tech-tag">React 18</span>
+                <span class="tech-tag">Vite</span>
+                <span class="tech-tag">globe.gl</span>
+                <span class="tech-tag">topojson-client</span>
+                <span class="tech-tag">Netlify Functions</span>
+                <span class="tech-tag">Serper API</span>
+                <span class="tech-tag">Firecrawl</span>
+                <span class="tech-tag">PapaParse</span>
+            </div>
+        </div>
+    </section>
+
+    <div class="page-break"></div>
+
+    <!-- ==================== PAGE 2: GLOPO COMPANION ==================== -->
+    <section id="companion">
+        <div class="hero" style="border-bottom-color: rgba(255, 153, 0, 0.1);">
+            <div class="tag" style="background: rgba(255, 153, 0, 0.08); border-color: rgba(255, 153, 0, 0.2); color: #ff9900;">Application Review</div>
+            <h1>IB <span class="accent" style="color: #ff9900;">GloPo Companion</span></h1>
+            <p>A comprehensive study suite for IB Global Politics students, featuring a case library, writing lab, exam practice, debate tools, and AI-powered feedback.</p>
+        </div>
+
+        <div class="section">
+            <div class="stats-row">
+                <div class="stat-box"><span class="num" style="color: #ff9900;">10</span><span class="label">Case Studies</span></div>
+                <div class="stat-box"><span class="num" style="color: #ff9900;">3</span><span class="label">Exam Papers</span></div>
+                <div class="stat-box"><span class="num" style="color: #ff9900;">5</span><span class="label">Study Modules</span></div>
+                <div class="stat-box"><span class="num" style="color: #ff9900;">7</span><span class="label">Global Challenges</span></div>
+            </div>
+        </div>
+
+        <div class="section">
+            <div class="section-header">
+                <div class="divider" style="background: #ff9900;"></div>
+                <h2>Study Suite Overview</h2>
+                <p>The GloPo Companion organizes IB Global Politics study into five interconnected modules, each designed around the IB curriculum's four core units and seven HL Global Challenges.</p>
+            </div>
+            <div class="screenshot">
+                <img src="img/gc_landing.png" alt="GloPo Companion Landing Page">
+                <div class="screenshot-caption">Landing page showing the five study modules: Case Library, Writing Studio, Mock Exam Zone, Policy War Room, and Concept Drills.</div>
+            </div>
+        </div>
+
+        <div class="section">
+            <div class="section-header">
+                <div class="divider" style="background: #ff9900;"></div>
+                <h2>Core Features</h2>
+            </div>
+            <div class="feature-grid">
+                <div class="feature-card">
+                    <div class="badge amber">Cases</div>
+                    <h3>Case Library with 5W1H</h3>
+                    <p>10 curated IB-relevant case studies (South China Sea, G20, Israel-Palestine, EU vs Big Tech, etc.) with full 5W1H analysis, theory insights, and HL Global Challenges mapping.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="badge green">Writing</div>
+                    <h3>Writing Studio</h3>
+                    <p>Paper 2 Question Bank with guided essay planning, Debate Lab for thesis analysis, and AI-powered exemplar essays with mark scheme rubrics.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="badge red">Timed</div>
+                    <h3>Mock Exam Zone</h3>
+                    <p>Full timed practice for Papers 1, 2, and 3 with stimulus materials, mark allocations, and structured response areas. Exam conditions with countdown timers.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="badge">Strategy</div>
+                    <h3>Policy War Room</h3>
+                    <p>Active scenario-based policy drafting where students respond to real-world situations as policymakers, applying theoretical frameworks under pressure.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="badge amber">IB Aligned</div>
+                    <h3>Concept Drills</h3>
+                    <p>Interactive exercises testing students' understanding of core IB concepts (sovereignty, legitimacy, power, human rights) through categorization and application tasks.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="badge green">AI</div>
+                    <h3>Deep AI Feedback</h3>
+                    <p>Integration with LLMs for neutral, structured essay analysis. Configured to provide balanced feedback without political bias, suitable for IB assessment criteria.</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="section">
+            <div class="section-header">
+                <div class="divider" style="background: #ff9900;"></div>
+                <h2>Case Library with 5W1H Analysis</h2>
+                <p>Each case study provides a structured analytical framework mirroring the Command Center's event modals.</p>
+            </div>
+            <div class="split">
+                <div class="screenshot">
+                    <img src="img/gc_case.png" alt="Case Study with 5W1H">
+                    <div class="screenshot-caption">South China Sea case showing 5W1H breakdown, IB Linkage tags, IR theory analysis, and HL Global Challenges.</div>
+                </div>
+                <div class="text-col">
+                    <h3>Consistent Analytical Framework</h3>
+                    <p>The 5W1H structure (Who, What, Where, When, Why, How) provides students with a repeatable analytical method. Each case includes:</p>
+                    <p>Primary and secondary actors (WHO), the specific issue or dispute (WHAT), geographic context (WHERE), timeline milestones (WHEN), underlying drivers (WHY), and mechanisms of action (HOW).</p>
+                    <h3>Cross-Platform Alignment</h3>
+                    <p>The same 5W1H framework appears in the Global Command Center's live event modals, ensuring students encounter a consistent analytical approach whether studying curated cases or analyzing breaking news.</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="section">
+            <div class="section-header">
+                <div class="divider" style="background: #ff9900;"></div>
+                <h2>Writing Studio and Debate Lab</h2>
+                <p>Tools to develop structured argumentation and essay writing skills.</p>
+            </div>
+            <div class="split">
+                <div class="text-col">
+                    <h3>Paper 2 Question Bank</h3>
+                    <p>Practice questions organized across the four IB themes: People, Power and Politics; Human Rights; Peace and Conflict; Development. Each question includes core concepts and mark allocations.</p>
+                    <h3>Debate Lab</h3>
+                    <p>Students input a thesis statement, then receive multiple analytical perspectives encouraging open-mindedness and balanced argumentation -- critical for IB assessment criteria.</p>
+                </div>
+                <div class="screenshot">
+                    <img src="img/gc_writing.png" alt="Writing Studio Interface">
+                    <div class="screenshot-caption">Writing Studio showing the Paper 2 question bank and Debate Lab for thesis analysis.</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="section">
+            <div class="section-header">
+                <div class="divider" style="background: #ff9900;"></div>
+                <h2>Mock Exam Zone</h2>
+                <p>Timed practice under exam conditions for all three IB Global Politics papers.</p>
+            </div>
+            <div class="split">
+                <div class="screenshot">
+                    <img src="img/gc_exams.png" alt="Mock Exam Interface">
+                    <div class="screenshot-caption">Mock Exam Zone showing timed papers with mark allocations for Papers 1, 2, and 3.</div>
+                </div>
+                <div class="text-col">
+                    <h3>Paper 1: Source Analysis (SL/HL)</h3>
+                    <p>Stimulus-based questions requiring students to analyze primary sources, identify bias, and compare perspectives. Multiple stimulus materials can be viewed simultaneously.</p>
+                    <h3>Paper 2: Extended Response (SL/HL)</h3>
+                    <p>Essay questions across core IB themes with structured planning tools and exemplar responses available for self-assessment.</p>
+                    <h3>Paper 3: HL Extension</h3>
+                    <p>Case study-based questions focused on Global Challenges, requiring students to draw on their chosen case study and connect it to broader theoretical frameworks.</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="section">
+            <div class="section-header">
+                <div class="divider" style="background: #ff9900;"></div>
+                <h2>Policy War Room</h2>
+                <p>Scenario-based policy drafting for applied learning.</p>
+            </div>
+            <div class="screenshot">
+                <img src="img/gc_warroom.png" alt="Policy War Room">
+                <div class="screenshot-caption">Policy War Room with active scenarios for students to draft policy proposals under real-world conditions.</div>
+            </div>
+        </div>
+
+        <div class="section">
+            <div class="section-header">
+                <div class="divider" style="background: #ff9900;"></div>
+                <h2>Technology Stack</h2>
+            </div>
+            <div class="tech-row">
+                <span class="tech-tag">React</span>
+                <span class="tech-tag">Tailwind CSS</span>
+                <span class="tech-tag">Netlify</span>
+                <span class="tech-tag">Netlify Functions</span>
+                <span class="tech-tag">Gemini API</span>
+                <span class="tech-tag">Lucide Icons</span>
+            </div>
+        </div>
+    </section>
+
+    <!-- Cross-Platform Summary -->
+    <div class="page-break"></div>
+    <div class="section" style="text-align: center; padding-bottom: 2rem;">
+        <h2 style="font-size: 1.4rem; margin-bottom: 1rem;">Cross-Platform Integration</h2>
+        <p style="color: #888; max-width: 700px; margin: 0 auto 2rem; font-size: 0.9rem;">Both applications share a unified 5W1H analytical framework and IB HL Global Challenges mapping, creating a consistent learning experience from curated case studies to real-time news analysis.</p>
+        <div class="feature-grid" style="max-width: 800px; margin: 0 auto;">
+            <div class="feature-card" style="text-align:left;">
+                <h3 style="color: #00ccff;">Command Center</h3>
+                <p>Real-time tracking, live data, global visualization. Students observe and analyze unfolding events through theoretical lenses as they happen.</p>
+            </div>
+            <div class="feature-card" style="text-align:left;">
+                <h3 style="color: #ff9900;">GloPo Companion</h3>
+                <p>Structured study, exam prep, writing practice. Students build foundational knowledge and skills through curated content and timed practice.</p>
+            </div>
+        </div>
+    </div>
+
+    <footer>
+        IB Global Politics Study Suite &mdash; Built for educational purposes &mdash; February 2026
+    </footer>
+</body>
+</html>

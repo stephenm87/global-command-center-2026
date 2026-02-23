@@ -1,0 +1,521 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Context Cards: Field Agents — Republican China</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400&display=swap');
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        @page {
+            size: A4 portrait;
+            margin: 0;
+        }
+
+        body {
+            font-family: 'Times New Roman', 'Georgia', serif;
+            background: #f5f0e8;
+            color: #1a1a1a;
+            -webkit-print-color-adjust: exact;
+            print-color-adjust: exact;
+        }
+
+        .card-page {
+            width: 210mm;
+            min-height: 297mm;
+            margin: 0 auto;
+            padding: 18mm 22mm 20mm 22mm;
+            background: #faf6ee;
+            page-break-after: always;
+            display: flex;
+            flex-direction: column;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .card-page::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background:
+                linear-gradient(135deg, rgba(139, 109, 71, 0.04) 0%, transparent 50%),
+                linear-gradient(225deg, rgba(139, 109, 71, 0.03) 0%, transparent 50%);
+            pointer-events: none;
+        }
+
+        .card-page:last-child {
+            page-break-after: auto;
+        }
+
+        /* Header */
+        .card-header {
+            text-align: center;
+            margin-bottom: 6mm;
+            position: relative;
+            z-index: 1;
+        }
+
+        .card-header .classification {
+            font-family: 'Playfair Display', serif;
+            font-size: 9pt;
+            letter-spacing: 4px;
+            text-transform: uppercase;
+            color: #8b6d47;
+            margin-bottom: 2mm;
+        }
+
+        .card-header h1 {
+            font-family: 'Playfair Display', serif;
+            font-size: 26pt;
+            font-weight: 900;
+            color: #1a1a1a;
+            letter-spacing: 1px;
+            margin-bottom: 1mm;
+        }
+
+        .card-header .subtitle {
+            font-family: 'Playfair Display', serif;
+            font-size: 12pt;
+            font-style: italic;
+            color: #6b5a3e;
+            margin-bottom: 3mm;
+        }
+
+        .header-rule {
+            width: 100%;
+            height: 0;
+            border: none;
+            border-top: 2px solid #8b6d47;
+            margin: 0 auto 2mm;
+        }
+
+        .header-rule-thin {
+            width: 100%;
+            height: 0;
+            border: none;
+            border-top: 0.5px solid #c4b59a;
+            margin: 0 auto;
+        }
+
+        /* Photo frame */
+        .photo-frame {
+            width: 72mm;
+            margin: 5mm auto 6mm;
+            background: #fff;
+            padding: 3mm;
+            border: 0.5px solid #c4b59a;
+            box-shadow:
+                0 1px 3px rgba(0, 0, 0, 0.08),
+                inset 0 0 0 0.5px rgba(139, 109, 71, 0.1);
+            position: relative;
+            z-index: 1;
+        }
+
+        .photo-frame img {
+            width: 100%;
+            height: auto;
+            display: block;
+            filter: sepia(15%) contrast(1.05);
+        }
+
+        .photo-caption {
+            text-align: center;
+            font-size: 7pt;
+            color: #8b7355;
+            padding-top: 2mm;
+            font-style: italic;
+            letter-spacing: 0.5px;
+        }
+
+        /* Body text */
+        .card-body {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-start;
+            position: relative;
+            z-index: 1;
+        }
+
+        .body-text {
+            font-family: 'Times New Roman', 'Georgia', serif;
+            font-size: 11.5pt;
+            line-height: 1.75;
+            color: #2a2a2a;
+            text-align: justify;
+            hyphens: auto;
+            margin-bottom: 5mm;
+        }
+
+        .body-text .dropcap {
+            float: left;
+            font-family: 'Playfair Display', serif;
+            font-size: 42pt;
+            font-weight: 900;
+            line-height: 0.75;
+            padding-right: 2mm;
+            padding-top: 3px;
+            color: #8b6d47;
+        }
+
+        /* Citation */
+        .citation-block {
+            margin-top: auto;
+            padding-top: 4mm;
+            border-top: 0.5px solid #c4b59a;
+        }
+
+        .citation-label {
+            font-size: 7pt;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            color: #8b6d47;
+            margin-bottom: 1.5mm;
+            font-weight: bold;
+        }
+
+        .citation-text {
+            font-family: 'Times New Roman', serif;
+            font-size: 8.5pt;
+            color: #5a4e3a;
+            line-height: 1.5;
+            font-style: italic;
+        }
+
+        .citation-text a {
+            color: #6b5a3e;
+            text-decoration: none;
+            border-bottom: 0.5px dotted #8b7355;
+        }
+
+        /* Footer */
+        .card-footer {
+            text-align: center;
+            padding-top: 3mm;
+            margin-top: 3mm;
+            position: relative;
+            z-index: 1;
+        }
+
+        .card-footer .page-number {
+            font-family: 'Playfair Display', serif;
+            font-size: 8pt;
+            color: #b0a38a;
+            letter-spacing: 2px;
+        }
+
+        .decorative-line {
+            width: 20mm;
+            height: 0;
+            border: none;
+            border-top: 1px solid #c4b59a;
+            margin: 2mm auto;
+        }
+
+        /* Print */
+        @media print {
+            body {
+                background: white;
+            }
+
+            .card-page {
+                margin: 0;
+                box-shadow: none;
+                width: 210mm;
+                min-height: 297mm;
+            }
+        }
+
+        /* Screen preview */
+        @media screen {
+            body {
+                padding: 20px 0;
+            }
+
+            .card-page {
+                box-shadow: 0 2px 20px rgba(0, 0, 0, 0.15);
+                margin-bottom: 30px;
+                border: 1px solid #d4c9b5;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- ============ CARD 1: LU XUN ============ -->
+    <div class="card-page">
+        <div class="card-header">
+            <div class="classification">Context Card · Field Agent Dossier</div>
+            <h1>Lu Xun</h1>
+            <div class="subtitle">The Intellectual Soul · 周树人 (1881–1936)</div>
+            <hr class="header-rule">
+            <hr class="header-rule-thin">
+        </div>
+
+        <div class="photo-frame">
+            <img src="lu_xun.jpg" alt="Lu Xun, 1930">
+            <div class="photo-caption">Lu Xun, Shanghai, c. 1930 · Photograph: Public Domain via Wikimedia Commons</div>
+        </div>
+
+        <div class="card-body">
+            <p class="body-text">
+                <span class="dropcap">B</span>orn Zhou Shuren in Shaoxing, Zhejiang province, Lu Xun initially studied
+                medicine in Japan before making a fateful decision that would reshape modern Chinese literature.
+                Witnessing the apathy of Chinese spectators watching footage of their own countrymen being executed, he
+                concluded that China's sickness was not physical but spiritual — the nation needed writers, not doctors.
+                Returning to China, he became the sharpest voice of the New Culture Movement, wielding his pen against
+                what he called the "cannibalistic" traditions of Confucian society. His 1918 short story <em>Diary of a
+                    Madman</em>, the first major work of fiction written in vernacular Chinese rather than classical
+                literary language, scandalized the intellectual establishment with its allegory of a society that
+                devours its own people. During the chaos of the Warlord Era, Lu Xun relocated from Beijing to Shanghai,
+                where he joined the League of Left-Wing Writers and championed the modern woodcut movement as a tool for
+                social awakening. He wrote with a relentless urgency, declaring that China was a "sleeping nation" that
+                must be roused before it was too late. His collected stories in <em>Nahan</em> ("Outcry") remain a
+                foundational text for understanding the intellectual ferment that swept China between the fall of the
+                Qing Dynasty and the rise of the Communist Party. Lu Xun died in Shanghai in 1936, leaving behind a
+                legacy as the conscience of modern China.
+            </p>
+
+            <div class="citation-block">
+                <div class="citation-label">Source & Verification</div>
+                <p class="citation-text">
+                    Adapted from: "Lu Xun," in <em>Asia for Educators</em>, Columbia University. <a
+                        href="http://afe.easia.columbia.edu/special/china_1900_luxun.htm"
+                        target="_blank">afe.easia.columbia.edu</a>. See also: Encyclopædia Britannica, "Lu Xun — Chinese
+                    Writer." Public domain photograph: Wikimedia Commons, <em>LuXun1930.jpg</em>.
+                </p>
+            </div>
+        </div>
+
+        <div class="card-footer">
+            <hr class="decorative-line">
+            <span class="page-number">I / V</span>
+        </div>
+    </div>
+
+    <!-- ============ CARD 2: DING LING ============ -->
+    <div class="card-page">
+        <div class="card-header">
+            <div class="classification">Context Card · Field Agent Dossier</div>
+            <h1>Ding Ling</h1>
+            <div class="subtitle">The New Woman · 丁玲 (1904–1986)</div>
+            <hr class="header-rule">
+            <hr class="header-rule-thin">
+        </div>
+
+        <div class="photo-frame">
+            <img src="ding_ling.jpg" alt="Ding Ling">
+            <div class="photo-caption">Ding Ling, c. 1930s · Photograph: Public Domain via Wikimedia Commons</div>
+        </div>
+
+        <div class="card-body">
+            <p class="body-text">
+                <span class="dropcap">D</span>ing Ling arrived in Shanghai in 1920 as a young woman fleeing an arranged
+                marriage, carrying only the fierce independence her mother — a rare female educator in Hunan province —
+                had instilled in her. Within the literary salons of the city's French Concession, she found a voice that
+                shocked Republican China. Her 1928 novella <em>Miss Sophia's Diary</em> was revolutionary not merely for
+                its literary quality, but for its candid exploration of a young woman's desires, frustrations, and
+                interior life — subjects that Chinese fiction had never before dared to address so directly. The story
+                made her an overnight sensation and a symbol of the "New Woman" emerging from the wreckage of Confucian
+                patriarchy. But Shanghai's glamour concealed brutal politics. In 1931, her husband, the poet Hu Yepin,
+                was executed by Kuomintang secret police alongside twenty-three other leftist intellectuals. His death
+                radicalized her entirely. She joined the Chinese Communist Party in 1932 and eventually made the
+                dangerous journey to the revolutionary base at Yan'an, trading the literary salons for cave dwellings.
+                Even there, she remained defiant — her 1942 essay criticizing the Party's treatment of women drew the
+                wrath of Mao Zedong himself. She was persecuted, imprisoned during the Cultural Revolution, and not
+                rehabilitated until 1979. Her journey from Shanghai rebel to Yan'an revolutionary embodies the
+                radicalization of an entire generation who felt the Republic had failed them.
+            </p>
+
+            <div class="citation-block">
+                <div class="citation-label">Source & Verification</div>
+                <p class="citation-text">
+                    Adapted from: "Ding Ling," <em>Encyclopædia Britannica</em>. <a
+                        href="https://www.britannica.com/biography/Ding-Ling"
+                        target="_blank">britannica.com/biography/Ding-Ling</a>. See also: Tani E. Barlow, <em>I Myself
+                        Am a Woman: Selected Writings of Ding Ling</em> (Beacon Press, 1989). Public domain photograph:
+                    Wikimedia Commons, <em>Ding_Ling_1.jpg</em>.
+                </p>
+            </div>
+        </div>
+
+        <div class="card-footer">
+            <hr class="decorative-line">
+            <span class="page-number">II / V</span>
+        </div>
+    </div>
+
+    <!-- ============ CARD 3: DR. LIN QIAOZHI ============ -->
+    <div class="card-page">
+        <div class="card-header">
+            <div class="classification">Context Card · Field Agent Dossier</div>
+            <h1>Dr. Lin Qiaozhi</h1>
+            <div class="subtitle">The Healer · 林巧稚 (1901–1983)</div>
+            <hr class="header-rule">
+            <hr class="header-rule-thin">
+        </div>
+
+        <div class="photo-frame">
+            <img src="lin_qiaozhi.jpg" alt="Dr. Lin Qiaozhi, 1934">
+            <div class="photo-caption">Dr. Lin Qiaozhi, Peking Union Medical College, 1934 · Photograph: Public Domain
+                via Wikimedia Commons</div>
+        </div>
+
+        <div class="card-body">
+            <p class="body-text">
+                <span class="dropcap">I</span>n 1929, a young woman from Xiamen became the first Chinese female graduate
+                of the Peking Union Medical College — the most prestigious medical institution in Asia, founded with
+                Rockefeller money and staffed by American physicians. Lin Qiaozhi chose to specialize in obstetrics and
+                gynecology at a time when the vast majority of Chinese women gave birth without any medical assistance,
+                attended only by midwives following centuries-old traditions. By 1940, she had risen to become the first
+                Chinese woman to direct a department at PUMC Hospital, a feat of quiet determination in an era when
+                women were still largely excluded from professional life. When the Pacific War erupted in 1941 and
+                Japanese forces seized PUMC, closing the hospital, most foreign staff evacuated. Lin Qiaozhi stayed. She
+                opened a private clinic in a Beijing <em>hutong</em> — a narrow alley of traditional courtyard houses —
+                and continued treating patients, many of them too poor to pay. She delivered babies by candlelight
+                during power blackouts, transforming her modest practice into a lifeline for the city's most vulnerable.
+                Over the course of her career, she delivered more than 50,000 babies, earning the title "Mother of Ten
+                Thousand Babies." In 1959, she became the sole female academician elected to the Chinese Academy of
+                Sciences. Her life was a quiet rebellion against instability — while warlords, revolutionaries, and
+                invaders fought over China's future, she focused on ensuring the survival of the next generation.
+            </p>
+
+            <div class="citation-block">
+                <div class="citation-label">Source & Verification</div>
+                <p class="citation-text">
+                    Adapted from: "Lin Qiaozhi: Mother of Ten Thousand Babies," <em>China Daily</em>. <a
+                        href="https://www.chinadaily.com.cn/a/201903/08/WS5c81e8c4a3106c65c34ee451.html"
+                        target="_blank">chinadaily.com.cn</a>. See also: "Lin Qiaozhi," <em>Encyclopedia.com</em>;
+                    Wikipedia, "Lin Qiaozhi." Public domain photograph: Wikimedia Commons,
+                    <em>Lin_Qiaozhi_in_1934.jpg</em>.
+                </p>
+            </div>
+        </div>
+
+        <div class="card-footer">
+            <hr class="decorative-line">
+            <span class="page-number">III / V</span>
+        </div>
+    </div>
+
+    <!-- ============ CARD 4: CHARLIE SOONG ============ -->
+    <div class="card-page">
+        <div class="card-header">
+            <div class="classification">Context Card · Field Agent Dossier</div>
+            <h1>Charlie Soong</h1>
+            <div class="subtitle">The Financier · 宋嘉澍 (1861–1918)</div>
+            <hr class="header-rule">
+            <hr class="header-rule-thin">
+        </div>
+
+        <div class="photo-frame">
+            <img src="charlie_soong.jpg" alt="Charlie Soong at Vanderbilt University, c. 1882">
+            <div class="photo-caption">Charles Jones Soong, Vanderbilt University, c. 1882 · Photograph: Public Domain
+                via Wikimedia Commons</div>
+        </div>
+
+        <div class="card-body">
+            <p class="body-text">
+                <span class="dropcap">C</span>harles Jones Soong — born Han Jiao Zhun on the island of Hainan — was a
+                stowaway, a convert, a missionary, a publisher, and ultimately the man who bankrolled Sun Yat-sen's
+                revolution. Adopted at seventeen, he was sent to America, where he worked in a tea shop in Boston before
+                running away to join the U.S. Revenue Marine. A chance encounter led to his conversion to Christianity
+                and his enrollment at Trinity College in North Carolina (now Duke University) in 1881, making him the
+                institution's first international student. After studying theology at Vanderbilt, he returned to China
+                in 1886 as a Methodist missionary, but quickly realized that faith and commerce were more powerful
+                together. In Shanghai, he built a printing empire, producing inexpensive vernacular Chinese Bibles that
+                made him wealthy and influential. When he met Sun Yat-sen in 1894, the two men — both Western-educated,
+                both dreaming of a modern China freed from Qing dynasty rule — became inseparable allies. Soong was
+                appointed treasurer of the Revolutionary Alliance in 1906, secretly channeling his business profits into
+                funding uprisings, printing political tracts, and smuggling arms. He bridged East and West in a way few
+                others could, embodying the complexity of the new merchant class that sought to modernize China through
+                capital and faith. His six children, all educated in the United States, went on to marry into the
+                highest echelons of Chinese power — forming the Soong dynasty that shaped the nation's destiny for
+                decades.
+            </p>
+
+            <div class="citation-block">
+                <div class="citation-label">Source & Verification</div>
+                <p class="citation-text">
+                    Adapted from: "Charlie Soong at Trinity College," <em>Duke University Libraries Blog</em>. <a
+                        href="https://blogs.library.duke.edu/rubenstein/2017/09/05/charlie-soong-at-trinity-college/"
+                        target="_blank">blogs.library.duke.edu</a>. See also: Sterling Seagrave, <em>The Soong
+                        Dynasty</em> (Harper & Row, 1985); PBS, "The Soongs." Public domain photograph: Wikimedia
+                    Commons, <em>CharlesSoong.jpg</em>.
+                </p>
+            </div>
+        </div>
+
+        <div class="card-footer">
+            <hr class="decorative-line">
+            <span class="page-number">IV / V</span>
+        </div>
+    </div>
+
+    <!-- ============ CARD 5: LAO SHE ============ -->
+    <div class="card-page">
+        <div class="card-header">
+            <div class="classification">Context Card · Field Agent Dossier</div>
+            <h1>Lao She</h1>
+            <div class="subtitle">The Everyman · 老舍 (1899–1966)</div>
+            <hr class="header-rule">
+            <hr class="header-rule-thin">
+        </div>
+
+        <div class="photo-frame">
+            <img src="lao_she.jpg" alt="Lao She, 1934">
+            <div class="photo-caption">Lao She, Beijing, c. 1934 · Photograph: Public Domain via Wikimedia Commons</div>
+        </div>
+
+        <div class="card-body">
+            <p class="body-text">
+                <span class="dropcap">S</span>hu Qingchun — known to the world as Lao She — was born into a poor Manchu
+                family in Beijing in 1899, the year before his father, a palace guard, was killed during the Boxer
+                Rebellion fighting foreign invaders. Growing up in the narrow <em>hutongs</em> of the old imperial
+                capital, he absorbed the rhythms of street life — the cries of vendors, the clatter of rickshaw wheels
+                on cobblestones, the language of people who lived and died without ever appearing in history books.
+                After studying at Peking Normal School, he traveled to London in 1924 to teach Mandarin at the School of
+                Oriental Studies, where he discovered Dickens and recognized a kindred spirit: a writer who made the
+                struggles of the urban poor into great literature. Returning to China in 1930, Lao She poured his
+                memories of Beijing's streets into his masterpiece, <em>Rickshaw Boy</em> (1936). The novel follows
+                Xiangzi, an honest and hardworking rickshaw puller whose dreams are systematically crushed by a corrupt
+                society — a fate that mirrored the experience of millions. Unlike Lu Xun's intellectual fury, Lao She
+                wrote with heartbreaking tenderness for the "little people," revealing that for Beijing's urban poor,
+                the Republic was a place of cultural beauty but devastating economic cruelty. His later play
+                <em>Teahouse</em> (1957) chronicled fifty years of Chinese history through the conversations of ordinary
+                people. Tragically, Lao She was persecuted during the Cultural Revolution and died in 1966 under
+                disputed circumstances.
+            </p>
+
+            <div class="citation-block">
+                <div class="citation-label">Source & Verification</div>
+                <p class="citation-text">
+                    Adapted from: "On Lao She, 1899–1966," <em>UNESCO Digital Library</em>. <a
+                        href="https://unesdoc.unesco.org/ark:/48223/pf0000074677"
+                        target="_blank">unesdoc.unesco.org</a>. See also: Encyclopædia Britannica, "Lao She — Chinese
+                    Author"; <em>chinaculture.org</em>, "Lao She." Public domain photograph: Wikimedia Commons,
+                    <em>LaoShe.jpg</em>, 1934.
+                </p>
+            </div>
+        </div>
+
+        <div class="card-footer">
+            <hr class="decorative-line">
+            <span class="page-number">V / V</span>
+        </div>
+    </div>
+
+</body>
+
+</html>

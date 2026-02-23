@@ -30,6 +30,8 @@ function App() {
     const [intelLastUpdated, setIntelLastUpdated] = useState(null);
     const [deepScanResult, setDeepScanResult] = useState(null);
     const [deepScanLoading, setDeepScanLoading] = useState(false);
+    const [aiSummary, setAiSummary] = useState(null);
+    const [aiSummaryLoading, setAiSummaryLoading] = useState(false);
     const globeEl = useRef();
     const globeContainer = useRef();
     const attributionRef = useRef();
@@ -166,10 +168,30 @@ function App() {
         });
     }, []);
 
-    // Deep Scan: Firecrawl-powered article extractor
+    // AI Summary: Gemini-powered geopolitical intelligence brief
+    const handleAiSummary = async (content, title, url) => {
+        setAiSummary(null);
+        setAiSummaryLoading(true);
+        try {
+            const res = await fetch('/.netlify/functions/ai-summary', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ url, title, content })
+            });
+            const data = await res.json();
+            setAiSummary(data);
+        } catch (e) {
+            setAiSummary({ error: 'AI analysis unavailable' });
+        } finally {
+            setAiSummaryLoading(false);
+        }
+    };
+
+    // Deep Scan: Firecrawl-powered article extractor → auto-triggers AI summary
     const handleDeepScan = async (url) => {
         if (!url) return;
         setDeepScanResult(null);
+        setAiSummary(null);
         setDeepScanLoading(true);
         try {
             const res = await fetch('/.netlify/functions/deep-scan', {
@@ -179,6 +201,10 @@ function App() {
             });
             const data = await res.json();
             setDeepScanResult(data);
+            // Auto-trigger AI summary once article is extracted
+            if (!data.error && (data.content || data.title)) {
+                handleAiSummary(data.content, data.title, url);
+            }
         } catch (e) {
             setDeepScanResult({ error: 'Deep scan unavailable' });
         } finally {
@@ -524,9 +550,9 @@ function App() {
             {/* Detail Modal */}
             {
                 selectedForecast && (
-                    <div className="detail-modal" onClick={() => { setSelectedForecast(null); setDeepScanResult(null); }}>
-                        <div className="modal-content" onClick={(e) => e.stopPropagation()}>
-                            <button className="close-btn" onClick={() => { setSelectedForecast(null); setDeepScanResult(null); }}>✕</button>
+                    <div className="detail-modal" onClick={() => { setSelectedForecast(null); setDeepScanResult(null); setAiSummary(null); }}>
+                        <div className="modal-content" onClick={(e) => e.stopPropagation()} style={{ maxWidth: '800px' }}>
+                            <button className="close-btn" onClick={() => { setSelectedForecast(null); setDeepScanResult(null); setAiSummary(null); }}>✕</button>
                             <div
                                 className="modal-header"
                                 style={{ borderBottomColor: categoryColors[selectedForecast.Broad_Category] }}
@@ -630,35 +656,118 @@ function App() {
                                         <button
                                             className="deep-scan-btn"
                                             onClick={() => handleDeepScan(selectedForecast.url)}
-                                            disabled={deepScanLoading}
+                                            disabled={deepScanLoading || aiSummaryLoading}
                                         >
                                             {deepScanLoading
                                                 ? <><span className="scan-spinner">⟳</span> EXTRACTING ARTICLE...</>
-                                                : '📰 EXTRACT FULL ARTICLE'
+                                                : '🔥 FIRECRAWL + AI BRIEF'
                                             }
                                         </button>
 
-                                        {deepScanResult && (
-                                            <div className="deep-scan-result">
-                                                {deepScanResult.error ? (
-                                                    <div className="scan-error">
-                                                        <span>⚠</span> {deepScanResult.error}
+                                        {/* AI INTEL BRIEF — renders after Firecrawl extraction */}
+                                        {(aiSummaryLoading || aiSummary) && (
+                                            <div className="ai-brief-panel">
+                                                <div className="ai-brief-header">
+                                                    <span className="ai-brief-icon">🤖</span>
+                                                    <span className="ai-brief-title">AI INTEL BRIEF</span>
+                                                    <span className="ai-brief-model">Gemini 2.0 Flash</span>
+                                                </div>
+
+                                                {aiSummaryLoading ? (
+                                                    <div className="ai-loading">
+                                                        <span className="scan-spinner">⟳</span> Generating intelligence brief...
                                                     </div>
-                                                ) : (
+                                                ) : aiSummary?.error ? (
+                                                    <div className="scan-error"><span>⚠</span> {aiSummary.error}</div>
+                                                ) : aiSummary && (
                                                     <>
-                                                        {deepScanResult.title && (
-                                                            <h4 className="scan-title">{deepScanResult.title}</h4>
+                                                        {/* BLUF */}
+                                                        <div className="bluf-box">
+                                                            <span className="bluf-label">📌 BLUF</span>
+                                                            <p className="bluf-text">{aiSummary.oneLiner}</p>
+                                                        </div>
+
+                                                        {/* Risk Level */}
+                                                        <div className="risk-row">
+                                                            <span
+                                                                className="risk-indicator"
+                                                                data-level={aiSummary.riskLevel}
+                                                            >
+                                                                {aiSummary.riskLevel === 'HIGH' ? '🔴' : aiSummary.riskLevel === 'MEDIUM' ? '🟡' : '🟢'} {aiSummary.riskLevel} RISK
+                                                            </span>
+                                                            {aiSummary.riskReason && (
+                                                                <span className="risk-reason">{aiSummary.riskReason}</span>
+                                                            )}
+                                                        </div>
+
+                                                        {/* Key Actors */}
+                                                        {aiSummary.keyActors?.length > 0 && (
+                                                            <div className="brief-row">
+                                                                <span className="brief-row-label">👥 KEY ACTORS</span>
+                                                                <div className="actor-chips">
+                                                                    {aiSummary.keyActors.map((actor, i) => (
+                                                                        <span key={i} className="actor-chip">{actor}</span>
+                                                                    ))}
+                                                                </div>
+                                                            </div>
                                                         )}
-                                                        {deepScanResult.description && (
-                                                            <p className="scan-description">{deepScanResult.description}</p>
+
+                                                        {/* IB Themes */}
+                                                        {aiSummary.ibThemes?.length > 0 && (
+                                                            <div className="brief-row">
+                                                                <span className="brief-row-label">📚 IB GP THEMES</span>
+                                                                <div className="actor-chips">
+                                                                    {aiSummary.ibThemes.map((theme, i) => (
+                                                                        <span key={i} className="theme-badge">{theme}</span>
+                                                                    ))}
+                                                                </div>
+                                                            </div>
                                                         )}
-                                                        <div className="scan-content">{deepScanResult.content}</div>
+
+                                                        {/* Analytical Summary */}
+                                                        {aiSummary.rawSummary && (
+                                                            <div className="brief-summary">
+                                                                <span className="brief-row-label">📝 ANALYSIS</span>
+                                                                <p className="summary-text">{aiSummary.rawSummary}</p>
+                                                            </div>
+                                                        )}
+
+                                                        {/* Student Discussion Prompt */}
+                                                        {aiSummary.studentPrompt && (
+                                                            <div className="student-prompt-box">
+                                                                <span className="prompt-label">💬 STUDENT DISCUSSION</span>
+                                                                <p className="prompt-text">{aiSummary.studentPrompt}</p>
+                                                            </div>
+                                                        )}
+
                                                         <div className="scan-meta">
-                                                            Extracted {new Date(deepScanResult.scrapedAt).toLocaleTimeString()}
+                                                            Generated {aiSummary.generatedAt ? new Date(aiSummary.generatedAt).toLocaleTimeString() : 'just now'}
                                                         </div>
                                                     </>
                                                 )}
                                             </div>
+                                        )}
+
+                                        {/* Raw Firecrawl Extraction (collapsible) */}
+                                        {deepScanResult && !deepScanResult.error && (
+                                            <details className="raw-scan-details">
+                                                <summary className="raw-scan-summary">📄 RAW ARTICLE EXTRACT</summary>
+                                                <div className="deep-scan-result">
+                                                    {deepScanResult.title && (
+                                                        <h4 className="scan-title">{deepScanResult.title}</h4>
+                                                    )}
+                                                    {deepScanResult.description && (
+                                                        <p className="scan-description">{deepScanResult.description}</p>
+                                                    )}
+                                                    <div className="scan-content">{deepScanResult.content}</div>
+                                                    <div className="scan-meta">
+                                                        Extracted {new Date(deepScanResult.scrapedAt).toLocaleTimeString()}
+                                                    </div>
+                                                </div>
+                                            </details>
+                                        )}
+                                        {deepScanResult?.error && (
+                                            <div className="scan-error"><span>⚠</span> {deepScanResult.error}</div>
                                         )}
                                     </div>
                                 )}
