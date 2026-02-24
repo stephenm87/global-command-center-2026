@@ -26,6 +26,146 @@ const REGION_COORDS = {
     turkey: [38.9, 35.2], 'saudi arabia': [23.9, 45.1], yemen: [15.6, 48.5]
 };
 
+// ── PINNED INTEL — Hand-curated high-signal events (Feb 24, 2026) ────────────
+// These always appear as live nodes regardless of scraper output.
+const PINNED_INTEL = [
+    // A — US-Iran Military Standoff
+    {
+        'Topic/Sector': 'Geopolitics / Conflict',
+        'Entity/Subject': 'US-Iran Military Standoff: Armada Deployed, Talks Continue Under Threat',
+        'Key Player/Organization': 'United States, Iran, US Navy',
+        'Timeline': 'LIVE - Feb 2026',
+        'Expected Impact/Value': 'US carrier groups positioned near Iran as Trump threatens military action; indirect talks ongoing but Iran views any confrontation as existential — escalation risk HIGH',
+        'Source': 'Modern Diplomacy / GIS Reports',
+        'url': 'https://moderndiplomacy.eu/2026/02/24/no-win-situation-for-trump-why-the-us-cannot-achieve-military-victory/',
+        'Latitude': '32.4279',
+        'Longitude': '53.6880',
+        'Broad_Category': 'Geopolitics & Conflict',
+        'isScraped': true,
+        '_scraperSource': 'pinned'
+    },
+    // B — Ukraine War 4-Year Anniversary
+    {
+        'Topic/Sector': 'Geopolitics / Conflict',
+        'Entity/Subject': 'Ukraine War: 4th Anniversary — Putin\'s Aims Unchanged, Peace Dim',
+        'Key Player/Organization': 'Russia, Ukraine, NATO, USA',
+        'Timeline': 'LIVE - Feb 2026',
+        'Expected Impact/Value': 'Four years since Russia\'s full-scale invasion; Ukrainian forces counterattack in Dnipropetrovsk; Western experts see no change in Putin\'s objectives and dimming peace prospects',
+        'Source': 'Russia Matters / Reddit CredibleDefense',
+        'url': 'https://www.russiamatters.org/analysis/four-years-russias-invasion-western-experts-see-putins-aims-largely-unchanged-prospects',
+        'Latitude': '48.3794',
+        'Longitude': '31.1656',
+        'Broad_Category': 'Geopolitics & Conflict',
+        'isScraped': true,
+        '_scraperSource': 'pinned'
+    },
+    // C — South Sudan Humanitarian Crisis
+    {
+        'Topic/Sector': 'Health / Society',
+        'Entity/Subject': 'South Sudan: Conflict Deepens Hunger Crisis, Aid Access Blocked',
+        'Key Player/Organization': 'UN OCHA, WFP, South Sudan government, armed factions',
+        'Timeline': 'LIVE - Feb 2026',
+        'Expected Impact/Value': '1.2 million+ people at crisis-level food insecurity; armed conflict blocking humanitarian corridors — UN warns of imminent famine if aid cannot reach affected populations',
+        'Source': 'UN News',
+        'url': 'https://news.un.org/en/story/2026/02/1167005',
+        'Latitude': '6.8770',
+        'Longitude': '31.3070',
+        'Broad_Category': 'Health & Society',
+        'isScraped': true,
+        '_scraperSource': 'pinned'
+    },
+    // D — Trump 15% Global Tariff
+    {
+        'Topic/Sector': 'Economy / Global',
+        'Entity/Subject': 'Trump 15% Global Tariff: Supreme Court Clips IEEPA, Trade War Escalates',
+        'Key Player/Organization': 'USA, EU, UK, WTO, US Supreme Court',
+        'Timeline': 'LIVE - Feb 2026',
+        'Expected Impact/Value': 'SCOTUS struck down IEEPA tariffs 6-3; Trump immediately responded with 15% blanket tariff under Section 122 — effective Feb 24. Wall Street drops; EU and UK scramble to respond. Could reshape global trade architecture',
+        'Source': 'NYT / Reuters / CFR',
+        'url': 'https://www.cfr.org/articles/the-supreme-court-clipped-trumps-tariff-powers-and-opened-new-trade-battle-fronts',
+        'Latitude': '38.8951',
+        'Longitude': '-77.0364',
+        'Broad_Category': 'Economy & Trade',
+        'isScraped': true,
+        '_scraperSource': 'pinned'
+    },
+    // F — US Rejects Global AI Governance
+    {
+        'Topic/Sector': 'Technology / Security',
+        'Entity/Subject': 'US "Totally Rejects" Global AI Governance at India Summit',
+        'Key Player/Organization': 'USA White House, India AI Summit, EU, UN',
+        'Timeline': 'LIVE - Feb 2026',
+        'Expected Impact/Value': 'White House tech adviser Kratsios declares US opposes risk-focused multilateral AI regulation at Global AI Summit in New Delhi — fracturing international consensus on AI governance just as UN pushes its own framework',
+        'Source': 'France 24',
+        'url': 'https://www.france24.com/en/technology/20260220-us-totally-rejects-global-ai-governance-white-house-adviser-tells-india-summit',
+        'Latitude': '28.6139',
+        'Longitude': '77.2090',
+        'Broad_Category': 'Technology & Science',
+        'isScraped': true,
+        '_scraperSource': 'pinned'
+    },
+    // G — UN AI Human Rights Framework
+    {
+        'Topic/Sector': 'Technology / Security',
+        'Entity/Subject': 'UN Launches AI Human Rights Governance Framework',
+        'Key Player/Organization': 'UN Human Rights Council, Volker Türk, OpenAI, member states',
+        'Timeline': 'LIVE - Feb 2026',
+        'Expected Impact/Value': 'UN High Commissioner Türk calls for inclusivity, accountability and global AI standards at 61st HRC session in Geneva — directly countering US unilateralist stance. Sam Altman also urges urgent global AI regulation',
+        'Source': 'UN News / Dig.Watch',
+        'url': 'https://news.un.org/en/story/2026/02/1167000',
+        'Latitude': '46.2044',
+        'Longitude': '6.1432',
+        'Broad_Category': 'Technology & Science',
+        'isScraped': true,
+        '_scraperSource': 'pinned'
+    },
+    // J — SCOTUS Oil Companies Climate Suit
+    {
+        'Topic/Sector': 'Environment / Energy',
+        'Entity/Subject': 'SCOTUS Takes Up Exxon/Suncor Climate Accountability Case',
+        'Key Player/Organization': 'US Supreme Court, ExxonMobil, Suncor Energy, Boulder CO, fossil fuel sector',
+        'Timeline': 'LIVE - Feb 2026',
+        'Expected Impact/Value': 'Supreme Court agrees to hear oil companies\' bid to dismiss Boulder\'s climate damage lawsuit — ruling could shield fossil fuel industry from wave of city/state climate litigation nationwide and globally',
+        'Source': 'The Guardian / LA Times',
+        'url': 'https://www.theguardian.com/us-news/2026/feb/23/supreme-court-suncor-exxonmobil-case',
+        'Latitude': '37.0902',
+        'Longitude': '-95.7129',
+        'Broad_Category': 'Environment & Energy',
+        'isScraped': true,
+        '_scraperSource': 'pinned'
+    },
+    // K — Somalia WFP Food Aid Crisis
+    {
+        'Topic/Sector': 'Health / Society',
+        'Entity/Subject': 'WFP: Somalia Food Aid Could Halt Within Weeks Due to Funding Collapse',
+        'Key Player/Organization': 'WFP, Somalia government, USAID (dismantled), donor nations',
+        'Timeline': 'LIVE - Feb 2026',
+        'Expected Impact/Value': 'World Food Programme warns food aid to Somalia may fully stop within weeks — directly linked to USAID dismantling and declining donor contributions. 1.2M+ face acute food insecurity',
+        'Source': 'CNBC Africa / WFP',
+        'url': 'https://www.cnbcafrica.com/2026/food-aid-in-somalia-could-halt-within-weeks-due-to-funding-shortages-wfp-warns/',
+        'Latitude': '2.0469',
+        'Longitude': '45.3418',
+        'Broad_Category': 'Health & Society',
+        'isScraped': true,
+        '_scraperSource': 'pinned'
+    },
+    // L — USAID 1-Year Dismantling Impact
+    {
+        'Topic/Sector': 'Health / Society',
+        'Entity/Subject': 'USAID Dismantled: Lancet Study Projects Mass Death Toll After 1 Year',
+        'Key Player/Organization': 'USA (Trump admin), USAID, Lancet, WHO, Global South nations',
+        'Timeline': 'LIVE - Feb 2026',
+        'Expected Impact/Value': 'One year since Trump dismantled USAID — Lancet study projects devastating mortality projections across HIV, TB, malaria, and maternal health programs in Sub-Saharan Africa and South/Southeast Asia',
+        'Source': 'CNN / The Lancet',
+        'url': 'https://www.cnn.com/2026/02/04/world/lancet-usaid-global-aid-cuts-intl',
+        'Latitude': '0.0',
+        'Longitude': '20.0',
+        'Broad_Category': 'Health & Society',
+        'isScraped': true,
+        '_scraperSource': 'pinned'
+    }
+];
+
 function getCoords(text) {
     const lower = (text || '').toLowerCase();
     for (const [key, coords] of Object.entries(REGION_COORDS)) {
@@ -162,13 +302,18 @@ exports.handler = async (event) => {
             intelItems = [...intelItems, ...conflictBack, ...econBack];
         }
 
-        // Deduplicate by URL
+        // Deduplicate scraped items by URL
         const seen = new Set();
+        // Pre-seed with pinned URLs so scraper dupes are removed
+        PINNED_INTEL.forEach(p => seen.add(p.url));
         intelItems = intelItems.filter(item => {
             if (!item.url || seen.has(item.url)) return false;
             seen.add(item.url);
             return true;
         });
+
+        // Merge: pinned intel always leads, scraped items follow
+        intelItems = [...PINNED_INTEL, ...intelItems];
 
         // ── CRITICAL MINERALS PRICING ──────────────────────────────────────
         // Static reference data for the matrix grid
