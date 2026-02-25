@@ -621,6 +621,117 @@
     text-shadow: 0 0 8px rgba(255, 51, 0, 0.5);
 }
 
+/* ── Option D: CRITICAL Escalation Connections Panel ─────────────────── */
+.critical-connections-panel {
+    width: 100%;
+    margin-top: 10px;
+    background: rgba(255, 0, 0, 0.06);
+    border: 1px solid rgba(255, 51, 0, 0.6);
+    border-radius: 4px;
+    box-shadow: 0 0 16px rgba(255, 30, 0, 0.25), inset 0 0 8px rgba(255, 0, 0, 0.05);
+    animation: criticalPanelIn 0.4s ease;
+    overflow: hidden;
+}
+
+@keyframes criticalPanelIn {
+    from {
+        opacity: 0;
+        transform: translateY(8px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.critical-connections-header {
+    font-family: 'Orbitron', sans-serif;
+    font-size: 0.6rem;
+    font-weight: 900;
+    letter-spacing: 2px;
+    color: #ff4400;
+    padding: 6px 10px;
+    background: rgba(255, 30, 0, 0.1);
+    border-bottom: 1px solid rgba(255, 51, 0, 0.4);
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.critical-blink {
+    animation: blink 0.8s step-start infinite;
+    color: #ff2200;
+}
+
+@keyframes blink {
+
+    0%,
+    100% {
+        opacity: 1;
+    }
+
+    50% {
+        opacity: 0;
+    }
+}
+
+.critical-connections-list {
+    max-height: 120px;
+    overflow-y: auto;
+    padding: 4px 0;
+}
+
+.critical-connections-list::-webkit-scrollbar {
+    width: 4px;
+}
+
+.critical-connections-list::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+.critical-connections-list::-webkit-scrollbar-thumb {
+    background: rgba(255, 51, 0, 0.5);
+    border-radius: 2px;
+}
+
+.connection-row {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    padding: 4px 10px;
+    border-bottom: 1px solid rgba(255, 51, 0, 0.1);
+    font-family: 'Roboto Mono', monospace;
+    font-size: 0.58rem;
+    color: #ffaa88;
+    transition: background 0.2s;
+}
+
+.connection-row:hover {
+    background: rgba(255, 51, 0, 0.1);
+}
+
+.conn-index {
+    color: rgba(255, 68, 0, 0.6);
+    font-size: 0.5rem;
+    font-weight: 900;
+    min-width: 16px;
+}
+
+.conn-from,
+.conn-to {
+    flex: 1;
+    color: #ff9966;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.conn-arrow {
+    color: #ff4400;
+    font-size: 0.8rem;
+    flex-shrink: 0;
+}
 
 .tension-bar {
     width: 100%;

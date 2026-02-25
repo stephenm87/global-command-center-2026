@@ -23,6 +23,7 @@ function App() {
     const [selectedTheory, setSelectedTheory] = useState('Realism');
 
     const [stressLevel, setStressLevel] = useState(0);
+    const [escalationPairs, setEscalationPairs] = useState([]);
     const [keyMetrics, setKeyMetrics] = useState({});
     const [minerals, setMinerals] = useState({});
     const [showMineralsModal, setShowMineralsModal] = useState(false);
@@ -267,28 +268,59 @@ function App() {
         globeEl.current.atmosphereColor(stressColor);
         globeEl.current.atmosphereAltitude(0.15 + (stressLevel / 500));
 
-        // Escalation Arcs (only at high stress)
+        // Escalation Arcs — Option A: animated dashes, glow, speed scales with stress
         if (stressLevel > 50) {
-            const conflictPoints = forecastPoints.filter(p => p.data.Broad_Category === 'Geopolitics & Conflict').slice(0, 10);
+            const conflictPoints = forecastPoints
+                .filter(p => p.data.Broad_Category === 'Geopolitics & Conflict')
+                .slice(0, 12);
+
+            const isCritical = stressLevel > 70;
             const arcs = [];
+            const pairs = [];
+
             for (let i = 0; i < conflictPoints.length - 1; i += 2) {
+                const a = conflictPoints[i];
+                const b = conflictPoints[i + 1];
+                const label = `${a.data['Key Player/Organization'] || a.data['Entity/Subject']?.substring(0, 30)} ↔ ${b.data['Key Player/Organization'] || b.data['Entity/Subject']?.substring(0, 30)}`;
                 arcs.push({
-                    startLat: conflictPoints[i].lat,
-                    startLng: conflictPoints[i].lng,
-                    endLat: conflictPoints[i + 1].lat,
-                    endLng: conflictPoints[i + 1].lng,
-                    color: ['#ff3300', '#ff9900']
+                    startLat: a.lat,
+                    startLng: a.lng,
+                    endLat: b.lat,
+                    endLng: b.lng,
+                    // At CRITICAL: solid red-orange; at Elevated: orange-yellow
+                    color: isCritical
+                        ? ['#ff0000', '#ff6600', '#ff0000']
+                        : ['#ff9900', '#ffcc00', '#ff9900'],
+                    label
+                });
+                pairs.push({
+                    from: a.data['Entity/Subject']?.substring(0, 50) || 'Unknown',
+                    to: b.data['Entity/Subject']?.substring(0, 50) || 'Unknown',
+                    fromOrg: a.data['Key Player/Organization'],
+                    toOrg: b.data['Key Player/Organization'],
+                    label
                 });
             }
+
+            // Animation speed scales with stress; stroke thickens at CRITICAL
+            const animTime = isCritical ? 800 : 2000;
+            const dashLen = isCritical ? 0.6 : 0.4;
+            const dashGap = isCritical ? 0.3 : 2;
+            const stroke = isCritical ? 1.5 : 0.8;
+
             globeEl.current
                 .arcsData(arcs)
                 .arcColor('color')
-                .arcDashLength(0.4)
-                .arcDashGap(4)
-                .arcDashAnimateTime(4000)
-                .arcStroke(0.5);
+                .arcDashLength(dashLen)
+                .arcDashGap(dashGap)
+                .arcDashAnimateTime(animTime)
+                .arcStroke(stroke)
+                .arcLabel(d => `<div style="background:rgba(0,0,0,0.85);padding:6px 10px;border:1px solid #ff4400;border-radius:4px;font-family:Roboto Mono,monospace;color:#ff9900;font-size:0.7rem;max-width:240px;">${d.label}</div>`);
+
+            setEscalationPairs(pairs);
         } else {
             globeEl.current.arcsData([]);
+            setEscalationPairs([]);
         }
     };
 
@@ -342,7 +374,7 @@ function App() {
                     <div className="date-time">
                         <span className="date">2026 FORECASTS</span>
                         <a
-                            href="https://glistening-cannoli-9a4914.netlify.app/"
+                            href="https://glopocompanion.netlify.app/"
                             target="_blank"
                             rel="noopener noreferrer"
                             className="companion-btn"
@@ -476,6 +508,25 @@ function App() {
                             className="stress-slider"
                         />
                         <span className="stress-level-label">{stressLevel === 0 ? 'BASELINE' : stressLevel < 40 ? 'LOW TENSION' : stressLevel < 70 ? 'ELEVATED' : 'CRITICAL'}</span>
+
+                        {/* Option D: CRITICAL connections panel */}
+                        {stressLevel > 70 && escalationPairs.length > 0 && (
+                            <div className="critical-connections-panel">
+                                <div className="critical-connections-header">
+                                    <span className="critical-blink">⚡</span> ACTIVE ESCALATION LINKS
+                                </div>
+                                <div className="critical-connections-list">
+                                    {escalationPairs.map((pair, i) => (
+                                        <div key={i} className="connection-row">
+                                            <span className="conn-index">{String(i + 1).padStart(2, '0')}</span>
+                                            <span className="conn-from">{pair.fromOrg || pair.from.substring(0, 35)}</span>
+                                            <span className="conn-arrow">⇄</span>
+                                            <span className="conn-to">{pair.toOrg || pair.to.substring(0, 35)}</span>
+                                        </div>
+                                    ))}
+                                </div>
+                            </div>
+                        )}
                     </div>
                 </div>
             </div>
