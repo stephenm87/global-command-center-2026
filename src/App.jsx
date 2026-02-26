@@ -24,6 +24,8 @@ function App() {
 
     const [stressLevel, setStressLevel] = useState(0);
     const [escalationPairs, setEscalationPairs] = useState([]);
+    const [showConnections, setShowConnections] = useState(false);
+    const [arcClickedInfo, setArcClickedInfo] = useState(null);
     const [keyMetrics, setKeyMetrics] = useState({});
     const [minerals, setMinerals] = useState({});
     const [showMineralsModal, setShowMineralsModal] = useState(false);
@@ -33,6 +35,9 @@ function App() {
     const [deepScanLoading, setDeepScanLoading] = useState(false);
     const [aiSummary, setAiSummary] = useState(null);
     const [aiSummaryLoading, setAiSummaryLoading] = useState(false);
+    const [theoryLens, setTheoryLens] = useState(null); // null | 'realism' | 'liberalism' | 'constructivism'
+    const [timelineYear, setTimelineYear] = useState('ALL');
+    const [expandedCluster, setExpandedCluster] = useState(null); // { items, lat, lng } when a cluster is clicked
     const globeEl = useRef();
     const globeContainer = useRef();
     const attributionRef = useRef();
@@ -50,6 +55,7 @@ function App() {
             .showGraticules(false);
 
         globeEl.current = globe;
+        globe.pointOfView({ lat: 40, lng: 30, altitude: 2.5 });
 
         // Load country boundaries GeoJSON
         fetch('https://cdn.jsdelivr.net/npm/world-atlas@2/countries-110m.json')
@@ -81,6 +87,16 @@ function App() {
             });
     }, []);
 
+
+    // Auto-open connections panel when entering CRITICAL
+    useEffect(() => {
+        if (stressLevel > 70 && escalationPairs.length > 0) {
+            setShowConnections(true);
+        } else if (stressLevel <= 70) {
+            setShowConnections(false);
+        }
+    }, [stressLevel, escalationPairs.length]);
+
     // Keyboard shortcuts
     useEffect(() => {
         const handleKeyPress = (e) => {
@@ -93,11 +109,15 @@ function App() {
             if (e.code === 'Escape' && selectedForecast) {
                 setSelectedForecast(null);
             }
+            // L: Toggle escalation links panel
+            if (e.code === 'KeyL' && !selectedForecast && stressLevel > 70) {
+                setShowConnections(prev => !prev);
+            }
         };
 
         window.addEventListener('keydown', handleKeyPress);
         return () => window.removeEventListener('keydown', handleKeyPress);
-    }, [selectedForecast]);
+    }, [selectedForecast, stressLevel]);
 
     // Load data
     useEffect(() => {
@@ -227,34 +247,117 @@ function App() {
 
 
 
+    // ── Theory lens keyword maps ──────────────────────────────────────────────
+    const THEORY_KEYWORDS = {
+        realism: /war|military|nuclear|territory|power|arms|coup|missile|troops|conflict|navy|siege|weapon|sanctions|invasion/,
+        liberalism: /un\b|united nations|trade|wto|institution|cooperation|treaty|ngo|democracy|aid|climate|multilateral|agreement|imf|world bank/,
+        constructivism: /identity|human rights|norms|refugee|sovereignty|dignity|gender|indigenous|culture|legitimacy|narrative|recognition|discourse/
+    };
+    const THEORY_COLORS = { realism: '#ff3344', liberalism: '#00ddff', constructivism: '#cc44ff' };
+
+    // ── Node clustering: group points within 8° of each other ────────────────
+    const clusterPoints = (points) => {
+        const RADIUS = 8;
+        const clusters = [];
+        const used = new Set();
+        for (let i = 0; i < points.length; i++) {
+            if (used.has(i)) continue;
+            const group = [points[i]];
+            used.add(i);
+            for (let j = i + 1; j < points.length; j++) {
+                if (used.has(j)) continue;
+                const dlat = Math.abs(points[i].lat - points[j].lat);
+                const dlng = Math.abs(points[i].lng - points[j].lng);
+                if (dlat < RADIUS && dlng < RADIUS) { group.push(points[j]); used.add(j); }
+            }
+            if (group.length === 1) {
+                clusters.push(group[0]);
+            } else {
+                const avgLat = group.reduce((s, p) => s + p.lat, 0) / group.length;
+                const avgLng = group.reduce((s, p) => s + p.lng, 0) / group.length;
+                const dominant = group.reduce((a, b) => (a.size > b.size ? a : b));
+                clusters.push({
+                    lat: avgLat, lng: avgLng,
+                    size: Math.min(2.5, 0.8 + group.length * 0.25),
+                    color: dominant.color,
+                    isCluster: true, count: group.length,
+                    items: group.map(g => g.data),
+                    data: dominant.data,
+                });
+            }
+        }
+        return clusters;
+    };
+
     // Update Globe Points (including Student Pins)
     const updateGlobeData = () => {
         if (!globeEl.current) return;
 
-        const filtered = selectedCategory === 'All'
+        // Timeline year filter
+        const yearFilter = (item) => {
+            if (timelineYear === 'ALL') return true;
+            const tl = (item.Timeline || '').toString();
+            return tl.includes(timelineYear);
+        };
+
+        const filtered = (selectedCategory === 'All'
             ? forecasts
             : selectedCategory === 'Live Intel'
                 ? forecasts.filter(f => f.isLive)
-                : forecasts.filter(f => f.Broad_Category === selectedCategory);
+                : forecasts.filter(f => f.Broad_Category === selectedCategory)
+        ).filter(yearFilter);
 
         setFilteredForecasts(filtered);
 
-        const forecastPoints = filtered.map(item => ({
-            lat: parseFloat(item.Latitude),
-            lng: parseFloat(item.Longitude),
-            size: item.isLive ? 1.2 : 0.8,
-            color: item.isLive ? '#00ffff' : (categoryColors[item.Broad_Category] || '#ffffff'),
-            data: item,
-            type: 'forecast'
-        }));
+        // Theory lens coloring
+        const getPointColor = (item, baseColor) => {
+            if (!theoryLens) return baseColor;
+            const text = `${item['Entity/Subject']} ${item['Expected Impact/Value']} ${item['Topic/Sector']}`.toLowerCase();
+            const matches = THEORY_KEYWORDS[theoryLens]?.test(text);
+            return matches ? THEORY_COLORS[theoryLens] : baseColor;
+        };
+        const getPointOpacity = (item) => {
+            if (!theoryLens) return 1;
+            const text = `${item['Entity/Subject']} ${item['Expected Impact/Value']} ${item['Topic/Sector']}`.toLowerCase();
+            return THEORY_KEYWORDS[theoryLens]?.test(text) ? 1 : 0.15;
+        };
+
+        const rawPoints = filtered.map(item => {
+            const baseColor = item.isLive ? '#00ffff' : (categoryColors[item.Broad_Category] || '#ffffff');
+            const color = getPointColor(item, baseColor);
+            const opacity = getPointOpacity(item);
+            return {
+                lat: parseFloat(item.Latitude),
+                lng: parseFloat(item.Longitude),
+                size: (item.isLive ? 1.2 : 0.8) * (theoryLens && opacity < 0.5 ? 0.4 : 1),
+                color,
+                opacity,
+                data: item,
+                type: 'forecast'
+            };
+        });
+
+        // Cluster nearby points
+        const forecastPoints = clusterPoints(rawPoints);
 
         globeEl.current
             .pointsData(forecastPoints)
             .pointAltitude(0.01)
             .pointRadius('size')
             .pointColor('color')
-            .onPointClick(point => setSelectedForecast(point.data))
+            .onPointClick(point => {
+                if (point.isCluster) {
+                    globeEl.current.pointOfView({ lat: point.lat, lng: point.lng, altitude: 1.0 }, 600);
+                    setExpandedCluster({ items: point.items, lat: point.lat, lng: point.lng });
+                } else {
+                    setExpandedCluster(null);
+                    setSelectedForecast(point.data);
+                }
+            })
             .pointLabel(d => {
+                if (d.isCluster) {
+                    return `<div style="background:rgba(0,0,0,0.9);padding:8px 12px;border:1px solid #ffcc00;border-radius:20px;font-family:Roboto Mono;color:#ffcc00;font-size:0.75rem;font-weight:900;">${d.count} EVENTS — click to expand</div>`;
+                }
                 const isLinked = d.data.url ? '<div style="color: #00ff88; font-size: 0.7rem; margin-top: 5px; font-weight: bold;">[ CLICK FOR LIVE INTEL ]</div>' : '';
                 return `<div style="background: rgba(0,0,0,0.9); padding: 12px; border: 1px solid ${d.color}; border-radius: 4px; font-family: Roboto Mono; color: #00ffff; max-width: 300px; box-shadow: 0 0 15px ${d.color}44;">
                     <div style="color: ${d.color}; font-weight: 700; margin-bottom: 5px;">${d.data.isLive ? '[LIVE] ' : ''}${d.data['Topic/Sector']}</div>
@@ -268,7 +371,24 @@ function App() {
         globeEl.current.atmosphereColor(stressColor);
         globeEl.current.atmosphereAltitude(0.15 + (stressLevel / 500));
 
-        // Escalation Arcs — Option A: animated dashes, glow, speed scales with stress
+        // ── C: Classify arc relationship type → color + icon ──────────────────
+        const classifyRelationship = (a, b) => {
+            const text = [
+                a.data['Entity/Subject'], a.data['Expected Impact/Value'],
+                b.data['Entity/Subject'], b.data['Expected Impact/Value']
+            ].join(' ').toLowerCase();
+            if (/war|military|attack|missile|troops|drone|weapon|navy|armed|combat|siege|nuclear/.test(text))
+                return { type: 'MILITARY', color: ['#ff0033', '#ff4400', '#ff0033'], icon: '⚔️', hex: '#ff2200' };
+            if (/sanction|tariff|trade.war|embargo|export.ban|economic|gdp|inflation|currency/.test(text))
+                return { type: 'ECONOMIC', color: ['#ff9900', '#ffcc00', '#ff9900'], icon: '💰', hex: '#ff9900' };
+            if (/territory|border|sea|island|claim|sovereignty|occupation|annex/.test(text))
+                return { type: 'TERRITORIAL', color: ['#ffff00', '#ffe000', '#ffff00'], icon: '🗺️', hex: '#ffdd00' };
+            if (/famine|refugee|aid|disease|hunger|humanitarian|food.crisis|displaced/.test(text))
+                return { type: 'HUMANITARIAN', color: ['#00ff88', '#00ffcc', '#00ff88'], icon: '🏥', hex: '#00ff99' };
+            return { type: 'DIPLOMATIC', color: ['#cc00ff', '#ff00cc', '#cc00ff'], icon: '🤝', hex: '#cc44ff' };
+        };
+
+        // Escalation Arcs — Options B/C/D/E
         if (stressLevel > 50) {
             const conflictPoints = forecastPoints
                 .filter(p => p.data.Broad_Category === 'Geopolitics & Conflict')
@@ -277,36 +397,53 @@ function App() {
             const isCritical = stressLevel > 70;
             const arcs = [];
             const pairs = [];
+            const connectedNodes = []; // for D: pulsing rings
 
             for (let i = 0; i < conflictPoints.length - 1; i += 2) {
                 const a = conflictPoints[i];
                 const b = conflictPoints[i + 1];
-                const label = `${a.data['Key Player/Organization'] || a.data['Entity/Subject']?.substring(0, 30)} ↔ ${b.data['Key Player/Organization'] || b.data['Entity/Subject']?.substring(0, 30)}`;
+
+                // C: classify relationship
+                const rel = classifyRelationship(a, b);
+
+                const fromName = a.data['Key Player/Organization'] || a.data['Entity/Subject']?.substring(0, 28);
+                const toName = b.data['Key Player/Organization'] || b.data['Entity/Subject']?.substring(0, 28);
+
                 arcs.push({
-                    startLat: a.lat,
-                    startLng: a.lng,
-                    endLat: b.lat,
-                    endLng: b.lng,
-                    // At CRITICAL: solid red-orange; at Elevated: orange-yellow
-                    color: isCritical
-                        ? ['#ff0000', '#ff6600', '#ff0000']
-                        : ['#ff9900', '#ffcc00', '#ff9900'],
-                    label
+                    startLat: a.lat, startLng: a.lng,
+                    endLat: b.lat, endLng: b.lng,
+                    color: rel.color,
+                    // B: altitude — high so arcs arch clearly above globe surface
+                    altitude: isCritical ? 0.7 : 0.5,
+                    relType: rel.type,
+                    relIcon: rel.icon,
+                    relHex: rel.hex,
+                    fromName, toName,
+                    fromImpact: a.data['Expected Impact/Value']?.substring(0, 80),
+                    toImpact: b.data['Expected Impact/Value']?.substring(0, 80),
+                    fromFull: a.data,
+                    toFull: b.data,
                 });
+
                 pairs.push({
                     from: a.data['Entity/Subject']?.substring(0, 50) || 'Unknown',
                     to: b.data['Entity/Subject']?.substring(0, 50) || 'Unknown',
                     fromOrg: a.data['Key Player/Organization'],
                     toOrg: b.data['Key Player/Organization'],
-                    label
+                    relType: rel.type,
+                    relIcon: rel.icon,
+                    relHex: rel.hex,
                 });
+
+                // D: collect connected node positions for pulsing rings
+                connectedNodes.push({ lat: a.lat, lng: a.lng, hex: rel.hex });
+                connectedNodes.push({ lat: b.lat, lng: b.lng, hex: rel.hex });
             }
 
-            // Animation speed scales with stress; stroke thickens at CRITICAL
-            const animTime = isCritical ? 800 : 2000;
-            const dashLen = isCritical ? 0.6 : 0.4;
-            const dashGap = isCritical ? 0.3 : 2;
-            const stroke = isCritical ? 1.5 : 0.8;
+            const animTime = isCritical ? 600 : 1800;
+            const dashLen = isCritical ? 0.9 : 0.5;   // longer dashes = more visible
+            const dashGap = isCritical ? 0.15 : 1.2;
+            const stroke = isCritical ? 2.5 : 1.2;   // thicker stroke
 
             globeEl.current
                 .arcsData(arcs)
@@ -315,18 +452,42 @@ function App() {
                 .arcDashGap(dashGap)
                 .arcDashAnimateTime(animTime)
                 .arcStroke(stroke)
-                .arcLabel(d => `<div style="background:rgba(0,0,0,0.85);padding:6px 10px;border:1px solid #ff4400;border-radius:4px;font-family:Roboto Mono,monospace;color:#ff9900;font-size:0.7rem;max-width:240px;">${d.label}</div>`);
+                // B: high altitude
+                .arcAltitude('altitude')
+                // E: rich hover label with type icon, both names, impact snippet
+                .arcLabel(d => `
+                    <div style="background:rgba(5,3,3,0.92);padding:10px 14px;border:1px solid ${d.relHex};border-radius:6px;font-family:Roboto Mono,monospace;max-width:280px;box-shadow:0 0 16px ${d.relHex}55;">
+                        <div style="color:${d.relHex};font-size:0.62rem;font-weight:900;letter-spacing:1.5px;margin-bottom:6px;">${d.relIcon} ${d.relType} LINK</div>
+                        <div style="color:#fff;font-size:0.7rem;font-weight:700;">${d.fromName}</div>
+                        <div style="color:${d.relHex};font-size:0.75rem;text-align:center;margin:3px 0;">⇄</div>
+                        <div style="color:#fff;font-size:0.7rem;font-weight:700;margin-bottom:6px;">${d.toName}</div>
+                        <div style="color:#aaa;font-size:0.58rem;line-height:1.4;border-top:1px solid ${d.relHex}44;padding-top:5px;">${d.fromImpact || ''}</div>
+                        <div style="color:#777;font-size:0.5rem;margin-top:5px;">CLICK ARC FOR FULL DETAIL</div>
+                    </div>`)
+                // B: click arc to open detail card
+                .onArcClick(d => setArcClickedInfo(d));
+
+            // D: pulsing HTML rings on connected nodes
+            globeEl.current
+                .htmlElementsData(connectedNodes)
+                .htmlAltitude(0.015)
+                .htmlElement(d => {
+                    const el = document.createElement('div');
+                    el.className = 'node-pulse-ring';
+                    el.style.setProperty('--ring-color', d.hex);
+                    return el;
+                });
 
             setEscalationPairs(pairs);
         } else {
-            globeEl.current.arcsData([]);
+            globeEl.current.arcsData([]).htmlElementsData([]);
             setEscalationPairs([]);
         }
     };
 
     useEffect(() => {
         updateGlobeData();
-    }, [selectedCategory, forecasts, stressLevel]);
+    }, [selectedCategory, forecasts, stressLevel, theoryLens, timelineYear]);
 
     // Filter logic moved to updateGlobeData
 
@@ -388,20 +549,105 @@ function App() {
                             CREDITS & LICENSE
                         </button>
                         <span className="live-indicator">● LIVE</span>
-
+                        <button className="export-btn" onClick={() => {
+                            const nodes = filteredForecasts.slice(0, 40);
+                            const date = new Date().toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric' });
+                            const html = `<!DOCTYPE html><html><head><title>Global Intelligence Briefing</title><style>body{font-family:monospace;background:#000;color:#0ff;padding:30px;max-width:800px;margin:0 auto}h1{color:#0ff;border-bottom:2px solid #0ff;padding-bottom:10px;font-size:1.1rem;letter-spacing:3px}.node{border:1px solid #333;padding:12px;margin:10px 0;border-radius:4px}.cat{color:#ff9900;font-size:0.7rem;letter-spacing:2px;margin-bottom:4px}.sub{color:#fff;font-size:0.85rem;margin-bottom:6px}.detail{color:#888;font-size:0.75rem;line-height:1.5}.src a{color:#00ff88;font-size:0.65rem}footer{color:#444;font-size:0.6rem;margin-top:30px;border-top:1px solid #222;padding-top:10px}@media print{body{background:#fff;color:#000}.cat{color:#c70}.src a{color:green}h1{color:#000;border-color:#000}}</style></head><body><h1>⬢ GLOBAL INTELLIGENCE BRIEFING — ${date}</h1>${nodes.map((n, i) => `<div class="node"><div class="cat">${String(i + 1).padStart(2, '0')} · ${n.Broad_Category || n['Topic/Sector'] || 'GLOBAL'}</div><div class="sub">${n['Entity/Subject'] || ''}</div><div class="detail"><strong>Players:</strong> ${n['Key Player/Organization'] || '—'}<br/><strong>Impact:</strong> ${n['Expected Impact/Value'] || '—'}<br/><strong>Timeline:</strong> ${n.Timeline || '—'}</div>${n.url ? `<div class="src"><a href="${n.url}" target="_blank">SOURCE ↗</a></div>` : ''}</div>`).join('')}<footer>Generated by Global Command Center · ${date} · globalcommandcenter2026.netlify.app</footer></body></html>`;
+                            const w = window.open('', '_blank');
+                            w.document.write(html); w.document.close();
+                            setTimeout(() => w.print(), 400);
+                        }} title="Export Intelligence Briefing">
+                            📄 EXPORT BRIEFING
+                        </button>
                     </div>
                 </div>
 
                 {/* Main Content */}
                 <div className="main-content">
                     {/* Globe Center Stage */}
-                    <div className="globe-container">
+                    <div className={`globe-container ${stressLevel > 70 ? 'critical-vignette' : ''}`}>
                         <div ref={globeContainer} style={{ width: '100%', height: '100%' }} />
                         <div className="globe-overlay">
                             <div className="globe-title">GLOBAL THREAT MATRIX</div>
 
+
                         </div>
+
+                        {/* Feature 1: Arc Type Legend */}
+                        {stressLevel > 50 && (
+                            <div className="arc-legend">
+                                <div className="arc-legend-title">ARC KEY</div>
+                                {[['⚔️', 'MILITARY', '#ff2200'], ['💰', 'ECONOMIC', '#ff9900'], ['🗺️', 'TERRITORIAL', '#ffdd00'], ['🏥', 'HUMANITARIAN', '#00ff99'], ['🤝', 'DIPLOMATIC', '#cc44ff']].map(([icon, label, color]) => (
+                                    <div key={label} className="arc-legend-item">
+                                        <span className="arc-legend-dot" style={{ background: color, boxShadow: `0 0 6px ${color}` }} />
+                                        <span style={{ color }}>{icon} {label}</span>
+                                    </div>
+                                ))}
+                            </div>
+                        )}
                     </div>
+
+
+                    {/* Cluster expand panel */}
+                    {expandedCluster && (
+                        <>
+                            {/* Backdrop — click outside to dismiss */}
+                            <div onClick={() => setExpandedCluster(null)}
+                                style={{ position: 'absolute', inset: 0, zIndex: 99, cursor: 'default' }} />
+                            <div onClick={e => e.stopPropagation()}
+                                style={{
+                                    position: 'absolute', top: '50%', left: '50%', transform: 'translate(-50%, -50%)',
+                                    background: 'rgba(0,0,0,0.95)', border: '1px solid #ffcc00',
+                                    borderRadius: '12px', padding: '16px', zIndex: 100, width: '320px',
+                                    maxHeight: '60vh', overflowY: 'auto', fontFamily: 'Roboto Mono, monospace',
+                                    boxShadow: '0 0 30px #ffcc0044'
+                                }}>
+                                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '12px' }}>
+                                    <span style={{ color: '#ffcc00', fontWeight: 900, fontSize: '0.8rem' }}>
+                                        📍 {expandedCluster.items.length} EVENTS IN REGION
+                                    </span>
+                                    <button onClick={() => setExpandedCluster(null)}
+                                        style={{ background: 'none', border: '1px solid #ffcc0055', borderRadius: '4px', color: '#ffcc00', cursor: 'pointer', padding: '2px 8px', fontSize: '0.75rem' }}>
+                                        ✕
+                                    </button>
+                                </div>
+                                <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
+                                    {(() => {
+                                        // Group items by category
+                                        const groups = {};
+                                        expandedCluster.items.forEach(item => {
+                                            const cat = item.isLive ? 'Live Intel' : (item.Broad_Category || 'Other');
+                                            if (!groups[cat]) groups[cat] = [];
+                                            groups[cat].push(item);
+                                        });
+                                        return Object.entries(groups).map(([cat, items]) => {
+                                            const catColor = items[0].isLive ? '#00ffff' : (categoryColors[cat] || '#aaaaaa');
+                                            return (
+                                                <div key={cat}>
+                                                    <div style={{ color: catColor, fontSize: '0.6rem', fontWeight: 900, letterSpacing: '0.1em', textTransform: 'uppercase', marginBottom: '6px', paddingBottom: '4px', borderBottom: `1px solid ${catColor}33` }}>
+                                                        {cat} ({items.length})
+                                                    </div>
+                                                    <div style={{ display: 'flex', flexDirection: 'column', gap: '5px' }}>
+                                                        {items.map((item, i) => (
+                                                            <button key={i} onClick={() => { setSelectedForecast(item); setExpandedCluster(null); }}
+                                                                style={{ textAlign: 'left', background: catColor + '0d', border: `1px solid ${catColor}33`, borderRadius: '6px', padding: '6px 10px', cursor: 'pointer', transition: 'all 0.15s' }}
+                                                                onMouseEnter={e => e.currentTarget.style.background = catColor + '22'}
+                                                                onMouseLeave={e => e.currentTarget.style.background = catColor + '0d'}>
+                                                                <div style={{ color: '#ddd', fontSize: '0.68rem', lineHeight: 1.3 }}>
+                                                                    {item.isLive ? <span style={{ color: '#00ffff', fontWeight: 700, marginRight: '4px' }}>[LIVE]</span> : null}
+                                                                    {item['Entity/Subject']?.substring(0, 70)}
+                                                                </div>
+                                                            </button>
+                                                        ))}
+                                                    </div>
+                                                </div>
+                                            );
+                                        });
+                                    })()}
+                                </div>
+                            </div>
+                        </>
+                    )}
 
                     {/* Right Sidebar - Intel Feed */}
                     <div className={`intel-feed ${sidebarCollapsed ? 'collapsed' : ''}`}>
@@ -507,30 +753,87 @@ function App() {
                             onChange={(e) => setStressLevel(parseInt(e.target.value))}
                             className="stress-slider"
                         />
-                        <span className="stress-level-label">{stressLevel === 0 ? 'BASELINE' : stressLevel < 40 ? 'LOW TENSION' : stressLevel < 70 ? 'ELEVATED' : 'CRITICAL'}</span>
-
-                        {/* Option D: CRITICAL connections panel */}
-                        {stressLevel > 70 && escalationPairs.length > 0 && (
-                            <div className="critical-connections-panel">
-                                <div className="critical-connections-header">
-                                    <span className="critical-blink">⚡</span> ACTIVE ESCALATION LINKS
-                                </div>
-                                <div className="critical-connections-list">
-                                    {escalationPairs.map((pair, i) => (
-                                        <div key={i} className="connection-row">
-                                            <span className="conn-index">{String(i + 1).padStart(2, '0')}</span>
-                                            <span className="conn-from">{pair.fromOrg || pair.from.substring(0, 35)}</span>
-                                            <span className="conn-arrow">⇄</span>
-                                            <span className="conn-to">{pair.toOrg || pair.to.substring(0, 35)}</span>
-                                        </div>
-                                    ))}
-                                </div>
+                        <span className="stress-level-label">
+                            {stressLevel === 0 ? 'BASELINE' : stressLevel < 40 ? 'LOW TENSION' : stressLevel < 70 ? 'ELEVATED' : 'CRITICAL'}
+                            {stressLevel > 50 && escalationPairs.length > 0 && (
+                                <span className="arc-count-badge"
+                                    title={stressLevel > 70 ? 'Press L to toggle links panel' : ''}
+                                    onClick={() => stressLevel > 70 && setShowConnections(p => !p)}
+                                    style={{ cursor: stressLevel > 70 ? 'pointer' : 'default' }}
+                                >
+                                    · {escalationPairs.length} ARCS {stressLevel > 70 ? (showConnections ? '▼' : '▲') : ''}
+                                </span>
+                            )}
+                        </span>
+                        {/* Feature 5: Timeline Year Filter */}
+                        <div className="timeline-filter">
+                            <span className="timeline-label">📅 TIMELINE</span>
+                            <div className="timeline-year-btns">
+                                {['ALL', '2023', '2024', '2025', '2026'].map(y => (
+                                    <button key={y}
+                                        className={`timeline-year-btn${timelineYear === y ? ' active' : ''}`}
+                                        onClick={() => setTimelineYear(y)}
+                                    >{y === 'ALL' ? 'ALL' : `'${y.slice(2)}`}</button>
+                                ))}
                             </div>
-                        )}
+                        </div>
                     </div>
                 </div>
             </div>
 
+            {/* Fixed floating escalation links panel */}
+            {stressLevel > 70 && escalationPairs.length > 0 && (
+                <div className={`critical-connections-panel ${showConnections ? 'panel-open' : 'panel-collapsed'}`}>
+                    <div className="critical-connections-header" onClick={() => setShowConnections(p => !p)}>
+                        <span className="critical-blink">⚡</span>
+                        <span className="conn-header-title">ACTIVE ESCALATION LINKS</span>
+                        <span className="conn-count-badge">{escalationPairs.length}</span>
+                        <span className="conn-toggle-icon">{showConnections ? '▼' : '▲'}</span>
+                        {showConnections && (
+                            <button className="conn-close-btn" onClick={(e) => { e.stopPropagation(); setShowConnections(false); }} title="Close (L)">✕</button>
+                        )}
+                    </div>
+                    {showConnections && (
+                        <div className="critical-connections-list">
+                            <div className="conn-keyboard-hint">Press <kbd>L</kbd> to toggle</div>
+                            {escalationPairs.map((pair, i) => (
+                                <div key={i} className="connection-row">
+                                    <span className="conn-index">{String(i + 1).padStart(2, '0')}</span>
+                                    <span className="conn-from">{pair.fromOrg || pair.from.substring(0, 30)}</span>
+                                    <span className="conn-arrow">⇄</span>
+                                    <span className="conn-to">{pair.toOrg || pair.to.substring(0, 30)}</span>
+                                </div>
+                            ))}
+                        </div>
+                    )}
+                </div>
+            )}
+
+            {/* B: Arc clicked — relationship detail card */}
+            {arcClickedInfo && (
+                <div className="arc-detail-overlay" onClick={() => setArcClickedInfo(null)}>
+                    <div className="arc-detail-card" onClick={e => e.stopPropagation()}>
+                        <button className="arc-detail-close" onClick={() => setArcClickedInfo(null)}>✕</button>
+                        <div className="arc-detail-type" style={{ color: arcClickedInfo.relHex, borderBottomColor: arcClickedInfo.relHex + '55' }}>
+                            {arcClickedInfo.relIcon} {arcClickedInfo.relType} CONFLICT LINK
+                        </div>
+                        <div className="arc-detail-entities">
+                            <div className="arc-entity-box" style={{ borderColor: arcClickedInfo.relHex + '88' }}>
+                                <span className="arc-entity-label">NODE A</span>
+                                <strong className="arc-entity-name">{arcClickedInfo.fromName}</strong>
+                                <p className="arc-entity-impact">{arcClickedInfo.fromImpact || '—'}</p>
+                            </div>
+                            <div className="arc-entity-connector" style={{ color: arcClickedInfo.relHex }}>⇄</div>
+                            <div className="arc-entity-box" style={{ borderColor: arcClickedInfo.relHex + '88' }}>
+                                <span className="arc-entity-label">NODE B</span>
+                                <strong className="arc-entity-name">{arcClickedInfo.toName}</strong>
+                                <p className="arc-entity-impact">{arcClickedInfo.toImpact || '—'}</p>
+                            </div>
+                        </div>
+                        <div className="arc-detail-hint">Click outside to dismiss · Click a globe node for full intel</div>
+                    </div>
+                </div>
+            )}
 
             <div className="netlify-attribution" ref={attributionRef} style={{
                 textAlign: 'center',

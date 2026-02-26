@@ -163,6 +163,96 @@ const PINNED_INTEL = [
         'Broad_Category': 'Health & Society',
         'isScraped': true,
         '_scraperSource': 'pinned'
+    },
+    // J — M1: El Mencho Killing & CJNG Retaliation
+    {
+        'Topic/Sector': 'Geopolitics / Conflict',
+        'Entity/Subject': 'Mexico: CJNG Boss "El Mencho" Killed, Cartel Retaliatory Violence Erupts Across Jalisco',
+        'Key Player/Organization': 'Mexico (Sheinbaum govt), CJNG Cartel, US Intelligence',
+        'Timeline': 'LIVE - Feb 2026',
+        'Expected Impact/Value': 'US-assisted military raid killed CJNG leader Nemesio Oseguera ("El Mencho") Feb 22 — immediate retaliation: burning buses, highway blockades, gunfights across Jalisco & Michoacán; 10,000 troops deployed; Mexico at a crossroads on cartel power vs. state authority',
+        'Source': 'NYT / Modern Diplomacy',
+        'url': 'https://www.nytimes.com/2026/02/22/world/americas/jalisco-new-generation-cartel-leader-killed.html',
+        'Latitude': '20.6597',
+        'Longitude': '-103.3496',
+        'Broad_Category': 'Geopolitics & Conflict',
+        'isScraped': true,
+        '_scraperSource': 'pinned'
+    },
+    // K — M2: US-Mexico Sovereignty Clash
+    {
+        'Topic/Sector': 'Geopolitics / Conflict',
+        'Entity/Subject': 'US-Mexico Sovereignty Standoff: Sheinbaum Rejects Intervention, Counters Tariffs, Faces Musk',
+        'Key Player/Organization': 'USA (Trump/Musk), Mexico (Sheinbaum), USMCA',
+        'Timeline': 'LIVE - Feb 2026',
+        'Expected Impact/Value': 'Mexico firmly rejects US military intervention despite Trump threats; Sheinbaum imposes 50% retaliatory tariffs on 1,000+ US goods; considers legal action after Elon Musk criticism — textbook realist sovereignty vs. liberal interventionist tension under USMCA framework',
+        'Source': 'Al Jazeera / CRS Report',
+        'url': 'https://www.aljazeera.com/news/2026/2/24/mexicos-claudia-sheinbaum-considers-legal-action-after-elon-musk-criticism',
+        'Latitude': '19.4326',
+        'Longitude': '-99.1332',
+        'Broad_Category': 'Geopolitics & Conflict',
+        'isScraped': true,
+        '_scraperSource': 'pinned'
+    },
+    // L — S1: Duterte ICC Pre-Trial
+    {
+        'Topic/Sector': 'Human Rights / Governance',
+        'Entity/Subject': 'Philippines: Duterte Faces ICC Pre-Trial — "War on Drugs" Killings Prosecuted Internationally',
+        'Key Player/Organization': 'ICC, Rodrigo Duterte, Philippines, Human Rights Watch',
+        'Timeline': 'LIVE - Feb 2026',
+        'Expected Impact/Value': 'ICC pre-trial hearings opened Feb 23: prosecutors allege Duterte personally directed extrajudicial drug war killings (est. 6,000–30,000 deaths 2016–2022); landmark case for international criminal accountability in SE Asia — precedent for state-sanctioned violence trials',
+        'Source': 'The Star / Foreign Policy / ISEAS',
+        'url': 'https://foreignpolicy.com/2026/02/24/duterte-icc-court-hearing-war-drugs/',
+        'Latitude': '14.5995',
+        'Longitude': '120.9842',
+        'Broad_Category': 'Human Rights & Dignity',
+        'isScraped': true,
+        '_scraperSource': 'pinned'
+    },
+    // M — S2: ASEAN Treaty 50 Years Under Pressure
+    {
+        'Topic/Sector': 'Global Governance',
+        'Entity/Subject': 'ASEAN at 50: Treaty of Amity Under Strain as US Unilateralism and China Pressure Mount',
+        'Key Player/Organization': 'ASEAN, USA, China, RSIS Singapore',
+        'Timeline': 'LIVE - Feb 2026',
+        'Expected Impact/Value': 'ASEAN\'s foundational Treaty of Amity & Cooperation marks 50 years amid unprecedented pressure: US tariff unilateralism disrupts regional trade frameworks, China asserts SCS claims, and major-power rivalries test ASEAN\'s non-alignment doctrine — regional multilateralism at inflection point',
+        'Source': 'CNA / RSIS',
+        'url': 'https://www.channelnewsasia.com/asia/asean-treaty-amity-cooperation-southeast-asia-mark-50-years-5949361',
+        'Latitude': '13.7563',
+        'Longitude': '100.5018',
+        'Broad_Category': 'Global Governance',
+        'isScraped': true,
+        '_scraperSource': 'pinned'
+    },
+    // N — S4: Rohingya Militant Transnational Threat
+    {
+        'Topic/Sector': 'Human Rights / Security',
+        'Entity/Subject': 'Rohingya Crisis Metastasizes: Refugee Camps Breeding Transnational Militant Networks Across SE Asia',
+        'Key Player/Organization': 'Rohingya refugees, Bangladesh, Malaysia, Thailand, Indonesia, ARSA militants',
+        'Timeline': 'LIVE - Feb 2026',
+        'Expected Impact/Value': 'Bangladesh Rohingya refugee crisis (1M+ displaced) spawning transnational criminal-militant ecosystem: arms trafficking, people smuggling, radicalization networks spreading into Malaysia, Thailand, Indonesia — The Diplomat warns of regional security breakdown if unaddressed',
+        'Source': 'The Diplomat',
+        'url': 'https://thediplomat.com/2026/02/southeast-asia-and-the-rohingya-militant-threat/',
+        'Latitude': '21.9162',
+        'Longitude': '95.9560',
+        'Broad_Category': 'Human Rights & Dignity',
+        'isScraped': true,
+        '_scraperSource': 'pinned'
+    },
+    // O — S5: Myanmar Civil War Border Spillover
+    {
+        'Topic/Sector': 'Geopolitics / Conflict',
+        'Entity/Subject': 'Myanmar Civil War: Junta Losing Ground, Civilian Displacement Floods Thailand & Malaysia Borders',
+        'Key Player/Organization': 'Myanmar Military (SAC), PDFs, NUG, Thailand, Malaysia',
+        'Timeline': 'LIVE - Feb 2026',
+        'Expected Impact/Value': 'Ongoing junta vs. resistance People\'s Defence Forces conflict; military losing territory in Shan, Kayah & Rakhine states; massive civilian displacement spilling into Thailand and India; Malaysia arrested 7,043 undocumented migrants Jan–Feb 2026 alone — regional humanitarian and security crisis accelerating',
+        'Source': 'NST Malaysia / ISEAS',
+        'url': 'https://www.nst.com.my/newssummary/1382735',
+        'Latitude': '19.7633',
+        'Longitude': '96.0785',
+        'Broad_Category': 'Geopolitics & Conflict',
+        'isScraped': true,
+        '_scraperSource': 'pinned'
     }
 ];
 
