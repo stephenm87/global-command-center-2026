@@ -38,6 +38,8 @@ function App() {
     const [theoryLens, setTheoryLens] = useState(null); // null | 'realism' | 'liberalism' | 'constructivism'
     const [timelineYear, setTimelineYear] = useState('ALL');
     const [expandedCluster, setExpandedCluster] = useState(null); // { items, lat, lng } when a cluster is clicked
+    const [historicalData, setHistoricalData] = useState(null); // null = use live forecasts
+    const [historicalLoading, setHistoricalLoading] = useState(false);
     const globeEl = useRef();
     const globeContainer = useRef();
     const attributionRef = useRef();
@@ -189,6 +191,24 @@ function App() {
         });
     }, []);
 
+    // Load historical data when year is 2023 / 2024 / 2025
+    useEffect(() => {
+        const HISTORICAL_YEARS = ['2023', '2024', '2025'];
+        if (!HISTORICAL_YEARS.includes(timelineYear)) {
+            setHistoricalData(null);
+            return;
+        }
+        setHistoricalLoading(true);
+        fetch(`/historical_${timelineYear}.json`)
+            .then(r => r.ok ? r.json() : [])
+            .then(data => {
+                setHistoricalData(data.map(item => ({ ...item, isHistorical: true })));
+            })
+            .catch(() => setHistoricalData([]))
+            .finally(() => setHistoricalLoading(false));
+    }, [timelineYear]);
+
+
     // AI Summary: Gemini-powered geopolitical intelligence brief
     const handleAiSummary = async (content, title, url) => {
         setAiSummary(null);
@@ -233,17 +253,7 @@ function App() {
         }
     };
 
-    // Load Student Pins from LocalStorage
-    useEffect(() => {
-        const savedPins = localStorage.getItem('gcc_student_pins');
-        if (savedPins) {
-            try {
-                setStudentPins(JSON.parse(savedPins));
-            } catch (e) {
-                console.error('Failed to parse student pins', e);
-            }
-        }
-    }, []);
+    // (Student pins removed — setStudentPins was never declared)
 
 
 
@@ -300,12 +310,19 @@ function App() {
             return tl.includes(timelineYear);
         };
 
-        const filtered = (selectedCategory === 'All'
-            ? forecasts
-            : selectedCategory === 'Live Intel'
-                ? forecasts.filter(f => f.isLive)
-                : forecasts.filter(f => f.Broad_Category === selectedCategory)
-        ).filter(yearFilter);
+        // Use historical dataset for 2023/2024/2025; otherwise use live forecasts
+        const activeData = historicalData || forecasts;
+
+        const filtered = historicalData
+            ? (selectedCategory === 'All'
+                ? historicalData
+                : historicalData.filter(f => f.Broad_Category === selectedCategory))
+            : (selectedCategory === 'All'
+                ? forecasts
+                : selectedCategory === 'Live Intel'
+                    ? forecasts.filter(f => f.isLive)
+                    : forecasts.filter(f => f.Broad_Category === selectedCategory)
+            ).filter(yearFilter);
 
         setFilteredForecasts(filtered);
 
@@ -487,7 +504,7 @@ function App() {
 
     useEffect(() => {
         updateGlobeData();
-    }, [selectedCategory, forecasts, stressLevel, theoryLens, timelineYear]);
+    }, [selectedCategory, forecasts, stressLevel, theoryLens, timelineYear, historicalData]);
 
     // Filter logic moved to updateGlobeData
 
@@ -519,7 +536,7 @@ function App() {
 
     const tensionMeter = Math.min(100, (keyMetrics.conflictEvents && keyMetrics.totalEvents
         ? Math.round((keyMetrics.conflictEvents / keyMetrics.totalEvents) * 100)
-        : 0) + (stressLevel / 2));
+        : 0) + stressLevel);
 
 
 
@@ -573,18 +590,37 @@ function App() {
 
                         </div>
 
-                        {/* Feature 1: Arc Type Legend */}
-                        {stressLevel > 50 && (
-                            <div className="arc-legend">
-                                <div className="arc-legend-title">ARC KEY</div>
-                                {[['⚔️', 'MILITARY', '#ff2200'], ['💰', 'ECONOMIC', '#ff9900'], ['🗺️', 'TERRITORIAL', '#ffdd00'], ['🏥', 'HUMANITARIAN', '#00ff99'], ['🤝', 'DIPLOMATIC', '#cc44ff']].map(([icon, label, color]) => (
-                                    <div key={label} className="arc-legend-item">
-                                        <span className="arc-legend-dot" style={{ background: color, boxShadow: `0 0 6px ${color}` }} />
-                                        <span style={{ color }}>{icon} {label}</span>
-                                    </div>
-                                ))}
-                            </div>
-                        )}
+                        {/* Node Category Color Key — always visible */}
+                        <div className="arc-legend">
+                            <div className="arc-legend-title">NODE KEY</div>
+                            {[
+                                ['Geopolitics & Conflict', '#ff0066'],
+                                ['Economy & Trade', '#00ccff'],
+                                ['Technology & Science', '#00ff88'],
+                                ['Health & Society', '#ff9900'],
+                                ['Environment & Energy', '#66ff00'],
+                                ['Culture & Entertainment', '#ff00ff'],
+                                ['Live Intel', '#00ffff'],
+                            ].map(([label, color]) => (
+                                <div key={label} className="arc-legend-item">
+                                    <span className="arc-legend-dot" style={{ background: color, boxShadow: `0 0 6px ${color}` }} />
+                                    <span style={{ color }}>{label}</span>
+                                </div>
+                            ))}
+
+                            {/* Arc type sub-key — only when scenario simulator is elevated */}
+                            {stressLevel > 50 && (
+                                <>
+                                    <div className="arc-legend-title" style={{ marginTop: '12px' }}>ARC KEY</div>
+                                    {[['⚔️', 'Military', '#ff2200'], ['💰', 'Economic', '#ff9900'], ['🗺️', 'Territorial', '#ffdd00'], ['🏥', 'Humanitarian', '#00ff99'], ['🤝', 'Diplomatic', '#cc44ff']].map(([icon, label, color]) => (
+                                        <div key={label} className="arc-legend-item">
+                                            <span className="arc-legend-dot" style={{ background: color, boxShadow: `0 0 6px ${color}` }} />
+                                            <span style={{ color }}>{icon} {label}</span>
+                                        </div>
+                                    ))}
+                                </>
+                            )}
+                        </div>
                     </div>
 
 
@@ -658,8 +694,14 @@ function App() {
                             aria-label={sidebarCollapsed ? 'Expand sidebar' : 'Collapse sidebar'}
                         />
                         <div className="intel-header">
-                            <span className="intel-title">INTEL FEED</span>
-                            {intelLastUpdated && (
+                            <span className="intel-title">
+                                {historicalData ? `📅 ${timelineYear} ARCHIVE` : 'INTEL FEED'}
+                            </span>
+                            {historicalData ? (
+                                <span style={{ fontSize: '0.6rem', color: '#ffcc0099', display: 'block', marginTop: '2px' }}>
+                                    {historicalLoading ? '⟳ LOADING...' : `${historicalData.length} EVENTS • SOURCED`}
+                                </span>
+                            ) : intelLastUpdated && (
                                 <span style={{ fontSize: '0.6rem', color: '#00ff8880', display: 'block', marginTop: '2px' }}>
                                     ⟳ SCRAPED {intelLastUpdated.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' })}
                                 </span>
@@ -670,7 +712,7 @@ function App() {
                                 onChange={(e) => setSelectedCategory(e.target.value)}
                             >
                                 <option value="All">ALL SECTORS</option>
-                                <option value="Live Intel" style={{ color: '#00ffff', fontWeight: 'bold' }}>● LIVE INTEL FEED</option>
+                                {!historicalData && <option value="Live Intel" style={{ color: '#00ffff', fontWeight: 'bold' }}>● LIVE INTEL FEED</option>}
                                 {Object.keys(categoryColors).map(cat => (
                                     <option key={cat} value={cat}>{cat.toUpperCase()}</option>
                                 ))}
@@ -678,15 +720,20 @@ function App() {
                         </div>
 
                         <div className="intel-cards">
-                            {filteredForecasts.slice(0, 30).map((forecast, idx) => (
+                            {historicalLoading ? (
+                                <div style={{ color: '#ffcc00', fontFamily: 'Roboto Mono', fontSize: '0.7rem', padding: '20px', textAlign: 'center', opacity: 0.8 }}>
+                                    ⟳ Loading {timelineYear} historical data...
+                                </div>
+                            ) : filteredForecasts.slice(0, 30).map((forecast, idx) => (
                                 <div
                                     key={idx}
                                     className={`intel-card ${selectedForecast === forecast ? 'selected' : ''} ${forecast.isLive ? 'live-item' : ''}`}
                                     onClick={() => setSelectedForecast(forecast)}
-                                    style={{ borderLeftColor: forecast.isLive ? '#00ffff' : categoryColors[forecast.Broad_Category] }}
+                                    style={{ borderLeftColor: forecast.isHistorical ? '#ffcc00' : forecast.isLive ? '#00ffff' : categoryColors[forecast.Broad_Category] }}
                                 >
                                     {forecast.isLive && <div className="live-tag">● LIVE INTEL</div>}
-                                    <div className="card-category" style={{ color: forecast.isLive ? '#00ffff' : categoryColors[forecast.Broad_Category] }}>
+                                    {forecast.isHistorical && <div className="live-tag" style={{ background: '#ffcc0022', color: '#ffcc00', borderColor: '#ffcc0044' }}>📅 {timelineYear}</div>}
+                                    <div className="card-category" style={{ color: forecast.isHistorical ? '#ffcc00' : forecast.isLive ? '#00ffff' : categoryColors[forecast.Broad_Category] }}>
                                         {forecast.Broad_Category}
                                     </div>
                                     <div className="card-title">{forecast['Topic/Sector']}</div>

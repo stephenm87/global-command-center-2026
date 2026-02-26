@@ -192,12 +192,13 @@
     justify-content: center;
 }
 
-/* Ensure globe canvas is centred and fills the container */
+/* Ensure globe canvas fills container and stays centred */
 .globe-container canvas {
-    display: block;
-    max-width: 100%;
-    max-height: 100%;
-    transform: translate(-80px, -50px);
+    display: block !important;
+    width: 100% !important;
+    height: 100% !important;
+    position: static !important;
+    transform: none !important;
 }
 
 .globe-overlay {
@@ -667,8 +668,10 @@
 .critical-connections-panel {
     position: fixed;
     bottom: 90px;
-    right: 20px;
+    left: 20px;
     width: 340px;
+    max-height: calc(100vh - 180px);
+    overflow-y: auto;
     z-index: 500;
     background: rgba(8, 4, 4, 0.93);
     border: 1px solid rgba(255, 60, 0, 0.7);
@@ -676,7 +679,6 @@
     box-shadow: 0 0 24px rgba(255, 40, 0, 0.35), 0 4px 20px rgba(0, 0, 0, 0.6);
     -webkit-backdrop-filter: blur(8px);
     backdrop-filter: blur(8px);
-    overflow: hidden;
     animation: panelSlideUp 0.35s cubic-bezier(0.22, 1, 0.36, 1);
     transition: box-shadow 0.3s;
 }
@@ -2361,8 +2363,8 @@
 ══════════════════════════════════════════════════════════════ */
 .arc-legend {
     position: absolute;
-    bottom: 18px;
-    left: 14px;
+    bottom: 12px;
+    right: 10px;
     background: rgba(4, 2, 8, 0.88);
     border: 1px solid rgba(255, 255, 255, 0.1);
     border-radius: 6px;
@@ -2375,25 +2377,27 @@
 
 .arc-legend-title {
     font-family: 'Orbitron', sans-serif;
-    font-size: 0.42rem;
+    font-size: 0.55rem;
     letter-spacing: 2px;
-    color: rgba(255, 255, 255, 0.35);
+    color: rgba(255, 255, 255, 0.4);
     margin-bottom: 5px;
+    text-transform: uppercase;
 }
 
 .arc-legend-item {
     display: flex;
     align-items: center;
-    gap: 6px;
+    gap: 7px;
     font-family: 'Roboto Mono', monospace;
-    font-size: 0.52rem;
+    font-size: 0.68rem;
     margin-bottom: 3px;
-    letter-spacing: 0.5px;
+    letter-spacing: 0.3px;
+    white-space: nowrap;
 }
 
 .arc-legend-dot {
-    width: 7px;
-    height: 7px;
+    width: 9px;
+    height: 9px;
     border-radius: 50%;
     flex-shrink: 0;
 }
