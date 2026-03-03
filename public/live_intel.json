@@ -1,6 +1,66 @@
 [
     {
         "Topic/Sector": "Geopolitics / Conflict",
+        "Entity/Subject": "Operation Epic Fury — US & Israel Strike Iran",
+        "Key Player/Organization": "U.S., Israel, IDF, Iran, IRGC",
+        "Timeline": "LIVE - Mar 2026",
+        "Expected Impact/Value": "US and Israel launch Operation Epic Fury on Feb 28, targeting Iran's nuclear and military infrastructure. Supreme Leader Khamenei killed. Six US service members killed. Trump signals an extended campaign lasting weeks.",
+        "Source": "CFR",
+        "url": "https://www.cfr.org/articles/gauging-the-impact-of-massive-u-s-israeli-strikes-on-iran",
+        "Latitude": "35.6892",
+        "Longitude": "51.3890",
+        "Broad_Category": "Geopolitics & Conflict"
+    },
+    {
+        "Topic/Sector": "Geopolitics / Analysis",
+        "Entity/Subject": "What Comes Next After Operation Epic Fury?",
+        "Key Player/Organization": "Atlantic Council, US, Israel, Iran",
+        "Timeline": "LIVE - Mar 2026",
+        "Expected Impact/Value": "Multi-expert analysis: the assault has decapitated Iran's regime but risks cascading instability across the Middle East. Key questions include: succession in Tehran, proxy network coherence, and US exit strategy.",
+        "Source": "Atlantic Council",
+        "url": "https://www.atlanticcouncil.org/dispatches/experts-react-the-us-and-israel-just-unleashed-a-major-attack-on-iran-whats-next/",
+        "Latitude": "32.0853",
+        "Longitude": "34.7818",
+        "Broad_Category": "Geopolitics & Conflict"
+    },
+    {
+        "Topic/Sector": "Geopolitics / Diplomacy",
+        "Entity/Subject": "China Playing the Long Game on Iran",
+        "Key Player/Organization": "China, Russia, Iran, UN Security Council",
+        "Timeline": "LIVE - Mar 2026",
+        "Expected Impact/Value": "Russia and China condemn strikes but offer Iran no material support, exposing the limits of their 'axis.' Beijing positions for post-war reconstruction influence while Moscow's regional leverage is further eroded.",
+        "Source": "Chatham House",
+        "url": "https://www.chathamhouse.org/2026/02/china-playing-long-game-over-iran",
+        "Latitude": "39.9042",
+        "Longitude": "116.4074",
+        "Broad_Category": "Geopolitics & Conflict"
+    },
+    {
+        "Topic/Sector": "Geopolitics / Conflict",
+        "Entity/Subject": "Iran's Proxies Acting Independently — Hezbollah, Houthis, Iraq Militias",
+        "Key Player/Organization": "Hezbollah, Houthis, Iran-backed Iraqi militias",
+        "Timeline": "LIVE - Mar 2026",
+        "Expected Impact/Value": "Hezbollah fires rockets into Israel; Iraq militias target US troops; Houthis strike Israeli targets. Foreign Policy reports proxies are each calculating their own survival — not acting as a unified 'axis of resistance.'",
+        "Source": "Foreign Policy",
+        "url": "https://foreignpolicy.com/2026/03/02/iran-war-hezbollah-lebabon-houthis-yemen-iraq-proxies/",
+        "Latitude": "33.8938",
+        "Longitude": "35.5018",
+        "Broad_Category": "Geopolitics & Conflict"
+    },
+    {
+        "Topic/Sector": "Economy / Energy",
+        "Entity/Subject": "Strait of Hormuz — Global Economic Chokepoint",
+        "Key Player/Organization": "Iran, OPEC, Gulf States, Global Shipping",
+        "Timeline": "LIVE - Mar 2026",
+        "Expected Impact/Value": "Iran threatens Strait of Hormuz closure — 20% of global seaborne crude and LNG at risk. Insurance withdrawal has caused de facto closure. Analysts warn of $100+ oil and a 'guaranteed global recession' if disruption is sustained.",
+        "Source": "The Conversation",
+        "url": "https://theconversation.com/strait-of-hormuz-if-the-iran-conflict-shuts-worlds-most-important-oil-chokepoint-global-economic-chaos-could-follow-277199",
+        "Latitude": "26.5833",
+        "Longitude": "56.2500",
+        "Broad_Category": "Economy & Trade"
+    },
+    {
+        "Topic/Sector": "Geopolitics / Conflict",
         "Entity/Subject": "U.S.-Iran Escalation",
         "Key Player/Organization": "EU, IRGC, Iran",
         "Timeline": "LIVE - Feb 2026",
