@@ -35,11 +35,17 @@ function App() {
     const [deepScanLoading, setDeepScanLoading] = useState(false);
     const [aiSummary, setAiSummary] = useState(null);
     const [aiSummaryLoading, setAiSummaryLoading] = useState(false);
-    const [theoryLens, setTheoryLens] = useState(null); // null | 'realism' | 'liberalism' | 'constructivism'
+    const [theoryLens, setTheoryLens] = useState(null);
     const [timelineYear, setTimelineYear] = useState('ALL');
-    const [expandedCluster, setExpandedCluster] = useState(null); // { items, lat, lng } when a cluster is clicked
-    const [historicalData, setHistoricalData] = useState(null); // null = use live forecasts
+    const [expandedCluster, setExpandedCluster] = useState(null);
+    const [historicalData, setHistoricalData] = useState(null);
     const [historicalLoading, setHistoricalLoading] = useState(false);
+    // News scan state
+    const [newsNodes, setNewsNodes] = useState([]);
+    const [newsScanLoading, setNewsScanLoading] = useState(false);
+    const [newsScanError, setNewsScanError] = useState(null);
+    const [newsQuery, setNewsQuery] = useState('');
+    const [globeNewsOnly, setGlobeNewsOnly] = useState(false); // 🎯 news-only globe filter
     const globeEl = useRef();
     const globeContainer = useRef();
     const attributionRef = useRef();
@@ -255,6 +261,125 @@ function App() {
 
     // (Student pins removed — setStudentPins was never declared)
 
+    // ── Live News Scan: tries Netlify fn first, falls back to direct Serper call ──
+    const fetchLiveNews = async (queryOverride) => {
+        setNewsScanLoading(true);
+        setNewsScanError(null);
+
+        const query = queryOverride || newsQuery || 'geopolitical crisis conflict war sanctions sovereignty 2026';
+
+        // Country → coords map for frontend fallback
+        const COORDS = {
+            'united states': [38.9, -77.0], 'usa': [38.9, -77.0], 'russia': [55.7, 37.6],
+            'ukraine': [50.4, 30.5], 'china': [39.9, 116.4], 'israel': [31.8, 35.2],
+            'iran': [35.7, 51.4], 'north korea': [39.0, 125.7], 'taiwan': [25.0, 121.5],
+            'india': [28.6, 77.2], 'pakistan': [33.7, 73.1], 'saudi arabia': [24.7, 46.7],
+            'turkey': [39.9, 32.9], 'europe': [50.0, 10.0], 'germany': [52.5, 13.4],
+            'france': [48.9, 2.3], 'uk': [51.5, -0.1], 'united kingdom': [51.5, -0.1],
+            'brazil': [-15.8, -47.9], 'africa': [0, 25], 'egypt': [30.0, 31.2],
+            'syria': [33.5, 36.3], 'iraq': [33.3, 44.4], 'afghanistan': [34.5, 69.2],
+            'japan': [35.7, 139.7], 'south korea': [37.6, 127.0], 'venezuela': [10.5, -66.9],
+            'gaza': [31.5, 34.5], 'lebanon': [33.9, 35.5], 'yemen': [15.4, 44.2],
+            'myanmar': [19.7, 96.1], 'philippines': [14.6, 121.0], 'thailand': [13.7, 100.5],
+        };
+        const inferCoords = (text) => {
+            const t = text.toLowerCase();
+            for (const [name, coords] of Object.entries(COORDS)) {
+                if (t.includes(name)) return { lat: coords[0] + (Math.random() - 0.5) * 2, lng: coords[1] + (Math.random() - 0.5) * 2 };
+            }
+            return null;
+        };
+        const inferCategory = (text) => {
+            const t = text.toLowerCase();
+            if (/war|military|nuclear|coup|missile|conflict|troops/.test(t)) return 'Geopolitics & Conflict';
+            if (/sanction|tariff|trade|inflation|gdp|currency/.test(t)) return 'Economy & Trade';
+            if (/climate|energy|oil|solar|emissions/.test(t)) return 'Environment & Energy';
+            if (/pandemic|health|disease|refugee/.test(t)) return 'Health & Society';
+            if (/tech|ai|cyber|space/.test(t)) return 'Technology & Science';
+            return 'Geopolitics & Conflict';
+        };
+
+        try {
+            // 1. Try Netlify function first
+            const fnRes = await fetch('/.netlify/functions/fetch-news', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ query })
+            });
+
+            if (fnRes.ok) {
+                const data = await fnRes.json();
+                if (data.error) throw new Error(data.error);
+                const mapped = (data.nodes || []).map(n => ({ ...n, isLive: true, isNews: true }));
+                setNewsNodes(mapped);
+                setForecasts(prev => [...prev.filter(f => !f.isNews), ...mapped]);
+                setNewsScanLoading(false); // ← must reset before early return
+                return;
+            }
+        } catch { /* fall through to direct call */ }
+
+        // 2. Fallback: call Serper directly from frontend
+        try {
+            const serperKey = import.meta.env.VITE_SERPER_API_KEY;
+            if (!serperKey) throw new Error('No API key available');
+
+            const serperRes = await fetch('https://google.serper.dev/news', {
+                method: 'POST',
+                headers: { 'X-API-KEY': serperKey, 'Content-Type': 'application/json' },
+                body: JSON.stringify({ q: query, num: 10, tbs: 'qdr:d' })
+            });
+
+            if (!serperRes.ok) throw new Error(`Serper error: ${serperRes.status}`);
+            const serperData = await serperRes.json();
+            const articles = serperData.news || [];
+
+            const mapped = articles
+                .map(a => {
+                    const text = `${a.title} ${a.snippet || ''}`;
+                    const coords = inferCoords(text);
+                    if (!coords) return null;
+                    return {
+                        'Topic/Sector': a.title?.substring(0, 80) || 'News Alert',
+                        'Entity/Subject': a.title || 'Breaking News',
+                        'Broad_Category': inferCategory(text),
+                        'Expected Impact/Value': a.snippet || '',
+                        'Key Player/Organization': a.source || 'News Source',
+                        'Timeline': 'Live – ' + (a.date || 'Today'),
+                        Latitude: coords.lat, Longitude: coords.lng,
+                        url: a.link, isLive: true, isNews: true, source: a.source || 'News'
+                    };
+                })
+                .filter(Boolean);
+
+            setNewsNodes(mapped);
+            setForecasts(prev => [...prev.filter(f => !f.isNews), ...mapped]);
+
+        } catch (err) {
+            setNewsScanError(err.message);
+        } finally {
+            setNewsScanLoading(false);
+        }
+    };
+
+    // ── Clear news nodes & reset globe to base dataset ───────────────────────
+    const clearNewsNodes = () => {
+        setNewsNodes([]);
+        setNewsScanError(null);
+        setNewsQuery('');
+        setGlobeNewsOnly(false);
+        setForecasts(prev => prev.filter(f => !f.isNews));
+        setSelectedCategory('All');
+    };
+
+    // ── Export briefing scoped to current news scan results ──────────────────
+    const exportNewsReport = () => {
+        if (!newsNodes.length) return;
+        const date = new Date().toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric' });
+        const html = `<!DOCTYPE html><html><head><title>Live News Intel Briefing</title><style>body{font-family:monospace;background:#000;color:#0ff;padding:30px;max-width:800px;margin:0 auto}h1{color:#0ff;border-bottom:2px solid #0ff;padding-bottom:10px;font-size:1.1rem;letter-spacing:3px}.node{border:1px solid #333;padding:12px;margin:10px 0;border-radius:4px}.cat{color:#ff9900;font-size:0.7rem;letter-spacing:2px;margin-bottom:4px}.sub{color:#fff;font-size:0.85rem;margin-bottom:6px}.detail{color:#888;font-size:0.75rem;line-height:1.5}.src a{color:#00ff88;font-size:0.65rem}footer{color:#444;font-size:0.6rem;margin-top:30px;border-top:1px solid #222;padding-top:10px}@media print{body{background:#fff;color:#000}.cat{color:#c70}.src a{color:green}h1{color:#000;border-color:#000}}</style></head><body><h1>📡 LIVE NEWS INTEL BRIEFING — ${date}</h1>${newsNodes.map((n, i) => `<div class="node"><div class="cat">${String(i + 1).padStart(2, '0')} · ${n.Broad_Category || n['Topic/Sector'] || 'GLOBAL'}</div><div class="sub">${n['Entity/Subject'] || ''}</div><div class="detail"><strong>Players:</strong> ${n['Key Player/Organization'] || '—'}<br/><strong>Impact:</strong> ${n['Expected Impact/Value'] || '—'}<br/><strong>Timeline:</strong> ${n.Timeline || '—'}</div>${n.url ? `<div class="src"><a href="${n.url}" target="_blank">SOURCE ↗</a></div>` : ''}</div>`).join('')}<footer>Generated by Global Command Center · ${date} · Live News Scan</footer></body></html>`;
+        const w = window.open('', '_blank');
+        w.document.write(html); w.document.close();
+        setTimeout(() => w.print(), 400);
+    };
 
 
     // ── Theory lens keyword maps ──────────────────────────────────────────────
@@ -313,16 +438,19 @@ function App() {
         // Use historical dataset for 2023/2024/2025; otherwise use live forecasts
         const activeData = historicalData || forecasts;
 
-        const filtered = historicalData
-            ? (selectedCategory === 'All'
-                ? historicalData
-                : historicalData.filter(f => f.Broad_Category === selectedCategory))
-            : (selectedCategory === 'All'
-                ? forecasts
-                : selectedCategory === 'Live Intel'
-                    ? forecasts.filter(f => f.isLive)
-                    : forecasts.filter(f => f.Broad_Category === selectedCategory)
-            ).filter(yearFilter);
+        // 🎯 News-only filter takes precedence when FILTER GLOBE is active
+        const filtered = globeNewsOnly
+            ? forecasts.filter(f => f.isNews)
+            : historicalData
+                ? (selectedCategory === 'All'
+                    ? historicalData
+                    : historicalData.filter(f => f.Broad_Category === selectedCategory))
+                : (selectedCategory === 'All'
+                    ? forecasts
+                    : selectedCategory === 'Live Intel'
+                        ? forecasts.filter(f => f.isLive)
+                        : forecasts.filter(f => f.Broad_Category === selectedCategory)
+                ).filter(yearFilter);
 
         setFilteredForecasts(filtered);
 
@@ -504,7 +632,7 @@ function App() {
 
     useEffect(() => {
         updateGlobeData();
-    }, [selectedCategory, forecasts, stressLevel, theoryLens, timelineYear, historicalData]);
+    }, [selectedCategory, forecasts, stressLevel, theoryLens, timelineYear, historicalData, globeNewsOnly]);
 
     // Filter logic moved to updateGlobeData
 
@@ -550,7 +678,6 @@ function App() {
                         <span className="logo-text">GLOBAL COMMAND CENTER</span>
                     </div>
                     <div className="date-time">
-                        <span className="date">2026 FORECASTS</span>
                         <a
                             href="https://glopocompanion.netlify.app/"
                             target="_blank"
@@ -576,6 +703,102 @@ function App() {
                         }} title="Export Intelligence Briefing">
                             📄 EXPORT BRIEFING
                         </button>
+
+                        {/* 📡 Live News Scan */}
+                        <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-end', gap: '6px', marginLeft: '4px' }}>
+                            {/* Search row */}
+                            <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
+                                <input
+                                    value={newsQuery}
+                                    onChange={e => setNewsQuery(e.target.value)}
+                                    onKeyDown={e => e.key === 'Enter' && fetchLiveNews()}
+                                    placeholder="news topic..."
+                                    style={{ background: 'rgba(0,255,200,0.05)', border: '1px solid rgba(0,255,200,0.2)', borderRadius: '6px', padding: '4px 10px', color: '#00ffcc', fontFamily: 'Roboto Mono', fontSize: '0.65rem', width: '130px', outline: 'none' }}
+                                />
+                                <button
+                                    className="export-btn"
+                                    onClick={() => fetchLiveNews()}
+                                    disabled={newsScanLoading}
+                                    style={{ background: newsScanLoading ? 'rgba(0,255,200,0.05)' : 'rgba(0,255,200,0.1)', borderColor: 'rgba(0,255,200,0.3)', color: '#00ffcc' }}
+                                    title="Fetch live geopolitical news and place on globe"
+                                >
+                                    {newsScanLoading ? '⟳ SCANNING...' : '📡 NEWS SCAN'}
+                                </button>
+                                {newsScanError && (
+                                    <span style={{ color: '#ff4444', fontSize: '0.6rem', fontFamily: 'Roboto Mono' }} title={newsScanError}>
+                                        ⚠ scan error
+                                    </span>
+                                )}
+                            </div>
+
+                            {/* ✅ SCAN COMPLETE action panel */}
+                            {newsNodes.length > 0 && !newsScanLoading && (() => {
+                                const conflictCount = newsNodes.filter(n => n.Broad_Category === 'Geopolitics & Conflict').length;
+                                const econCount = newsNodes.filter(n => n.Broad_Category === 'Economy & Trade').length;
+                                const otherCount = newsNodes.length - conflictCount - econCount;
+                                return (
+                                    <div style={{
+                                        background: 'rgba(0,255,200,0.05)',
+                                        border: '1px solid rgba(0,255,200,0.3)',
+                                        borderRadius: '8px',
+                                        padding: '8px 12px',
+                                        fontFamily: 'Roboto Mono',
+                                        minWidth: '320px',
+                                        boxShadow: '0 0 14px rgba(0,255,200,0.12)'
+                                    }}>
+                                        {/* Header */}
+                                        <div style={{ color: '#00ffcc', fontSize: '0.62rem', fontWeight: 900, letterSpacing: '1.5px', marginBottom: '5px' }}>
+                                            ✅ SCAN COMPLETE — +{newsNodes.length} NODES PLOTTED
+                                        </div>
+                                        {/* Category mini-stats */}
+                                        <div style={{ display: 'flex', gap: '10px', marginBottom: '8px', fontSize: '0.55rem', color: '#888', letterSpacing: '0.5px' }}>
+                                            <span style={{ color: '#ff0066' }}>⚔️ {conflictCount} Conflict</span>
+                                            <span style={{ color: '#00ccff' }}>💰 {econCount} Economy</span>
+                                            <span style={{ color: '#aaa' }}>🌍 {otherCount} Other</span>
+                                        </div>
+                                        {/* Action buttons */}
+                                        <div style={{ display: 'flex', gap: '5px', flexWrap: 'wrap' }}>
+                                            <button
+                                                onClick={() => { setSelectedCategory('Live Intel'); }}
+                                                style={{ background: 'rgba(0,255,200,0.08)', border: '1px solid rgba(0,255,200,0.35)', borderRadius: '5px', color: '#00ffcc', fontFamily: 'Roboto Mono', fontSize: '0.58rem', padding: '4px 8px', cursor: 'pointer', letterSpacing: '0.5px', transition: 'all 0.15s' }}
+                                                onMouseEnter={e => e.currentTarget.style.background = 'rgba(0,255,200,0.18)'}
+                                                onMouseLeave={e => e.currentTarget.style.background = 'rgba(0,255,200,0.08)'}
+                                                title="Filter Intel Feed to show only news nodes"
+                                            >
+                                                📋 VIEW IN FEED
+                                            </button>
+                                            <button
+                                                onClick={() => setGlobeNewsOnly(prev => !prev)}
+                                                style={{ background: globeNewsOnly ? 'rgba(0,200,255,0.25)' : 'rgba(0,200,255,0.08)', border: `1px solid ${globeNewsOnly ? 'rgba(0,200,255,0.7)' : 'rgba(0,200,255,0.35)'}`, borderRadius: '5px', color: '#00ccff', fontFamily: 'Roboto Mono', fontSize: '0.58rem', padding: '4px 8px', cursor: 'pointer', letterSpacing: '0.5px', transition: 'all 0.15s' }}
+                                                onMouseEnter={e => e.currentTarget.style.background = 'rgba(0,200,255,0.25)'}
+                                                onMouseLeave={e => e.currentTarget.style.background = globeNewsOnly ? 'rgba(0,200,255,0.25)' : 'rgba(0,200,255,0.08)'}
+                                                title={globeNewsOnly ? 'Showing news nodes only — click to restore all' : 'Filter globe to show only scanned news nodes'}
+                                            >
+                                                {globeNewsOnly ? '🎯 NEWS ONLY ✓' : '🎯 FILTER GLOBE'}
+                                            </button>
+                                            <button
+                                                onClick={exportNewsReport}
+                                                style={{ background: 'rgba(255,153,0,0.08)', border: '1px solid rgba(255,153,0,0.35)', borderRadius: '5px', color: '#ff9900', fontFamily: 'Roboto Mono', fontSize: '0.58rem', padding: '4px 8px', cursor: 'pointer', letterSpacing: '0.5px', transition: 'all 0.15s' }}
+                                                onMouseEnter={e => e.currentTarget.style.background = 'rgba(255,153,0,0.18)'}
+                                                onMouseLeave={e => e.currentTarget.style.background = 'rgba(255,153,0,0.08)'}
+                                                title="Export a printable briefing of the scanned news nodes"
+                                            >
+                                                📄 EXPORT BRIEFING
+                                            </button>
+                                            <button
+                                                onClick={clearNewsNodes}
+                                                style={{ background: 'rgba(255,50,50,0.08)', border: '1px solid rgba(255,50,50,0.3)', borderRadius: '5px', color: '#ff4444', fontFamily: 'Roboto Mono', fontSize: '0.58rem', padding: '4px 8px', cursor: 'pointer', letterSpacing: '0.5px', transition: 'all 0.15s' }}
+                                                onMouseEnter={e => e.currentTarget.style.background = 'rgba(255,50,50,0.18)'}
+                                                onMouseLeave={e => e.currentTarget.style.background = 'rgba(255,50,50,0.08)'}
+                                                title="Clear news scan and reset globe"
+                                            >
+                                                🗑️ CLEAR SCAN
+                                            </button>
+                                        </div>
+                                    </div>
+                                );
+                            })()}
+                        </div>
                     </div>
                 </div>
 
