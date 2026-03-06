@@ -713,8 +713,8 @@ function App() {
                             📄 EXPORT BRIEFING
                         </button>
 
-                        {/* 📡 Live News Scan */}
-                        <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-end', gap: '4px', marginLeft: '4px', flexShrink: 0 }}>
+                        {/* 📡 Live News Scan — fixed-width controls only, scan results float below */}
+                        <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-end', gap: '4px', marginLeft: '4px', flexShrink: 0, position: 'relative' }}>
                             {/* Search row */}
                             <div style={{ display: 'flex', alignItems: 'center', gap: '6px', flexWrap: 'nowrap' }}>
                                 <input
@@ -740,20 +740,25 @@ function App() {
                                 </div>
                             )}
 
-                            {/* ✅ SCAN COMPLETE action panel */}
+                            {/* ✅ SCAN COMPLETE action panel — floats below header, doesn't affect layout */}
                             {newsNodes.length > 0 && !newsScanLoading && (() => {
                                 const conflictCount = newsNodes.filter(n => n.Broad_Category === 'Geopolitics & Conflict').length;
                                 const econCount = newsNodes.filter(n => n.Broad_Category === 'Economy & Trade').length;
                                 const otherCount = newsNodes.length - conflictCount - econCount;
                                 return (
                                     <div style={{
-                                        background: 'rgba(0,255,200,0.05)',
+                                        position: 'absolute',
+                                        top: '100%',
+                                        right: 0,
+                                        marginTop: '6px',
+                                        background: 'rgba(8,14,26,0.97)',
                                         border: '1px solid rgba(0,255,200,0.3)',
                                         borderRadius: '8px',
-                                        padding: '8px 12px',
+                                        padding: '10px 14px',
                                         fontFamily: 'Roboto Mono',
-                                        minWidth: '320px',
-                                        boxShadow: '0 0 14px rgba(0,255,200,0.12)'
+                                        minWidth: '340px',
+                                        boxShadow: '0 8px 24px rgba(0,0,0,0.6), 0 0 14px rgba(0,255,200,0.12)',
+                                        zIndex: 200,
                                     }}>
                                         {/* Header */}
                                         <div style={{ color: '#00ffcc', fontSize: '0.62rem', fontWeight: 900, letterSpacing: '1.5px', marginBottom: '5px' }}>
