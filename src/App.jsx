@@ -299,6 +299,7 @@ function App() {
             return 'Geopolitics & Conflict';
         };
 
+        let path1Error = null;
         try {
             // 1. Try Netlify function first
             const fnRes = await fetch('/.netlify/functions/fetch-news', {
@@ -315,8 +316,11 @@ function App() {
                 setForecasts(prev => [...prev.filter(f => !f.isNews), ...mapped]);
                 setNewsScanLoading(false); // ← must reset before early return
                 return;
+            } else {
+                const errText = await fnRes.text().catch(() => '');
+                path1Error = `Netlify fn error ${fnRes.status}: ${errText.substring(0, 80)}`;
             }
-        } catch { /* fall through to direct call */ }
+        } catch (e) { path1Error = e.message; /* fall through to direct call */ }
 
         // 2. Fallback: call Serper directly from frontend
         try {
@@ -355,7 +359,10 @@ function App() {
             setForecasts(prev => [...prev.filter(f => !f.isNews), ...mapped]);
 
         } catch (err) {
-            setNewsScanError(err.message);
+            const msg = path1Error
+                ? `Scan failed. Server: ${path1Error}`
+                : err.message;
+            setNewsScanError(msg);
         } finally {
             setNewsScanLoading(false);
         }
@@ -725,9 +732,9 @@ function App() {
                                     {newsScanLoading ? '⟳ SCANNING...' : '📡 NEWS SCAN'}
                                 </button>
                                 {newsScanError && (
-                                    <span style={{ color: '#ff4444', fontSize: '0.6rem', fontFamily: 'Roboto Mono' }} title={newsScanError}>
-                                        ⚠ scan error
-                                    </span>
+                                    <div style={{ background: 'rgba(255,50,50,0.15)', border: '1px solid rgba(255,50,50,0.4)', borderRadius: '6px', padding: '4px 10px', color: '#ff6666', fontSize: '0.6rem', fontFamily: 'Roboto Mono', maxWidth: '280px', lineHeight: 1.4 }}>
+                                        ⚠ {newsScanError}
+                                    </div>
                                 )}
                             </div>
 
