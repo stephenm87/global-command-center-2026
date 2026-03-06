@@ -712,15 +712,15 @@ function App() {
                         </button>
 
                         {/* 📡 Live News Scan */}
-                        <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-end', gap: '6px', marginLeft: '4px' }}>
+                        <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-end', gap: '4px', marginLeft: '4px', flexShrink: 0 }}>
                             {/* Search row */}
-                            <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
+                            <div style={{ display: 'flex', alignItems: 'center', gap: '6px', flexWrap: 'nowrap' }}>
                                 <input
                                     value={newsQuery}
                                     onChange={e => setNewsQuery(e.target.value)}
                                     onKeyDown={e => e.key === 'Enter' && fetchLiveNews()}
-                                    placeholder="news topic..."
-                                    style={{ background: 'rgba(0,255,200,0.05)', border: '1px solid rgba(0,255,200,0.2)', borderRadius: '6px', padding: '4px 10px', color: '#00ffcc', fontFamily: 'Roboto Mono', fontSize: '0.65rem', width: '130px', outline: 'none' }}
+                                    placeholder="topic..."
+                                    style={{ background: 'rgba(0,255,200,0.05)', border: '1px solid rgba(0,255,200,0.2)', borderRadius: '6px', padding: '4px 8px', color: '#00ffcc', fontFamily: 'Roboto Mono', fontSize: '0.65rem', width: '110px', minWidth: '80px', maxWidth: '140px', outline: 'none', flexShrink: 0 }}
                                 />
                                 <button
                                     className="export-btn"
@@ -731,12 +731,12 @@ function App() {
                                 >
                                     {newsScanLoading ? '⟳ SCANNING...' : '📡 NEWS SCAN'}
                                 </button>
-                                {newsScanError && (
-                                    <div style={{ background: 'rgba(255,50,50,0.15)', border: '1px solid rgba(255,50,50,0.4)', borderRadius: '6px', padding: '4px 10px', color: '#ff6666', fontSize: '0.6rem', fontFamily: 'Roboto Mono', maxWidth: '280px', lineHeight: 1.4 }}>
-                                        ⚠ {newsScanError}
-                                    </div>
-                                )}
                             </div>
+                            {newsScanError && (
+                                <div style={{ background: 'rgba(255,50,50,0.15)', border: '1px solid rgba(255,50,50,0.4)', borderRadius: '6px', padding: '3px 8px', color: '#ff6666', fontSize: '0.55rem', fontFamily: 'Roboto Mono', maxWidth: '260px', lineHeight: 1.4, textAlign: 'right' }}>
+                                    ⚠ {newsScanError}
+                                </div>
+                            )}
 
                             {/* ✅ SCAN COMPLETE action panel */}
                             {newsNodes.length > 0 && !newsScanLoading && (() => {
