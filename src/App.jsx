@@ -108,8 +108,10 @@ function App() {
     // Keyboard shortcuts
     useEffect(() => {
         const handleKeyPress = (e) => {
-            // Space: Toggle sidebar (only if modal is not open)
-            if (e.code === 'Space' && !selectedForecast) {
+            // Space: Toggle sidebar (only if modal is not open AND not typing in an input)
+            const tag = document.activeElement?.tagName?.toLowerCase();
+            const isTyping = tag === 'input' || tag === 'textarea' || tag === 'select' || document.activeElement?.isContentEditable;
+            if (e.code === 'Space' && !selectedForecast && !isTyping) {
                 e.preventDefault();
                 setSidebarCollapsed(prev => !prev);
             }
