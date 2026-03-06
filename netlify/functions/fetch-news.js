@@ -10,14 +10,26 @@ const CATEGORY_MAP = {
     'conflict': 'Geopolitics & Conflict',
     'troops': 'Geopolitics & Conflict',
     'nuclear': 'Geopolitics & Conflict',
+    'missile': 'Geopolitics & Conflict',
+    'strike': 'Geopolitics & Conflict',
     'sanction': 'Economy & Trade',
     'trade': 'Economy & Trade',
     'tariff': 'Economy & Trade',
     'inflation': 'Economy & Trade',
     'gdp': 'Economy & Trade',
+    'gold': 'Economy & Trade',
+    'mineral': 'Economy & Trade',
+    'rare earth': 'Economy & Trade',
+    'lithium': 'Economy & Trade',
+    'copper': 'Economy & Trade',
+    'cobalt': 'Economy & Trade',
+    'resource': 'Economy & Trade',
+    'supply chain': 'Economy & Trade',
     'climate': 'Environment & Energy',
     'energy': 'Environment & Energy',
     'oil': 'Environment & Energy',
+    'gas': 'Environment & Energy',
+    'emission': 'Environment & Energy',
     'pandemic': 'Health & Society',
     'health': 'Health & Society',
     'human rights': 'Health & Society',
@@ -25,6 +37,8 @@ const CATEGORY_MAP = {
     'tech': 'Technology & Science',
     'ai': 'Technology & Science',
     'cyber': 'Technology & Science',
+    'semiconductor': 'Technology & Science',
+    'chip': 'Technology & Science',
 };
 
 function inferCategory(title, snippet) {
@@ -54,7 +68,25 @@ const COUNTRY_COORDS = {
     'yemen': [15.4, 44.2], 'libya': [32.9, 13.2], 'mali': [12.7, -8.0],
 };
 
-function extractCoords(entities) {
+// Fast text-based coordinate inference — no API call needed
+// This is the PRIMARY coord resolver so every article gets a chance
+function inferCoordsFromText(text) {
+    const lower = text.toLowerCase();
+    // Sort by key length descending so "saudi arabia" matches before "arabia"
+    const sorted = Object.entries(COUNTRY_COORDS).sort((a, b) => b[0].length - a[0].length);
+    for (const [country, coords] of sorted) {
+        if (lower.includes(country)) {
+            return {
+                lat: coords[0] + (Math.random() - 0.5) * 2.5,
+                lng: coords[1] + (Math.random() - 0.5) * 2.5
+            };
+        }
+    }
+    return null;
+}
+
+// NL API coord extraction — only used as an enhancement when a GCP project key is available
+function extractCoordsFromEntities(entities) {
     if (!entities || !Array.isArray(entities)) return null;
     const locations = entities
         .filter(e => e.type === 'LOCATION' && e.salience > 0.05)
@@ -67,7 +99,6 @@ function extractCoords(entities) {
                 return { lat: coords[0] + (Math.random() - 0.5) * 2, lng: coords[1] + (Math.random() - 0.5) * 2 };
             }
         }
-        // Use metadata coords if available (Wikipedia-backed)
         if (loc.metadata?.latitude && loc.metadata?.longitude) {
             return { lat: parseFloat(loc.metadata.latitude), lng: parseFloat(loc.metadata.longitude) };
         }
@@ -128,16 +159,24 @@ exports.handler = async (event, context) => {
             return { statusCode: 200, body: JSON.stringify({ nodes: [], count: 0 }) };
         }
 
-        // 2. For each article, extract entities via NL API (if key available), then build node
+        // 2. For each article: text-based coord inference (always works) + optional NL API enhancement
         const nodes = [];
-        const nlApiKey = geminiKey; // Same GCP project key works for NL API
 
-        await Promise.all(articles.slice(0, 8).map(async (article) => {
+        await Promise.all(articles.slice(0, 10).map(async (article) => {
             const text = `${article.title}. ${article.snippet || ''}`;
-            const entities = nlApiKey ? await analyzeArticle(text, nlApiKey) : null;
-            const coords = extractCoords(entities);
 
-            if (!coords) return; // Skip articles we can't place on the globe
+            // PRIMARY: fast text-based lookup — no external API needed
+            let coords = inferCoordsFromText(text);
+
+            // ENHANCEMENT: try NL API for better entity extraction (only if GCP key available)
+            let entities = null;
+            if (geminiKey && coords) { // only call NL API if text already found a region
+                entities = await analyzeArticle(text, geminiKey);
+                const nlCoords = extractCoordsFromEntities(entities);
+                if (nlCoords) coords = nlCoords; // prefer NL precision when available
+            }
+
+            if (!coords) return; // No location found at all — skip
 
             const keyOrgs = entities
                 ? entities.filter(e => ['PERSON', 'ORGANIZATION'].includes(e.type)).slice(0, 3).map(e => e.name).join(', ')
