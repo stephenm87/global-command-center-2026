@@ -1,6 +1,7 @@
 // ai-summary.js - Gemini-powered geopolitical intelligence brief generator
 // Accepts: POST { url, title, content } where content = Firecrawl markdown
 // Returns: structured intelligence brief for IB Global Politics students
+const { callGeminiWithRetry } = require('./gemini-retry');
 
 const GEMINI_API_BASE = 'https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent';
 
@@ -66,22 +67,18 @@ ${truncatedContent}
 
 Generate the intelligence brief JSON now.`;
 
-        const geminiRes = await fetch(`${GEMINI_API_BASE}?key=${geminiKey}`, {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({
-                contents: [
-                    {
-                        role: 'user',
-                        parts: [{ text: SYSTEM_PROMPT + '\n\n' + userMessage }]
-                    }
-                ],
-                generationConfig: {
-                    temperature: 0.3,
-                    maxOutputTokens: 800,
-                    responseMimeType: 'application/json'
+        const geminiRes = await callGeminiWithRetry(`${GEMINI_API_BASE}?key=${geminiKey}`, {
+            contents: [
+                {
+                    role: 'user',
+                    parts: [{ text: SYSTEM_PROMPT + '\n\n' + userMessage }]
                 }
-            })
+            ],
+            generationConfig: {
+                temperature: 0.3,
+                maxOutputTokens: 800,
+                responseMimeType: 'application/json'
+            }
         });
 
         if (!geminiRes.ok) {
