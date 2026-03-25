@@ -2,7 +2,7 @@
  * gemini-retry.js — Shared retry wrapper for Gemini API calls.
  * Retries on 429 (rate limit) and 503 (overloaded) with exponential backoff.
  */
-const fetch = (...args) => import('node-fetch').then(m => m.default(...args));
+// Node 18+ has native fetch — no polyfill needed
 
 const RETRYABLE_STATUSES = [429, 503];
 const MAX_RETRIES = 3;
