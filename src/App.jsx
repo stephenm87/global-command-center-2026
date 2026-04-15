@@ -663,7 +663,7 @@ function App() {
         metrics.totalEvents = data.length;
         metrics.conflictEvents = categoryCounts['Geopolitics & Conflict'] || 0;
         metrics.economyEvents = categoryCounts['Economy & Trade'] || 0;
-        metrics.techEvents = categoryColors['Technology & Science'] || 0;
+        metrics.techEvents = categoryCounts['Technology & Science'] || 0;
         metrics.goldPrice = goldMentions.length > 0 ? '$4,500' : 'N/A';
         metrics.globalGrowth = gdpMentions.length > 0 ? '2.4%' : 'N/A';
         metrics.defenseSpending = defenseMentions.length > 0 ? '$2.9trn' : 'N/A';
