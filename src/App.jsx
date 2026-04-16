@@ -4,6 +4,8 @@ import Papa from 'papaparse';
 import * as topojson from 'topojson-client';
 import { theories, getTheoryInterpretation } from './theories';
 import { generate5W1H, getGlobalChallenges, CHALLENGE_ICONS } from './eventAnalysis';
+import { AuthBadge, AuthModal, useAuth } from './AuthModal';
+import { supabase } from './supabase';
 import './App.css';
 
 const categoryColors = {
@@ -16,6 +18,7 @@ const categoryColors = {
 };
 
 function App() {
+    const { user, showModal, openModal, closeModal } = useAuth();
     const [forecasts, setForecasts] = useState([]);
     const [filteredForecasts, setFilteredForecasts] = useState([]);
     const [selectedCategory, setSelectedCategory] = useState('All');
@@ -50,6 +53,46 @@ function App() {
     const globeContainer = useRef();
     const attributionRef = useRef();
     const dashboardRef = useRef();
+
+    // ── Preferences persistence: restore on mount ────────────────────────
+    useEffect(() => {
+        const prefs = JSON.parse(localStorage.getItem('gcc-preferences') || '{}');
+        if (prefs.selectedTheory)  setSelectedTheory(prefs.selectedTheory);
+        if (prefs.selectedCategory) setSelectedCategory(prefs.selectedCategory);
+        if (prefs.timelineYear)    setTimelineYear(prefs.timelineYear);
+        if (typeof prefs.stressLevel === 'number') setStressLevel(prefs.stressLevel);
+        if (typeof prefs.sidebarCollapsed === 'boolean') setSidebarCollapsed(prefs.sidebarCollapsed);
+        // Pull cloud copy if signed in
+        supabase.auth.getUser().then(async ({ data: { user } }) => {
+            if (!user) return;
+            const { data } = await supabase
+                .from('user_data').select('value')
+                .eq('user_id', user.id).eq('key', 'gcc-preferences').single();
+            if (data?.value) {
+                const p = data.value;
+                if (p.selectedTheory)  setSelectedTheory(p.selectedTheory);
+                if (p.selectedCategory) setSelectedCategory(p.selectedCategory);
+                if (p.timelineYear)    setTimelineYear(p.timelineYear);
+                if (typeof p.stressLevel === 'number') setStressLevel(p.stressLevel);
+                if (typeof p.sidebarCollapsed === 'boolean') setSidebarCollapsed(p.sidebarCollapsed);
+                localStorage.setItem('gcc-preferences', JSON.stringify(p));
+            }
+        });
+    }, []);
+
+    // ── Preferences persistence: save on change ──────────────────────────
+    useEffect(() => {
+        const prefs = { selectedTheory, selectedCategory, timelineYear, stressLevel, sidebarCollapsed };
+        localStorage.setItem('gcc-preferences', JSON.stringify(prefs));
+        // Fire-and-forget Supabase sync
+        supabase.auth.getUser().then(({ data: { user } }) => {
+            if (!user) return;
+            supabase.from('user_data').upsert(
+                { user_id: user.id, key: 'gcc-preferences', value: prefs },
+                { onConflict: 'user_id,key' }
+            );
+        });
+    }, [selectedTheory, selectedCategory, timelineYear, stressLevel, sidebarCollapsed]);
 
     // Initialize globe
     useEffect(() => {
@@ -679,6 +722,7 @@ function App() {
 
     return (
         <div className="command-center">
+            {showModal && <AuthModal onClose={closeModal} />}
             <div className="dashboard-view" ref={dashboardRef}>
                 {/* Header */}
                 <div className="header">
@@ -701,6 +745,7 @@ function App() {
                         >
                             CREDITS & LICENSE
                         </button>
+                        <AuthBadge user={user} onSignInClick={openModal} />
                         <span className="live-indicator">● LIVE</span>
                         <button className="export-btn" onClick={() => {
                             const nodes = filteredForecasts.slice(0, 40);

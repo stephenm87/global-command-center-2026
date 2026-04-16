@@ -1,0 +1,242 @@
+/* =====================================================
+   Auth styles for Global Command Center
+   Overlaid on top of the existing dark military theme
+   ===================================================== */
+
+/* ── Auth Badge (top-right of header) ─────────────── */
+.auth-badge-wrapper {
+    display: flex;
+    align-items: center;
+    flex-shrink: 0;
+}
+.auth-user-badge {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 4px 10px 4px 4px;
+    background: rgba(0, 255, 200, 0.06);
+    border: 1px solid rgba(0, 255, 200, 0.2);
+    border-radius: 999px;
+}
+.auth-avatar {
+    width: 26px;
+    height: 26px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #00ffcc, #0088ff);
+    color: #000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 900;
+    font-size: 0.7rem;
+    flex-shrink: 0;
+    font-family: 'Roboto Mono', monospace;
+}
+.auth-name {
+    font-family: 'Roboto Mono', monospace;
+    font-size: 0.7rem;
+    color: #00ffcc;
+    max-width: 90px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    letter-spacing: 0.5px;
+}
+.auth-signout {
+    background: none;
+    border: none;
+    color: rgba(0, 255, 200, 0.3);
+    cursor: pointer;
+    font-size: 0.65rem;
+    padding: 0 2px;
+    line-height: 1;
+    transition: color 0.2s;
+    font-family: 'Roboto Mono', monospace;
+}
+.auth-signout:hover { color: #00ffcc; }
+
+.auth-signin-btn {
+    background: rgba(0, 255, 200, 0.06);
+    border: 1px solid rgba(0, 255, 200, 0.2);
+    color: rgba(0, 255, 200, 0.6);
+    padding: 4px 10px;
+    border-radius: 4px;
+    font-family: 'Roboto Mono', monospace;
+    font-size: 0.65rem;
+    letter-spacing: 1px;
+    cursor: pointer;
+    transition: all 0.2s;
+    white-space: nowrap;
+}
+.auth-signin-btn:hover {
+    border-color: rgba(0, 255, 200, 0.5);
+    color: #00ffcc;
+    background: rgba(0, 255, 200, 0.1);
+}
+
+/* ── Auth Modal Overlay ─────────────────────────────── */
+.gcc-auth-overlay {
+    position: fixed;
+    inset: 0;
+    z-index: 9999;
+    background: rgba(0, 0, 0, 0.75);
+    backdrop-filter: blur(8px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.gcc-auth-card {
+    background: #050d1a;
+    border: 1px solid rgba(0, 255, 200, 0.25);
+    border-radius: 12px;
+    padding: 36px 40px;
+    width: 100%;
+    max-width: 400px;
+    box-shadow: 0 0 60px rgba(0, 255, 200, 0.08), 0 24px 80px rgba(0,0,0,0.6);
+    position: relative;
+    animation: gccAuthSlide 0.25s ease;
+}
+@keyframes gccAuthSlide {
+    from { transform: translateY(16px); opacity: 0; }
+    to   { transform: translateY(0);    opacity: 1; }
+}
+.gcc-auth-logo {
+    font-family: 'Roboto Mono', monospace;
+    font-size: 0.6rem;
+    letter-spacing: 4px;
+    color: rgba(0, 255, 200, 0.4);
+    text-align: center;
+    margin-bottom: 12px;
+}
+.gcc-auth-title {
+    font-family: 'Roboto Mono', monospace;
+    font-size: 1rem;
+    font-weight: 700;
+    color: #00ffcc;
+    text-align: center;
+    margin: 0 0 4px;
+    letter-spacing: 2px;
+}
+.gcc-auth-subtitle {
+    font-family: 'Roboto Mono', monospace;
+    font-size: 0.65rem;
+    color: rgba(255,255,255,0.3);
+    text-align: center;
+    margin: 0 0 24px;
+    letter-spacing: 0.5px;
+}
+.gcc-auth-input {
+    width: 100%;
+    padding: 10px 14px;
+    background: rgba(0, 255, 200, 0.04);
+    border: 1px solid rgba(0, 255, 200, 0.15);
+    border-radius: 6px;
+    color: #fff;
+    font-family: 'Roboto Mono', monospace;
+    font-size: 0.8rem;
+    outline: none;
+    transition: border-color 0.2s;
+    box-sizing: border-box;
+    margin-bottom: 10px;
+}
+.gcc-auth-input:focus { border-color: rgba(0, 255, 200, 0.5); }
+.gcc-auth-input::placeholder { color: rgba(255,255,255,0.2); }
+
+.gcc-auth-btn {
+    width: 100%;
+    padding: 12px;
+    background: linear-gradient(90deg, rgba(0,255,200,0.15), rgba(0,136,255,0.15));
+    border: 1px solid rgba(0, 255, 200, 0.35);
+    color: #00ffcc;
+    font-family: 'Roboto Mono', monospace;
+    font-weight: 700;
+    font-size: 0.75rem;
+    letter-spacing: 2px;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+.gcc-auth-btn:hover:not(:disabled) {
+    background: linear-gradient(90deg, rgba(0,255,200,0.25), rgba(0,136,255,0.25));
+    box-shadow: 0 0 20px rgba(0, 255, 200, 0.15);
+}
+.gcc-auth-btn:disabled { opacity: 0.4; cursor: default; }
+
+.gcc-auth-error {
+    color: #ff4444;
+    font-family: 'Roboto Mono', monospace;
+    font-size: 0.65rem;
+    margin-top: 8px;
+    min-height: 16px;
+    text-align: center;
+    letter-spacing: 0.5px;
+}
+.gcc-auth-success {
+    text-align: center;
+    padding: 16px 0;
+}
+.gcc-auth-success-icon { font-size: 2.5rem; margin-bottom: 12px; }
+.gcc-auth-success h3 {
+    font-family: 'Roboto Mono', monospace;
+    color: #00ffcc;
+    font-size: 0.85rem;
+    letter-spacing: 2px;
+    margin: 0 0 8px;
+}
+.gcc-auth-success p {
+    color: rgba(255,255,255,0.4);
+    font-family: 'Roboto Mono', monospace;
+    font-size: 0.65rem;
+    margin: 0;
+    letter-spacing: 0.3px;
+}
+.gcc-auth-close {
+    position: absolute;
+    top: 14px;
+    right: 16px;
+    background: none;
+    border: none;
+    color: rgba(0, 255, 200, 0.3);
+    font-size: 1rem;
+    cursor: pointer;
+    transition: color 0.2s;
+    line-height: 1;
+}
+.gcc-auth-close:hover { color: #00ffcc; }
+
+/* ── Mobile Responsive ──────────────────────────────── */
+@media (max-width: 768px) {
+    .auth-name {
+        max-width: 60px;
+        font-size: 0.6rem;
+    }
+    .auth-signin-btn {
+        font-size: 0.55rem;
+        padding: 3px 7px;
+        letter-spacing: 0.5px;
+    }
+    .auth-user-badge {
+        gap: 5px;
+        padding: 3px 8px 3px 3px;
+    }
+    .gcc-auth-card {
+        padding: 28px 24px;
+        max-width: calc(100vw - 32px);
+    }
+}
+
+@media (max-width: 480px) {
+    /* On phones, hide the name — show avatar + signout only */
+    .auth-name { display: none; }
+    /* Collapse sign-in to minimal text */
+    .auth-signin-btn {
+        font-size: 0.5rem;
+        padding: 2px 6px;
+        letter-spacing: 0;
+    }
+    .auth-avatar { width: 22px; height: 22px; font-size: 0.6rem; }
+    .gcc-auth-card {
+        padding: 24px 20px;
+        border-radius: 8px;
+    }
+}
