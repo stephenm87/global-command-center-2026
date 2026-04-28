@@ -77,7 +77,10 @@ Generate the intelligence brief JSON now.`;
             generationConfig: {
                 temperature: 0.3,
                 maxOutputTokens: 800,
-                response_mime_type: 'application/json'
+                response_mime_type: 'application/json',
+                // Disable thinking for structured JSON output — faster, cheaper, avoids
+                // the thinking parts interfering with JSON parsing
+                thinkingConfig: { thinkingBudget: 0 }
             }
         });
 
@@ -87,7 +90,11 @@ Generate the intelligence brief JSON now.`;
         }
 
         const geminiData = await geminiRes.json();
-        const rawText = geminiData.candidates?.[0]?.content?.parts?.[0]?.text || '{}';
+        // gemini-2.5-flash is a thinking model: parts may contain { thought: true } entries.
+        // Find the actual (non-thought) text part for JSON parsing.
+        const parts = geminiData.candidates?.[0]?.content?.parts || [];
+        const responsePart = parts.find(p => p.text && !p.thought) || parts.find(p => p.text) || {};
+        const rawText = responsePart.text || '{}';
 
         // Parse the JSON response from Gemini
         let brief;
