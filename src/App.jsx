@@ -1353,7 +1353,7 @@ function App() {
                                                 <div className="ai-brief-header">
                                                     <span className="ai-brief-icon">🤖</span>
                                                     <span className="ai-brief-title">AI INTEL BRIEF</span>
-                                                    <span className="ai-brief-model">Gemini 2.0 Flash</span>
+                                                    <span className="ai-brief-model">Gemini 2.5 Flash</span>
                                                 </div>
 
                                                 {aiSummaryLoading ? (

@@ -77,7 +77,7 @@ Generate the intelligence brief JSON now.`;
             generationConfig: {
                 temperature: 0.3,
                 maxOutputTokens: 800,
-                responseMimeType: 'application/json'
+                response_mime_type: 'application/json'
             }
         });
 
