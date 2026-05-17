@@ -177,13 +177,12 @@ function App() {
                         .catch(e => console.log('Country borders unavailable:', e.message));
                 });
 
+            setGlobeReady(true);
             return () => window.removeEventListener('resize', handleResize);
         } catch (err) {
             console.error('[Globe] Initialization failed:', err);
+            setGlobeReady(true); // Still clear overlay on failure
         }
-
-        // Always clear loading overlay even if Globe() fails
-        setGlobeReady(true);
     }, []);
 
 
