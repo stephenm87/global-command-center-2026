@@ -434,13 +434,34 @@ function App() {
     };
 
 
-    // ── Theory lens keyword maps ──────────────────────────────────────────────
+    // ── Theory lens keyword maps (all 7 IR theories) ──────────────────────────
     const THEORY_KEYWORDS = {
-        realism: /war|military|nuclear|territory|power|arms|coup|missile|troops|conflict|navy|siege|weapon|sanctions|invasion/,
-        liberalism: /un\b|united nations|trade|wto|institution|cooperation|treaty|ngo|democracy|aid|climate|multilateral|agreement|imf|world bank/,
-        constructivism: /identity|human rights|norms|refugee|sovereignty|dignity|gender|indigenous|culture|legitimacy|narrative|recognition|discourse/
+        realism: /war|military|nuclear|territory|power|arms|coup|missile|troops|conflict|navy|siege|weapon|sanctions|invasion|balance.of.power|deterrence|security.dilemma|national.interest|strategic|defense|geopolitics|rival|supremacy|hegemony/,
+        liberalism: /un\b|united nations|trade|wto|institution|cooperation|treaty|ngo|democracy|aid|climate|multilateral|agreement|imf|world bank|rule.of.law|human.rights|transparency|governance|diplomatic|peace.process|free.trade|interdependence|reform|accountability|election|civil.society/,
+        constructivism: /identity|human rights|norms|refugee|sovereignty|dignity|gender|indigenous|culture|legitimacy|narrative|recognition|discourse|ethnic|nationalist|colonial|heritage|community|belonging|framing|perception|social.construct|belief|value|ideology|separatist|self.determination|apartheid|persecution|historical.memory|diaspora/,
+        marxism: /class|exploit|capital|labor|worker|inequality|wealth|profit|poverty|wage|neoliberal|austerity|privatization|corporation|oligarch|surplus|proletariat|bourgeois|commodity|extraction|accumulation|sweatshop|factory|garment|supply.chain|debt/,
+        structuralism: /core|periphery|dependency|develop|underdevelop|global.south|global.north|colonial|extraction|commodity|raw.material|industrializ|structural|unequal.exchange|world.system|imf|world.bank|debt|loan|aid|conditionality|terms.of.trade|multinational/,
+        feminism: /women|gender|female|girl|maternal|patriarch|sexual|lgbtq|domestic.violence|reproductive|feminist|masculinit|care.work|trafficking|bride|dowry|femicide|misogyn|glass.ceiling|pay.gap|gendered|women.rights|she|her|mother|wife|daughter|abortion|contraception/,
+        postcolonialism: /colonial|imperial|decoloni|empire|settler|indigenous|native|subaltern|orientalism|eurocentri|western.gaze|global.south|race|racial|ethnic.cleansing|genocide|reparation|partition|mandate|protectorate|annexed|occupied|liberation|independence|self.determination|diaspora|migration|displacement/
     };
-    const THEORY_COLORS = { realism: '#ff3344', liberalism: '#00ddff', constructivism: '#cc44ff' };
+    const THEORY_COLORS = {
+        realism: '#ff3344',
+        liberalism: '#00ddff',
+        constructivism: '#cc44ff',
+        marxism: '#cc0000',
+        structuralism: '#9966ff',
+        feminism: '#ff66cc',
+        postcolonialism: '#ff9933'
+    };
+    const THEORY_LABELS = {
+        realism: 'Realism',
+        liberalism: 'Liberalism',
+        constructivism: 'Constructivism',
+        marxism: 'Marxism',
+        structuralism: 'Structuralism',
+        feminism: 'Feminism',
+        postcolonialism: 'Postcolonialism'
+    };
 
     // ── Node clustering: group points within 8° of each other ────────────────
     const clusterPoints = (points) => {
@@ -901,6 +922,57 @@ function App() {
                                         </div>
                                     ))}
                                 </>
+                            )}
+
+                            {/* Theory Lens Toggles */}
+                            <div className="arc-legend-title" style={{ marginTop: '14px' }}>THEORY LENS</div>
+                            <div style={{ display: 'flex', flexDirection: 'column', gap: '3px' }}>
+                                {Object.entries(THEORY_LABELS).map(([key, label]) => {
+                                    const isActive = theoryLens === key;
+                                    const color = THEORY_COLORS[key];
+                                    return (
+                                        <button
+                                            key={key}
+                                            onClick={() => setTheoryLens(isActive ? null : key)}
+                                            style={{
+                                                background: isActive ? color + '30' : 'transparent',
+                                                border: `1px solid ${isActive ? color : color + '44'}`,
+                                                borderRadius: '4px',
+                                                padding: '3px 8px',
+                                                cursor: 'pointer',
+                                                display: 'flex',
+                                                alignItems: 'center',
+                                                gap: '6px',
+                                                transition: 'all 0.2s',
+                                            }}
+                                            onMouseEnter={e => { if (!isActive) e.currentTarget.style.background = color + '18'; }}
+                                            onMouseLeave={e => { if (!isActive) e.currentTarget.style.background = 'transparent'; }}
+                                        >
+                                            <span style={{
+                                                width: '7px', height: '7px', borderRadius: '50%',
+                                                background: isActive ? color : color + '66',
+                                                boxShadow: isActive ? `0 0 8px ${color}` : 'none',
+                                                flexShrink: 0,
+                                            }} />
+                                            <span style={{
+                                                color: isActive ? color : color + 'aa',
+                                                fontSize: '0.55rem',
+                                                fontFamily: 'Roboto Mono',
+                                                fontWeight: isActive ? 700 : 400,
+                                                letterSpacing: '0.5px',
+                                            }}>
+                                                {label.toUpperCase()}
+                                            </span>
+                                        </button>
+                                    );
+                                })}
+                            </div>
+                            {theoryLens && (
+                                <div style={{ marginTop: '6px', padding: '5px 8px', background: THEORY_COLORS[theoryLens] + '12', border: `1px solid ${THEORY_COLORS[theoryLens]}33`, borderRadius: '4px' }}>
+                                    <div style={{ color: THEORY_COLORS[theoryLens], fontSize: '0.5rem', fontFamily: 'Roboto Mono', lineHeight: 1.4 }}>
+                                        Highlighting events matching {THEORY_LABELS[theoryLens]} keywords. Non-matching nodes dimmed.
+                                    </div>
+                                </div>
                             )}
                         </div>
                     </div>
