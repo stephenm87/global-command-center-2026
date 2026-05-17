@@ -365,52 +365,13 @@ function App() {
                 const errText = await fnRes.text().catch(() => '');
                 path1Error = `Netlify fn error ${fnRes.status}: ${errText.substring(0, 80)}`;
             }
-        } catch (e) { path1Error = e.message; /* fall through to direct call */ }
+        } catch (e) { path1Error = e.message; }
 
-        // 2. Fallback: call Serper directly from frontend
-        try {
-            const serperKey = import.meta.env.VITE_SERPER_API_KEY;
-            if (!serperKey) throw new Error('No API key available');
-
-            const serperRes = await fetch('https://google.serper.dev/news', {
-                method: 'POST',
-                headers: { 'X-API-KEY': serperKey, 'Content-Type': 'application/json' },
-                body: JSON.stringify({ q: query, num: 10, tbs: 'qdr:d' })
-            });
-
-            if (!serperRes.ok) throw new Error(`Serper error: ${serperRes.status}`);
-            const serperData = await serperRes.json();
-            const articles = serperData.news || [];
-
-            const mapped = articles
-                .map(a => {
-                    const text = `${a.title} ${a.snippet || ''}`;
-                    const coords = inferCoords(text);
-                    if (!coords) return null;
-                    return {
-                        'Topic/Sector': a.title?.substring(0, 80) || 'News Alert',
-                        'Entity/Subject': a.title || 'Breaking News',
-                        'Broad_Category': inferCategory(text),
-                        'Expected Impact/Value': a.snippet || '',
-                        'Key Player/Organization': a.source || 'News Source',
-                        'Timeline': 'Live – ' + (a.date || 'Today'),
-                        Latitude: coords.lat, Longitude: coords.lng,
-                        url: a.link, isLive: true, isNews: true, source: a.source || 'News'
-                    };
-                })
-                .filter(Boolean);
-
-            setNewsNodes(mapped);
-            setForecasts(prev => [...prev.filter(f => !f.isNews), ...mapped]);
-
-        } catch (err) {
-            const msg = path1Error
-                ? `Scan failed. Server: ${path1Error}`
-                : err.message;
-            setNewsScanError(msg);
-        } finally {
-            setNewsScanLoading(false);
+        // Fallback: show server error (no client-side API calls — keys must stay server-side)
+        if (path1Error) {
+            setNewsScanError(`Scan failed. Server: ${path1Error}`);
         }
+        setNewsScanLoading(false);
     };
 
     // ── Clear news nodes & reset globe to base dataset ───────────────────────
@@ -441,7 +402,7 @@ function App() {
         constructivism: /identity|human rights|norms|refugee|sovereignty|dignity|gender|indigenous|culture|legitimacy|narrative|recognition|discourse|ethnic|nationalist|colonial|heritage|community|belonging|framing|perception|social.construct|belief|value|ideology|separatist|self.determination|apartheid|persecution|historical.memory|diaspora/,
         marxism: /class|exploit|capital|labor|worker|inequality|wealth|profit|poverty|wage|neoliberal|austerity|privatization|corporation|oligarch|surplus|proletariat|bourgeois|commodity|extraction|accumulation|sweatshop|factory|garment|supply.chain|debt/,
         structuralism: /core|periphery|dependency|develop|underdevelop|global.south|global.north|colonial|extraction|commodity|raw.material|industrializ|structural|unequal.exchange|world.system|imf|world.bank|debt|loan|aid|conditionality|terms.of.trade|multinational/,
-        feminism: /women|gender|female|girl|maternal|patriarch|sexual|lgbtq|domestic.violence|reproductive|feminist|masculinit|care.work|trafficking|bride|dowry|femicide|misogyn|glass.ceiling|pay.gap|gendered|women.rights|she|her|mother|wife|daughter|abortion|contraception/,
+        feminism: /women|gender|female|\bgirl\b|maternal|patriarch|sexual|lgbtq|domestic.violence|reproductive|feminist|masculinit|care.work|trafficking|\bbride\b|dowry|femicide|misogyn|glass.ceiling|pay.gap|gendered|women.rights|abortion|contraception/,
         postcolonialism: /colonial|imperial|decoloni|empire|settler|indigenous|native|subaltern|orientalism|eurocentri|western.gaze|global.south|race|racial|ethnic.cleansing|genocide|reparation|partition|mandate|protectorate|annexed|occupied|liberation|independence|self.determination|diaspora|migration|displacement/
     };
     const THEORY_COLORS = {
@@ -570,6 +531,8 @@ function App() {
                 } else {
                     setExpandedCluster(null);
                     setSelectedForecast(point.data);
+                    // Auto-select matching theory in detail modal when lens is active
+                    if (theoryLens) setSelectedTheory(THEORY_LABELS[theoryLens] || 'Realism');
                 }
             })
             .pointLabel(d => {
