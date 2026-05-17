@@ -136,6 +136,8 @@ function App() {
 
         globeEl.current = globe;
         globe.pointOfView({ lat: 40, lng: 30, altitude: 2.5 });
+        // Signal globe mounted — clears loading overlay
+        setGlobeReady(true);
 
         // Load country boundaries GeoJSON
         fetch('https://cdn.jsdelivr.net/npm/world-atlas@2/countries-110m.json')
@@ -265,7 +267,6 @@ function App() {
                     ${isLinked}
                   </div>`;
                     });
-                    setGlobeReady(true);
             }
             extractMetrics(combinedData);
             setIntelLastUpdated(new Date());

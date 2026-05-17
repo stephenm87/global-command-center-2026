@@ -2803,6 +2803,7 @@ h1.logo-text {
     justify-content: center;
     z-index: 5000;
     animation: globeLoadFadeIn 0.3s ease;
+    transition: opacity 0.5s ease;
 }
 .globe-loading-spinner {
     font-size: 4rem;
