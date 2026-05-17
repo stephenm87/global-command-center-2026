@@ -137,6 +137,11 @@ function App() {
                 .showGraticules(false);
 
             globeEl.current = globe;
+
+            // Set globe renderer to match container (not window) dimensions
+            const cw = globeContainer.current.offsetWidth || 600;
+            const ch = globeContainer.current.offsetHeight || 500;
+            globe.width(cw).height(ch);
             globe.pointOfView({ lat: 40, lng: 30, altitude: 2.5 });
 
             // Load country boundaries GeoJSON

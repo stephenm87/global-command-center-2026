@@ -201,13 +201,9 @@
     justify-content: center;
 }
 
-/* Ensure globe canvas fills container and stays centred */
+/* Globe canvas — globe.gl manages pixel dimensions via .width()/.height() */
 .globe-container canvas {
-    display: block !important;
-    width: 100% !important;
-    height: 100% !important;
-    position: static !important;
-    transform: none !important;
+    display: block;
 }
 
 .globe-overlay {
