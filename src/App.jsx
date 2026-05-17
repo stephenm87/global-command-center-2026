@@ -758,10 +758,10 @@ function App() {
             )}
             <div className="dashboard-view" ref={dashboardRef}>
                 {/* Header */}
-                <nav className="header" role="navigation" aria-label="Main navigation">
+                <div className="header" role="navigation" aria-label="Main navigation">
                     <div className="logo">
                         <span className="logo-icon" aria-hidden="true">⬢</span>
-                        <h1 className="logo-text">GLOBAL COMMAND CENTER</h1>
+                        <span className="logo-text">GLOBAL COMMAND CENTER</span>
                     </div>
                     <div className="date-time">
                         <a
@@ -892,10 +892,10 @@ function App() {
                             })()}
                         </div>
                     </div>
-                </nav>
+                </div>
 
                 {/* Main Content */}
-                <main className="main-content" role="main">
+                <div className="main-content" role="main">
                     {/* Globe Center Stage */}
                     <GlobeErrorBoundary>
                     <div className={`globe-container ${stressLevel > 70 ? 'critical-vignette' : ''}`}>
@@ -1051,7 +1051,7 @@ function App() {
                             </div>
                         </>
                     )}
-                </main>
+
 
                     {/* Right Sidebar - Intel Feed */}
                     <aside id="intel-feed" className={`intel-feed ${sidebarCollapsed ? 'collapsed' : ''}`} role="complementary" aria-label="Intelligence Feed">
@@ -1132,6 +1132,7 @@ function App() {
                             )}
                         </div>
                 </aside>
+                </div> {/* end .main-content */}
 
                 {/* Bottom Bar - Key Metrics */}
                 <div className="metrics-bar">
