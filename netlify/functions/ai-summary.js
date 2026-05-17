@@ -25,15 +25,27 @@ Given article content, produce a JSON response with exactly these fields:
   "oneLiner": "One-sentence BLUF (Bottom Line Up Front) — the most important takeaway in plain language",
   "keyActors": ["Array of 2-5 key state or non-state actors involved"],
   "ibThemes": ["Array of 1-3 relevant IB GP themes from: Power & Sovereignty, Human Rights, Development, Peace & Conflict, Global Governance, Identity, Technology"],
+  "keyConceptTags": ["Array of 2-4 IB key concepts from: Power, Sovereignty, Legitimacy, Interdependence, Human Rights, Justice, Liberty, Equality, Development, Globalization, Peace, Conflict, Violence, Identity, Community, Sustainability"],
   "riskLevel": "HIGH or MEDIUM or LOW — assessed geopolitical risk level",
   "riskReason": "One sentence explaining why you chose that risk level",
+  "cuiBono": "One sentence answering: Who benefits from this event or its current framing? Whose interests are served?",
+  "globalSouthPerspective": "2-3 sentences presenting how this event would be viewed from the Global South — consider perspectives from Africa, Latin America, South/Southeast Asia, or the Middle East. How might their media frame this differently than Western outlets?",
+  "historicalParallel": "One sentence suggesting a historical analogy (e.g., 'This echoes the 1962 Cuban Missile Crisis in its brinkmanship dynamics')",
+  "sourceType": "Classify the source: State Media | Wire Service | Independent Media | Think Tank | NGO Report | Social Media | Academic",
+  "sourceBias": "Brief note on potential bias or perspective of the source (e.g., 'Western-aligned think tank; may underrepresent Global South agency')",
   "studentPrompt": "One thought-provoking discussion question for IB students that encourages critical thinking",
+  "paper2Prompts": {
+    "identify": "A prompt asking students to identify the key issue and actors (SL level)",
+    "explain": "A prompt asking students to explain the event using a specific IR theory (HL level)",
+    "evaluate": "A prompt asking students to evaluate competing perspectives on this event (HL level)"
+  },
   "rawSummary": "A concise 2-3 sentence analytical summary of the event and its geopolitical significance"
 }
 
 Rules:
 - Be analytical, not sensationalist
 - Use precise geopolitical terminology
+- The globalSouthPerspective MUST present a genuinely different viewpoint, not just restate the Western framing in softer terms
 - Keep all text appropriate for 16-18 year old students
 - Only return valid JSON — no markdown, no code blocks, no extra text
 - If content is insufficient, still return valid JSON with best-effort analysis`;
@@ -94,7 +106,7 @@ Generate the intelligence brief JSON now.`;
             ],
             generationConfig: {
                 temperature: 0.3,
-                maxOutputTokens: 800,
+                maxOutputTokens: 1500,
                 response_mime_type: 'application/json',
                 // Disable thinking for structured JSON output — faster, cheaper, avoids
                 // the thinking parts interfering with JSON parsing
@@ -147,7 +159,7 @@ Generate the intelligence brief JSON now.`;
         return {
             statusCode: 500,
             headers,
-            body: JSON.stringify({ error: `AI analysis failed: ${error.message}` })
+            body: JSON.stringify({ error: 'AI analysis temporarily unavailable. Please try again later.' })
         };
     }
 };

@@ -101,7 +101,7 @@ exports.handler = async (event) => {
         return {
             statusCode: 500,
             headers,
-            body: JSON.stringify({ error: error.message })
+            body: JSON.stringify({ error: 'Deep scan failed. Please try again later.' })
         };
     }
 };

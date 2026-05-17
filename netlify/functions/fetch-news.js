@@ -234,6 +234,6 @@ exports.handler = async (event, context) => {
 
     } catch (err) {
         console.error('fetch-news error:', err);
-        return { statusCode: 500, body: JSON.stringify({ error: err.message }) };
+        return { statusCode: 500, body: JSON.stringify({ error: 'News scan failed. Please try again later.' }) };
     }
 };
