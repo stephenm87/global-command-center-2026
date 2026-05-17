@@ -127,46 +127,63 @@ function App() {
     useEffect(() => {
         if (!globeContainer.current) return;
 
-        const globe = Globe()(globeContainer.current)
-            .globeImageUrl('https://unpkg.com/three-globe/example/img/earth-night.jpg')
-            .backgroundImageUrl('https://unpkg.com/three-globe/example/img/night-sky.png')
-            .atmosphereColor('#0088ff')
-            .atmosphereAltitude(0.15)
-            .showGraticules(false);
+        try {
+            const globe = Globe()(globeContainer.current)
+                .globeImageUrl('https://unpkg.com/three-globe/example/img/earth-night.jpg')
+                .backgroundImageUrl('https://unpkg.com/three-globe/example/img/night-sky.png')
+                .atmosphereColor('#0088ff')
+                .atmosphereAltitude(0.15)
+                .showGraticules(false);
 
-        globeEl.current = globe;
-        globe.pointOfView({ lat: 40, lng: 30, altitude: 2.5 });
-        // Signal globe mounted — clears loading overlay
-        setGlobeReady(true);
+            globeEl.current = globe;
+            globe.pointOfView({ lat: 40, lng: 30, altitude: 2.5 });
 
-        // Load country boundaries GeoJSON
-        fetch('https://cdn.jsdelivr.net/npm/world-atlas@2/countries-110m.json')
-            .then(res => res.json())
-            .then(worldData => {
-                const countries = topojson.feature(worldData, worldData.objects.countries).features;
-                if (countries.length > 0) {
-                    globe
-                        .polygonsData(countries)
-                        .polygonAltitude(0.005)
-                        .polygonCapColor(() => 'rgba(0, 255, 255, 0.02)')
-                        .polygonSideColor(() => 'rgba(0, 255, 255, 0.05)')
-                        .polygonStrokeColor(() => 'rgba(0, 255, 255, 0.3)');
+            // Handle window resize so globe fills available space
+            const handleResize = () => {
+                if (globeContainer.current && globe) {
+                    globe.width(globeContainer.current.offsetWidth);
+                    globe.height(globeContainer.current.offsetHeight);
                 }
-            })
-            .catch(() => {
-                // Fallback: try GeoJSON directly
-                fetch('https://raw.githubusercontent.com/datasets/geo-countries/master/data/countries.geojson')
-                    .then(r => r.json())
-                    .then(geoData => {
+            };
+            window.addEventListener('resize', handleResize);
+            // Initial size kick — give DOM a frame to settle
+            requestAnimationFrame(handleResize);
+
+            // Load country boundaries GeoJSON
+            fetch('https://cdn.jsdelivr.net/npm/world-atlas@2/countries-110m.json')
+                .then(res => res.json())
+                .then(worldData => {
+                    const countries = topojson.feature(worldData, worldData.objects.countries).features;
+                    if (countries.length > 0) {
                         globe
-                            .polygonsData(geoData.features)
+                            .polygonsData(countries)
                             .polygonAltitude(0.005)
                             .polygonCapColor(() => 'rgba(0, 255, 255, 0.02)')
                             .polygonSideColor(() => 'rgba(0, 255, 255, 0.05)')
                             .polygonStrokeColor(() => 'rgba(0, 255, 255, 0.3)');
-                    })
-                    .catch(e => console.log('Country borders unavailable:', e.message));
-            });
+                    }
+                })
+                .catch(() => {
+                    fetch('https://raw.githubusercontent.com/datasets/geo-countries/master/data/countries.geojson')
+                        .then(r => r.json())
+                        .then(geoData => {
+                            globe
+                                .polygonsData(geoData.features)
+                                .polygonAltitude(0.005)
+                                .polygonCapColor(() => 'rgba(0, 255, 255, 0.02)')
+                                .polygonSideColor(() => 'rgba(0, 255, 255, 0.05)')
+                                .polygonStrokeColor(() => 'rgba(0, 255, 255, 0.3)');
+                        })
+                        .catch(e => console.log('Country borders unavailable:', e.message));
+                });
+
+            return () => window.removeEventListener('resize', handleResize);
+        } catch (err) {
+            console.error('[Globe] Initialization failed:', err);
+        }
+
+        // Always clear loading overlay even if Globe() fails
+        setGlobeReady(true);
     }, []);
 
 
