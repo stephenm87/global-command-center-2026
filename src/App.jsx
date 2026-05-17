@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef, Component } from 'react';
 import Globe from 'globe.gl';
 import Papa from 'papaparse';
 import * as topojson from 'topojson-client';
@@ -7,6 +7,27 @@ import { generate5W1H, getGlobalChallenges, CHALLENGE_ICONS } from './eventAnaly
 import { AuthBadge, AuthModal, useAuth } from './AuthModal';
 import { supabase } from './supabase';
 import './App.css';
+
+// ── XSS prevention: escape HTML in user/CSV-sourced data before template strings ──
+const escHtml = s => (s || '').replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+
+// ── ErrorBoundary: graceful fallback if WebGL/Globe.gl crashes ──
+class GlobeErrorBoundary extends Component {
+    constructor(props) { super(props); this.state = { hasError: false, error: null }; }
+    static getDerivedStateFromError(error) { return { hasError: true, error }; }
+    componentDidCatch(error, info) { console.error('[GlobeErrorBoundary]', error, info); }
+    render() {
+        if (this.state.hasError) return (
+            <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', height: '100%', color: '#ff4444', fontFamily: 'Roboto Mono', textAlign: 'center', padding: '40px' }}>
+                <div style={{ fontSize: '3rem', marginBottom: '16px' }}>⚠️</div>
+                <h2 style={{ color: '#ff6666', marginBottom: '8px' }}>Globe Rendering Failed</h2>
+                <p style={{ color: '#888', fontSize: '0.85rem', maxWidth: '400px' }}>WebGL could not initialize. This may be due to your browser or device not supporting 3D graphics. Try using Chrome or Firefox on a desktop computer.</p>
+                <button onClick={() => this.setState({ hasError: false })} style={{ marginTop: '16px', padding: '8px 16px', background: 'rgba(0,255,136,0.1)', border: '1px solid #00ff88', color: '#00ff88', borderRadius: '4px', cursor: 'pointer', fontFamily: 'Roboto Mono' }}>⟳ Retry</button>
+            </div>
+        );
+        return this.props.children;
+    }
+}
 
 const categoryColors = {
     'Geopolitics & Conflict': '#ff0066',
@@ -49,6 +70,9 @@ function App() {
     const [newsScanError, setNewsScanError] = useState(null);
     const [newsQuery, setNewsQuery] = useState('');
     const [globeNewsOnly, setGlobeNewsOnly] = useState(false); // 🎯 news-only globe filter
+    const [globeReady, setGlobeReady] = useState(false); // loading skeleton
+    const [feedPage, setFeedPage] = useState(1); // Intel Feed pagination
+    const FEED_PAGE_SIZE = 30;
     const globeEl = useRef();
     const globeContainer = useRef();
     const attributionRef = useRef();
@@ -231,11 +255,12 @@ function App() {
                     .pointLabel(d => {
                         const isLinked = d.data.url ? '<div style="color: #00ff88; font-size: 0.7rem; margin-top: 5px; font-weight: bold;">[ CLICK FOR LIVE INTEL ]</div>' : '';
                         return `<div style="background: rgba(0,0,0,0.9); padding: 12px; border: 1px solid ${d.color}; border-radius: 4px; font-family: Roboto Mono; color: #00ffff; max-width: 300px; box-shadow: 0 0 15px ${d.color}44;">
-                    <div style="color: ${d.color}; font-weight: 700; margin-bottom: 5px;">${d.data.isLive ? '[LIVE] ' : ''}${d.data['Topic/Sector']}</div>
-                    <div style="font-size: 0.85rem; color: #fff;">${d.data['Entity/Subject']}</div>
+                    <div style="color: ${d.color}; font-weight: 700; margin-bottom: 5px;">${d.data.isLive ? '[LIVE] ' : ''}${escHtml(d.data['Topic/Sector'])}</div>
+                    <div style="font-size: 0.85rem; color: #fff;">${escHtml(d.data['Entity/Subject'])}</div>
                     ${isLinked}
                   </div>`;
                     });
+                    setGlobeReady(true);
             }
             extractMetrics(combinedData);
             setIntelLastUpdated(new Date());
@@ -541,8 +566,8 @@ function App() {
                 }
                 const isLinked = d.data.url ? '<div style="color: #00ff88; font-size: 0.7rem; margin-top: 5px; font-weight: bold;">[ CLICK FOR LIVE INTEL ]</div>' : '';
                 return `<div style="background: rgba(0,0,0,0.9); padding: 12px; border: 1px solid ${d.color}; border-radius: 4px; font-family: Roboto Mono; color: #00ffff; max-width: 300px; box-shadow: 0 0 15px ${d.color}44;">
-                    <div style="color: ${d.color}; font-weight: 700; margin-bottom: 5px;">${d.data.isLive ? '[LIVE] ' : ''}${d.data['Topic/Sector']}</div>
-                    <div style="font-size: 0.85rem; color: #fff;">${d.data['Entity/Subject']}</div>
+                    <div style="color: ${d.color}; font-weight: 700; margin-bottom: 5px;">${d.data.isLive ? '[LIVE] ' : ''}${escHtml(d.data['Topic/Sector'])}</div>
+                    <div style="font-size: 0.85rem; color: #fff;">${escHtml(d.data['Entity/Subject'])}</div>
                     ${isLinked}
                   </div>`;
             });
@@ -706,13 +731,22 @@ function App() {
 
     return (
         <div className="command-center">
+            {/* Skip navigation for accessibility */}
+            <a href="#intel-feed" className="skip-nav" aria-label="Skip to Intel Feed">Skip to Intel Feed</a>
             {showModal && <AuthModal onClose={closeModal} />}
+            {/* Loading skeleton while globe initializes */}
+            {!globeReady && (
+                <div className="globe-loading-overlay" role="status" aria-label="Loading globe">
+                    <div className="globe-loading-spinner">⬢</div>
+                    <div className="globe-loading-text">INITIALIZING COMMAND CENTER...</div>
+                </div>
+            )}
             <div className="dashboard-view" ref={dashboardRef}>
                 {/* Header */}
-                <div className="header">
+                <nav className="header" role="navigation" aria-label="Main navigation">
                     <div className="logo">
-                        <span className="logo-icon">⬢</span>
-                        <span className="logo-text">GLOBAL COMMAND CENTER</span>
+                        <span className="logo-icon" aria-hidden="true">⬢</span>
+                        <h1 className="logo-text">GLOBAL COMMAND CENTER</h1>
                     </div>
                     <div className="date-time">
                         <a
@@ -843,11 +877,12 @@ function App() {
                             })()}
                         </div>
                     </div>
-                </div>
+                </nav>
 
                 {/* Main Content */}
-                <div className="main-content">
+                <main className="main-content" role="main">
                     {/* Globe Center Stage */}
+                    <GlobeErrorBoundary>
                     <div className={`globe-container ${stressLevel > 70 ? 'critical-vignette' : ''}`}>
                         <div ref={globeContainer} style={{ width: '100%', height: '100%' }} />
                         <div className="globe-overlay">
@@ -939,7 +974,7 @@ function App() {
                             )}
                         </div>
                     </div>
-
+                    </GlobeErrorBoundary>
 
                     {/* Cluster expand panel */}
                     {expandedCluster && (
@@ -1001,9 +1036,10 @@ function App() {
                             </div>
                         </>
                     )}
+                </main>
 
                     {/* Right Sidebar - Intel Feed */}
-                    <div className={`intel-feed ${sidebarCollapsed ? 'collapsed' : ''}`}>
+                    <aside id="intel-feed" className={`intel-feed ${sidebarCollapsed ? 'collapsed' : ''}`} role="complementary" aria-label="Intelligence Feed">
                         <button
                             className="sidebar-toggle"
                             onClick={() => setSidebarCollapsed(!sidebarCollapsed)}
@@ -1041,7 +1077,7 @@ function App() {
                                 <div style={{ color: '#ffcc00', fontFamily: 'Roboto Mono', fontSize: '0.7rem', padding: '20px', textAlign: 'center', opacity: 0.8 }}>
                                     ⟳ Loading {timelineYear} historical data...
                                 </div>
-                            ) : filteredForecasts.slice(0, 30).map((forecast, idx) => (
+                            ) : filteredForecasts.slice(0, feedPage * FEED_PAGE_SIZE).map((forecast, idx) => (
                                 <div
                                     key={idx}
                                     className={`intel-card ${selectedForecast === forecast ? 'selected' : ''} ${forecast.isLive ? 'live-item' : ''}`}
@@ -1069,9 +1105,18 @@ function App() {
                                     )}
                                 </div>
                             ))}
+                            {/* Show More button for pagination */}
+                            {feedPage * FEED_PAGE_SIZE < filteredForecasts.length && (
+                                <button
+                                    className="show-more-btn"
+                                    onClick={() => setFeedPage(p => p + 1)}
+                                    aria-label={`Show more events. Currently showing ${Math.min(feedPage * FEED_PAGE_SIZE, filteredForecasts.length)} of ${filteredForecasts.length}`}
+                                >
+                                    ▼ SHOW MORE ({filteredForecasts.length - feedPage * FEED_PAGE_SIZE} remaining)
+                                </button>
+                            )}
                         </div>
-                    </div>
-                </div>
+                </aside>
 
                 {/* Bottom Bar - Key Metrics */}
                 <div className="metrics-bar">

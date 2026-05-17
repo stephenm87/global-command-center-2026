@@ -2752,3 +2752,193 @@
     /* Export not usable on phone; still accessible at larger sizes */
     .export-btn { display: none; }
 }
+
+/* ══════════════════════════════════════════════════════════════════════════
+   ACCESSIBILITY & LOADING — Added for WCAG 2.1 compliance
+   ══════════════════════════════════════════════════════════════════════════ */
+
+/* Skip navigation link — visible on focus for keyboard users */
+.skip-nav {
+    position: absolute;
+    top: -100%;
+    left: 50%;
+    transform: translateX(-50%);
+    background: #000;
+    color: #00ffcc;
+    padding: 8px 16px;
+    z-index: 9999;
+    font-family: 'Roboto Mono', monospace;
+    font-size: 0.8rem;
+    border: 2px solid #00ffcc;
+    border-radius: 0 0 8px 8px;
+    text-decoration: none;
+    transition: top 0.2s ease;
+}
+.skip-nav:focus {
+    top: 0;
+    outline: 3px solid #00ffcc;
+    outline-offset: 2px;
+}
+
+/* Logo h1 reset — inherits parent styles, no browser h1 defaults */
+h1.logo-text {
+    margin: 0;
+    font-size: inherit;
+    font-weight: inherit;
+    line-height: inherit;
+    letter-spacing: inherit;
+}
+
+/* Globe loading skeleton overlay */
+.globe-loading-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: linear-gradient(135deg, #0a0e1a 0%, #1a1e2e 100%);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    z-index: 5000;
+    animation: globeLoadFadeIn 0.3s ease;
+}
+.globe-loading-spinner {
+    font-size: 4rem;
+    color: #00ffcc;
+    animation: globeLoadSpin 2s ease-in-out infinite;
+}
+.globe-loading-text {
+    margin-top: 16px;
+    font-family: 'Roboto Mono', monospace;
+    font-size: 0.75rem;
+    color: #00ffcc;
+    letter-spacing: 4px;
+    opacity: 0.8;
+    animation: globeLoadPulse 1.5s ease-in-out infinite;
+}
+@keyframes globeLoadSpin {
+    0%, 100% { transform: rotate(0deg) scale(1); opacity: 1; }
+    50% { transform: rotate(180deg) scale(1.1); opacity: 0.6; }
+}
+@keyframes globeLoadPulse {
+    0%, 100% { opacity: 0.5; }
+    50% { opacity: 1; }
+}
+@keyframes globeLoadFadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+/* Show More button for Intel Feed pagination */
+.show-more-btn {
+    width: 100%;
+    padding: 10px;
+    margin-top: 8px;
+    background: rgba(0, 255, 200, 0.06);
+    border: 1px dashed rgba(0, 255, 200, 0.25);
+    border-radius: 6px;
+    color: #00ffcc;
+    font-family: 'Roboto Mono', monospace;
+    font-size: 0.65rem;
+    letter-spacing: 1.5px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+.show-more-btn:hover {
+    background: rgba(0, 255, 200, 0.12);
+    border-color: rgba(0, 255, 200, 0.5);
+}
+.show-more-btn:focus-visible {
+    outline: 2px solid #00ffcc;
+    outline-offset: 2px;
+}
+
+/* ── Global focus-visible styles ─────────────────────────────────────────── */
+button:focus-visible,
+a:focus-visible,
+select:focus-visible,
+input:focus-visible {
+    outline: 2px solid #00ffcc;
+    outline-offset: 2px;
+}
+.intel-card:focus-visible {
+    outline: 2px solid #00ffcc;
+    outline-offset: -2px;
+}
+.theory-tab:focus-visible,
+.category-btn:focus-visible {
+    outline: 2px solid #00ffcc;
+    outline-offset: 2px;
+}
+
+/* ── Reduced motion — respect user preference ────────────────────────────── */
+@media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+        scroll-behavior: auto !important;
+    }
+    .globe-loading-spinner { animation: none; }
+    .globe-loading-text { animation: none; opacity: 1; }
+    .live-indicator { animation: none; }
+}
+
+/* ── High contrast mode ──────────────────────────────────────────────────── */
+@media (prefers-contrast: high) {
+    .intel-card {
+        border-width: 2px;
+        border-color: #fff;
+    }
+    .card-title, .card-category {
+        font-weight: 900;
+    }
+    button, a {
+        border-width: 2px !important;
+    }
+}
+
+/* ── Print styles ────────────────────────────────────────────────────────── */
+@media print {
+    .command-center {
+        background: #fff !important;
+        color: #000 !important;
+    }
+    .command-center::before { display: none; }
+    .globe-container,
+    .globe-loading-overlay,
+    .metrics-bar,
+    .export-btn,
+    .sidebar-toggle,
+    .skip-nav,
+    .news-scan-btn,
+    .companion-btn,
+    .credits-link,
+    .live-indicator { display: none !important; }
+    .intel-feed {
+        position: static !important;
+        width: 100% !important;
+        max-width: 100% !important;
+        height: auto !important;
+        overflow: visible !important;
+        background: #fff !important;
+    }
+    .intel-card {
+        border: 1px solid #ccc !important;
+        color: #000 !important;
+        page-break-inside: avoid;
+    }
+    .card-title { color: #000 !important; }
+    .card-category { color: #555 !important; }
+    .card-impact { color: #333 !important; }
+    .header {
+        background: #fff !important;
+        color: #000 !important;
+        border-bottom: 2px solid #000 !important;
+    }
+    .logo-text { color: #000 !important; }
+}

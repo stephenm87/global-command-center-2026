@@ -2,6 +2,19 @@
 // Sources: Serper (primary) → GNews (backup)
 // Cached 30 min to preserve free-tier quotas
 
+// ── Rate limiter ───────────────────────────────────────────────────────────
+const RATE_WINDOW_MS = 15 * 60 * 1000;
+const MAX_REQUESTS = 30;
+const requestLog = [];
+
+function isRateLimited() {
+    const now = Date.now();
+    while (requestLog.length && requestLog[0] < now - RATE_WINDOW_MS) requestLog.shift();
+    if (requestLog.length >= MAX_REQUESTS) return true;
+    requestLog.push(now);
+    return false;
+}
+
 const CACHE_DURATION_MS = 30 * 60 * 1000;
 let cache = { data: null, timestamp: 0 };
 
@@ -359,6 +372,11 @@ exports.handler = async (event) => {
         'Content-Type': 'application/json',
         'Cache-Control': 'public, max-age=1800'
     };
+
+    // Rate limit check (cache hits bypass this)
+    if (isRateLimited() && !(cache.data && (Date.now() - cache.timestamp) < CACHE_DURATION_MS)) {
+        return { statusCode: 429, headers, body: JSON.stringify({ error: 'Rate limit exceeded' }) };
+    }
 
     try {
         // Return cached data if still fresh

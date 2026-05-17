@@ -2,6 +2,35 @@
 // Called on-demand when a user requests full article content for an Intel card
 // POST body: { url: "https://..." }
 
+// ── Simple rate limiter ────────────────────────────────────────────────────
+const RATE_WINDOW_MS = 15 * 60 * 1000; // 15 minutes
+const MAX_REQUESTS = 30;
+const requestLog = [];
+
+function isRateLimited() {
+    const now = Date.now();
+    // Purge old entries
+    while (requestLog.length && requestLog[0] < now - RATE_WINDOW_MS) requestLog.shift();
+    if (requestLog.length >= MAX_REQUESTS) return true;
+    requestLog.push(now);
+    return false;
+}
+
+// ── URL validation (SSRF prevention) ───────────────────────────────────────
+function isValidUrl(urlStr) {
+    try {
+        const parsed = new URL(urlStr);
+        if (!['http:', 'https:'].includes(parsed.protocol)) return false;
+        // Block private/internal IPs
+        if (/^(localhost|127\.|10\.|172\.(1[6-9]|2\d|3[01])\.|192\.168\.|169\.254\.|0\.0\.0\.0|::1|\[::1\])/.test(parsed.hostname)) return false;
+        // Block non-FQDN hostnames
+        if (!parsed.hostname.includes('.')) return false;
+        return true;
+    } catch {
+        return false;
+    }
+}
+
 exports.handler = async (event) => {
     const headers = {
         'Access-Control-Allow-Origin': '*',
@@ -12,10 +41,20 @@ exports.handler = async (event) => {
         return { statusCode: 200, headers, body: '' };
     }
 
+    // Rate limit check
+    if (isRateLimited()) {
+        return { statusCode: 429, headers, body: JSON.stringify({ error: 'Rate limit exceeded. Try again in a few minutes.' }) };
+    }
+
     try {
         const { url } = JSON.parse(event.body || '{}');
         if (!url) {
             return { statusCode: 400, headers, body: JSON.stringify({ error: 'URL required' }) };
+        }
+
+        // Validate URL (SSRF prevention)
+        if (!isValidUrl(url)) {
+            return { statusCode: 400, headers, body: JSON.stringify({ error: 'Invalid or disallowed URL' }) };
         }
 
         const firecrawlKey = process.env.FIRECRAWL_API_KEY;

@@ -3,6 +3,19 @@
 // Returns: structured intelligence brief for IB Global Politics students
 const { callGeminiWithRetry } = require('./gemini-retry');
 
+// ── Rate limiter ───────────────────────────────────────────────────────────
+const RATE_WINDOW_MS = 15 * 60 * 1000;
+const MAX_REQUESTS = 20; // AI calls are expensive
+const requestLog = [];
+
+function isRateLimited() {
+    const now = Date.now();
+    while (requestLog.length && requestLog[0] < now - RATE_WINDOW_MS) requestLog.shift();
+    if (requestLog.length >= MAX_REQUESTS) return true;
+    requestLog.push(now);
+    return false;
+}
+
 const GEMINI_API_BASE = 'https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent';
 
 const SYSTEM_PROMPT = `You are an IB Global Politics intelligence analyst. Your role is to transform raw news content into structured geopolitical intelligence briefs for high school students studying the IB Global Politics 2026 syllabus.
@@ -26,6 +39,11 @@ Rules:
 - If content is insufficient, still return valid JSON with best-effort analysis`;
 
 exports.handler = async (event) => {
+    // Rate limit check
+    if (event.httpMethod !== 'OPTIONS' && isRateLimited()) {
+        return { statusCode: 429, headers: { 'Access-Control-Allow-Origin': '*', 'Content-Type': 'application/json' }, body: JSON.stringify({ error: 'Rate limit exceeded. Try again in a few minutes.' }) };
+    }
+
     const headers = {
         'Access-Control-Allow-Origin': '*',
         'Content-Type': 'application/json'

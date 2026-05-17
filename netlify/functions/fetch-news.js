@@ -2,6 +2,26 @@
 // Fetches latest geopolitical news via Serper, extracts entities+locations via Cloud NL API,
 // returns globe-ready node objects for display as LIVE INTEL nodes
 
+// ── Rate limiter ───────────────────────────────────────────────────────────
+const RATE_WINDOW_MS = 15 * 60 * 1000;
+const MAX_REQUESTS = 60;
+const requestLog = [];
+
+function isRateLimited() {
+    const now = Date.now();
+    while (requestLog.length && requestLog[0] < now - RATE_WINDOW_MS) requestLog.shift();
+    if (requestLog.length >= MAX_REQUESTS) return true;
+    requestLog.push(now);
+    return false;
+}
+
+// ── Input sanitization ─────────────────────────────────────────────────────
+function sanitizeQuery(raw) {
+    if (!raw || typeof raw !== 'string') return null;
+    // Max 200 chars, strip control chars and angle brackets
+    return raw.substring(0, 200).replace(/[<>{}|\\^`]/g, '').trim();
+}
+
 const GEOPOLITICS_QUERY = 'geopolitical crisis conflict war sanctions sovereignty 2025 2026';
 
 const CATEGORY_MAP = {
@@ -129,6 +149,11 @@ exports.handler = async (event, context) => {
         return { statusCode: 405, body: 'Method Not Allowed' };
     }
 
+    // Rate limit check
+    if (isRateLimited()) {
+        return { statusCode: 429, headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ error: 'Rate limit exceeded' }) };
+    }
+
     const serperKey = process.env.SERPER_API_KEY;
     const geminiKey = process.env.GEMINI_API_KEY;
 
@@ -137,10 +162,11 @@ exports.handler = async (event, context) => {
     }
 
     try {
-        // 1. Fetch news via Serper
-        const customQuery = event.httpMethod === 'POST'
-            ? (JSON.parse(event.body || '{}').query || GEOPOLITICS_QUERY)
-            : GEOPOLITICS_QUERY;
+        // 1. Fetch news via Serper (with input sanitization)
+        const rawQuery = event.httpMethod === 'POST'
+            ? (JSON.parse(event.body || '{}').query || null)
+            : null;
+        const customQuery = sanitizeQuery(rawQuery) || GEOPOLITICS_QUERY;
 
         const serperRes = await fetch('https://google.serper.dev/news', {
             method: 'POST',
