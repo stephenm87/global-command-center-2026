@@ -59,6 +59,7 @@ function App() {
     const [minerals, setMinerals] = useState({});
     const [showMineralsModal, setShowMineralsModal] = useState(false);
     const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
+    const [legendCollapsed, setLegendCollapsed] = useState(true);
     const [intelLastUpdated, setIntelLastUpdated] = useState(null);
     const [deepScanResult, setDeepScanResult] = useState(null);
     const [deepScanLoading, setDeepScanLoading] = useState(false);
@@ -906,86 +907,107 @@ function App() {
 
                         </div>
 
-                        {/* Node Category Color Key — always visible */}
-                        <div className="arc-legend">
-                            <div className="arc-legend-title">NODE KEY</div>
-                            {[
-                                ['Geopolitics & Conflict', '#ff0066'],
-                                ['Economy & Trade', '#00ccff'],
-                                ['Technology & Science', '#00ff88'],
-                                ['Health & Society', '#ff9900'],
-                                ['Environment & Energy', '#66ff00'],
-                                ['Culture & Entertainment', '#ff00ff'],
-                                ['Live Intel', '#00ffff'],
-                            ].map(([label, color]) => (
-                                <div key={label} className="arc-legend-item">
-                                    <span className="arc-legend-dot" style={{ background: color, boxShadow: `0 0 6px ${color}` }} />
-                                    <span style={{ color }}>{label}</span>
+                        {/* Node Key & Theory Lens — collapsible compact panel */}
+                        <div className="arc-legend" style={{ maxHeight: legendCollapsed ? '28px' : '460px', overflow: 'hidden', transition: 'max-height 0.3s ease' }}>
+                            <div
+                                onClick={() => setLegendCollapsed(!legendCollapsed)}
+                                style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', cursor: 'pointer', marginBottom: legendCollapsed ? 0 : '6px', userSelect: 'none' }}
+                            >
+                                <div className="arc-legend-title" style={{ margin: 0 }}>
+                                    {legendCollapsed ? '◀ KEY / THEORY' : '▼ KEY / THEORY'}
                                 </div>
-                            ))}
-
-                            {/* Arc type sub-key — only when scenario simulator is elevated */}
-                            {stressLevel > 50 && (
-                                <>
-                                    <div className="arc-legend-title" style={{ marginTop: '12px' }}>ARC KEY</div>
-                                    {[['⚔️', 'Military', '#ff2200'], ['💰', 'Economic', '#ff9900'], ['🗺️', 'Territorial', '#ffdd00'], ['🏥', 'Humanitarian', '#00ff99'], ['🤝', 'Diplomatic', '#cc44ff']].map(([icon, label, color]) => (
-                                        <div key={label} className="arc-legend-item">
-                                            <span className="arc-legend-dot" style={{ background: color, boxShadow: `0 0 6px ${color}` }} />
-                                            <span style={{ color }}>{icon} {label}</span>
-                                        </div>
-                                    ))}
-                                </>
-                            )}
-
-                            {/* Theory Lens Toggles */}
-                            <div className="arc-legend-title" style={{ marginTop: '14px' }}>THEORY LENS</div>
-                            <div style={{ display: 'flex', flexDirection: 'column', gap: '3px' }}>
-                                {Object.entries(THEORY_LABELS).map(([key, label]) => {
-                                    const isActive = theoryLens === key;
-                                    const color = THEORY_COLORS[key];
-                                    return (
-                                        <button
-                                            key={key}
-                                            onClick={() => setTheoryLens(isActive ? null : key)}
-                                            style={{
-                                                background: isActive ? color + '30' : 'transparent',
-                                                border: `1px solid ${isActive ? color : color + '44'}`,
-                                                borderRadius: '4px',
-                                                padding: '3px 8px',
-                                                cursor: 'pointer',
-                                                display: 'flex',
-                                                alignItems: 'center',
-                                                gap: '6px',
-                                                transition: 'all 0.2s',
-                                            }}
-                                            onMouseEnter={e => { if (!isActive) e.currentTarget.style.background = color + '18'; }}
-                                            onMouseLeave={e => { if (!isActive) e.currentTarget.style.background = 'transparent'; }}
-                                        >
-                                            <span style={{
-                                                width: '7px', height: '7px', borderRadius: '50%',
-                                                background: isActive ? color : color + '66',
-                                                boxShadow: isActive ? `0 0 8px ${color}` : 'none',
-                                                flexShrink: 0,
-                                            }} />
-                                            <span style={{
-                                                color: isActive ? color : color + 'aa',
-                                                fontSize: '0.55rem',
-                                                fontFamily: 'Roboto Mono',
-                                                fontWeight: isActive ? 700 : 400,
-                                                letterSpacing: '0.5px',
-                                            }}>
-                                                {label.toUpperCase()}
-                                            </span>
-                                        </button>
-                                    );
-                                })}
+                                <span style={{ color: '#ffffff55', fontSize: '0.5rem', fontFamily: 'Roboto Mono' }}>
+                                    {legendCollapsed ? 'EXPAND' : 'COLLAPSE'}
+                                </span>
                             </div>
-                            {theoryLens && (
-                                <div style={{ marginTop: '6px', padding: '5px 8px', background: THEORY_COLORS[theoryLens] + '12', border: `1px solid ${THEORY_COLORS[theoryLens]}33`, borderRadius: '4px' }}>
-                                    <div style={{ color: THEORY_COLORS[theoryLens], fontSize: '0.5rem', fontFamily: 'Roboto Mono', lineHeight: 1.4 }}>
-                                        Highlighting events matching {THEORY_LABELS[theoryLens]} keywords. Non-matching nodes dimmed.
+
+                            {!legendCollapsed && (
+                                <>
+                                    {/* Node Key — compact two-column */}
+                                    <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1px 8px', marginBottom: '8px' }}>
+                                        {[
+                                            ['Conflict', '#ff0066'],
+                                            ['Economy', '#00ccff'],
+                                            ['Tech', '#00ff88'],
+                                            ['Health', '#ff9900'],
+                                            ['Environ', '#66ff00'],
+                                            ['Culture', '#ff00ff'],
+                                            ['Live', '#00ffff'],
+                                        ].map(([label, color]) => (
+                                            <div key={label} className="arc-legend-item" style={{ marginBottom: '1px' }}>
+                                                <span className="arc-legend-dot" style={{ background: color, boxShadow: `0 0 4px ${color}`, width: '6px', height: '6px' }} />
+                                                <span style={{ color, fontSize: '0.5rem' }}>{label}</span>
+                                            </div>
+                                        ))}
                                     </div>
-                                </div>
+
+                                    {/* Arc type sub-key — only at elevated stress */}
+                                    {stressLevel > 50 && (
+                                        <>
+                                            <div className="arc-legend-title" style={{ marginBottom: '3px' }}>ARC KEY</div>
+                                            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1px 6px', marginBottom: '8px' }}>
+                                                {[['⚔️', 'Military', '#ff2200'], ['💰', 'Economic', '#ff9900'], ['🗺️', 'Territory', '#ffdd00'], ['🏥', 'Humanit.', '#00ff99'], ['🤝', 'Diplom.', '#cc44ff']].map(([icon, label, color]) => (
+                                                    <div key={label} className="arc-legend-item" style={{ marginBottom: '1px' }}>
+                                                        <span className="arc-legend-dot" style={{ background: color, boxShadow: `0 0 4px ${color}`, width: '6px', height: '6px' }} />
+                                                        <span style={{ color, fontSize: '0.5rem' }}>{icon} {label}</span>
+                                                    </div>
+                                                ))}
+                                            </div>
+                                        </>
+                                    )}
+
+                                    {/* Theory Lens Toggles — compact */}
+                                    <div className="arc-legend-title" style={{ marginBottom: '3px' }}>THEORY LENS</div>
+                                    <div style={{ display: 'flex', flexWrap: 'wrap', gap: '2px' }}>
+                                        {Object.entries(THEORY_LABELS).map(([key, label]) => {
+                                            const isActive = theoryLens === key;
+                                            const color = THEORY_COLORS[key];
+                                            return (
+                                                <button
+                                                    key={key}
+                                                    onClick={() => setTheoryLens(isActive ? null : key)}
+                                                    style={{
+                                                        background: isActive ? color + '30' : 'transparent',
+                                                        border: `1px solid ${isActive ? color : color + '33'}`,
+                                                        borderRadius: '10px',
+                                                        padding: '2px 6px',
+                                                        cursor: 'pointer',
+                                                        display: 'inline-flex',
+                                                        alignItems: 'center',
+                                                        gap: '3px',
+                                                        transition: 'all 0.15s',
+                                                        lineHeight: 1,
+                                                    }}
+                                                    onMouseEnter={e => { if (!isActive) e.currentTarget.style.background = color + '18'; }}
+                                                    onMouseLeave={e => { if (!isActive) e.currentTarget.style.background = 'transparent'; }}
+                                                >
+                                                    <span style={{
+                                                        width: '5px', height: '5px', borderRadius: '50%',
+                                                        background: isActive ? color : color + '66',
+                                                        boxShadow: isActive ? `0 0 6px ${color}` : 'none',
+                                                        flexShrink: 0,
+                                                    }} />
+                                                    <span style={{
+                                                        color: isActive ? color : color + '99',
+                                                        fontSize: '0.45rem',
+                                                        fontFamily: 'Roboto Mono',
+                                                        fontWeight: isActive ? 700 : 400,
+                                                        letterSpacing: '0.3px',
+                                                    }}>
+                                                        {label.length > 12 ? label.slice(0, 10).toUpperCase() + '…' : label.toUpperCase()}
+                                                    </span>
+                                                </button>
+                                            );
+                                        })}
+                                    </div>
+                                    {theoryLens && (
+                                        <div style={{ marginTop: '4px', padding: '3px 6px', background: THEORY_COLORS[theoryLens] + '12', border: `1px solid ${THEORY_COLORS[theoryLens]}33`, borderRadius: '4px' }}>
+                                            <div style={{ color: THEORY_COLORS[theoryLens], fontSize: '0.42rem', fontFamily: 'Roboto Mono', lineHeight: 1.3 }}>
+                                                Filtering: {THEORY_LABELS[theoryLens]} keywords
+                                            </div>
+                                        </div>
+                                    )}
+                                </>
                             )}
                         </div>
                     </div>
