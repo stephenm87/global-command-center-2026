@@ -138,17 +138,6 @@ function App() {
             globeEl.current = globe;
             globe.pointOfView({ lat: 40, lng: 30, altitude: 2.5 });
 
-            // Handle window resize so globe fills available space
-            const handleResize = () => {
-                if (globeContainer.current && globe) {
-                    globe.width(globeContainer.current.offsetWidth);
-                    globe.height(globeContainer.current.offsetHeight);
-                }
-            };
-            window.addEventListener('resize', handleResize);
-            // Initial size kick — give DOM a frame to settle
-            requestAnimationFrame(handleResize);
-
             // Load country boundaries GeoJSON
             fetch('https://cdn.jsdelivr.net/npm/world-atlas@2/countries-110m.json')
                 .then(res => res.json())
@@ -176,13 +165,11 @@ function App() {
                         })
                         .catch(e => console.log('Country borders unavailable:', e.message));
                 });
-
-            setGlobeReady(true);
-            return () => window.removeEventListener('resize', handleResize);
         } catch (err) {
             console.error('[Globe] Initialization failed:', err);
-            setGlobeReady(true); // Still clear overlay on failure
         }
+
+        setGlobeReady(true);
     }, []);
 
 
