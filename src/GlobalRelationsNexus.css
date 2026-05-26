@@ -1,0 +1,1396 @@
+/* ----------------------------------------------------
+   3D Relations Nexus Stylesheet
+   Premium cyber-command center design aesthetics
+---------------------------------------------------- */
+
+.nexus-container {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    background-color: #000000;
+    font-family: 'Roboto Mono', 'Courier New', monospace;
+    color: #e0e0e0;
+    overflow: hidden;
+}
+
+/* Holographic Top Control Bar */
+.nexus-bar {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 50px;
+    z-index: 10;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 20px;
+    box-sizing: border-box;
+    background: linear-gradient(180deg, rgba(0, 0, 0, 0.85) 0%, rgba(0, 0, 0, 0.4) 60%, rgba(0, 0, 0, 0) 100%);
+    border-bottom: 1px solid rgba(0, 255, 136, 0.15);
+    backdrop-filter: blur(8px);
+}
+
+.nexus-title {
+    display: flex;
+    align-items: center;
+    font-size: 0.95rem;
+    font-weight: 700;
+    letter-spacing: 2px;
+    color: #00ff88;
+    text-shadow: 0 0 10px rgba(0, 255, 136, 0.3);
+}
+
+.nexus-pulse-orb {
+    display: inline-block;
+    width: 8px;
+    height: 8px;
+    background-color: #00ff88;
+    border-radius: 50%;
+    margin-right: 10px;
+    box-shadow: 0 0 8px #00ff88;
+    animation: nexus-pulse 2s infinite ease-in-out;
+}
+
+@keyframes nexus-pulse {
+    0%, 100% {
+        opacity: 0.3;
+        transform: scale(0.9);
+    }
+    50% {
+        opacity: 1;
+        transform: scale(1.1);
+        box-shadow: 0 0 14px #00ff88;
+    }
+}
+
+.theory-banner {
+    display: flex;
+    align-items: center;
+    padding-left: 12px;
+    font-size: 0.8rem;
+    letter-spacing: 1.5px;
+}
+
+.banner-label {
+    color: #888;
+    margin-right: 8px;
+}
+
+.banner-value {
+    font-weight: 700;
+    text-shadow: 0 0 8px currentColor;
+}
+
+/* Canvas wrapping */
+.nexus-canvas-wrapper {
+    position: relative;
+    width: 100%;
+    height: 100%;
+}
+
+/* Telemetry Stats Overlay */
+.nexus-telemetry {
+    position: absolute;
+    bottom: 20px;
+    left: 20px;
+    z-index: 10;
+    font-size: 0.65rem;
+    color: rgba(255, 255, 255, 0.35);
+    line-height: 1.6;
+    letter-spacing: 1px;
+    background: rgba(0, 0, 0, 0.6);
+    padding: 8px 12px;
+    border-radius: 4px;
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    backdrop-filter: blur(4px);
+    pointer-events: none;
+}
+
+/* Tooltips matching main GCC style */
+.nexus-tooltip {
+    background: rgba(0, 5, 10, 0.95);
+    border: 1px solid #00ff88;
+    border-radius: 4px;
+    padding: 10px 14px;
+    font-family: 'Roboto Mono', monospace;
+    font-size: 0.75rem;
+    color: #e0e0e0;
+    max-width: 280px;
+    box-shadow: 0 8px 32px rgba(0, 255, 136, 0.15);
+    backdrop-filter: blur(8px);
+}
+
+.tooltip-title {
+    font-weight: 700;
+    color: #fff;
+    margin-bottom: 4px;
+    letter-spacing: 0.5px;
+}
+
+.tooltip-type {
+    font-size: 0.65rem;
+    color: #00ccff;
+    letter-spacing: 1px;
+    margin-bottom: 6px;
+}
+
+.tooltip-players {
+    font-size: 0.65rem;
+    color: #888;
+    margin-bottom: 4px;
+}
+
+.tooltip-action {
+    font-size: 0.65rem;
+    color: #ff9900;
+    margin-top: 6px;
+    border-top: 1px dashed rgba(255, 255, 255, 0.1);
+    padding-top: 6px;
+}
+
+/* Dynamic Dimension Legend & Controls Panel */
+.nexus-hud-legend {
+    position: absolute;
+    bottom: 20px;
+    left: 20px;
+    z-index: 10;
+    width: 260px;
+    background: rgba(0, 5, 10, 0.85);
+    border: 1px solid rgba(0, 255, 136, 0.2);
+    border-radius: 6px;
+    padding: 16px;
+    box-sizing: border-box;
+    backdrop-filter: blur(12px);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.8);
+}
+
+.hud-header {
+    font-size: 0.7rem;
+    font-weight: 700;
+    letter-spacing: 1.5px;
+    color: #888;
+    margin-bottom: 12px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    padding-bottom: 4px;
+}
+
+.hud-row {
+    margin-bottom: 10px;
+}
+
+.hud-row:last-child {
+    margin-bottom: 0;
+}
+
+/* Custom Cybernetic Checkbox styling */
+.cyber-checkbox {
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+    user-select: none;
+}
+
+.cyber-checkbox input {
+    display: none;
+}
+
+.checkbox-box {
+    width: 12px;
+    height: 12px;
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    background-color: transparent;
+    border-radius: 2px;
+    margin-right: 10px;
+    display: inline-block;
+    position: relative;
+    transition: all 0.2s ease;
+}
+
+.cyber-checkbox input:checked + .checkbox-box {
+    background-color: currentColor;
+    box-shadow: 0 0 8px currentColor;
+}
+
+.checkbox-label {
+    font-size: 0.7rem;
+    font-weight: 700;
+    letter-spacing: 1px;
+    transition: color 0.2s ease;
+}
+
+/* Sliders */
+.hud-slider-row {
+    margin-top: 8px;
+}
+
+.slider-label {
+    display: block;
+    font-size: 0.6rem;
+    color: #666;
+    letter-spacing: 1px;
+    margin-bottom: 6px;
+}
+
+.cyber-slider {
+    -webkit-appearance: none;
+    width: 100%;
+    height: 3px;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 2px;
+    outline: none;
+}
+
+.cyber-slider::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    width: 10px;
+    height: 14px;
+    border-radius: 2px;
+    background: #00ff88;
+    box-shadow: 0 0 6px #00ff88;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+.cyber-slider::-webkit-slider-thumb:hover {
+    background: #fff;
+    box-shadow: 0 0 10px #fff;
+}
+
+/* ----------------------------------------------------
+   Holographic Intel Inspect Sidebar
+---------------------------------------------------- */
+.nexus-inspect-panel {
+    position: absolute;
+    top: 60px;
+    right: 20px;
+    width: 420px;
+    max-height: calc(100% - 80px);
+    z-index: 12;
+    background: rgba(0, 4, 8, 0.92);
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    border-radius: 8px;
+    padding: 22px 24px;
+    box-sizing: border-box;
+    overflow-y: auto;
+    backdrop-filter: blur(16px);
+    box-shadow: -10px 10px 40px rgba(0, 0, 0, 0.9);
+    animation: inspect-slide-in 0.3s ease-out;
+}
+
+@keyframes inspect-slide-in {
+    from {
+        opacity: 0;
+        transform: translateX(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+.inspect-close {
+    position: absolute;
+    top: 15px;
+    right: 15px;
+    background: none;
+    border: none;
+    color: #666;
+    font-size: 1.1rem;
+    cursor: pointer;
+    transition: color 0.2s;
+}
+
+.inspect-close:hover {
+    color: #fff;
+}
+
+.inspect-glow-header {
+    padding-bottom: 12px;
+    margin-bottom: 16px;
+}
+
+.inspect-cat {
+    font-size: 0.72rem;
+    font-weight: 700;
+    color: #ff9900;
+    letter-spacing: 2px;
+    margin-bottom: 6px;
+}
+
+.inspect-title {
+    margin: 0;
+    font-size: 1.2rem;
+    font-weight: 700;
+    color: #fff;
+    line-height: 1.3;
+    letter-spacing: 0.5px;
+}
+
+/* Sections */
+.inspect-section {
+    margin-bottom: 18px;
+}
+
+.inspect-section:last-child {
+    margin-bottom: 0;
+}
+
+.section-label {
+    font-size: 0.72rem;
+    font-size: 0.7rem;
+    font-weight: 700;
+    color: #555;
+    letter-spacing: 1.5px;
+    margin-bottom: 8px;
+    border-left: 2px solid rgba(0, 255, 255, 0.3);
+    padding-left: 8px;
+}
+
+.section-body {
+    margin: 0;
+    font-size: 0.82rem;
+    color: #bbb;
+    line-height: 1.6;
+}
+
+/* Interactive Metrics Bars */
+.radar-grid {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    margin-top: 8px;
+}
+
+.radar-metric {
+    display: grid;
+    grid-template-columns: 120px 1fr 35px;
+    align-items: center;
+    font-size: 0.65rem;
+}
+
+.metric-title {
+    color: #888;
+}
+
+.metric-bar-wrapper {
+    height: 4px;
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 2px;
+    overflow: hidden;
+    margin: 0 8px;
+}
+
+.metric-bar {
+    height: 100%;
+    border-radius: 2px;
+    box-shadow: 0 0 6px currentColor;
+}
+
+.metric-val {
+    color: #fff;
+    text-align: right;
+    font-weight: 700;
+}
+
+/* Theory Interpretations Inside Sidebar */
+.theoretical-lens-box {
+    background: rgba(255, 255, 255, 0.02);
+    padding: 12px;
+    border-radius: 4px;
+}
+
+.lens-header {
+    font-size: 0.7rem;
+    font-weight: 700;
+    letter-spacing: 1.5px;
+    margin-bottom: 6px;
+}
+
+.lens-text {
+    margin: 0;
+    font-size: 0.7rem;
+    color: #888;
+    line-height: 1.5;
+    font-style: italic;
+}
+
+/* Scrollbar customizations */
+.nexus-inspect-panel::-webkit-scrollbar {
+    width: 4px;
+}
+
+.nexus-inspect-panel::-webkit-scrollbar-track {
+    background: rgba(0, 0, 0, 0.3);
+}
+
+.nexus-inspect-panel::-webkit-scrollbar-thumb {
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 2px;
+}
+
+.nexus-inspect-panel::-webkit-scrollbar-thumb:hover {
+    background: rgba(255, 255, 255, 0.25);
+}
+
+/* ── Reset View Button & Hints ────────────────────────────────────────────── */
+.nexus-ctrl-btn {
+    background: rgba(0, 255, 136, 0.08);
+    border: 1px solid rgba(0, 255, 136, 0.3);
+    color: #00ff88;
+    padding: 3px 10px;
+    border-radius: 4px;
+    font-family: 'Roboto Mono', monospace;
+    font-size: 0.6rem;
+    letter-spacing: 1px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    outline: none;
+}
+.nexus-ctrl-btn:hover {
+    background: rgba(0, 255, 136, 0.2);
+    border-color: #00ff88;
+    text-shadow: 0 0 6px rgba(0, 255, 136, 0.5);
+    box-shadow: 0 0 8px rgba(0, 255, 136, 0.15);
+}
+.nexus-hint {
+    margin-top: 6px;
+    font-size: 0.52rem;
+    color: rgba(255, 255, 255, 0.35);
+    letter-spacing: 0.5px;
+    font-style: italic;
+}
+
+/* ── Hover Preview Card ───────────────────────────────────────────────────── */
+.nexus-hover-card {
+    position: absolute;
+    top: 60px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: rgba(8, 12, 20, 0.92);
+    border: 1px solid rgba(0, 255, 255, 0.2);
+    border-radius: 8px;
+    padding: 12px 16px;
+    min-width: 240px;
+    max-width: 360px;
+    pointer-events: none;
+    z-index: 50;
+    backdrop-filter: blur(12px);
+    box-shadow: 0 4px 24px rgba(0, 0, 0, 0.6), 0 0 12px rgba(0, 255, 255, 0.08);
+    animation: hoverFadeIn 0.15s ease-out;
+}
+@keyframes hoverFadeIn {
+    from { opacity: 0; transform: translateX(-50%) translateY(-4px); }
+    to   { opacity: 1; transform: translateX(-50%) translateY(0); }
+}
+.hover-card-header {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 4px;
+}
+.hover-card-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    flex-shrink: 0;
+    box-shadow: 0 0 6px currentColor;
+}
+.hover-card-name {
+    font-family: 'Roboto Mono', monospace;
+    font-size: 0.75rem;
+    font-weight: 700;
+    color: #fff;
+    letter-spacing: 0.5px;
+}
+.hover-card-type {
+    font-size: 0.55rem;
+    color: #888;
+    letter-spacing: 1px;
+    margin-bottom: 6px;
+    text-transform: uppercase;
+}
+.hover-card-desc {
+    font-size: 0.62rem;
+    color: #aaa;
+    line-height: 1.4;
+    margin-bottom: 4px;
+}
+.hover-card-players {
+    font-size: 0.58rem;
+    color: #00ff88;
+    font-family: 'Roboto Mono', monospace;
+    margin-bottom: 4px;
+}
+.hover-card-cta {
+    font-size: 0.5rem;
+    color: rgba(0, 255, 255, 0.5);
+    text-align: right;
+    font-style: italic;
+    margin-top: 4px;
+}
+
+/* ── At-a-Glance Badges ──────────────────────────────────────────────────── */
+.badge-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 4px;
+    margin-top: 6px;
+}
+.node-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    font-family: 'Roboto Mono', monospace;
+    font-size: 0.58rem;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+    padding: 3px 8px;
+    border-radius: 4px;
+    border: 1px solid;
+    background: rgba(0, 0, 0, 0.4);
+    text-shadow: 0 0 4px currentColor;
+}
+
+/* ── Inspect Tab Bar ─────────────────────────────────────────────────────── */
+.inspect-tabs {
+    display: flex;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+    margin-bottom: 0;
+    padding: 0;
+    gap: 0;
+}
+.inspect-tab {
+    flex: 1;
+    background: transparent;
+    border: none;
+    border-bottom: 2px solid transparent;
+    color: #666;
+    font-family: 'Roboto Mono', monospace;
+    font-size: 0.62rem;
+    letter-spacing: 0.5px;
+    padding: 10px 6px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    outline: none;
+    text-align: center;
+}
+.inspect-tab:hover {
+    color: #aaa;
+    background: rgba(255, 255, 255, 0.02);
+}
+.inspect-tab.active {
+    color: #00ffff;
+    border-bottom-color: #00ffff;
+    text-shadow: 0 0 6px rgba(0, 255, 255, 0.4);
+}
+.inspect-tab-content {
+    flex: 1;
+    overflow-y: auto;
+    padding-top: 4px;
+}
+
+/* ── Connection Summary Table ────────────────────────────────────────────── */
+.conn-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-family: 'Roboto Mono', monospace;
+    font-size: 0.58rem;
+    margin-top: 6px;
+}
+.conn-table thead tr {
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+.conn-table th {
+    text-align: left;
+    color: #666;
+    font-size: 0.48rem;
+    letter-spacing: 1px;
+    padding: 4px 4px;
+    font-weight: 400;
+}
+.conn-table td {
+    padding: 4px 4px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.03);
+    vertical-align: middle;
+}
+.conn-name {
+    color: #ccc;
+    font-size: 0.58rem;
+    max-width: 130px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+.conn-dim-pill {
+    display: inline-block;
+    font-size: 0.45rem;
+    letter-spacing: 0.5px;
+    padding: 1px 5px;
+    border: 1px solid;
+    border-radius: 3px;
+    background: rgba(0, 0, 0, 0.3);
+}
+.conn-str {
+    color: #ff9900;
+    font-size: 0.5rem;
+    letter-spacing: -1px;
+}
+
+/* ── GPC Cards ───────────────────────────────────────────────────────────── */
+.gpc-card {
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 6px;
+    padding: 8px 10px;
+    transition: border-color 0.2s ease;
+}
+.gpc-card:hover {
+    border-color: rgba(0, 255, 255, 0.3);
+}
+.gpc-card-header {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    color: #00ffff;
+    font-size: 0.65rem;
+    font-weight: 700;
+    font-family: 'Roboto Mono', monospace;
+    margin-bottom: 4px;
+}
+.gpc-card-body {
+    margin: 0;
+    font-size: 0.75rem;
+    color: #bbb;
+    line-height: 1.5;
+}
+
+/* ── Anchor Cluster Legend ────────────────────────────────────────────────── */
+.anchor-legend-list {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    margin-bottom: 10px;
+    max-height: 260px;
+    overflow-y: auto;
+}
+.anchor-legend-item {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    background: rgba(255, 255, 255, 0.02);
+    border: 1px solid rgba(255, 255, 255, 0.06);
+    border-radius: 4px;
+    padding: 4px 8px;
+    cursor: pointer;
+    transition: all 0.15s ease;
+    outline: none;
+    text-align: left;
+    font-family: 'Roboto Mono', monospace;
+}
+.anchor-legend-item:hover {
+    background: rgba(255, 255, 255, 0.05);
+    border-color: var(--anchor-color, rgba(255, 255, 255, 0.2));
+}
+.anchor-legend-item.expanded {
+    background: rgba(0, 255, 255, 0.06);
+    border-color: var(--anchor-color, #00ffff);
+    box-shadow: 0 0 6px rgba(0, 255, 255, 0.08);
+}
+.anchor-dot {
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    flex-shrink: 0;
+    box-shadow: 0 0 4px currentColor;
+}
+.anchor-label {
+    flex: 1;
+    font-size: 0.52rem;
+    color: #bbb;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+.anchor-legend-item.expanded .anchor-label {
+    color: #fff;
+}
+.anchor-count {
+    font-size: 0.48rem;
+    color: #666;
+    flex-shrink: 0;
+    min-width: 24px;
+    text-align: right;
+}
+.anchor-legend-item.expanded .anchor-count {
+    color: #00ffff;
+}
+
+/* ── Connection Navigation List ──────────────────────────────────────────── */
+.conn-nav-list {
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+    margin-top: 6px;
+    max-height: 200px;
+    overflow-y: auto;
+}
+.conn-nav-btn {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    background: rgba(255, 255, 255, 0.02);
+    border: 1px solid rgba(255, 255, 255, 0.06);
+    border-radius: 4px;
+    padding: 5px 8px;
+    cursor: pointer;
+    transition: all 0.15s ease;
+    outline: none;
+    text-align: left;
+    font-family: 'Roboto Mono', monospace;
+}
+.conn-nav-btn:hover {
+    background: rgba(0, 255, 255, 0.08);
+    border-color: var(--conn-color, #00ffff);
+    box-shadow: 0 0 8px rgba(0, 255, 255, 0.1);
+}
+.conn-nav-dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    flex-shrink: 0;
+}
+.conn-nav-name {
+    flex: 1;
+    font-size: 0.65rem;
+    color: #ccc;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+.conn-nav-btn:hover .conn-nav-name {
+    color: #fff;
+}
+.conn-nav-arrow {
+    color: #00ffff;
+    font-size: 0.65rem;
+    opacity: 0;
+    transition: opacity 0.15s ease;
+    flex-shrink: 0;
+}
+.conn-nav-btn:hover .conn-nav-arrow {
+    opacity: 1;
+}
+
+/* ── Lock Mode UI ─────────────────────────────────────────────────────────── */
+.inspect-header-actions {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 8px;
+}
+.lock-btn {
+    background: rgba(255, 153, 0, 0.08);
+    border: 1px solid rgba(255, 153, 0, 0.3);
+    color: #ff9900;
+    padding: 4px 12px;
+    border-radius: 4px;
+    font-family: 'Roboto Mono', monospace;
+    font-size: 0.6rem;
+    font-weight: 700;
+    letter-spacing: 1px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    outline: none;
+}
+.lock-btn:hover {
+    background: rgba(255, 153, 0, 0.2);
+    border-color: #ff9900;
+    box-shadow: 0 0 8px rgba(255, 153, 0, 0.2);
+}
+.lock-btn.locked {
+    background: rgba(255, 153, 0, 0.15);
+    border-color: #ff9900;
+    color: #ffcc00;
+    text-shadow: 0 0 6px rgba(255, 204, 0, 0.4);
+    box-shadow: 0 0 10px rgba(255, 153, 0, 0.15);
+    animation: lock-pulse 2s ease-in-out infinite;
+}
+@keyframes lock-pulse {
+    0%, 100% { box-shadow: 0 0 10px rgba(255, 153, 0, 0.15); }
+    50% { box-shadow: 0 0 16px rgba(255, 153, 0, 0.3); }
+}
+
+/* Breadcrumb navigation */
+.lock-breadcrumb {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    padding: 6px 10px;
+    margin-bottom: 8px;
+    background: rgba(255, 153, 0, 0.06);
+    border: 1px solid rgba(255, 153, 0, 0.15);
+    border-radius: 4px;
+    font-family: 'Roboto Mono', monospace;
+    font-size: 0.6rem;
+}
+.breadcrumb-link {
+    background: none;
+    border: none;
+    font-family: 'Roboto Mono', monospace;
+    font-size: 0.6rem;
+    font-weight: 700;
+    cursor: pointer;
+    padding: 0;
+    transition: opacity 0.2s;
+    text-decoration: underline;
+    text-underline-offset: 2px;
+}
+.breadcrumb-link:hover {
+    opacity: 0.8;
+}
+.breadcrumb-arrow {
+    color: #666;
+    font-size: 0.7rem;
+}
+.breadcrumb-current {
+    color: #fff;
+    font-weight: 700;
+}
+
+/* ══════════════════════════════════════════════════════════════════════════════
+   SEARCH & FILTER BAR
+   ══════════════════════════════════════════════════════════════════════════ */
+.nexus-search-overlay {
+    position: absolute;
+    top: 10px;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 50;
+    width: 460px;
+    max-width: 90vw;
+}
+.nexus-search-bar {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    background: rgba(0, 5, 15, 0.95);
+    border: 1px solid rgba(0, 255, 255, 0.3);
+    border-radius: 8px;
+    padding: 10px 14px;
+    backdrop-filter: blur(20px);
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.8), 0 0 20px rgba(0, 255, 255, 0.1);
+}
+.search-icon {
+    color: #00ffff;
+    font-size: 1.1rem;
+    flex-shrink: 0;
+}
+.nexus-search-bar input {
+    flex: 1;
+    background: transparent;
+    border: none;
+    outline: none;
+    color: #fff;
+    font-family: 'Roboto Mono', monospace;
+    font-size: 0.82rem;
+    letter-spacing: 0.5px;
+}
+.nexus-search-bar input::placeholder {
+    color: #555;
+}
+.search-close {
+    background: none;
+    border: none;
+    color: #666;
+    font-size: 0.9rem;
+    cursor: pointer;
+    padding: 2px 6px;
+    transition: color 0.2s;
+}
+.search-close:hover { color: #fff; }
+
+.search-results {
+    margin-top: 4px;
+    background: rgba(0, 5, 15, 0.95);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 6px;
+    max-height: 320px;
+    overflow-y: auto;
+    backdrop-filter: blur(20px);
+}
+.search-result-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    width: 100%;
+    padding: 10px 14px;
+    background: transparent;
+    border: none;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+    cursor: pointer;
+    transition: background 0.15s;
+    text-align: left;
+    font-family: 'Roboto Mono', monospace;
+}
+.search-result-item:hover {
+    background: rgba(0, 255, 255, 0.06);
+}
+.search-result-item:last-child { border-bottom: none; }
+.search-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    flex-shrink: 0;
+}
+.search-name {
+    flex: 1;
+    color: #ddd;
+    font-size: 0.72rem;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+.search-cat {
+    color: #555;
+    font-size: 0.5rem;
+    letter-spacing: 1px;
+    flex-shrink: 0;
+    max-width: 120px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+.search-empty {
+    padding: 16px;
+    color: #444;
+    font-size: 0.7rem;
+    text-align: center;
+}
+
+/* ══════════════════════════════════════════════════════════════════════════════
+   GUIDED TOURS
+   ══════════════════════════════════════════════════════════════════════════ */
+.tour-selector {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    max-height: 200px;
+    overflow-y: auto;
+}
+.tour-start-btn {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    background: rgba(255, 255, 255, 0.02);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-left: 3px solid;
+    border-radius: 4px;
+    padding: 8px 10px;
+    cursor: pointer;
+    text-align: left;
+    font-family: 'Roboto Mono', monospace;
+    font-size: 0.58rem;
+    font-weight: 700;
+    transition: all 0.2s ease;
+}
+.tour-start-btn:hover {
+    background: rgba(255, 255, 255, 0.05);
+    transform: translateX(3px);
+}
+.tour-subtitle {
+    font-weight: 400;
+    font-size: 0.48rem;
+    color: #666;
+    letter-spacing: 0;
+}
+.tour-controls {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    padding: 6px 0;
+}
+.tour-controls button {
+    background: rgba(0, 255, 255, 0.06);
+    border: 1px solid rgba(0, 255, 255, 0.2);
+    color: #00ffff;
+    padding: 4px 10px;
+    border-radius: 3px;
+    font-family: 'Roboto Mono', monospace;
+    font-size: 0.52rem;
+    cursor: pointer;
+    transition: all 0.15s;
+}
+.tour-controls button:hover:not(:disabled) {
+    background: rgba(0, 255, 255, 0.15);
+}
+.tour-controls button:disabled {
+    opacity: 0.3;
+    cursor: not-allowed;
+}
+.tour-controls .tour-stop {
+    border-color: rgba(255, 0, 102, 0.3);
+    color: #ff0066;
+    margin-left: auto;
+}
+.tour-progress {
+    font-size: 0.5rem;
+    color: #888;
+    letter-spacing: 1px;
+}
+
+/* Tour Narration Overlay */
+.tour-narration {
+    position: absolute;
+    bottom: 30px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 520px;
+    max-width: 85vw;
+    z-index: 30;
+    background: rgba(0, 5, 15, 0.92);
+    border: 1px solid;
+    border-radius: 8px;
+    padding: 18px 22px;
+    backdrop-filter: blur(20px);
+    box-shadow: 0 12px 40px rgba(0, 0, 0, 0.9);
+    animation: tour-slide-up 0.4s ease-out;
+}
+@keyframes tour-slide-up {
+    from { opacity: 0; transform: translateX(-50%) translateY(20px); }
+    to { opacity: 1; transform: translateX(-50%) translateY(0); }
+}
+.tour-narration-title {
+    font-size: 0.85rem;
+    font-weight: 700;
+    letter-spacing: 1px;
+    margin-bottom: 8px;
+}
+.tour-narration-text {
+    font-size: 0.75rem;
+    color: #ccc;
+    line-height: 1.65;
+    margin: 0;
+}
+.tour-narration-progress {
+    display: flex;
+    gap: 6px;
+    margin-top: 14px;
+    justify-content: center;
+}
+.tour-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.15);
+    transition: all 0.3s ease;
+}
+.tour-dot.active {
+    transform: scale(1.4);
+    box-shadow: 0 0 8px currentColor;
+}
+.tour-dot.done {
+    background: rgba(255, 255, 255, 0.4);
+}
+
+/* ══════════════════════════════════════════════════════════════════════════════
+   COMPARATIVE MODE
+   ══════════════════════════════════════════════════════════════════════════ */
+.nexus-compare-panel {
+    position: absolute;
+    top: 60px;
+    right: 20px;
+    width: 420px;
+    max-height: calc(100% - 80px);
+    z-index: 12;
+    background: rgba(0, 4, 8, 0.92);
+    border: 1px solid rgba(255, 153, 0, 0.2);
+    border-radius: 8px;
+    padding: 22px 24px;
+    box-sizing: border-box;
+    overflow-y: auto;
+    backdrop-filter: blur(16px);
+    box-shadow: -10px 10px 40px rgba(0, 0, 0, 0.9);
+    animation: inspect-slide-in 0.3s ease-out;
+}
+.compare-header {
+    font-size: 0.75rem;
+    font-weight: 700;
+    color: #ff9900;
+    letter-spacing: 2px;
+    margin-bottom: 16px;
+    text-align: center;
+}
+.compare-columns {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    margin-bottom: 16px;
+}
+.compare-col {
+    flex: 1;
+    border-left: 3px solid;
+    padding-left: 10px;
+}
+.compare-col h3 {
+    margin: 0 0 4px;
+    font-size: 0.78rem;
+    font-weight: 700;
+}
+.compare-type {
+    font-size: 0.48rem;
+    color: #666;
+    letter-spacing: 1px;
+}
+.compare-vs {
+    color: #ff9900;
+    font-size: 0.9rem;
+    font-weight: 700;
+    padding-top: 6px;
+    flex-shrink: 0;
+}
+.compare-section {
+    margin-top: 14px;
+    padding-top: 14px;
+    border-top: 1px solid rgba(255, 255, 255, 0.06);
+}
+.compare-shared {
+    font-size: 0.7rem;
+    color: #aaa;
+    margin-top: 6px;
+}
+
+/* ══════════════════════════════════════════════════════════════════════════════
+   EDGE DETAIL CARDS
+   ══════════════════════════════════════════════════════════════════════════ */
+.edge-inspector {
+    border-color: rgba(0, 255, 255, 0.2);
+}
+.edge-header {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 0.82rem;
+    font-weight: 700;
+    margin-bottom: 10px;
+    flex-wrap: wrap;
+}
+.edge-arrow {
+    color: #555;
+    font-size: 1rem;
+}
+.edge-dimension {
+    font-size: 0.65rem;
+    font-weight: 700;
+    letter-spacing: 2px;
+    margin-bottom: 14px;
+    padding: 4px 10px;
+    border-radius: 3px;
+    background: rgba(255, 255, 255, 0.04);
+    display: inline-block;
+}
+.edge-metrics {
+    font-size: 0.7rem;
+    color: #aaa;
+    margin-bottom: 14px;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+.edge-metrics strong { color: #fff; }
+.edge-nav-btns {
+    display: flex;
+    gap: 6px;
+}
+.edge-nav-btns button {
+    flex: 1;
+    background: rgba(0, 255, 255, 0.06);
+    border: 1px solid rgba(0, 255, 255, 0.15);
+    color: #00ffff;
+    padding: 6px 10px;
+    border-radius: 4px;
+    font-family: 'Roboto Mono', monospace;
+    font-size: 0.55rem;
+    cursor: pointer;
+    transition: all 0.15s;
+}
+.edge-nav-btns button:hover {
+    background: rgba(0, 255, 255, 0.12);
+}
+
+/* ══════════════════════════════════════════════════════════════════════════════
+   MINI-MAP RADAR
+   ══════════════════════════════════════════════════════════════════════════ */
+.nexus-minimap {
+    position: absolute;
+    bottom: 20px;
+    right: 20px;
+    z-index: 15;
+    width: 140px;
+    height: 140px;
+    background: rgba(0, 5, 15, 0.8);
+    border: 1px solid rgba(0, 255, 136, 0.2);
+    border-radius: 6px;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.6);
+}
+
+/* ══════════════════════════════════════════════════════════════════════════════
+   AUDIO CONTROLS
+   ══════════════════════════════════════════════════════════════════════════ */
+.audio-controls {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+.audio-mute-btn {
+    background: rgba(255, 255, 255, 0.04);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    color: #888;
+    padding: 3px 8px;
+    border-radius: 3px;
+    font-family: 'Roboto Mono', monospace;
+    font-size: 0.5rem;
+    cursor: pointer;
+    transition: all 0.15s;
+    white-space: nowrap;
+}
+.audio-mute-btn:hover {
+    color: #fff;
+    border-color: rgba(0, 255, 255, 0.3);
+}
+.audio-slider {
+    flex: 1;
+    -webkit-appearance: none;
+    appearance: none;
+    height: 3px;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 2px;
+    outline: none;
+}
+.audio-slider::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background: #00ff88;
+    cursor: pointer;
+}
+
+/* ══════════════════════════════════════════════════════════════════════════════
+   PULSE INDICATOR
+   ══════════════════════════════════════════════════════════════════════════ */
+.pulse-indicator {
+    font-size: 0.52rem;
+    color: #00ff88;
+    letter-spacing: 1px;
+    padding: 4px 8px;
+    margin-top: 6px;
+    background: rgba(0, 255, 136, 0.06);
+    border: 1px solid rgba(0, 255, 136, 0.15);
+    border-radius: 3px;
+    animation: pulse-glow 2s ease-in-out infinite;
+}
+@keyframes pulse-glow {
+    0%, 100% { box-shadow: 0 0 4px rgba(0, 255, 136, 0.1); }
+    50% { box-shadow: 0 0 12px rgba(0, 255, 136, 0.25); }
+}
+
+
+/* ══════════════════════════════════════════════════════════════════════════════
+   ENLARGED PANEL OVERRIDES
+   ══════════════════════════════════════════════════════════════════════════ */
+.nexus-hud {
+    width: 280px;
+    font-size: 0.78rem;
+}
+.nexus-inspect-panel {
+    width: 440px;
+    font-size: 0.82rem;
+}
+.nexus-inspect-panel .inspect-node-name {
+    font-size: 1.1rem;
+}
+.nexus-inspect-panel .inspect-section {
+    font-size: 0.8rem;
+    line-height: 1.7;
+}
+.nexus-inspect-panel .section-label {
+    font-size: 0.72rem;
+}
+.nexus-inspect-panel .inspect-desc {
+    font-size: 0.78rem;
+    line-height: 1.65;
+}
+.nexus-inspect-panel .conn-item {
+    font-size: 0.72rem;
+}
+.nexus-inspect-panel .badge-item {
+    font-size: 0.62rem;
+}
+.nexus-hud .hud-header {
+    font-size: 0.62rem;
+}
+.nexus-hud .nexus-ctrl-btn {
+    font-size: 0.6rem;
+    padding: 5px 10px;
+}
+.nexus-hud .anchor-legend-item {
+    font-size: 0.62rem;
+}
+.nexus-compare-panel {
+    width: 460px;
+    font-size: 0.82rem;
+}
+
+/* ══════════════════════════════════════════════════════════════════════════════
+   RICH EDGE DATA STYLES
+   ══════════════════════════════════════════════════════════════════════════ */
+.edge-rich-data {
+    margin-bottom: 14px;
+}
+.edge-label-tag {
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: 2px;
+    margin-bottom: 6px;
+}
+.edge-data-points {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 5px;
+    margin-top: 8px;
+}
+.edge-dp {
+    font-size: 0.58rem;
+    color: #aaa;
+    background: rgba(255, 255, 255, 0.04);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    padding: 3px 8px;
+    border-radius: 3px;
+    letter-spacing: 0.5px;
+}
+
+/* ══════════════════════════════════════════════════════════════════════════════
+   GDELT LIVE INTEL FEED
+   ══════════════════════════════════════════════════════════════════════════ */
+.gdelt-feed {
+    max-height: 160px;
+    overflow-y: auto;
+    margin-top: 4px;
+}
+.gdelt-item {
+    display: block;
+    font-size: 0.52rem;
+    color: #999;
+    text-decoration: none;
+    padding: 5px 8px;
+    border-left: 2px solid;
+    margin-bottom: 3px;
+    background: rgba(255, 255, 255, 0.02);
+    transition: all 0.15s;
+    line-height: 1.4;
+}
+.gdelt-item:hover {
+    color: #fff;
+    background: rgba(255, 255, 255, 0.05);
+}

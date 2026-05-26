@@ -7,6 +7,7 @@ import { generate5W1H, getGlobalChallenges, CHALLENGE_ICONS } from './eventAnaly
 import { AuthBadge, AuthModal, useAuth } from './AuthModal';
 import { supabase } from './supabase';
 import './App.css';
+import GlobalRelationsNexus from './GlobalRelationsNexus';
 
 // ── XSS prevention: escape HTML in user/CSV-sourced data before template strings ──
 const escHtml = s => (s || '').replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
@@ -43,6 +44,33 @@ const categoryColors = {
     'Culture & Entertainment': '#ff00ff'
 };
 
+
+class NexusErrorBoundary extends React.Component {
+    constructor(props) { super(props); this.state = { error: null, info: null }; }
+    static getDerivedStateFromError(err) { return { error: err }; }
+    componentDidCatch(err, info) { 
+        this.setState({ info }); 
+        console.error('[NEXUS CRASH]', err.message, err.stack);
+    }
+    render() {
+        if (this.state.error) {
+            return React.createElement('div', {
+                style: { color: '#ff0066', background: '#0a0a1a', padding: '40px', fontFamily: 'Roboto Mono, monospace', fontSize: '13px', position: 'absolute', top: '60px', left: 0, right: 0, bottom: 0, zIndex: 100, overflow: 'auto' }
+            },
+                React.createElement('h2', { style: { color: '#ff0066', marginBottom: '16px' } }, '⚠ NEXUS COMPONENT CRASHED'),
+                React.createElement('div', { style: { color: '#ff9900', marginBottom: '8px' } }, 'Error: ' + this.state.error.message),
+                React.createElement('pre', { style: { color: '#888', fontSize: '11px', whiteSpace: 'pre-wrap', maxHeight: '300px', overflow: 'auto', background: 'rgba(255,255,255,0.03)', padding: '12px', borderRadius: '4px' } }, this.state.error.stack),
+                this.state.info && React.createElement('pre', { style: { color: '#555', fontSize: '10px', whiteSpace: 'pre-wrap', marginTop: '12px' } }, this.state.info.componentStack),
+                React.createElement('button', {
+                    onClick: () => this.setState({ error: null, info: null }),
+                    style: { marginTop: '20px', padding: '8px 16px', background: '#00ff88', color: '#000', border: 'none', cursor: 'pointer', fontFamily: 'monospace', fontWeight: 'bold' }
+                }, '⟲ RETRY')
+            );
+        }
+        return this.props.children;
+    }
+}
+
 function App() {
     const { user, showModal, openModal, closeModal } = useAuth();
     const [forecasts, setForecasts] = useState([]);
@@ -50,6 +78,7 @@ function App() {
     const [selectedCategory, setSelectedCategory] = useState('All');
     const [selectedForecast, setSelectedForecast] = useState(null);
     const [selectedTheory, setSelectedTheory] = useState('Realism');
+    const [viewMode, setViewMode] = useState('globe');
 
     const [stressLevel, setStressLevel] = useState(0);
     const [escalationPairs, setEscalationPairs] = useState([]);
@@ -769,6 +798,51 @@ function App() {
                         <span className="logo-icon" aria-hidden="true">⬢</span>
                         <span className="logo-text">GLOBAL COMMAND CENTER</span>
                     </div>
+                    
+                    {/* High-tech View Mode Selector */}
+                    <div className="view-mode-selector" style={{ display: 'flex', gap: '8px', marginLeft: '20px', borderLeft: '1px solid rgba(255,255,255,0.1)', paddingLeft: '20px' }}>
+                        <button
+                            className={`view-mode-btn ${viewMode === 'globe' ? 'active' : ''}`}
+                            onClick={() => setViewMode('globe')}
+                            style={{
+                                background: viewMode === 'globe' ? 'rgba(0, 255, 136, 0.15)' : 'transparent',
+                                border: '1px solid',
+                                borderColor: viewMode === 'globe' ? '#00ff88' : 'rgba(255, 255, 255, 0.15)',
+                                color: viewMode === 'globe' ? '#00ff88' : '#888',
+                                borderRadius: '4px',
+                                padding: '4px 10px',
+                                fontFamily: 'Roboto Mono, monospace',
+                                fontSize: '0.65rem',
+                                letterSpacing: '1px',
+                                cursor: 'pointer',
+                                transition: 'all 0.2s ease',
+                                textShadow: viewMode === 'globe' ? '0 0 8px rgba(0, 255, 136, 0.3)' : 'none'
+                            }}
+                        >
+                            🌎 3D GLOBE
+                        </button>
+                        <button
+                            className={`view-mode-btn ${viewMode === 'nexus' ? 'active' : ''}`}
+                            onClick={() => setViewMode('nexus')}
+                            style={{
+                                background: viewMode === 'nexus' ? 'rgba(0, 255, 136, 0.15)' : 'transparent',
+                                border: '1px solid',
+                                borderColor: viewMode === 'nexus' ? '#00ff88' : 'rgba(255, 255, 255, 0.15)',
+                                color: viewMode === 'nexus' ? '#00ff88' : '#888',
+                                borderRadius: '4px',
+                                padding: '4px 10px',
+                                fontFamily: 'Roboto Mono, monospace',
+                                fontSize: '0.65rem',
+                                letterSpacing: '1px',
+                                cursor: 'pointer',
+                                transition: 'all 0.2s ease',
+                                textShadow: viewMode === 'nexus' ? '0 0 8px rgba(0, 255, 136, 0.3)' : 'none'
+                            }}
+                        >
+                            ⚯ RELATIONS NEXUS
+                        </button>
+                    </div>
+
                     <div className="date-time">
                         <a
                             href="https://glopocompanion.netlify.app/"
@@ -904,15 +978,19 @@ function App() {
                 <div className="main-content" role="main">
                     {/* Globe Center Stage */}
                     <GlobeErrorBoundary>
-                    <div className={`globe-container ${stressLevel > 70 ? 'critical-vignette' : ''}`}>
-                        <div ref={globeContainer} style={{ width: '100%', height: '100%' }} />
-                        <div className="globe-overlay">
-                            <div className="globe-title">GLOBAL THREAT MATRIX</div>
+                    <div className={`globe-container ${stressLevel > 70 ? 'critical-vignette' : ''}`} style={viewMode === 'nexus' ? { display: 'none' } : {}}>
+                        <div ref={globeContainer} style={{ width: '100%', height: '100%', display: viewMode === 'globe' ? 'block' : 'none' }} />
+                        
+                        {viewMode === 'globe' && (
+                            <div className="globe-overlay">
+                                <div className="globe-title">GLOBAL THREAT MATRIX</div>
+                            </div>
+                        )}
 
 
-                        </div>
 
                         {/* Node Key & Theory Lens — collapsible compact panel */}
+                        {viewMode === 'globe' && (
                         <div className="arc-legend" style={{ maxHeight: legendCollapsed ? '28px' : '460px', overflow: 'hidden', transition: 'max-height 0.3s ease' }}>
                             <div
                                 onClick={() => setLegendCollapsed(!legendCollapsed)}
@@ -1015,8 +1093,21 @@ function App() {
                                 </>
                             )}
                         </div>
+                        )}
                     </div>
                     </GlobeErrorBoundary>
+
+                    {/* Relations Nexus — with error display */}
+                    {viewMode === 'nexus' && (
+                        <NexusErrorBoundary>
+                            <GlobalRelationsNexus
+                                forecasts={filteredForecasts}
+                                selectedTheory={selectedTheory}
+                                theories={theories}
+                                onTheorySelect={setSelectedTheory}
+                            />
+                        </NexusErrorBoundary>
+                    )}
 
                     {/* Cluster expand panel */}
                     {expandedCluster && (
@@ -1081,7 +1172,7 @@ function App() {
 
 
                     {/* Right Sidebar - Intel Feed */}
-                    <aside id="intel-feed" className={`intel-feed ${sidebarCollapsed ? 'collapsed' : ''}`} role="complementary" aria-label="Intelligence Feed">
+                    <aside id="intel-feed" className={`intel-feed ${sidebarCollapsed ? 'collapsed' : ''}`} role="complementary" aria-label="Intelligence Feed" style={viewMode === 'nexus' ? { display: 'none' } : {}}>
                         <button
                             className="sidebar-toggle"
                             onClick={() => setSidebarCollapsed(!sidebarCollapsed)}
@@ -1161,8 +1252,8 @@ function App() {
                 </aside>
                 </div> {/* end .main-content */}
 
-                {/* Bottom Bar - Key Metrics */}
-                <div className="metrics-bar">
+                {/* Bottom Bar - Key Metrics (hidden in nexus mode) */}
+                <div className="metrics-bar" style={viewMode === 'nexus' ? { display: 'none' } : {}}>
                     <div className="metric-item">
                         <span className="metric-label">TOTAL EVENTS</span>
                         <span className="metric-value">{keyMetrics.totalEvents || 0}</span>
