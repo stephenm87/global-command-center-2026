@@ -1394,3 +1394,77 @@
     color: #fff;
     background: rgba(255, 255, 255, 0.05);
 }
+
+/* ══════════════════════════════════════════════════════════════════════════════
+   CONTEXT MENU
+   ══════════════════════════════════════════════════════════════════════════ */
+.nexus-context-menu {
+    position: fixed;
+    z-index: 100;
+    background: rgba(0, 4, 10, 0.96);
+    border: 1px solid rgba(0, 255, 255, 0.2);
+    border-radius: 6px;
+    padding: 4px 0;
+    min-width: 200px;
+    backdrop-filter: blur(20px);
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.9), 0 0 20px rgba(0, 255, 255, 0.05);
+    animation: ctx-pop 0.15s ease-out;
+}
+@keyframes ctx-pop {
+    from { opacity: 0; transform: scale(0.95); }
+    to { opacity: 1; transform: scale(1); }
+}
+.ctx-header {
+    font-size: 0.65rem;
+    font-weight: 700;
+    padding: 8px 14px 6px;
+    letter-spacing: 1px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+}
+.nexus-context-menu button {
+    display: block;
+    width: 100%;
+    text-align: left;
+    background: transparent;
+    border: none;
+    color: #ccc;
+    font-family: 'Roboto Mono', monospace;
+    font-size: 0.62rem;
+    padding: 8px 14px;
+    cursor: pointer;
+    transition: all 0.12s;
+}
+.nexus-context-menu button:hover {
+    background: rgba(0, 255, 255, 0.08);
+    color: #fff;
+}
+
+/* ══════════════════════════════════════════════════════════════════════════════
+   ACTOR LIST SIDEBAR
+   ══════════════════════════════════════════════════════════════════════════ */
+.actor-list {
+    display: flex;
+    flex-direction: column;
+    gap: 1px;
+    max-height: 240px;
+    overflow-y: auto;
+}
+.actor-list-item {
+    background: transparent;
+    border: none;
+    border-left: 3px solid;
+    padding: 5px 10px;
+    text-align: left;
+    font-family: 'Roboto Mono', monospace;
+    font-size: 0.55rem;
+    cursor: pointer;
+    transition: all 0.15s;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+.actor-list-item:hover {
+    background: rgba(255, 255, 255, 0.04);
+    color: #fff !important;
+    transform: translateX(3px);
+}

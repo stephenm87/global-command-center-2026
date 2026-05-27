@@ -1,12 +1,8 @@
-import { useState, useEffect, useRef, useMemo, useCallback } from 'react';
+import React, { useState, useEffect, useRef, useMemo, useCallback } from 'react';
 import ForceGraph3D from 'react-force-graph-3d';
 import * as THREE from 'three';
 import { getGlobalChallenges, CHALLENGE_ICONS } from './eventAnalysis';
 import './GlobalRelationsNexus.css';
-import * as NexusAudio from './nexusAudio';
-import { getEdgeInfo, getEdgeLabel } from './nexusEdgeData';
-import { generateNodeNarrative, generateEdgeNarrative } from './nexusNarrative';
-import { fetchGlobalPulse } from './nexusGDELT';
 
 // ── Primary Geopolitical Anchors ──────────────────────────────────────────────
 const PRIMARY_ANCHORS = {
@@ -22,11 +18,7 @@ const PRIMARY_ANCHORS = {
     UN_OPEC:      { id: 'UN_OPEC',      name: 'Global Institutions (UN/OPEC/WTO)',      type: 'igo',      color: '#e0f7fa', size: 12 },
     BiotechHub:   { id: 'BiotechHub',   name: 'Global Pharma MNCs (Lilly/Novo/Amgen)',  type: 'mnc',      color: '#00ff88', size: 12 },
     TechAIHub:    { id: 'TechAIHub',    name: 'Tech & Silicon MNCs (Nvidia/TSMC/ASML)', type: 'mnc',      color: '#00ffff', size: 12 },
-    MilitantPMC:  { id: 'MilitantPMC',  name: 'PMCs & Militias (Wagner/RSF)',             type: 'nonstate', color: '#ff3d00', size: 10 },
-    Jihadist:     { id: 'Jihadist',     name: 'Jihadist Networks (ISIS/AQ/Boko Haram)',    type: 'nonstate', color: '#cc0000', size: 9  },
-    Cartels:      { id: 'Cartels',      name: 'Transnational Cartels (Sinaloa/CJNG)',      type: 'nonstate', color: '#ff6f00', size: 8  },
-    CyberActors:  { id: 'CyberActors',  name: 'State-Backed Cyber Groups (APT28/Lazarus)', type: 'nonstate', color: '#9c27b0', size: 8  },
-    Hezbollah:    { id: 'Hezbollah',    name: 'Hezbollah / Iran Proxies (Houthis)',        type: 'nonstate', color: '#d50000', size: 8  },
+    MilitantPMC:  { id: 'MilitantPMC',  name: 'Non-State Actors & PMCs (RSF/Wagner)',   type: 'nonstate', color: '#ff3d00', size: 10 },
 };
 
 const ANCHOR_DESCS = {
@@ -42,11 +34,7 @@ const ANCHOR_DESCS = {
     UN_OPEC:      'Multilateral system managing international law, global energy supply controls, and trade dispute arbitrations.',
     BiotechHub:   'Transnational pharmaceutical giants dictating global metabolic healthcare pipelines and pharmaceutical distribution networks.',
     TechAIHub:    'Strategic high-tech corporate entities controlling semiconductor foundries, advanced photolithography, and AI hardware platforms.',
-    MilitantPMC:  'Private military contractors and paramilitary forces: Wagner Group in Africa/Syria, Sudan RSF, Sahel juntas — state-adjacent but deniable.',
-    Jihadist:     'Transnational jihadist networks: ISIS remnants in Syria/Sahel, Al-Qaeda affiliates (JNIM, Al-Shabaab), Boko Haram in Lake Chad Basin.',
-    Cartels:      'Mexican and Latin American drug cartels controlling fentanyl/cocaine supply chains: Sinaloa Cartel, CJNG — destabilizing states from Colombia to the US border.',
-    CyberActors:  'State-sponsored cyber warfare groups: Russia\'s APT28/Sandworm, China\'s APT41, North Korea\'s Lazarus Group, Iran\'s Charming Kitten — operating in the grey zone.',
-    Hezbollah:    'Iran\'s proxy network: Hezbollah in Lebanon, Houthis in Yemen, PMF in Iraq — the "Axis of Resistance" reshaping Middle East power dynamics.',
+    MilitantPMC:  'Asymmetric actors, private military contractors, and insurgent forces operating in geopolitical friction zones (Wagner, Sudan RSF).',
 };
 
 const ACTOR_TYPE_LABELS = {
@@ -73,12 +61,7 @@ const assignPrimaryAnchor = (forecast) => {
         forecast.Broad_Category,
     ].join(' ').toLowerCase();
 
-    if (/wagner|rsf|paramilitary|militia|mercenary|pmc/.test(allText)) return 'MilitantPMC';
-    if (/isis|isil|islamic.state|al.qaeda|boko.haram|jihadist|al.shabaab|jnim|aqim/.test(allText)) return 'Jihadist';
-    if (/cartel|sinaloa|cjng|fentanyl|narco|drug.trafficking|el.chapo/.test(allText)) return 'Cartels';
-    if (/cyber|apt28|apt41|lazarus|sandworm|hack|ransomware|charming.kitten/.test(allText)) return 'CyberActors';
-    if (/hezbollah|houthi|axis.of.resistance|iran.proxy|pmf|popular.mobilization/.test(allText)) return 'Hezbollah';
-    if (/insurgent|rebel|terrorist|guerrilla/.test(allText)) return 'MilitantPMC';
+    if (/wagner|rsf|paramilitary|militia|insurgent|rebel|terrorist|mercenary|guerrilla/.test(allText)) return 'MilitantPMC';
     if (/\bnato\b|north atlantic treaty/.test(allText)) return 'NATO';
     if (/united nations|\bun\b|\bopec\b|\bwto\b|\bwho\b|world health|world bank|\bimf\b|multilateral/.test(allText)) return 'UN_OPEC';
     if (/novo nordisk|wegovy|semaglutide|eli lilly|amgen|retatrutide|cagrisema|maritide|bimagrumab|pharma|pharmaceuticals/.test(allText)) return 'BiotechHub';
@@ -99,7 +82,27 @@ const linkId = (end) => (typeof end === 'object' && end !== null) ? (end.id || '
 
 // ══════════════════════════════════════════════════════════════════════════════
 
-
+class NexusErrorCatcher extends React.Component {
+    constructor(props) { super(props); this.state = { error: null }; }
+    static getDerivedStateFromError(err) { return { error: err }; }
+    componentDidCatch(err, info) { console.error('[NEXUS CRASH]', err, info); }
+    render() {
+        if (this.state.error) {
+            return React.createElement('div', {
+                style: { color: '#ff0066', background: '#000', padding: '40px', fontFamily: 'monospace', fontSize: '14px' }
+            },
+                React.createElement('h2', { style: { color: '#ff0066' } }, '⚠ NEXUS RENDER ERROR'),
+                React.createElement('pre', { style: { color: '#ff9900', whiteSpace: 'pre-wrap' } }, this.state.error.message),
+                React.createElement('pre', { style: { color: '#666', fontSize: '11px', whiteSpace: 'pre-wrap' } }, this.state.error.stack),
+                React.createElement('button', {
+                    onClick: () => this.setState({ error: null }),
+                    style: { marginTop: '20px', padding: '8px 16px', background: '#00ff88', color: '#000', border: 'none', cursor: 'pointer', fontFamily: 'monospace' }
+                }, 'RETRY')
+            );
+        }
+        return this.props.children;
+    }
+}
 
 export default function GlobalRelationsNexus({ forecasts, selectedTheory, theories, onTheorySelect }) {
     const fgRef = useRef();
@@ -111,33 +114,12 @@ export default function GlobalRelationsNexus({ forecasts, selectedTheory, theori
     const [lockedNode, setLockedNode]                = useState(null);
     const [hoveredNode, setHoveredNode]              = useState(null);
     const [inspectTab, setInspectTab]                = useState('overview');
-    // Search
-    const [searchOpen, setSearchOpen]                = useState(false);
-    const [searchQuery, setSearchQuery]              = useState('');
-    // Case Study Presets
-    const [activeCaseStudy, setActiveCaseStudy]      = useState(null);
-    // Live Data Pulse
-    const [pulseSignals, setPulseSignals]             = useState([]);
-    // Comparative Mode
-    const [compareNode, setCompareNode]              = useState(null);
-    // Edge Detail
-    const [selectedEdge, setSelectedEdge]            = useState(null);
-    // Audio
-    const [audioMuted, setAudioMuted]                = useState(false);
-    const [audioVolume, setAudioVolume]              = useState(0.3);
-    // Mini-map
-    const miniMapRef = useRef(null);
-    // 2D mode
-    const [is2D, setIs2D] = useState(false);
-    // Context menu
-    const [contextMenu, setContextMenu] = useState(null);
-    // Double-click tracking
-    const lastClickRef = useRef({ nodeId: null, time: 0 });
+    const [repulsionMultiplier, setRepulsionMultiplier] = useState(1.1);
     const [dimensions, setDimensions] = useState({ trade: true, conflict: true, diplomacy: true, tech: true });
     const [expandedAnchors, setExpandedAnchors] = useState({
         USA: false, China: false, Russia: false, Europe: false,
         MiddleEast: false, Africa: false, AsiaPacific: false, LatinAmerica: false,
-        NATO: false, UN_OPEC: false, BiotechHub: false, TechAIHub: false, MilitantPMC: false, Jihadist: false, Cartels: false, CyberActors: false, Hezbollah: false,
+        NATO: false, UN_OPEC: false, BiotechHub: false, TechAIHub: false, MilitantPMC: false,
     });
 
     const toggleAnchorExpand = useCallback((id) => {
@@ -258,31 +240,6 @@ export default function GlobalRelationsNexus({ forecasts, selectedTheory, theori
             p('MiddleEast','MilitantPMC','conflict',DIM_COLORS.conflict,2.0,3); // Regional militia
             p('MilitantPMC','Africa','conflict',DIM_COLORS.conflict,2.4,3);  // Sudan RSF, Sahel
             p('MilitantPMC','Russia','conflict',DIM_COLORS.conflict,1.8,2);  // Wagner operations
-            p('MilitantPMC','China','conflict',DIM_COLORS.conflict,0.8,1);   // China Belt & Road security
-            // Jihadist networks
-            p('Jihadist','Africa','conflict',DIM_COLORS.conflict,2.5,4);     // Sahel JNIM, Boko Haram, Al-Shabaab
-            p('Jihadist','MiddleEast','conflict',DIM_COLORS.conflict,2.2,3); // ISIS remnants in Syria/Iraq
-            p('Jihadist','AsiaPacific','conflict',DIM_COLORS.conflict,1.2,2);// SE Asia affiliates (Philippines, Indonesia)
-            p('Jihadist','USA','conflict',DIM_COLORS.conflict,1.5,2);       // Counter-terrorism operations
-            p('Jihadist','Europe','conflict',DIM_COLORS.conflict,1.4,2);    // Domestic radicalization
-            p('Jihadist','MilitantPMC','conflict',DIM_COLORS.conflict,1.6,2);// Sahel overlap with Wagner
-            // Cartels
-            p('Cartels','LatinAmerica','conflict',DIM_COLORS.conflict,2.8,4);// Territorial control
-            p('Cartels','USA','conflict',DIM_COLORS.conflict,2.2,3);        // Fentanyl crisis, border security
-            p('Cartels','China','trade',DIM_COLORS.trade,1.5,2);            // Precursor chemicals from China
-            // Cyber actors
-            p('CyberActors','Russia','conflict',DIM_COLORS.conflict,2.0,3); // APT28/Sandworm
-            p('CyberActors','China','conflict',DIM_COLORS.conflict,1.8,2);  // APT41
-            p('CyberActors','USA','conflict',DIM_COLORS.conflict,2.2,3);    // Primary target
-            p('CyberActors','Europe','conflict',DIM_COLORS.conflict,1.5,2); // Infrastructure attacks
-            p('CyberActors','TechAIHub','tech',DIM_COLORS.tech,1.6,2);     // IP theft, chip espionage
-            p('CyberActors','NATO','conflict',DIM_COLORS.conflict,1.3,2);   // Hybrid warfare
-            // Hezbollah / Iran proxies
-            p('Hezbollah','MiddleEast','conflict',DIM_COLORS.conflict,2.8,4);// Lebanon, Iraq PMF
-            p('Hezbollah','AsiaPacific','conflict',DIM_COLORS.conflict,1.0,1);// Houthi Red Sea attacks
-            p('Hezbollah','Russia','diplomacy',DIM_COLORS.diplomacy,1.2,2); // Syria alliance
-            p('Hezbollah','UN_OPEC','diplomacy',DIM_COLORS.diplomacy,1.0,1);// UN sanctions
-            p('Hezbollah','USA','conflict',DIM_COLORS.conflict,2.0,3);      // US sanctions/CENTCOM
             p('MilitantPMC','Europe','conflict',DIM_COLORS.conflict,1.6,2);  // Wagner friction
             // Tech conflict (export controls, cyber)
             p('USA','TechAIHub','conflict',DIM_COLORS.conflict,1.4,2); // Chip export controls
@@ -316,9 +273,6 @@ export default function GlobalRelationsNexus({ forecasts, selectedTheory, theori
             p('China','AsiaPacific','tech',DIM_COLORS.tech,1.6,3);   // Regional tech competition
             p('USA','Europe','tech',DIM_COLORS.tech,1.5,2);          // AI regulation / transatlantic tech
             p('LatinAmerica','TechAIHub','tech',DIM_COLORS.tech,1.3,2); // Lithium for batteries
-            // Non-state actor trade links
-            p('Cartels','Africa','trade',DIM_COLORS.trade,0.8,1);           // Cocaine transit via West Africa
-            p('MilitantPMC','Africa','trade',DIM_COLORS.trade,1.2,2);      // Gold/mineral extraction
             // Pharma/biotech tech corridors
             p('BiotechHub','Europe','tech',DIM_COLORS.tech,1.8,3);   // Novo Nordisk R&D
             p('BiotechHub','AsiaPacific','tech',DIM_COLORS.tech,1.4,2); // Generic manufacturing
@@ -328,61 +282,9 @@ export default function GlobalRelationsNexus({ forecasts, selectedTheory, theori
         return { nodes, links };
     }, [forecasts, expandedAnchors, dimensions]);
 
-    // ── Case Study preset logic ────────────────────────────────────────────────
-    const CASE_STUDIES = useMemo(() => [
-        { id: 'semiconductor', title: '🔬 Semiconductor Supply Chain', color: '#bf55ec',
-          nodes: ['TechAIHub','AsiaPacific','USA','Europe','China','LatinAmerica'],
-          dims: ['tech','trade','conflict'],
-          context: 'TSMC, ASML, Nvidia — the chokepoints controlling who can build advanced chips. US export controls vs China\'s self-sufficiency push.' },
-        { id: 'sudan', title: '⚔ Sudan Conflict Network', color: '#ff0066',
-          nodes: ['MilitantPMC','Africa','Russia','UN_OPEC','MiddleEast'],
-          dims: ['conflict','diplomacy'],
-          context: 'The RSF vs SAF civil war, Wagner mercenaries, 12M displaced, Gulf proxy competition, and multilateral paralysis.' },
-        { id: 'us-china', title: '🐉 US-China Strategic Competition', color: '#ff9900',
-          nodes: ['USA','China','AsiaPacific','TechAIHub','NATO','Europe','Russia'],
-          dims: ['conflict','trade','diplomacy','tech'],
-          context: 'The defining great power rivalry: Indo-Pacific theatre, tech decoupling, alliance architecture, and the Taiwan question.' },
-        { id: 'energy', title: '⚡ Energy Geopolitics', color: '#ff6600',
-          nodes: ['MiddleEast','UN_OPEC','Russia','Europe','Africa','China'],
-          dims: ['trade','conflict','diplomacy'],
-          context: 'OPEC+ production politics, Russia\'s energy weapon, Europe\'s transition, and Africa\'s resource frontier.' },
-        { id: 'health', title: '🏥 Global Health Pipeline', color: '#00ff88',
-          nodes: ['BiotechHub','USA','Europe','AsiaPacific','Africa','UN_OPEC'],
-          dims: ['trade','tech','diplomacy'],
-          context: 'GLP-1 drug wars, vaccine equity, TRIPS waivers, generic manufacturing in India, and pharma lobby power.' },
-        { id: 'bri', title: '🏗 Belt & Road Initiative', color: '#ffcc00',
-          nodes: ['China','Africa','LatinAmerica','AsiaPacific','Europe','MiddleEast'],
-          dims: ['trade','diplomacy','tech'],
-          context: 'China\'s $1T infrastructure diplomacy: debt traps, port acquisitions, digital silk road, and Western counter-offers (B3W/PGII).' },
-        { id: 'minerals', title: '⛏ Critical Minerals Race', color: '#66ff00',
-          nodes: ['Africa','LatinAmerica','China','TechAIHub','USA','Europe'],
-          dims: ['trade','tech'],
-          context: 'Lithium triangle, Congo cobalt, rare earths, supply chain reshoring — who controls the materials of the energy transition?' },
-        { id: 'africa', title: '🌍 Africa\'s Strategic Scramble', color: '#66ff00',
-          nodes: ['Africa','China','Russia','MilitantPMC','Europe','USA','UN_OPEC'],
-          dims: ['conflict','trade','diplomacy','tech'],
-          context: 'Sahel coups, Wagner expansion, critical minerals, EU migration deals, and competing infrastructure investments.' },
-    ], []);
-
-    // Case study highlight set — overrides normal highlightSet when active
-    const caseStudySet = useMemo(() => {
-        if (!activeCaseStudy) return null;
-        const cs = CASE_STUDIES.find(c => c.id === activeCaseStudy);
-        if (!cs) return null;
-        return new Set(cs.nodes);
-    }, [activeCaseStudy, CASE_STUDIES]);
-
-    const activeCaseData = useMemo(() => {
-        if (!activeCaseStudy) return null;
-        return CASE_STUDIES.find(c => c.id === activeCaseStudy) || null;
-    }, [activeCaseStudy, CASE_STUDIES]);
-
-
     // ── Highlighted (first-degree) set — uses lockedNode when locked ─────────
     const focusNode = lockedNode || selectedNode;
     const highlightSet = useMemo(() => {
-        // Case study mode overrides when no specific node is selected
-        if (!focusNode && caseStudySet) return caseStudySet;
         if (!focusNode) return null;
         const s = new Set([focusNode.id]);
         graphData.links.forEach(l => {
@@ -394,28 +296,8 @@ export default function GlobalRelationsNexus({ forecasts, selectedTheory, theori
         if (selectedNode && selectedNode.id !== focusNode.id) {
             s.add(selectedNode.id);
         }
-        // Comparative mode: also add compare node's neighborhood
-        if (compareNode) {
-            s.add(compareNode.id);
-            graphData.links.forEach(l2 => {
-                const s2 = typeof l2.source === 'object' ? l2.source.id : l2.source;
-                const t2 = typeof l2.target === 'object' ? l2.target.id : l2.target;
-                if (s2 === compareNode.id) s.add(t2);
-                if (t2 === compareNode.id) s.add(s2);
-            });
-        }
         return s;
-    }, [focusNode, selectedNode, compareNode, caseStudySet, graphData]);
-
-    // ── Search results ────────────────────────────────────────────────────────
-    const searchResults = useMemo(() => {
-        if (!searchQuery || searchQuery.length < 2) return [];
-        const q = searchQuery.toLowerCase();
-        return graphData.nodes.filter(n => {
-            const txt = [n.name, n.category, n.players, n.desc].filter(Boolean).join(' ').toLowerCase();
-            return txt.includes(q);
-        });
-    }, [searchQuery, graphData]);
+    }, [focusNode, selectedNode, graphData]);
 
     // ── Physics engine ────────────────────────────────────────────────────────
     useEffect(() => {
@@ -429,32 +311,10 @@ export default function GlobalRelationsNexus({ forecasts, selectedTheory, theori
         else if (selectedTheory === 'Liberalism')     { charge = -110; baseDist = 90; }
         else if (selectedTheory === 'Constructivism') { charge = -160; baseDist = 110; }
 
-        fg.d3Force('charge').strength(charge);
+        fg.d3Force('charge').strength(charge * repulsionMultiplier);
         fg.d3Force('link').distance(lnk => {
             if (physicsPreset === 'core')     return lnk.type === 'satellite' ? 20 : 75;
             if (physicsPreset === 'friction') return lnk.type === 'conflict' ? 260 : 160;
-            NexusAudio.soundTheorySwitch();
-            if (selectedTheory === 'Marxism') {
-                // Vertical split: Global North up, Global South down
-                fg.d3Force('y', d => {
-                    if (!d.isAnchor) return;
-                    const north = ['USA','Europe','Russia','NATO'].includes(d.id);
-                    return north ? -80 : 80;
-                });
-            } else if (selectedTheory === 'Postcolonialism') {
-                // Push former colonial powers to periphery
-                fg.d3Force('x', d => {
-                    if (!d.isAnchor) return;
-                    const peripheral = ['USA','Europe'].includes(d.id);
-                    return peripheral ? (d.id === 'USA' ? -200 : 200) : 0;
-                });
-            } else if (selectedTheory === 'Feminism') {
-                fg.d3Force('x', null);
-                fg.d3Force('y', null);
-            } else {
-                fg.d3Force('x', null);
-                fg.d3Force('y', null);
-            }
             if (selectedTheory === 'Realism') {
                 if (lnk.type === 'conflict') return 240;
                 if (lnk.type === 'satellite') return 40;
@@ -468,34 +328,11 @@ export default function GlobalRelationsNexus({ forecasts, selectedTheory, theori
             return baseDist;
         });
         fg.d3ReheatSimulation();
-    }, [selectedTheory, physicsPreset, graphData]);
+    }, [selectedTheory, physicsPreset, repulsionMultiplier, graphData]);
 
     // ── Click handler ─────────────────────────────────────────────────────────
     const handleNodeClick = useCallback((node) => {
-        setContextMenu(null);
-        // Double-click detection → auto-lock
-        const now = Date.now();
-        if (lastClickRef.current.nodeId === node.id && now - lastClickRef.current.time < 400) {
-            // Double-click: lock the node
-            setSelectedNode(node);
-            setLockedNode(node);
-            NexusAudio.soundLockEngage();
-            navigateToNode(node);
-            lastClickRef.current = { nodeId: null, time: 0 };
-            return;
-        }
-        lastClickRef.current = { nodeId: node.id, time: now };
-
         setSelectedNode(prev => (prev && prev.id === node.id) ? null : node);
-        setSelectedEdge(null);
-        NexusAudio.soundNodeClick();
-        // Comparative mode: Shift+click with locked node
-        if (lockedNode && node.id !== lockedNode.id && window._lastClickShift) {
-            setCompareNode(node);
-            NexusAudio.soundCompareEngage();
-        }
-        // Auto-zoom on first click
-        if (!lockedNode) navigateToNode(node);
         // Smooth camera orbit — zoom to comfortable distance (not too close)
         if (fgRef.current && node.x != null) {
             const dist = 220; // comfortable viewing distance
@@ -522,9 +359,7 @@ export default function GlobalRelationsNexus({ forecasts, selectedTheory, theori
     const navigateToNode = useCallback((nodeRef) => {
         if (!nodeRef) return;
         setSelectedNode(nodeRef);
-        setSelectedEdge(null);
         setInspectTab('overview');
-        NexusAudio.soundConnectionNav();
         if (fgRef.current && nodeRef.x != null) {
             const dist = 220;
             const ratio = 1 + dist / Math.hypot(nodeRef.x, nodeRef.y, nodeRef.z);
@@ -556,13 +391,10 @@ export default function GlobalRelationsNexus({ forecasts, selectedTheory, theori
         if (lockedNode) {
             // Unlock — resume physics
             setLockedNode(null);
-            setCompareNode(null);
             if (fgRef.current) fgRef.current.d3ReheatSimulation();
-            NexusAudio.soundLockRelease();
         } else if (selectedNode) {
             // Lock — freeze physics to stabilize the view
             setLockedNode(selectedNode);
-            NexusAudio.soundLockEngage();
             if (fgRef.current) {
                 fgRef.current.d3ReheatSimulation();
                 // Let it settle briefly then pause
@@ -576,72 +408,49 @@ export default function GlobalRelationsNexus({ forecasts, selectedTheory, theori
         }
     }, [selectedNode, lockedNode]);
 
-    // ── Radar metrics ─────────────────────────────────────────────────────────
-    // ── Mini-map 2D projection ─────────────────────────────────────────────────
+    // ── Keyboard navigation ───────────────────────────────────────────────────
     useEffect(() => {
-        const canvas = miniMapRef.current;
-        if (!canvas) return;
-        let animId;
-        const draw = () => {
-            const ctx = canvas.getContext('2d');
-            if (!ctx) return;
-            const W = 140, H = 140;
-            ctx.fillStyle = 'rgba(0, 5, 15, 0.9)';
-            ctx.fillRect(0, 0, W, H);
-            // Draw nodes
-            const nodes = graphData.nodes.filter(n => n.x !== undefined);
-            if (nodes.length === 0) { animId = requestAnimationFrame(draw); return; }
-            let minX = Infinity, maxX = -Infinity, minY = Infinity, maxY = -Infinity;
-            nodes.forEach(n => {
-                if (n.x < minX) minX = n.x;
-                if (n.x > maxX) maxX = n.x;
-                if (n.y < minY) minY = n.y;
-                if (n.y > maxY) maxY = n.y;
-            });
-            const rangeX = (maxX - minX) || 1, rangeY = (maxY - minY) || 1;
-            const pad = 12;
-            nodes.forEach(n => {
-                const px = pad + ((n.x - minX) / rangeX) * (W - pad * 2);
-                const py = pad + ((n.y - minY) / rangeY) * (H - pad * 2);
-                const r = n.isAnchor ? 3 : 1.5;
-                ctx.beginPath();
-                ctx.arc(px, py, r, 0, Math.PI * 2);
-                ctx.fillStyle = n.color || '#fff';
-                ctx.globalAlpha = (highlightSet && !highlightSet.has(n.id)) ? 0.2 : 0.8;
-                ctx.fill();
-            });
-            ctx.globalAlpha = 1;
-            animId = requestAnimationFrame(draw);
-        };
-        animId = requestAnimationFrame(draw);
-        return () => cancelAnimationFrame(animId);
-    }, [graphData, highlightSet]);
-
-    // ── GDELT live data pulse ─────────────────────────────────────────────────
-    const [gdeltArticles, setGdeltArticles] = useState([]);
-    useEffect(() => {
-        // Initial fetch
-        fetchGlobalPulse().then(articles => {
-            setGdeltArticles(articles);
-            const signals = [...new Set(articles.flatMap(a => a.anchors))];
-            setPulseSignals(signals);
-            if (signals.length > 0) NexusAudio.soundDataPulse();
-        }).catch(() => {});
-        // Refresh every 45 seconds (GDELT rate limit: 1 req per 5s)
-        const interval = setInterval(() => {
-            fetchGlobalPulse().then(articles => {
-                setGdeltArticles(prev => {
-                    const combined = [...articles, ...prev].slice(0, 50);
-                    return combined;
+        const handler = (e) => {
+            if (e.key === 'Escape') {
+                if (lockedNode) {
+                    setLockedNode(null);
+                    if (fgRef.current) fgRef.current.d3ReheatSimulation();
+                } else {
+                    setSelectedNode(null);
+                }
+                return;
+            }
+            // Tab cycling through inspect tabs
+            if (selectedNode && e.key === 'Tab') {
+                e.preventDefault();
+                const tabs = ['overview', 'metrics', 'gpc', 'theory'];
+                setInspectTab(prev => {
+                    const idx = tabs.indexOf(prev);
+                    return tabs[(idx + 1) % tabs.length];
                 });
-                const signals = [...new Set(articles.flatMap(a => a.anchors))];
-                setPulseSignals(signals);
-                if (signals.length > 0) NexusAudio.soundDataPulse();
-            }).catch(() => {});
-        }, 45000);
-        return () => clearInterval(interval);
-    }, []);
+                return;
+            }
+            // Arrow up/down to cycle through connections
+            if (selectedNode && connectionSummary.length > 0) {
+                if (e.key === 'ArrowDown' || e.key === 'ArrowRight') {
+                    e.preventDefault();
+                    // Navigate to next connection
+                    const currIdx = connectionSummary.findIndex(c => c.id === selectedNode.id);
+                    const nextIdx = currIdx < connectionSummary.length - 1 ? currIdx + 1 : 0;
+                    navigateToNode(connectionSummary[nextIdx].nodeRef);
+                } else if (e.key === 'ArrowUp' || e.key === 'ArrowLeft') {
+                    e.preventDefault();
+                    const currIdx = connectionSummary.findIndex(c => c.id === selectedNode.id);
+                    const prevIdx = currIdx > 0 ? currIdx - 1 : connectionSummary.length - 1;
+                    navigateToNode(connectionSummary[prevIdx].nodeRef);
+                }
+            }
+        };
+        window.addEventListener('keydown', handler);
+        return () => window.removeEventListener('keydown', handler);
+    }, [selectedNode, connectionSummary, navigateToNode]);
 
+    // ── Radar metrics ─────────────────────────────────────────────────────────
     // ── Data-driven radar metrics ─────────────────────────────────────────────
     // Each metric is scored 0-100 by scanning the node's text fields for signal keywords.
     // More keyword hits = higher score. Anchors use type-based baselines.
@@ -731,119 +540,6 @@ export default function GlobalRelationsNexus({ forecasts, selectedTheory, theori
         return conns;
     }, [selectedNode, graphData]);
 
-    // ── Right-click context menu ──────────────────────────────────────────────
-    const handleNodeRightClick = useCallback((node, event) => {
-        event.preventDefault();
-        setContextMenu({
-            node,
-            x: event.clientX,
-            y: event.clientY,
-        });
-    }, []);
-
-    const contextAction = useCallback((action, node) => {
-        setContextMenu(null);
-        switch (action) {
-            case 'lock':
-                setSelectedNode(node);
-                setLockedNode(node);
-                navigateToNode(node);
-                NexusAudio.soundLockEngage();
-                break;
-            case 'unlock':
-                setLockedNode(null);
-                setCompareNode(null);
-                if (fgRef.current) fgRef.current.d3ReheatSimulation();
-                NexusAudio.soundLockRelease();
-                break;
-            case 'compare':
-                if (lockedNode) {
-                    setCompareNode(node);
-                    NexusAudio.soundCompareEngage();
-                }
-                break;
-            case 'focus':
-                navigateToNode(node);
-                setSelectedNode(node);
-                NexusAudio.soundNodeClick();
-                break;
-            default: break;
-        }
-    }, [lockedNode, navigateToNode]);
-
-    // ── Edge click handler ────────────────────────────────────────────────────
-    const handleLinkClick = useCallback((link) => {
-        setSelectedEdge(link);
-        setSelectedNode(null);
-        NexusAudio.soundEdgeClick();
-    }, []);
-
-    // ── Keyboard navigation ───────────────────────────────────────────────────
-    useEffect(() => {
-        const handler = (e) => {
-            // Search shortcut
-            if ((e.metaKey || e.ctrlKey) && e.key === 'k') {
-                e.preventDefault();
-                setSearchOpen(prev => !prev);
-                setSearchQuery('');
-                NexusAudio.soundSearchOpen();
-                return;
-            }
-            if (e.key === 'Escape' && searchOpen) {
-                setSearchOpen(false);
-                setSearchQuery('');
-                return;
-            }
-            if (e.key === 'Escape' && activeCaseStudy) {
-                setActiveCaseStudy(null);
-                return;
-            }
-            if (e.key === 'Escape') {
-                if (lockedNode) {
-                    setLockedNode(null);
-                    if (fgRef.current) fgRef.current.d3ReheatSimulation();
-                } else {
-                    setSelectedNode(null);
-                }
-                return;
-            }
-            // Tab cycling through inspect tabs
-            if (selectedNode && e.key === 'Tab') {
-                e.preventDefault();
-                const tabs = ['overview', 'metrics', 'gpc', 'theory'];
-                setInspectTab(prev => {
-                    const idx = tabs.indexOf(prev);
-                    return tabs[(idx + 1) % tabs.length];
-                });
-                return;
-            }
-            // Arrow up/down to cycle through connections
-            if (selectedNode && connectionSummary.length > 0) {
-                if (e.key === 'ArrowDown' || e.key === 'ArrowRight') {
-                    e.preventDefault();
-                    // Navigate to next connection
-                    const currIdx = connectionSummary.findIndex(c => c.id === selectedNode.id);
-                    const nextIdx = currIdx < connectionSummary.length - 1 ? currIdx + 1 : 0;
-                    navigateToNode(connectionSummary[nextIdx].nodeRef);
-                } else if (e.key === 'ArrowUp' || e.key === 'ArrowLeft') {
-                    e.preventDefault();
-                    const currIdx = connectionSummary.findIndex(c => c.id === selectedNode.id);
-                    const prevIdx = currIdx > 0 ? currIdx - 1 : connectionSummary.length - 1;
-                    navigateToNode(connectionSummary[prevIdx].nodeRef);
-                }
-            }
-        };
-        window.addEventListener('keydown', handler);
-        return () => window.removeEventListener('keydown', handler);
-    }, [selectedNode, lockedNode, connectionSummary, navigateToNode, searchOpen, activeCaseStudy]);
-
-    // ── Narrative generation for selected node ──────────────────────────────
-    const nodeNarrative = useMemo(() => {
-        if (!selectedNode) return '';
-        return generateNodeNarrative(selectedNode, connectionSummary, graphData.links, selectedTheory);
-    }, [selectedNode, connectionSummary, graphData, selectedTheory]);
-
-
     // ── At-a-glance badges for selected node ──────────────────────────────────
     const nodeBadges = useMemo(() => {
         if (!selectedNode) return [];
@@ -900,11 +596,10 @@ export default function GlobalRelationsNexus({ forecasts, selectedTheory, theori
             return group;
         }
 
-        group.userData = { anchorType: node.type };
         const op = focused ? 0.95 : 0.30;
         if (node.type === 'igo') {
             const g1 = new THREE.DodecahedronGeometry(node.val / 2.4);
-            group.add(new THREE.Mesh(g1, new THREE.MeshPhongMaterial({ color: node.color, emissive: node.color, emissiveIntensity: 0.2, transparent: true, opacity: op, wireframe: true })));
+            group.add(new THREE.Mesh(g1, new THREE.MeshBasicMaterial({ color: node.color, transparent: true, opacity: op, wireframe: true })));
             const g2 = new THREE.SphereGeometry(node.val / 4, 16, 16);
             group.add(new THREE.Mesh(g2, new THREE.MeshBasicMaterial({ color: node.color, transparent: true, opacity: op * 0.7 })));
         } else if (node.type === 'mnc') {
@@ -943,96 +638,10 @@ export default function GlobalRelationsNexus({ forecasts, selectedTheory, theori
         return group;
     }, [highlightSet, makeTextSprite]);
 
-    // ── 2D mode: flatten z-coordinates ──────────────────────────────────────
-    useEffect(() => {
-        if (!fgRef.current) return;
-        const fg = fgRef.current;
-        if (is2D) {
-            // Flatten all nodes to z=0
-            graphData.nodes.forEach(n => { n.fz = 0; });
-            fg.d3ReheatSimulation();
-            // Top-down camera
-            setTimeout(() => {
-                fg.cameraPosition({ x: 0, y: 0, z: 600 }, { x: 0, y: 0, z: 0 }, 1000);
-            }, 200);
-        } else {
-            // Restore 3D freedom
-            graphData.nodes.forEach(n => { n.fz = undefined; });
-            fg.d3ReheatSimulation();
-        }
-    }, [is2D, graphData]);
-
-    // ── 3D scene lighting ─────────────────────────────────────────────────────
-    useEffect(() => {
-        const timer = setTimeout(() => {
-            if (fgRef.current) {
-                const scene = fgRef.current.scene();
-                if (scene && !scene.userData.lightsAdded) {
-                    scene.add(new THREE.AmbientLight(0x404040, 2));
-                    const pl = new THREE.PointLight(0xffffff, 1.5, 2000);
-                    pl.position.set(0, 200, 400);
-                    scene.add(pl);
-                    const pl2 = new THREE.PointLight(0x0088ff, 0.8, 1500);
-                    pl2.position.set(-300, -100, 200);
-                    scene.add(pl2);
-                    scene.userData.lightsAdded = true;
-                }
-            }
-        }, 1000);
-        return () => clearTimeout(timer);
-    }, [graphData]);
-
-    // ── Anchor rotation animation ─────────────────────────────────────────────
-    useEffect(() => {
-        let animId;
-        const animate = () => {
-            if (fgRef.current) {
-                const scene = fgRef.current.scene();
-                if (scene) {
-                    scene.traverse(obj => {
-                        if (obj.userData && obj.userData.anchorType) {
-                            obj.rotation.y += 0.003;
-                            if (obj.userData.anchorType === 'mnc') obj.rotation.x += 0.002;
-                            if (obj.userData.anchorType === 'igo') obj.rotation.z += 0.002;
-                            if (obj.userData.anchorType === 'nonstate') obj.rotation.x += 0.004;
-                        }
-                    });
-                }
-            }
-            animId = requestAnimationFrame(animate);
-        };
-        animId = requestAnimationFrame(animate);
-        return () => cancelAnimationFrame(animId);
-    }, []);
-
     // ══════════════════════════════════════════════════════════════════════════
     return (
+        <NexusErrorCatcher>
         <div className="nexus-container">
-            {/* ── Search Overlay ─────────────────────────────────── */}
-            {searchOpen && (
-                <div className="nexus-search-overlay">
-                    <div className="nexus-search-bar">
-                        <span className="search-icon">⌕</span>
-                        <input autoFocus placeholder="Search nodes, actors, topics... (Esc to close)"
-                            value={searchQuery}
-                            onChange={e => setSearchQuery(e.target.value)}
-                            onKeyDown={e => { if (e.key === 'Escape') { setSearchOpen(false); setSearchQuery(''); } }} />
-                        <button className="search-close" onClick={() => { setSearchOpen(false); setSearchQuery(''); }}>✕</button>
-                    </div>
-                    {searchQuery.length > 1 && (
-                        <div className="search-results">
-                            {searchResults.slice(0, 8).map(n => (
-                                <button key={n.id} className="search-result-item" onClick={() => { navigateToNode(n); setSearchOpen(false); setSearchQuery(''); }}>
-                                    <span className="search-dot" style={{ background: n.color }} />
-                                    <span className="search-name">{n.name}</span>
-                                    <span className="search-cat">{n.isAnchor ? (ACTOR_TYPE_LABELS[n.type] || '') : (n.category || '')}</span>
-                                </button>
-                            ))}
-                            {searchResults.length === 0 && <div className="search-empty">No matches found</div>}
-                        </div>
-                    )}
-                </div>
-            )}
             {/* ── Top Bar ─────────────────────────────────────────────────── */}
             <div className="nexus-bar">
                 <div className="nexus-title">
@@ -1070,28 +679,7 @@ export default function GlobalRelationsNexus({ forecasts, selectedTheory, theori
                         return n.color;
                     }}
                     nodeThreeObject={buildNodeObject}
-                    nodeLabel={node => {
-                        if (!node) return '';
-                        const conns = graphData.links.filter(l => {
-                            const s = typeof l.source === 'object' ? l.source.id : l.source;
-                            const t = typeof l.target === 'object' ? l.target.id : l.target;
-                            return s === node.id || t === node.id;
-                        }).length;
-                        return '<div style="background:rgba(0,2,8,0.92);color:#fff;padding:8px 12px;border-radius:5px;font-family:monospace;font-size:11px;border-left:3px solid ' + (node.color || '#fff') + ';max-width:280px;backdrop-filter:blur(10px)">'
-                            + '<strong style="color:' + (node.color || '#fff') + '">' + node.name + '</strong><br/>'
-                            + '<span style="color:#888;font-size:9px">' + (node.isAnchor ? (node.type || '').toUpperCase() : (node.category || '')) + '</span><br/>'
-                            + '<span style="color:#aaa">' + conns + ' connections</span>'
-                            + (node.isAnchor ? '<br/><span style="color:#555;font-size:9px">Double-click to lock · Right-click for menu</span>' : '')
-                            + '</div>';
-                    }}
-                    linkLabel={lnk => {
-                        const sId = typeof lnk.source === 'object' ? lnk.source.id : lnk.source;
-                        const tId = typeof lnk.target === 'object' ? lnk.target.id : lnk.target;
-                        const info = getEdgeInfo(sId, tId, lnk.type);
-                        if (info) return `<div style="background:rgba(0,0,0,0.85);color:#fff;padding:8px 12px;border-radius:4px;font-family:monospace;font-size:11px;max-width:320px;border-left:3px solid ${DIM_COLORS[lnk.type] || '#fff'}"><strong>${info.label}</strong><br/>${info.summary}</div>`;
-                        return '';
-                    }}
-                    onLinkClick={handleLinkClick}
+                    nodeLabel={() => ''}
                     linkColor={lnk => {
                         if (selectedNode) return isLinkFocused(lnk) ? lnk.color : 'rgba(80,80,80,0.12)';
                         return lnk.color;
@@ -1107,10 +695,10 @@ export default function GlobalRelationsNexus({ forecasts, selectedTheory, theori
                     linkDirectionalParticleSpeed={() => 0.008}
                     linkDirectionalParticleWidth={lnk => lnk.width * 1.5}
                     linkDirectionalParticleColor={lnk => lnk.color}
-                    onNodeClick={(node, event) => { window._lastClickShift = event && event.shiftKey; handleNodeClick(node); }}
-                    onNodeRightClick={handleNodeRightClick}
+                    linkLabel={lnk => `<div class="nexus-tooltip"><div class="tooltip-title">${lnk.type.toUpperCase()} LINK</div></div>`}
+                    onNodeClick={handleNodeClick}
                     onNodeHover={node => setHoveredNode(node || null)}
-                    onBackgroundClick={() => { handleBackgroundClick(); setContextMenu(null); }}
+                    onBackgroundClick={handleBackgroundClick}
                     enableNodeDrag={true}
                     enableNavigationControls={true}
                     controlType="orbit"
@@ -1138,13 +726,11 @@ export default function GlobalRelationsNexus({ forecasts, selectedTheory, theori
                         {lockedNode && <button onClick={() => { setLockedNode(null); if (fgRef.current) fgRef.current.d3ReheatSimulation(); }} className="nexus-ctrl-btn" style={{ borderColor: '#ff9900', color: '#ff9900' }} title="Unlock current view">🔓 UNLOCK</button>}
                     </div>
                     <div className="nexus-hint">
-                        {activeCaseStudy
-                            ? '📋 CASE STUDY active · click actors below · Esc to clear'
-                            : lockedNode
-                                ? '🔒 LOCKED — Shift+click to compare · Esc to unlock · ←→ cycle'
-                                : selectedNode
-                                    ? '⬡ Esc: deselect · Ctrl+K: search · ←→: cycle'
-                                    : '⬡ Click node to inspect · Ctrl+K to search · Lock to explore'}
+                        {lockedNode
+                            ? '🔒 LOCKED — click connections to explore · Esc to unlock · ←→ cycle'
+                            : selectedNode
+                                ? '⬡ Esc: deselect · ←→: cycle connections · Tab: switch tabs'
+                                : '⬡ Click node to inspect · Lock to explore connections'}
                     </div>
                 </div>
 
@@ -1215,55 +801,9 @@ export default function GlobalRelationsNexus({ forecasts, selectedTheory, theori
                         })}
                     </div>
 
-
-
-                    {pulseSignals.length > 0 && (
-                        <div className="pulse-indicator">📡 LIVE: {pulseSignals.length} actors in news</div>
-                    )}
-                    {gdeltArticles.length > 0 && (
-                        <div className="gdelt-feed">
-                            <div className="section-label" style={{ marginTop: '6px', marginBottom: '4px' }}>LIVE INTEL</div>
-                            {gdeltArticles.slice(0, 4).map((a, i) => (
-                                <a key={i} href={a.url} target="_blank" rel="noopener noreferrer" className="gdelt-item"
-                                    style={{ borderLeftColor: a.tone < -2 ? '#ff0066' : a.tone > 2 ? '#00ff88' : '#888' }}>
-                                    {a.title.slice(0, 80)}{a.title.length > 80 ? '…' : ''}
-                                </a>
-                            ))}
-                        </div>
-                    )}
-
-                    <div className="hud-header" style={{ marginTop: '14px' }}>VIEW</div>
-                    <button className={`nexus-ctrl-btn ${is2D ? 'active' : ''}`}
-                        style={is2D ? { background: 'rgba(0,255,255,0.15)', borderColor: '#00ffff' } : {}}
-                        onClick={() => setIs2D(prev => !prev)}>
-                        {is2D ? '◈ 3D MODE' : '◻ 2D MODE'}
-                    </button>
-
-                    <div className="hud-header" style={{ marginTop: '14px' }}>ACTORS</div>
-                    <div className="actor-list">
-                        {Object.values(PRIMARY_ANCHORS).map(a => (
-                            <button key={a.id} className="actor-list-item"
-                                style={{ borderLeftColor: a.color, color: (selectedNode && selectedNode.id === a.id) ? '#fff' : '#999' }}
-                                onClick={() => {
-                                    const node = graphData.nodes.find(n => n.id === a.id);
-                                    if (node) { navigateToNode(node); setSelectedNode(node); NexusAudio.soundNodeClick(); }
-                                }}>
-                                {a.name.split('(')[0].trim()}
-                            </button>
-                        ))}
-                    </div>
-
-                    <div className="hud-header" style={{ marginTop: '14px' }}>AUDIO</div>
-                    <div className="audio-controls">
-                        <button className="audio-mute-btn" onClick={() => { const m = NexusAudio.toggleMute(); setAudioMuted(m); }}>
-                            {audioMuted ? '🔇 MUTED' : '🔊 ON'}
-                        </button>
-                        <input type="range" min="0" max="1" step="0.05" value={audioVolume}
-                            onChange={e => { const v = parseFloat(e.target.value); setAudioVolume(v); NexusAudio.setVolume(v); }}
-                            className="audio-slider" />
-                    </div>
-
-
+                    <div className="hud-header" style={{ marginTop: '14px' }}>GEOPOLITICAL FRICTION</div>
+                    <input type="range" min="0.2" max="2.5" step="0.1" value={repulsionMultiplier}
+                        onChange={e => setRepulsionMultiplier(parseFloat(e.target.value))} className="cyber-slider" />
                 </div>
 
                 {/* ── Tabbed Inspect Panel ─────────────────────────────────── */}
@@ -1440,6 +980,6 @@ export default function GlobalRelationsNexus({ forecasts, selectedTheory, theori
                 )}
             </div>
         </div>
-        
+        </NexusErrorCatcher>
     );
 }
