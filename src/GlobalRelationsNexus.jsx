@@ -129,14 +129,8 @@ export default function GlobalRelationsNexus({ forecasts, selectedTheory, theori
     const miniMapRef = useRef(null);
     // 2D mode
     const [is2D, setIs2D] = useState(false);
-    // Collapsible HUD sections
-    const [hudSections, setHudSections] = useState({
-        filters: true, gpc: false, physics: false, clusters: false,
-        graphCtrl: true, view: true, actors: true, audio: false,
-    });
-    const toggleSection = useCallback((key) => {
-        setHudSections(prev => ({ ...prev, [key]: !prev[key] }));
-    }, []);
+    // Tabbed HUD
+    const [hudTab, setHudTab] = useState('filters');
     // Graph clarity controls
     const [showSatellites, setShowSatellites] = useState(false);
     const [intensityThreshold, setIntensityThreshold] = useState(0);
