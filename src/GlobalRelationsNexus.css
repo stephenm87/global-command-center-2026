@@ -1845,3 +1845,60 @@
     from { opacity: 0; transform: translateY(4px); }
     to { opacity: 1; transform: translateY(0); }
 }
+
+/* ══════════════════════════════════════════════════════════════════════════════
+   ACTOR LIST — FORCE READABLE TEXT
+   ══════════════════════════════════════════════════════════════════════════ */
+.actor-list-item {
+    font-size: 0.7rem !important;
+    color: #ddd !important;
+    padding: 7px 12px !important;
+    letter-spacing: 0.5px !important;
+    line-height: 1.4 !important;
+    white-space: nowrap !important;
+    overflow: hidden !important;
+    text-overflow: ellipsis !important;
+    background: rgba(255, 255, 255, 0.02) !important;
+    margin-bottom: 1px !important;
+}
+.actor-list-item:hover {
+    color: #fff !important;
+    background: rgba(0, 255, 255, 0.06) !important;
+}
+
+/* Edge inspector extras */
+.edge-label {
+    font-size: 0.82rem;
+    font-weight: 700;
+    color: #fff;
+    margin: 8px 0 4px;
+    letter-spacing: 0.5px;
+}
+.edge-summary {
+    font-size: 0.7rem;
+    color: #aaa;
+    line-height: 1.55;
+    margin-bottom: 8px;
+}
+.edge-header {
+    font-size: 0.85rem;
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex-wrap: wrap;
+}
+.edge-arrow {
+    color: #555;
+    font-size: 1rem;
+}
+.edge-dimension {
+    font-size: 0.5rem;
+    letter-spacing: 2px;
+    font-weight: 700;
+    margin: 6px 0 10px;
+}
+.edge-metrics {
+    font-size: 0.65rem;
+    color: #999;
+}

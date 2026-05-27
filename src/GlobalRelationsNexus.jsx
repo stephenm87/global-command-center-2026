@@ -1370,6 +1370,78 @@ export default function GlobalRelationsNexus({ forecasts, selectedTheory, theori
                     </div>
                 </div>
 
+                {/* ── Edge Inspector Panel ────────────────────────────── */}
+                {selectedEdge && !selectedNode && (
+                    <aside className="nexus-inspect-panel edge-inspector">
+                        <button className="inspect-close" onClick={() => setSelectedEdge(null)}>✕</button>
+                        <div className="edge-header">
+                            <span style={{ color: typeof selectedEdge.source === 'object' ? selectedEdge.source.color : '#fff' }}>
+                                {typeof selectedEdge.source === 'object' ? selectedEdge.source.name : selectedEdge.source}
+                            </span>
+                            <span className="edge-arrow">⟷</span>
+                            <span style={{ color: typeof selectedEdge.target === 'object' ? selectedEdge.target.color : '#fff' }}>
+                                {typeof selectedEdge.target === 'object' ? selectedEdge.target.name : selectedEdge.target}
+                            </span>
+                        </div>
+                        <div className="edge-dimension" style={{ color: DIM_COLORS[selectedEdge.type] || '#fff' }}>
+                            {(selectedEdge.type || 'CONNECTION').toUpperCase()}
+                        </div>
+                        {(() => {
+                            const sId = typeof selectedEdge.source === 'object' ? selectedEdge.source.id : selectedEdge.source;
+                            const tId = typeof selectedEdge.target === 'object' ? selectedEdge.target.id : selectedEdge.target;
+                            const info = getEdgeInfo(sId, tId, selectedEdge.type);
+                            return info ? (
+                                <div className="edge-rich-data">
+                                    <div className="edge-label">{info.label}</div>
+                                    <p className="edge-summary">{info.summary}</p>
+                                    <div className="hero-chips">
+                                        {info.dataPoints.map((dp, j) => (
+                                            <span key={j} className="hero-chip">{dp}</span>
+                                        ))}
+                                    </div>
+                                    <div className="hero-tension" style={{ marginTop: '10px' }}>
+                                        <span>TENSION</span>
+                                        <div className="tension-bar">
+                                            <div className="tension-fill" style={{
+                                                width: (info.tension * 100) + '%',
+                                                background: info.tension > 0.7 ? '#ff0066' : info.tension > 0.4 ? '#ff9900' : '#00ff88'
+                                            }} />
+                                        </div>
+                                        <span style={{ color: info.tension > 0.7 ? '#ff0066' : info.tension > 0.4 ? '#ff9900' : '#00ff88' }}>
+                                            {(info.tension * 100).toFixed(0)}%
+                                        </span>
+                                    </div>
+                                    {info.timeline && (
+                                        <div className="edge-timeline">
+                                            <div className="section-label" style={{ marginTop: '12px' }}>TIMELINE</div>
+                                            {info.timeline.map((t, j) => (
+                                                <div key={j} className="timeline-event">
+                                                    <span className="timeline-year">{t.year}</span>
+                                                    <span className="timeline-text">{t.event}</span>
+                                                </div>
+                                            ))}
+                                        </div>
+                                    )}
+                                </div>
+                            ) : (
+                                <div className="edge-metrics">
+                                    <div>Link Strength: <strong>{((selectedEdge.width || 1) * 20).toFixed(0)}%</strong></div>
+                                </div>
+                            );
+                        })()}
+                        <div className="edge-nav-btns" style={{ marginTop: '12px', display: 'flex', gap: '6px' }}>
+                            <button className="nexus-ctrl-btn" style={{ flex: 1 }} onClick={() => {
+                                const n = graphData.nodes.find(n => n.id === (typeof selectedEdge.source === 'object' ? selectedEdge.source.id : selectedEdge.source));
+                                if (n) { navigateToNode(n); setSelectedNode(n); setSelectedEdge(null); }
+                            }}>→ Source</button>
+                            <button className="nexus-ctrl-btn" style={{ flex: 1 }} onClick={() => {
+                                const n = graphData.nodes.find(n => n.id === (typeof selectedEdge.target === 'object' ? selectedEdge.target.id : selectedEdge.target));
+                                if (n) { navigateToNode(n); setSelectedNode(n); setSelectedEdge(null); }
+                            }}>→ Target</button>
+                        </div>
+                    </aside>
+                )}
+
                 {/* ── Tabbed Inspect Panel ─────────────────────────────────── */}
                 {selectedNode && (
                     <aside className="nexus-inspect-panel">
