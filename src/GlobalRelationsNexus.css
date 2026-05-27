@@ -1764,3 +1764,25 @@
     margin-top: 8px !important;
     padding-bottom: 4px !important;
 }
+
+/* ══════════════════════════════════════════════════════════════════════════════
+   INSPECT PANEL — FLUSH RIGHT, FULL HEIGHT
+   ══════════════════════════════════════════════════════════════════════════ */
+.nexus-inspect-panel {
+    right: 0 !important;
+    top: 45px !important;
+    max-height: calc(100% - 45px) !important;
+    border-radius: 0 !important;
+    border-right: none !important;
+    border-top: none !important;
+    border-bottom: none !important;
+    border-left: 1px solid rgba(0, 255, 255, 0.12) !important;
+}
+.nexus-compare-panel {
+    right: 0 !important;
+    top: 45px !important;
+    max-height: calc(100% - 45px) !important;
+    border-radius: 0 !important;
+    border-right: none !important;
+    border-left: 1px solid rgba(0, 255, 255, 0.12) !important;
+}
