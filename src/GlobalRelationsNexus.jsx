@@ -125,6 +125,7 @@ export default function GlobalRelationsNexus({ forecasts, selectedTheory, theori
     // Audio
     const [audioMuted, setAudioMuted]                = useState(false);
     const [audioVolume, setAudioVolume]              = useState(0.3);
+    const [ambientOn, setAmbientOn]                = useState(false);
     // Mini-map
     const miniMapRef = useRef(null);
     // 2D mode
