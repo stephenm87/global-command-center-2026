@@ -129,6 +129,10 @@ export default function GlobalRelationsNexus({ forecasts, selectedTheory, theori
     const miniMapRef = useRef(null);
     // 2D mode
     const [is2D, setIs2D] = useState(false);
+    // Graph clarity controls
+    const [showSatellites, setShowSatellites] = useState(false);
+    const [intensityThreshold, setIntensityThreshold] = useState(0);
+    const [introComplete, setIntroComplete] = useState(false);
     // Context menu
     const [contextMenu, setContextMenu] = useState(null);
     // Double-click tracking
@@ -406,6 +410,30 @@ export default function GlobalRelationsNexus({ forecasts, selectedTheory, theori
         }
         return s;
     }, [focusNode, selectedNode, compareNode, caseStudySet, graphData]);
+
+    // ── Filtered graph data for display ─────────────────────────────────────
+    const displayData = useMemo(() => {
+        let nodes = graphData.nodes;
+        let links = graphData.links;
+
+        // Hide satellites unless toggled or a node is selected
+        if (!showSatellites && !selectedNode && !lockedNode) {
+            const anchorIds = new Set(Object.keys(PRIMARY_ANCHORS));
+            nodes = nodes.filter(n => anchorIds.has(n.id));
+            links = links.filter(l => {
+                const s = typeof l.source === 'object' ? l.source.id : l.source;
+                const t = typeof l.target === 'object' ? l.target.id : l.target;
+                return anchorIds.has(s) && anchorIds.has(t);
+            });
+        }
+
+        // Intensity filter — hide weak links
+        if (intensityThreshold > 0) {
+            links = links.filter(l => (l.width || 1) >= intensityThreshold);
+        }
+
+        return { nodes, links };
+    }, [graphData, showSatellites, selectedNode, lockedNode, intensityThreshold]);
 
     // ── Search results ────────────────────────────────────────────────────────
     const searchResults = useMemo(() => {
@@ -962,6 +990,20 @@ export default function GlobalRelationsNexus({ forecasts, selectedTheory, theori
         }
     }, [is2D, graphData]);
 
+    // ── Animated intro sequence ───────────────────────────────────────────────
+    useEffect(() => {
+        if (introComplete) return;
+        // Stagger node appearance
+        const anchors = Object.keys(PRIMARY_ANCHORS);
+        anchors.forEach((id, i) => {
+            setTimeout(() => {
+                const node = graphData.nodes.find(n => n.id === id);
+                if (node) node.__visible = true;
+            }, i * 150);
+        });
+        setTimeout(() => setIntroComplete(true), anchors.length * 150 + 500);
+    }, [graphData, introComplete]);
+
     // ── 3D scene lighting ─────────────────────────────────────────────────────
     useEffect(() => {
         const timer = setTimeout(() => {
@@ -1061,7 +1103,7 @@ export default function GlobalRelationsNexus({ forecasts, selectedTheory, theori
             <div className="nexus-canvas-wrapper">
                 <ForceGraph3D
                     ref={fgRef}
-                    graphData={graphData}
+                    graphData={displayData}
                     backgroundColor="#000000"
                     showNavInfo={false}
                     nodeVal={n => n.val}
@@ -1097,8 +1139,8 @@ export default function GlobalRelationsNexus({ forecasts, selectedTheory, theori
                         return lnk.color;
                     }}
                     linkWidth={lnk => {
-                        if (selectedNode) return isLinkFocused(lnk) ? lnk.width * 1.6 : 0.2;
-                        return lnk.width;
+                        if (selectedNode) return isLinkFocused(lnk) ? lnk.width * 4 : 0.15;
+                        return (lnk.width || 0.5) * 2.5;
                     }}
                     linkDirectionalParticles={lnk => {
                         if (selectedNode) return isLinkFocused(lnk) ? (lnk.particles || 0) : 0;
@@ -1232,12 +1274,36 @@ export default function GlobalRelationsNexus({ forecasts, selectedTheory, theori
                         </div>
                     )}
 
-                    <div className="hud-header" style={{ marginTop: '14px' }}>VIEW</div>
-                    <button className={`nexus-ctrl-btn ${is2D ? 'active' : ''}`}
-                        style={is2D ? { background: 'rgba(0,255,255,0.15)', borderColor: '#00ffff' } : {}}
-                        onClick={() => setIs2D(prev => !prev)}>
-                        {is2D ? '◈ 3D MODE' : '◻ 2D MODE'}
-                    </button>
+                    <div className="hud-header" style={{ marginTop: '14px' }}>GRAPH CONTROLS</div>
+                    <div className="graph-control-row">
+                        <label className="ctrl-label">Show Satellites</label>
+                        <button className={`ctrl-toggle ${showSatellites ? 'on' : ''}`}
+                            onClick={() => setShowSatellites(prev => !prev)}>
+                            {showSatellites ? 'ON' : 'OFF'}
+                        </button>
+                    </div>
+                    <div className="graph-control-row">
+                        <label className="ctrl-label">Link Intensity</label>
+                        <input type="range" min="0" max="3" step="0.2" value={intensityThreshold}
+                            onChange={e => setIntensityThreshold(parseFloat(e.target.value))}
+                            className="audio-slider" />
+                        <span className="ctrl-value">{intensityThreshold > 0 ? '≥' + intensityThreshold.toFixed(1) : 'ALL'}</span>
+                    </div>
+
+                    <div className="hud-header" style={{ marginTop: '14px' }}>VIEW MODE</div>
+                    <div className="view-toggle">
+                        <button className={`view-toggle-btn ${!is2D ? 'active' : ''}`}
+                            onClick={() => setIs2D(false)}>
+                            ◈ 3D
+                        </button>
+                        <button className={`view-toggle-btn ${is2D ? 'active' : ''}`}
+                            onClick={() => setIs2D(true)}>
+                            ◻ 2D
+                        </button>
+                    </div>
+                    <div className="view-mode-label">
+                        ACTIVE: {is2D ? '2D FLAT MAP' : '3D SPATIAL'}
+                    </div>
 
                     <div className="hud-header" style={{ marginTop: '14px' }}>ACTORS</div>
                     <div className="actor-list">

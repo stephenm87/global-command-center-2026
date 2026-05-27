@@ -5,17 +5,44 @@
 
 export const EDGE_DESCRIPTIONS = {
     // ═══ US-CHINA ═══
-    'USA|China|trade':       { summary: '$690B bilateral trade, 301 tariffs since 2018, tech decoupling accelerating', label: 'TRADE WAR', dataPoints: ['$690B annual trade', '25-100% tariffs on $370B goods', 'De-risking replacing decoupling'], tension: 0.9 },
-    'USA|China|conflict':    { summary: 'Strategic competition across Taiwan Strait, South China Sea, and cyber domains', label: 'STRATEGIC RIVALRY', dataPoints: ['Taiwan contingency planning', '7 military bases in Indo-Pacific', 'Annual $886B US defense budget'], tension: 0.95 },
-    'USA|China|tech':        { summary: 'Export controls on advanced chips, AI compute restrictions, entity list expansions', label: 'TECH DECOUPLING', dataPoints: ['CHIPS Act: $52B subsidy', 'A100/H100 export ban', 'ASML EUV equipment blocked'], tension: 0.85 },
+    'USA|China|trade':       { summary: '$690B bilateral trade, 301 tariffs since 2018, tech decoupling accelerating', label: 'TRADE WAR', dataPoints: ['$690B annual trade', '25-100% tariffs on $370B goods', 'De-risking replacing decoupling'], tension: 0.9, timeline: [
+            { year: '2018', event: 'Section 301 tariffs imposed' },
+            { year: '2020', event: 'Phase One trade deal signed' },
+            { year: '2022', event: 'CHIPS Act passed ($52B)' },
+            { year: '2023', event: 'De-risking replaces decoupling' },
+            { year: '2024', event: '100% EV tariffs announced' },
+        ] },
+    'USA|China|conflict':    { summary: 'Strategic competition across Taiwan Strait, South China Sea, and cyber domains', label: 'STRATEGIC RIVALRY', dataPoints: ['Taiwan contingency planning', '7 military bases in Indo-Pacific', 'Annual $886B US defense budget'], tension: 0.95, timeline: [
+            { year: '2018', event: 'Indo-Pacific Strategy released' },
+            { year: '2021', event: 'AUKUS submarine pact' },
+            { year: '2022', event: 'Pelosi Taiwan visit — PLA exercises' },
+            { year: '2023', event: 'Spy balloon incident' },
+            { year: '2024', event: 'Philippines confrontations escalate' },
+        ] },
+    'USA|China|tech':        { summary: 'Export controls on advanced chips, AI compute restrictions, entity list expansions', label: 'TECH DECOUPLING', dataPoints: ['CHIPS Act: $52B subsidy', 'A100/H100 export ban', 'ASML EUV equipment blocked'], tension: 0.85, timeline: [
+            { year: '2019', event: 'Huawei entity list ban' },
+            { year: '2022', event: 'A100/H100 export controls' },
+            { year: '2023', event: 'Huawei Kirin 9000s surprise' },
+            { year: '2024', event: 'ASML servicing restrictions' },
+        ] },
 
     // ═══ US-RUSSIA ═══
-    'USA|Russia|conflict':   { summary: 'Ukraine proxy war, nuclear posture tensions, NATO expansion friction', label: 'NEW COLD WAR', dataPoints: ['$175B+ US aid to Ukraine', 'INF Treaty collapsed 2019', 'Nuclear saber-rattling'], tension: 0.92 },
+    'USA|Russia|conflict':   { summary: 'Ukraine proxy war, nuclear posture tensions, NATO expansion friction', label: 'NEW COLD WAR', dataPoints: ['$175B+ US aid to Ukraine', 'INF Treaty collapsed 2019', 'Nuclear saber-rattling'], tension: 0.92, timeline: [
+            { year: '2014', event: 'Crimea annexation — first sanctions' },
+            { year: '2019', event: 'INF Treaty collapsed' },
+            { year: '2022', event: 'Full-scale Ukraine invasion' },
+            { year: '2023', event: 'Wagner mutiny' },
+            { year: '2024', event: '$175B+ US aid to Ukraine' },
+        ] },
 
     // ═══ US-EUROPE ═══
     'USA|Europe|trade':      { summary: 'Transatlantic trade partnership, LNG replacement of Russian gas, IRA subsidy disputes', label: 'ALLIED TRADE', dataPoints: ['$1.1T bilateral trade', 'US LNG exports tripled', 'IRA green subsidy friction'], tension: 0.3 },
     'USA|Europe|diplomacy':  { summary: 'NATO backbone, intelligence sharing (Five Eyes+), coordinated Russia sanctions', label: 'WESTERN ALLIANCE', dataPoints: ['NATO 32 members', '2% GDP defense target', 'AUKUS trilateral pact'], tension: 0.15 },
-    'USA|Europe|tech':       { summary: 'AI regulation divergence, ASML export controls coordination, data privacy conflicts', label: 'TECH ALIGNMENT', dataPoints: ['EU AI Act vs US approach', 'ASML chokepoint', 'Privacy Shield invalidated'], tension: 0.4 },
+    'USA|Europe|tech':       { summary: 'AI regulation divergence, ASML export controls coordination, data privacy conflicts', label: 'TECH ALIGNMENT', dataPoints: ['EU AI Act vs US approach', 'ASML chokepoint', 'Privacy Shield invalidated'], tension: 0.4, timeline: [
+            { year: '2013', event: 'Belt & Road Initiative launched' },
+            { year: '2017', event: 'Djibouti military base opens' },
+            { year: '2023', event: '$170B cumulative BRI investment' },
+        ] },
 
     // ═══ CHINA-RUSSIA ═══
     'China|Russia|trade':    { summary: '"No limits" partnership: energy, arms, and UN voting coordination', label: 'AXIS OF CONVENIENCE', dataPoints: ['$240B bilateral trade', 'Power of Siberia pipeline', 'Yuan settlement growing'], tension: 0.2 },
@@ -34,22 +61,51 @@ export const EDGE_DESCRIPTIONS = {
     'MiddleEast|Russia|trade':{ summary: 'OPEC+ coordination, Syria alliance, competing gas supply to Europe', label: 'ENERGY CARTEL', dataPoints: ['OPEC+ production cuts', 'Russia in Syria since 2015', 'Competing pipeline routes'], tension: 0.5 },
 
     // ═══ HEZBOLLAH / IRAN PROXIES ═══
-    'Hezbollah|MiddleEast|conflict': { summary: 'Iran\'s "Axis of Resistance": Lebanon, Yemen Houthis, Iraq PMF — reshaping regional power', label: 'AXIS OF RESISTANCE', dataPoints: ['150,000 Hezbollah rockets', 'Houthi Red Sea attacks', 'Iraq PMF integration'], tension: 0.9 },
-    'Hezbollah|USA|conflict':        { summary: 'US sanctions, CENTCOM operations, Beirut embassy bombing legacy', label: 'US CONTAINMENT', dataPoints: ['Treasury sanctions', 'CENTCOM deployments', 'Israeli proxy conflicts'], tension: 0.85 },
+    'Hezbollah|MiddleEast|conflict': { summary: 'Iran\'s "Axis of Resistance": Lebanon, Yemen Houthis, Iraq PMF — reshaping regional power', label: 'AXIS OF RESISTANCE', dataPoints: ['150,000 Hezbollah rockets', 'Houthi Red Sea attacks', 'Iraq PMF integration'], tension: 0.9, timeline: [
+            { year: '2014', event: 'Readiness Action Plan activated' },
+            { year: '2022', event: 'NATO 2022 Strategic Concept' },
+            { year: '2023', event: 'Finland joins NATO (31st member)' },
+            { year: '2024', event: 'Sweden joins — 300K high-readiness force' },
+        ] },
+    'Hezbollah|USA|conflict':        { summary: 'US sanctions, CENTCOM operations, Beirut embassy bombing legacy', label: 'US CONTAINMENT', dataPoints: ['Treasury sanctions', 'CENTCOM deployments', 'Israeli proxy conflicts'], tension: 0.85, timeline: [
+            { year: '2019', event: 'Fentanyl declared national emergency' },
+            { year: '2023', event: '110K overdose deaths recorded' },
+            { year: '2024', event: 'Cartel-as-terrorist designation debated' },
+        ] },
 
     // ═══ JIHADIST ═══
-    'Jihadist|Africa|conflict':      { summary: 'Sahel collapse: JNIM, Boko Haram, Al-Shabaab — 10,000+ annual fatalities', label: 'SAHEL INSURGENCY', dataPoints: ['JNIM controls Mali territory', 'Boko Haram 40K killed', 'Al-Shabaab in Somalia/Kenya'], tension: 0.95 },
+    'Jihadist|Africa|conflict':      { summary: 'Sahel collapse: JNIM, Boko Haram, Al-Shabaab — 10,000+ annual fatalities', label: 'SAHEL INSURGENCY', dataPoints: ['JNIM controls Mali territory', 'Boko Haram 40K killed', 'Al-Shabaab in Somalia/Kenya'], tension: 0.95, timeline: [
+            { year: '2014', event: 'Boko Haram Chibok kidnapping' },
+            { year: '2020', event: 'JNIM expands across Sahel' },
+            { year: '2023', event: 'Sahel coups — France withdraws' },
+            { year: '2024', event: 'Al-Shabaab targets AU forces' },
+        ] },
     'Jihadist|MiddleEast|conflict':  { summary: 'ISIS remnants in Syria/Iraq, ongoing insurgency, prison camp risks', label: 'ISIS REMNANTS', dataPoints: ['10,000 ISIS in Al-Hol camp', 'Sleeper cells active', 'Abu Bakr successor killed'], tension: 0.75 },
     'Jihadist|USA|conflict':         { summary: 'Global War on Terror legacy: drone strikes, SOF raids, intelligence operations', label: 'GWOT LEGACY', dataPoints: ['$8T spent since 2001', 'Drone program ongoing', 'CT partnerships in 85 countries'], tension: 0.6 },
     'Jihadist|Europe|conflict':      { summary: 'Domestic radicalization, returning fighters, online recruitment networks', label: 'HOMEGROWN THREAT', dataPoints: ['300+ EU attacks since 2015', 'Online radicalization', 'Deradicalization programs'], tension: 0.65 },
 
     // ═══ CARTELS ═══
-    'Cartels|LatinAmerica|conflict': { summary: 'Territorial control of cocaine/fentanyl routes: 100,000+ annual homicides across region', label: 'NARCO STATES', dataPoints: ['CJNG in 35 countries', '100K+ homicides/year', 'State capture in Honduras/Guatemala'], tension: 0.9 },
-    'Cartels|USA|conflict':          { summary: 'Fentanyl crisis: 110,000 US overdose deaths/year, border security escalation', label: 'FENTANYL CRISIS', dataPoints: ['110K OD deaths/year', '$53B DEA budget', 'Cartel-as-terrorist debate'], tension: 0.85 },
+    'Cartels|LatinAmerica|conflict': { summary: 'Territorial control of cocaine/fentanyl routes: 100,000+ annual homicides across region', label: 'NARCO STATES', dataPoints: ['CJNG in 35 countries', '100K+ homicides/year', 'State capture in Honduras/Guatemala'], tension: 0.9, timeline: [
+            { year: '2006', event: 'Lebanon War — 33 days' },
+            { year: '2015', event: 'Houthis seize Sanaa' },
+            { year: '2023', event: 'Oct 7 — Hezbollah opens northern front' },
+            { year: '2024', event: 'Houthi Red Sea shipping attacks' },
+        ] },
+    'Cartels|USA|conflict':          { summary: 'Fentanyl crisis: 110,000 US overdose deaths/year, border security escalation', label: 'FENTANYL CRISIS', dataPoints: ['110K OD deaths/year', '$53B DEA budget', 'Cartel-as-terrorist debate'], tension: 0.85, timeline: [
+            { year: '2011', event: 'Nord Stream 1 operational' },
+            { year: '2022', event: 'Russia cuts gas — EU scrambles' },
+            { year: '2022', event: 'Nord Stream pipelines destroyed' },
+            { year: '2023', event: 'EU Russian gas share drops to <15%' },
+        ] },
     'Cartels|China|trade':           { summary: 'Chinese chemical precursors fuel fentanyl production in Mexican super-labs', label: 'PRECURSOR PIPELINE', dataPoints: ['Chinese precursor chemicals', 'WeChat-based transactions', 'Bilateral pressure agreements'], tension: 0.7 },
 
     // ═══ CYBER ═══
-    'CyberActors|Russia|conflict':   { summary: 'APT28/Sandworm: election interference, critical infrastructure attacks, ransomware', label: 'HYBRID WARFARE', dataPoints: ['SolarWinds attack', 'Ukraine grid attacks', 'NotPetya $10B damage'], tension: 0.85 },
+    'CyberActors|Russia|conflict':   { summary: 'APT28/Sandworm: election interference, critical infrastructure attacks, ransomware', label: 'HYBRID WARFARE', dataPoints: ['SolarWinds attack', 'Ukraine grid attacks', 'NotPetya $10B damage'], tension: 0.85, timeline: [
+            { year: '2016', event: 'DNC hack — election interference' },
+            { year: '2017', event: 'NotPetya — $10B global damage' },
+            { year: '2020', event: 'SolarWinds supply chain attack' },
+            { year: '2022', event: 'Ukraine grid cyberattacks' },
+        ] },
     'CyberActors|China|conflict':    { summary: 'APT41: IP theft, military espionage, supply chain compromise at scale', label: 'CYBER ESPIONAGE', dataPoints: ['$600B IP theft annually', 'OPM hack 21.5M records', 'Volt Typhoon infrastructure'], tension: 0.8 },
     'CyberActors|USA|conflict':      { summary: 'Primary target for state-sponsored attacks: defense, energy, finance sectors', label: 'ATTACK SURFACE', dataPoints: ['CISA shields up alerts', '$10B+ cyber defense budget', 'Colonial Pipeline ransom'], tension: 0.8 },
     'CyberActors|NATO|conflict':     { summary: 'Cyber declared a domain of warfare by NATO; Article 5 applicability debated', label: 'FIFTH DOMAIN', dataPoints: ['Cyber as warfare domain', 'Tallinn Manual', 'Collective defense in cyber'], tension: 0.65 },

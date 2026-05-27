@@ -1468,3 +1468,256 @@
     color: #fff !important;
     transform: translateX(3px);
 }
+
+/* ══════════════════════════════════════════════════════════════════════════════
+   HUD SCROLLABLE FIX
+   ══════════════════════════════════════════════════════════════════════════ */
+.nexus-hud {
+    max-height: calc(100vh - 80px);
+    overflow-y: auto;
+    overflow-x: hidden;
+    scrollbar-width: thin;
+    scrollbar-color: rgba(0, 255, 255, 0.15) transparent;
+}
+.nexus-hud::-webkit-scrollbar {
+    width: 4px;
+}
+.nexus-hud::-webkit-scrollbar-track {
+    background: transparent;
+}
+.nexus-hud::-webkit-scrollbar-thumb {
+    background: rgba(0, 255, 255, 0.15);
+    border-radius: 2px;
+}
+.nexus-hud::-webkit-scrollbar-thumb:hover {
+    background: rgba(0, 255, 255, 0.3);
+}
+.actor-list {
+    max-height: 150px;
+}
+.tour-selector {
+    max-height: 140px;
+}
+
+/* ══════════════════════════════════════════════════════════════════════════════
+   VIEW MODE TOGGLE
+   ══════════════════════════════════════════════════════════════════════════ */
+.view-toggle {
+    display: flex;
+    gap: 0;
+    border-radius: 4px;
+    overflow: hidden;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+.view-toggle-btn {
+    flex: 1;
+    background: rgba(255, 255, 255, 0.02);
+    border: none;
+    color: #555;
+    font-family: 'Roboto Mono', monospace;
+    font-size: 0.62rem;
+    font-weight: 700;
+    padding: 6px 12px;
+    cursor: pointer;
+    letter-spacing: 1px;
+    transition: all 0.2s;
+}
+.view-toggle-btn:first-child {
+    border-right: 1px solid rgba(255, 255, 255, 0.08);
+}
+.view-toggle-btn.active {
+    background: rgba(0, 255, 255, 0.12);
+    color: #00ffff;
+    box-shadow: inset 0 0 12px rgba(0, 255, 255, 0.08);
+}
+.view-toggle-btn:hover:not(.active) {
+    background: rgba(255, 255, 255, 0.04);
+    color: #999;
+}
+.view-mode-label {
+    font-size: 0.48rem;
+    color: #00ff88;
+    letter-spacing: 1.5px;
+    margin-top: 4px;
+    text-align: center;
+}
+
+/* ══════════════════════════════════════════════════════════════════════════════
+   HERO CONNECTION CARDS
+   ══════════════════════════════════════════════════════════════════════════ */
+.hero-connections {
+    margin-top: 12px;
+}
+.hero-card {
+    background: rgba(255, 255, 255, 0.02);
+    border: 1px solid rgba(255, 255, 255, 0.06);
+    border-left: 3px solid;
+    border-radius: 5px;
+    padding: 12px 14px;
+    margin-bottom: 8px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+.hero-card:hover {
+    background: rgba(255, 255, 255, 0.05);
+    transform: translateX(2px);
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.4);
+}
+.hero-card-header {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 6px;
+}
+.hero-rank {
+    font-size: 0.55rem;
+    color: #555;
+    font-weight: 700;
+}
+.hero-name {
+    font-size: 0.78rem;
+    font-weight: 700;
+    flex: 1;
+}
+.hero-dim {
+    font-size: 0.45rem;
+    font-weight: 700;
+    letter-spacing: 1.5px;
+    padding: 2px 6px;
+    border-radius: 2px;
+    background: rgba(255, 255, 255, 0.04);
+}
+.hero-label {
+    font-size: 0.62rem;
+    font-weight: 700;
+    color: #ccc;
+    letter-spacing: 1px;
+    margin-bottom: 4px;
+}
+.hero-summary {
+    font-size: 0.68rem;
+    color: #999;
+    line-height: 1.55;
+    margin-bottom: 8px;
+}
+.hero-chips {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 4px;
+    margin-bottom: 8px;
+}
+.hero-chip {
+    font-size: 0.5rem;
+    color: #bbb;
+    background: rgba(0, 255, 255, 0.04);
+    border: 1px solid rgba(0, 255, 255, 0.1);
+    padding: 2px 7px;
+    border-radius: 3px;
+    letter-spacing: 0.3px;
+}
+
+/* ══════════════════════════════════════════════════════════════════════════════
+   TENSION BAR
+   ══════════════════════════════════════════════════════════════════════════ */
+.hero-tension {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 0.48rem;
+    color: #666;
+    letter-spacing: 1px;
+}
+.tension-bar {
+    flex: 1;
+    height: 4px;
+    background: rgba(255, 255, 255, 0.06);
+    border-radius: 2px;
+    overflow: hidden;
+}
+.tension-fill {
+    height: 100%;
+    border-radius: 2px;
+    transition: width 0.5s ease;
+}
+
+/* ══════════════════════════════════════════════════════════════════════════════
+   TIMELINE STRIP
+   ══════════════════════════════════════════════════════════════════════════ */
+.hero-timeline, .edge-timeline {
+    margin-top: 6px;
+    padding-top: 6px;
+    border-top: 1px solid rgba(255, 255, 255, 0.04);
+}
+.timeline-event {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    padding: 3px 0;
+    position: relative;
+}
+.timeline-event::before {
+    content: '';
+    position: absolute;
+    left: 26px;
+    top: 12px;
+    bottom: -6px;
+    width: 1px;
+    background: rgba(255, 255, 255, 0.06);
+}
+.timeline-event:last-child::before {
+    display: none;
+}
+.timeline-year {
+    font-size: 0.5rem;
+    font-weight: 700;
+    color: #00ffff;
+    min-width: 32px;
+    flex-shrink: 0;
+    letter-spacing: 0.5px;
+}
+.timeline-text {
+    font-size: 0.55rem;
+    color: #999;
+    line-height: 1.4;
+}
+
+/* ══════════════════════════════════════════════════════════════════════════════
+   GRAPH CONTROLS
+   ══════════════════════════════════════════════════════════════════════════ */
+.graph-control-row {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 6px;
+}
+.ctrl-label {
+    font-size: 0.5rem;
+    color: #888;
+    letter-spacing: 0.5px;
+    min-width: 80px;
+}
+.ctrl-toggle {
+    background: rgba(255, 255, 255, 0.04);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    color: #666;
+    padding: 2px 10px;
+    border-radius: 3px;
+    font-family: 'Roboto Mono', monospace;
+    font-size: 0.45rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.15s;
+    letter-spacing: 1px;
+}
+.ctrl-toggle.on {
+    background: rgba(0, 255, 136, 0.1);
+    border-color: rgba(0, 255, 136, 0.3);
+    color: #00ff88;
+}
+.ctrl-value {
+    font-size: 0.45rem;
+    color: #666;
+    min-width: 28px;
+    text-align: right;
+    letter-spacing: 0.5px;
+}
