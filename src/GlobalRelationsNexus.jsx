@@ -1222,23 +1222,20 @@ export default function GlobalRelationsNexus({ forecasts, selectedTheory, theori
                     {/* ── TAB: FILTERS ─────────────────────────── */}
                     {hudTab === 'filters' && <>
                         <div className="hud-header">DIMENSION FILTERS</div>
-                        {Object.entries(DIM_COLORS).map(([dim, color]) => {
-                            const labels = { trade: 'ECONOMY & TRADE', conflict: 'CONFLICT & FRICTION', diplomacy: 'DIPLOMACY & TREATIES', tech: 'TECH & MINERALS' };
-                            return (
-                                <label key={dim} className="dim-filter-row" style={{ display: 'flex', alignItems: 'center', gap: '8px', padding: '4px 0', cursor: 'pointer', fontSize: '0.6rem' }}>
-                                    <input type="checkbox" checked={activeDims.has(dim)} onChange={() => toggleDim(dim)}
-                                        style={{ accentColor: color }} />
-                                    <span style={{ color }}>{labels[dim] || dim.toUpperCase()}</span>
-                                </label>
-                            );
-                        })}
+                        {Object.entries({ trade: 'ECONOMY & TRADE', conflict: 'CONFLICT & FRICTION', diplomacy: 'DIPLOMACY & TREATIES', tech: 'TECH & MINERALS' }).map(([key, label]) => (
+                            <label key={key} className="dim-filter-row" style={{ display: 'flex', alignItems: 'center', gap: '8px', padding: '4px 0', cursor: 'pointer', fontSize: '0.6rem' }}>
+                                <input type="checkbox" checked={dimensions[key]} onChange={() => setDimensions(d => ({ ...d, [key]: !d[key] }))}
+                                    style={{ accentColor: DIM_COLORS[key] }} />
+                                <span style={{ color: DIM_COLORS[key] }}>{label}</span>
+                            </label>
+                        ))}
 
                         <div className="hud-header" style={{ marginTop: '12px' }}>GPC CHALLENGES</div>
                         <div className="gpc-grid" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '4px', marginBottom: '10px' }}>
-                            {Object.entries(GPC_CHALLENGES || {}).map(([key, {name, icon}]) => {
-                                const sel = activeGPCs.has(key);
+                            {[['security','🛡','Security'],['borders','🚧','Borders'],['identity','🧬','Identity'],['technology','💻','Technology'],['environment','🌍','Environment'],['health','🏥','Health'],['poverty','📉','Poverty'],['equality','⚖','Equality']].map(([key, icon, name]) => {
+                                const sel = selectedGPC === key;
                                 return (
-                                    <button key={key} onClick={() => toggleGPC(key)} style={{
+                                    <button key={key} onClick={() => setSelectedGPC(sel ? null : key)} style={{
                                         background: sel ? 'rgba(0,255,255,0.12)' : 'rgba(255,255,255,0.02)',
                                         border: `1px solid ${sel ? '#00ffff' : 'rgba(255,255,255,0.1)'}`,
                                         color: sel ? '#00ffff' : '#aaa', fontSize: '0.52rem',
