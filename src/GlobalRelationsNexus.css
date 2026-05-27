@@ -1721,3 +1721,46 @@
     text-align: right;
     letter-spacing: 0.5px;
 }
+
+/* ══════════════════════════════════════════════════════════════════════════════
+   ACTOR LIST READABILITY FIX
+   ══════════════════════════════════════════════════════════════════════════ */
+.actor-list-item {
+    font-size: 0.65rem !important;
+    color: #bbb !important;
+    padding: 6px 10px !important;
+    letter-spacing: 0.3px;
+    line-height: 1.3;
+    white-space: normal !important;
+}
+.actor-list-item:hover {
+    color: #fff !important;
+}
+
+/* ══════════════════════════════════════════════════════════════════════════════
+   COLLAPSIBLE HUD SECTIONS
+   ══════════════════════════════════════════════════════════════════════════ */
+.hud-collapsible {
+    cursor: pointer !important;
+    user-select: none;
+    transition: color 0.15s;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+.hud-collapsible:hover {
+    color: #00ffff !important;
+}
+.hud-section-body {
+    animation: hud-expand 0.2s ease-out;
+}
+@keyframes hud-expand {
+    from { opacity: 0; max-height: 0; }
+    to { opacity: 1; max-height: 500px; }
+}
+
+/* Compact the HUD further */
+.nexus-hud .hud-header {
+    margin-top: 8px !important;
+    padding-bottom: 4px !important;
+}

@@ -129,6 +129,14 @@ export default function GlobalRelationsNexus({ forecasts, selectedTheory, theori
     const miniMapRef = useRef(null);
     // 2D mode
     const [is2D, setIs2D] = useState(false);
+    // Collapsible HUD sections
+    const [hudSections, setHudSections] = useState({
+        filters: true, gpc: false, physics: false, clusters: false,
+        graphCtrl: true, view: true, actors: true, audio: false,
+    });
+    const toggleSection = useCallback((key) => {
+        setHudSections(prev => ({ ...prev, [key]: !prev[key] }));
+    }, []);
     // Graph clarity controls
     const [showSatellites, setShowSatellites] = useState(false);
     const [intensityThreshold, setIntensityThreshold] = useState(0);
@@ -1192,7 +1200,7 @@ export default function GlobalRelationsNexus({ forecasts, selectedTheory, theori
 
                 {/* ── HUD Legend ──────────────────────────────────────────── */}
                 <div className="nexus-hud-legend">
-                    <div className="hud-header">DIMENSION FILTERS</div>
+                    <div className="hud-header hud-collapsible" onClick={() => toggleSection('filters')}>{hudSections.filters ? "▾" : "▸"} DIMENSION FILTERS</div>
                     {Object.entries({ trade: 'ECONOMY & TRADE', conflict: 'CONFLICT & FRICTION', diplomacy: 'DIPLOMACY & TREATIES', tech: 'TECH & MINERALS' }).map(([key, label]) => (
                         <div className="hud-row" key={key}>
                             <label className="cyber-checkbox">
@@ -1274,8 +1282,8 @@ export default function GlobalRelationsNexus({ forecasts, selectedTheory, theori
                         </div>
                     )}
 
-                    <div className="hud-header" style={{ marginTop: '14px' }}>GRAPH CONTROLS</div>
-                    <div className="graph-control-row">
+                    <div className="hud-header hud-collapsible" onClick={() => toggleSection('graphCtrl')}>{hudSections.graphCtrl ? "▾" : "▸"} GRAPH CONTROLS</div>
+                    {hudSections.graphCtrl && <><div className="graph-control-row">
                         <label className="ctrl-label">Show Satellites</label>
                         <button className={`ctrl-toggle ${showSatellites ? 'on' : ''}`}
                             onClick={() => setShowSatellites(prev => !prev)}>
@@ -1289,9 +1297,10 @@ export default function GlobalRelationsNexus({ forecasts, selectedTheory, theori
                             className="audio-slider" />
                         <span className="ctrl-value">{intensityThreshold > 0 ? '≥' + intensityThreshold.toFixed(1) : 'ALL'}</span>
                     </div>
+                    </>}
 
-                    <div className="hud-header" style={{ marginTop: '14px' }}>VIEW MODE</div>
-                    <div className="view-toggle">
+                    <div className="hud-header hud-collapsible" onClick={() => toggleSection('view')}>{hudSections.view ? "▾" : "▸"} VIEW MODE</div>
+                    {hudSections.view && <><div className="view-toggle">
                         <button className={`view-toggle-btn ${!is2D ? 'active' : ''}`}
                             onClick={() => setIs2D(false)}>
                             ◈ 3D
@@ -1304,9 +1313,10 @@ export default function GlobalRelationsNexus({ forecasts, selectedTheory, theori
                     <div className="view-mode-label">
                         ACTIVE: {is2D ? '2D FLAT MAP' : '3D SPATIAL'}
                     </div>
+                    </>}
 
-                    <div className="hud-header" style={{ marginTop: '14px' }}>ACTORS</div>
-                    <div className="actor-list">
+                    <div className="hud-header hud-collapsible" onClick={() => toggleSection('actors')}>{hudSections.actors ? "▾" : "▸"} ACTORS</div>
+                    {hudSections.actors && <div className="actor-list">
                         {Object.values(PRIMARY_ANCHORS).map(a => (
                             <button key={a.id} className="actor-list-item"
                                 style={{ borderLeftColor: a.color, color: (selectedNode && selectedNode.id === a.id) ? '#fff' : '#999' }}
@@ -1317,9 +1327,9 @@ export default function GlobalRelationsNexus({ forecasts, selectedTheory, theori
                                 {a.name.split('(')[0].trim()}
                             </button>
                         ))}
-                    </div>
+                    </div>}
 
-                    <div className="hud-header" style={{ marginTop: '14px' }}>AUDIO</div>
+                    <div className="hud-header hud-collapsible" onClick={() => toggleSection('audio')}>{hudSections.audio ? "▾" : "▸"} AUDIO</div>
                     <div className="audio-controls">
                         <button className="audio-mute-btn" onClick={() => { const m = NexusAudio.toggleMute(); setAudioMuted(m); }}>
                             {audioMuted ? '🔇 MUTED' : '🔊 ON'}
