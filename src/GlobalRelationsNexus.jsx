@@ -1137,9 +1137,25 @@ export default function GlobalRelationsNexus({ forecasts, selectedTheory, theori
                     linkLabel={lnk => {
                         const sId = typeof lnk.source === 'object' ? lnk.source.id : lnk.source;
                         const tId = typeof lnk.target === 'object' ? lnk.target.id : lnk.target;
+                        const sName = typeof lnk.source === 'object' ? lnk.source.name : sId;
+                        const tName = typeof lnk.target === 'object' ? lnk.target.name : tId;
+                        const dimColor = DIM_COLORS[lnk.type] || '#fff';
+                        const dimLabel = (lnk.type || 'connection').toUpperCase();
                         const info = getEdgeInfo(sId, tId, lnk.type);
-                        if (info) return `<div style="background:rgba(0,0,0,0.85);color:#fff;padding:8px 12px;border-radius:4px;font-family:monospace;font-size:11px;max-width:320px;border-left:3px solid ${DIM_COLORS[lnk.type] || '#fff'}"><strong>${info.label}</strong><br/>${info.summary}</div>`;
-                        return '';
+                        if (info) {
+                            return `<div style="background:rgba(0,2,8,0.94);color:#fff;padding:10px 14px;border-radius:5px;font-family:'Roboto Mono',monospace;font-size:11px;max-width:360px;border-left:4px solid ${dimColor};backdrop-filter:blur(12px);box-shadow:0 8px 32px rgba(0,0,0,0.8)">
+                                <div style="color:${dimColor};font-size:9px;letter-spacing:2px;margin-bottom:4px">${dimLabel}</div>
+                                <strong style="font-size:13px">${info.label}</strong><br/>
+                                <span style="color:#bbb;font-size:10px;line-height:1.5">${info.summary}</span>
+                                <div style="margin-top:6px;display:flex;gap:4px;flex-wrap:wrap">${info.dataPoints.slice(0,3).map(dp => '<span style="font-size:9px;color:#aaa;background:rgba(0,255,255,0.06);padding:2px 6px;border-radius:2px;border:1px solid rgba(0,255,255,0.1)">' + dp + '</span>').join('')}</div>
+                                <div style="margin-top:6px;font-size:9px;color:#666">Tension: <span style="color:${info.tension > 0.7 ? '#ff0066' : info.tension > 0.4 ? '#ff9900' : '#00ff88'}">${(info.tension * 100).toFixed(0)}%</span> · Click for full details</div>
+                            </div>`;
+                        }
+                        return `<div style="background:rgba(0,2,8,0.92);color:#ccc;padding:8px 12px;border-radius:4px;font-family:'Roboto Mono',monospace;font-size:11px;border-left:3px solid ${dimColor};backdrop-filter:blur(10px)">
+                            <span style="color:${dimColor};font-size:9px;letter-spacing:1.5px">${dimLabel}</span><br/>
+                            <strong>${sName.split('(')[0].trim()}</strong> ⟷ <strong>${tName.split('(')[0].trim()}</strong><br/>
+                            <span style="font-size:9px;color:#888">Click for details</span>
+                        </div>`;
                     }}
                     onLinkClick={handleLinkClick}
                     linkColor={lnk => {
@@ -1163,6 +1179,7 @@ export default function GlobalRelationsNexus({ forecasts, selectedTheory, theori
                     onBackgroundClick={() => { handleBackgroundClick(); setContextMenu(null); }}
                     enableNodeDrag={true}
                     enableNavigationControls={true}
+                    linkHoverPrecision={8}
                     controlType="orbit"
                 />
 
@@ -1200,146 +1217,166 @@ export default function GlobalRelationsNexus({ forecasts, selectedTheory, theori
 
                 {/* ── HUD Legend ──────────────────────────────────────────── */}
                 <div className="nexus-hud-legend">
-                    <div className="hud-header hud-collapsible" onClick={() => toggleSection('filters')}>{hudSections.filters ? "▾" : "▸"} DIMENSION FILTERS</div>
-                    {Object.entries({ trade: 'ECONOMY & TRADE', conflict: 'CONFLICT & FRICTION', diplomacy: 'DIPLOMACY & TREATIES', tech: 'TECH & MINERALS' }).map(([key, label]) => (
-                        <div className="hud-row" key={key}>
-                            <label className="cyber-checkbox">
-                                <input type="checkbox" checked={dimensions[key]} onChange={() => setDimensions(d => ({ ...d, [key]: !d[key] }))} />
-                                <span className="checkbox-box" style={{ borderColor: DIM_COLORS[key] }} />
-                                <span className="checkbox-label" style={{ color: DIM_COLORS[key] }}>{label}</span>
-                            </label>
+                    {/* ── Tabbed HUD ──────────────────────────── */}
+                    <div className="hud-tabs">
+                        <button className={`hud-tab ${hudTab === 'filters' ? 'active' : ''}`} onClick={() => setHudTab('filters')}>⬡ FILTERS</button>
+                        <button className={`hud-tab ${hudTab === 'controls' ? 'active' : ''}`} onClick={() => setHudTab('controls')}>⚙ CONTROLS</button>
+                        <button className={`hud-tab ${hudTab === 'actors' ? 'active' : ''}`} onClick={() => setHudTab('actors')}>◉ ACTORS</button>
+                    </div>
+
+                    <div className="hud-tab-panel">
+                    {/* ── TAB: FILTERS ─────────────────────────── */}
+                    {hudTab === 'filters' && <>
+                        <div className="hud-header">DIMENSION FILTERS</div>
+                        {Object.entries(DIM_COLORS).map(([dim, color]) => {
+                            const labels = { trade: 'ECONOMY & TRADE', conflict: 'CONFLICT & FRICTION', diplomacy: 'DIPLOMACY & TREATIES', tech: 'TECH & MINERALS' };
+                            return (
+                                <label key={dim} className="dim-filter-row" style={{ display: 'flex', alignItems: 'center', gap: '8px', padding: '4px 0', cursor: 'pointer', fontSize: '0.6rem' }}>
+                                    <input type="checkbox" checked={activeDims.has(dim)} onChange={() => toggleDim(dim)}
+                                        style={{ accentColor: color }} />
+                                    <span style={{ color }}>{labels[dim] || dim.toUpperCase()}</span>
+                                </label>
+                            );
+                        })}
+
+                        <div className="hud-header" style={{ marginTop: '12px' }}>GPC CHALLENGES</div>
+                        <div className="gpc-grid" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '4px', marginBottom: '10px' }}>
+                            {Object.entries(GPC_CHALLENGES || {}).map(([key, {name, icon}]) => {
+                                const sel = activeGPCs.has(key);
+                                return (
+                                    <button key={key} onClick={() => toggleGPC(key)} style={{
+                                        background: sel ? 'rgba(0,255,255,0.12)' : 'rgba(255,255,255,0.02)',
+                                        border: `1px solid ${sel ? '#00ffff' : 'rgba(255,255,255,0.1)'}`,
+                                        color: sel ? '#00ffff' : '#aaa', fontSize: '0.52rem',
+                                        fontFamily: 'Roboto Mono, monospace', padding: '4px 2px', borderRadius: '4px',
+                                        cursor: 'pointer', textAlign: 'center', transition: 'all 0.15s', outline: 'none',
+                                    }} title={`Focus on ${name}`}>{icon} {name.toUpperCase()}</button>
+                                );
+                            })}
                         </div>
-                    ))}
 
-                    <div className="hud-header" style={{ marginTop: '14px' }}>HL POLITICAL CHALLENGES (GPC)</div>
-                    <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '6px', marginBottom: '14px' }}>
-                        {Object.entries(CHALLENGE_ICONS).map(([name, icon]) => {
-                            const sel = selectedGPC === name;
-                            return (
-                                <button key={name} onClick={() => setSelectedGPC(sel ? null : name)} style={{
-                                    background: sel ? 'rgba(0,255,255,0.15)' : 'rgba(255,255,255,0.02)',
-                                    border: `1px solid ${sel ? '#00ffff' : 'rgba(255,255,255,0.1)'}`,
-                                    color: sel ? '#00ffff' : '#aaa', fontSize: '0.52rem',
-                                    fontFamily: 'Roboto Mono, monospace', padding: '4px 2px', borderRadius: '4px',
-                                    cursor: 'pointer', textAlign: 'center', transition: 'all 0.15s', outline: 'none',
-                                }} title={`Focus on ${name}`}>{icon} {name.toUpperCase()}</button>
-                            );
-                        })}
-                    </div>
+                        {/* GDELT Live Feed */}
+                        {pulseSignals.length > 0 && (
+                            <div className="pulse-indicator">📡 LIVE: {pulseSignals.length} actors in news</div>
+                        )}
+                        {gdeltArticles.length > 0 && (
+                            <div className="gdelt-feed">
+                                <div className="section-label" style={{ marginTop: '6px', marginBottom: '4px' }}>LIVE INTEL</div>
+                                {gdeltArticles.slice(0, 4).map((a, i) => (
+                                    <a key={i} href={a.url} target="_blank" rel="noopener noreferrer" className="gdelt-item"
+                                        style={{ borderLeftColor: a.tone < -2 ? '#ff0066' : a.tone > 2 ? '#00ff88' : '#888' }}>
+                                        {a.title.slice(0, 80)}{a.title.length > 80 ? '…' : ''}
+                                    </a>
+                                ))}
+                            </div>
+                        )}
+                    </>}
 
-                    <div className="hud-header" style={{ marginTop: '14px' }}>PHYSICS PRESETS</div>
-                    <div style={{ display: 'flex', gap: '4px', marginBottom: '14px' }}>
-                        {[['balance','⚖️ BALANCE'],['friction','⚡ FRICTION'],['core','⬢ CORE-PERIPH.']].map(([id, label]) => {
-                            const act = physicsPreset === id;
-                            return (
-                                <button key={id} onClick={() => setPhysicsPreset(id)} style={{
-                                    flex: 1, background: act ? 'rgba(0,255,136,0.15)' : 'rgba(255,255,255,0.02)',
-                                    border: `1px solid ${act ? '#00ff88' : 'rgba(255,255,255,0.1)'}`,
-                                    color: act ? '#00ff88' : '#888', fontSize: '0.55rem',
-                                    fontFamily: 'Roboto Mono, monospace', padding: '4px 0', borderRadius: '4px',
-                                    cursor: 'pointer', textAlign: 'center', transition: 'all 0.15s', outline: 'none',
-                                }}>{label}</button>
-                            );
-                        })}
-                    </div>
+                    {/* ── TAB: CONTROLS ────────────────────────── */}
+                    {hudTab === 'controls' && <>
+                        <div className="hud-header">GRAPH CONTROLS</div>
+                        <div className="graph-control-row">
+                            <label className="ctrl-label">Satellites</label>
+                            <button className={`ctrl-toggle ${showSatellites ? 'on' : ''}`}
+                                onClick={() => setShowSatellites(prev => !prev)}>
+                                {showSatellites ? 'ON' : 'OFF'}
+                            </button>
+                        </div>
+                        <div className="graph-control-row">
+                            <label className="ctrl-label">Link Intensity</label>
+                            <input type="range" min="0" max="3" step="0.2" value={intensityThreshold}
+                                onChange={e => setIntensityThreshold(parseFloat(e.target.value))}
+                                className="audio-slider" />
+                            <span className="ctrl-value">{intensityThreshold > 0 ? '≥' + intensityThreshold.toFixed(1) : 'ALL'}</span>
+                        </div>
 
-                    {/* Anchor Cluster Legend */}
-                    <div className="hud-header" style={{ marginTop: '14px' }}>ACTOR CLUSTERS</div>
-                    <div style={{ display: 'flex', gap: '4px', marginBottom: '8px' }}>
-                        <button onClick={expandAll} className="nexus-ctrl-btn" style={{ flex: 1, fontSize: '0.48rem' }}>▼ EXPAND ALL</button>
-                        <button onClick={collapseAll} className="nexus-ctrl-btn" style={{ flex: 1, fontSize: '0.48rem' }}>▲ COLLAPSE ALL</button>
-                    </div>
-                    <div className="anchor-legend-list">
-                        {Object.entries(PRIMARY_ANCHORS).map(([id, a]) => {
-                            const isExp = expandedAnchors[id];
-                            const count = anchorSatCounts[id] || 0;
-                            return (
-                                <button key={id} className={`anchor-legend-item ${isExp ? 'expanded' : ''}`}
-                                    onClick={() => toggleAnchorExpand(id)}
-                                    style={{ '--anchor-color': a.color }}>
-                                    <span className="anchor-dot" style={{ background: a.color }} />
-                                    <span className="anchor-label">{a.name.length > 20 ? a.name.slice(0, 18) + '..' : a.name}</span>
-                                    <span className="anchor-count">{isExp ? '▾' : '▸'} {count}</span>
+                        <div className="hud-header" style={{ marginTop: '12px' }}>PHYSICS</div>
+                        <div style={{ display: 'flex', gap: '4px', marginBottom: '10px' }}>
+                            {[['balance','⚖️ BALANCE'],['friction','⚡ FRICTION'],['core','⬢ CORE-PERIPH.']].map(([id, label]) => {
+                                const act = physicsPreset === id;
+                                return (
+                                    <button key={id} onClick={() => setPhysicsPreset(id)} style={{
+                                        flex: 1, background: act ? 'rgba(0,255,136,0.15)' : 'rgba(255,255,255,0.02)',
+                                        border: `1px solid ${act ? '#00ff88' : 'rgba(255,255,255,0.1)'}`,
+                                        color: act ? '#00ff88' : '#888', fontSize: '0.55rem',
+                                        fontFamily: 'Roboto Mono, monospace', padding: '4px 0', borderRadius: '4px',
+                                        cursor: 'pointer', textAlign: 'center', transition: 'all 0.15s', outline: 'none',
+                                    }}>{label}</button>
+                                );
+                            })}
+                        </div>
+
+                        <div className="hud-header" style={{ marginTop: '12px' }}>VIEW MODE</div>
+                        <div className="view-toggle">
+                            <button className={`view-toggle-btn ${!is2D ? 'active' : ''}`}
+                                onClick={() => setIs2D(false)}>◈ 3D</button>
+                            <button className={`view-toggle-btn ${is2D ? 'active' : ''}`}
+                                onClick={() => setIs2D(true)}>◻ 2D</button>
+                        </div>
+                        <div className="view-mode-label">
+                            ACTIVE: {is2D ? '2D FLAT MAP' : '3D SPATIAL'}
+                        </div>
+
+                        <div className="hud-header" style={{ marginTop: '12px' }}>AUDIO</div>
+                        <div className="graph-control-row" style={{ marginBottom: '6px' }}>
+                            <label className="ctrl-label">Ambient Pad</label>
+                            <button className={`ctrl-toggle ${ambientOn ? 'on' : ''}`}
+                                onClick={() => {
+                                    if (ambientOn) { NexusAudio.stopAmbient(); setAmbientOn(false); }
+                                    else { NexusAudio.startAmbient(); setAmbientOn(true); }
+                                }}>
+                                {ambientOn ? 'ON' : 'OFF'}
+                            </button>
+                        </div>
+                        <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                            <button className="audio-mute-btn" onClick={() => { const m = NexusAudio.toggleMute(); setAudioMuted(m); }}
+                                style={{ fontSize: '0.55rem', padding: '3px 8px' }}>
+                                {audioMuted ? '🔇' : '🔊'}
+                            </button>
+                            <input type="range" min="0" max="1" step="0.05" value={audioVolume}
+                                onChange={e => { const v = parseFloat(e.target.value); setAudioVolume(v); NexusAudio.setVolume(v); }}
+                                className="audio-slider" style={{ flex: 1 }} />
+                        </div>
+                    </>}
+
+                    {/* ── TAB: ACTORS ──────────────────────────── */}
+                    {hudTab === 'actors' && <>
+                        <div className="hud-header">ACTOR CLUSTERS</div>
+                        <div style={{ display: 'flex', gap: '4px', marginBottom: '8px' }}>
+                            <button onClick={expandAll} className="nexus-ctrl-btn" style={{ flex: 1, fontSize: '0.48rem' }}>▼ EXPAND ALL</button>
+                            <button onClick={collapseAll} className="nexus-ctrl-btn" style={{ flex: 1, fontSize: '0.48rem' }}>▲ COLLAPSE ALL</button>
+                        </div>
+                        <div className="anchor-legend-list">
+                            {Object.entries(PRIMARY_ANCHORS).map(([id, a]) => {
+                                const isExp = expandedAnchors[id];
+                                const count = anchorSatCounts[id] || 0;
+                                return (
+                                    <button key={id} className={`anchor-legend-item ${isExp ? 'expanded' : ''}`}
+                                        onClick={() => toggleAnchorExpand(id)}
+                                        style={{ '--anchor-color': a.color }}>
+                                        <span className="anchor-dot" style={{ background: a.color }} />
+                                        <span className="anchor-label">{a.name.length > 20 ? a.name.slice(0, 18) + '..' : a.name}</span>
+                                        <span className="anchor-count">{isExp ? '▾' : '▸'} {count}</span>
+                                    </button>
+                                );
+                            })}
+                        </div>
+
+                        <div className="hud-header" style={{ marginTop: '12px' }}>QUICK NAV</div>
+                        <div className="actor-list">
+                            {Object.values(PRIMARY_ANCHORS).map(a => (
+                                <button key={a.id} className="actor-list-item"
+                                    style={{ borderLeftColor: a.color, color: (selectedNode && selectedNode.id === a.id) ? '#fff' : '#999' }}
+                                    onClick={() => {
+                                        const node = graphData.nodes.find(n => n.id === a.id);
+                                        if (node) { navigateToNode(node); setSelectedNode(node); NexusAudio.soundNodeClick(); }
+                                    }}>
+                                    {a.name.split('(')[0].trim()}
                                 </button>
-                            );
-                        })}
-                    </div>
-
-
-
-                    {pulseSignals.length > 0 && (
-                        <div className="pulse-indicator">📡 LIVE: {pulseSignals.length} actors in news</div>
-                    )}
-                    {gdeltArticles.length > 0 && (
-                        <div className="gdelt-feed">
-                            <div className="section-label" style={{ marginTop: '6px', marginBottom: '4px' }}>LIVE INTEL</div>
-                            {gdeltArticles.slice(0, 4).map((a, i) => (
-                                <a key={i} href={a.url} target="_blank" rel="noopener noreferrer" className="gdelt-item"
-                                    style={{ borderLeftColor: a.tone < -2 ? '#ff0066' : a.tone > 2 ? '#00ff88' : '#888' }}>
-                                    {a.title.slice(0, 80)}{a.title.length > 80 ? '…' : ''}
-                                </a>
                             ))}
                         </div>
-                    )}
-
-                    <div className="hud-header hud-collapsible" onClick={() => toggleSection('graphCtrl')}>{hudSections.graphCtrl ? "▾" : "▸"} GRAPH CONTROLS</div>
-                    {hudSections.graphCtrl && <><div className="graph-control-row">
-                        <label className="ctrl-label">Show Satellites</label>
-                        <button className={`ctrl-toggle ${showSatellites ? 'on' : ''}`}
-                            onClick={() => setShowSatellites(prev => !prev)}>
-                            {showSatellites ? 'ON' : 'OFF'}
-                        </button>
-                    </div>
-                    <div className="graph-control-row">
-                        <label className="ctrl-label">Link Intensity</label>
-                        <input type="range" min="0" max="3" step="0.2" value={intensityThreshold}
-                            onChange={e => setIntensityThreshold(parseFloat(e.target.value))}
-                            className="audio-slider" />
-                        <span className="ctrl-value">{intensityThreshold > 0 ? '≥' + intensityThreshold.toFixed(1) : 'ALL'}</span>
-                    </div>
                     </>}
-
-                    <div className="hud-header hud-collapsible" onClick={() => toggleSection('view')}>{hudSections.view ? "▾" : "▸"} VIEW MODE</div>
-                    {hudSections.view && <><div className="view-toggle">
-                        <button className={`view-toggle-btn ${!is2D ? 'active' : ''}`}
-                            onClick={() => setIs2D(false)}>
-                            ◈ 3D
-                        </button>
-                        <button className={`view-toggle-btn ${is2D ? 'active' : ''}`}
-                            onClick={() => setIs2D(true)}>
-                            ◻ 2D
-                        </button>
                     </div>
-                    <div className="view-mode-label">
-                        ACTIVE: {is2D ? '2D FLAT MAP' : '3D SPATIAL'}
-                    </div>
-                    </>}
-
-                    <div className="hud-header hud-collapsible" onClick={() => toggleSection('actors')}>{hudSections.actors ? "▾" : "▸"} ACTORS</div>
-                    {hudSections.actors && <div className="actor-list">
-                        {Object.values(PRIMARY_ANCHORS).map(a => (
-                            <button key={a.id} className="actor-list-item"
-                                style={{ borderLeftColor: a.color, color: (selectedNode && selectedNode.id === a.id) ? '#fff' : '#999' }}
-                                onClick={() => {
-                                    const node = graphData.nodes.find(n => n.id === a.id);
-                                    if (node) { navigateToNode(node); setSelectedNode(node); NexusAudio.soundNodeClick(); }
-                                }}>
-                                {a.name.split('(')[0].trim()}
-                            </button>
-                        ))}
-                    </div>}
-
-                    <div className="hud-header hud-collapsible" onClick={() => toggleSection('audio')}>{hudSections.audio ? "▾" : "▸"} AUDIO</div>
-                    <div className="audio-controls">
-                        <button className="audio-mute-btn" onClick={() => { const m = NexusAudio.toggleMute(); setAudioMuted(m); }}>
-                            {audioMuted ? '🔇 MUTED' : '🔊 ON'}
-                        </button>
-                        <input type="range" min="0" max="1" step="0.05" value={audioVolume}
-                            onChange={e => { const v = parseFloat(e.target.value); setAudioVolume(v); NexusAudio.setVolume(v); }}
-                            className="audio-slider" />
-                    </div>
-
-
                 </div>
 
                 {/* ── Tabbed Inspect Panel ─────────────────────────────────── */}
