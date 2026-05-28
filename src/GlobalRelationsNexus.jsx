@@ -419,6 +419,20 @@ export default function GlobalRelationsNexus({ forecasts, selectedTheory, theori
         let nodes = graphData.nodes;
         let links = graphData.links;
 
+        // GPC challenge filter — highlight relevant nodes
+        if (selectedGPC && GPC_NODE_MAP[selectedGPC]) {
+            const gpcSet = new Set(GPC_NODE_MAP[selectedGPC]);
+            nodes = nodes.map(n => ({
+                ...n,
+                __gpcDimmed: !gpcSet.has(n.id),
+            }));
+            links = links.filter(l => {
+                const s = typeof l.source === 'object' ? l.source.id : l.source;
+                const t = typeof l.target === 'object' ? l.target.id : l.target;
+                return gpcSet.has(s) || gpcSet.has(t);
+            });
+        }
+
         // Hide satellites unless toggled or a node is selected
         if (!showSatellites && !selectedNode && !lockedNode) {
             const anchorIds = new Set(Object.keys(PRIMARY_ANCHORS));
@@ -436,7 +450,7 @@ export default function GlobalRelationsNexus({ forecasts, selectedTheory, theori
         }
 
         return { nodes, links };
-    }, [graphData, showSatellites, selectedNode, lockedNode, intensityThreshold]);
+    }, [graphData, showSatellites, selectedNode, lockedNode, intensityThreshold, selectedGPC]);
 
     // ── Search results ────────────────────────────────────────────────────────
     const searchResults = useMemo(() => {
@@ -1155,6 +1169,12 @@ export default function GlobalRelationsNexus({ forecasts, selectedTheory, theori
                     onLinkClick={handleLinkClick}
                     linkColor={lnk => {
                         if (selectedNode) return isLinkFocused(lnk) ? lnk.color : 'rgba(80,80,80,0.12)';
+                        if (selectedGPC && GPC_NODE_MAP[selectedGPC]) {
+                            const gpcSet = new Set(GPC_NODE_MAP[selectedGPC]);
+                            const s = typeof lnk.source === 'object' ? lnk.source.id : lnk.source;
+                            const t = typeof lnk.target === 'object' ? lnk.target.id : lnk.target;
+                            if (!gpcSet.has(s) && !gpcSet.has(t)) return 'rgba(80,80,80,0.06)';
+                        }
                         return lnk.color;
                     }}
                     linkWidth={lnk => {
@@ -1246,6 +1266,14 @@ export default function GlobalRelationsNexus({ forecasts, selectedTheory, theori
                                 );
                             })}
                         </div>
+                        {selectedGPC && (
+                            <div style={{ marginBottom: '8px', padding: '6px 10px', background: 'rgba(0,255,255,0.06)',
+                                border: '1px solid rgba(0,255,255,0.15)', borderRadius: '4px',
+                                fontSize: '0.55rem', color: '#00ffff', letterSpacing: '1px', textAlign: 'center' }}>
+                                VIEWING: {selectedGPC.toUpperCase()} CHALLENGE
+                                <br/><span style={{ color: '#888', fontSize: '0.45rem' }}>{GPC_NODE_MAP[selectedGPC] ? GPC_NODE_MAP[selectedGPC].length + ' relevant actors' : ''}</span>
+                            </div>
+                        )}
 
                         {/* GDELT Live Feed */}
                         {pulseSignals.length > 0 && (
