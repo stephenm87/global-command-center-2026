@@ -64,6 +64,17 @@ const DIM_COLORS = {
     tech:      '#bf55ec',
 };
 
+const GPC_NODE_MAP = {
+    security:    ['USA','China','Russia','NATO','MiddleEast','Jihadist','Hezbollah','PMCs','CyberActors'],
+    borders:     ['Europe','MiddleEast','Africa','LatinAmerica','USA','Cartels'],
+    identity:    ['MiddleEast','Europe','Russia','Africa','LatinAmerica','Jihadist'],
+    technology:  ['USA','China','TechAIHub','CyberActors','Europe','AsiaPacific'],
+    environment: ['China','USA','Europe','Africa','AsiaPacific','MiddleEast','GlobalInstitutions'],
+    health:      ['GlobalInstitutions','Africa','LatinAmerica','AsiaPacific','GlobalPharmaMNCs'],
+    poverty:     ['Africa','LatinAmerica','AsiaPacific','MiddleEast','GlobalInstitutions'],
+    equality:    ['GlobalInstitutions','Europe','Africa','LatinAmerica','USA'],
+};
+
 // ── Assign a forecast to a primary anchor ─────────────────────────────────────
 const assignPrimaryAnchor = (forecast) => {
     const allText = [
