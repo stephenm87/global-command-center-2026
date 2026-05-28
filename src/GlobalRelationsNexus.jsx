@@ -484,15 +484,8 @@ export default function GlobalRelationsNexus({ forecasts, selectedTheory, theori
         let nodes = graphData.nodes;
         let links = graphData.links;
 
-        // GPC challenge filter — highlight relevant nodes
-        if (selectedGPC && GPC_NODE_MAP[selectedGPC]) {
-            const gpcSet = new Set(GPC_NODE_MAP[selectedGPC]);
-            nodes = nodes.map(n => ({
-                ...n,
-                __gpcDimmed: !gpcSet.has(n.id),
-            }));
-            // Links kept — dimming handled by linkColor callback
-        }
+        // GPC challenge filter — dimming handled by linkColor/linkWidth callbacks
+        // (No node modification here to preserve ForceGraph position references)
 
         // Hide satellites unless toggled or a node is selected
         if (!showSatellites && !selectedNode && !lockedNode) {
@@ -511,7 +504,7 @@ export default function GlobalRelationsNexus({ forecasts, selectedTheory, theori
         }
 
         return { nodes, links };
-    }, [graphData, showSatellites, selectedNode, lockedNode, intensityThreshold, selectedGPC]);
+    }, [graphData, showSatellites, selectedNode, lockedNode, intensityThreshold]);
 
     // ── Search results ────────────────────────────────────────────────────────
     const searchResults = useMemo(() => {
