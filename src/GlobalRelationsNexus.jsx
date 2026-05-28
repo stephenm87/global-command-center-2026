@@ -437,11 +437,7 @@ export default function GlobalRelationsNexus({ forecasts, selectedTheory, theori
                 ...n,
                 __gpcDimmed: !gpcSet.has(n.id),
             }));
-            links = links.filter(l => {
-                const s = typeof l.source === 'object' ? l.source.id : l.source;
-                const t = typeof l.target === 'object' ? l.target.id : l.target;
-                return gpcSet.has(s) || gpcSet.has(t);
-            });
+            // Links kept — dimming handled by linkColor callback
         }
 
         // Hide satellites unless toggled or a node is selected
