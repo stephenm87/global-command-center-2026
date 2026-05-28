@@ -75,6 +75,60 @@ const GPC_NODE_MAP = {
     equality:    ['GlobalInstitutions','Europe','Africa','LatinAmerica','USA'],
 };
 
+const GPC_CONTEXT = {
+    security: {
+        USA: { insight: 'Global military hegemon with 750+ overseas bases. NATO anchor, AUKUS, Quad alliances.', stakes: 'HIGH', connections: ['NATO','China','Russia','MiddleEast'] },
+        China: { insight: 'Rapid military modernization, South China Sea island-building, Taiwan contingency.', stakes: 'CRITICAL', connections: ['USA','AsiaPacific','Russia'] },
+        Russia: { insight: 'Nuclear arsenal, Wagner Group proxy operations, Arctic militarization.', stakes: 'CRITICAL', connections: ['NATO','USA','MiddleEast','Europe','PMCs'] },
+        NATO: { insight: 'Post-Ukraine expansion (Finland, Sweden). Eastern flank reinforcement.', stakes: 'HIGH', connections: ['USA','Europe','Russia'] },
+        Europe: { insight: 'Re-arming post-Ukraine. Franco-German defense integration challenges.', stakes: 'MEDIUM', connections: ['NATO','Russia','MiddleEast'] },
+        MiddleEast: { insight: 'Iran nuclear threshold, Israel-Gaza, Saudi-Iran detente fragility.', stakes: 'CRITICAL', connections: ['USA','Russia','Hezbollah','Jihadist'] },
+    },
+    borders: {
+        USA: { insight: 'US-Mexico border crisis: 2.5M encounters/yr. Fentanyl trafficking, asylum policy.', stakes: 'CRITICAL', connections: ['LatinAmerica','Cartels','MiddleEast'] },
+        Europe: { insight: 'Mediterranean migration, Belarus hybrid warfare, Schengen stress-testing.', stakes: 'HIGH', connections: ['Africa','MiddleEast','LatinAmerica'] },
+        MiddleEast: { insight: 'Syrian refugee crisis, Iraqi displacement, Kurdish territorial disputes.', stakes: 'HIGH', connections: ['Europe','Africa','USA'] },
+        Africa: { insight: 'Sahel instability, Lake Chad basin displacement, Libya transit corridor.', stakes: 'CRITICAL', connections: ['Europe','MiddleEast','LatinAmerica'] },
+        LatinAmerica: { insight: 'Venezuelan exodus (7M+), Darien Gap corridor, Northern Triangle push factors.', stakes: 'CRITICAL', connections: ['USA','Cartels','Africa'] },
+        Cartels: { insight: 'Sinaloa/CJNG control migration corridors, human smuggling revenue $13B/yr.', stakes: 'CRITICAL', connections: ['USA','LatinAmerica','MiddleEast'] },
+    },
+    technology: {
+        USA: { insight: 'AI/chip dominance via Nvidia, TSMC leverage. CHIPS Act $52B reshoring.', stakes: 'CRITICAL', connections: ['China','TechAIHub','Europe'] },
+        China: { insight: 'Self-sufficiency drive post-sanctions. Huawei breakthrough chips, DeepSeek AI.', stakes: 'CRITICAL', connections: ['USA','TechAIHub','AsiaPacific'] },
+        TechAIHub: { insight: 'Big Tech ($3T+ market cap) as geopolitical actors. AI safety governance gap.', stakes: 'HIGH', connections: ['USA','China','Europe'] },
+        Europe: { insight: 'EU AI Act regulatory leadership. Digital sovereignty vs US tech dependence.', stakes: 'MEDIUM', connections: ['USA','China','TechAIHub'] },
+        CyberActors: { insight: 'State-backed APTs (Fancy Bear, Lazarus). Ransomware-as-a-service economy.', stakes: 'CRITICAL', connections: ['USA','China','Russia'] },
+    },
+    identity: {
+        Europe: { insight: 'Far-right surge, anti-immigration populism, EU values vs sovereignty debate.', stakes: 'HIGH', connections: ['MiddleEast','Africa','Russia'] },
+        MiddleEast: { insight: 'Sunni-Shia divide, pan-Arabism decline, Gulf modernization vs tradition.', stakes: 'CRITICAL', connections: ['Jihadist','Europe','Africa'] },
+        Russia: { insight: 'Civilizational state narrative, Orthodox identity politics, anti-Western ideology.', stakes: 'HIGH', connections: ['Europe','MiddleEast','USA'] },
+        Africa: { insight: 'Post-colonial identity reclamation, ethnic federalism tensions, youth bulge.', stakes: 'HIGH', connections: ['Europe','MiddleEast','LatinAmerica'] },
+    },
+    environment: {
+        China: { insight: 'Largest emitter (31% global CO2) but also largest renewable investor.', stakes: 'CRITICAL', connections: ['USA','Europe','Africa'] },
+        USA: { insight: 'IRA $369B green investment vs fossil fuel lobbying. Paris re-engagement fragile.', stakes: 'HIGH', connections: ['China','Europe','MiddleEast'] },
+        Europe: { insight: 'Green Deal leader, carbon border tax (CBAM), energy transition post-Russia gas.', stakes: 'HIGH', connections: ['China','USA','MiddleEast'] },
+        Africa: { insight: 'Climate vulnerability disproportionate. Critical minerals for green transition.', stakes: 'CRITICAL', connections: ['China','Europe','USA'] },
+        MiddleEast: { insight: 'Petro-state transition pressure. UAE/Saudi Vision diversification.', stakes: 'HIGH', connections: ['China','Europe','USA'] },
+    },
+    health: {
+        GlobalInstitutions: { insight: 'WHO pandemic preparedness reform. Vaccine equity gaps persist.', stakes: 'HIGH', connections: ['Africa','AsiaPacific','GlobalPharmaMNCs'] },
+        Africa: { insight: 'Lowest vaccine coverage globally. Disease surveillance infrastructure gaps.', stakes: 'CRITICAL', connections: ['GlobalInstitutions','GlobalPharmaMNCs','China'] },
+        GlobalPharmaMNCs: { insight: 'mRNA platform potential vs IP barriers. $1.5T global pharma market.', stakes: 'HIGH', connections: ['GlobalInstitutions','USA','Africa'] },
+    },
+    poverty: {
+        Africa: { insight: '60% of extreme poor by 2030. Debt distress in 22 countries.', stakes: 'CRITICAL', connections: ['GlobalInstitutions','China','Europe'] },
+        LatinAmerica: { insight: 'Inequality highest region globally. Informal economy 50%+ workforce.', stakes: 'HIGH', connections: ['USA','GlobalInstitutions','China'] },
+        AsiaPacific: { insight: 'Dramatic poverty reduction but 350M+ still in extreme poverty.', stakes: 'MEDIUM', connections: ['China','GlobalInstitutions','USA'] },
+    },
+    equality: {
+        GlobalInstitutions: { insight: 'SDG5 gender equality stalled. LGBTQ+ rights divergence globally.', stakes: 'HIGH', connections: ['Europe','Africa','USA'] },
+        Europe: { insight: 'Gender pay gap narrowing. Anti-discrimination framework strongest globally.', stakes: 'MEDIUM', connections: ['GlobalInstitutions','USA','Africa'] },
+        Africa: { insight: 'Child marriage, FGM prevalence. Women in parliament rising (Rwanda 61%).', stakes: 'HIGH', connections: ['GlobalInstitutions','Europe','LatinAmerica'] },
+    },
+};
+
 // ── Assign a forecast to a primary anchor ─────────────────────────────────────
 const assignPrimaryAnchor = (forecast) => {
     const allText = [
