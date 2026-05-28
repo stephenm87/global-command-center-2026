@@ -1175,16 +1175,27 @@ export default function GlobalRelationsNexus({ forecasts, selectedTheory, theori
                     }}
                     onLinkClick={handleLinkClick}
                     linkColor={lnk => {
-                        if (selectedNode) return isLinkFocused(lnk) ? lnk.color : 'rgba(80,80,80,0.12)';
-                        if (selectedGPC && GPC_NODE_MAP[selectedGPC]) {
-                            const gpcSet = new Set(GPC_NODE_MAP[selectedGPC]);
-                            const s = typeof lnk.source === 'object' ? lnk.source.id : lnk.source;
-                            const t = typeof lnk.target === 'object' ? lnk.target.id : lnk.target;
-                            if (!gpcSet.has(s) && !gpcSet.has(t)) return 'rgba(80,80,80,0.06)';
+                        const s = typeof lnk.source === 'object' ? lnk.source.id : lnk.source;
+                        const t = typeof lnk.target === 'object' ? lnk.target.id : lnk.target;
+                        const focused = selectedNode ? isLinkFocused(lnk) : true;
+                        const gpcOk = (selectedGPC && GPC_NODE_MAP[selectedGPC])
+                            ? (new Set(GPC_NODE_MAP[selectedGPC]).has(s) || new Set(GPC_NODE_MAP[selectedGPC]).has(t))
+                            : true;
+                        if (selectedNode && selectedGPC) {
+                            return (focused && gpcOk) ? lnk.color : 'rgba(80,80,80,0.06)';
                         }
+                        if (selectedNode) return focused ? lnk.color : 'rgba(80,80,80,0.12)';
+                        if (selectedGPC) return gpcOk ? lnk.color : 'rgba(80,80,80,0.06)';
                         return lnk.color;
                     }}
                     linkWidth={lnk => {
+                        if (selectedNode && selectedGPC) {
+                            const s2 = typeof lnk.source === 'object' ? lnk.source.id : lnk.source;
+                            const t2 = typeof lnk.target === 'object' ? lnk.target.id : lnk.target;
+                            const gpcSet2 = new Set(GPC_NODE_MAP[selectedGPC]);
+                            if (isLinkFocused(lnk) && (gpcSet2.has(s2) || gpcSet2.has(t2))) return lnk.width * 4;
+                            return 0.1;
+                        }
                         if (selectedNode) return isLinkFocused(lnk) ? lnk.width * 4 : 0.15;
                         return (lnk.width || 0.5) * 2.5;
                     }}
