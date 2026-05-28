@@ -1501,6 +1501,33 @@ export default function GlobalRelationsNexus({ forecasts, selectedTheory, theori
                             <button className="inspect-close" onClick={() => { setSelectedNode(null); setLockedNode(null); setInspectTab('overview'); }}>✕</button>
                         </div>
 
+
+                        {/* GPC Context Card */}
+                        {selectedGPC && GPC_CONTEXT[selectedGPC] && GPC_CONTEXT[selectedGPC][selectedNode.id] && (
+                            <div style={{
+                                background: 'rgba(0,255,255,0.04)', border: '1px solid rgba(0,255,255,0.2)',
+                                borderRadius: '6px', padding: '12px 14px', marginBottom: '14px',
+                            }}>
+                                <div style={{ fontSize: '0.5rem', letterSpacing: '2px', color: '#00ffff', marginBottom: '6px' }}>
+                                    🌐 {selectedGPC.toUpperCase()} CHALLENGE ANALYSIS
+                                </div>
+                                <p style={{ fontSize: '0.68rem', color: '#ddd', lineHeight: '1.55', margin: '0 0 8px' }}>
+                                    {GPC_CONTEXT[selectedGPC][selectedNode.id].insight}
+                                </p>
+                                <div style={{ display: 'flex', alignItems: 'center', gap: '8px', fontSize: '0.55rem' }}>
+                                    <span style={{ color: '#888' }}>STAKES:</span>
+                                    <span style={{
+                                        color: GPC_CONTEXT[selectedGPC][selectedNode.id].stakes === 'CRITICAL' ? '#ff0066'
+                                            : GPC_CONTEXT[selectedGPC][selectedNode.id].stakes === 'HIGH' ? '#ff9900' : '#00ff88',
+                                        fontWeight: 700
+                                    }}>{GPC_CONTEXT[selectedGPC][selectedNode.id].stakes}</span>
+                                </div>
+                                <div style={{ marginTop: '8px', fontSize: '0.5rem', color: '#666' }}>
+                                    Key connections: {GPC_CONTEXT[selectedGPC][selectedNode.id].connections.join(' · ')}
+                                </div>
+                            </div>
+                        )}
+
                         {/* Breadcrumb when navigating within a lock */}
                         {lockedNode && selectedNode && lockedNode.id !== selectedNode.id && (
                             <div className="lock-breadcrumb">
