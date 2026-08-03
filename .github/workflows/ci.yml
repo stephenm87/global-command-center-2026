@@ -1,0 +1,25 @@
+name: CI
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main, dev ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Use Node.js 22.x
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22.x'
+          cache: 'npm'
+      - run: npm ci
+      - run: npm run build
+      - name: Check for secrets in output
+        run: |
+          if grep -iR 'AIza[0-9A-Za-z-_]{35}' dist/ ; then echo "Google API key found in build"; exit 1; fi
+          if grep -iR 'sk-[a-zA-Z0-9]{32,}' dist/ ; then echo "Generic API key found in build"; exit 1; fi
+          echo "No obvious secrets found in dist/"
