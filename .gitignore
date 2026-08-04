@@ -3,6 +3,7 @@ node_modules/
 
 # Build output (Netlify rebuilds this)
 dist/
+build/
 
 # macOS system files
 .DS_Store
@@ -10,6 +11,8 @@ dist/
 # Environment variables
 .env
 .env.local
+.env.production
+.env.development.local
 .env.*.local
 
 # Editor directories
@@ -21,4 +24,10 @@ dist/
 npm-debug.log*
 
 # Local Netlify folder
-.netlify
+.netlify/
+
+# Test coverage
+coverage/
+
+# Playwright browsers
+playwright/.cache/
