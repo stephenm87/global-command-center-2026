@@ -7,7 +7,7 @@
         "globe.gl": "^2.31.1",
         "papaparse": "^5.4.1",
         "react": "^18.2.0",
-        "react-dom": "^18.2.0",
+        "react-dom": "^19.2.8",
         "react-force-graph-3d": "^1.29.1",
         "three": "^0.184.0",
         "topojson-client": "^3.1.0"
