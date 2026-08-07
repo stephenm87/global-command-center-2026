@@ -2,8 +2,6 @@ import React, { useState, useEffect } from 'react';
 import { supabase } from './supabase';
 import './auth.css';
 
-const ALLOWED_DOMAIN = 'saschina.org';
-
 function getDisplayName(user) {
     if (!user) return null;
     const emailPart = user.email.split('@')[0];
@@ -54,9 +52,8 @@ export function AuthModal({ onClose }) {
     const handleSend = async () => {
         const trimmed = email.trim();
         if (!trimmed) { setError('Please enter your email.'); return; }
-        const domain = trimmed.split('@')[1]?.toLowerCase();
-        if (domain !== ALLOWED_DOMAIN) {
-            setError(`Please use your SAS school email (@${ALLOWED_DOMAIN})`);
+        if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(trimmed)) {
+            setError('Please enter a valid email address.');
             return;
         }
         setError('');
@@ -84,11 +81,11 @@ export function AuthModal({ onClose }) {
                     <>
                         <div className="gcc-auth-logo">⬢ GLOBAL COMMAND CENTER</div>
                         <h2 className="gcc-auth-title">SIGN IN</h2>
-                        <p className="gcc-auth-subtitle">Enter your SAS email to receive a magic link.</p>
+                        <p className="gcc-auth-subtitle">Enter your email to receive a magic link.</p>
                         <input
                             type="email"
                             className="gcc-auth-input"
-                            placeholder="yourname@saschina.org"
+                            placeholder="you@example.com"
                             value={email}
                             onChange={(e) => setEmail(e.target.value)}
                             onKeyDown={(e) => { if (e.key === 'Enter') handleSend(); }}

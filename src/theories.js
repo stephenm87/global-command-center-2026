@@ -228,5 +228,20 @@ export const KEY_DOCUMENTS = [
 export const getTheoryInterpretation = (theoryName, event) => {
     const theory = theories[theoryName];
     if (!theory) return "Select a theory to view perspective.";
+    if (event?.isCaseStudy) {
+        const caseQuestions = {
+            Realism: 'How do power asymmetries, security interests, and bargaining leverage shape the actors’ choices?',
+            Liberalism: 'Can law, institutions, interdependence, and cooperation narrow the range of harmful outcomes?',
+            Marxism: 'Who controls material resources and production, who benefits, and who carries the social costs?',
+            Structuralism: 'How do larger economic and political structures constrain the choices available to different actors?',
+            Constructivism: 'How do identity, language, norms, and competing narratives define interests and legitimate action?',
+            Feminism: 'Whose experiences and labor are missing, and how do gendered power relations change the meaning of security?',
+            Postcolonialism: 'How do colonial histories and unequal authority shape whose knowledge, sovereignty, and agency count?',
+            'Green Theory': 'How would analysis change if ecological integrity and intergenerational justice were treated as ends in themselves?',
+            'Critical Security': 'Who is being secured, from which threat, by whom, and at what cost to human freedom and dignity?',
+        };
+        const title = event['Entity/Subject'] || 'this case';
+        return `Interpretive lens—not an established factual conclusion. ${theory.description} Applied to “${title}”: ${caseQuestions[theoryName]} Test the answer against the dated sources and the case’s stated uncertainty.`;
+    }
     return theory.getInterpretation(event);
 };

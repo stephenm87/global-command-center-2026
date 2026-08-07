@@ -7,6 +7,8 @@ import * as NexusAudio from './nexusAudio';
 import { getEdgeInfo, getEdgeLabel } from './nexusEdgeData';
 import { generateNodeNarrative, generateEdgeNarrative } from './nexusNarrative';
 import { fetchGlobalPulse } from './nexusGDELT';
+import { reheatGraphWhenReady } from './graphReadiness.mjs';
+import { readStoredJson, writeStoredJson } from './localState.mjs';
 
 // ── Primary Geopolitical Anchors ──────────────────────────────────────────────
 const PRIMARY_ANCHORS = {
@@ -166,13 +168,22 @@ const linkId = (end) => (typeof end === 'object' && end !== null) ? (end.id || '
 
 
 
-export default function GlobalRelationsNexus({ forecasts, selectedTheory, theories, onTheorySelect }) {
+export default function GlobalRelationsNexus({ forecasts, selectedTheory, theories, onTheorySelect, initialNodeId, onActorSelect }) {
     const fgRef = useRef();
+    const nexusRootRef = useRef(null);
+    const [initialPreferences] = useState(() => readStoredJson('gcc-nexus-preferences', {}));
+    // react-force-graph schedules its internal layout asynchronously. Calling
+    // d3ReheatSimulation before the first engine tick marks the engine as
+    // running while its layout is still undefined, which crashes tickFrame.
+    const graphReadyRef = useRef(false);
 
     // ── State ─────────────────────────────────────────────────────────────────
-    const [selectedGPC, setSelectedGPC]             = useState(null);
-    const [physicsPreset, setPhysicsPreset]          = useState('balance');
-    const [selectedNode, setSelectedNode]            = useState(null);
+    const [selectedGPC, setSelectedGPC]             = useState(initialPreferences.selectedGPC || null);
+    const [physicsPreset, setPhysicsPreset]          = useState(['balance', 'friction', 'core'].includes(initialPreferences.physicsPreset) ? initialPreferences.physicsPreset : 'balance');
+    const [selectedNode, setSelectedNode]            = useState(() => {
+        const anchor = PRIMARY_ANCHORS[initialNodeId];
+        return anchor ? { ...anchor, isAnchor: true, desc: ANCHOR_DESCS[initialNodeId], category: ACTOR_TYPE_LABELS[anchor.type] || '' } : null;
+    });
     const [lockedNode, setLockedNode]                = useState(null);
     const [hoveredNode, setHoveredNode]              = useState(null);
     const [inspectTab, setInspectTab]                = useState('overview');
@@ -188,29 +199,51 @@ export default function GlobalRelationsNexus({ forecasts, selectedTheory, theori
     // Edge Detail
     const [selectedEdge, setSelectedEdge]            = useState(null);
     // Audio
-    const [audioMuted, setAudioMuted]                = useState(false);
-    const [audioVolume, setAudioVolume]              = useState(0.3);
+    const [audioMuted, setAudioMuted]                = useState(initialPreferences.audioMuted === true);
+    const [audioVolume, setAudioVolume]              = useState(typeof initialPreferences.audioVolume === 'number' ? initialPreferences.audioVolume : 0.3);
     const [ambientOn, setAmbientOn]                = useState(false);
     // Mini-map
     const miniMapRef = useRef(null);
     // 2D mode
-    const [is2D, setIs2D] = useState(false);
+    const [is2D, setIs2D] = useState(initialPreferences.is2D === true);
     // Tabbed HUD
     const [hudTab, setHudTab] = useState('filters');
     // Graph clarity controls
-    const [showSatellites, setShowSatellites] = useState(false);
-    const [intensityThreshold, setIntensityThreshold] = useState(0);
+    const [showSatellites, setShowSatellites] = useState(initialPreferences.showSatellites === true);
+    const [intensityThreshold, setIntensityThreshold] = useState(typeof initialPreferences.intensityThreshold === 'number' ? initialPreferences.intensityThreshold : 0);
     const [introComplete, setIntroComplete] = useState(false);
     // Context menu
     const [contextMenu, setContextMenu] = useState(null);
     // Double-click tracking
     const lastClickRef = useRef({ nodeId: null, time: 0 });
-    const [dimensions, setDimensions] = useState({ trade: true, conflict: true, diplomacy: true, tech: true });
+    const [dimensions, setDimensions] = useState({ trade: true, conflict: true, diplomacy: true, tech: true, ...(initialPreferences.dimensions || {}) });
     const [expandedAnchors, setExpandedAnchors] = useState({
         USA: false, China: false, Russia: false, Europe: false,
         MiddleEast: false, Africa: false, AsiaPacific: false, LatinAmerica: false,
         NATO: false, UN_OPEC: false, BiotechHub: false, TechAIHub: false, MilitantPMC: false, Jihadist: false, Cartels: false, CyberActors: false, Hezbollah: false,
     });
+
+    useEffect(() => {
+        const anchor = PRIMARY_ANCHORS[initialNodeId];
+        if (anchor) setSelectedNode({ ...anchor, isAnchor: true, desc: ANCHOR_DESCS[initialNodeId], category: ACTOR_TYPE_LABELS[anchor.type] || '' });
+    }, [initialNodeId]);
+
+    useEffect(() => {
+        if (selectedNode?.isAnchor) onActorSelect?.(selectedNode.id);
+    }, [selectedNode?.id, selectedNode?.isAnchor, onActorSelect]);
+
+    useEffect(() => {
+        writeStoredJson('gcc-nexus-preferences', {
+            selectedGPC,
+            physicsPreset,
+            audioMuted,
+            audioVolume,
+            is2D,
+            showSatellites,
+            intensityThreshold,
+            dimensions,
+        });
+    }, [selectedGPC, physicsPreset, audioMuted, audioVolume, is2D, showSatellites, intensityThreshold, dimensions]);
 
     const toggleAnchorExpand = useCallback((id) => {
         setExpandedAnchors(prev => ({ ...prev, [id]: !prev[id] }));
@@ -566,7 +599,7 @@ export default function GlobalRelationsNexus({ forecasts, selectedTheory, theori
             }
             return baseDist;
         });
-        fg.d3ReheatSimulation();
+        reheatGraphWhenReady(graphReadyRef, fg);
     }, [selectedTheory, physicsPreset, graphData]);
 
     // ── Click handler ─────────────────────────────────────────────────────────
@@ -656,14 +689,13 @@ export default function GlobalRelationsNexus({ forecasts, selectedTheory, theori
             // Unlock — resume physics
             setLockedNode(null);
             setCompareNode(null);
-            if (fgRef.current) fgRef.current.d3ReheatSimulation();
+            reheatGraphWhenReady(graphReadyRef, fgRef);
             NexusAudio.soundLockRelease();
         } else if (selectedNode) {
             // Lock — freeze physics to stabilize the view
             setLockedNode(selectedNode);
             NexusAudio.soundLockEngage();
-            if (fgRef.current) {
-                fgRef.current.d3ReheatSimulation();
+            if (reheatGraphWhenReady(graphReadyRef, fgRef)) {
                 // Let it settle briefly then pause
                 setTimeout(() => {
                     if (fgRef.current) fgRef.current.pauseAnimation();
@@ -852,7 +884,7 @@ export default function GlobalRelationsNexus({ forecasts, selectedTheory, theori
             case 'unlock':
                 setLockedNode(null);
                 setCompareNode(null);
-                if (fgRef.current) fgRef.current.d3ReheatSimulation();
+                reheatGraphWhenReady(graphReadyRef, fgRef);
                 NexusAudio.soundLockRelease();
                 break;
             case 'compare':
@@ -880,6 +912,14 @@ export default function GlobalRelationsNexus({ forecasts, selectedTheory, theori
     // ── Keyboard navigation ───────────────────────────────────────────────────
     useEffect(() => {
         const handler = (e) => {
+            const target = e.target instanceof Element ? e.target : null;
+            const isInteractive = Boolean(target?.closest('input, textarea, select, button, a, [contenteditable="true"]'));
+
+            // Shortcuts belong to this workspace only. Normal keyboard behavior
+            // always wins in controls, and Tab is never repurposed.
+            if (!nexusRootRef.current?.contains(target)) return;
+            if (isInteractive && e.key !== 'Escape') return;
+
             // Search shortcut
             if ((e.metaKey || e.ctrlKey) && e.key === 'k') {
                 e.preventDefault();
@@ -900,20 +940,10 @@ export default function GlobalRelationsNexus({ forecasts, selectedTheory, theori
             if (e.key === 'Escape') {
                 if (lockedNode) {
                     setLockedNode(null);
-                    if (fgRef.current) fgRef.current.d3ReheatSimulation();
+                    reheatGraphWhenReady(graphReadyRef, fgRef);
                 } else {
                     setSelectedNode(null);
                 }
-                return;
-            }
-            // Tab cycling through inspect tabs
-            if (selectedNode && e.key === 'Tab') {
-                e.preventDefault();
-                const tabs = ['overview', 'metrics', 'gpc', 'theory'];
-                setInspectTab(prev => {
-                    const idx = tabs.indexOf(prev);
-                    return tabs[(idx + 1) % tabs.length];
-                });
                 return;
             }
             // Arrow up/down to cycle through connections
@@ -932,8 +962,9 @@ export default function GlobalRelationsNexus({ forecasts, selectedTheory, theori
                 }
             }
         };
-        window.addEventListener('keydown', handler);
-        return () => window.removeEventListener('keydown', handler);
+        const root = nexusRootRef.current;
+        root?.addEventListener('keydown', handler);
+        return () => root?.removeEventListener('keydown', handler);
     }, [selectedNode, lockedNode, connectionSummary, navigateToNode, searchOpen, activeCaseStudy]);
 
     // ── Narrative generation for selected node ──────────────────────────────
@@ -1049,7 +1080,7 @@ export default function GlobalRelationsNexus({ forecasts, selectedTheory, theori
         if (is2D) {
             // Flatten all nodes to z=0
             graphData.nodes.forEach(n => { n.fz = 0; });
-            fg.d3ReheatSimulation();
+            reheatGraphWhenReady(graphReadyRef, fg);
             // Top-down camera
             setTimeout(() => {
                 fg.cameraPosition({ x: 0, y: 0, z: 600 }, { x: 0, y: 0, z: 0 }, 1000);
@@ -1057,7 +1088,7 @@ export default function GlobalRelationsNexus({ forecasts, selectedTheory, theori
         } else {
             // Restore 3D freedom
             graphData.nodes.forEach(n => { n.fz = undefined; });
-            fg.d3ReheatSimulation();
+            reheatGraphWhenReady(graphReadyRef, fg);
         }
     }, [is2D, graphData]);
 
@@ -1120,7 +1151,7 @@ export default function GlobalRelationsNexus({ forecasts, selectedTheory, theori
 
     // ══════════════════════════════════════════════════════════════════════════
     return (
-        <div className="nexus-container">
+        <div className="nexus-container" ref={nexusRootRef}>
             {/* ── Search Overlay ─────────────────────────────────── */}
             {searchOpen && (
                 <div className="nexus-search-overlay">
@@ -1171,10 +1202,11 @@ export default function GlobalRelationsNexus({ forecasts, selectedTheory, theori
             </div>
 
             {/* ── Canvas ──────────────────────────────────────────────────── */}
-            <div className="nexus-canvas-wrapper">
+            <div className="nexus-canvas-wrapper" tabIndex="0" aria-label="Interactive 3D relationship map. Use arrow keys to move between a selected actor's connections.">
                 <ForceGraph3D
                     ref={fgRef}
                     graphData={displayData}
+                    onEngineTick={() => { graphReadyRef.current = true; }}
                     backgroundColor="#000000"
                     showNavInfo={false}
                     nodeVal={n => n.val}
@@ -1282,7 +1314,7 @@ export default function GlobalRelationsNexus({ forecasts, selectedTheory, theori
                     <div>NODES: {graphData.nodes.length} · EDGES: {graphData.links.length}</div>
                     <div style={{ display: 'flex', gap: '6px', marginTop: '6px' }}>
                         <button onClick={resetCamera} className="nexus-ctrl-btn" title="Reset camera to overview">⟲ RESET VIEW</button>
-                        {lockedNode && <button onClick={() => { setLockedNode(null); if (fgRef.current) fgRef.current.d3ReheatSimulation(); }} className="nexus-ctrl-btn" style={{ borderColor: '#ff9900', color: '#ff9900' }} title="Unlock current view">🔓 UNLOCK</button>}
+                        {lockedNode && <button onClick={() => { setLockedNode(null); reheatGraphWhenReady(graphReadyRef, fgRef); }} className="nexus-ctrl-btn" style={{ borderColor: '#ff9900', color: '#ff9900' }} title="Unlock current view">🔓 UNLOCK</button>}
                     </div>
                     <div className="nexus-hint">
                         {activeCaseStudy
@@ -1298,10 +1330,10 @@ export default function GlobalRelationsNexus({ forecasts, selectedTheory, theori
                 {/* ── HUD Legend ──────────────────────────────────────────── */}
                 <div className="nexus-hud-legend">
                     {/* ── Tabbed HUD ──────────────────────────── */}
-                    <div className="hud-tabs">
-                        <button className={`hud-tab ${hudTab === 'filters' ? 'active' : ''}`} onClick={() => setHudTab('filters')}>⬡ FILTERS</button>
-                        <button className={`hud-tab ${hudTab === 'controls' ? 'active' : ''}`} onClick={() => setHudTab('controls')}>⚙ CONTROLS</button>
-                        <button className={`hud-tab ${hudTab === 'actors' ? 'active' : ''}`} onClick={() => setHudTab('actors')}>◉ ACTORS</button>
+                    <div className="hud-tabs" role="group" aria-label="Advanced Nexus controls">
+                        <button aria-pressed={hudTab === 'filters'} className={`hud-tab ${hudTab === 'filters' ? 'active' : ''}`} onClick={() => setHudTab('filters')}>⬡ FILTERS</button>
+                        <button aria-pressed={hudTab === 'controls'} className={`hud-tab ${hudTab === 'controls' ? 'active' : ''}`} onClick={() => setHudTab('controls')}>⚙ CONTROLS</button>
+                        <button aria-pressed={hudTab === 'actors'} className={`hud-tab ${hudTab === 'actors' ? 'active' : ''}`} onClick={() => setHudTab('actors')}>◉ ACTORS</button>
                     </div>
 
                     <div className="hud-tab-panel">
@@ -1394,8 +1426,10 @@ export default function GlobalRelationsNexus({ forecasts, selectedTheory, theori
                         <div className="hud-header" style={{ marginTop: '12px' }}>VIEW MODE</div>
                         <div className="view-toggle">
                             <button className={`view-toggle-btn ${!is2D ? 'active' : ''}`}
+                                aria-pressed={!is2D}
                                 onClick={() => setIs2D(false)}>◈ 3D</button>
                             <button className={`view-toggle-btn ${is2D ? 'active' : ''}`}
+                                aria-pressed={is2D}
                                 onClick={() => setIs2D(true)}>◻ 2D</button>
                         </div>
                         <div className="view-mode-label">
@@ -1607,6 +1641,7 @@ export default function GlobalRelationsNexus({ forecasts, selectedTheory, theori
                         <div className="inspect-tabs">
                             {[['overview','⬡ OVERVIEW'],['metrics','📊 METRICS'],['gpc','🌐 GPC'],['theory','⚛ THEORY']].map(([id, label]) => (
                                 <button key={id} className={`inspect-tab ${inspectTab === id ? 'active' : ''}`}
+                                    aria-pressed={inspectTab === id}
                                     onClick={() => setInspectTab(id)}>{label}</button>
                             ))}
                         </div>

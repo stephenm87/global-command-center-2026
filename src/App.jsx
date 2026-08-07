@@ -1,13 +1,44 @@
-import React, { useState, useEffect, useRef, Component } from 'react';
-import Globe from 'globe.gl';
+import React, { useState, useEffect, useRef, useCallback, Component } from 'react';
 import Papa from 'papaparse';
 import * as topojson from 'topojson-client';
 import { theories, getTheoryInterpretation } from './theories';
 import { generate5W1H, getGlobalChallenges, CHALLENGE_ICONS } from './eventAnalysis';
 import { AuthBadge, AuthModal, useAuth } from './AuthModal';
 import { supabase } from './supabase';
+import { secureFetch } from './api';
+import { readStoredJson, writeStoredJson } from './localState.mjs';
+import { CASE_STUDIES_2026, toForecastRecord } from './caseStudies2026';
 import './App.css';
-import GlobalRelationsNexus from './GlobalRelationsNexus';
+
+const GuidedBriefings = React.lazy(() => import('./GuidedBriefings'));
+const NexusWorkspace = React.lazy(() => import('./NexusWorkspace'));
+
+const VIEW_MODES = ['globe', 'briefings', 'nexus'];
+const CURATED_CASE_RECORDS = CASE_STUDIES_2026.map(toForecastRecord);
+const CURATED_SOURCE_URLS = new Set(CASE_STUDIES_2026.flatMap(caseStudy => caseStudy.sources.map(source => source.url)));
+
+const normalizeLegacyForecast = row => {
+    const sourceUrl = typeof row.Source === 'string' && /^https:\/\//i.test(row.Source.trim())
+        ? row.Source.trim()
+        : '';
+    return { ...row, url: row.url || sourceUrl };
+};
+
+const getViewFromLocation = () => {
+    const requested = new URLSearchParams(window.location.search).get('view');
+    return VIEW_MODES.includes(requested) ? requested : 'globe';
+};
+
+const getBriefingEntryFromLocation = () => {
+    const params = new URLSearchParams(window.location.search);
+    const rawStep = params.get('step');
+    const numericStep = rawStep === null ? undefined : Number(rawStep);
+    return {
+        tourId: params.get('tour') || undefined,
+        nodeId: params.get('actor') || undefined,
+        step: Number.isInteger(numericStep) && numericStep >= 1 ? numericStep : undefined,
+    };
+};
 
 // ── XSS prevention: escape HTML in user/CSV-sourced data before template strings ──
 const escHtml = s => (s || '').replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
@@ -78,7 +109,9 @@ function App() {
     const [selectedCategory, setSelectedCategory] = useState('All');
     const [selectedForecast, setSelectedForecast] = useState(null);
     const [selectedTheory, setSelectedTheory] = useState('Realism');
-    const [viewMode, setViewMode] = useState('globe');
+    const [viewMode, setViewMode] = useState(getViewFromLocation);
+    const [nexusEntry, setNexusEntry] = useState(() => ({ nodeId: new URLSearchParams(window.location.search).get('actor') || 'USA' }));
+    const [briefingEntry, setBriefingEntry] = useState(getBriefingEntryFromLocation);
 
     const [stressLevel, setStressLevel] = useState(0);
     const [escalationPairs, setEscalationPairs] = useState([]);
@@ -90,6 +123,8 @@ function App() {
     const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
     const [legendCollapsed, setLegendCollapsed] = useState(true);
     const [intelLastUpdated, setIntelLastUpdated] = useState(null);
+    const [intelMeta, setIntelMeta] = useState(null);
+    const [feedSearch, setFeedSearch] = useState('');
     const [deepScanResult, setDeepScanResult] = useState(null);
     const [deepScanLoading, setDeepScanLoading] = useState(false);
     const [aiSummary, setAiSummary] = useState(null);
@@ -107,15 +142,66 @@ function App() {
     const [globeNewsOnly, setGlobeNewsOnly] = useState(false); // 🎯 news-only globe filter
     const [globeReady, setGlobeReady] = useState(false); // loading skeleton
     const [feedPage, setFeedPage] = useState(1); // Intel Feed pagination
-    const FEED_PAGE_SIZE = 30;
+    const FEED_PAGE_SIZE = 40;
     const globeEl = useRef();
     const globeContainer = useRef();
     const attributionRef = useRef();
     const dashboardRef = useRef();
+    const detailModalRef = useRef();
+    const mineralsModalRef = useRef();
+    const previousFocusRef = useRef();
+
+    const navigateView = (mode, params = {}) => {
+        const nextMode = VIEW_MODES.includes(mode) ? mode : 'globe';
+        if (nextMode === viewMode && Object.keys(params).length === 0) return;
+        const url = new URL(window.location.href);
+        url.searchParams.set('view', nextMode);
+        ['tour', 'step', 'actor'].forEach(key => url.searchParams.delete(key));
+        Object.entries(params).forEach(([key, value]) => {
+            if (value) url.searchParams.set(key, value);
+        });
+        window.history.pushState({ view: nextMode, ...params }, '', url);
+        setViewMode(nextMode);
+    };
+
+    const openNexusAtActor = (nodeId, tourId) => {
+        setNexusEntry({ nodeId, tourId });
+        navigateView('nexus', { actor: nodeId });
+    };
+
+    const openBriefing = (tourId, nodeId) => {
+        setBriefingEntry({ tourId, nodeId, step: 1 });
+        navigateView('briefings', { tour: tourId, actor: nodeId, step: 1 });
+    };
+
+    const rememberNexusActor = useCallback(nodeId => {
+        setNexusEntry(previous => ({ ...previous, nodeId }));
+    }, []);
+
+    const rememberBriefingRoute = useCallback(entry => {
+        setBriefingEntry(previous => (
+            previous.tourId === entry.tourId
+            && previous.nodeId === entry.nodeId
+            && previous.step === entry.step
+                ? previous
+                : entry
+        ));
+    }, []);
+
+    useEffect(() => {
+        const handleHistory = () => {
+            const params = new URLSearchParams(window.location.search);
+            setViewMode(getViewFromLocation());
+            setNexusEntry({ nodeId: params.get('actor') || 'USA' });
+            setBriefingEntry(getBriefingEntryFromLocation());
+        };
+        window.addEventListener('popstate', handleHistory);
+        return () => window.removeEventListener('popstate', handleHistory);
+    }, []);
 
     // ── Preferences persistence: restore on mount ────────────────────────
     useEffect(() => {
-        const prefs = JSON.parse(localStorage.getItem('gcc-preferences') || '{}');
+        const prefs = readStoredJson('gcc-preferences', {});
         if (prefs.selectedTheory)  setSelectedTheory(prefs.selectedTheory);
         if (prefs.selectedCategory) setSelectedCategory(prefs.selectedCategory);
         if (prefs.timelineYear)    setTimelineYear(prefs.timelineYear);
@@ -134,15 +220,15 @@ function App() {
                 if (p.timelineYear)    setTimelineYear(p.timelineYear);
                 if (typeof p.stressLevel === 'number') setStressLevel(p.stressLevel);
                 if (typeof p.sidebarCollapsed === 'boolean') setSidebarCollapsed(p.sidebarCollapsed);
-                localStorage.setItem('gcc-preferences', JSON.stringify(p));
+                writeStoredJson('gcc-preferences', p);
             }
         });
-    }, []);
+    }, [user]);
 
     // ── Preferences persistence: save on change ──────────────────────────
     useEffect(() => {
         const prefs = { selectedTheory, selectedCategory, timelineYear, stressLevel, sidebarCollapsed };
-        localStorage.setItem('gcc-preferences', JSON.stringify(prefs));
+        writeStoredJson('gcc-preferences', prefs);
         // Fire-and-forget Supabase sync
         supabase.auth.getUser().then(({ data: { user } }) => {
             if (!user) return;
@@ -155,9 +241,12 @@ function App() {
 
     // Initialize globe
     useEffect(() => {
-        if (!globeContainer.current) return;
+        if (viewMode !== 'globe' || globeEl.current) return undefined;
+        if (!globeContainer.current) return undefined;
+        let cancelled = false;
 
-        try {
+        import('globe.gl').then(({ default: Globe }) => {
+            if (cancelled || !globeContainer.current) return;
             const globe = Globe()(globeContainer.current)
                 .globeImageUrl('https://unpkg.com/three-globe/example/img/earth-night.jpg')
                 .backgroundImageUrl('https://unpkg.com/three-globe/example/img/night-sky.png')
@@ -200,12 +289,14 @@ function App() {
                         })
                         .catch(e => console.log('Country borders unavailable:', e.message));
                 });
-        } catch (err) {
+            setGlobeReady(true);
+        }).catch((err) => {
             console.error('[Globe] Initialization failed:', err);
-        }
+            setGlobeReady(true);
+        });
 
-        setGlobeReady(true);
-    }, []);
+        return () => { cancelled = true; };
+    }, [viewMode]);
 
 
     // Auto-open connections panel when entering CRITICAL
@@ -228,8 +319,9 @@ function App() {
                 setSidebarCollapsed(prev => !prev);
             }
             // Esc: Close modal
-            if (e.code === 'Escape' && selectedForecast) {
+            if (e.code === 'Escape' && (selectedForecast || showMineralsModal)) {
                 setSelectedForecast(null);
+                setShowMineralsModal(false);
             }
             // L: Toggle escalation links panel
             if (e.code === 'KeyL' && !selectedForecast && stressLevel > 70) {
@@ -239,7 +331,15 @@ function App() {
 
         window.addEventListener('keydown', handleKeyPress);
         return () => window.removeEventListener('keydown', handleKeyPress);
-    }, [selectedForecast, stressLevel]);
+    }, [selectedForecast, showMineralsModal, stressLevel]);
+
+    useEffect(() => {
+        const activeModal = selectedForecast ? detailModalRef.current : showMineralsModal ? mineralsModalRef.current : null;
+        if (!activeModal) return undefined;
+        previousFocusRef.current = document.activeElement;
+        activeModal.focus();
+        return () => previousFocusRef.current?.focus?.();
+    }, [selectedForecast, showMineralsModal]);
 
     // Load data
     useEffect(() => {
@@ -261,7 +361,7 @@ function App() {
             });
 
         // Try live scraper function first, fall back to static file
-        const fetchLive = fetch('/.netlify/functions/fetch-intel')
+        const fetchLive = secureFetch('/.netlify/functions/fetch-intel')
             .then(res => res.ok ? res.json() : { items: [], minerals: {} })
             .catch(() =>
                 fetch('/live_intel.json')
@@ -273,11 +373,21 @@ function App() {
             // Support both old (array) and new ({items, minerals}) response formats
             const liveData = Array.isArray(liveResponse) ? liveResponse : (liveResponse.items || []);
             const mineralData = Array.isArray(liveResponse) ? {} : (liveResponse.minerals || {});
+            setIntelMeta(Array.isArray(liveResponse) ? null : (liveResponse.meta || null));
             if (Object.keys(mineralData).length > 0) setMinerals(mineralData);
 
+            const normalizedReferenceData = csvData
+                .map(normalizeLegacyForecast)
+                .filter(item => !CURATED_SOURCE_URLS.has(item.url));
+
             const combinedData = [
-                ...liveData.map(item => ({ ...item, isLive: true })),
-                ...csvData
+                ...liveData.map(item => ({
+                    ...item,
+                    isLive: item.isLive ?? item._contentStatus === 'provider-current',
+                    isEditorial: item.isEditorial ?? item._contentStatus === 'editorial-archive'
+                })),
+                ...CURATED_CASE_RECORDS,
+                ...normalizedReferenceData,
             ];
             setForecasts(combinedData);
             setFilteredForecasts(combinedData);
@@ -309,7 +419,7 @@ function App() {
             extractMetrics(combinedData);
             setIntelLastUpdated(new Date());
         });
-    }, []);
+    }, [user]);
 
     // Load historical data when year is 2023 / 2024 / 2025
     useEffect(() => {
@@ -334,10 +444,11 @@ function App() {
         setAiSummary(null);
         setAiSummaryLoading(true);
         try {
-            const res = await fetch('/.netlify/functions/ai-summary', {
+            const res = await secureFetch('/.netlify/functions/ai-summary', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ url, title, content })
+                body: JSON.stringify({ url, title, content }),
+                signal: AbortSignal.timeout(45000)
             });
             const data = await res.json();
             setAiSummary(data);
@@ -355,10 +466,11 @@ function App() {
         setAiSummary(null);
         setDeepScanLoading(true);
         try {
-            const res = await fetch('/.netlify/functions/deep-scan', {
+            const res = await secureFetch('/.netlify/functions/deep-scan', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ url })
+                body: JSON.stringify({ url }),
+                signal: AbortSignal.timeout(30000)
             });
             const data = await res.json();
             setDeepScanResult(data);
@@ -416,7 +528,7 @@ function App() {
         let path1Error = null;
         try {
             // 1. Try Netlify function first
-            const fnRes = await fetch('/.netlify/functions/fetch-news', {
+            const fnRes = await secureFetch('/.netlify/functions/fetch-news', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ query })
@@ -459,6 +571,11 @@ function App() {
         const date = new Date().toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric' });
         const html = `<!DOCTYPE html><html><head><title>Live News Intel Briefing</title><style>body{font-family:monospace;background:#000;color:#0ff;padding:30px;max-width:800px;margin:0 auto}h1{color:#0ff;border-bottom:2px solid #0ff;padding-bottom:10px;font-size:1.1rem;letter-spacing:3px}.node{border:1px solid #333;padding:12px;margin:10px 0;border-radius:4px}.cat{color:#ff9900;font-size:0.7rem;letter-spacing:2px;margin-bottom:4px}.sub{color:#fff;font-size:0.85rem;margin-bottom:6px}.detail{color:#888;font-size:0.75rem;line-height:1.5}.src a{color:#00ff88;font-size:0.65rem}footer{color:#444;font-size:0.6rem;margin-top:30px;border-top:1px solid #222;padding-top:10px}@media print{body{background:#fff;color:#000}.cat{color:#c70}.src a{color:green}h1{color:#000;border-color:#000}}</style></head><body><h1>📡 LIVE NEWS INTEL BRIEFING — ${escHtml(date)}</h1>${newsNodes.map((n, i) => `<div class="node"><div class="cat">${String(i + 1).padStart(2, '0')} · ${escHtml(n.Broad_Category || n['Topic/Sector'] || 'GLOBAL')}</div><div class="sub">${escHtml(n['Entity/Subject'] || '')}</div><div class="detail"><strong>Players:</strong> ${escHtml(n['Key Player/Organization'] || '—')}<br/><strong>Impact:</strong> ${escHtml(n['Expected Impact/Value'] || '—')}<br/><strong>Timeline:</strong> ${escHtml(n.Timeline || '—')}</div>${safeHref(n.url) ? `<div class="src"><a href="${safeHref(n.url)}" target="_blank" rel="noopener noreferrer">SOURCE ↗</a></div>` : ''}</div>`).join('')}<footer>Generated by Global Command Center · ${escHtml(date)} · Live News Scan</footer></body></html>`;
         const w = window.open('', '_blank');
+        if (!w) {
+            setNewsScanError('Export blocked by the browser. Allow pop-ups and try again.');
+            return;
+        }
+        w.opener = null;
         w.document.write(html); w.document.close();
         setTimeout(() => w.print(), 400);
     };
@@ -743,7 +860,7 @@ function App() {
 
     useEffect(() => {
         updateGlobeData();
-    }, [selectedCategory, forecasts, stressLevel, theoryLens, timelineYear, historicalData, globeNewsOnly]);
+    }, [selectedCategory, forecasts, stressLevel, theoryLens, timelineYear, historicalData, globeNewsOnly, globeReady, viewMode]);
 
     // Filter logic moved to updateGlobeData
 
@@ -777,15 +894,23 @@ function App() {
         ? Math.round((keyMetrics.conflictEvents / keyMetrics.totalEvents) * 100)
         : 0) + stressLevel);
 
+    const normalizedFeedSearch = feedSearch.trim().toLowerCase();
+    const feedItems = normalizedFeedSearch
+        ? filteredForecasts.filter(item => [
+            item['Entity/Subject'], item['Topic/Sector'], item['Expected Impact/Value'],
+            item['Key Player/Organization'], item.Broad_Category, item.Source
+        ].some(value => String(value || '').toLowerCase().includes(normalizedFeedSearch)))
+        : filteredForecasts;
+
 
 
     return (
         <div className="command-center">
             {/* Skip navigation for accessibility */}
-            <a href="#intel-feed" className="skip-nav" aria-label="Skip to Intel Feed">Skip to Intel Feed</a>
+            <a href="#main-workspace" className="skip-nav">Skip to main content</a>
             {showModal && <AuthModal onClose={closeModal} />}
             {/* Loading skeleton while globe initializes */}
-            {!globeReady && (
+            {viewMode === 'globe' && !globeReady && (
                 <div className="globe-loading-overlay" role="status" aria-label="Loading globe">
                     <div className="globe-loading-spinner">⬢</div>
                     <div className="globe-loading-text">INITIALIZING COMMAND CENTER...</div>
@@ -799,48 +924,31 @@ function App() {
                         <span className="logo-text">GLOBAL COMMAND CENTER</span>
                     </div>
                     
-                    {/* High-tech View Mode Selector */}
-                    <div className="view-mode-selector" style={{ display: 'flex', gap: '8px', marginLeft: '20px', borderLeft: '1px solid rgba(255,255,255,0.1)', paddingLeft: '20px' }}>
-                        <button
-                            className={`view-mode-btn ${viewMode === 'globe' ? 'active' : ''}`}
-                            onClick={() => setViewMode('globe')}
-                            style={{
-                                background: viewMode === 'globe' ? 'rgba(0, 255, 136, 0.15)' : 'transparent',
-                                border: '1px solid',
-                                borderColor: viewMode === 'globe' ? '#00ff88' : 'rgba(255, 255, 255, 0.15)',
-                                color: viewMode === 'globe' ? '#00ff88' : '#888',
-                                borderRadius: '4px',
-                                padding: '4px 10px',
-                                fontFamily: 'Roboto Mono, monospace',
-                                fontSize: '0.65rem',
-                                letterSpacing: '1px',
-                                cursor: 'pointer',
-                                transition: 'all 0.2s ease',
-                                textShadow: viewMode === 'globe' ? '0 0 8px rgba(0, 255, 136, 0.3)' : 'none'
-                            }}
-                        >
-                            🌎 3D GLOBE
-                        </button>
-                        <button
-                            className={`view-mode-btn ${viewMode === 'nexus' ? 'active' : ''}`}
-                            onClick={() => setViewMode('nexus')}
-                            style={{
-                                background: viewMode === 'nexus' ? 'rgba(0, 255, 136, 0.15)' : 'transparent',
-                                border: '1px solid',
-                                borderColor: viewMode === 'nexus' ? '#00ff88' : 'rgba(255, 255, 255, 0.15)',
-                                color: viewMode === 'nexus' ? '#00ff88' : '#888',
-                                borderRadius: '4px',
-                                padding: '4px 10px',
-                                fontFamily: 'Roboto Mono, monospace',
-                                fontSize: '0.65rem',
-                                letterSpacing: '1px',
-                                cursor: 'pointer',
-                                transition: 'all 0.2s ease',
-                                textShadow: viewMode === 'nexus' ? '0 0 8px rgba(0, 255, 136, 0.3)' : 'none'
-                            }}
-                        >
-                            ⚯ RELATIONS NEXUS
-                        </button>
+                    <div className="view-mode-selector" role="group" aria-label="Intelligence views">
+                        {[
+                            ['globe', '🌎', 'LIVE GLOBE'],
+                            ['briefings', '▤', 'GUIDED BRIEFINGS'],
+                            ['nexus', '⚯', 'ADVANCED NEXUS'],
+                        ].map(([id, icon, label]) => (
+                            <button
+                                key={id}
+                                type="button"
+                                aria-current={viewMode === id ? 'page' : undefined}
+                                className={`view-mode-btn ${viewMode === id ? 'active' : ''}`}
+                                onClick={() => {
+                                    if (viewMode === id) return;
+                                    if (id === 'nexus') {
+                                        navigateView(id, { actor: nexusEntry.nodeId });
+                                    } else if (id === 'briefings') {
+                                        navigateView(id, { tour: briefingEntry.tourId, step: briefingEntry.step });
+                                    } else {
+                                        navigateView(id);
+                                    }
+                                }}
+                            >
+                                <span aria-hidden="true">{icon}</span> {label}
+                            </button>
+                        ))}
                     </div>
 
                     <div className="date-time">
@@ -859,12 +967,15 @@ function App() {
                             CREDITS & LICENSE
                         </button>
                         <AuthBadge user={user} onSignInClick={openModal} />
+                        {viewMode === 'globe' && <>
                         <span className="live-indicator">● LIVE</span>
                         <button className="export-btn" onClick={() => {
                             const nodes = filteredForecasts.slice(0, 40);
                             const date = new Date().toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric' });
                             const html = `<!DOCTYPE html><html><head><title>Global Intelligence Briefing</title><style>body{font-family:monospace;background:#000;color:#0ff;padding:30px;max-width:800px;margin:0 auto}h1{color:#0ff;border-bottom:2px solid #0ff;padding-bottom:10px;font-size:1.1rem;letter-spacing:3px}.node{border:1px solid #333;padding:12px;margin:10px 0;border-radius:4px}.cat{color:#ff9900;font-size:0.7rem;letter-spacing:2px;margin-bottom:4px}.sub{color:#fff;font-size:0.85rem;margin-bottom:6px}.detail{color:#888;font-size:0.75rem;line-height:1.5}.src a{color:#00ff88;font-size:0.65rem}footer{color:#444;font-size:0.6rem;margin-top:30px;border-top:1px solid #222;padding-top:10px}@media print{body{background:#fff;color:#000}.cat{color:#c70}.src a{color:green}h1{color:#000;border-color:#000}}</style></head><body><h1>⬢ GLOBAL INTELLIGENCE BRIEFING — ${escHtml(date)}</h1>${nodes.map((n, i) => `<div class="node"><div class="cat">${String(i + 1).padStart(2, '0')} · ${escHtml(n.Broad_Category || n['Topic/Sector'] || 'GLOBAL')}</div><div class="sub">${escHtml(n['Entity/Subject'] || '')}</div><div class="detail"><strong>Players:</strong> ${escHtml(n['Key Player/Organization'] || '—')}<br/><strong>Impact:</strong> ${escHtml(n['Expected Impact/Value'] || '—')}<br/><strong>Timeline:</strong> ${escHtml(n.Timeline || '—')}</div>${safeHref(n.url) ? `<div class="src"><a href="${safeHref(n.url)}" target="_blank" rel="noopener noreferrer">SOURCE ↗</a></div>` : ''}</div>`).join('')}<footer>Generated by Global Command Center · ${escHtml(date)} · globalcommandcenter2026.netlify.app</footer></body></html>`;
                             const w = window.open('', '_blank');
+                            if (!w) return;
+                            w.opener = null;
                             w.document.write(html); w.document.close();
                             setTimeout(() => w.print(), 400);
                         }} title="Export Intelligence Briefing">
@@ -971,14 +1082,15 @@ function App() {
                                 );
                             })()}
                         </div>
+                        </>}
                     </div>
                 </div>
 
                 {/* Main Content */}
-                <div className="main-content" role="main">
+                <div id="main-workspace" className="main-content" role="main" tabIndex="-1">
                     {/* Globe Center Stage */}
                     <GlobeErrorBoundary>
-                    <div className={`globe-container ${stressLevel > 70 ? 'critical-vignette' : ''}`} style={viewMode === 'nexus' ? { display: 'none' } : {}}>
+                    <div className={`globe-container ${stressLevel > 70 ? 'critical-vignette' : ''}`} style={viewMode !== 'globe' ? { display: 'none' } : {}}>
                         <div ref={globeContainer} style={{ width: '100%', height: '100%', display: viewMode === 'globe' ? 'block' : 'none' }} />
                         
                         {viewMode === 'globe' && (
@@ -1097,15 +1209,34 @@ function App() {
                     </div>
                     </GlobeErrorBoundary>
 
-                    {/* Relations Nexus — with error display */}
+                    {viewMode === 'briefings' && (
+                        <NexusErrorBoundary>
+                            <React.Suspense fallback={<div className="nexus-route-loading" role="status">LOADING GUIDED BRIEFINGS…</div>}>
+                                <GuidedBriefings
+                                    initialTourId={briefingEntry.tourId}
+                                    initialNodeId={briefingEntry.nodeId}
+                                    initialStep={briefingEntry.step}
+                                    onExploreNode={openNexusAtActor}
+                                    onRouteChange={rememberBriefingRoute}
+                                />
+                            </React.Suspense>
+                        </NexusErrorBoundary>
+                    )}
+
+                    {/* Relations Nexus — focused by default, 3D on demand */}
                     {viewMode === 'nexus' && (
                         <NexusErrorBoundary>
-                            <GlobalRelationsNexus
-                                forecasts={filteredForecasts}
-                                selectedTheory={selectedTheory}
-                                theories={theories}
-                                onTheorySelect={setSelectedTheory}
-                            />
+                            <React.Suspense fallback={<div className="nexus-route-loading" role="status">LOADING FOCUS NEXUS…</div>}>
+                                <NexusWorkspace
+                                    forecasts={filteredForecasts}
+                                    selectedTheory={selectedTheory}
+                                    theories={theories}
+                                    onTheorySelect={setSelectedTheory}
+                                    initialNodeId={nexusEntry.nodeId}
+                                    onActorChange={rememberNexusActor}
+                                    onOpenBriefing={openBriefing}
+                                />
+                            </React.Suspense>
                         </NexusErrorBoundary>
                     )}
 
@@ -1172,7 +1303,7 @@ function App() {
 
 
                     {/* Right Sidebar - Intel Feed */}
-                    <aside id="intel-feed" className={`intel-feed ${sidebarCollapsed ? 'collapsed' : ''}`} role="complementary" aria-label="Intelligence Feed" style={viewMode === 'nexus' ? { display: 'none' } : {}}>
+                    <aside id="intel-feed" className={`intel-feed ${sidebarCollapsed ? 'collapsed' : ''}`} role="complementary" aria-label="Intelligence Feed" style={viewMode !== 'globe' ? { display: 'none' } : {}}>
                         <button
                             className="sidebar-toggle"
                             onClick={() => setSidebarCollapsed(!sidebarCollapsed)}
@@ -1189,9 +1320,18 @@ function App() {
                                 </span>
                             ) : intelLastUpdated && (
                                 <span style={{ fontSize: '0.6rem', color: '#00ff8880', display: 'block', marginTop: '2px' }}>
-                                    ⟳ SCRAPED {intelLastUpdated.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' })}
+                                    ⟳ {intelMeta?.sourceMode === 'provider' ? 'PROVIDER UPDATED' : 'REFERENCE DATA'} {intelLastUpdated.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' })}
                                 </span>
                             )}
+                            <label className="feed-search-label" htmlFor="feed-search">Search the intelligence list</label>
+                            <input
+                                id="feed-search"
+                                className="feed-search"
+                                type="search"
+                                value={feedSearch}
+                                onChange={(event) => setFeedSearch(event.target.value)}
+                                placeholder="Search actors, topics, sources…"
+                            />
                             <select
                                 className="category-filter"
                                 value={selectedCategory}
@@ -1210,21 +1350,33 @@ function App() {
                                 <div style={{ color: '#ffcc00', fontFamily: 'Roboto Mono', fontSize: '0.7rem', padding: '20px', textAlign: 'center', opacity: 0.8 }}>
                                     ⟳ Loading {timelineYear} historical data...
                                 </div>
-                            ) : filteredForecasts.slice(0, feedPage * FEED_PAGE_SIZE).map((forecast, idx) => (
+                            ) : feedItems.slice(0, feedPage * FEED_PAGE_SIZE).map((forecast, idx) => (
                                 <div
-                                    key={idx}
-                                    className={`intel-card ${selectedForecast === forecast ? 'selected' : ''} ${forecast.isLive ? 'live-item' : ''}`}
+                                    key={`${forecast.caseStudyId || forecast.url || forecast['Entity/Subject'] || forecast['Topic/Sector'] || 'forecast'}-${idx}`}
+                                    className={`intel-card ${selectedForecast === forecast ? 'selected' : ''} ${forecast.isLive ? 'live-item' : ''} ${forecast.isEditorial ? 'editorial-item' : ''}`}
                                     onClick={() => setSelectedForecast(forecast)}
-                                    style={{ borderLeftColor: forecast.isHistorical ? '#ffcc00' : forecast.isLive ? '#00ffff' : categoryColors[forecast.Broad_Category] }}
+                                    onKeyDown={(event) => {
+                                        if (event.key === 'Enter' || event.key === ' ') {
+                                            event.preventDefault();
+                                            setSelectedForecast(forecast);
+                                        }
+                                    }}
+                                    role="button"
+                                    tabIndex="0"
+                                    aria-label={`Open intelligence detail: ${forecast['Entity/Subject'] || forecast['Topic/Sector']}`}
+                                    style={{ borderLeftColor: forecast.isHistorical ? '#ffcc00' : forecast.isLive ? '#00ffff' : forecast.isEditorial ? '#b69cff' : categoryColors[forecast.Broad_Category] }}
                                 >
                                     {forecast.isLive && <div className="live-tag">● LIVE INTEL</div>}
+                                    {forecast.isCaseStudy
+                                        ? <div className="case-study-tag">◆ VERIFIED CASE · {forecast.updatedAt}</div>
+                                        : forecast.isEditorial && <div className="context-tag">◆ DATED CONTEXT</div>}
                                     {forecast.isHistorical && <div className="live-tag" style={{ background: '#ffcc0022', color: '#ffcc00', borderColor: '#ffcc0044' }}>📅 {timelineYear}</div>}
                                     <div className="card-category" style={{ color: forecast.isHistorical ? '#ffcc00' : forecast.isLive ? '#00ffff' : categoryColors[forecast.Broad_Category] }}>
                                         {forecast.Broad_Category}
                                     </div>
-                                    <div className="card-title">{forecast['Topic/Sector']}</div>
-                                    <div className="card-timeline">⏱ {forecast.Timeline}</div>
-                                    <div className="card-impact">{forecast['Expected Impact/Value']?.substring(0, 120)}...</div>
+                                    <div className="card-title">{forecast.isCaseStudy ? forecast['Entity/Subject'] : forecast['Topic/Sector']}</div>
+                                    <div className="card-timeline">⏱ {forecast.isCaseStudy ? `${forecast.regionTags?.join(' · ')} · ${forecast.Timeline}` : forecast.Timeline}</div>
+                                    <div className="card-impact">{(forecast.isCaseStudy ? forecast.statusSummary : forecast['Expected Impact/Value'])?.substring(0, 120)}...</div>
                                     {forecast.url && (
                                         <a
                                             href={forecast.url}
@@ -1233,19 +1385,19 @@ function App() {
                                             className="card-link"
                                             onClick={(e) => e.stopPropagation()}
                                         >
-                                            VIEW LIVE REPORT ↗
+                                            VIEW SOURCE ↗
                                         </a>
                                     )}
                                 </div>
                             ))}
                             {/* Show More button for pagination */}
-                            {feedPage * FEED_PAGE_SIZE < filteredForecasts.length && (
+                            {feedPage * FEED_PAGE_SIZE < feedItems.length && (
                                 <button
                                     className="show-more-btn"
                                     onClick={() => setFeedPage(p => p + 1)}
-                                    aria-label={`Show more events. Currently showing ${Math.min(feedPage * FEED_PAGE_SIZE, filteredForecasts.length)} of ${filteredForecasts.length}`}
+                                    aria-label={`Show more events. Currently showing ${Math.min(feedPage * FEED_PAGE_SIZE, feedItems.length)} of ${feedItems.length}`}
                                 >
-                                    ▼ SHOW MORE ({filteredForecasts.length - feedPage * FEED_PAGE_SIZE} remaining)
+                                    ▼ SHOW MORE ({feedItems.length - feedPage * FEED_PAGE_SIZE} remaining)
                                 </button>
                             )}
                         </div>
@@ -1253,7 +1405,7 @@ function App() {
                 </div> {/* end .main-content */}
 
                 {/* Bottom Bar - Key Metrics (hidden in nexus mode) */}
-                <div className="metrics-bar" style={viewMode === 'nexus' ? { display: 'none' } : {}}>
+                <div className="metrics-bar" style={viewMode !== 'globe' ? { display: 'none' } : {}}>
                     <div className="metric-item">
                         <span className="metric-label">TOTAL EVENTS</span>
                         <span className="metric-value">{keyMetrics.totalEvents || 0}</span>
@@ -1448,8 +1600,8 @@ function App() {
             {
                 selectedForecast && (
                     <div className="detail-modal" onClick={() => { setSelectedForecast(null); setDeepScanResult(null); setAiSummary(null); }}>
-                        <div className="modal-content" onClick={(e) => e.stopPropagation()} style={{ maxWidth: '800px' }}>
-                            <button className="close-btn" onClick={() => { setSelectedForecast(null); setDeepScanResult(null); setAiSummary(null); }}>✕</button>
+                        <div ref={detailModalRef} className="modal-content" role="dialog" aria-modal="true" aria-labelledby="forecast-dialog-title" tabIndex="-1" onClick={(e) => e.stopPropagation()} style={{ maxWidth: '800px' }}>
+                            <button className="close-btn" aria-label="Close intelligence detail" onClick={() => { setSelectedForecast(null); setDeepScanResult(null); setAiSummary(null); }}>✕</button>
                             <div
                                 className="modal-header"
                                 style={{ borderBottomColor: categoryColors[selectedForecast.Broad_Category] }}
@@ -1457,9 +1609,52 @@ function App() {
                                 <span className="modal-category" style={{ color: categoryColors[selectedForecast.Broad_Category] }}>
                                     {selectedForecast.Broad_Category}
                                 </span>
-                                <h2>{selectedForecast['Topic/Sector']}</h2>
+                                <h2 id="forecast-dialog-title">{selectedForecast.isCaseStudy ? selectedForecast['Entity/Subject'] : selectedForecast['Topic/Sector']}</h2>
+                                {selectedForecast.isCaseStudy && <p className="modal-case-subtitle">{selectedForecast['Topic/Sector']}</p>}
                             </div>
                             <div className="modal-body">
+                                {selectedForecast.isCaseStudy && (
+                                    <section className="case-study-overview" aria-label="Verified case-study evidence">
+                                        <div className="case-study-meta">
+                                            {selectedForecast.regionTags?.map(region => <span key={region}>{region}</span>)}
+                                            <time dateTime={selectedForecast.updatedAt}>As of {selectedForecast.updatedAt}</time>
+                                            <span>{selectedForecast.confidence} source confidence</span>
+                                        </div>
+                                        <p className="case-study-status">{selectedForecast.statusSummary}</p>
+                                        <div className="case-study-analysis-grid">
+                                            <div><strong>Why it matters</strong><p>{selectedForecast.whyItMatters}</p></div>
+                                            <div><strong>What remains uncertain</strong><p>{selectedForecast.uncertainty}</p></div>
+                                        </div>
+                                        {selectedForecast.issueDimensions?.length > 0 && (
+                                            <div className="case-study-dimensions" aria-label="Issue dimensions">
+                                                {selectedForecast.issueDimensions.map(issue => <span key={issue}>{issue}</span>)}
+                                            </div>
+                                        )}
+                                        {selectedForecast.sources?.length > 0 && (
+                                            <div className="case-study-sources">
+                                                <strong>Primary and official sources</strong>
+                                                <ul>
+                                                    {selectedForecast.sources.map(source => (
+                                                        <li key={source.url}>
+                                                            <a href={source.url} target="_blank" rel="noopener noreferrer">{source.title}</a>
+                                                            <span>{source.publisher}{source.publishedAt ? ` · ${source.publishedAt}` : ''}{source.perspective ? ` · ${source.perspective}` : ''}</span>
+                                                        </li>
+                                                    ))}
+                                                </ul>
+                                            </div>
+                                        )}
+                                        <button
+                                            type="button"
+                                            className="case-study-briefing-btn"
+                                            onClick={() => {
+                                                setSelectedForecast(null);
+                                                openBriefing(selectedForecast.caseStudyId, selectedForecast.nexusActorIds?.[0]);
+                                            }}
+                                        >
+                                            OPEN GUIDED BRIEFING →
+                                        </button>
+                                    </section>
+                                )}
                                 {/* 5W1H Analysis Section */}
                                 {(() => {
                                     const analysis = generate5W1H(selectedForecast);
@@ -1567,7 +1762,7 @@ function App() {
                                                 <div className="ai-brief-header">
                                                     <span className="ai-brief-icon">🤖</span>
                                                     <span className="ai-brief-title">AI INTEL BRIEF</span>
-                                                    <span className="ai-brief-model">Gemini 2.5 Flash</span>
+                                                    <span className="ai-brief-model">{aiSummary?.model || 'Configured AI model'}</span>
                                                 </div>
 
                                                 {aiSummaryLoading ? (
@@ -1749,11 +1944,11 @@ function App() {
             {/* Critical Minerals Matrix Modal */}
             {showMineralsModal && (
                 <div className="detail-modal" onClick={() => setShowMineralsModal(false)}>
-                    <div className="modal-content minerals-matrix-modal" onClick={e => e.stopPropagation()}>
-                        <button className="close-btn" onClick={() => setShowMineralsModal(false)}>✕</button>
+                    <div ref={mineralsModalRef} className="modal-content minerals-matrix-modal" role="dialog" aria-modal="true" aria-labelledby="minerals-dialog-title" tabIndex="-1" onClick={e => e.stopPropagation()}>
+                        <button className="close-btn" aria-label="Close critical minerals matrix" onClick={() => setShowMineralsModal(false)}>✕</button>
                         <div className="modal-header" style={{ borderBottomColor: '#ffd700' }}>
                             <span className="modal-category" style={{ color: '#ffd700' }}>STRATEGIC RESOURCES</span>
-                            <h2>⛏️ CRITICAL MINERALS MATRIX</h2>
+                            <h2 id="minerals-dialog-title">⛏️ CRITICAL MINERALS MATRIX</h2>
                         </div>
                         <div className="modal-body">
                             <table className="minerals-table">
