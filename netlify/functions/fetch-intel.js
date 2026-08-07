@@ -1,22 +1,30 @@
 // fetch-intel.js - Multi-source live geopolitical news scraper
 // Sources: Serper (primary) → GNews (backup)
 // Cached 30 min to preserve free-tier quotas
-
-// ── Rate limiter ───────────────────────────────────────────────────────────
-const RATE_WINDOW_MS = 15 * 60 * 1000;
-const MAX_REQUESTS = 30;
-const requestLog = [];
-
-function isRateLimited() {
-    const now = Date.now();
-    while (requestLog.length && requestLog[0] < now - RATE_WINDOW_MS) requestLog.shift();
-    if (requestLog.length >= MAX_REQUESTS) return true;
-    requestLog.push(now);
-    return false;
-}
+const { protectEndpoint } = require('./security');
 
 const CACHE_DURATION_MS = 30 * 60 * 1000;
+const REQUEST_TIMEOUT_MS = 12000;
 let cache = { data: null, timestamp: 0 };
+
+async function fetchWithTimeout(url, options = {}, timeoutMs = REQUEST_TIMEOUT_MS) {
+    const controller = new AbortController();
+    const timeout = setTimeout(() => controller.abort(), timeoutMs);
+    try {
+        return await fetch(url, { ...options, signal: controller.signal });
+    } finally {
+        clearTimeout(timeout);
+    }
+}
+
+async function settledItems(promise, label) {
+    try {
+        return await promise;
+    } catch (error) {
+        console.warn(`[fetch-intel] ${label} unavailable:`, error.message);
+        return [];
+    }
+}
 
 // Simple keyword → coordinates lookup for geolocating headlines
 const REGION_COORDS = {
@@ -269,6 +277,18 @@ const PINNED_INTEL = [
     }
 ];
 
+// Curated items are useful classroom context, but they are not a live feed.
+// Keep them explicitly dated and place them after current provider results.
+const EDITORIAL_CONTEXT = PINNED_INTEL.map(item => ({
+    ...item,
+    'Timeline': item.Timeline.replace(/^LIVE\s*-\s*/i, 'EDITORIAL CONTEXT — '),
+    isLive: false,
+    isEditorial: true,
+    _contentStatus: 'editorial-archive',
+    _scraperSource: 'editorial',
+    publishedAt: '2026-02-24T00:00:00.000Z'
+}));
+
 function getCoords(text) {
     const lower = (text || '').toLowerCase();
     for (const [key, coords] of Object.entries(REGION_COORDS)) {
@@ -302,7 +322,7 @@ const SECTOR_LABELS = {
 
 // ── SERPER ──────────────────────────────────────────────────────────────────
 async function fetchSerper(query, apiKey, numResults = 8) {
-    const res = await fetch('https://google.serper.dev/news', {
+    const res = await fetchWithTimeout('https://google.serper.dev/news', {
         method: 'POST',
         headers: {
             'X-API-KEY': apiKey,
@@ -320,11 +340,11 @@ async function fetchSerper(query, apiKey, numResults = 8) {
             'Entity/Subject': item.title,
             'Key Player/Organization': item.source || 'Global News',
             'Timeline': (() => {
-                if (!item.date) return 'LIVE - Feb 2026';
+                if (!item.date) return 'CURRENT — date unavailable';
                 const parsed = new Date(item.date);
-                if (!isNaN(parsed)) return `LIVE - ${parsed.toLocaleString('en-US', { month: 'short', year: 'numeric' })}`;
+                if (!isNaN(parsed)) return `CURRENT — ${parsed.toLocaleString('en-US', { month: 'short', year: 'numeric' })}`;
                 // Serper sometimes returns relative strings like "2 days ago" — use as-is
-                return `LIVE - ${item.date}`;
+                return `CURRENT — ${item.date}`;
             })(),
             'Expected Impact/Value': item.snippet || item.title,
             'Source': item.source || 'Google News',
@@ -333,7 +353,10 @@ async function fetchSerper(query, apiKey, numResults = 8) {
             'Longitude': String(lng),
             'Broad_Category': category,
             'isScraped': true,
-            '_scraperSource': 'serper'
+            'isLive': true,
+            '_contentStatus': 'provider-current',
+            '_scraperSource': 'serper',
+            'publishedAt': item.date || null
         };
     });
 }
@@ -341,7 +364,7 @@ async function fetchSerper(query, apiKey, numResults = 8) {
 // ── GNEWS (backup) ───────────────────────────────────────────────────────────
 async function fetchGNews(query, apiKey, max = 8) {
     const url = `https://gnews.io/api/v4/search?q=${encodeURIComponent(query)}&lang=en&country=any&max=${max}&sortby=publishedAt&token=${apiKey}`;
-    const res = await fetch(url);
+    const res = await fetchWithTimeout(url);
     if (!res.ok) throw new Error(`GNews error: ${res.status}`);
     const data = await res.json();
     return (data.articles || []).map(article => {
@@ -352,7 +375,7 @@ async function fetchGNews(query, apiKey, max = 8) {
             'Topic/Sector': SECTOR_LABELS[category],
             'Entity/Subject': article.title,
             'Key Player/Organization': article.source?.name || 'Global News',
-            'Timeline': `LIVE - ${new Date(article.publishedAt || Date.now()).toLocaleString('en-US', { month: 'short', year: 'numeric' })}`,
+            'Timeline': `CURRENT — ${new Date(article.publishedAt || Date.now()).toLocaleString('en-US', { month: 'short', year: 'numeric' })}`,
             'Expected Impact/Value': article.description || article.title,
             'Source': article.source?.name || 'GNews',
             'url': article.url,
@@ -360,23 +383,24 @@ async function fetchGNews(query, apiKey, max = 8) {
             'Longitude': String(lng),
             'Broad_Category': category,
             'isScraped': true,
-            '_scraperSource': 'gnews'
+            'isLive': true,
+            '_contentStatus': 'provider-current',
+            '_scraperSource': 'gnews',
+            'publishedAt': article.publishedAt || null
         };
     });
 }
 
 // ── HANDLER ──────────────────────────────────────────────────────────────────
 exports.handler = async (event) => {
-    const headers = {
-        'Access-Control-Allow-Origin': '*',
-        'Content-Type': 'application/json',
-        'Cache-Control': 'public, max-age=1800'
-    };
+    const security = await protectEndpoint(event, { methods: ['GET'], maxRequests: 30 });
+    if (security.response) return security.response;
 
-    // Rate limit check (cache hits bypass this)
-    if (isRateLimited() && !(cache.data && (Date.now() - cache.timestamp) < CACHE_DURATION_MS)) {
-        return { statusCode: 429, headers, body: JSON.stringify({ error: 'Rate limit exceeded' }) };
-    }
+    const headers = {
+        'Content-Type': 'application/json',
+        'Cache-Control': 'private, max-age=300, stale-while-revalidate=60',
+        'Vary': 'Authorization'
+    };
 
     try {
         // Return cached data if still fresh
@@ -390,38 +414,31 @@ exports.handler = async (event) => {
 
         let intelItems = [];
 
-        // PRIMARY: Serper — scoped to past month (tbs:qdr:m), targeting latest + ongoing conflicts
+        // PRIMARY: two broad Serper calls replace four overlapping queries.
         if (serperKey) {
-            const [breakingConflict, ongoingWars, geoecon, techSec] = await Promise.all([
-                fetchSerper('breaking geopolitics crisis conflict 2026 latest update', serperKey, 8),
-                fetchSerper('Ukraine Gaza Sudan Taiwan ceasefire offensive latest development 2026', serperKey, 7),
-                fetchSerper('global economy sanctions trade war tariffs 2026', serperKey, 5),
-                fetchSerper('cyber attack AI surveillance military technology 2026', serperKey, 4)
+            const [securityNews, governanceNews] = await Promise.all([
+                settledItems(fetchSerper('latest global geopolitics conflict security diplomacy', serperKey, 12), 'Serper security feed'),
+                settledItems(fetchSerper('latest global economy governance climate technology human rights', serperKey, 12), 'Serper governance feed')
             ]);
-            intelItems = [...breakingConflict, ...ongoingWars, ...geoecon, ...techSec];
+            intelItems = [...securityNews, ...governanceNews];
         }
 
         // BACKUP: GNews (if Serper unavailable or too few results)
         if (intelItems.length < 5 && gnewsKey) {
             const [conflictBack, econBack] = await Promise.all([
-                fetchGNews('geopolitics war conflict UN sanctions', gnewsKey, 8),
-                fetchGNews('global economy trade inflation crisis', gnewsKey, 5)
+                settledItems(fetchGNews('geopolitics war conflict UN sanctions', gnewsKey, 8), 'GNews security feed'),
+                settledItems(fetchGNews('global economy trade climate technology human rights', gnewsKey, 5), 'GNews governance feed')
             ]);
             intelItems = [...intelItems, ...conflictBack, ...econBack];
         }
 
         // Deduplicate scraped items by URL
         const seen = new Set();
-        // Pre-seed with pinned URLs so scraper dupes are removed
-        PINNED_INTEL.forEach(p => seen.add(p.url));
         intelItems = intelItems.filter(item => {
             if (!item.url || seen.has(item.url)) return false;
             seen.add(item.url);
             return true;
         });
-
-        // Merge: pinned intel always leads, scraped items follow
-        intelItems = [...PINNED_INTEL, ...intelItems];
 
         // ── CRITICAL MINERALS PRICING ──────────────────────────────────────
         // Static reference data for the matrix grid
@@ -442,7 +459,7 @@ exports.handler = async (event) => {
         if (serperKey) {
             try {
                 // Batch 1: precious metals
-                const preciousRes = await fetch('https://google.serper.dev/search', {
+                const preciousRes = await fetchWithTimeout('https://google.serper.dev/search', {
                     method: 'POST',
                     headers: { 'X-API-KEY': serperKey, 'Content-Type': 'application/json' },
                     body: JSON.stringify({ q: 'gold silver price per ounce today 2026', num: 5, gl: 'us', hl: 'en' })
@@ -468,7 +485,7 @@ exports.handler = async (event) => {
                 }
 
                 // Batch 2: industrial minerals
-                const industrialRes = await fetch('https://google.serper.dev/search', {
+                const industrialRes = await fetchWithTimeout('https://google.serper.dev/search', {
                     method: 'POST',
                     headers: { 'X-API-KEY': serperKey, 'Content-Type': 'application/json' },
                     body: JSON.stringify({ q: 'lithium cobalt copper price 2026 per tonne', num: 5, gl: 'us', hl: 'en' })
@@ -493,7 +510,7 @@ exports.handler = async (event) => {
                 }
 
                 // Rare earths supply status
-                const reRes = await fetch('https://google.serper.dev/search', {
+                const reRes = await fetchWithTimeout('https://google.serper.dev/search', {
                     method: 'POST',
                     headers: { 'X-API-KEY': serperKey, 'Content-Type': 'application/json' },
                     body: JSON.stringify({ q: 'rare earth minerals supply chain status 2026', num: 2, gl: 'us', hl: 'en' })
@@ -516,13 +533,30 @@ exports.handler = async (event) => {
                 const path = require('path');
                 const staticPath = path.join(__dirname, '../../public/live_intel.json');
                 const fallbackData = JSON.parse(fs.readFileSync(staticPath, 'utf8'));
-                intelItems = fallbackData.map(item => ({ ...item, isScraped: true }));
+                intelItems = fallbackData.map(item => ({
+                    ...item,
+                    isScraped: true,
+                    isLive: false,
+                    _contentStatus: 'static-fallback',
+                    _scraperSource: 'static'
+                }));
             } catch (_) {
                 // No static fallback available either
             }
         }
 
-        const payload = { items: intelItems, minerals };
+        const contextualItems = EDITORIAL_CONTEXT.filter(item => !seen.has(item.url));
+        const payload = {
+            items: [...intelItems, ...contextualItems],
+            minerals,
+            meta: {
+                generatedAt: new Date(now).toISOString(),
+                cacheTtlSeconds: CACHE_DURATION_MS / 1000,
+                liveItemCount: intelItems.filter(item => item.isLive).length,
+                editorialItemCount: contextualItems.length,
+                sourceMode: intelItems.some(item => item._contentStatus === 'provider-current') ? 'provider' : 'static-fallback'
+            }
+        };
         cache = { data: payload, timestamp: now };
         return { statusCode: 200, headers, body: JSON.stringify(payload) };
 
@@ -538,10 +572,20 @@ exports.handler = async (event) => {
             return {
                 statusCode: 200,
                 headers: { ...headers, 'X-Fallback': 'static' },
-                body: JSON.stringify(fallback)
+                body: JSON.stringify({
+                    items: fallback.map(item => ({ ...item, isLive: false, _contentStatus: 'static-fallback', _scraperSource: 'static' })),
+                    minerals: {},
+                    meta: { generatedAt: new Date().toISOString(), sourceMode: 'static-fallback', degraded: true }
+                })
             };
         } catch (_) {
-            return { statusCode: 200, headers, body: JSON.stringify([]) };
+            return {
+                statusCode: 200,
+                headers,
+                body: JSON.stringify({ items: [], minerals: {}, meta: { sourceMode: 'unavailable', degraded: true } })
+            };
         }
     }
 };
+
+exports._test = { EDITORIAL_CONTEXT, getCoords, categorizeSector };

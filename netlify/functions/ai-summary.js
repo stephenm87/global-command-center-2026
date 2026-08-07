@@ -2,21 +2,70 @@
 // Accepts: POST { url, title, content } where content = Firecrawl markdown
 // Returns: structured intelligence brief for IB Global Politics students
 const { callGeminiWithRetry } = require('./gemini-retry');
+const { protectEndpoint } = require('./security');
 
-// ── Rate limiter ───────────────────────────────────────────────────────────
-const RATE_WINDOW_MS = 15 * 60 * 1000;
-const MAX_REQUESTS = 20; // AI calls are expensive
-const requestLog = [];
+const BRIEF_SCHEMA_VERSION = '1.0';
+const GEMINI_MODEL = process.env.GEMINI_SUMMARY_MODEL || 'gemini-2.5-flash';
+const GEMINI_API_BASE = `https://generativelanguage.googleapis.com/v1beta/models/${GEMINI_MODEL}:generateContent`;
+const MIN_ARTICLE_CONTENT_LENGTH = 200;
+const MAX_ARTICLE_CONTENT_LENGTH = 12000;
 
-function isRateLimited() {
-    const now = Date.now();
-    while (requestLog.length && requestLog[0] < now - RATE_WINDOW_MS) requestLog.shift();
-    if (requestLog.length >= MAX_REQUESTS) return true;
-    requestLog.push(now);
-    return false;
+const SOURCE_TYPES = new Set([
+    'State Media', 'Wire Service', 'Independent Media', 'Think Tank',
+    'NGO Report', 'Social Media', 'Academic'
+]);
+
+function cleanText(value, fallback = '') {
+    return typeof value === 'string' ? value.trim() : fallback;
 }
 
-const GEMINI_API_BASE = 'https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent';
+function cleanList(value, maxItems) {
+    return Array.isArray(value)
+        ? value.map(item => cleanText(item)).filter(Boolean).slice(0, maxItems)
+        : [];
+}
+
+function selectArticleContent(content) {
+    const normalized = cleanText(content).replace(/\n{3,}/g, '\n\n');
+    if (normalized.length <= MAX_ARTICLE_CONTENT_LENGTH) return normalized;
+
+    // Preserve both the article lead and conclusion instead of silently losing
+    // all material after the first few paragraphs.
+    const leadLength = Math.floor(MAX_ARTICLE_CONTENT_LENGTH * 0.7);
+    const tailLength = MAX_ARTICLE_CONTENT_LENGTH - leadLength;
+    return `${normalized.slice(0, leadLength)}\n\n[...middle omitted for cost control...]\n\n${normalized.slice(-tailLength)}`;
+}
+
+function sanitizeBrief(brief = {}) {
+    const riskLevel = ['HIGH', 'MEDIUM', 'LOW'].includes(brief.riskLevel)
+        ? brief.riskLevel
+        : 'MEDIUM';
+    const sourceType = SOURCE_TYPES.has(brief.sourceType) ? brief.sourceType : 'Independent Media';
+
+    return {
+        schemaVersion: BRIEF_SCHEMA_VERSION,
+        model: GEMINI_MODEL,
+        oneLiner: cleanText(brief.oneLiner, 'Analysis unavailable — insufficient article content.'),
+        keyActors: cleanList(brief.keyActors, 5),
+        ibThemes: cleanList(brief.ibThemes, 3),
+        keyConceptTags: cleanList(brief.keyConceptTags, 4),
+        riskLevel,
+        riskReason: cleanText(brief.riskReason),
+        cuiBono: cleanText(brief.cuiBono),
+        globalSouthPerspective: cleanText(brief.globalSouthPerspective),
+        historicalParallel: cleanText(brief.historicalParallel),
+        sourceType,
+        sourceBias: cleanText(brief.sourceBias),
+        studentPrompt: cleanText(brief.studentPrompt, 'How does this event reflect the dynamics of power in the current global order?'),
+        paper2Prompts: {
+            identify: cleanText(brief.paper2Prompts?.identify),
+            explain: cleanText(brief.paper2Prompts?.explain),
+            evaluate: cleanText(brief.paper2Prompts?.evaluate)
+        },
+        rawSummary: cleanText(brief.rawSummary),
+        generatedAt: new Date().toISOString()
+    };
+}
 
 const SYSTEM_PROMPT = `You are an IB Global Politics intelligence analyst. Your role is to transform raw news content into structured geopolitical intelligence briefs for high school students studying the IB Global Politics 2026 syllabus.
 
@@ -51,28 +100,25 @@ Rules:
 - If content is insufficient, still return valid JSON with best-effort analysis`;
 
 exports.handler = async (event) => {
-    // Rate limit check
-    if (event.httpMethod !== 'OPTIONS' && isRateLimited()) {
-        return { statusCode: 429, headers: { 'Access-Control-Allow-Origin': '*', 'Content-Type': 'application/json' }, body: JSON.stringify({ error: 'Rate limit exceeded. Try again in a few minutes.' }) };
-    }
+    const security = await protectEndpoint(event, { maxRequests: 12 });
+    if (security.response) return security.response;
 
     const headers = {
-        'Access-Control-Allow-Origin': '*',
-        'Content-Type': 'application/json'
+        'Content-Type': 'application/json',
+        'Cache-Control': 'private, no-store'
     };
-
-    if (event.httpMethod === 'OPTIONS') {
-        return { statusCode: 200, headers, body: '' };
-    }
 
     try {
         const { url, title, content } = JSON.parse(event.body || '{}');
 
-        if (!content && !title) {
+        const articleContent = selectArticleContent(content);
+        if (articleContent.length < MIN_ARTICLE_CONTENT_LENGTH) {
             return {
                 statusCode: 400,
                 headers,
-                body: JSON.stringify({ error: 'Content or title required' })
+                body: JSON.stringify({
+                    error: `At least ${MIN_ARTICLE_CONTENT_LENGTH} characters of article content are required for a reliable brief.`
+                })
             };
         }
 
@@ -85,15 +131,11 @@ exports.handler = async (event) => {
             };
         }
 
-        // Truncate content to avoid token limits (Gemini Flash: 1M context, but keep costs low)
-        const maxContentLength = 4000;
-        const truncatedContent = (content || '').substring(0, maxContentLength);
-
         const userMessage = `Article URL: ${url || 'Unknown'}
 Article Title: ${title || 'Untitled'}
 
 Article Content:
-${truncatedContent}
+${articleContent}
 
 Generate the intelligence brief JSON now.`;
 
@@ -140,17 +182,7 @@ Generate the intelligence brief JSON now.`;
             }
         }
 
-        // Validate required fields and provide safe defaults
-        const safeBrief = {
-            oneLiner: brief.oneLiner || 'Analysis unavailable — insufficient article content.',
-            keyActors: Array.isArray(brief.keyActors) ? brief.keyActors : [],
-            ibThemes: Array.isArray(brief.ibThemes) ? brief.ibThemes : ['Power & Sovereignty'],
-            riskLevel: ['HIGH', 'MEDIUM', 'LOW'].includes(brief.riskLevel) ? brief.riskLevel : 'MEDIUM',
-            riskReason: brief.riskReason || '',
-            studentPrompt: brief.studentPrompt || 'How does this event reflect the dynamics of power in the current global order?',
-            rawSummary: brief.rawSummary || '',
-            generatedAt: new Date().toISOString()
-        };
+        const safeBrief = sanitizeBrief(brief);
 
         return { statusCode: 200, headers, body: JSON.stringify(safeBrief) };
 
@@ -162,4 +194,12 @@ Generate the intelligence brief JSON now.`;
             body: JSON.stringify({ error: 'AI analysis temporarily unavailable. Please try again later.' })
         };
     }
+};
+
+exports._test = {
+    BRIEF_SCHEMA_VERSION,
+    MIN_ARTICLE_CONTENT_LENGTH,
+    MAX_ARTICLE_CONTENT_LENGTH,
+    sanitizeBrief,
+    selectArticleContent
 };

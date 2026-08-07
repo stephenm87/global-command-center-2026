@@ -49,6 +49,19 @@ export function generate5W1H(event) {
     const category = event.Broad_Category || '';
     const topic = event['Topic/Sector'] || '';
 
+    if (event.isCaseStudy) {
+        return {
+            who: `Key actors: ${players}.`,
+            what: event.statusSummary || impact,
+            where: event.regionTags?.length
+                ? event.regionTags.join(' · ')
+                : `Representative map anchor: ${parseFloat(event.Latitude).toFixed(1)}°, ${parseFloat(event.Longitude).toFixed(1)}°`,
+            when: `Evidence reviewed ${event.updatedAt || timeline.replace('Current as of ', '')}.`,
+            why: event.whyItMatters || generateWhy(category, entity, impact),
+            how: `Analyze the case across ${event.issueDimensions?.join(', ') || topic}. Track the stated uncertainty as conditions and official positions change: ${event.uncertainty || 'recheck current evidence before drawing conclusions.'}`,
+        };
+    }
+
     return {
         who: `Primary actors: ${entity}. Key players: ${players}.`,
         what: `${topic}${impact ? '. ' + impact.substring(0, 200) : ''}`,
@@ -91,6 +104,31 @@ function generateHow(category, players, impact) {
  */
 export function getGlobalChallenges(event) {
     if (!event) return {};
+    if (event.isCaseStudy) {
+        const issueText = event.issueDimensions?.join(' ').toLowerCase() || '';
+        const title = event['Entity/Subject'] || 'This case';
+        const reviewed = event.updatedAt ? `Evidence is current to ${event.updatedAt}.` : 'Check the evidence date before analysis.';
+        const uncertainty = event.uncertainty ? ` Keep in view: ${event.uncertainty}` : '';
+        const prompts = [];
+
+        if (/conflict|security|sovereignty|territorial|sanctions/.test(issueText)) {
+            prompts.push(['Security', `${title} asks whose security is prioritized, which actors can shape outcomes, and how human and state security may diverge. ${reviewed}${uncertainty}`]);
+        }
+        if (/displacement|return|mobility|territorial|statehood|border/.test(issueText)) {
+            prompts.push(['Borders', `${title} tests how borders, statehood, mobility, or return are governed when legal rules and lived conditions do not align. ${reviewed}${uncertainty}`]);
+        }
+        if (/climate|mineral|environment|adaptation/.test(issueText)) {
+            prompts.push(['Environment', `${title} connects environmental change or resource policy to questions of consent, justice, and long-term governance. ${reviewed}${uncertainty}`]);
+        }
+        if (/humanitarian|displacement|local participation|asymmetric|industrial|trade/.test(issueText)) {
+            prompts.push(['Equality', `${title} invites analysis of who receives protection, bargaining power, economic benefit, and voice—and who bears the costs. ${reviewed}${uncertainty}`]);
+        }
+        if (/technology|mineral|supply-chain/.test(issueText)) {
+            prompts.push(['Technology', `${title} shows how infrastructure, production networks, or strategic materials can redistribute political and economic power. ${reviewed}${uncertainty}`]);
+        }
+
+        return Object.fromEntries(prompts.slice(0, 4));
+    }
     const category = event.Broad_Category;
     const challengeGenerators = CATEGORY_CHALLENGES[category] || {};
 

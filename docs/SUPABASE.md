@@ -2,7 +2,7 @@
 
 ## Authentication
 - Users authenticate via OTP magic links.
-- Access is strictly limited to email addresses ending in `@saschina.org`.
+- Any valid email address may request a magic link, subject to the configured Supabase Auth policies.
 
 ## Database
 - Stores user cloud preferences and saved states.

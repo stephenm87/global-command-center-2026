@@ -1,19 +1,7 @@
 // fetch-news.js — Global Command Center
 // Fetches latest geopolitical news via Serper, extracts entities+locations via Cloud NL API,
 // returns globe-ready node objects for display as LIVE INTEL nodes
-
-// ── Rate limiter ───────────────────────────────────────────────────────────
-const RATE_WINDOW_MS = 15 * 60 * 1000;
-const MAX_REQUESTS = 60;
-const requestLog = [];
-
-function isRateLimited() {
-    const now = Date.now();
-    while (requestLog.length && requestLog[0] < now - RATE_WINDOW_MS) requestLog.shift();
-    if (requestLog.length >= MAX_REQUESTS) return true;
-    requestLog.push(now);
-    return false;
-}
+const { protectEndpoint } = require('./security');
 
 // ── Input sanitization ─────────────────────────────────────────────────────
 function sanitizeQuery(raw) {
@@ -116,7 +104,7 @@ function extractCoordsFromEntities(entities) {
         const name = loc.name.toLowerCase();
         for (const [country, coords] of Object.entries(COUNTRY_COORDS)) {
             if (name.includes(country) || country.includes(name)) {
-                return { lat: coords[0] + (Math.random() - 0.5) * 2, lng: coords[1] + (Math.random() - 0.5) * 2 };
+                return { lat: coords[0], lng: coords[1] };
             }
         }
         if (loc.metadata?.latitude && loc.metadata?.longitude) {
@@ -132,6 +120,7 @@ async function analyzeArticle(text, apiKey) {
             `https://language.googleapis.com/v1/documents:analyzeEntities?key=${apiKey}`,
             {
                 method: 'POST',
+                signal: AbortSignal.timeout(10000),
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ document: { type: 'PLAIN_TEXT', content: text }, encodingType: 'UTF8' })
             }
@@ -145,17 +134,11 @@ async function analyzeArticle(text, apiKey) {
 }
 
 exports.handler = async (event, context) => {
-    if (event.httpMethod !== 'POST' && event.httpMethod !== 'GET') {
-        return { statusCode: 405, body: 'Method Not Allowed' };
-    }
-
-    // Rate limit check
-    if (isRateLimited()) {
-        return { statusCode: 429, headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ error: 'Rate limit exceeded' }) };
-    }
+    const security = await protectEndpoint(event, { maxRequests: 30 });
+    if (security.response) return security.response;
 
     const serperKey = process.env.SERPER_API_KEY;
-    const geminiKey = process.env.GEMINI_API_KEY;
+    const googleNlKey = process.env.GOOGLE_NL_API_KEY;
 
     if (!serperKey) {
         return { statusCode: 500, body: JSON.stringify({ error: 'SERPER_API_KEY not configured' }) };
@@ -170,6 +153,7 @@ exports.handler = async (event, context) => {
 
         const serperRes = await fetch('https://google.serper.dev/news', {
             method: 'POST',
+            signal: AbortSignal.timeout(12000),
             headers: { 'X-API-KEY': serperKey, 'Content-Type': 'application/json' },
             body: JSON.stringify({ q: customQuery, num: 10, tbs: 'qdr:d' }) // last 24h
         });
@@ -196,8 +180,8 @@ exports.handler = async (event, context) => {
 
             // ENHANCEMENT: try NL API for better entity extraction (only if GCP key available)
             let entities = null;
-            if (geminiKey && coords) { // only call NL API if text already found a region
-                entities = await analyzeArticle(text, geminiKey);
+            if (googleNlKey && coords) { // only call NL API if text already found a region
+                entities = await analyzeArticle(text, googleNlKey);
                 const nlCoords = extractCoordsFromEntities(entities);
                 if (nlCoords) coords = nlCoords; // prefer NL precision when available
             }
