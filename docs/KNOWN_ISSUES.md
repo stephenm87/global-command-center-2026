@@ -12,6 +12,7 @@
 
 ## Recently Resolved
 
+- Public linked-reference records now load independently from protected provider services; unavailable provider-only filters show a clear recovery action instead of a blank feed.
 - Deep Scan is available from forecast detail cards and automatically triggers an AI intelligence brief.
 - Provider-backed Netlify functions reject unauthenticated callers.
 - Production security policy now permits required GDELT and Netlify assets without wildcard function CORS.

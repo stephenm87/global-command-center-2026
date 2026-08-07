@@ -8,6 +8,15 @@ import { supabase } from './supabase';
 import { secureFetch } from './api';
 import { readStoredJson, writeStoredJson } from './localState.mjs';
 import { CASE_STUDIES_2026, toForecastRecord } from './caseStudies2026';
+import {
+    ALL_INTEL_CATEGORY,
+    LIVE_INTEL_CATEGORY,
+    filterIntelForecasts,
+    getFeedEmptyState,
+    mergeIntelSources,
+    searchIntelForecasts,
+    summarizeIntelSources,
+} from './intelFeed.mjs';
 import './App.css';
 
 const GuidedBriefings = React.lazy(() => import('./GuidedBriefings'));
@@ -15,7 +24,6 @@ const NexusWorkspace = React.lazy(() => import('./NexusWorkspace'));
 
 const VIEW_MODES = ['globe', 'briefings', 'nexus'];
 const CURATED_CASE_RECORDS = CASE_STUDIES_2026.map(toForecastRecord);
-const CURATED_SOURCE_URLS = new Set(CASE_STUDIES_2026.flatMap(caseStudy => caseStudy.sources.map(source => source.url)));
 
 const normalizeLegacyForecast = row => {
     const sourceUrl = typeof row.Source === 'string' && /^https:\/\//i.test(row.Source.trim())
@@ -124,6 +132,7 @@ function App() {
     const [legendCollapsed, setLegendCollapsed] = useState(true);
     const [intelLastUpdated, setIntelLastUpdated] = useState(null);
     const [intelMeta, setIntelMeta] = useState(null);
+    const [intelLoading, setIntelLoading] = useState(true);
     const [feedSearch, setFeedSearch] = useState('');
     const [deepScanResult, setDeepScanResult] = useState(null);
     const [deepScanLoading, setDeepScanLoading] = useState(false);
@@ -341,10 +350,14 @@ function App() {
         return () => previousFocusRef.current?.focus?.();
     }, [selectedForecast, showMineralsModal]);
 
-    // Load data
+    // Load the public reference library independently from protected provider updates.
     useEffect(() => {
+        let cancelled = false;
         const fetchCSV = fetch('/Global_Forecasts_2026_Enriched.csv')
-            .then(response => response.text())
+            .then(response => {
+                if (!response.ok) throw new Error(`Forecast library unavailable (${response.status})`);
+                return response.text();
+            })
             .then(csvText => {
                 return new Promise((resolve) => {
                     Papa.parse(csvText, {
@@ -358,37 +371,38 @@ function App() {
                         }
                     });
                 });
-            });
+            })
+            .catch(() => []);
 
-        // Try live scraper function first, fall back to static file
-        const fetchLive = secureFetch('/.netlify/functions/fetch-intel')
-            .then(res => res.ok ? res.json() : { items: [], minerals: {} })
-            .catch(() =>
-                fetch('/live_intel.json')
-                    .then(r => r.ok ? r.json().then(d => ({ items: d, minerals: {} })) : { items: [], minerals: {} })
-                    .catch(() => ({ items: [], minerals: {} }))
-            );
+        const fetchPublicReferences = fetch('/live_intel.json')
+            .then(response => {
+                if (!response.ok) throw new Error(`Public reference feed unavailable (${response.status})`);
+                return response.json();
+            })
+            .then(data => Array.isArray(data) ? data : [])
+            .catch(() => []);
 
-        Promise.all([fetchCSV, fetchLive]).then(([csvData, liveResponse]) => {
-            // Support both old (array) and new ({items, minerals}) response formats
-            const liveData = Array.isArray(liveResponse) ? liveResponse : (liveResponse.items || []);
-            const mineralData = Array.isArray(liveResponse) ? {} : (liveResponse.minerals || {});
-            setIntelMeta(Array.isArray(liveResponse) ? null : (liveResponse.meta || null));
+        const providerController = new AbortController();
+        const providerTimeout = window.setTimeout(() => providerController.abort(), 30000);
+        const fetchProviderUpdates = secureFetch('/.netlify/functions/fetch-intel', {
+            signal: providerController.signal,
+        })
+            .then(response => {
+                if (!response.ok) throw new Error(`Provider feed unavailable (${response.status})`);
+                return response.json();
+            })
+            .catch(() => ({
+                items: [],
+                minerals: {},
+                meta: { sourceMode: 'protected' },
+            }))
+            .finally(() => window.clearTimeout(providerTimeout));
+
+        const applyIntelData = (combinedData, providerMeta = null, mineralData = {}) => {
+            if (cancelled) return;
             if (Object.keys(mineralData).length > 0) setMinerals(mineralData);
-
-            const normalizedReferenceData = csvData
-                .map(normalizeLegacyForecast)
-                .filter(item => !CURATED_SOURCE_URLS.has(item.url));
-
-            const combinedData = [
-                ...liveData.map(item => ({
-                    ...item,
-                    isLive: item.isLive ?? item._contentStatus === 'provider-current',
-                    isEditorial: item.isEditorial ?? item._contentStatus === 'editorial-archive'
-                })),
-                ...CURATED_CASE_RECORDS,
-                ...normalizedReferenceData,
-            ];
+            const sourceSummary = summarizeIntelSources(combinedData, providerMeta);
+            setIntelMeta({ ...providerMeta, ...sourceSummary });
             setForecasts(combinedData);
             setFilteredForecasts(combinedData);
 
@@ -408,7 +422,8 @@ function App() {
                     .pointColor('color')
                     .onPointClick(point => setSelectedForecast(point.data))
                     .pointLabel(d => {
-                        const isLinked = d.data.url ? '<div style="color: #00ff88; font-size: 0.7rem; margin-top: 5px; font-weight: bold;">[ CLICK FOR LIVE INTEL ]</div>' : '';
+                        const sourceLabel = d.data.isLive ? 'OPEN CURRENT SOURCE' : 'OPEN SOURCE';
+                        const isLinked = d.data.url ? `<div style="color: #00ff88; font-size: 0.7rem; margin-top: 5px; font-weight: bold;">[ ${sourceLabel} ]</div>` : '';
                         return `<div style="background: rgba(0,0,0,0.9); padding: 12px; border: 1px solid ${d.color}; border-radius: 4px; font-family: Roboto Mono; color: #00ffff; max-width: 300px; box-shadow: 0 0 15px ${d.color}44;">
                     <div style="color: ${d.color}; font-weight: 700; margin-bottom: 5px;">${d.data.isLive ? '[LIVE] ' : ''}${escHtml(d.data['Topic/Sector'])}</div>
                     <div style="font-size: 0.85rem; color: #fff;">${escHtml(d.data['Entity/Subject'])}</div>
@@ -417,8 +432,49 @@ function App() {
                     });
             }
             extractMetrics(combinedData);
-            setIntelLastUpdated(new Date());
+            const generatedAt = providerMeta?.generatedAt ? new Date(providerMeta.generatedAt) : new Date();
+            setIntelLastUpdated(Number.isNaN(generatedAt.getTime()) ? new Date() : generatedAt);
+        };
+
+        const publicDataPromise = Promise.all([fetchCSV, fetchPublicReferences])
+            .then(([csvData, publicReferenceData]) => {
+                if (cancelled) return null;
+                const publicData = { csvData, publicReferenceData };
+                const combinedData = mergeIntelSources({
+                    publicReferenceItems: publicReferenceData,
+                    curatedItems: CURATED_CASE_RECORDS,
+                    legacyItems: csvData.map(normalizeLegacyForecast),
+                });
+                applyIntelData(combinedData, { sourceMode: 'public-reference' });
+                setIntelLoading(false);
+                return publicData;
+            })
+            .catch(() => {
+                if (!cancelled) setIntelLoading(false);
+                return null;
+            });
+
+        Promise.all([publicDataPromise, fetchProviderUpdates]).then(([publicData, providerResponse]) => {
+            if (cancelled || !publicData) return;
+            const providerItems = Array.isArray(providerResponse) ? providerResponse : (providerResponse.items || []);
+            const mineralData = Array.isArray(providerResponse) ? {} : (providerResponse.minerals || {});
+            const providerMeta = Array.isArray(providerResponse) ? null : (providerResponse.meta || null);
+            if (providerItems.length === 0 && Object.keys(mineralData).length === 0) return;
+
+            const combinedData = mergeIntelSources({
+                providerItems,
+                publicReferenceItems: publicData.publicReferenceData,
+                curatedItems: CURATED_CASE_RECORDS,
+                legacyItems: publicData.csvData.map(normalizeLegacyForecast),
+            });
+            applyIntelData(combinedData, providerMeta, mineralData);
         });
+
+        return () => {
+            cancelled = true;
+            providerController.abort();
+            window.clearTimeout(providerTimeout);
+        };
     }, [user]);
 
     // Load historical data when year is 2023 / 2024 / 2025
@@ -654,29 +710,14 @@ function App() {
     const updateGlobeData = () => {
         if (!globeEl.current) return;
 
-        // Timeline year filter
-        const yearFilter = (item) => {
-            if (timelineYear === 'ALL') return true;
-            const tl = (item.Timeline || '').toString();
-            return tl.includes(timelineYear);
-        };
-
-        // Use historical dataset for 2023/2024/2025; otherwise use live forecasts
-        const activeData = historicalData || forecasts;
-
-        // 🎯 News-only filter takes precedence when FILTER GLOBE is active
-        const filtered = globeNewsOnly
-            ? forecasts.filter(f => f.isNews)
-            : historicalData
-                ? (selectedCategory === 'All'
-                    ? historicalData
-                    : historicalData.filter(f => f.Broad_Category === selectedCategory))
-                : (selectedCategory === 'All'
-                    ? forecasts
-                    : selectedCategory === 'Live Intel'
-                        ? forecasts.filter(f => f.isLive)
-                        : forecasts.filter(f => f.Broad_Category === selectedCategory)
-                ).filter(yearFilter);
+        // News-only filtering takes precedence; every other feed filter shares one tested path.
+        const filtered = filterIntelForecasts({
+            forecasts,
+            historicalData,
+            selectedCategory,
+            timelineYear,
+            globeNewsOnly,
+        });
 
         setFilteredForecasts(filtered);
 
@@ -894,13 +935,23 @@ function App() {
         ? Math.round((keyMetrics.conflictEvents / keyMetrics.totalEvents) * 100)
         : 0) + stressLevel);
 
-    const normalizedFeedSearch = feedSearch.trim().toLowerCase();
-    const feedItems = normalizedFeedSearch
-        ? filteredForecasts.filter(item => [
-            item['Entity/Subject'], item['Topic/Sector'], item['Expected Impact/Value'],
-            item['Key Player/Organization'], item.Broad_Category, item.Source
-        ].some(value => String(value || '').toLowerCase().includes(normalizedFeedSearch)))
-        : filteredForecasts;
+    const feedItems = searchIntelForecasts(filteredForecasts, feedSearch);
+    const intelSummary = summarizeIntelSources(forecasts, intelMeta);
+    const visibleSelectedCategory = historicalData && selectedCategory === LIVE_INTEL_CATEGORY
+        ? ALL_INTEL_CATEGORY
+        : selectedCategory;
+    const feedEmptyState = getFeedEmptyState({
+        feedItems,
+        selectedCategory: visibleSelectedCategory,
+        feedSearch,
+        historicalLoading,
+        historicalData,
+        intelLoading,
+    });
+
+    useEffect(() => {
+        setFeedPage(1);
+    }, [selectedCategory, feedSearch, timelineYear]);
 
 
 
@@ -968,7 +1019,9 @@ function App() {
                         </button>
                         <AuthBadge user={user} onSignInClick={openModal} />
                         {viewMode === 'globe' && <>
-                        <span className="live-indicator">● LIVE</span>
+                        <span className={`live-indicator ${intelSummary.sourceMode === 'provider' ? '' : 'reference-mode'}`}>
+                            {intelLoading ? '○ LOADING' : intelSummary.sourceMode === 'provider' ? '● CURRENT' : '○ REFERENCE'}
+                        </span>
                         <button className="export-btn" onClick={() => {
                             const nodes = filteredForecasts.slice(0, 40);
                             const date = new Date().toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric' });
@@ -1319,8 +1372,13 @@ function App() {
                                     {historicalLoading ? '⟳ LOADING...' : `${historicalData.length} EVENTS • SOURCED`}
                                 </span>
                             ) : intelLastUpdated && (
-                                <span style={{ fontSize: '0.6rem', color: '#00ff8880', display: 'block', marginTop: '2px' }}>
-                                    ⟳ {intelMeta?.sourceMode === 'provider' ? 'PROVIDER UPDATED' : 'REFERENCE DATA'} {intelLastUpdated.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' })}
+                                <span
+                                    className={`intel-source-status ${intelSummary.sourceMode === 'provider' ? 'provider' : 'reference'}`}
+                                    role="status"
+                                >
+                                    {intelSummary.sourceMode === 'provider'
+                                        ? `● ${intelSummary.liveItemCount} PROVIDER-CURRENT · ${intelLastUpdated.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' })}`
+                                        : `○ PUBLIC REFERENCE MODE · ${intelSummary.linkedReferenceCount} LINKED SOURCES`}
                                 </span>
                             )}
                             <label className="feed-search-label" htmlFor="feed-search">Search the intelligence list</label>
@@ -1334,11 +1392,16 @@ function App() {
                             />
                             <select
                                 className="category-filter"
-                                value={selectedCategory}
+                                value={visibleSelectedCategory}
                                 onChange={(e) => setSelectedCategory(e.target.value)}
+                                aria-label="Filter intelligence sources"
                             >
-                                <option value="All">ALL SECTORS</option>
-                                {!historicalData && <option value="Live Intel" style={{ color: '#00ffff', fontWeight: 'bold' }}>● LIVE INTEL FEED</option>}
+                                <option value={ALL_INTEL_CATEGORY}>ALL SOURCED INTELLIGENCE</option>
+                                {!historicalData && (
+                                    <option value={LIVE_INTEL_CATEGORY} style={{ color: '#00ffff', fontWeight: 'bold' }}>
+                                        CURRENT PROVIDER UPDATES ({intelSummary.liveItemCount})
+                                    </option>
+                                )}
                                 {Object.keys(categoryColors).map(cat => (
                                     <option key={cat} value={cat}>{cat.toUpperCase()}</option>
                                 ))}
@@ -1349,6 +1412,27 @@ function App() {
                             {historicalLoading ? (
                                 <div style={{ color: '#ffcc00', fontFamily: 'Roboto Mono', fontSize: '0.7rem', padding: '20px', textAlign: 'center', opacity: 0.8 }}>
                                     ⟳ Loading {timelineYear} historical data...
+                                </div>
+                            ) : intelLoading ? (
+                                <div className="feed-loading-state" role="status">
+                                    ⟳ LOADING PUBLIC SOURCES...
+                                </div>
+                            ) : feedEmptyState ? (
+                                <div className="feed-empty-state" role="status">
+                                    <strong>{feedEmptyState.title}</strong>
+                                    <span>{feedEmptyState.message}</span>
+                                    {feedEmptyState.actionLabel && (
+                                        <button
+                                            type="button"
+                                            className="feed-empty-action"
+                                            onClick={() => {
+                                                if (feedEmptyState.action === 'clear-search') setFeedSearch('');
+                                                if (feedEmptyState.action === 'show-public-sources') setSelectedCategory(ALL_INTEL_CATEGORY);
+                                            }}
+                                        >
+                                            {feedEmptyState.actionLabel}
+                                        </button>
+                                    )}
                                 </div>
                             ) : feedItems.slice(0, feedPage * FEED_PAGE_SIZE).map((forecast, idx) => (
                                 <div
@@ -1370,6 +1454,11 @@ function App() {
                                     {forecast.isCaseStudy
                                         ? <div className="case-study-tag">◆ VERIFIED CASE · {forecast.updatedAt}</div>
                                         : forecast.isEditorial && <div className="context-tag">◆ DATED CONTEXT</div>}
+                                    {forecast.isReference && !forecast.isEditorial && !forecast.isCaseStudy && (
+                                        <div className="reference-tag">
+                                            {forecast.url ? '◇ PUBLIC SOURCE' : '◇ LEGACY REFERENCE'}
+                                        </div>
+                                    )}
                                     {forecast.isHistorical && <div className="live-tag" style={{ background: '#ffcc0022', color: '#ffcc00', borderColor: '#ffcc0044' }}>📅 {timelineYear}</div>}
                                     <div className="card-category" style={{ color: forecast.isHistorical ? '#ffcc00' : forecast.isLive ? '#00ffff' : categoryColors[forecast.Broad_Category] }}>
                                         {forecast.Broad_Category}
@@ -1385,7 +1474,7 @@ function App() {
                                             className="card-link"
                                             onClick={(e) => e.stopPropagation()}
                                         >
-                                            VIEW SOURCE ↗
+                                            OPEN SOURCE ↗
                                         </a>
                                     )}
                                 </div>

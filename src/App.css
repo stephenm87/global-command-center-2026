@@ -194,6 +194,11 @@
     animation: blink 1.5s ease-in-out infinite;
 }
 
+.live-indicator.reference-mode {
+    color: #8fa6bd;
+    animation: none;
+}
+
 @keyframes blink {
 
     0%,
@@ -472,6 +477,21 @@
     color: #00ffff;
 }
 
+.intel-source-status {
+    display: block;
+    margin-top: 2px;
+    font: 700 0.62rem/1.4 'Roboto Mono', monospace;
+    letter-spacing: 0.05em;
+}
+
+.intel-source-status.provider {
+    color: #00ff88;
+}
+
+.intel-source-status.reference {
+    color: #9fb2c7;
+}
+
 .category-filter {
     background: rgba(0, 0, 0, 0.5);
     border: 1px solid #00ffff;
@@ -517,6 +537,13 @@
     gap: 0.75rem;
 }
 
+.feed-loading-state {
+    padding: 1rem;
+    color: #9fb2c7;
+    font: 700 0.72rem 'Roboto Mono', monospace;
+    letter-spacing: 0.08em;
+}
+
 .intel-cards::-webkit-scrollbar {
     width: 8px;
 }
@@ -528,6 +555,42 @@
 .intel-cards::-webkit-scrollbar-thumb {
     background: #00ffff;
     border-radius: 4px;
+}
+
+.feed-empty-state {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.75rem;
+    padding: 1rem;
+    border: 1px solid rgba(0, 255, 255, 0.25);
+    border-radius: 6px;
+    background: rgba(0, 255, 255, 0.05);
+    color: #aebfd1;
+    font: 0.75rem/1.5 'Roboto Mono', monospace;
+}
+
+.feed-empty-state strong {
+    color: #fff;
+    letter-spacing: 0.08em;
+}
+
+.feed-empty-action {
+    min-height: 40px;
+    padding: 0.65rem 0.85rem;
+    border: 1px solid #00ffff;
+    border-radius: 4px;
+    background: rgba(0, 255, 255, 0.08);
+    color: #00ffff;
+    cursor: pointer;
+    font: 800 0.68rem 'Roboto Mono', monospace;
+    letter-spacing: 0.08em;
+}
+
+.feed-empty-action:hover,
+.feed-empty-action:focus-visible {
+    background: #00ffff;
+    color: #031015;
 }
 
 .intel-card {
@@ -565,6 +628,19 @@
     border-radius: 3px;
     color: #d6c7ff;
     background: rgba(182, 156, 255, 0.1);
+    font-size: 0.65rem;
+    font-weight: 800;
+    letter-spacing: 0.08em;
+}
+
+.reference-tag {
+    display: inline-block;
+    margin-bottom: 0.55rem;
+    padding: 0.2rem 0.4rem;
+    border: 1px solid rgba(143, 166, 189, 0.45);
+    border-radius: 3px;
+    color: #b8c8d8;
+    background: rgba(143, 166, 189, 0.1);
     font-size: 0.65rem;
     font-weight: 800;
     letter-spacing: 0.08em;
