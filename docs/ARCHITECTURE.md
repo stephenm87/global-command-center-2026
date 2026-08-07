@@ -8,6 +8,7 @@ The application is a Single Page Application (SPA) built with React and bundled 
 - **Visualization**: `Globe.gl` and `Three.js` render the live 3D globe. The default Nexus experience is a DOM/SVG Focus view with search, issue lenses, and a single selected actor. The full force-directed 3D Nexus is an optional secondary presentation.
 - **Progressive loading**: The globe, Guided Briefings, Nexus workspace, and advanced 3D Nexus are split into separate chunks. `src/graphReadiness.mjs` prevents force-graph reheating until the 3D graph reports its first engine tick.
 - **Case-study projection**: `src/caseStudies2026.js` is the canonical source-aware editorial dataset. `src/nexusTours.js` projects it into guided learning paths, while `src/nexusFocusData.js` combines its dated connections with clearly labelled structural relationship context.
+- **Intelligence feed composition**: `src/intelFeed.mjs` merges authenticated provider-current items, the public linked-reference library, verified editorial cases, and legacy forecasts. Provider records take precedence over exact duplicates, while distinct insights that share a source remain visible. Public references are always loaded independently and are never relabelled as live.
 - **Entry Points**: `src/main.jsx` and `src/App.jsx`.
 
 ## Backend (Netlify Functions)
@@ -19,7 +20,7 @@ Located in `netlify/functions`:
 - `gemini-retry.js`: Utility for handling Gemini API retries.
 - `security.js`: Validates Supabase bearer tokens and applies per-user throttling before provider calls.
 
-The frontend uses `src/api.js` to attach the current Supabase access token to every provider-backed request. Static forecast and historical assets remain available without authentication.
+The frontend uses `src/api.js` to attach the current Supabase access token to every provider-backed request. Static forecast, linked-reference, verified-case, and historical assets remain available without authentication. If provider-current items are unavailable, the interface stays in public reference mode and exposes a direct recovery action instead of rendering an empty feed.
 
 Provider calls have explicit deadlines. The feed response uses a short private browser cache plus the existing warm-instance cache. A shared store is still required for safe cross-instance caching and rate limiting; authenticated responses are not placed in a shared CDN cache.
 
