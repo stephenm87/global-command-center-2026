@@ -1,20 +1,7 @@
 // deep-scan.js - Firecrawl-powered article deep extractor
 // Called on-demand when a user requests full article content for an Intel card
 // POST body: { url: "https://..." }
-
-// ── Simple rate limiter ────────────────────────────────────────────────────
-const RATE_WINDOW_MS = 15 * 60 * 1000; // 15 minutes
-const MAX_REQUESTS = 30;
-const requestLog = [];
-
-function isRateLimited() {
-    const now = Date.now();
-    // Purge old entries
-    while (requestLog.length && requestLog[0] < now - RATE_WINDOW_MS) requestLog.shift();
-    if (requestLog.length >= MAX_REQUESTS) return true;
-    requestLog.push(now);
-    return false;
-}
+const { protectEndpoint } = require('./security');
 
 // ── URL validation (SSRF prevention) ───────────────────────────────────────
 function isValidUrl(urlStr) {
@@ -32,19 +19,13 @@ function isValidUrl(urlStr) {
 }
 
 exports.handler = async (event) => {
+    const security = await protectEndpoint(event, { maxRequests: 15 });
+    if (security.response) return security.response;
+
     const headers = {
-        'Access-Control-Allow-Origin': '*',
-        'Content-Type': 'application/json'
+        'Content-Type': 'application/json',
+        'Cache-Control': 'private, no-store'
     };
-
-    if (event.httpMethod === 'OPTIONS') {
-        return { statusCode: 200, headers, body: '' };
-    }
-
-    // Rate limit check
-    if (isRateLimited()) {
-        return { statusCode: 429, headers, body: JSON.stringify({ error: 'Rate limit exceeded. Try again in a few minutes.' }) };
-    }
 
     try {
         const { url } = JSON.parse(event.body || '{}');
@@ -63,8 +44,9 @@ exports.handler = async (event) => {
         }
 
         // Scrape the article with Firecrawl
-        const res = await fetch('https://api.firecrawl.dev/v1/scrape', {
+        const res = await fetch('https://api.firecrawl.dev/v2/scrape', {
             method: 'POST',
+            signal: AbortSignal.timeout(20000),
             headers: {
                 'Authorization': `Bearer ${firecrawlKey}`,
                 'Content-Type': 'application/json'

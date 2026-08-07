@@ -7,6 +7,17 @@
 const RETRYABLE_STATUSES = [429, 503];
 const MAX_RETRIES = 2;
 const INITIAL_DELAY_MS = 1000;
+const REQUEST_TIMEOUT_MS = 15000;
+
+async function fetchWithTimeout(url, options, timeoutMs = REQUEST_TIMEOUT_MS) {
+    const controller = new AbortController();
+    const timeout = setTimeout(() => controller.abort(), timeoutMs);
+    try {
+        return await fetch(url, { ...options, signal: controller.signal });
+    } finally {
+        clearTimeout(timeout);
+    }
+}
 
 /**
  * Calls a Gemini API endpoint with automatic retry on 429/503.
@@ -22,7 +33,7 @@ async function callGeminiWithRetry(url, body, options = {}) {
     const bodyStr = typeof body === 'string' ? body : JSON.stringify(body);
 
     for (let attempt = 0; attempt <= maxRetries; attempt++) {
-        const res = await fetch(url, {
+        const res = await fetchWithTimeout(url, {
             method: 'POST',
             headers,
             body: bodyStr
@@ -34,13 +45,16 @@ async function callGeminiWithRetry(url, body, options = {}) {
 
         // Retryable error
         if (attempt < maxRetries) {
-            const delay = INITIAL_DELAY_MS * Math.pow(2, attempt);
+            const retryAfter = Number(res.headers?.get?.('Retry-After'));
+            const delay = Number.isFinite(retryAfter) && retryAfter > 0
+                ? Math.min(retryAfter * 1000, 10000)
+                : INITIAL_DELAY_MS * Math.pow(2, attempt) + Math.random() * 400;
             console.log(`[gemini-retry] ${res.status} on attempt ${attempt + 1}/${maxRetries + 1}, retrying in ${delay}ms...`);
             await new Promise(r => setTimeout(r, delay));
         } else {
             if (fallbackUrl) {
                 console.log(`[gemini-retry] Primary model exhausted (${res.status}). Falling back to flash model...`);
-                const fallbackRes = await fetch(fallbackUrl, {
+                const fallbackRes = await fetchWithTimeout(fallbackUrl, {
                     method: 'POST',
                     headers,
                     body: bodyStr
@@ -54,4 +68,4 @@ async function callGeminiWithRetry(url, body, options = {}) {
     }
 }
 
-module.exports = { callGeminiWithRetry };
+module.exports = { callGeminiWithRetry, fetchWithTimeout };

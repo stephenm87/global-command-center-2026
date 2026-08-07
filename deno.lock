@@ -11,15 +11,14 @@
   "workspace": {
     "packageJson": {
       "dependencies": [
-        "npm:@supabase/supabase-js@^2.103.2",
-        "npm:@vitejs/plugin-react@^4.2.1",
+        "npm:@supabase/supabase-js@2.103.2",
+        "npm:@vitejs/plugin-react@^4.7.0",
         "npm:globe.gl@^2.31.1",
-        "npm:netlify-cli@24",
         "npm:papaparse@^5.4.1",
         "npm:react-dom@^18.2.0",
         "npm:react@^18.2.0",
         "npm:topojson-client@^3.1.0",
-        "npm:vite@5"
+        "npm:vite@^5.4.21"
       ]
     }
   }
