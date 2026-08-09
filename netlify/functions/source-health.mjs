@@ -9,23 +9,30 @@ const headers = {
     'Netlify-CDN-Cache-Control': 'public, max-age=900, stale-while-revalidate=21600',
 };
 
-export const handler = async event => {
+function toLegacyEvent(request) {
+    return { httpMethod: request.method, headers: Object.fromEntries(request.headers.entries()) };
+}
+
+function toResponse(response) {
+    return new Response(response.body || null, { status: response.statusCode, headers: response.headers });
+}
+
+export default async request => {
+    const event = toLegacyEvent(request);
     const security = protectPublicEndpoint(event, { methods: ['GET'] });
-    if (security.response) return security.response;
+    if (security.response) return toResponse(security.response);
     try {
-        const snapshot = await readSnapshot(SNAPSHOT_KEY, event);
-        return {
-            statusCode: 200,
-            headers,
-            body: JSON.stringify(snapshot || { status: 'pending', results: [], summary: null }),
-        };
+        const snapshot = await readSnapshot(SNAPSHOT_KEY);
+        return new Response(
+            JSON.stringify(snapshot || { status: 'pending', results: [], summary: null }),
+            { status: 200, headers },
+        );
     } catch (error) {
         console.error('[source-health] Snapshot unavailable:', error.message);
-        return {
-            statusCode: 200,
-            headers: { ...headers, 'Netlify-CDN-Cache-Control': 'public, max-age=60' },
-            body: JSON.stringify({ status: 'unavailable', results: [], summary: null }),
-        };
+        return new Response(
+            JSON.stringify({ status: 'unavailable', results: [], summary: null }),
+            { status: 200, headers: { ...headers, 'Netlify-CDN-Cache-Control': 'public, max-age=60' } },
+        );
     }
 };
 

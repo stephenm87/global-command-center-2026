@@ -7,7 +7,7 @@ const manifest = require('./source-health-targets.json');
 const { checkTargets, summarizeHealth } = sourceHealthModule;
 const SNAPSHOT_KEY = 'source-health/current.json';
 
-export const handler = async event => {
+export default async () => {
     const checkedAt = new Date().toISOString();
     const results = await checkTargets(manifest.targets);
     const snapshot = {
@@ -17,9 +17,9 @@ export const handler = async event => {
         summary: summarizeHealth(results),
         results,
     };
-    await writeSnapshot(SNAPSHOT_KEY, snapshot, event);
+    await writeSnapshot(SNAPSHOT_KEY, snapshot);
     console.log(`[refresh-source-health] Checked ${results.length} links: ${JSON.stringify(snapshot.summary)}.`);
-    return { statusCode: 204 };
+    return new Response(null, { status: 204 });
 };
 
 export const _test = { SNAPSHOT_KEY };

@@ -13,35 +13,41 @@ const publicHeaders = {
     'Netlify-CDN-Cache-Control': 'public, max-age=900, stale-while-revalidate=21600',
 };
 
-async function refreshSnapshot(event) {
+async function refreshSnapshot() {
     if (!inFlightRefresh) {
         inFlightRefresh = buildPublicSnapshot()
-            .then(snapshot => writeSnapshot(SNAPSHOT_KEY, snapshot, event))
+            .then(snapshot => writeSnapshot(SNAPSHOT_KEY, snapshot))
             .finally(() => { inFlightRefresh = null; });
     }
     return inFlightRefresh;
 }
 
-export const handler = async event => {
+function toLegacyEvent(request) {
+    return { httpMethod: request.method, headers: Object.fromEntries(request.headers.entries()) };
+}
+
+function toResponse(response) {
+    return new Response(response.body || null, { status: response.statusCode, headers: response.headers });
+}
+
+export default async request => {
+    const event = toLegacyEvent(request);
     const security = protectPublicEndpoint(event, { methods: ['GET'] });
-    if (security.response) return security.response;
+    if (security.response) return toResponse(security.response);
 
     try {
-        const cached = await readSnapshot(SNAPSHOT_KEY, event);
+        const cached = await readSnapshot(SNAPSHOT_KEY);
         const configurationBecameAvailable = cached?.meta?.status === 'not-configured' && process.env.SERPER_API_KEY;
         if (cached?.meta && !configurationBecameAvailable) {
-            return { statusCode: 200, headers: publicHeaders, body: JSON.stringify(withSnapshotAge(cached)) };
+            return new Response(JSON.stringify(withSnapshotAge(cached)), { status: 200, headers: publicHeaders });
         }
 
-        const snapshot = await refreshSnapshot(event);
-        return { statusCode: 200, headers: publicHeaders, body: JSON.stringify(withSnapshotAge(snapshot)) };
+        const snapshot = await refreshSnapshot();
+        return new Response(JSON.stringify(withSnapshotAge(snapshot)), { status: 200, headers: publicHeaders });
     } catch (error) {
         console.error('[public-intel] Snapshot unavailable:', error.message);
         const status = process.env.SERPER_API_KEY ? 'unavailable' : 'not-configured';
-        return {
-            statusCode: 200,
-            headers: { ...publicHeaders, 'Netlify-CDN-Cache-Control': 'public, max-age=60' },
-            body: JSON.stringify({
+        return new Response(JSON.stringify({
                 items: [],
                 minerals: {},
                 meta: {
@@ -52,8 +58,10 @@ export const handler = async event => {
                     queryPolicy: 'fixed-editorial',
                     liveItemCount: 0,
                 },
-            }),
-        };
+            }), {
+            status: 200,
+            headers: { ...publicHeaders, 'Netlify-CDN-Cache-Control': 'public, max-age=60' },
+        });
     }
 };
 
