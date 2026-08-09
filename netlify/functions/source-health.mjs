@@ -1,6 +1,7 @@
-const { protectPublicEndpoint } = require('./security');
-const { readSnapshot } = require('./_shared/snapshot-store');
+import securityModule from './security.js';
+import { readSnapshot } from './_shared/snapshot-store.mjs';
 
+const { protectPublicEndpoint } = securityModule;
 const SNAPSHOT_KEY = 'source-health/current.json';
 const headers = {
     'Content-Type': 'application/json',
@@ -8,7 +9,7 @@ const headers = {
     'Netlify-CDN-Cache-Control': 'public, max-age=900, stale-while-revalidate=21600',
 };
 
-exports.handler = async event => {
+export const handler = async event => {
     const security = protectPublicEndpoint(event, { methods: ['GET'] });
     if (security.response) return security.response;
     try {
@@ -28,4 +29,4 @@ exports.handler = async event => {
     }
 };
 
-exports._test = { SNAPSHOT_KEY };
+export const _test = { SNAPSHOT_KEY };

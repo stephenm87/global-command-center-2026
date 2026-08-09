@@ -16,10 +16,10 @@ Located in `netlify/functions`:
 - `ai-summary.js`: Uses Gemini API for text summarization.
 - `deep-scan.js`: Uses Firecrawl for deep web scraping.
 - `fetch-intel.js`: Aggregates current intel from two broad Serper queries with GNews fallback, adds explicitly dated editorial context after current results, and emits provenance/cache metadata.
-- `public-intel.js`: Reads the anonymous fixed-query snapshot from Netlify Blobs and uses CDN cache headers. It creates the first snapshot on demand if the scheduled job has not run.
-- `refresh-public-intel.js`: Rebuilds the public snapshot every 30 minutes from four fixed editorial queries.
+- `public-intel.mjs`: Reads the anonymous fixed-query snapshot from Netlify Blobs and uses CDN cache headers. It creates the first snapshot on demand if the scheduled job has not run.
+- `refresh-public-intel.mjs`: Rebuilds the public snapshot every 30 minutes from four fixed editorial queries.
 - `fetch-news.js`: Runs authenticated visitor-supplied news searches.
-- `source-health.js` and `refresh-source-health.js`: Publish and refresh the daily editorial link-health snapshot generated from all case-study sources and declared alternates.
+- `source-health.mjs` and `refresh-source-health.mjs`: Publish and refresh the daily editorial link-health snapshot generated from all case-study sources and declared alternates.
 - `gemini-retry.js`: Utility for handling Gemini API retries.
 - `security.js`: Validates Supabase bearer tokens and applies per-user throttling before provider calls.
 

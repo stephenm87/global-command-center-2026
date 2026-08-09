@@ -1,7 +1,9 @@
-const { protectPublicEndpoint } = require('./security');
-const { buildPublicSnapshot, withSnapshotAge } = require('./_shared/intel-snapshot');
-const { readSnapshot, writeSnapshot } = require('./_shared/snapshot-store');
+import securityModule from './security.js';
+import snapshotModule from './_shared/intel-snapshot.js';
+import { readSnapshot, writeSnapshot } from './_shared/snapshot-store.mjs';
 
+const { protectPublicEndpoint } = securityModule;
+const { buildPublicSnapshot, withSnapshotAge } = snapshotModule;
 const SNAPSHOT_KEY = 'public-intel/current.json';
 let inFlightRefresh = null;
 
@@ -20,7 +22,7 @@ async function refreshSnapshot(event) {
     return inFlightRefresh;
 }
 
-exports.handler = async event => {
+export const handler = async event => {
     const security = protectPublicEndpoint(event, { methods: ['GET'] });
     if (security.response) return security.response;
 
@@ -55,4 +57,4 @@ exports.handler = async event => {
     }
 };
 
-exports._test = { SNAPSHOT_KEY, publicHeaders };
+export const _test = { SNAPSHOT_KEY, publicHeaders };
