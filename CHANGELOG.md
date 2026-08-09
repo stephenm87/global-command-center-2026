@@ -5,8 +5,11 @@
 - Versioned, validated AI intelligence brief responses and contract tests.
 - Searchable keyboard-accessible intelligence feed and accessible dialog semantics.
 - Provider provenance, freshness, and private-cache metadata.
-- Nine regionally balanced, dated case studies with official or primary source metadata, uncertainty notes, and issue dimensions, including European AI-governance implementation.
-- Guided Briefings with refresh-safe case and step links.
+- A 29-case editorial library: nine original cases plus 20 new cases spanning additional regions and emerging global issues.
+- Exactly three core readings for every case, labelled as local, institutional, and independent perspectives, with separate support statements and optional supplemental primary documents.
+- Guided Briefings with text search, region and issue filters, result counts, refresh-safe case and step links, review dates, and perspective-labelled readings.
+- An **Editorial Cases** globe layer with a visible case count, persistent on/off preference, and multi-location mapping for regional and global cases.
+- A documented case-study editorial standard covering claims, sources, sensitivity, map modes, and manual review metadata.
 - A searchable Focus Nexus with relationship lenses, source-linked current cases, and actor deep links.
 
 ### Changed
@@ -16,6 +19,7 @@
 - Firecrawl deep scanning now uses the v2 scrape endpoint.
 - The visually dense force graph is now an opt-in Advanced Nexus presentation; the simpler Focus view is the default and preserves actor context when switching presentations.
 - Case-study 5W1H and theory panels now use qualified, evidence-aware language instead of generic factual assertions.
+- Case records now normalize `coverageRegion`, `featured`, `sensitivity`, `reviewCadenceDays`, `reviewBy`, perspective labels, and point, route, regional, or global map locations for use across the globe, Guided Briefings, and Nexus.
 
 ## [baseline-2026-08-03] - 2026-08-03
 ### Added

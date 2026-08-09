@@ -56,6 +56,18 @@ const safeHref = url => {
     try { const u = new URL(url); return ['http:', 'https:'].includes(u.protocol) ? escHtml(url) : ''; } catch { return ''; }
 };
 
+const isReviewOverdue = reviewBy => Boolean(reviewBy && reviewBy < new Date().toISOString().slice(0, 10));
+
+const dedupeClusterItems = items => {
+    const caseIds = new Set();
+    return items.filter(item => {
+        if (!item.isCaseStudy || !item.caseStudyId) return true;
+        if (caseIds.has(item.caseStudyId)) return false;
+        caseIds.add(item.caseStudyId);
+        return true;
+    });
+};
+
 // ── ErrorBoundary: graceful fallback if WebGL/Globe.gl crashes ──
 class GlobeErrorBoundary extends Component {
     constructor(props) { super(props); this.state = { hasError: false, error: null }; }
@@ -149,6 +161,8 @@ function App() {
     const [newsScanError, setNewsScanError] = useState(null);
     const [newsQuery, setNewsQuery] = useState('');
     const [globeNewsOnly, setGlobeNewsOnly] = useState(false); // 🎯 news-only globe filter
+    const [showEditorialCases, setShowEditorialCases] = useState(true);
+    const [preferencesHydratedFor, setPreferencesHydratedFor] = useState(null);
     const [globeReady, setGlobeReady] = useState(false); // loading skeleton
     const [feedPage, setFeedPage] = useState(1); // Intel Feed pagination
     const FEED_PAGE_SIZE = 40;
@@ -158,6 +172,7 @@ function App() {
     const dashboardRef = useRef();
     const detailModalRef = useRef();
     const mineralsModalRef = useRef();
+    const clusterDialogRef = useRef();
     const previousFocusRef = useRef();
 
     const navigateView = (mode, params = {}) => {
@@ -210,43 +225,58 @@ function App() {
 
     // ── Preferences persistence: restore on mount ────────────────────────
     useEffect(() => {
-        const prefs = readStoredJson('gcc-preferences', {});
-        if (prefs.selectedTheory)  setSelectedTheory(prefs.selectedTheory);
-        if (prefs.selectedCategory) setSelectedCategory(prefs.selectedCategory);
-        if (prefs.timelineYear)    setTimelineYear(prefs.timelineYear);
-        if (typeof prefs.stressLevel === 'number') setStressLevel(prefs.stressLevel);
-        if (typeof prefs.sidebarCollapsed === 'boolean') setSidebarCollapsed(prefs.sidebarCollapsed);
-        // Pull cloud copy if signed in
-        supabase.auth.getUser().then(async ({ data: { user } }) => {
-            if (!user) return;
-            const { data } = await supabase
-                .from('user_data').select('value')
-                .eq('user_id', user.id).eq('key', 'gcc-preferences').single();
-            if (data?.value) {
-                const p = data.value;
-                if (p.selectedTheory)  setSelectedTheory(p.selectedTheory);
-                if (p.selectedCategory) setSelectedCategory(p.selectedCategory);
-                if (p.timelineYear)    setTimelineYear(p.timelineYear);
-                if (typeof p.stressLevel === 'number') setStressLevel(p.stressLevel);
-                if (typeof p.sidebarCollapsed === 'boolean') setSidebarCollapsed(p.sidebarCollapsed);
-                writeStoredJson('gcc-preferences', p);
+        let cancelled = false;
+        const preferenceOwner = user?.id || 'anonymous';
+        setPreferencesHydratedFor(null);
+
+        const applyPreferences = prefs => {
+            if (prefs.selectedTheory) setSelectedTheory(prefs.selectedTheory);
+            if (prefs.selectedCategory) setSelectedCategory(prefs.selectedCategory);
+            if (prefs.timelineYear) setTimelineYear(prefs.timelineYear);
+            if (typeof prefs.stressLevel === 'number') setStressLevel(prefs.stressLevel);
+            if (typeof prefs.sidebarCollapsed === 'boolean') setSidebarCollapsed(prefs.sidebarCollapsed);
+            if (typeof prefs.showEditorialCases === 'boolean') setShowEditorialCases(prefs.showEditorialCases);
+        };
+
+        const restorePreferences = async () => {
+            const localPreferences = readStoredJson('gcc-preferences', {});
+            applyPreferences(localPreferences);
+
+            try {
+                if (user) {
+                    const { data } = await supabase
+                        .from('user_data').select('value')
+                        .eq('user_id', user.id).eq('key', 'gcc-preferences').single();
+                    if (cancelled) return;
+                    if (data?.value) {
+                        applyPreferences(data.value);
+                        writeStoredJson('gcc-preferences', data.value);
+                    }
+                }
+            } catch (error) {
+                console.warn('[GCC] Cloud preferences unavailable:', error?.message || 'unknown error');
+            } finally {
+                if (!cancelled) setPreferencesHydratedFor(preferenceOwner);
             }
-        });
-    }, [user]);
+        };
+
+        restorePreferences();
+        return () => { cancelled = true; };
+    }, [user?.id]);
 
     // ── Preferences persistence: save on change ──────────────────────────
     useEffect(() => {
-        const prefs = { selectedTheory, selectedCategory, timelineYear, stressLevel, sidebarCollapsed };
+        const preferenceOwner = user?.id || 'anonymous';
+        if (preferencesHydratedFor !== preferenceOwner) return;
+
+        const prefs = { selectedTheory, selectedCategory, timelineYear, stressLevel, sidebarCollapsed, showEditorialCases };
         writeStoredJson('gcc-preferences', prefs);
-        // Fire-and-forget Supabase sync
-        supabase.auth.getUser().then(({ data: { user } }) => {
-            if (!user) return;
-            supabase.from('user_data').upsert(
-                { user_id: user.id, key: 'gcc-preferences', value: prefs },
-                { onConflict: 'user_id,key' }
-            );
-        });
-    }, [selectedTheory, selectedCategory, timelineYear, stressLevel, sidebarCollapsed]);
+        if (!user) return;
+        supabase.from('user_data').upsert(
+            { user_id: user.id, key: 'gcc-preferences', value: prefs },
+            { onConflict: 'user_id,key' }
+        );
+    }, [selectedTheory, selectedCategory, timelineYear, stressLevel, sidebarCollapsed, showEditorialCases, preferencesHydratedFor, user?.id]);
 
     // Initialize globe
     useEffect(() => {
@@ -323,32 +353,39 @@ function App() {
             // Space: Toggle sidebar (only if modal is not open AND not typing in an input)
             const tag = document.activeElement?.tagName?.toLowerCase();
             const isTyping = tag === 'input' || tag === 'textarea' || tag === 'select' || document.activeElement?.isContentEditable;
-            if (e.code === 'Space' && !selectedForecast && !isTyping) {
+            if (e.code === 'Space' && !selectedForecast && !expandedCluster && !isTyping) {
                 e.preventDefault();
                 setSidebarCollapsed(prev => !prev);
             }
             // Esc: Close modal
-            if (e.code === 'Escape' && (selectedForecast || showMineralsModal)) {
+            if (e.code === 'Escape' && (selectedForecast || showMineralsModal || expandedCluster)) {
                 setSelectedForecast(null);
                 setShowMineralsModal(false);
+                setExpandedCluster(null);
             }
             // L: Toggle escalation links panel
-            if (e.code === 'KeyL' && !selectedForecast && stressLevel > 70) {
+            if (e.code === 'KeyL' && !selectedForecast && !expandedCluster && stressLevel > 70) {
                 setShowConnections(prev => !prev);
             }
         };
 
         window.addEventListener('keydown', handleKeyPress);
         return () => window.removeEventListener('keydown', handleKeyPress);
-    }, [selectedForecast, showMineralsModal, stressLevel]);
+    }, [selectedForecast, showMineralsModal, expandedCluster, stressLevel]);
 
     useEffect(() => {
-        const activeModal = selectedForecast ? detailModalRef.current : showMineralsModal ? mineralsModalRef.current : null;
+        const activeModal = selectedForecast
+            ? detailModalRef.current
+            : showMineralsModal
+                ? mineralsModalRef.current
+                : expandedCluster
+                    ? clusterDialogRef.current
+                    : null;
         if (!activeModal) return undefined;
         previousFocusRef.current = document.activeElement;
         activeModal.focus();
         return () => previousFocusRef.current?.focus?.();
-    }, [selectedForecast, showMineralsModal]);
+    }, [selectedForecast, showMineralsModal, expandedCluster]);
 
     // Load the public reference library independently from protected provider updates.
     useEffect(() => {
@@ -698,6 +735,9 @@ function App() {
                     size: Math.min(2.5, 0.8 + group.length * 0.25),
                     color: dominant.color,
                     isCluster: true, count: group.length,
+                    caseCount: new Set(group
+                        .filter(point => point.data.isCaseStudy && point.data.caseStudyId)
+                        .map(point => point.data.caseStudyId)).size,
                     items: group.map(g => g.data),
                     data: dominant.data,
                 });
@@ -734,19 +774,34 @@ function App() {
             return THEORY_KEYWORDS[theoryLens]?.test(text) ? 1 : 0.15;
         };
 
-        const rawPoints = filtered.map(item => {
-            const baseColor = item.isLive ? '#00ffff' : (categoryColors[item.Broad_Category] || '#ffffff');
+        const globeItems = showEditorialCases ? filtered : filtered.filter(item => !item.isCaseStudy);
+        const rawPoints = globeItems.flatMap(item => {
+            const baseColor = item.isCaseStudy
+                ? '#b69cff'
+                : item.isLive ? '#00ffff' : (categoryColors[item.Broad_Category] || '#ffffff');
             const color = getPointColor(item, baseColor);
             const opacity = getPointOpacity(item);
-            return {
-                lat: parseFloat(item.Latitude),
-                lng: parseFloat(item.Longitude),
-                size: (item.isLive ? 1.2 : 0.8) * (theoryLens && opacity < 0.5 ? 0.4 : 1),
+            const fallbackLocation = {
+                label: item.regionTags?.[0] || item['Entity/Subject'] || 'Mapped location',
+                latitude: parseFloat(item.Latitude),
+                longitude: parseFloat(item.Longitude),
+            };
+            const locations = item.isCaseStudy && item.map?.locations?.length
+                ? item.map.locations
+                : [fallbackLocation];
+
+            return locations
+                .filter(location => Number.isFinite(Number(location.latitude)) && Number.isFinite(Number(location.longitude)))
+                .map(location => ({
+                lat: Number(location.latitude),
+                lng: Number(location.longitude),
+                size: (item.isCaseStudy ? 1.35 : item.isLive ? 1.2 : 0.8) * (theoryLens && opacity < 0.5 ? 0.4 : 1),
                 color,
                 opacity,
                 data: item,
-                type: 'forecast'
-            };
+                locationLabel: location.label,
+                type: item.isCaseStudy ? 'editorial-case' : 'forecast',
+            }));
         });
 
         // Cluster nearby points
@@ -754,7 +809,7 @@ function App() {
 
         globeEl.current
             .pointsData(forecastPoints)
-            .pointAltitude(0.01)
+            .pointAltitude(point => point.data.isCaseStudy ? 0.035 : 0.01)
             .pointRadius('size')
             .pointColor('color')
             .onPointClick(point => {
@@ -770,12 +825,20 @@ function App() {
             })
             .pointLabel(d => {
                 if (d.isCluster) {
-                    return `<div style="background:rgba(0,0,0,0.9);padding:8px 12px;border:1px solid #ffcc00;border-radius:20px;font-family:Roboto Mono;color:#ffcc00;font-size:0.75rem;font-weight:900;">${d.count} EVENTS — click to expand</div>`;
+                    const caseDetail = d.caseCount ? ` · ${d.caseCount} EDITORIAL ${d.caseCount === 1 ? 'CASE' : 'CASES'}` : '';
+                    return `<div style="background:rgba(0,0,0,0.9);padding:8px 12px;border:1px solid #ffcc00;border-radius:20px;font-family:Roboto Mono;color:#ffcc00;font-size:0.75rem;font-weight:900;">${d.count} MAP ITEMS${caseDetail} — click to expand</div>`;
                 }
-                const isLinked = d.data.url ? '<div style="color: #00ff88; font-size: 0.7rem; margin-top: 5px; font-weight: bold;">[ CLICK FOR LIVE INTEL ]</div>' : '';
+                const isLinked = d.data.url
+                    ? `<div style="color: #00ff88; font-size: 0.7rem; margin-top: 5px; font-weight: bold;">[ ${d.data.isCaseStudy ? 'OPEN CASE & BRIEFING' : 'CLICK FOR SOURCE'} ]</div>`
+                    : '';
+                const layerLabel = d.data.isCaseStudy
+                    ? `◆ EDITORIAL CASE · ${d.data.sources?.length || 0} PERSPECTIVES`
+                    : d.data.isLive ? '[LIVE] CURRENT SOURCE' : 'REFERENCE SOURCE';
+                const locationLabel = d.locationLabel ? `<div style="color:#9fb2bc;font-size:0.58rem;margin-top:4px;">📍 ${escHtml(d.locationLabel)}</div>` : '';
                 return `<div style="background: rgba(0,0,0,0.9); padding: 12px; border: 1px solid ${d.color}; border-radius: 4px; font-family: Roboto Mono; color: #00ffff; max-width: 300px; box-shadow: 0 0 15px ${d.color}44;">
-                    <div style="color: ${d.color}; font-weight: 700; margin-bottom: 5px;">${d.data.isLive ? '[LIVE] ' : ''}${escHtml(d.data['Topic/Sector'])}</div>
+                    <div style="color: ${d.color}; font-weight: 700; margin-bottom: 5px;">${layerLabel}</div>
                     <div style="font-size: 0.85rem; color: #fff;">${escHtml(d.data['Entity/Subject'])}</div>
+                    ${locationLabel}
                     ${isLinked}
                   </div>`;
             });
@@ -901,7 +964,7 @@ function App() {
 
     useEffect(() => {
         updateGlobeData();
-    }, [selectedCategory, forecasts, stressLevel, theoryLens, timelineYear, historicalData, globeNewsOnly, globeReady, viewMode]);
+    }, [selectedCategory, forecasts, stressLevel, theoryLens, timelineYear, historicalData, globeNewsOnly, showEditorialCases, globeReady, viewMode]);
 
     // Filter logic moved to updateGlobeData
 
@@ -1148,7 +1211,19 @@ function App() {
                         
                         {viewMode === 'globe' && (
                             <div className="globe-overlay">
-                                <div className="globe-title">GLOBAL THREAT MATRIX</div>
+                                <div className="globe-title">GLOBAL ISSUES & CASE MAP</div>
+                                <button
+                                    type="button"
+                                    className={`editorial-layer-toggle ${showEditorialCases ? 'active' : ''}`}
+                                    onClick={() => setShowEditorialCases(value => !value)}
+                                    aria-pressed={showEditorialCases}
+                                    title="Show or hide the curated case-study layer"
+                                >
+                                    <span aria-hidden="true">◆</span>
+                                    EDITORIAL CASES
+                                    <strong>{CASE_STUDIES_2026.length}</strong>
+                                    <small>{showEditorialCases ? 'ON' : 'OFF'}</small>
+                                </button>
                             </div>
                         )}
 
@@ -1181,6 +1256,7 @@ function App() {
                                             ['Environ', '#66ff00'],
                                             ['Culture', '#ff00ff'],
                                             ['Live', '#00ffff'],
+                                            ['Cases', '#b69cff'],
                                         ].map(([label, color]) => (
                                             <div key={label} className="arc-legend-item" style={{ marginBottom: '1px' }}>
                                                 <span className="arc-legend-dot" style={{ background: color, boxShadow: `0 0 4px ${color}`, width: '6px', height: '6px' }} />
@@ -1297,9 +1373,15 @@ function App() {
                     {expandedCluster && (
                         <>
                             {/* Backdrop — click outside to dismiss */}
-                            <div onClick={() => setExpandedCluster(null)}
+                            <div onClick={() => setExpandedCluster(null)} aria-hidden="true"
                                 style={{ position: 'absolute', inset: 0, zIndex: 99, cursor: 'default' }} />
-                            <div onClick={e => e.stopPropagation()}
+                            <div
+                                ref={clusterDialogRef}
+                                role="dialog"
+                                aria-modal="true"
+                                aria-labelledby="cluster-dialog-title"
+                                tabIndex="-1"
+                                onClick={e => e.stopPropagation()}
                                 style={{
                                     position: 'absolute', top: '50%', left: '50%', transform: 'translate(-50%, -50%)',
                                     background: 'rgba(0,0,0,0.95)', border: '1px solid #ffcc00',
@@ -1308,25 +1390,26 @@ function App() {
                                     boxShadow: '0 0 30px #ffcc0044'
                                 }}>
                                 <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '12px' }}>
-                                    <span style={{ color: '#ffcc00', fontWeight: 900, fontSize: '0.8rem' }}>
-                                        📍 {expandedCluster.items.length} EVENTS IN REGION
+                                    <span id="cluster-dialog-title" style={{ color: '#ffcc00', fontWeight: 900, fontSize: '0.8rem' }}>
+                                        📍 {dedupeClusterItems(expandedCluster.items).length} MAP ITEMS IN REGION
                                     </span>
-                                    <button onClick={() => setExpandedCluster(null)}
+                                    <button onClick={() => setExpandedCluster(null)} aria-label="Close map items"
                                         style={{ background: 'none', border: '1px solid #ffcc0055', borderRadius: '4px', color: '#ffcc00', cursor: 'pointer', padding: '2px 8px', fontSize: '0.75rem' }}>
                                         ✕
                                     </button>
                                 </div>
                                 <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
                                     {(() => {
+                                        const uniqueItems = dedupeClusterItems(expandedCluster.items);
                                         // Group items by category
                                         const groups = {};
-                                        expandedCluster.items.forEach(item => {
-                                            const cat = item.isLive ? 'Live Intel' : (item.Broad_Category || 'Other');
+                                        uniqueItems.forEach(item => {
+                                            const cat = item.isCaseStudy ? 'Editorial Cases' : item.isLive ? 'Live Intel' : (item.Broad_Category || 'Other');
                                             if (!groups[cat]) groups[cat] = [];
                                             groups[cat].push(item);
                                         });
                                         return Object.entries(groups).map(([cat, items]) => {
-                                            const catColor = items[0].isLive ? '#00ffff' : (categoryColors[cat] || '#aaaaaa');
+                                            const catColor = items[0].isCaseStudy ? '#b69cff' : items[0].isLive ? '#00ffff' : (categoryColors[cat] || '#aaaaaa');
                                             return (
                                                 <div key={cat}>
                                                     <div style={{ color: catColor, fontSize: '0.6rem', fontWeight: 900, letterSpacing: '0.1em', textTransform: 'uppercase', marginBottom: '6px', paddingBottom: '4px', borderBottom: `1px solid ${catColor}33` }}>
@@ -1340,6 +1423,7 @@ function App() {
                                                                 onMouseLeave={e => e.currentTarget.style.background = catColor + '0d'}>
                                                                 <div style={{ color: '#ddd', fontSize: '0.68rem', lineHeight: 1.3 }}>
                                                                     {item.isLive ? <span style={{ color: '#00ffff', fontWeight: 700, marginRight: '4px' }}>[LIVE]</span> : null}
+                                                                    {item.isCaseStudy ? <span style={{ color: '#b69cff', fontWeight: 700, marginRight: '4px' }}>[CASE]</span> : null}
                                                                     {item['Entity/Subject']?.substring(0, 70)}
                                                                 </div>
                                                             </button>
@@ -1708,6 +1792,14 @@ function App() {
                                             {selectedForecast.regionTags?.map(region => <span key={region}>{region}</span>)}
                                             <time dateTime={selectedForecast.updatedAt}>As of {selectedForecast.updatedAt}</time>
                                             <span>{selectedForecast.confidence} source confidence</span>
+                                            {selectedForecast.reviewBy && (
+                                                <time
+                                                    className={isReviewOverdue(selectedForecast.reviewBy) ? 'review-overdue' : ''}
+                                                    dateTime={selectedForecast.reviewBy}
+                                                >
+                                                    {isReviewOverdue(selectedForecast.reviewBy) ? 'Review overdue since' : 'Review by'} {selectedForecast.reviewBy}
+                                                </time>
+                                            )}
                                         </div>
                                         <p className="case-study-status">{selectedForecast.statusSummary}</p>
                                         <div className="case-study-analysis-grid">
@@ -1721,15 +1813,30 @@ function App() {
                                         )}
                                         {selectedForecast.sources?.length > 0 && (
                                             <div className="case-study-sources">
-                                                <strong>Primary and official sources</strong>
+                                                <strong>Three-perspective reading set</strong>
                                                 <ul>
                                                     {selectedForecast.sources.map(source => (
                                                         <li key={source.url}>
+                                                            {source.perspectiveType && <em className={`case-source-badge case-source-${source.perspectiveType}`}>{source.perspectiveType}</em>}
                                                             <a href={source.url} target="_blank" rel="noopener noreferrer">{source.title}</a>
-                                                            <span>{source.publisher}{source.publishedAt ? ` · ${source.publishedAt}` : ''}{source.perspective ? ` · ${source.perspective}` : ''}</span>
+                                                            <span>{source.publisher}{source.dateLabel ? ` · ${source.dateLabel}` : ''}{source.perspective ? ` · ${source.perspective}` : ''}</span>
+                                                            {source.supports && <small>Supports: {source.supports}</small>}
                                                         </li>
                                                     ))}
                                                 </ul>
+                                                {selectedForecast.supplementalSources?.length > 0 && (
+                                                    <details>
+                                                        <summary>{selectedForecast.supplementalSources.length} supporting primary {selectedForecast.supplementalSources.length === 1 ? 'document' : 'documents'}</summary>
+                                                        <ul>
+                                                            {selectedForecast.supplementalSources.map(source => (
+                                                                <li key={source.url}>
+                                                                    <a href={source.url} target="_blank" rel="noopener noreferrer">{source.title}</a>
+                                                                    <span>{source.publisher}{source.dateLabel ? ` · ${source.dateLabel}` : ''}</span>
+                                                                </li>
+                                                            ))}
+                                                        </ul>
+                                                    </details>
+                                                )}
                                             </div>
                                         )}
                                         <button

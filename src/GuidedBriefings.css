@@ -32,6 +32,15 @@
 }
 
 .briefing-library-heading p { margin: 6px 0 14px; color: var(--briefing-muted); font-size: .66rem; }
+.briefing-library-tools { display: grid; gap: 8px; margin-bottom: 10px; }
+.briefing-library-tools label { display: grid; gap: 4px; color: var(--briefing-muted); font-size: .5rem; letter-spacing: .06em; text-transform: uppercase; }
+.briefing-library-tools input,
+.briefing-library-tools select { width: 100%; min-height: 34px; padding: 7px 8px; border: 1px solid var(--briefing-border); border-radius: 5px; color: var(--briefing-text); background: #070c11; font: .58rem 'Roboto Mono', monospace; }
+.briefing-library-tools input:focus-visible,
+.briefing-library-tools select:focus-visible { border-color: #5eead4; outline: 2px solid rgba(94, 234, 212, .18); outline-offset: 1px; }
+.briefing-library-filters { display: grid; grid-template-columns: 1fr 1fr; gap: 7px; }
+.briefing-results-status { display: flex; align-items: center; justify-content: space-between; min-height: 22px; color: #6f858f; font-size: .51rem; }
+.briefing-results-status button { border: 0; color: #5eead4; background: transparent; font: inherit; cursor: pointer; text-decoration: underline; }
 .briefing-tour-list { display: flex; flex-direction: column; gap: 7px; overflow-y: auto; }
 
 .briefing-tour-list button {
@@ -55,6 +64,7 @@
 .briefing-tour-list strong { font-size: .68rem; }
 .briefing-tour-list span { color: var(--briefing-muted); font-size: .57rem; line-height: 1.4; }
 .briefing-tour-list small { color: var(--tour-color); font-size: .5rem; text-transform: uppercase; }
+.briefing-library-empty { padding: 16px 10px; border: 1px dashed var(--briefing-border); border-radius: 6px; color: var(--briefing-muted); font-size: .58rem; line-height: 1.5; text-align: center; }
 .briefing-library-note { margin-top: auto; padding-top: 14px; color: #6f858f; font-size: .55rem; line-height: 1.5; }
 
 .briefing-stage {
@@ -81,6 +91,7 @@
 .briefing-progress button > span { display: grid; place-items: center; width: 25px; height: 25px; border: 1px solid var(--briefing-border); border-radius: 50%; background: var(--briefing-surface); z-index: 1; font-size: .58rem; }
 .briefing-progress button.active > span,
 .briefing-progress button.complete > span { border-color: var(--tour-color); color: var(--tour-color); }
+.briefing-progress button.active::before,
 .briefing-progress button.complete::before { background: var(--tour-color); }
 .briefing-progress small { max-width: 105px; font-size: .5rem; line-height: 1.25; text-align: center; }
 
@@ -118,12 +129,27 @@
 .briefing-evidence h3 { margin: 0 0 5px; font-family: 'Orbitron', sans-serif; font-size: .7rem; }
 .briefing-evidence p { margin: 0; color: var(--briefing-muted); font-size: .58rem; line-height: 1.5; }
 .briefing-evidence .briefing-issues { margin-top: 8px; color: #b8c9d0; }
+.briefing-evidence .briefing-review-date { margin-top: 8px; color: #f4d35e; }
+.briefing-evidence .briefing-review-date.overdue { color: #ff7b8d; font-weight: 700; }
 .briefing-evidence .briefing-uncertainty { margin-top: 8px; padding-top: 8px; border-top: 1px solid rgba(159, 178, 188, .16); }
 .briefing-uncertainty strong { color: var(--tour-color); }
 .briefing-evidence ul { margin: 0; padding-left: 18px; }
-.briefing-evidence li + li { margin-top: 7px; }
+.briefing-evidence li { display: grid; grid-template-columns: auto minmax(0, 1fr); align-items: start; column-gap: 7px; }
+.briefing-evidence li + li { margin-top: 10px; padding-top: 10px; border-top: 1px solid rgba(159, 178, 188, .12); }
 .briefing-evidence a { color: var(--tour-color); font-size: .6rem; }
-.briefing-evidence li span { display: block; margin-top: 2px; color: var(--briefing-muted); font-size: .5rem; }
+.briefing-evidence li span,
+.briefing-evidence li small { grid-column: 2; display: block; margin-top: 2px; color: var(--briefing-muted); font-size: .5rem; line-height: 1.45; }
+.briefing-evidence li small { color: #79909a; }
+.briefing-evidence .source-perspective { grid-column: 1; display: inline-block; min-width: 62px; margin: 0; padding: 3px 5px; border: 1px solid currentColor; border-radius: 999px; color: #c9f4f7; font-size: .43rem; line-height: 1; text-align: center; text-transform: uppercase; }
+.briefing-evidence .source-perspective-local { color: #62e6a7; }
+.briefing-evidence .source-perspective-institutional { color: #67d5f5; }
+.briefing-evidence .source-perspective-independent { color: #d990ff; }
+.briefing-reading-list { min-width: 0; }
+.briefing-supplemental { margin-top: 10px; padding-top: 8px; border-top: 1px solid rgba(159, 178, 188, .16); }
+.briefing-supplemental summary { color: #9fb2bc; cursor: pointer; font-size: .52rem; }
+.briefing-supplemental ul { margin-top: 8px; }
+.briefing-supplemental li { display: block; }
+.briefing-supplemental li span { margin-left: 0; }
 
 .briefing-controls { display: flex; justify-content: space-between; gap: 10px; max-width: 900px; margin: 18px auto 0; }
 .briefing-controls button { min-height: 38px; padding: 8px 12px; border: 1px solid var(--briefing-border); border-radius: 6px; color: var(--briefing-text); background: var(--briefing-surface); font: inherit; font-size: .63rem; cursor: pointer; }
@@ -131,10 +157,10 @@
 .briefing-controls .briefing-explore { border-color: var(--tour-color); color: var(--tour-color); background: color-mix(in srgb, var(--tour-color) 9%, var(--briefing-surface)); }
 .briefings-empty { display: grid; place-items: center; height: 100%; color: #89a0aa; background: #05090d; }
 
-@media (max-width: 760px) {
+@media (max-width: 900px) {
     .guided-briefings { display: block; height: auto; overflow-y: auto; }
     .briefing-library { border-right: 0; border-bottom: 1px solid var(--briefing-border); }
-    .briefing-tour-list { display: grid; grid-template-columns: 1fr 1fr; overflow: visible; }
+    .briefing-tour-list { display: grid; grid-template-columns: 1fr 1fr; max-height: 420px; overflow-y: auto; }
     .briefing-library-note { margin-top: 12px; }
     .briefing-stage { overflow: visible; }
     .briefing-focus-card { grid-template-columns: 1fr; }
@@ -142,6 +168,7 @@
 }
 
 @media (max-width: 480px) {
+    .briefing-library-filters { grid-template-columns: 1fr; }
     .briefing-tour-list { grid-template-columns: 1fr; }
     .briefing-stage-header { display: block; }
     .briefing-progress-label { display: inline-block; margin-top: 12px; }

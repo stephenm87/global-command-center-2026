@@ -4,8 +4,9 @@ Global Command Center 2026 is an educational web application tailored for IB Glo
 
 ## Features
 - **3D Interactive Globe**: Visualizes global political forecasts using Globe.gl and Three.js.
-- **Verified Case Studies**: Nine dated, official-source case records spanning Africa, Asia-Pacific, the Middle East, Latin America and the Caribbean, North America, the Pacific, the Arctic, and European AI governance.
-- **Guided Briefings**: Four-step learning paths that keep evidence, uncertainty, sources, and discussion questions beside each case.
+- **Multi-Perspective Case Library**: 29 dated editorial cases—nine original cases plus 20 new cases—with exactly three core readings apiece: one local, one institutional, and one independent perspective.
+- **Searchable Guided Briefings**: Four- or five-step learning paths with text search, region and issue filters, attributed evidence, uncertainty, review dates, source links, and discussion questions.
+- **Editorial Cases Globe Layer**: A dedicated toggle maps the case library separately from provider intelligence. Regional and global cases can use multiple representative locations instead of a misleading single pin.
 - **Focus Nexus**: A searchable 2D relationship view with issue lenses and source-linked current cases.
 - **Advanced Nexus**: An optional, lazily loaded 3D force graph for users who want the full spatial network.
 - **AI-Powered Intelligence**: Summaries and news aggregation leveraging Gemini, Serper, and GNews.
@@ -27,6 +28,8 @@ Global Command Center 2026 is an educational web application tailored for IB Glo
 5. Build for production: `npm run build`
 
 The primary routes are URL-addressable: `?view=globe`, `?view=briefings&tour=<case-id>&step=<number>`, and `?view=nexus&actor=<actor-id>`.
+
+Case records include coverage, sensitivity, map-location, review-cadence, and `reviewBy` metadata. These dates are manual editorial checkpoints, not proof of automatic source revalidation. See [Case Study Editorial Standard](docs/CASE_STUDY_EDITORIAL_STANDARD.md).
 
 ## Environment Variables
 See `docs/ENVIRONMENT.md` for required environment variables.

@@ -5,7 +5,13 @@
  * attached to each record. Analytical prompts are framed as questions rather
  * than predictions.
  */
-export const CASE_STUDIES_2026 = [
+import { AFRICA_MENA_CASE_STUDIES_2026 } from './caseStudiesAfricaMena2026';
+import { AMERICAS_GLOBAL_CASE_STUDIES_2026 } from './caseStudiesAmericasGlobal2026';
+import { ASIA_PACIFIC_CASE_STUDIES_2026 } from './caseStudiesAsiaPacific2026';
+
+export const CONTENT_REVIEW_DATE = '2026-08-09';
+
+const CORE_CASE_STUDIES_2026 = [
     {
         id: 'sudan-displacement-regional-spillover',
         title: 'Sudan: War, Displacement, and Regional Spillover',
@@ -23,11 +29,31 @@ export const CASE_STUDIES_2026 = [
         broadCategory: 'Geopolitics & Conflict',
         sources: [
             {
+                title: 'Sudanese communities are rebuilding under fire. Will Berlin back them?',
+                publisher: 'The New Humanitarian',
+                publishedAt: '2026-04-14',
+                url: 'https://www.thenewhumanitarian.org/opinion/2026/04/14/sudanese-communities-are-rebuilding-under-fire-will-berlin-back-them',
+                perspectiveType: 'local',
+                perspective: 'Sudanese civil-society and mutual-aid priorities',
+                supports: 'Local protection, food, health, education, and recovery capacity under wartime conditions',
+            },
+            {
                 title: 'Three years on, war-weary Sudanese remain on the move',
                 publisher: 'UNHCR',
                 publishedAt: '2026-04-10',
                 url: 'https://www.unhcr.org/news/briefing-notes/three-years-war-weary-sudanese-remain-move',
+                perspectiveType: 'institutional',
                 perspective: 'United Nations humanitarian and displacement reporting',
+                supports: 'Regional displacement scale, protection risks, and humanitarian funding constraints',
+            },
+            {
+                title: 'Sudan enters a fourth year of war as officials lament an abandoned crisis',
+                publisher: 'Associated Press',
+                publishedAt: '2026-04-15',
+                url: 'https://apnews.com/article/32a416bfbd680ea42edf6c0298d2617b',
+                perspectiveType: 'independent',
+                perspective: 'Independent reporting incorporating civilian, diplomatic, and conflict-monitoring evidence',
+                supports: 'How regional involvement, hunger, displacement, and failed mediation interact',
             },
         ],
         waypoints: [
@@ -74,11 +100,31 @@ export const CASE_STUDIES_2026 = [
         broadCategory: 'Geopolitics & Conflict',
         sources: [
             {
+                title: '150,000 People Displaced by Fighting in Pakokku in Urgent Need',
+                publisher: 'The Irrawaddy',
+                publishedAt: '2026-07-02',
+                url: 'https://www.irrawaddy.com/news/burma/150000-people-displaced-by-fighting-in-pakokku-in-urgent-need.html',
+                perspectiveType: 'local',
+                perspective: 'Myanmar reporting centered on displaced families and local aid workers',
+                supports: 'Local access, shelter, medicine, food, and displacement conditions in central Myanmar',
+            },
+            {
                 title: 'Myanmar Humanitarian Update No. 52',
                 publisher: 'OCHA / United Nations in Myanmar',
                 publishedAt: '2026-07-13',
                 url: 'https://myanmar.un.org/en/319232-myanmar-humanitarian-update-no-52',
+                perspectiveType: 'institutional',
                 perspective: 'United Nations humanitarian situation and response reporting',
+                supports: 'National assistance needs, displacement estimates, access barriers, and response funding',
+            },
+            {
+                title: 'Situation of human rights in Myanmar',
+                publisher: 'Office of the UN High Commissioner for Human Rights',
+                publishedAt: '2026-06-22',
+                url: 'https://bangkok.ohchr.org/myanmar',
+                perspectiveType: 'independent',
+                perspective: 'Independent human-rights monitoring of all major conflict actors',
+                supports: 'Civilian protection, accountability, inclusive governance, and limits on humanitarian access',
             },
         ],
         waypoints: [
@@ -125,19 +171,34 @@ export const CASE_STUDIES_2026 = [
         broadCategory: 'Geopolitics & Conflict',
         sources: [
             {
-                title: 'The South China Sea Arbitration: Award of 12 July 2016',
-                publisher: 'Permanent Court of Arbitration (registry)',
-                publishedAt: '2016-07-12',
-                url: 'https://docs.pca-cpa.org/2016/07/PH-CN-20160712-Award.pdf',
-                perspective: 'Official text of the Annex VII arbitral tribunal award',
-            },
-            {
                 title: 'Delhi Roundtable Accentuates Abiding Relevance of South China Sea Arbitral Award on Decennial',
                 publisher: 'Department of Foreign Affairs of the Philippines',
                 publishedAt: '2026-07-21',
                 url: 'https://newdelhipe.dfa.gov.ph/index.php/newsroom/embassy-news/1230-delhi-roundtable-accentuates-abiding-relevance-of-south-china-sea-arbitral-award-on-decennial',
+                perspectiveType: 'local',
                 perspective: 'Official Philippine government position supporting the award',
+                supports: 'The Philippine legal and rules-based-maritime-order position',
             },
+            {
+                title: 'The South China Sea Arbitration: Award of 12 July 2016',
+                publisher: 'Permanent Court of Arbitration (registry)',
+                publishedAt: '2016-07-12',
+                url: 'https://docs.pca-cpa.org/2016/07/PH-CN-20160712-Award.pdf',
+                perspectiveType: 'institutional',
+                perspective: 'Official text of the Annex VII arbitral tribunal award',
+                supports: 'The tribunal\'s jurisdictional reasoning, findings, and limited legal scope',
+            },
+            {
+                title: 'Philippines commemorates 2016 South China Sea ruling rejected by Beijing',
+                publisher: 'Associated Press',
+                publishedAt: '2026-07-10',
+                url: 'https://apnews.com/article/d0148a4175f80eedf70dcf2696f03ddd',
+                perspectiveType: 'independent',
+                perspective: 'Independent account presenting Philippine, Chinese, and wider regional positions',
+                supports: 'The gap between the award\'s legal authority and its political enforcement',
+            },
+        ],
+        supplementalSources: [
             {
                 title: 'Foreign Ministry Spokesperson Lin Jian\'s Regular Press Conference on July 14, 2026',
                 publisher: 'Ministry of Foreign Affairs of the People\'s Republic of China',
@@ -183,25 +244,47 @@ export const CASE_STUDIES_2026 = [
         nexusNodeIds: ['MiddleEast', 'Europe', 'UN_OPEC'],
         statusSummary: 'UNHCR reported in March 2026 that 15.6 million people required assistance and that more than 1.5 million refugees and 1.8 million internally displaced people had returned since December 2024. In May 2026, the EU renewed targeted measures against former-regime networks while describing broad economic sanctions as having been lifted in 2025 to support transition and recovery.',
         whyItMatters: 'Syria tests whether political transition and sanctions relief can produce voluntary, safe, and sustainable return before housing, services, livelihoods, documentation, and accountable institutions have recovered.',
-        updatedAt: '2026-05-18',
+        updatedAt: '2026-06-30',
         confidence: 'high',
         uncertainty: 'Return totals change frequently and conditions vary sharply by locality. A recorded return must not be treated as proof that return was safe, voluntary, or sustainable.',
         coordinates: { latitude: 33.5138, longitude: 36.2765 },
         broadCategory: 'Geopolitics & Conflict',
         sources: [
             {
-                title: 'Operational Update – Syria, March 2026',
-                publisher: 'UNHCR',
-                publishedAt: '2026-03',
-                url: 'https://www.unhcr.org/sites/default/files/2026-04/unhcr-syria-operational-update-march.pdf',
-                perspective: 'United Nations protection, return, and humanitarian reporting',
+                title: 'Syria: One Year After Political Change, Peace Spring Areas Block Displaced Persons’ Return',
+                publisher: 'Syrians for Truth and Justice',
+                publishedAt: '2026-06-30',
+                url: 'https://stj-sy.org/en/syria-one-year-after-political-change-peace-spring-areas-block-displaced-persons-return/',
+                perspectiveType: 'local',
+                perspective: 'Syrian documentation of property, security, and return barriers in contested localities',
+                supports: 'Why a recorded return or political transition does not establish safe, equitable reintegration',
             },
             {
                 title: 'Syria: Council renews restrictive measures targeting the former al-Assad regime for one year and de-lists certain entities',
                 publisher: 'Council of the European Union',
                 publishedAt: '2026-05-18',
                 url: 'https://www.consilium.europa.eu/en/press/press-releases/2026/05/18/syria-council-renews-restrictive-measures-targeting-the-former-al-assad-regime-for-one-year-and-de-lists-certain-entities/',
+                perspectiveType: 'institutional',
                 perspective: 'Official European Union sanctions and engagement policy',
+                supports: 'The distinction between broad sanctions relief and targeted accountability measures',
+            },
+            {
+                title: 'Beyond safety and necessity: Understanding Syria’s mass return',
+                publisher: 'University of Oxford COMPAS',
+                publishedAt: '2026-05-22',
+                url: 'https://www.compas.ox.ac.uk/article/beyond-safety-and-necessity-understanding-syrias-mass-return',
+                perspectiveType: 'independent',
+                perspective: 'Independent migration research centered on returnees’ lived experience',
+                supports: 'The difference between physical return, belonging, livelihood recovery, and sustainable reintegration',
+            },
+        ],
+        supplementalSources: [
+            {
+                title: 'Operational Update – Syria, March 2026',
+                publisher: 'UNHCR',
+                publishedAt: '2026-04-21',
+                url: 'https://www.unhcr.org/sites/default/files/2026-04/unhcr-syria-operational-update-march.pdf',
+                perspective: 'United Nations protection, return, and humanitarian reporting',
             },
         ],
         waypoints: [
@@ -248,19 +331,38 @@ export const CASE_STUDIES_2026 = [
         broadCategory: 'Geopolitics & Conflict',
         sources: [
             {
-                title: 'Arbitral Award of 3 October 1899 (Guyana v. Venezuela)',
-                publisher: 'International Court of Justice',
-                publishedAt: null,
-                url: 'https://www.icj-cij.org/case/171',
-                perspective: 'Official Court docket and procedural record; the page is updated as the case develops',
-            },
-            {
                 title: 'Communiqué: Fifty-First Regular Meeting of the Conference of Heads of Government of CARICOM',
                 publisher: 'Caribbean Community',
                 publishedAt: '2026-07-10',
                 url: 'https://caricom.org/communique-fifty-first-regular-meeting-of-the-conference-of-heads-of-government-of-the-caribbean-community-caricom-saint-lucia/',
+                perspectiveType: 'local',
                 perspective: 'Official CARICOM proceeding summary and regional policy position supporting Guyana',
+                supports: 'The Caribbean regional-security and peaceful-settlement perspective',
             },
+            {
+                title: 'Arbitral Award of 3 October 1899 (Guyana v. Venezuela)',
+                publisher: 'International Court of Justice',
+                publishedAt: null,
+                sourceType: 'living-reference',
+                reviewedAt: CONTENT_REVIEW_DATE,
+                milestoneDate: '2018-03-29',
+                milestoneLabel: 'Case instituted',
+                url: 'https://www.icj-cij.org/case/171',
+                perspectiveType: 'institutional',
+                perspective: 'Official Court docket and procedural record; the page is updated as the case develops',
+                supports: 'The Court\'s jurisdiction, orders, filings, hearings, and eventual merits judgment',
+            },
+            {
+                title: 'Guyana and Venezuela return to UN court to settle historic dispute over valuable border region',
+                publisher: 'Associated Press',
+                publishedAt: '2026-05-04',
+                url: 'https://apnews.com/article/2c9d13b0dbcf7f92d6f53264003ce626',
+                perspectiveType: 'independent',
+                perspective: 'Independent reporting presenting the core Guyanese and Venezuelan arguments',
+                supports: 'The historical, resource, sovereignty, and jurisdictional stakes presented at the merits hearings',
+            },
+        ],
+        supplementalSources: [
             {
                 title: 'Venezuela desmontó ante la CIJ argumentos de Guyana y ratifica Acuerdo de Ginebra',
                 publisher: 'Ministry of Foreign Affairs of Venezuela',
@@ -313,32 +415,40 @@ export const CASE_STUDIES_2026 = [
         broadCategory: 'Economy & Trade',
         sources: [
             {
+                title: 'Quinta Reunión de la Comisión de Libre Comercio del T-MEC: Proceso de Revisión Conjunta previsto en el artículo 34.7',
+                publisher: 'Secretaría de Economía de México',
+                publishedAt: '2026-07-01',
+                url: 'https://www.gob.mx/se/prensa/quinta-reunion-de-la-comision-de-libre-comercio-del-t-mec-proceso-de-revision-conjunta-previsto-en-el-articulo-34-7?idiom=es-MX',
+                perspectiveType: 'local',
+                perspective: 'Mexican account of the joint review, continued term, and annual-review process',
+                supports: 'Mexico\'s regional-integration, industrial, and continued-agreement position',
+            },
+            {
                 title: 'American Farmers, Ranchers, Manufacturers, and Businesses Applaud President Trump for Not Rubber Stamping the USMCA',
                 publisher: 'Office of the United States Trade Representative',
                 publishedAt: '2026-07-02',
                 url: 'https://www.ustr.gov/about/policy-offices/press-office/press-releases/2026/july/american-farmers-ranchers-manufacturers-and-businesses-applaud-president-trump-not-rubber-stamping',
+                perspectiveType: 'institutional',
                 perspective: 'Official United States position explaining the decision not to extend immediately',
+                supports: 'The United States bargaining and economic-security rationale',
             },
+            {
+                title: 'The United States Has Opted Not to Extend the USMCA',
+                publisher: 'Center for Strategic and International Studies',
+                publishedAt: '2026-07-06',
+                url: 'https://www.csis.org/analysis/united-states-has-opted-not-extend-usmca',
+                perspectiveType: 'independent',
+                perspective: 'Independent analysis of the legal timeline and economic costs of recurring review',
+                supports: 'The distinction between non-extension, annual review, and termination',
+            },
+        ],
+        supplementalSources: [
             {
                 title: 'Minister LeBlanc updates provincial and territorial ministers responsible for International Trade on CUSMA Joint Review',
                 publisher: 'Global Affairs Canada',
                 publishedAt: '2026-07-03',
                 url: 'https://www.canada.ca/en/global-affairs/news/2026/07/minister-leblanc-updates-provincial-and-territorial-ministers-responsible-for-international-trade-on-cusma-joint-review.html',
                 perspective: 'Official Canadian account emphasizing continuity and Canadian priorities',
-            },
-            {
-                title: 'Quinta Reunión de la Comisión de Libre Comercio del T-MEC: Proceso de Revisión Conjunta previsto en el artículo 34.7',
-                publisher: 'Secretaría de Economía de México',
-                publishedAt: '2026-07-01',
-                url: 'https://www.gob.mx/se/prensa/quinta-reunion-de-la-comision-de-libre-comercio-del-t-mec-proceso-de-revision-conjunta-previsto-en-el-articulo-34-7?idiom=es-MX',
-                perspective: 'Official Mexican account of the joint review, continued term, and annual-review process',
-            },
-            {
-                title: 'México mantiene ventaja arancelaria para exportar al mercado estadounidense',
-                publisher: 'Secretaría de Economía de México',
-                publishedAt: '2026-07-23',
-                url: 'https://www.gob.mx/se/prensa/mexico-mantiene-ventaja-arancelaria-para-exportar-al-mercado-estadounidense',
-                perspective: 'Official Mexican update on continuing bilateral review negotiations',
             },
         ],
         waypoints: [
@@ -378,25 +488,51 @@ export const CASE_STUDIES_2026 = [
         nexusNodeIds: ['AsiaPacific', 'UN_OPEC'],
         statusSummary: 'The Falepili Union entered into force on 28 August 2024. Australia states that the treaty recognizes Tuvalu\'s continuing statehood despite climate-related sea-level rise and creates a permanent-residence mobility pathway with up to 280 places per program year. The 2026 ballot closed on 1 June 2026.',
         whyItMatters: 'The arrangement links climate adaptation, mobility, legal continuity of a threatened state, culture, and security cooperation without treating mobility participants as refugees.',
-        updatedAt: '2026-06-01',
+        updatedAt: '2026-07-01',
         confidence: 'high',
         uncertainty: 'Annual allocations and selection timing can change. The pathway is permanent-residence mobility, not formal refugee recognition, and claims about demographic or brain-drain effects need separate evidence.',
         coordinates: { latitude: -8.5211, longitude: 179.1962 },
         broadCategory: 'Environment & Energy',
         sources: [
             {
-                title: 'Australia–Tuvalu Falepili Union treaty',
-                publisher: 'Australian Department of Foreign Affairs and Trade',
-                publishedAt: null,
-                url: 'https://www.dfat.gov.au/geo/tuvalu/australia-tuvalu-falepili-union-treaty',
-                perspective: 'Current official Australian treaty and implementation overview; the page does not expose a publication date',
+                title: 'Hope in Tuvalu’s climate change response: Falepili to Digital Nation',
+                publisher: 'Development Policy Centre',
+                publishedAt: '2026-02-20',
+                url: 'https://devpolicy.org/hope-in-tuvalus-climate-change-response-from-falepili-to-digital-nation-20260220/',
+                perspectiveType: 'local',
+                perspective: 'Tuvalu-centered account of mobility, culture, state continuity, and local adaptation choices',
+                supports: 'Why Tuvaluan agency and cultural continuity should not be reduced to a climate-loss narrative',
             },
             {
                 title: 'Pacific Engagement visa (subclass 192) – Treaty stream ballot registration',
                 publisher: 'Australian Department of Home Affairs',
                 publishedAt: '2026-04-16',
                 url: 'https://immi.homeaffairs.gov.au/visas/getting-a-visa/visa-listing/pacific-engagement/subclass-192/treaty-stream/ballot-registration',
+                perspectiveType: 'institutional',
                 perspective: 'Official eligibility, allocation, and 2026 ballot information',
+                supports: 'The pathway\'s legal status, annual allocation, and administrative operation',
+            },
+            {
+                title: 'An Unthinkable Question: Tuvalu and the Falepili Union',
+                publisher: 'Victoria University of Wellington Law Review',
+                publishedAt: '2026-07-01',
+                url: 'https://ojs.victoria.ac.nz/vuwlr/article/view/10760',
+                perspectiveType: 'independent',
+                perspective: 'Independent legal analysis of mobility, security, sovereignty, and continuing statehood',
+                supports: 'The treaty\'s legal innovations and tensions between protection and asymmetric security commitments',
+            },
+        ],
+        supplementalSources: [
+            {
+                title: 'Australia–Tuvalu Falepili Union treaty',
+                publisher: 'Australian Department of Foreign Affairs and Trade',
+                publishedAt: null,
+                sourceType: 'living-reference',
+                reviewedAt: CONTENT_REVIEW_DATE,
+                milestoneDate: '2024-08-28',
+                milestoneLabel: 'Treaty entered into force',
+                url: 'https://www.dfat.gov.au/geo/tuvalu/australia-tuvalu-falepili-union-treaty',
+                perspective: 'Current official treaty and implementation overview',
             },
         ],
         waypoints: [
@@ -436,12 +572,41 @@ export const CASE_STUDIES_2026 = [
         nexusNodeIds: ['Europe', 'USA', 'NATO', 'TechAIHub'],
         statusSummary: 'Greenland\'s government and Denmark announced expanded allied military activity in and around Greenland in January 2026. Greenland\'s Section 21 Commission began work in March on the legal requirements for a possible independence process, while the 2025–2029 mineral strategy prioritizes sustainability, local benefit, critical minerals, and partnerships including with the United States and European Union.',
         whyItMatters: 'Greenland brings self-determination, local consent, alliance security, Arctic strategic change, and competition for critical-mineral supply chains into one case without reducing Greenland to an object of outside strategy.',
-        updatedAt: '2026-03-19',
+        updatedAt: '2026-05-18',
         confidence: 'high',
         uncertainty: 'Security, autonomy, and mineral development are distinct policy tracks. External geopolitical rhetoric changes rapidly, and mineral potential must not be presented as proven commercially recoverable reserves.',
         coordinates: { latitude: 64.1814, longitude: -51.6941 },
         broadCategory: 'Geopolitics & Conflict',
         sources: [
+            {
+                title: 'Greenland’s prime minister tells US envoy self-determination cannot be negotiated',
+                publisher: 'Associated Press',
+                publishedAt: '2026-05-18',
+                url: 'https://apnews.com/article/bbece2f899116788fe45525dcfe7d030',
+                perspectiveType: 'local',
+                perspective: 'Greenlandic leadership and public-agency perspective reported from Nuuk',
+                supports: 'The primacy of Greenlandic consent and self-determination in external security relationships',
+            },
+            {
+                title: 'Greenland Mineral Resources Strategy 2025–2029',
+                publisher: 'Mineral Resources Authority, Government of Greenland',
+                publishedAt: '2025-01-31',
+                url: 'https://govmin.gl/publications/greenland-mineral-resources-strategy-2025-2029/',
+                perspectiveType: 'institutional',
+                perspective: 'Official Greenlandic mineral-development strategy',
+                supports: 'Government priorities for local benefit, sustainability, investment, and strategic partnerships',
+            },
+            {
+                title: 'Greenland mineral policy – changes in procedures for exploitation licences',
+                publisher: 'Polar Geography',
+                publishedAt: '2026-03-05',
+                url: 'https://www.tandfonline.com/doi/full/10.1080/2154896X.2026.2628474',
+                perspectiveType: 'independent',
+                perspective: 'Independent research on mineral governance, licensing, and economic autonomy',
+                supports: 'How resource rules connect commercial uncertainty, environmental review, and aspirations for greater autonomy',
+            },
+        ],
+        supplementalSources: [
             {
                 title: 'The Danish Armed Forces expand their presence and continue exercises in Greenland in close cooperation with allies',
                 publisher: 'Naalakkersuisut, Government of Greenland',
@@ -455,13 +620,6 @@ export const CASE_STUDIES_2026 = [
                 publishedAt: '2026-03-19',
                 url: 'https://naalakkersuisut.gl/Nyheder/2026/03/1903_kommission?sc_lang=da',
                 perspective: 'Official Greenlandic account of the legal study concerning a possible independence process',
-            },
-            {
-                title: 'Greenland Mineral Resources Strategy 2025–2029',
-                publisher: 'Mineral Resources Authority, Government of Greenland',
-                publishedAt: '2025-01-31',
-                url: 'https://govmin.gl/publications/greenland-mineral-resources-strategy-2025-2029/',
-                perspective: 'Official Greenlandic mineral-development strategy',
             },
         ],
         waypoints: [
@@ -507,25 +665,47 @@ export const CASE_STUDIES_2026 = [
         nexusNodeIds: ['Europe', 'TechAIHub'],
         statusSummary: 'The EU AI Act reached its general application date on 2 August 2026. Transparency duties now cover specified interactions with AI and the marking or labelling of certain AI-generated or manipulated content. The AI Omnibus, which the European Commission says entered into force on 27 July 2026, moved the main high-risk-system deadline to 2 December 2027 and the deadline for AI embedded in regulated products to 2 August 2028.',
         whyItMatters: 'The case separates political claims about “AI regulation” into concrete duties, voluntary implementation tools, delayed high-risk rules, and questions about whether users can recognize synthetic content in practice.',
-        updatedAt: '2026-08-02',
+        updatedAt: '2026-08-03',
         confidence: 'high',
         uncertainty: 'Implementation guidance, standards, enforcement practice, and the list of code signatories can continue to change. The general application date does not mean every obligation has the same start date, and the voluntary transparency code is not itself the statutory rule.',
         coordinates: { latitude: 50.8503, longitude: 4.3517 },
         broadCategory: 'Technology & Innovation',
         sources: [
             {
-                title: 'Regulation (EU) 2024/1689 (Artificial Intelligence Act)',
-                publisher: 'EUR-Lex, European Union',
-                publishedAt: '2024-07-12',
-                url: 'https://eur-lex.europa.eu/eli/reg/2024/1689/oj?locale=en',
-                perspective: 'Official legal text, including the staged application dates in Article 113',
+                title: 'EU adopts the AI Omnibus: what it means for consumers',
+                publisher: 'BEUC, The European Consumer Organisation',
+                publishedAt: '2026-06-29',
+                url: 'https://www.beuc.eu/news/eu-adopts-ai-omnibus-what-it-means-consumers',
+                perspectiveType: 'local',
+                perspective: 'Consumer and fundamental-rights perspective on delayed safeguards and transparency',
+                supports: 'How the revised timetable may affect people subject to high-risk AI decisions',
             },
             {
                 title: 'Commission publishes guidelines on transparency obligations for providers and deployers of certain AI systems',
                 publisher: 'European Commission',
                 publishedAt: '2026-07-20',
                 url: 'https://digital-strategy.ec.europa.eu/en/news/commission-publishes-guidelines-transparency-obligations-providers-and-deployers-certain-ai-systems',
+                perspectiveType: 'institutional',
                 perspective: 'Official implementation guidance for Article 50 transparency duties applying from 2 August 2026',
+                supports: 'Which disclosure and content-marking duties apply to providers and deployers',
+            },
+            {
+                title: 'Three things you need to know about the new EU AI Act rules',
+                publisher: 'ITPro',
+                publishedAt: '2026-08-03',
+                url: 'https://www.itpro.com/business/policy-and-legislation/three-things-you-need-to-know-about-the-new-eu-ai-act-rules',
+                perspectiveType: 'independent',
+                perspective: 'Independent implementation reporting for organizations and technology users',
+                supports: 'The practical split between current transparency duties and delayed high-risk obligations',
+            },
+        ],
+        supplementalSources: [
+            {
+                title: 'Regulation (EU) 2024/1689 (Artificial Intelligence Act)',
+                publisher: 'EUR-Lex, European Union',
+                publishedAt: '2024-07-12',
+                url: 'https://eur-lex.europa.eu/eli/reg/2024/1689/oj?locale=en',
+                perspective: 'Official legal text and staged application framework',
             },
             {
                 title: 'AI Omnibus enters into force',
@@ -564,6 +744,111 @@ export const CASE_STUDIES_2026 = [
     },
 ];
 
+const addDays = (date, days) => {
+    const [year, month, day] = date.split('-').map(Number);
+    const result = new Date(Date.UTC(year, month - 1, day + days));
+    return result.toISOString().slice(0, 10);
+};
+
+const BROAD_CATEGORY_ALIASES = {
+    'Technology & Innovation': 'Technology & Science',
+    'Climate, Resources & Security': 'Environment & Energy',
+    'Global Governance & Economics': 'Economy & Trade',
+    'Technology & Economics': 'Economy & Trade',
+};
+
+const COVERAGE_REGION_ALIASES = {
+    'Sub-Saharan Africa': 'Africa',
+    'Horn of Africa and Red Sea': 'Africa',
+    'Southern Africa': 'Africa',
+    'North Africa': 'Middle East & North Africa',
+    'North Africa and Mediterranean': 'Middle East & North Africa',
+    'Middle East': 'Middle East & North Africa',
+    'Middle East and Red Sea': 'Middle East & North Africa',
+    'South Asia': 'Asia',
+    'Central Asia': 'Asia',
+    'East Asia': 'Asia',
+    'Southeast Asia': 'Asia',
+    'Asia-Pacific': 'Asia',
+    'Latin America': 'Latin America & Caribbean',
+    'Caribbean & Americas': 'Latin America & Caribbean',
+    'Amazon Basin & South America': 'Latin America & Caribbean',
+    'United States–Mexico Borderlands': 'North America',
+    'Eastern Europe & Eurasia': 'Europe',
+    'Global Oceans': 'Global',
+};
+
+const getSourceDateLabel = source => {
+    if (source.publishedAt) return source.publishedAt;
+
+    const timing = [];
+    if (source.dataThrough) timing.push(`Data through ${source.dataThrough}`);
+    else if (source.updatedAt) timing.push(`Updated ${source.updatedAt}`);
+    else if (source.milestoneDate) timing.push(`${source.milestoneLabel || 'Milestone'} ${source.milestoneDate}`);
+    if (source.reviewedAt) timing.push(`Living reference reviewed ${source.reviewedAt}`);
+
+    return timing.join(' · ') || (source.sourceType === 'living-reference' ? 'Living reference' : 'Publication date not stated');
+};
+
+const normalizeCaseStudy = caseStudy => {
+    const sourcePerspectiveTypes = ['local', 'institutional', 'independent'];
+    const validSensitivity = ['standard', 'high'].includes(caseStudy.sensitivity);
+    const reviewCadenceDays = caseStudy.reviewCadenceDays
+        || (/conflict|displacement|security|sovereignty/i.test(caseStudy.issueDimensions.join(' ')) ? 30 : 90);
+    const sensitivity = validSensitivity
+        ? caseStudy.sensitivity
+        : reviewCadenceDays <= 30 ? 'high' : 'standard';
+    const fallbackLocation = caseStudy.coordinates ? [{
+        label: caseStudy.regionTags[0],
+        latitude: caseStudy.coordinates.latitude,
+        longitude: caseStudy.coordinates.longitude,
+    }] : [];
+    const map = caseStudy.map || { mode: 'point', locations: fallbackLocation };
+
+    const coverageRegion = caseStudy.coverageRegion || caseStudy.regionTags[0];
+
+    return {
+        ...caseStudy,
+        broadCategory: BROAD_CATEGORY_ALIASES[caseStudy.broadCategory] || caseStudy.broadCategory,
+        coverageRegion: COVERAGE_REGION_ALIASES[coverageRegion] || coverageRegion,
+        featured: Boolean(caseStudy.featured),
+        sensitivity,
+        editorialCaution: caseStudy.editorialCaution
+            || (!validSensitivity && typeof caseStudy.sensitivity === 'string' ? caseStudy.sensitivity : '')
+            || caseStudy.uncertainty,
+        reviewCadenceDays,
+        reviewBy: caseStudy.reviewBy || addDays(caseStudy.updatedAt, reviewCadenceDays),
+        map: {
+            ...map,
+            locations: map.locations.map(location => ({ ...location })),
+        },
+        sources: caseStudy.sources.map((source, index) => ({
+            ...source,
+            perspectiveType: source.perspectiveType || sourcePerspectiveTypes[index],
+            dateLabel: getSourceDateLabel(source),
+            supports: Array.isArray(source.supports)
+                ? source.supports.join(' ')
+                : source.supports || source.perspective,
+        })),
+        supplementalSources: (caseStudy.supplementalSources || []).map(source => ({
+            ...source,
+            dateLabel: getSourceDateLabel(source),
+        })),
+        waypoints: caseStudy.waypoints.map((waypoint, index) => ({
+            ...waypoint,
+            perspectiveLabel: waypoint.perspectiveLabel || waypoint.title,
+            perspectiveType: waypoint.perspectiveType || (index === caseStudy.waypoints.length - 1 ? 'synthesis' : sourcePerspectiveTypes[index % sourcePerspectiveTypes.length]),
+        })),
+    };
+};
+
+export const CASE_STUDIES_2026 = [
+    ...CORE_CASE_STUDIES_2026,
+    ...AFRICA_MENA_CASE_STUDIES_2026,
+    ...ASIA_PACIFIC_CASE_STUDIES_2026,
+    ...AMERICAS_GLOBAL_CASE_STUDIES_2026,
+].map(normalizeCaseStudy);
+
 /**
  * Adapt a canonical case study to the legacy forecast record shape while
  * retaining evidence metadata for source-aware consumers.
@@ -575,8 +860,13 @@ export function toForecastRecord(caseStudy) {
 
     const primarySource = caseStudy.sources?.[0];
     const sourceLabel = (caseStudy.sources || [])
-        .map(source => `${source.publisher}: ${source.title}${source.publishedAt ? ` (${source.publishedAt})` : ''}`)
+        .map(source => `${source.publisher}: ${source.title}${source.dateLabel ? ` (${source.dateLabel})` : ''}`)
         .join('; ');
+    const mapAnchor = caseStudy.coordinates || caseStudy.map?.locations?.[0];
+
+    if (!mapAnchor || !Number.isFinite(Number(mapAnchor.latitude)) || !Number.isFinite(Number(mapAnchor.longitude))) {
+        throw new TypeError(`Case study ${caseStudy.id || '(unknown)'} requires at least one valid map location`);
+    }
 
     return {
         'Topic/Sector': caseStudy.issueDimensions.join(' / '),
@@ -586,8 +876,8 @@ export function toForecastRecord(caseStudy) {
         'Expected Impact/Value': `${caseStudy.statusSummary} ${caseStudy.whyItMatters}`,
         Source: sourceLabel,
         url: primarySource?.url || '',
-        Latitude: String(caseStudy.coordinates.latitude),
-        Longitude: String(caseStudy.coordinates.longitude),
+        Latitude: String(mapAnchor.latitude),
+        Longitude: String(mapAnchor.longitude),
         Broad_Category: caseStudy.broadCategory,
         caseStudyId: caseStudy.id,
         statusSummary: caseStudy.statusSummary,
@@ -598,7 +888,18 @@ export function toForecastRecord(caseStudy) {
         updatedAt: caseStudy.updatedAt,
         confidence: caseStudy.confidence,
         uncertainty: caseStudy.uncertainty,
+        coverageRegion: caseStudy.coverageRegion,
+        featured: caseStudy.featured,
+        sensitivity: caseStudy.sensitivity,
+        editorialCaution: caseStudy.editorialCaution,
+        reviewCadenceDays: caseStudy.reviewCadenceDays,
+        reviewBy: caseStudy.reviewBy,
+        map: {
+            ...caseStudy.map,
+            locations: caseStudy.map.locations.map(location => ({ ...location })),
+        },
         sources: caseStudy.sources.map(source => ({ ...source })),
+        supplementalSources: caseStudy.supplementalSources.map(source => ({ ...source })),
         waypoints: caseStudy.waypoints.map(waypoint => ({ ...waypoint })),
         isCaseStudy: true,
         isEditorial: true,

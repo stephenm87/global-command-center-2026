@@ -6,7 +6,7 @@
 4. **Supabase RLS**: Row Level Security (RLS) policies in Supabase need verification and tightening.
 5. **3D Chunk Size**: The application shell is approximately 297 kB before gzip, but the deferred Three.js rendering chunk remains approximately 1.34 MB and should be evaluated on low-end devices.
 6. **External Map Assets**: Globe textures and country boundary files still rely on third-party CDNs and should be bundled locally.
-7. **Editorial Review Cadence**: Verified case studies are dated snapshots, not a live monitoring service. A named owner and recurring source-review cadence are still needed before they can be treated as maintained curriculum.
+7. **Editorial Ownership and Review Automation**: The 29 case studies carry `updatedAt`, `reviewCadenceDays`, `reviewBy`, sensitivity, and uncertainty metadata, but the application does not assign a named editorial owner, open source-review tasks, send reminders, or revalidate links and claims automatically. A displayed review date is a manual checkpoint, not evidence that review occurred; the cases remain dated editorial snapshots rather than a live monitoring service.
 8. **Relationship Provenance**: Dated case connections include sources, but the advanced 3D Nexus also contains legacy structural annotations that are reference context rather than independently sourced current claims.
 9. **Vite 5 Development Advisories**: The repository contract currently requires Vite 5. `npm audit` reports development-server path/CORS and Windows-path advisories with no fix inside that major. Vite is not included in the Netlify production runtime; local serve and preview are restricted to loopback, but moving to a supported Vite major requires an explicit repository-policy update.
 
@@ -24,4 +24,5 @@
 - Relations Nexus defers force-graph reheating until the renderer signals that its simulation is ready, preventing the previously observed blank-canvas startup failure.
 - Anonymous users retain dashboard and Relations Nexus visualization preferences across refreshes. Malformed or unavailable browser storage now falls back safely instead of breaking startup.
 - The default Nexus is now a searchable, lens-based Focus view; the visually denser 3D graph is opt-in and loaded only when requested.
-- Guided Briefings and nine regionally balanced, official-source case studies provide a simpler route from evidence to relationship exploration, including a standalone European AI-governance case.
+- Guided Briefings now expose all 29 regionally balanced cases with text search, region and issue filters, exactly three perspective-labelled core readings per case, and a simpler route from evidence to relationship exploration.
+- The globe now has a separate **Editorial Cases** layer, including multi-location regional and global mappings, so curated cases are visibly distinct from provider intelligence.
