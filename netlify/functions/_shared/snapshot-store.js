@@ -1,17 +1,21 @@
-const { getStore } = require('@netlify/blobs');
-
 const STORE_NAME = 'global-command-center-snapshots';
+let storePromise;
 
-function snapshotStore() {
-    return getStore(STORE_NAME);
+async function snapshotStore() {
+    if (!storePromise) {
+        storePromise = import('@netlify/blobs').then(({ getStore }) => getStore(STORE_NAME));
+    }
+    return storePromise;
 }
 
 async function readSnapshot(key) {
-    return snapshotStore().get(key, { type: 'json', consistency: 'strong' });
+    const store = await snapshotStore();
+    return store.get(key, { type: 'json', consistency: 'strong' });
 }
 
 async function writeSnapshot(key, value) {
-    await snapshotStore().setJSON(key, value);
+    const store = await snapshotStore();
+    await store.setJSON(key, value);
     return value;
 }
 
