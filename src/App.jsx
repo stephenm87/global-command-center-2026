@@ -12,6 +12,7 @@ import {
     ALL_INTEL_CATEGORY,
     LIVE_INTEL_CATEGORY,
     filterIntelForecasts,
+    getCurrentFeedLabel,
     getFeedEmptyState,
     mergeIntelSources,
     searchIntelForecasts,
@@ -421,7 +422,7 @@ function App() {
 
         const providerController = new AbortController();
         const providerTimeout = window.setTimeout(() => providerController.abort(), 30000);
-        const fetchProviderUpdates = secureFetch('/.netlify/functions/fetch-intel', {
+        const fetchProviderUpdates = fetch('/.netlify/functions/public-intel', {
             signal: providerController.signal,
         })
             .then(response => {
@@ -431,7 +432,12 @@ function App() {
             .catch(() => ({
                 items: [],
                 minerals: {},
-                meta: { sourceMode: 'protected' },
+                meta: {
+                    generatedAt: new Date().toISOString(),
+                    sourceMode: 'public-cache',
+                    status: 'network-error',
+                    provider: 'Serper',
+                },
             }))
             .finally(() => window.clearTimeout(providerTimeout));
 
@@ -482,7 +488,7 @@ function App() {
                     curatedItems: CURATED_CASE_RECORDS,
                     legacyItems: csvData.map(normalizeLegacyForecast),
                 });
-                applyIntelData(combinedData, { sourceMode: 'public-reference' });
+                applyIntelData(combinedData, { sourceMode: 'public-cache', status: 'warming', provider: 'Serper' });
                 setIntelLoading(false);
                 return publicData;
             })
@@ -496,8 +502,6 @@ function App() {
             const providerItems = Array.isArray(providerResponse) ? providerResponse : (providerResponse.items || []);
             const mineralData = Array.isArray(providerResponse) ? {} : (providerResponse.minerals || {});
             const providerMeta = Array.isArray(providerResponse) ? null : (providerResponse.meta || null);
-            if (providerItems.length === 0 && Object.keys(mineralData).length === 0) return;
-
             const combinedData = mergeIntelSources({
                 providerItems,
                 publicReferenceItems: publicData.publicReferenceData,
@@ -512,7 +516,7 @@ function App() {
             providerController.abort();
             window.clearTimeout(providerTimeout);
         };
-    }, [user]);
+    }, []);
 
     // Load historical data when year is 2023 / 2024 / 2025
     useEffect(() => {
@@ -1010,7 +1014,9 @@ function App() {
         historicalLoading,
         historicalData,
         intelLoading,
+        intelStatus: intelSummary.feedStatus,
     });
+    const currentFeedLabel = getCurrentFeedLabel(intelSummary);
 
     useEffect(() => {
         setFeedPage(1);
@@ -1082,8 +1088,14 @@ function App() {
                         </button>
                         <AuthBadge user={user} onSignInClick={openModal} />
                         {viewMode === 'globe' && <>
-                        <span className={`live-indicator ${intelSummary.sourceMode === 'provider' ? '' : 'reference-mode'}`}>
-                            {intelLoading ? '○ LOADING' : intelSummary.sourceMode === 'provider' ? '● CURRENT' : '○ REFERENCE'}
+                        <span className={`live-indicator ${['provider', 'public-cache'].includes(intelSummary.sourceMode) ? '' : 'reference-mode'}`}>
+                            {intelLoading
+                                ? '○ LOADING'
+                                : intelSummary.sourceMode === 'provider'
+                                    ? '● CURRENT'
+                                    : intelSummary.sourceMode === 'public-cache'
+                                        ? intelSummary.feedStatus === 'stale' ? '◐ STALE CACHE' : '● CACHED'
+                                        : '○ REFERENCE'}
                         </span>
                         <button className="export-btn" onClick={() => {
                             const nodes = filteredForecasts.slice(0, 40);
@@ -1457,12 +1469,18 @@ function App() {
                                 </span>
                             ) : intelLastUpdated && (
                                 <span
-                                    className={`intel-source-status ${intelSummary.sourceMode === 'provider' ? 'provider' : 'reference'}`}
+                                    className={`intel-source-status ${intelSummary.sourceMode === 'provider' ? 'provider' : intelSummary.sourceMode === 'public-cache' ? (intelSummary.feedStatus === 'stale' ? 'warning' : 'cached') : ['not-configured', 'unavailable', 'network-error'].includes(intelSummary.feedStatus) ? 'warning' : 'reference'}`}
                                     role="status"
                                 >
                                     {intelSummary.sourceMode === 'provider'
                                         ? `● ${intelSummary.liveItemCount} PROVIDER-CURRENT · ${intelLastUpdated.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' })}`
-                                        : `○ PUBLIC REFERENCE MODE · ${intelSummary.linkedReferenceCount} LINKED SOURCES`}
+                                        : intelSummary.sourceMode === 'public-cache'
+                                            ? `${intelSummary.feedStatus === 'stale' ? '◐' : '●'} ${intelSummary.liveItemCount} ${intelSummary.feedStatus === 'stale' ? 'STALE' : 'CACHED'} CURRENT · ${intelLastUpdated.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' })}`
+                                            : intelSummary.feedStatus === 'not-configured'
+                                                ? `△ CURRENT FEED NOT CONFIGURED · ${intelSummary.linkedReferenceCount} PUBLIC SOURCES`
+                                                : ['unavailable', 'network-error'].includes(intelSummary.feedStatus)
+                                                    ? `△ CURRENT FEED UNAVAILABLE · ${intelSummary.linkedReferenceCount} PUBLIC SOURCES`
+                                                    : `○ PUBLIC REFERENCE MODE · ${intelSummary.linkedReferenceCount} LINKED SOURCES`}
                                 </span>
                             )}
                             <label className="feed-search-label" htmlFor="feed-search">Search the intelligence list</label>
@@ -1483,7 +1501,7 @@ function App() {
                                 <option value={ALL_INTEL_CATEGORY}>ALL SOURCED INTELLIGENCE</option>
                                 {!historicalData && (
                                     <option value={LIVE_INTEL_CATEGORY} style={{ color: '#00ffff', fontWeight: 'bold' }}>
-                                        CURRENT PROVIDER UPDATES ({intelSummary.liveItemCount})
+                                        {currentFeedLabel}
                                     </option>
                                 )}
                                 {Object.keys(categoryColors).map(cat => (
@@ -1534,7 +1552,7 @@ function App() {
                                     aria-label={`Open intelligence detail: ${forecast['Entity/Subject'] || forecast['Topic/Sector']}`}
                                     style={{ borderLeftColor: forecast.isHistorical ? '#ffcc00' : forecast.isLive ? '#00ffff' : forecast.isEditorial ? '#b69cff' : categoryColors[forecast.Broad_Category] }}
                                 >
-                                    {forecast.isLive && <div className="live-tag">● LIVE INTEL</div>}
+                                    {forecast.isLive && <div className="live-tag">● {forecast._scraperSource === 'serper-public-cache' ? 'CACHED CURRENT' : 'LIVE INTEL'}</div>}
                                     {forecast.isCaseStudy
                                         ? <div className="case-study-tag">◆ VERIFIED CASE · {forecast.updatedAt}</div>
                                         : forecast.isEditorial && <div className="context-tag">◆ DATED CONTEXT</div>}

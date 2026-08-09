@@ -519,6 +519,14 @@
     color: #00ff88;
 }
 
+.intel-source-status.cached {
+    color: #5eead4;
+}
+
+.intel-source-status.warning {
+    color: #f4d35e;
+}
+
 .intel-source-status.reference {
     color: #9fb2c7;
 }

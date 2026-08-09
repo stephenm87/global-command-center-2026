@@ -1,0 +1,979 @@
+{
+  "schemaVersion": 1,
+  "caseStudyCount": 29,
+  "targetCount": 97,
+  "targets": [
+    {
+      "id": "sudan-displacement-regional-spillover:core:0",
+      "caseStudyId": "sudan-displacement-regional-spillover",
+      "caseStudyTitle": "Sudan: War, Displacement, and Regional Spillover",
+      "sourceTitle": "Sudanese communities are rebuilding under fire. Will Berlin back them?",
+      "publisher": "The New Humanitarian",
+      "group": "core",
+      "kind": "primary",
+      "url": "https://www.thenewhumanitarian.org/opinion/2026/04/14/sudanese-communities-are-rebuilding-under-fire-will-berlin-back-them"
+    },
+    {
+      "id": "sudan-displacement-regional-spillover:core:1",
+      "caseStudyId": "sudan-displacement-regional-spillover",
+      "caseStudyTitle": "Sudan: War, Displacement, and Regional Spillover",
+      "sourceTitle": "Three years on, war-weary Sudanese remain on the move",
+      "publisher": "UNHCR",
+      "group": "core",
+      "kind": "primary",
+      "url": "https://www.unhcr.org/news/briefing-notes/three-years-war-weary-sudanese-remain-move"
+    },
+    {
+      "id": "sudan-displacement-regional-spillover:core:2",
+      "caseStudyId": "sudan-displacement-regional-spillover",
+      "caseStudyTitle": "Sudan: War, Displacement, and Regional Spillover",
+      "sourceTitle": "Sudan enters a fourth year of war as officials lament an abandoned crisis",
+      "publisher": "Associated Press",
+      "group": "core",
+      "kind": "primary",
+      "url": "https://apnews.com/article/32a416bfbd680ea42edf6c0298d2617b"
+    },
+    {
+      "id": "myanmar-fragmented-sovereignty:core:0",
+      "caseStudyId": "myanmar-fragmented-sovereignty",
+      "caseStudyTitle": "Myanmar: Fragmented Sovereignty and Humanitarian Access",
+      "sourceTitle": "150,000 People Displaced by Fighting in Pakokku in Urgent Need",
+      "publisher": "The Irrawaddy",
+      "group": "core",
+      "kind": "primary",
+      "url": "https://www.irrawaddy.com/news/burma/150000-people-displaced-by-fighting-in-pakokku-in-urgent-need.html"
+    },
+    {
+      "id": "myanmar-fragmented-sovereignty:core:1",
+      "caseStudyId": "myanmar-fragmented-sovereignty",
+      "caseStudyTitle": "Myanmar: Fragmented Sovereignty and Humanitarian Access",
+      "sourceTitle": "Myanmar Humanitarian Update No. 52",
+      "publisher": "OCHA / United Nations in Myanmar",
+      "group": "core",
+      "kind": "primary",
+      "url": "https://myanmar.un.org/en/319232-myanmar-humanitarian-update-no-52"
+    },
+    {
+      "id": "myanmar-fragmented-sovereignty:core:1:alternate:0",
+      "caseStudyId": "myanmar-fragmented-sovereignty",
+      "caseStudyTitle": "Myanmar: Fragmented Sovereignty and Humanitarian Access",
+      "sourceTitle": "Myanmar Humanitarian Update No. 52",
+      "publisher": "OCHA / United Nations in Myanmar",
+      "group": "core",
+      "kind": "alternate",
+      "primaryUrl": "https://myanmar.un.org/en/319232-myanmar-humanitarian-update-no-52",
+      "label": "Open the official OCHA PDF directly",
+      "url": "https://myanmar.un.org/en/download/212411/319232"
+    },
+    {
+      "id": "myanmar-fragmented-sovereignty:core:2",
+      "caseStudyId": "myanmar-fragmented-sovereignty",
+      "caseStudyTitle": "Myanmar: Fragmented Sovereignty and Humanitarian Access",
+      "sourceTitle": "Situation of human rights in Myanmar",
+      "publisher": "Office of the UN High Commissioner for Human Rights",
+      "group": "core",
+      "kind": "primary",
+      "url": "https://bangkok.ohchr.org/myanmar"
+    },
+    {
+      "id": "south-china-sea-arbitral-award-ten-years:core:0",
+      "caseStudyId": "south-china-sea-arbitral-award-ten-years",
+      "caseStudyTitle": "South China Sea: Ten Years After the Arbitral Award",
+      "sourceTitle": "Delhi Roundtable Accentuates Abiding Relevance of South China Sea Arbitral Award on Decennial",
+      "publisher": "Department of Foreign Affairs of the Philippines",
+      "group": "core",
+      "kind": "primary",
+      "url": "https://newdelhipe.dfa.gov.ph/index.php/newsroom/embassy-news/1230-delhi-roundtable-accentuates-abiding-relevance-of-south-china-sea-arbitral-award-on-decennial"
+    },
+    {
+      "id": "south-china-sea-arbitral-award-ten-years:core:1",
+      "caseStudyId": "south-china-sea-arbitral-award-ten-years",
+      "caseStudyTitle": "South China Sea: Ten Years After the Arbitral Award",
+      "sourceTitle": "The South China Sea Arbitration: Award of 12 July 2016",
+      "publisher": "Permanent Court of Arbitration (registry)",
+      "group": "core",
+      "kind": "primary",
+      "url": "https://docs.pca-cpa.org/2016/07/PH-CN-20160712-Award.pdf"
+    },
+    {
+      "id": "south-china-sea-arbitral-award-ten-years:core:2",
+      "caseStudyId": "south-china-sea-arbitral-award-ten-years",
+      "caseStudyTitle": "South China Sea: Ten Years After the Arbitral Award",
+      "sourceTitle": "Philippines commemorates 2016 South China Sea ruling rejected by Beijing",
+      "publisher": "Associated Press",
+      "group": "core",
+      "kind": "primary",
+      "url": "https://apnews.com/article/d0148a4175f80eedf70dcf2696f03ddd"
+    },
+    {
+      "id": "south-china-sea-arbitral-award-ten-years:supplemental:0",
+      "caseStudyId": "south-china-sea-arbitral-award-ten-years",
+      "caseStudyTitle": "South China Sea: Ten Years After the Arbitral Award",
+      "sourceTitle": "Foreign Ministry Spokesperson Lin Jian's Regular Press Conference on July 14, 2026",
+      "publisher": "Ministry of Foreign Affairs of the People's Republic of China",
+      "group": "supplemental",
+      "kind": "primary",
+      "url": "https://www.mfa.gov.cn/eng/xw/fyrbt/202607/t20260714_11982116.html"
+    },
+    {
+      "id": "syria-transition-return-sanctions:core:0",
+      "caseStudyId": "syria-transition-return-sanctions",
+      "caseStudyTitle": "Syria: Political Transition, Return, and Sanctions Relief",
+      "sourceTitle": "Syria: One Year After Political Change, Peace Spring Areas Block Displaced Persons’ Return",
+      "publisher": "Syrians for Truth and Justice",
+      "group": "core",
+      "kind": "primary",
+      "url": "https://stj-sy.org/en/syria-one-year-after-political-change-peace-spring-areas-block-displaced-persons-return/"
+    },
+    {
+      "id": "syria-transition-return-sanctions:core:1",
+      "caseStudyId": "syria-transition-return-sanctions",
+      "caseStudyTitle": "Syria: Political Transition, Return, and Sanctions Relief",
+      "sourceTitle": "Syria: Council renews restrictive measures targeting the former al-Assad regime for one year and de-lists certain entities",
+      "publisher": "Council of the European Union",
+      "group": "core",
+      "kind": "primary",
+      "url": "https://www.consilium.europa.eu/en/press/press-releases/2026/05/18/syria-council-renews-restrictive-measures-targeting-the-former-al-assad-regime-for-one-year-and-de-lists-certain-entities/"
+    },
+    {
+      "id": "syria-transition-return-sanctions:core:2",
+      "caseStudyId": "syria-transition-return-sanctions",
+      "caseStudyTitle": "Syria: Political Transition, Return, and Sanctions Relief",
+      "sourceTitle": "Beyond safety and necessity: Understanding Syria’s mass return",
+      "publisher": "University of Oxford COMPAS",
+      "group": "core",
+      "kind": "primary",
+      "url": "https://www.compas.ox.ac.uk/article/beyond-safety-and-necessity-understanding-syrias-mass-return"
+    },
+    {
+      "id": "syria-transition-return-sanctions:supplemental:0",
+      "caseStudyId": "syria-transition-return-sanctions",
+      "caseStudyTitle": "Syria: Political Transition, Return, and Sanctions Relief",
+      "sourceTitle": "Operational Update – Syria, March 2026",
+      "publisher": "UNHCR",
+      "group": "supplemental",
+      "kind": "primary",
+      "url": "https://www.unhcr.org/sites/default/files/2026-04/unhcr-syria-operational-update-march.pdf"
+    },
+    {
+      "id": "guyana-venezuela-essequibo-icj:core:0",
+      "caseStudyId": "guyana-venezuela-essequibo-icj",
+      "caseStudyTitle": "Guyana–Venezuela: Essequibo Before the ICJ",
+      "sourceTitle": "Communiqué: Fifty-First Regular Meeting of the Conference of Heads of Government of CARICOM",
+      "publisher": "Caribbean Community",
+      "group": "core",
+      "kind": "primary",
+      "url": "https://caricom.org/communique-fifty-first-regular-meeting-of-the-conference-of-heads-of-government-of-the-caribbean-community-caricom-saint-lucia/"
+    },
+    {
+      "id": "guyana-venezuela-essequibo-icj:core:1",
+      "caseStudyId": "guyana-venezuela-essequibo-icj",
+      "caseStudyTitle": "Guyana–Venezuela: Essequibo Before the ICJ",
+      "sourceTitle": "Arbitral Award of 3 October 1899 (Guyana v. Venezuela)",
+      "publisher": "International Court of Justice",
+      "group": "core",
+      "kind": "primary",
+      "url": "https://www.icj-cij.org/case/171"
+    },
+    {
+      "id": "guyana-venezuela-essequibo-icj:core:2",
+      "caseStudyId": "guyana-venezuela-essequibo-icj",
+      "caseStudyTitle": "Guyana–Venezuela: Essequibo Before the ICJ",
+      "sourceTitle": "Guyana and Venezuela return to UN court to settle historic dispute over valuable border region",
+      "publisher": "Associated Press",
+      "group": "core",
+      "kind": "primary",
+      "url": "https://apnews.com/article/2c9d13b0dbcf7f92d6f53264003ce626"
+    },
+    {
+      "id": "guyana-venezuela-essequibo-icj:supplemental:0",
+      "caseStudyId": "guyana-venezuela-essequibo-icj",
+      "caseStudyTitle": "Guyana–Venezuela: Essequibo Before the ICJ",
+      "sourceTitle": "Venezuela desmontó ante la CIJ argumentos de Guyana y ratifica Acuerdo de Ginebra",
+      "publisher": "Ministry of Foreign Affairs of Venezuela",
+      "group": "supplemental",
+      "kind": "primary",
+      "url": "https://mppre.gob.ve/publicacion/7224-venezuela-desmonto-ante-la-cij-argumentos-de-guyana-y-ratifica-acuerdo-de-ginebra"
+    },
+    {
+      "id": "usmca-2026-joint-review:core:0",
+      "caseStudyId": "usmca-2026-joint-review",
+      "caseStudyTitle": "USMCA After the 2026 Joint Review",
+      "sourceTitle": "Quinta Reunión de la Comisión de Libre Comercio del T-MEC: Proceso de Revisión Conjunta previsto en el artículo 34.7",
+      "publisher": "Secretaría de Economía de México",
+      "group": "core",
+      "kind": "primary",
+      "url": "https://www.gob.mx/se/prensa/quinta-reunion-de-la-comision-de-libre-comercio-del-t-mec-proceso-de-revision-conjunta-previsto-en-el-articulo-34-7?idiom=es-MX"
+    },
+    {
+      "id": "usmca-2026-joint-review:core:1",
+      "caseStudyId": "usmca-2026-joint-review",
+      "caseStudyTitle": "USMCA After the 2026 Joint Review",
+      "sourceTitle": "American Farmers, Ranchers, Manufacturers, and Businesses Applaud President Trump for Not Rubber Stamping the USMCA",
+      "publisher": "Office of the United States Trade Representative",
+      "group": "core",
+      "kind": "primary",
+      "url": "https://www.ustr.gov/about/policy-offices/press-office/press-releases/2026/july/american-farmers-ranchers-manufacturers-and-businesses-applaud-president-trump-not-rubber-stamping"
+    },
+    {
+      "id": "usmca-2026-joint-review:core:2",
+      "caseStudyId": "usmca-2026-joint-review",
+      "caseStudyTitle": "USMCA After the 2026 Joint Review",
+      "sourceTitle": "The United States Has Opted Not to Extend the USMCA",
+      "publisher": "Center for Strategic and International Studies",
+      "group": "core",
+      "kind": "primary",
+      "url": "https://www.csis.org/analysis/united-states-has-opted-not-extend-usmca"
+    },
+    {
+      "id": "usmca-2026-joint-review:supplemental:0",
+      "caseStudyId": "usmca-2026-joint-review",
+      "caseStudyTitle": "USMCA After the 2026 Joint Review",
+      "sourceTitle": "Minister LeBlanc updates provincial and territorial ministers responsible for International Trade on CUSMA Joint Review",
+      "publisher": "Global Affairs Canada",
+      "group": "supplemental",
+      "kind": "primary",
+      "url": "https://www.canada.ca/en/global-affairs/news/2026/07/minister-leblanc-updates-provincial-and-territorial-ministers-responsible-for-international-trade-on-cusma-joint-review.html"
+    },
+    {
+      "id": "tuvalu-australia-falepili-union:core:0",
+      "caseStudyId": "tuvalu-australia-falepili-union",
+      "caseStudyTitle": "Tuvalu–Australia Falepili Union",
+      "sourceTitle": "Hope in Tuvalu’s climate change response: Falepili to Digital Nation",
+      "publisher": "Development Policy Centre",
+      "group": "core",
+      "kind": "primary",
+      "url": "https://devpolicy.org/hope-in-tuvalus-climate-change-response-from-falepili-to-digital-nation-20260220/"
+    },
+    {
+      "id": "tuvalu-australia-falepili-union:core:1",
+      "caseStudyId": "tuvalu-australia-falepili-union",
+      "caseStudyTitle": "Tuvalu–Australia Falepili Union",
+      "sourceTitle": "Pacific Engagement visa (subclass 192) – Treaty stream ballot registration",
+      "publisher": "Australian Department of Home Affairs",
+      "group": "core",
+      "kind": "primary",
+      "url": "https://immi.homeaffairs.gov.au/visas/getting-a-visa/visa-listing/pacific-engagement/subclass-192/treaty-stream/ballot-registration"
+    },
+    {
+      "id": "tuvalu-australia-falepili-union:core:2",
+      "caseStudyId": "tuvalu-australia-falepili-union",
+      "caseStudyTitle": "Tuvalu–Australia Falepili Union",
+      "sourceTitle": "An Unthinkable Question: Tuvalu and the Falepili Union",
+      "publisher": "Victoria University of Wellington Law Review",
+      "group": "core",
+      "kind": "primary",
+      "url": "https://ojs.victoria.ac.nz/vuwlr/article/view/10760"
+    },
+    {
+      "id": "tuvalu-australia-falepili-union:supplemental:0",
+      "caseStudyId": "tuvalu-australia-falepili-union",
+      "caseStudyTitle": "Tuvalu–Australia Falepili Union",
+      "sourceTitle": "Australia–Tuvalu Falepili Union treaty",
+      "publisher": "Australian Department of Foreign Affairs and Trade",
+      "group": "supplemental",
+      "kind": "primary",
+      "url": "https://www.dfat.gov.au/geo/tuvalu/australia-tuvalu-falepili-union-treaty"
+    },
+    {
+      "id": "greenland-autonomy-security-minerals:core:0",
+      "caseStudyId": "greenland-autonomy-security-minerals",
+      "caseStudyTitle": "Greenland: Autonomy, Arctic Security, and Critical Minerals",
+      "sourceTitle": "Greenland’s prime minister tells US envoy self-determination cannot be negotiated",
+      "publisher": "Associated Press",
+      "group": "core",
+      "kind": "primary",
+      "url": "https://apnews.com/article/bbece2f899116788fe45525dcfe7d030"
+    },
+    {
+      "id": "greenland-autonomy-security-minerals:core:1",
+      "caseStudyId": "greenland-autonomy-security-minerals",
+      "caseStudyTitle": "Greenland: Autonomy, Arctic Security, and Critical Minerals",
+      "sourceTitle": "Greenland Mineral Resources Strategy 2025–2029",
+      "publisher": "Mineral Resources Authority, Government of Greenland",
+      "group": "core",
+      "kind": "primary",
+      "url": "https://govmin.gl/publications/greenland-mineral-resources-strategy-2025-2029/"
+    },
+    {
+      "id": "greenland-autonomy-security-minerals:core:2",
+      "caseStudyId": "greenland-autonomy-security-minerals",
+      "caseStudyTitle": "Greenland: Autonomy, Arctic Security, and Critical Minerals",
+      "sourceTitle": "Greenland mineral policy – changes in procedures for exploitation licences",
+      "publisher": "Polar Geography",
+      "group": "core",
+      "kind": "primary",
+      "url": "https://www.tandfonline.com/doi/full/10.1080/2154896X.2026.2628474"
+    },
+    {
+      "id": "greenland-autonomy-security-minerals:supplemental:0",
+      "caseStudyId": "greenland-autonomy-security-minerals",
+      "caseStudyTitle": "Greenland: Autonomy, Arctic Security, and Critical Minerals",
+      "sourceTitle": "The Danish Armed Forces expand their presence and continue exercises in Greenland in close cooperation with allies",
+      "publisher": "Naalakkersuisut, Government of Greenland",
+      "group": "supplemental",
+      "kind": "primary",
+      "url": "https://naalakkersuisut.gl/Nyheder/2026/01/1401_forsvaret?sc_lang=da"
+    },
+    {
+      "id": "greenland-autonomy-security-minerals:supplemental:1",
+      "caseStudyId": "greenland-autonomy-security-minerals",
+      "caseStudyTitle": "Greenland: Autonomy, Arctic Security, and Critical Minerals",
+      "sourceTitle": "Section 21 Commission constitutes itself and begins its work",
+      "publisher": "Naalakkersuisut, Government of Greenland",
+      "group": "supplemental",
+      "kind": "primary",
+      "url": "https://naalakkersuisut.gl/Nyheder/2026/03/1903_kommission?sc_lang=da"
+    },
+    {
+      "id": "eu-ai-act-transparency-implementation:core:0",
+      "caseStudyId": "eu-ai-act-transparency-implementation",
+      "caseStudyTitle": "EU AI Act: Transparency and a Revised Implementation Timeline",
+      "sourceTitle": "EU adopts the AI Omnibus: what it means for consumers",
+      "publisher": "BEUC, The European Consumer Organisation",
+      "group": "core",
+      "kind": "primary",
+      "url": "https://www.beuc.eu/news/eu-adopts-ai-omnibus-what-it-means-consumers"
+    },
+    {
+      "id": "eu-ai-act-transparency-implementation:core:1",
+      "caseStudyId": "eu-ai-act-transparency-implementation",
+      "caseStudyTitle": "EU AI Act: Transparency and a Revised Implementation Timeline",
+      "sourceTitle": "Commission publishes guidelines on transparency obligations for providers and deployers of certain AI systems",
+      "publisher": "European Commission",
+      "group": "core",
+      "kind": "primary",
+      "url": "https://digital-strategy.ec.europa.eu/en/news/commission-publishes-guidelines-transparency-obligations-providers-and-deployers-certain-ai-systems"
+    },
+    {
+      "id": "eu-ai-act-transparency-implementation:core:2",
+      "caseStudyId": "eu-ai-act-transparency-implementation",
+      "caseStudyTitle": "EU AI Act: Transparency and a Revised Implementation Timeline",
+      "sourceTitle": "Three things you need to know about the new EU AI Act rules",
+      "publisher": "ITPro",
+      "group": "core",
+      "kind": "primary",
+      "url": "https://www.itpro.com/business/policy-and-legislation/three-things-you-need-to-know-about-the-new-eu-ai-act-rules"
+    },
+    {
+      "id": "eu-ai-act-transparency-implementation:supplemental:0",
+      "caseStudyId": "eu-ai-act-transparency-implementation",
+      "caseStudyTitle": "EU AI Act: Transparency and a Revised Implementation Timeline",
+      "sourceTitle": "Regulation (EU) 2024/1689 (Artificial Intelligence Act)",
+      "publisher": "EUR-Lex, European Union",
+      "group": "supplemental",
+      "kind": "primary",
+      "url": "https://eur-lex.europa.eu/eli/reg/2024/1689/oj?locale=en"
+    },
+    {
+      "id": "eu-ai-act-transparency-implementation:supplemental:1",
+      "caseStudyId": "eu-ai-act-transparency-implementation",
+      "caseStudyTitle": "EU AI Act: Transparency and a Revised Implementation Timeline",
+      "sourceTitle": "AI Omnibus enters into force",
+      "publisher": "European Commission",
+      "group": "supplemental",
+      "kind": "primary",
+      "url": "https://digital-strategy.ec.europa.eu/en/news/ai-omnibus-enters-force"
+    },
+    {
+      "id": "eastern-drc-peace-civilian-protection:core:0",
+      "caseStudyId": "eastern-drc-peace-civilian-protection",
+      "caseStudyTitle": "Eastern DRC: Peace Agreements, Armed Authority, and Civilian Protection",
+      "sourceTitle": "The DRC and Rwanda Sign a Peace Agreement in Washington",
+      "publisher": "Presidency of the Democratic Republic of the Congo",
+      "group": "core",
+      "kind": "primary",
+      "url": "https://www.presidence.cd/actualite-detail/actualite/exclusif_la_rdc_et_le_rwanda_ont_signe_un_accord_de_paix_ce_vendredi_aux_etats_unis_damerique"
+    },
+    {
+      "id": "eastern-drc-peace-civilian-protection:core:1",
+      "caseStudyId": "eastern-drc-peace-civilian-protection",
+      "caseStudyTitle": "Eastern DRC: Peace Agreements, Armed Authority, and Civilian Protection",
+      "sourceTitle": "Alliance Fleuve Congo (AFC)",
+      "publisher": "United Nations Security Council",
+      "group": "core",
+      "kind": "primary",
+      "url": "https://main.un.org/securitycouncil/en/content/alliance-fleuve-congo-afc"
+    },
+    {
+      "id": "eastern-drc-peace-civilian-protection:core:2",
+      "caseStudyId": "eastern-drc-peace-civilian-protection",
+      "caseStudyTitle": "Eastern DRC: Peace Agreements, Armed Authority, and Civilian Protection",
+      "sourceTitle": "Diplomacy without deterrence won't bring peace in eastern DRC",
+      "publisher": "Institute for Security Studies",
+      "group": "core",
+      "kind": "primary",
+      "url": "https://issafrica.org/iss-today/diplomacy-without-deterrence-won-t-bring-peace-in-eastern-drc"
+    },
+    {
+      "id": "sahel-after-ecowas-regional-order:core:0",
+      "caseStudyId": "sahel-after-ecowas-regional-order",
+      "caseStudyTitle": "The Sahel After ECOWAS: Competing Regional Orders",
+      "sourceTitle": "Press Statement on the Withdrawal of Burkina Faso, Mali and Niger from ECOWAS",
+      "publisher": "Economic Community of West African States",
+      "group": "core",
+      "kind": "primary",
+      "url": "https://www.ecowas.int/press-statement-2/"
+    },
+    {
+      "id": "sahel-after-ecowas-regional-order:core:1",
+      "caseStudyId": "sahel-after-ecowas-regional-order",
+      "caseStudyTitle": "The Sahel After ECOWAS: Competing Regional Orders",
+      "sourceTitle": "Before the Security Council, Special Representative Leonardo Santos Simão Calls for Renewed Regional Cooperation",
+      "publisher": "United Nations Office for West Africa and the Sahel",
+      "group": "core",
+      "kind": "primary",
+      "url": "https://unowas.unmissions.org/en/news/before-the-security-council-special-representative-leonardo-santos-simao-calls-for"
+    },
+    {
+      "id": "sahel-after-ecowas-regional-order:core:2",
+      "caseStudyId": "sahel-after-ecowas-regional-order",
+      "caseStudyTitle": "The Sahel After ECOWAS: Competing Regional Orders",
+      "sourceTitle": "How ECOWAS can make its new counter-terrorism force effective",
+      "publisher": "Institute for Security Studies",
+      "group": "core",
+      "kind": "primary",
+      "url": "https://issafrica.org/iss-today/how-ecowas-can-make-its-new-counter-terrorism-force-effective"
+    },
+    {
+      "id": "somaliland-recognition-red-sea-order:core:0",
+      "caseStudyId": "somaliland-recognition-red-sea-order",
+      "caseStudyTitle": "Somaliland Recognition and the Red Sea Order",
+      "sourceTitle": "Statement on the Establishment of Diplomatic Relations Between the Republic of Somaliland and the State of Israel",
+      "publisher": "Ministry of Foreign Affairs and International Cooperation of Somaliland",
+      "group": "core",
+      "kind": "primary",
+      "url": "https://mfa.govsomaliland.org/article/statement-establishment-diplomatic-relations-between-republi?category=media"
+    },
+    {
+      "id": "somaliland-recognition-red-sea-order:core:1",
+      "caseStudyId": "somaliland-recognition-red-sea-order",
+      "caseStudyTitle": "Somaliland Recognition and the Red Sea Order",
+      "sourceTitle": "Assistant Secretary-General Khiari Briefs the Security Council on Somalia",
+      "publisher": "United Nations Department of Political and Peacebuilding Affairs",
+      "group": "core",
+      "kind": "primary",
+      "url": "https://dppa.dfs.un.org/en/mtg-sc-10084-asg-khiari-29-dec-2025"
+    },
+    {
+      "id": "somaliland-recognition-red-sea-order:core:2",
+      "caseStudyId": "somaliland-recognition-red-sea-order",
+      "caseStudyTitle": "Somaliland Recognition and the Red Sea Order",
+      "sourceTitle": "Israel's foreign minister visits Somaliland after recognizing the breakaway region",
+      "publisher": "Associated Press",
+      "group": "core",
+      "kind": "primary",
+      "url": "https://apnews.com/article/2447736e7355da4ac1ed182771f2e85e"
+    },
+    {
+      "id": "zambia-electricity-reset-climate-access:core:0",
+      "caseStudyId": "zambia-electricity-reset-climate-access",
+      "caseStudyTitle": "Zambia's Electricity Reset: Copper, Climate, and Access",
+      "sourceTitle": "Key Highlights in Zambia's Energy Sector",
+      "publisher": "Ministry of Energy, Republic of Zambia",
+      "group": "core",
+      "kind": "primary",
+      "url": "https://www.moe.gov.zm/?p=6323"
+    },
+    {
+      "id": "zambia-electricity-reset-climate-access:core:1",
+      "caseStudyId": "zambia-electricity-reset-climate-access",
+      "caseStudyTitle": "Zambia's Electricity Reset: Copper, Climate, and Access",
+      "sourceTitle": "Lake Kariba Levels",
+      "publisher": "Zambezi River Authority",
+      "group": "core",
+      "kind": "primary",
+      "url": "https://www.zambezira.org/hydrology/lake-levels"
+    },
+    {
+      "id": "zambia-electricity-reset-climate-access:core:2",
+      "caseStudyId": "zambia-electricity-reset-climate-access",
+      "caseStudyTitle": "Zambia's Electricity Reset: Copper, Climate, and Access",
+      "sourceTitle": "Powering Zambia's Transformation: From Electricity Crisis to Catalyst for Growth and Jobs",
+      "publisher": "World Bank",
+      "group": "core",
+      "kind": "primary",
+      "url": "https://www.worldbank.org/en/country/zambia/publication/powering-zambia-s-transformation-from-electricity-crisis-to-catalyst-for-growth-and-jobs"
+    },
+    {
+      "id": "western-sahara-autonomy-self-determination:core:0",
+      "caseStudyId": "western-sahara-autonomy-self-determination",
+      "caseStudyTitle": "Western Sahara: Self-Determination, Autonomy, and Representation",
+      "sourceTitle": "Moroccan Sahara: Spain Welcomes the Adoption of Resolution 2797",
+      "publisher": "Ministry of Foreign Affairs, African Cooperation and Moroccan Expatriates",
+      "group": "core",
+      "kind": "primary",
+      "url": "https://diplomatie.ma/en/moroccan-sahara-spain-welcomes-adoption-resolution-2797-which-emphasizes-genuine-autonomy-under-moroccan-sovereignty-most-feasible-solution"
+    },
+    {
+      "id": "western-sahara-autonomy-self-determination:core:1",
+      "caseStudyId": "western-sahara-autonomy-self-determination",
+      "caseStudyTitle": "Western Sahara: Self-Determination, Autonomy, and Representation",
+      "sourceTitle": "Security Council Resolution 2797 (2025)",
+      "publisher": "United Nations Digital Library",
+      "group": "core",
+      "kind": "primary",
+      "url": "https://digitallibrary.un.org/record/4093666?ln=en"
+    },
+    {
+      "id": "western-sahara-autonomy-self-determination:core:2",
+      "caseStudyId": "western-sahara-autonomy-self-determination",
+      "caseStudyTitle": "Western Sahara: Self-Determination, Autonomy, and Representation",
+      "sourceTitle": "UN: Western Sahara Peoples' Self-Determination at Risk",
+      "publisher": "Human Rights Watch",
+      "group": "core",
+      "kind": "primary",
+      "url": "https://www.hrw.org/news/2026/03/25/un-western-sahara-peoples-self-determination-at-risk"
+    },
+    {
+      "id": "libya-roadmap-elections-oil-assets:core:0",
+      "caseStudyId": "libya-roadmap-elections-oil-assets",
+      "caseStudyTitle": "Libya's 2026 Roadmap: Elections, Oil Assets, and Competing Authority",
+      "sourceTitle": "UN-led talks in Libya seek ways to break electoral deadlock",
+      "publisher": "The Libya Observer",
+      "group": "core",
+      "kind": "primary",
+      "url": "https://libyaobserver.ly/news/un-led-talks-libya-seek-ways-break-electoral-deadlock"
+    },
+    {
+      "id": "libya-roadmap-elections-oil-assets:core:1",
+      "caseStudyId": "libya-roadmap-elections-oil-assets",
+      "caseStudyTitle": "Libya's 2026 Roadmap: Elections, Oil Assets, and Competing Authority",
+      "sourceTitle": "Security Council Resolution 2819 (2026)",
+      "publisher": "United Nations Security Council",
+      "group": "core",
+      "kind": "primary",
+      "url": "https://main.un.org/securitycouncil/en/content/sres28192026"
+    },
+    {
+      "id": "libya-roadmap-elections-oil-assets:core:2",
+      "caseStudyId": "libya-roadmap-elections-oil-assets",
+      "caseStudyTitle": "Libya's 2026 Roadmap: Elections, Oil Assets, and Competing Authority",
+      "sourceTitle": "Why US plans for power-sharing in Libya will not work",
+      "publisher": "Chatham House",
+      "group": "core",
+      "kind": "primary",
+      "url": "https://www.chathamhouse.org/2026/07/why-us-plans-power-sharing-libya-will-not-work"
+    },
+    {
+      "id": "red-sea-yemen-humanitarian-economy:core:0",
+      "caseStudyId": "red-sea-yemen-humanitarian-economy",
+      "caseStudyTitle": "Red Sea Security Through Yemen's Humanitarian Economy",
+      "sourceTitle": "Supporting Trade Finance in Yemen Amid Uncertainty",
+      "publisher": "Sana'a Center for Strategic Studies",
+      "group": "core",
+      "kind": "primary",
+      "url": "https://sanaacenter.org/publications/policy-research/26389"
+    },
+    {
+      "id": "red-sea-yemen-humanitarian-economy:core:1",
+      "caseStudyId": "red-sea-yemen-humanitarian-economy",
+      "caseStudyTitle": "Red Sea Security Through Yemen's Humanitarian Economy",
+      "sourceTitle": "Statement on recent attacks in the Red Sea",
+      "publisher": "International Maritime Organization",
+      "group": "core",
+      "kind": "primary",
+      "url": "https://www.imo.org/en/mediacentre/pressbriefings/pages/statement-on-recent-attacks-in-the-red-sea.aspx"
+    },
+    {
+      "id": "red-sea-yemen-humanitarian-economy:core:2",
+      "caseStudyId": "red-sea-yemen-humanitarian-economy",
+      "caseStudyTitle": "Red Sea Security Through Yemen's Humanitarian Economy",
+      "sourceTitle": "The Houthi Red Sea blockade: Will collective maritime security be defended, or break down?",
+      "publisher": "Chatham House",
+      "group": "core",
+      "kind": "primary",
+      "url": "https://www.chathamhouse.org/2026/07/houthi-red-sea-blockade-will-collective-maritime-security-be-defended-or-break-down"
+    },
+    {
+      "id": "indus-water-regime-under-strain:core:0",
+      "caseStudyId": "indus-water-regime-under-strain",
+      "caseStudyTitle": "Indus Waters Treaty: Security, Law, and Basin Livelihoods",
+      "sourceTitle": "Statement by the Spokesperson Regarding Indian Home Minister's Assertion that the Indus Waters Treaty Will Never be Restored",
+      "publisher": "Ministry of Foreign Affairs, Government of Pakistan",
+      "group": "core",
+      "kind": "primary",
+      "url": "https://mofa.gov.pk/press-releases/statement-by-the-spokesperson-regarding-indian-home-ministers-assertion-that-the-indus-waters-treaty-will-never-be-restored"
+    },
+    {
+      "id": "indus-water-regime-under-strain:core:1",
+      "caseStudyId": "indus-water-regime-under-strain",
+      "caseStudyTitle": "Indus Waters Treaty: Security, Law, and Basin Livelihoods",
+      "sourceTitle": "PCA Case No. 2023-01: The Indus Waters Western Rivers Arbitration",
+      "publisher": "Permanent Court of Arbitration",
+      "group": "core",
+      "kind": "primary",
+      "url": "https://pca-cpa.org/en/news/pca-press-release-pca-case-no-2023-01-the-indus-waters-western-rivers-arbitration-islamic-republic-of-pakistan-v-republic-of-india-3/"
+    },
+    {
+      "id": "indus-water-regime-under-strain:core:2",
+      "caseStudyId": "indus-water-regime-under-strain",
+      "caseStudyTitle": "Indus Waters Treaty: Security, Law, and Basin Livelihoods",
+      "sourceTitle": "India–Pakistan ceasefire remains shaky, with relations unlikely to return to status quo",
+      "publisher": "Chatham House",
+      "group": "core",
+      "kind": "primary",
+      "url": "https://www.chathamhouse.org/2025/05/india-pakistan-ceasefire-remains-shaky-relations-unlikely-return-status-quo"
+    },
+    {
+      "id": "bangladesh-ldc-graduation-decision:core:0",
+      "caseStudyId": "bangladesh-ldc-graduation-decision",
+      "caseStudyTitle": "Bangladesh at the Graduation Gate",
+      "sourceTitle": "CDP recommends favorable consideration of Bangladesh's request for extension of LDC graduation preparatory period",
+      "publisher": "Government of Bangladesh, Support to Sustainable Graduation Project",
+      "group": "core",
+      "kind": "primary",
+      "url": "https://ssgp.erd.gov.bd/news-posts/cdp-recommends-favorable-consideration-of-bangladeshs-request-for-extension-of-ldc-graduation-preparatory-period/"
+    },
+    {
+      "id": "bangladesh-ldc-graduation-decision:core:1",
+      "caseStudyId": "bangladesh-ldc-graduation-decision",
+      "caseStudyTitle": "Bangladesh at the Graduation Gate",
+      "sourceTitle": "Bangladesh graduation status and preparatory-period extension request",
+      "publisher": "United Nations LDC Portal",
+      "group": "core",
+      "kind": "primary",
+      "url": "https://www.un.org/ldcportal/node/858"
+    },
+    {
+      "id": "bangladesh-ldc-graduation-decision:core:2",
+      "caseStudyId": "bangladesh-ldc-graduation-decision",
+      "caseStudyTitle": "Bangladesh at the Graduation Gate",
+      "sourceTitle": "Deferring Bangladesh's LDC graduation and the road ahead",
+      "publisher": "Centre for Policy Dialogue",
+      "group": "core",
+      "kind": "primary",
+      "url": "https://cpd.org.bd/deferring-bangladeshs-ldc-graduation-and-the-road-ahead/"
+    },
+    {
+      "id": "kyrgyzstan-tajikistan-border-peace:core:0",
+      "caseStudyId": "kyrgyzstan-tajikistan-border-peace",
+      "caseStudyTitle": "Kyrgyzstan–Tajikistan: From Border Treaty to Everyday Peace",
+      "sourceTitle": "Kairagach and Kyzyl-Bel checkpoints resume operations on the Kyrgyz–Tajik border",
+      "publisher": "President of the Kyrgyz Republic",
+      "group": "core",
+      "kind": "primary",
+      "url": "https://president.kg/ru/news/21/38920"
+    },
+    {
+      "id": "kyrgyzstan-tajikistan-border-peace:core:1",
+      "caseStudyId": "kyrgyzstan-tajikistan-border-peace",
+      "caseStudyTitle": "Kyrgyzstan–Tajikistan: From Border Treaty to Everyday Peace",
+      "sourceTitle": "Women leaders build interethnic cohesion in border communities of Kyrgyzstan",
+      "publisher": "United Nations Sustainable Development Group",
+      "group": "core",
+      "kind": "primary",
+      "url": "https://unsdg.un.org/latest/stories/women-leaders-build-interethnic-cohesion-border-communities-kyrgyzstan"
+    },
+    {
+      "id": "kyrgyzstan-tajikistan-border-peace:core:2",
+      "caseStudyId": "kyrgyzstan-tajikistan-border-peace",
+      "caseStudyTitle": "Kyrgyzstan–Tajikistan: From Border Treaty to Everyday Peace",
+      "sourceTitle": "Central Asian States Have Put Aside Their Territorial Disputes. Why Now?",
+      "publisher": "Carnegie Endowment for International Peace",
+      "group": "core",
+      "kind": "primary",
+      "url": "https://carnegieendowment.org/russia-eurasia/politika/2025/04/kyrgyzstan-tajikistan-border-deal"
+    },
+    {
+      "id": "mongolia-coal-critical-minerals-transition:core:0",
+      "caseStudyId": "mongolia-coal-critical-minerals-transition",
+      "caseStudyTitle": "Mongolia Between Coal and Critical Minerals",
+      "sourceTitle": "Strategic-deposit reforms create an opportunity to increase benefits for citizens",
+      "publisher": "Government of Mongolia",
+      "group": "core",
+      "kind": "primary",
+      "url": "https://mongolia.gov.mn/news/view/27582"
+    },
+    {
+      "id": "mongolia-coal-critical-minerals-transition:core:1",
+      "caseStudyId": "mongolia-coal-critical-minerals-transition",
+      "caseStudyTitle": "Mongolia Between Coal and Critical Minerals",
+      "sourceTitle": "Just Energy Transition Framework",
+      "publisher": "United Nations Development Programme Mongolia",
+      "group": "core",
+      "kind": "primary",
+      "url": "https://www.undp.org/mongolia/publications/just-energy-transition-framework"
+    },
+    {
+      "id": "mongolia-coal-critical-minerals-transition:core:2",
+      "caseStudyId": "mongolia-coal-critical-minerals-transition",
+      "caseStudyTitle": "Mongolia Between Coal and Critical Minerals",
+      "sourceTitle": "Mongolia's Strategic Deposits: A Framework Under Strain in the Critical Minerals Race",
+      "publisher": "Think Mongol Institute",
+      "group": "core",
+      "kind": "primary",
+      "url": "https://thinkmongol.mn/en/post/policybrief-7"
+    },
+    {
+      "id": "indonesia-nickel-development-bargain:core:0",
+      "caseStudyId": "indonesia-nickel-development-bargain",
+      "caseStudyTitle": "Indonesia's Nickel Bargain",
+      "sourceTitle": "Investment Realization Reaches IDR 1,010.6 Trillion in the First Half of 2026, Creating 1.4 Million Jobs",
+      "publisher": "Ministry of Investment and Downstreaming, Republic of Indonesia",
+      "group": "core",
+      "kind": "primary",
+      "url": "https://www.bkpm.go.id/en/info/press-release/investment-realization-reaches-idr-1-010-6-trillion-in-the-first-half-of-2026-creating-1-4-million-jobs"
+    },
+    {
+      "id": "indonesia-nickel-development-bargain:core:1",
+      "caseStudyId": "indonesia-nickel-development-bargain",
+      "caseStudyTitle": "Indonesia's Nickel Bargain",
+      "sourceTitle": "DS592: Indonesia — Measures Relating to Raw Materials",
+      "publisher": "World Trade Organization",
+      "group": "core",
+      "kind": "primary",
+      "url": "https://www.wto.org/english/tratop_e/dispu_e/cases_e/ds592_e.htm"
+    },
+    {
+      "id": "indonesia-nickel-development-bargain:core:2",
+      "caseStudyId": "indonesia-nickel-development-bargain",
+      "caseStudyTitle": "Indonesia's Nickel Bargain",
+      "sourceTitle": "Indonesia: The downstreaming dilemma",
+      "publisher": "Lowy Institute",
+      "group": "core",
+      "kind": "primary",
+      "url": "https://www.lowyinstitute.org/the-interpreter/indonesia-downstreaming-dilemma"
+    },
+    {
+      "id": "mekong-energy-food-bargain:core:0",
+      "caseStudyId": "mekong-energy-food-bargain",
+      "caseStudyTitle": "The Mekong Energy–Food Bargain",
+      "sourceTitle": "Viet Nam to Chair the Mekong River Commission Council in 2026",
+      "publisher": "Ministry of Agriculture and Environment, Viet Nam",
+      "group": "core",
+      "kind": "primary",
+      "url": "https://en.mae.gov.vn/Pages/chi-tiet-tin-Eng.aspx?ItemID=9133"
+    },
+    {
+      "id": "mekong-energy-food-bargain:core:1",
+      "caseStudyId": "mekong-energy-food-bargain",
+      "caseStudyTitle": "The Mekong Energy–Food Bargain",
+      "sourceTitle": "An inception report on piloting a Joint Environmental Monitoring Programme on two Mekong Mainstream Dams",
+      "publisher": "Mekong River Commission",
+      "group": "core",
+      "kind": "primary",
+      "url": "https://www.mrcmekong.org/publications/an-inception-report-on-piloting-a-joint-environmental-monitoring-programme-on-two-mekong-mainstream-dams-don-sahong-hydropower-project-and-xayaburi-hydropower-project-6/"
+    },
+    {
+      "id": "mekong-energy-food-bargain:core:2",
+      "caseStudyId": "mekong-energy-food-bargain",
+      "caseStudyTitle": "The Mekong Energy–Food Bargain",
+      "sourceTitle": "Balancing Energy and Ecology: Floating Solar in the 3S River Basin",
+      "publisher": "Stimson Center",
+      "group": "core",
+      "kind": "primary",
+      "url": "https://www.stimson.org/2025/balancing-energy-and-ecology-floating-solar-in-the-3s-river-basin/"
+    },
+    {
+      "id": "pacific-seabed-governance:core:0",
+      "caseStudyId": "pacific-seabed-governance",
+      "caseStudyTitle": "Who Governs the Pacific Seabed?",
+      "sourceTitle": "Nauru and TMC sign updated sponsorship agreement",
+      "publisher": "Government of the Republic of Nauru",
+      "group": "core",
+      "kind": "primary",
+      "url": "https://www.nauru.gov.nr/government-information-office/media-release/media-release-nauru%2C-tmc-sign-new-agreement_6jun2025.aspx"
+    },
+    {
+      "id": "pacific-seabed-governance:core:1",
+      "caseStudyId": "pacific-seabed-governance",
+      "caseStudyTitle": "Who Governs the Pacific Seabed?",
+      "sourceTitle": "31st Session of the Council, Part II: 13–24 July 2026",
+      "publisher": "International Seabed Authority",
+      "group": "core",
+      "kind": "primary",
+      "url": "https://isa.org.jm/session-31-council-part-2-july-2026/"
+    },
+    {
+      "id": "pacific-seabed-governance:core:2",
+      "caseStudyId": "pacific-seabed-governance",
+      "caseStudyTitle": "Who Governs the Pacific Seabed?",
+      "sourceTitle": "Long-term impact and biological recovery in a deep-sea mining track",
+      "publisher": "Nature",
+      "group": "core",
+      "kind": "primary",
+      "url": "https://www.nature.com/articles/s41586-025-08921-3"
+    },
+    {
+      "id": "haiti-security-legitimacy-haitian-ownership:core:0",
+      "caseStudyId": "haiti-security-legitimacy-haitian-ownership",
+      "caseStudyTitle": "Haiti: Security, Legitimacy, and Haitian Ownership",
+      "sourceTitle": "31st Anniversary of the PNH: Report on the General Operating Conditions of the Institution from June 2025 to June 2026",
+      "publisher": "National Human Rights Defense Network (RNDDH)",
+      "group": "core",
+      "kind": "primary",
+      "url": "https://web.rnddh.org/wp-content/uploads/2026/06/5-Rap-PNH-12Juin2026.ENG_.pdf"
+    },
+    {
+      "id": "haiti-security-legitimacy-haitian-ownership:core:1",
+      "caseStudyId": "haiti-security-legitimacy-haitian-ownership",
+      "caseStudyTitle": "Haiti: Security, Legitimacy, and Haitian Ownership",
+      "sourceTitle": "Noon briefing of 1 April 2026",
+      "publisher": "Office of the UN Secretary-General",
+      "group": "core",
+      "kind": "primary",
+      "url": "https://www.un.org/sg/en/content/highlight/2026-04-01.html"
+    },
+    {
+      "id": "haiti-security-legitimacy-haitian-ownership:core:2",
+      "caseStudyId": "haiti-security-legitimacy-haitian-ownership",
+      "caseStudyTitle": "Haiti: Security, Legitimacy, and Haitian Ownership",
+      "sourceTitle": "World Report 2026: Haiti",
+      "publisher": "Human Rights Watch",
+      "group": "core",
+      "kind": "primary",
+      "url": "https://www.hrw.org/world-report/2026/country-chapters/haiti"
+    },
+    {
+      "id": "amazon-indigenous-co-governance:core:0",
+      "caseStudyId": "amazon-indigenous-co-governance",
+      "caseStudyTitle": "Amazon: Indigenous Co-Governance After the Bogotá Declaration",
+      "sourceTitle": "COICA celebrates the approval of the Amazonian Mechanism of Indigenous Peoples (MAPI)",
+      "publisher": "Coordinator of Indigenous Organizations of the Amazon River Basin (COICA)",
+      "group": "core",
+      "kind": "primary",
+      "url": "https://coicamazonia.org/13933-2/"
+    },
+    {
+      "id": "amazon-indigenous-co-governance:core:1",
+      "caseStudyId": "amazon-indigenous-co-governance",
+      "caseStudyTitle": "Amazon: Indigenous Co-Governance After the Bogotá Declaration",
+      "sourceTitle": "Bogotá Declaration: V Meeting of Presidents of the States Parties of the Amazon Cooperation Treaty",
+      "publisher": "Amazon Cooperation Treaty Organization",
+      "group": "core",
+      "kind": "primary",
+      "url": "https://otca.org/en/wp-content/uploads/2025/08/BOGOTA-DECLARATION_Presidential-Summit.pdf"
+    },
+    {
+      "id": "amazon-indigenous-co-governance:core:2",
+      "caseStudyId": "amazon-indigenous-co-governance",
+      "caseStudyTitle": "Amazon: Indigenous Co-Governance After the Bogotá Declaration",
+      "sourceTitle": "Principais temas para acompanhar na COP30",
+      "publisher": "WRI Brasil",
+      "group": "core",
+      "kind": "primary",
+      "url": "https://www.wribrasil.org.br/cop30/principais-temas"
+    },
+    {
+      "id": "rio-bravo-rio-grande-water-treaty:core:0",
+      "caseStudyId": "rio-bravo-rio-grande-water-treaty",
+      "caseStudyTitle": "Rio Bravo / Rio Grande: Sharing Water Under Extreme Drought",
+      "sourceTitle": "México y Estados Unidos acuerdan un plan técnico para la gestión del agua en la cuenca del Río Bravo conforme al Tratado de 1944",
+      "publisher": "Comisión Nacional del Agua, Government of Mexico",
+      "group": "core",
+      "kind": "primary",
+      "url": "https://www.gob.mx/conagua/prensa/mexico-y-estados-unidos-acuerdan-un-plan-tecnico-para-la-gestion-del-agua-en-la-cuenca-del-rio-bravo-conforme-al-tratado-de-1944-418614?idiom=es"
+    },
+    {
+      "id": "rio-bravo-rio-grande-water-treaty:core:1",
+      "caseStudyId": "rio-bravo-rio-grande-water-treaty",
+      "caseStudyTitle": "Rio Bravo / Rio Grande: Sharing Water Under Extreme Drought",
+      "sourceTitle": "IBWC Signs Minute 331 Focused on Improving Reliability, Predictability of Rio Grande Water Deliveries",
+      "publisher": "International Boundary and Water Commission, United States and Mexico",
+      "group": "core",
+      "kind": "primary",
+      "url": "https://www.ibwc.gov/wp-content/uploads/2024/11/IBWC-Signs-Minute-331-Focused-on-Improving-Reliability-Predictability-of-Rio-Grande-Water-Deliveries.pdf"
+    },
+    {
+      "id": "rio-bravo-rio-grande-water-treaty:core:2",
+      "caseStudyId": "rio-bravo-rio-grande-water-treaty",
+      "caseStudyTitle": "Rio Bravo / Rio Grande: Sharing Water Under Extreme Drought",
+      "sourceTitle": "As the Rio Grande runs dry, South Texas leaders look to new water supplies to sustain growth",
+      "publisher": "The Texas Tribune",
+      "group": "core",
+      "kind": "primary",
+      "url": "https://www.texastribune.org/2025/05/15/texas-water-rio-grande-valley-drought/"
+    },
+    {
+      "id": "moldova-transnistria-energy-eu-accession:core:0",
+      "caseStudyId": "moldova-transnistria-energy-eu-accession",
+      "caseStudyTitle": "Moldova and Transnistria: Energy Resilience During EU Accession",
+      "sourceTitle": "Human Rights in the Transnistrian Region of the Republic of Moldova: Retrospective of 2025",
+      "publisher": "Promo-LEX Association",
+      "group": "core",
+      "kind": "primary",
+      "url": "https://promolex.md/en/promo-lex-association-launches-the-report-human-rights-in-the-transnistrian-region-of-the-republic-of-moldova-retrospective-of-2025/"
+    },
+    {
+      "id": "moldova-transnistria-energy-eu-accession:core:1",
+      "caseStudyId": "moldova-transnistria-energy-eu-accession",
+      "caseStudyTitle": "Moldova and Transnistria: Energy Resilience During EU Accession",
+      "sourceTitle": "Moldova",
+      "publisher": "Council of the European Union",
+      "group": "core",
+      "kind": "primary",
+      "url": "https://www.consilium.europa.eu/en/policies/moldova/"
+    },
+    {
+      "id": "moldova-transnistria-energy-eu-accession:core:2",
+      "caseStudyId": "moldova-transnistria-energy-eu-accession",
+      "caseStudyTitle": "Moldova and Transnistria: Energy Resilience During EU Accession",
+      "sourceTitle": "Cold calculations: Why a freezing Transnistria helps Moscow",
+      "publisher": "European Council on Foreign Relations",
+      "group": "core",
+      "kind": "primary",
+      "url": "https://ecfr.eu/article/cold-calculations-why-a-freezing-transnistria-helps-moscow/"
+    },
+    {
+      "id": "high-seas-bbnj-implementation:core:0",
+      "caseStudyId": "high-seas-bbnj-implementation",
+      "caseStudyTitle": "High Seas: Implementing the BBNJ Agreement",
+      "sourceTitle": "Proposals by the Pacific Small Island Developing States",
+      "publisher": "Pacific Small Island Developing States",
+      "group": "core",
+      "kind": "primary",
+      "url": "https://www.un.org/bbnjagreement/sites/default/files/2026-03/PSIDS_SubBodiesCorr_25March.pdf"
+    },
+    {
+      "id": "high-seas-bbnj-implementation:core:1",
+      "caseStudyId": "high-seas-bbnj-implementation",
+      "caseStudyTitle": "High Seas: Implementing the BBNJ Agreement",
+      "sourceTitle": "BBNJ Agreement",
+      "publisher": "United Nations, Division for Ocean Affairs and the Law of the Sea",
+      "group": "core",
+      "kind": "primary",
+      "url": "https://www.un.org/bbnjagreement/en"
+    },
+    {
+      "id": "high-seas-bbnj-implementation:core:2",
+      "caseStudyId": "high-seas-bbnj-implementation",
+      "caseStudyTitle": "High Seas: Implementing the BBNJ Agreement",
+      "sourceTitle": "Summary of the Third Session of the Preparatory Commission for the Entry into Force of the BBNJ Agreement",
+      "publisher": "Earth Negotiations Bulletin, International Institute for Sustainable Development",
+      "group": "core",
+      "kind": "primary",
+      "url": "https://enb.iisd.org/sites/default/files/2026-04/enb25262e.pdf"
+    },
+    {
+      "id": "who-pathogen-access-benefit-sharing:core:0",
+      "caseStudyId": "who-pathogen-access-benefit-sharing",
+      "caseStudyTitle": "Global Health: Pathogen Access and Benefit Sharing",
+      "sourceTitle": "African Group high level preparations ahead of the resumed 6th session on the PABS System",
+      "publisher": "African Union",
+      "group": "core",
+      "kind": "primary",
+      "url": "https://au.int/sites/default/files/pressreleases/46323-pr-Press_release_Ambassadors_workshop_23_April_2026_E_FINAL.pdf"
+    },
+    {
+      "id": "who-pathogen-access-benefit-sharing:core:1",
+      "caseStudyId": "who-pathogen-access-benefit-sharing",
+      "caseStudyTitle": "Global Health: Pathogen Access and Benefit Sharing",
+      "sourceTitle": "WHO Member States continue negotiations on the Pathogen Access and Benefit Sharing Annex",
+      "publisher": "World Health Organization",
+      "group": "core",
+      "kind": "primary",
+      "url": "https://www.who.int/news/item/20-07-2026-who-member-states-continue-negotiations-on-the-pathogen-access-and-benefit-sharing-annex"
+    },
+    {
+      "id": "who-pathogen-access-benefit-sharing:core:2",
+      "caseStudyId": "who-pathogen-access-benefit-sharing",
+      "caseStudyTitle": "Global Health: Pathogen Access and Benefit Sharing",
+      "sourceTitle": "WHO Pandemic Agreement is only the beginning: strengthening implementation to protect global health",
+      "publisher": "The BMJ",
+      "group": "core",
+      "kind": "primary",
+      "url": "https://www.bmj.com/content/392/bmj-2025-086069"
+    }
+  ]
+}

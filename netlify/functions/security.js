@@ -2,8 +2,11 @@ const RATE_WINDOW_MS = 15 * 60 * 1000;
 const DEFAULT_ALLOWED_ORIGINS = [
     'https://globalcommandcenter2026.netlify.app',
     'http://localhost:5173',
+    'http://127.0.0.1:5173',
     'http://localhost:8888',
+    'http://127.0.0.1:8888',
 ];
+const DEPLOY_PREVIEW_ORIGIN = /^https:\/\/deploy-preview-\d+--globalcommandcenter2026\.netlify\.app$/;
 
 const requestBuckets = new Map();
 
@@ -20,6 +23,10 @@ function allowedOrigins() {
     return new Set([...DEFAULT_ALLOWED_ORIGINS, ...configured]);
 }
 
+function isAllowedOrigin(origin) {
+    return !origin || allowedOrigins().has(origin) || DEPLOY_PREVIEW_ORIGIN.test(origin);
+}
+
 function responseHeaders(event) {
     const origin = getHeader(event, 'origin');
     const headers = {
@@ -28,7 +35,7 @@ function responseHeaders(event) {
         'Vary': 'Authorization, Origin',
     };
 
-    if (origin && allowedOrigins().has(origin)) {
+    if (origin && isAllowedOrigin(origin)) {
         headers['Access-Control-Allow-Origin'] = origin;
         headers['Access-Control-Allow-Headers'] = 'Authorization, Content-Type';
         headers['Access-Control-Allow-Methods'] = 'GET, POST, OPTIONS';
@@ -62,7 +69,7 @@ function rateLimit(userId, maxRequests) {
 
 async function protectEndpoint(event, { methods = ['POST'], maxRequests = 20 } = {}) {
     const origin = getHeader(event, 'origin');
-    if (origin && !allowedOrigins().has(origin)) {
+    if (!isAllowedOrigin(origin)) {
         return { response: jsonResponse(event, 403, 'Origin not allowed.') };
     }
 
@@ -121,4 +128,18 @@ async function protectEndpoint(event, { methods = ['POST'], maxRequests = 20 } =
     return { user };
 }
 
-module.exports = { protectEndpoint };
+function protectPublicEndpoint(event, { methods = ['GET'] } = {}) {
+    const origin = getHeader(event, 'origin');
+    if (!isAllowedOrigin(origin)) {
+        return { response: jsonResponse(event, 403, 'Origin not allowed.') };
+    }
+    if (event.httpMethod === 'OPTIONS') {
+        return { response: { statusCode: 204, headers: responseHeaders(event), body: '' } };
+    }
+    if (!methods.includes(event.httpMethod)) {
+        return { response: jsonResponse(event, 405, 'Method not allowed.') };
+    }
+    return {};
+}
+
+module.exports = { isAllowedOrigin, protectEndpoint, protectPublicEndpoint };

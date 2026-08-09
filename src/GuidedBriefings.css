@@ -144,11 +144,37 @@
 .briefing-evidence .source-perspective-local { color: #62e6a7; }
 .briefing-evidence .source-perspective-institutional { color: #67d5f5; }
 .briefing-evidence .source-perspective-independent { color: #d990ff; }
+.source-citation-main { display: grid; min-width: 0; }
+.briefing-evidence .source-citation-main > span,
+.briefing-evidence .source-citation-main > small { grid-column: 1; }
+.briefing-evidence .source-health {
+    display: inline-block;
+    width: fit-content;
+    margin-top: 3px;
+    padding: 2px 5px;
+    border: 1px solid currentColor;
+    border-radius: 999px;
+    color: #8aa0aa;
+    font-size: .43rem;
+    font-style: normal;
+    line-height: 1.2;
+}
+.briefing-evidence .source-health-healthy { color: #62e6a7; }
+.briefing-evidence .source-health-restricted { color: #f4d35e; }
+.briefing-evidence .source-health-broken { color: #ff7b8d; }
+.briefing-evidence .source-alternate {
+    width: fit-content;
+    margin-top: 5px;
+    color: #9fb2bc;
+    font-size: .5rem;
+}
+.briefing-evidence .source-alternate.recommended { color: #f4d35e; font-weight: 700; }
 .briefing-reading-list { min-width: 0; }
 .briefing-supplemental { margin-top: 10px; padding-top: 8px; border-top: 1px solid rgba(159, 178, 188, .16); }
 .briefing-supplemental summary { color: #9fb2bc; cursor: pointer; font-size: .52rem; }
 .briefing-supplemental ul { margin-top: 8px; }
 .briefing-supplemental li { display: block; }
+.briefing-supplemental .source-citation-main { display: grid; }
 .briefing-supplemental li span { margin-left: 0; }
 
 .briefing-controls { display: flex; justify-content: space-between; gap: 10px; max-width: 900px; margin: 18px auto 0; }

@@ -85,6 +85,10 @@ Shorter review cadences are appropriate for active conflict, elections, emergenc
 
 Guided Briefings search indexes case titles, subtitles, region tags, issue dimensions, and source publishers and titles. Region filtering uses `coverageRegion`; issue filtering uses `broadCategory`. The globe's **Editorial Cases** toggle controls the separate curated layer and may render more than one marker for a regional or global case.
 
-## Current operational limitation
+## Link health and current operational limitation
 
-The application displays review metadata but does not currently assign owners, create review tasks, alert on approaching or overdue dates, check link health, or verify that claims still match their sources. Until that workflow is implemented, an editor must maintain an external review queue and treat every case as a dated snapshot.
+The application performs a daily reachability check for every core, supplemental, and alternate URL. Results distinguish a reachable link from a publisher restriction, a confirmed 404/410, or an uncertain network response. These checks do not verify the article's claims, detect substantive revisions, or prove that a publisher page works from every visitor network.
+
+Sources may declare `alternateUrls: [{ label, url }]`. Alternates must be legitimate publisher, author, institutional, repository, or document mirrors—not mechanisms for bypassing access controls. The interface recommends an alternate when the primary is reported as restricted or broken.
+
+The application still does not assign named editorial owners, create review tasks, or alert on approaching and overdue review dates. Editors must therefore maintain the substantive review queue externally and treat every case as a dated snapshot even when all links are healthy.

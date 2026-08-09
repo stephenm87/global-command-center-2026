@@ -106,6 +106,11 @@ test('curated case studies remain balanced, auditable, and Nexus-compatible', as
             assertNonEmptyString(source.perspective, `${caseStudy.id} has a source without a perspective`);
             assertNonEmptyString(source.supports, `${caseStudy.id} has a source without a supports statement`);
             assertNonEmptyString(source.dateLabel, `${caseStudy.id} has a source without transparent timing metadata`);
+            for (const alternate of source.alternateUrls || []) {
+                assert.match(alternate.url, /^https:\/\//, `${caseStudy.id} has an invalid alternate source URL`);
+                assertNonEmptyString(alternate.label, `${caseStudy.id} has an unlabeled alternate source URL`);
+                assert.notEqual(alternate.url, source.url, `${caseStudy.id} repeats its primary URL as an alternate`);
+            }
             if (source.publishedAt) {
                 assertValidEditorialDate(source.publishedAt, `${caseStudy.id} has an invalid source publication date`);
             } else {

@@ -1,6 +1,7 @@
 import { useEffect, useMemo, useState } from 'react';
 import { GUIDED_TOURS } from './nexusTours';
 import { NEXUS_ACTORS } from './nexusFocusData';
+import { indexSourceHealth, shouldPreferAlternate, sourceHealthLabel } from './sourceHealth.mjs';
 import './GuidedBriefings.css';
 
 const validTour = id => GUIDED_TOURS.some(tour => tour.id === id);
@@ -15,12 +16,43 @@ const resolveStepIndex = (tourId, nodeId, step) => {
     return actorIndex >= 0 ? actorIndex : 0;
 };
 
+function SourceCitation({ source, healthByUrl, supplemental = false }) {
+    const health = healthByUrl.get(source.url);
+    const healthLabel = sourceHealthLabel(health);
+    const preferAlternate = shouldPreferAlternate(health);
+    const alternates = Array.isArray(source.alternateUrls) ? source.alternateUrls : [];
+
+    return (
+        <li className={supplemental ? 'source-citation source-citation-supplemental' : 'source-citation'}>
+            {!supplemental && source.perspectiveType && <strong className={`source-perspective source-perspective-${source.perspectiveType}`}>{source.perspectiveType}</strong>}
+            <div className="source-citation-main">
+                <a href={source.url} target="_blank" rel="noopener noreferrer">{source.title}</a>
+                {healthLabel && <em className={`source-health source-health-${health.status}`}>{healthLabel}{health.httpStatus ? ` · ${health.httpStatus}` : ''}</em>}
+                <span>{source.publisher}{source.dateLabel ? ` · ${source.dateLabel}` : ''}{source.perspective ? ` · ${source.perspective}` : ''}</span>
+                {source.supports && <small>Supports: {source.supports}</small>}
+                {alternates.map(alternate => (
+                    <a
+                        className={`source-alternate ${preferAlternate ? 'recommended' : ''}`}
+                        href={alternate.url}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        key={alternate.url}
+                    >
+                        {preferAlternate ? 'Recommended fallback: ' : 'Alternate: '}{alternate.label || 'Open alternate source'} ↗
+                    </a>
+                ))}
+            </div>
+        </li>
+    );
+}
+
 export default function GuidedBriefings({ initialTourId, initialNodeId, initialStep, onExploreNode, onRouteChange }) {
     const [tourId, setTourId] = useState(validTour(initialTourId) ? initialTourId : GUIDED_TOURS[0]?.id);
     const [stepIndex, setStepIndex] = useState(() => resolveStepIndex(initialTourId, initialNodeId, initialStep));
     const [librarySearch, setLibrarySearch] = useState('');
     const [regionFilter, setRegionFilter] = useState('all');
     const [issueFilter, setIssueFilter] = useState('all');
+    const [sourceHealth, setSourceHealth] = useState(null);
 
     const tour = useMemo(() => GUIDED_TOURS.find(item => item.id === tourId) || GUIDED_TOURS[0], [tourId]);
     const waypoint = tour?.waypoints[stepIndex];
@@ -51,6 +83,16 @@ export default function GuidedBriefings({ initialTourId, initialNodeId, initialS
             ].join(' ').toLowerCase().includes(query);
         });
     }, [librarySearch, regionFilter, issueFilter]);
+    const healthByUrl = useMemo(() => indexSourceHealth(sourceHealth), [sourceHealth]);
+
+    useEffect(() => {
+        const controller = new AbortController();
+        fetch('/.netlify/functions/source-health', { signal: controller.signal })
+            .then(response => response.ok ? response.json() : null)
+            .then(snapshot => { if (snapshot) setSourceHealth(snapshot); })
+            .catch(() => {});
+        return () => controller.abort();
+    }, []);
 
     useEffect(() => {
         if (!validTour(initialTourId)) return;
@@ -209,25 +251,13 @@ export default function GuidedBriefings({ initialTourId, initialNodeId, initialS
                     {tour.sources?.length > 0 && (
                         <div className="briefing-reading-list">
                             <ul>
-                                {tour.sources.map(source => (
-                                    <li key={source.url}>
-                                        {source.perspectiveType && <strong className={`source-perspective source-perspective-${source.perspectiveType}`}>{source.perspectiveType}</strong>}
-                                        <a href={source.url} target="_blank" rel="noopener noreferrer">{source.title}</a>
-                                        <span>{source.publisher}{source.dateLabel ? ` · ${source.dateLabel}` : ''}{source.perspective ? ` · ${source.perspective}` : ''}</span>
-                                        {source.supports && <small>Supports: {source.supports}</small>}
-                                    </li>
-                                ))}
+                                {tour.sources.map(source => <SourceCitation key={source.url} source={source} healthByUrl={healthByUrl} />)}
                             </ul>
                             {tour.supplementalSources?.length > 0 && (
                                 <details className="briefing-supplemental">
                                     <summary>{tour.supplementalSources.length} supporting primary {tour.supplementalSources.length === 1 ? 'document' : 'documents'}</summary>
                                     <ul>
-                                        {tour.supplementalSources.map(source => (
-                                            <li key={source.url}>
-                                                <a href={source.url} target="_blank" rel="noopener noreferrer">{source.title}</a>
-                                                <span>{source.publisher}{source.dateLabel ? ` · ${source.dateLabel}` : ''}{source.perspective ? ` · ${source.perspective}` : ''}</span>
-                                            </li>
-                                        ))}
+                                        {tour.supplementalSources.map(source => <SourceCitation key={source.url} source={source} healthByUrl={healthByUrl} supplemental />)}
                                     </ul>
                                 </details>
                             )}

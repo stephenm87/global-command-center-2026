@@ -4,6 +4,7 @@ import assert from 'node:assert/strict';
 import {
     LIVE_INTEL_CATEGORY,
     filterIntelForecasts,
+    getCurrentFeedLabel,
     getFeedEmptyState,
     mergeIntelSources,
     searchIntelForecasts,
@@ -34,6 +35,8 @@ test('public fallback records remain linked references and are never relabelled 
         liveItemCount: 0,
         linkedReferenceCount: 1,
         sourceMode: 'public-reference',
+        feedStatus: 'reference-only',
+        provider: null,
     });
 });
 
@@ -78,9 +81,30 @@ test('live-only filtering over references returns a clear public-source recovery
     });
 
     assert.deepEqual(filtered, []);
-    assert.equal(emptyState.title, 'NO CURRENT PROVIDER UPDATES');
+    assert.equal(emptyState.title, 'NO CURRENT UPDATES AVAILABLE');
     assert.equal(emptyState.action, 'show-public-sources');
-    assert.match(emptyState.message, /without a login/i);
+    assert.match(emptyState.message, /cached provider snapshot/i);
+});
+
+test('public cached updates expose accurate fresh and unavailable labels', () => {
+    const records = mergeIntelSources({
+        providerItems: [linkedRecord({ _contentStatus: 'provider-current', _scraperSource: 'serper-public-cache' })],
+    });
+    const summary = summarizeIntelSources(records, {
+        sourceMode: 'public-cache',
+        status: 'fresh',
+        provider: 'Serper',
+    });
+
+    assert.equal(summary.sourceMode, 'public-cache');
+    assert.equal(summary.feedStatus, 'fresh');
+    assert.equal(getCurrentFeedLabel(summary), 'CACHED CURRENT UPDATES (1)');
+    assert.equal(getCurrentFeedLabel({ liveItemCount: 0, feedStatus: 'not-configured' }), 'CURRENT UPDATES — NOT CONFIGURED');
+    assert.match(getFeedEmptyState({
+        feedItems: [],
+        selectedCategory: LIVE_INTEL_CATEGORY,
+        intelStatus: 'network-error',
+    }).title, /CONNECTION FAILED/);
 });
 
 test('searching supports source metadata and reports a clear no-match action', () => {

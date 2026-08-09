@@ -113,6 +113,12 @@ const CORE_CASE_STUDIES_2026 = [
                 publisher: 'OCHA / United Nations in Myanmar',
                 publishedAt: '2026-07-13',
                 url: 'https://myanmar.un.org/en/319232-myanmar-humanitarian-update-no-52',
+                alternateUrls: [
+                    {
+                        label: 'Open the official OCHA PDF directly',
+                        url: 'https://myanmar.un.org/en/download/212411/319232',
+                    },
+                ],
                 perspectiveType: 'institutional',
                 perspective: 'United Nations humanitarian situation and response reporting',
                 supports: 'National assistance needs, displacement estimates, access barriers, and response funding',

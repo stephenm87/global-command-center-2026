@@ -11,6 +11,8 @@
 - An **Editorial Cases** globe layer with a visible case count, persistent on/off preference, and multi-location mapping for regional and global cases.
 - A documented case-study editorial standard covering claims, sources, sensitivity, map modes, and manual review metadata.
 - A searchable Focus Nexus with relationship lenses, source-linked current cases, and actor deep links.
+- An anonymous, fixed-query Serper snapshot stored in Netlify Blobs and refreshed every 30 minutes without exposing the provider key.
+- Daily automated health classification for editorial source links, plus reusable alternate-source links and an official OCHA PDF fallback for the Myanmar briefing.
 
 ### Changed
 - Current provider intelligence now precedes clearly dated editorial context.
@@ -20,6 +22,8 @@
 - The visually dense force graph is now an opt-in Advanced Nexus presentation; the simpler Focus view is the default and preserves actor context when switching presentations.
 - Case-study 5W1H and theory panels now use qualified, evidence-aware language instead of generic factual assertions.
 - Case records now normalize `coverageRegion`, `featured`, `sensitivity`, `reviewCadenceDays`, `reviewBy`, perspective labels, and point, route, regional, or global map locations for use across the globe, Guided Briefings, and Nexus.
+- Feed states now distinguish cached, stale, unavailable, warming, and unconfigured provider data instead of presenting every failure as zero updates.
+- Authentication is reserved for visitor-supplied searches, Firecrawl extraction, and AI briefing generation; the fixed public snapshot is anonymously readable.
 
 ## [baseline-2026-08-03] - 2026-08-03
 ### Added
