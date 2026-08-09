@@ -12,7 +12,7 @@ exports.handler = async event => {
     const security = protectPublicEndpoint(event, { methods: ['GET'] });
     if (security.response) return security.response;
     try {
-        const snapshot = await readSnapshot(SNAPSHOT_KEY);
+        const snapshot = await readSnapshot(SNAPSHOT_KEY, event);
         return {
             statusCode: 200,
             headers,

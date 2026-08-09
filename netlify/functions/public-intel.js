@@ -11,10 +11,10 @@ const publicHeaders = {
     'Netlify-CDN-Cache-Control': 'public, max-age=900, stale-while-revalidate=21600',
 };
 
-async function refreshSnapshot() {
+async function refreshSnapshot(event) {
     if (!inFlightRefresh) {
         inFlightRefresh = buildPublicSnapshot()
-            .then(snapshot => writeSnapshot(SNAPSHOT_KEY, snapshot))
+            .then(snapshot => writeSnapshot(SNAPSHOT_KEY, snapshot, event))
             .finally(() => { inFlightRefresh = null; });
     }
     return inFlightRefresh;
@@ -25,13 +25,13 @@ exports.handler = async event => {
     if (security.response) return security.response;
 
     try {
-        const cached = await readSnapshot(SNAPSHOT_KEY);
+        const cached = await readSnapshot(SNAPSHOT_KEY, event);
         const configurationBecameAvailable = cached?.meta?.status === 'not-configured' && process.env.SERPER_API_KEY;
         if (cached?.meta && !configurationBecameAvailable) {
             return { statusCode: 200, headers: publicHeaders, body: JSON.stringify(withSnapshotAge(cached)) };
         }
 
-        const snapshot = await refreshSnapshot();
+        const snapshot = await refreshSnapshot(event);
         return { statusCode: 200, headers: publicHeaders, body: JSON.stringify(withSnapshotAge(snapshot)) };
     } catch (error) {
         console.error('[public-intel] Snapshot unavailable:', error.message);

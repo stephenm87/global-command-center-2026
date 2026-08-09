@@ -4,7 +4,7 @@ const { writeSnapshot } = require('./_shared/snapshot-store');
 
 const SNAPSHOT_KEY = 'source-health/current.json';
 
-exports.handler = async () => {
+exports.handler = async event => {
     const checkedAt = new Date().toISOString();
     const results = await checkTargets(manifest.targets);
     const snapshot = {
@@ -14,7 +14,7 @@ exports.handler = async () => {
         summary: summarizeHealth(results),
         results,
     };
-    await writeSnapshot(SNAPSHOT_KEY, snapshot);
+    await writeSnapshot(SNAPSHOT_KEY, snapshot, event);
     console.log(`[refresh-source-health] Checked ${results.length} links: ${JSON.stringify(snapshot.summary)}.`);
     return { statusCode: 204 };
 };
