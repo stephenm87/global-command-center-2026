@@ -1,37 +1,77 @@
 {
   "schemaVersion": 1,
   "caseStudyCount": 29,
-  "targetCount": 97,
+  "targetCount": 106,
   "targets": [
     {
       "id": "sudan-displacement-regional-spillover:core:0",
       "caseStudyId": "sudan-displacement-regional-spillover",
       "caseStudyTitle": "Sudan: War, Displacement, and Regional Spillover",
-      "sourceTitle": "Sudanese communities are rebuilding under fire. Will Berlin back them?",
-      "publisher": "The New Humanitarian",
+      "sourceTitle": "Emergency Response Rooms work in Sudan – we could change aid models in other warzones",
+      "publisher": "Chatham House",
       "group": "core",
       "kind": "primary",
-      "url": "https://www.thenewhumanitarian.org/opinion/2026/04/14/sudanese-communities-are-rebuilding-under-fire-will-berlin-back-them"
+      "url": "https://www.chathamhouse.org/publications/the-world-today/2026-06/emergency-response-rooms-work-sudan-we-could-change-aid-models"
     },
     {
       "id": "sudan-displacement-regional-spillover:core:1",
       "caseStudyId": "sudan-displacement-regional-spillover",
       "caseStudyTitle": "Sudan: War, Displacement, and Regional Spillover",
-      "sourceTitle": "Three years on, war-weary Sudanese remain on the move",
-      "publisher": "UNHCR",
+      "sourceTitle": "Sudan situation",
+      "publisher": "UNHCR Operational Data Portal",
       "group": "core",
       "kind": "primary",
-      "url": "https://www.unhcr.org/news/briefing-notes/three-years-war-weary-sudanese-remain-move"
+      "url": "https://data.unhcr.org/en/situations/sudansituation"
     },
     {
       "id": "sudan-displacement-regional-spillover:core:2",
       "caseStudyId": "sudan-displacement-regional-spillover",
       "caseStudyTitle": "Sudan: War, Displacement, and Regional Spillover",
-      "sourceTitle": "Sudan enters a fourth year of war as officials lament an abandoned crisis",
+      "sourceTitle": "More than 300 children killed or injured in Sudan war in 6 months, UNICEF says",
       "publisher": "Associated Press",
       "group": "core",
       "kind": "primary",
+      "url": "https://apnews.com/article/sudan-war-children-drone-rsf-army-9ac6245afb2c0e3cfc96da5ceda14f48"
+    },
+    {
+      "id": "sudan-displacement-regional-spillover:supplemental:0",
+      "caseStudyId": "sudan-displacement-regional-spillover",
+      "caseStudyTitle": "Sudan: War, Displacement, and Regional Spillover",
+      "sourceTitle": "Sudanese communities are rebuilding under fire. Will Berlin back them?",
+      "publisher": "The New Humanitarian",
+      "group": "supplemental",
+      "kind": "primary",
+      "url": "https://www.thenewhumanitarian.org/opinion/2026/04/14/sudanese-communities-are-rebuilding-under-fire-will-berlin-back-them"
+    },
+    {
+      "id": "sudan-displacement-regional-spillover:supplemental:1",
+      "caseStudyId": "sudan-displacement-regional-spillover",
+      "caseStudyTitle": "Sudan: War, Displacement, and Regional Spillover",
+      "sourceTitle": "Three years on, war-weary Sudanese remain on the move",
+      "publisher": "UNHCR",
+      "group": "supplemental",
+      "kind": "primary",
+      "url": "https://www.unhcr.org/news/briefing-notes/three-years-war-weary-sudanese-remain-move"
+    },
+    {
+      "id": "sudan-displacement-regional-spillover:supplemental:2",
+      "caseStudyId": "sudan-displacement-regional-spillover",
+      "caseStudyTitle": "Sudan: War, Displacement, and Regional Spillover",
+      "sourceTitle": "Sudan enters a fourth year of war as officials lament an abandoned crisis",
+      "publisher": "Associated Press",
+      "group": "supplemental",
+      "kind": "primary",
       "url": "https://apnews.com/article/32a416bfbd680ea42edf6c0298d2617b"
+    },
+    {
+      "id": "sudan-displacement-regional-spillover:supplemental:3",
+      "caseStudyId": "sudan-displacement-regional-spillover",
+      "caseStudyTitle": "Sudan: War, Displacement, and Regional Spillover",
+      "sourceTitle": "Noon briefing of 9 July 2026",
+      "publisher": "United Nations",
+      "group": "supplemental",
+      "kind": "primary",
+      "url": "https://www.un.org/sg/en/content/highlight/2026-07-09.html"
     },
     {
       "id": "myanmar-fragmented-sovereignty:core:0",
@@ -176,6 +216,18 @@
       "url": "https://www.icj-cij.org/case/171"
     },
     {
+      "id": "guyana-venezuela-essequibo-icj:core:1:alternate:0",
+      "caseStudyId": "guyana-venezuela-essequibo-icj",
+      "caseStudyTitle": "Guyana–Venezuela: Essequibo Before the ICJ",
+      "sourceTitle": "Arbitral Award of 3 October 1899 (Guyana v. Venezuela)",
+      "publisher": "International Court of Justice",
+      "group": "core",
+      "kind": "alternate",
+      "primaryUrl": "https://www.icj-cij.org/case/171",
+      "label": "Open the current ICJ docket mirror",
+      "url": "https://icj-web.leman.un-icc.cloud/case/171"
+    },
+    {
       "id": "guyana-venezuela-essequibo-icj:core:2",
       "caseStudyId": "guyana-venezuela-essequibo-icj",
       "caseStudyTitle": "Guyana–Venezuela: Essequibo Before the ICJ",
@@ -253,7 +305,7 @@
       "publisher": "Australian Department of Home Affairs",
       "group": "core",
       "kind": "primary",
-      "url": "https://immi.homeaffairs.gov.au/visas/getting-a-visa/visa-listing/pacific-engagement/subclass-192/treaty-stream/ballot-registration"
+      "url": "https://immi.homeaffairs.gov.au/visas/getting-a-visa/visa-listing/pacific-engagement/subclass-192-treaty-stream/ballot-registration"
     },
     {
       "id": "tuvalu-australia-falepili-union:core:2",
@@ -276,14 +328,24 @@
       "url": "https://www.dfat.gov.au/geo/tuvalu/australia-tuvalu-falepili-union-treaty"
     },
     {
+      "id": "tuvalu-australia-falepili-union:supplemental:1",
+      "caseStudyId": "tuvalu-australia-falepili-union",
+      "caseStudyTitle": "Tuvalu–Australia Falepili Union",
+      "sourceTitle": "Treaty stream ballot country status",
+      "publisher": "Australian Department of Home Affairs",
+      "group": "supplemental",
+      "kind": "primary",
+      "url": "https://immi.homeaffairs.gov.au/visas/getting-a-visa/visa-listing/pacific-engagement/subclass-192-treaty-stream/ballot-registration/ballot-country-status"
+    },
+    {
       "id": "greenland-autonomy-security-minerals:core:0",
       "caseStudyId": "greenland-autonomy-security-minerals",
       "caseStudyTitle": "Greenland: Autonomy, Arctic Security, and Critical Minerals",
-      "sourceTitle": "Greenland’s prime minister tells US envoy self-determination cannot be negotiated",
-      "publisher": "Associated Press",
+      "sourceTitle": "Trump: Tilbagetrækning af styrker i Europa afhænger af Grønland",
+      "publisher": "KNR",
       "group": "core",
       "kind": "primary",
-      "url": "https://apnews.com/article/bbece2f899116788fe45525dcfe7d030"
+      "url": "https://www.knr.gl/da/nyheder/trump-tilbagetraekning-af-styrker-i-europa-afhaenger-af-groenland"
     },
     {
       "id": "greenland-autonomy-security-minerals:core:1",
@@ -300,13 +362,23 @@
       "caseStudyId": "greenland-autonomy-security-minerals",
       "caseStudyTitle": "Greenland: Autonomy, Arctic Security, and Critical Minerals",
       "sourceTitle": "Greenland mineral policy – changes in procedures for exploitation licences",
-      "publisher": "Polar Geography",
+      "publisher": "The Polar Journal",
       "group": "core",
       "kind": "primary",
       "url": "https://www.tandfonline.com/doi/full/10.1080/2154896X.2026.2628474"
     },
     {
       "id": "greenland-autonomy-security-minerals:supplemental:0",
+      "caseStudyId": "greenland-autonomy-security-minerals",
+      "caseStudyTitle": "Greenland: Autonomy, Arctic Security, and Critical Minerals",
+      "sourceTitle": "Greenland’s prime minister tells Trump’s envoy self-determination cannot be negotiated",
+      "publisher": "Associated Press",
+      "group": "supplemental",
+      "kind": "primary",
+      "url": "https://apnews.com/article/bbece2f899116788fe45525dcfe7d030"
+    },
+    {
+      "id": "greenland-autonomy-security-minerals:supplemental:1",
       "caseStudyId": "greenland-autonomy-security-minerals",
       "caseStudyTitle": "Greenland: Autonomy, Arctic Security, and Critical Minerals",
       "sourceTitle": "The Danish Armed Forces expand their presence and continue exercises in Greenland in close cooperation with allies",
@@ -316,7 +388,7 @@
       "url": "https://naalakkersuisut.gl/Nyheder/2026/01/1401_forsvaret?sc_lang=da"
     },
     {
-      "id": "greenland-autonomy-security-minerals:supplemental:1",
+      "id": "greenland-autonomy-security-minerals:supplemental:2",
       "caseStudyId": "greenland-autonomy-security-minerals",
       "caseStudyTitle": "Greenland: Autonomy, Arctic Security, and Critical Minerals",
       "sourceTitle": "Section 21 Commission constitutes itself and begins its work",
@@ -439,11 +511,23 @@
       "id": "somaliland-recognition-red-sea-order:core:0",
       "caseStudyId": "somaliland-recognition-red-sea-order",
       "caseStudyTitle": "Somaliland Recognition and the Red Sea Order",
-      "sourceTitle": "Statement on the Establishment of Diplomatic Relations Between the Republic of Somaliland and the State of Israel",
-      "publisher": "Ministry of Foreign Affairs and International Cooperation of Somaliland",
+      "sourceTitle": "A Diplomatic Breakthrough: Somaliland’s Foreign DG hails Israel’s Recognition of Sovereignty",
+      "publisher": "The Horn Tribune",
       "group": "core",
       "kind": "primary",
-      "url": "https://mfa.govsomaliland.org/article/statement-establishment-diplomatic-relations-between-republi?category=media"
+      "url": "https://horntribune.com/2025/12/29/a-diplomatic-breakthrough-somalilands-foreign-ministry-director-general-marks-israels-recognition-of-sovereignty/"
+    },
+    {
+      "id": "somaliland-recognition-red-sea-order:core:0:alternate:0",
+      "caseStudyId": "somaliland-recognition-red-sea-order",
+      "caseStudyTitle": "Somaliland Recognition and the Red Sea Order",
+      "sourceTitle": "A Diplomatic Breakthrough: Somaliland’s Foreign DG hails Israel’s Recognition of Sovereignty",
+      "publisher": "The Horn Tribune",
+      "group": "core",
+      "kind": "alternate",
+      "primaryUrl": "https://horntribune.com/2025/12/29/a-diplomatic-breakthrough-somalilands-foreign-ministry-director-general-marks-israels-recognition-of-sovereignty/",
+      "label": "The Horn Tribune print edition — 4 January 2026, front-page lead and page 5 continuation",
+      "url": "https://horntribune.com/wp-content/uploads/2026/01/THT-04-January-2026front.pdf"
     },
     {
       "id": "somaliland-recognition-red-sea-order:core:1",
@@ -464,6 +548,16 @@
       "group": "core",
       "kind": "primary",
       "url": "https://apnews.com/article/2447736e7355da4ac1ed182771f2e85e"
+    },
+    {
+      "id": "somaliland-recognition-red-sea-order:supplemental:0",
+      "caseStudyId": "somaliland-recognition-red-sea-order",
+      "caseStudyTitle": "Somaliland Recognition and the Red Sea Order",
+      "sourceTitle": "Why SSC-Khaatumo opposes Somaliland’s bid for recognition",
+      "publisher": "The EastAfrican",
+      "group": "supplemental",
+      "kind": "primary",
+      "url": "https://www.theeastafrican.co.ke/tea/news/east-africa/why-ssc-khaatumo-opposes-somaliland-s-bid-for-recognition-5086894"
     },
     {
       "id": "zambia-electricity-reset-climate-access:core:0",

@@ -1844,7 +1844,7 @@ function App() {
                                                 </ul>
                                                 {selectedForecast.supplementalSources?.length > 0 && (
                                                     <details>
-                                                        <summary>{selectedForecast.supplementalSources.length} supporting primary {selectedForecast.supplementalSources.length === 1 ? 'document' : 'documents'}</summary>
+                                                        <summary>{selectedForecast.supplementalSources.length} supplemental {selectedForecast.supplementalSources.length === 1 ? 'source' : 'sources'}</summary>
                                                         <ul>
                                                             {selectedForecast.supplementalSources.map(source => (
                                                                 <li key={source.url}>

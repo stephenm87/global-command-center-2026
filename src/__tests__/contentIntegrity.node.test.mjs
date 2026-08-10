@@ -2,7 +2,7 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import { createServer } from 'vite';
 
-const EDITORIAL_SNAPSHOT_DATE = '2026-08-09';
+const EDITORIAL_SNAPSHOT_DATE = '2026-08-10';
 const ISO_DATE_PATTERN = /^\d{4}-\d{2}-\d{2}$/;
 const CORE_PERSPECTIVE_TYPES = ['independent', 'institutional', 'local'];
 const WAYPOINT_PERSPECTIVE_TYPES = new Set([...CORE_PERSPECTIVE_TYPES, 'synthesis']);
@@ -34,7 +34,7 @@ test('curated case studies remain balanced, auditable, and Nexus-compatible', as
     });
     t.after(() => vite.close());
 
-    const [{ CASE_STUDIES_2026, toForecastRecord }, { GUIDED_TOURS }, focusData, eventAnalysis, theoryData] = await Promise.all([
+    const [{ CASE_STUDIES_2026, CONTENT_REVIEW_DATE, toForecastRecord }, { GUIDED_TOURS }, focusData, eventAnalysis, theoryData] = await Promise.all([
         vite.ssrLoadModule('/src/caseStudies2026.js'),
         vite.ssrLoadModule('/src/nexusTours.js'),
         vite.ssrLoadModule('/src/nexusFocusData.js'),
@@ -42,6 +42,7 @@ test('curated case studies remain balanced, auditable, and Nexus-compatible', as
         vite.ssrLoadModule('/src/theories.js'),
     ]);
 
+    assert.equal(CONTENT_REVIEW_DATE, EDITORIAL_SNAPSHOT_DATE, 'editorial snapshot should match the canonical review date');
     assert.equal(CASE_STUDIES_2026.length, 29);
     assert.equal(new Set(CASE_STUDIES_2026.map(item => item.id)).size, CASE_STUDIES_2026.length);
 
@@ -80,6 +81,7 @@ test('curated case studies remain balanced, auditable, and Nexus-compatible', as
         assert.ok(Number.isInteger(caseStudy.reviewCadenceDays) && caseStudy.reviewCadenceDays > 0, `${caseStudy.id} has invalid review cadence`);
         assertValidEditorialDate(caseStudy.reviewBy, `${caseStudy.id} has an invalid reviewBy`);
         assert.ok(caseStudy.reviewBy >= caseStudy.updatedAt, `${caseStudy.id} reviewBy precedes updatedAt`);
+        assert.ok(caseStudy.reviewBy >= EDITORIAL_SNAPSHOT_DATE, `${caseStudy.id} is overdue for editorial review`);
 
         assert.ok(MAP_MODES.has(caseStudy.map.mode), `${caseStudy.id} has invalid map mode ${caseStudy.map.mode}`);
         assert.ok(Array.isArray(caseStudy.map.locations) && caseStudy.map.locations.length > 0, `${caseStudy.id} needs map locations`);

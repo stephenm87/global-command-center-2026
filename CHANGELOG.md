@@ -15,6 +15,7 @@
 - Daily automated health classification for editorial source links, plus reusable alternate-source links and an official OCHA PDF fallback for the Myanmar briefing.
 
 ### Changed
+- Revalidated the Sudan, Guyana–Venezuela, Tuvalu, and Greenland briefings against current primary and independent evidence, and replaced the broken Somaliland source with a reachable local report plus fallback and contested-area context.
 - Current provider intelligence now precedes clearly dated editorial context.
 - Serper news queries were consolidated and provider calls now have bounded timeouts.
 - The Globe.gl/Three.js renderer is loaded on demand, keeping the large rendering engine out of the initial application chunk.

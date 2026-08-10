@@ -255,7 +255,7 @@ export default function GuidedBriefings({ initialTourId, initialNodeId, initialS
                             </ul>
                             {tour.supplementalSources?.length > 0 && (
                                 <details className="briefing-supplemental">
-                                    <summary>{tour.supplementalSources.length} supporting primary {tour.supplementalSources.length === 1 ? 'document' : 'documents'}</summary>
+                                    <summary>{tour.supplementalSources.length} supplemental {tour.supplementalSources.length === 1 ? 'source' : 'sources'}</summary>
                                     <ul>
                                         {tour.supplementalSources.map(source => <SourceCitation key={source.url} source={source} healthByUrl={healthByUrl} supplemental />)}
                                     </ul>
