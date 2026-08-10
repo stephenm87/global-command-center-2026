@@ -9,6 +9,7 @@
 7. **Editorial Ownership and Claim Review Automation**: The 29 case studies carry `updatedAt`, `reviewCadenceDays`, `reviewBy`, sensitivity, and uncertainty metadata, and their links receive automated availability checks. The application still does not assign a named editorial owner, open claim-review tasks, send reminders, or verify that claims continue to match source content. A healthy link and displayed review date are not evidence that substantive review occurred; the cases remain dated editorial snapshots rather than a live monitoring service.
 8. **Relationship Provenance**: Dated case connections include sources, but the advanced 3D Nexus also contains legacy structural annotations that are reference context rather than independently sourced current claims.
 9. **Vite 5 Development Advisories**: The repository contract currently requires Vite 5. `npm audit` reports development-server path/CORS and Windows-path advisories with no fix inside that major. Vite is not included in the Netlify production runtime; local serve and preview are restricted to loopback, but moving to a supported Vite major requires an explicit repository-policy update.
+10. **Automated Feed Language and Claim Limits**: The public snapshot now balances seven regions, six issue lenses, and five source roles, but discovery remains English-language and provider-dependent. Automated relevance, source-role classification, and link availability do not verify article claims or eliminate editorial bias.
 
 ## Recently Resolved
 
@@ -27,5 +28,6 @@
 - Guided Briefings now expose all 29 regionally balanced cases with text search, region and issue filters, exactly three perspective-labelled core readings per case, and a simpler route from evidence to relationship exploration.
 - The globe now has a separate **Editorial Cases** layer, including multi-location regional and global mappings, so curated cases are visibly distinct from provider intelligence.
 - Anonymous visitors now receive a durable, CDN-cached fixed-query Serper snapshot; custom searches and Firecrawl remain authenticated.
+- Cached-current results now pass a relevance threshold and are balanced with regional, issue, publisher, event-cluster, and source-role limits. The interface exposes coverage totals and selection provenance instead of presenting provider order as editorial priority.
 - Feed status differentiates fresh cache, stale cache, unavailable, warming, and unconfigured provider states.
 - Editorial source links receive daily reachability checks, and sources can declare legitimate fallback URLs such as the Myanmar OCHA direct PDF.

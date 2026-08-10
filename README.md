@@ -10,6 +10,7 @@ Global Command Center 2026 is an educational web application tailored for IB Glo
 - **Focus Nexus**: A searchable 2D relationship view with issue lenses and source-linked current cases.
 - **Advanced Nexus**: An optional, lazily loaded 3D force graph for users who want the full spatial network.
 - **AI-Powered Intelligence**: Summaries and news aggregation leveraging Gemini, Serper, and GNews.
+- **Balanced Current-Intelligence Feed**: Anonymous cached updates are selected across seven regions and six issue lenses with publisher and repeated-event limits, transparent source roles, and visible selection provenance.
 - **Deep Scan**: Advanced web scraping powered by Firecrawl.
 - **Teacher Guide**: A standalone HTML reference guide for educators.
 - **Supabase Authentication**: Passwordless access using OTP magic links.

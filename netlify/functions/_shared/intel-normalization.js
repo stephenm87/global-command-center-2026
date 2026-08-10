@@ -37,13 +37,13 @@ function categorizeSector(text) {
     const value = String(text || '').toLowerCase();
     if (/war|conflict|military|attack|missile|sanction|nato|nuclear|troops|coup|siege|weapons|drone/.test(value))
         return 'Geopolitics & Conflict';
-    if (/economy|trade|gdp|inflation|tariff|market|debt|recession|bank|supply chain|crypto/.test(value))
+    if (/economy|economic|trade|gdp|inflation|tariff|market|debt|recession|bank|finance|investment|development|labor|worker|employment|currency|export|import|commodity|supply chain|crypto/.test(value))
         return 'Economy & Trade';
-    if (/climate|energy|oil|gas|carbon|emissions|environment|flooding|drought|cop/.test(value))
+    if (/climate|energy|oil|gas|carbon|emissions|environment|water|ocean|mineral|biodiversity|forest|flooding|drought|cop/.test(value))
         return 'Environment & Energy';
-    if (/ai|tech|cyber|hack|satellite|space|chip|quantum|digital|surveillance/.test(value))
+    if (/\bai\b|artificial intelligence|tech|cyber|hack|satellite|space|chip|semiconductor|quantum|digital|information governance|surveillance/.test(value))
         return 'Technology & Science';
-    if (/health|pandemic|disease|vaccine|hospital|mental|food crisis|famine|refugee|humanitarian/.test(value))
+    if (/health|pandemic|disease|outbreak|vaccine|hospital|mental|food crisis|famine|refugee|migration|displacement|humanitarian/.test(value))
         return 'Health & Society';
     return 'Geopolitics & Conflict';
 }

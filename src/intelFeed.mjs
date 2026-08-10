@@ -86,6 +86,7 @@ export function searchIntelForecasts(items = [], search = '') {
     return items.filter(item => [
         item['Entity/Subject'], item['Topic/Sector'], item['Expected Impact/Value'],
         item['Key Player/Organization'], item.Broad_Category, item.Source,
+        item.coverage?.region, item.coverage?.issue, item.coverage?.sourceRoleLabel,
     ].some(value => String(value || '').toLowerCase().includes(query)));
 }
 
@@ -104,6 +105,7 @@ export function summarizeIntelSources(items = [], providerMeta = null) {
         sourceMode,
         feedStatus: providerMeta?.status || (sourceMode === 'public-reference' ? 'reference-only' : 'fresh'),
         provider: providerMeta?.provider || null,
+        coverage: providerMeta?.coverage || null,
     };
 }
 

@@ -37,6 +37,7 @@ test('public fallback records remain linked references and are never relabelled 
         sourceMode: 'public-reference',
         feedStatus: 'reference-only',
         provider: null,
+        coverage: null,
     });
 });
 
@@ -108,9 +109,19 @@ test('public cached updates expose accurate fresh and unavailable labels', () =>
 });
 
 test('searching supports source metadata and reports a clear no-match action', () => {
-    const records = [linkedRecord({ Source: 'UN News' })];
+    const records = [linkedRecord({
+        Source: 'UN News',
+        coverage: {
+            region: 'Africa',
+            issue: 'Governance & Rights',
+            sourceRoleLabel: 'Institutional / primary',
+        },
+    })];
 
     assert.equal(searchIntelForecasts(records, 'un news').length, 1);
+    assert.equal(searchIntelForecasts(records, 'africa').length, 1);
+    assert.equal(searchIntelForecasts(records, 'governance').length, 1);
+    assert.equal(searchIntelForecasts(records, 'institutional').length, 1);
     assert.equal(searchIntelForecasts(records, 'antarctica').length, 0);
     assert.equal(getFeedEmptyState({
         feedItems: [],
