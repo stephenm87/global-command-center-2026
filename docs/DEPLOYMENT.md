@@ -9,3 +9,10 @@ The application is deployed on Netlify.
 
 ## Continuous Integration
 Deployment is automated via Netlify's GitHub integration. Pushes to `main` trigger a production build.
+
+## Scheduled data refresh
+
+- `refresh-public-intel` runs every 30 minutes and stores the anonymous fixed-query Serper snapshot in Netlify Blobs.
+- `refresh-source-health` runs daily at 03:17 UTC and stores editorial link-availability results.
+- Netlify does not automatically execute schedules for deploy previews. From the preview's Functions page, use **Run now** for each scheduled function before validating populated snapshot states.
+- `public-intel` can safely warm a missing intelligence snapshot on first read because its queries are fixed and the result is stored and CDN-cached. Source health never runs on a visitor request because it checks many third-party URLs.

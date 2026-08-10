@@ -3,6 +3,7 @@
     "version": "1.0.0",
     "private": true,
     "dependencies": {
+        "@netlify/blobs": "^9.1.5",
         "@supabase/supabase-js": "2.103.2",
         "globe.gl": "^2.31.1",
         "papaparse": "^5.4.1",
@@ -21,8 +22,10 @@
     },
     "scripts": {
         "dev": "vite",
-        "build": "vite build",
-        "test": "node --test netlify/functions/__tests__/*.node.test.js src/__tests__/*.node.test.*",
+        "sources:manifest": "node scripts/generate-source-health-manifest.mjs",
+        "sources:manifest:check": "node scripts/generate-source-health-manifest.mjs --check",
+        "build": "npm run sources:manifest && vite build",
+        "test": "npm run sources:manifest:check && node --test netlify/functions/__tests__/*.node.test.js src/__tests__/*.node.test.*",
         "preview": "vite preview"
     }
 }

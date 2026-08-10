@@ -237,7 +237,13 @@
 
 .focus-detail-tabs button[aria-pressed="true"] { color: var(--focus-text); border-bottom-color: var(--focus-accent); }
 
-.focus-detail-content { min-height: 0; margin-top: 5px; }
+.focus-detail-content {
+    flex: 1 1 auto;
+    min-height: 0;
+    margin-top: 5px;
+    overflow-y: auto;
+    overscroll-behavior: contain;
+}
 .focus-scroll-list { overflow-y: auto; }
 
 .focus-relation-row {
@@ -266,8 +272,18 @@
 .focus-case-row p { margin: 0; color: var(--focus-muted); font-size: .6rem; line-height: 1.45; }
 .focus-case-row a { display: inline-block; margin-top: 6px; color: var(--focus-accent); font-size: .56rem; }
 
-.focus-actions { display: flex; gap: 8px; margin-top: auto; padding-top: 14px; }
-.focus-actions > * { flex: 1; }
+.focus-actions {
+    position: relative;
+    z-index: 2;
+    display: flex;
+    flex: 0 0 auto;
+    gap: 8px;
+    margin-top: 10px;
+    padding-top: 14px;
+    border-top: 1px solid var(--focus-border);
+    background: var(--focus-surface);
+}
+.focus-actions > * { flex: 1 1 0; min-width: 0; }
 .focus-mobile-list { display: none; }
 
 @media (max-width: 900px) {

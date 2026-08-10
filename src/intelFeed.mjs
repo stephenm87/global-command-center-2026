@@ -92,15 +92,29 @@ export function searchIntelForecasts(items = [], search = '') {
 export function summarizeIntelSources(items = [], providerMeta = null) {
     const liveItemCount = items.filter(item => item.isLive).length;
     const linkedReferenceCount = items.filter(item => !item.isLive && /^https:\/\//i.test(item.url || '')).length;
+    const requestedMode = providerMeta?.sourceMode;
+    const sourceMode = liveItemCount > 0 && ['provider', 'public-cache'].includes(requestedMode)
+        ? requestedMode
+        : 'public-reference';
 
     return {
         totalItemCount: items.length,
         liveItemCount,
         linkedReferenceCount,
-        sourceMode: providerMeta?.sourceMode === 'provider' && liveItemCount > 0
-            ? 'provider'
-            : 'public-reference',
+        sourceMode,
+        feedStatus: providerMeta?.status || (sourceMode === 'public-reference' ? 'reference-only' : 'fresh'),
+        provider: providerMeta?.provider || null,
     };
+}
+
+export function getCurrentFeedLabel(summary = {}) {
+    if (summary.liveItemCount > 0) {
+        return `${summary.sourceMode === 'public-cache' ? 'CACHED CURRENT UPDATES' : 'CURRENT PROVIDER UPDATES'} (${summary.liveItemCount})`;
+    }
+    if (summary.feedStatus === 'not-configured') return 'CURRENT UPDATES — NOT CONFIGURED';
+    if (['unavailable', 'network-error'].includes(summary.feedStatus)) return 'CURRENT UPDATES — UNAVAILABLE';
+    if (summary.feedStatus === 'warming') return 'CURRENT UPDATES — WARMING';
+    return 'CURRENT UPDATES — NONE AVAILABLE';
 }
 
 export function getFeedEmptyState({
@@ -110,6 +124,7 @@ export function getFeedEmptyState({
     historicalLoading = false,
     historicalData = null,
     intelLoading = false,
+    intelStatus = 'reference-only',
 } = {}) {
     if (intelLoading || historicalLoading || feedItems.length > 0) return null;
     const effectiveCategory = historicalData && selectedCategory === LIVE_INTEL_CATEGORY
@@ -117,9 +132,27 @@ export function getFeedEmptyState({
         : selectedCategory;
 
     if (effectiveCategory === LIVE_INTEL_CATEGORY) {
+        const statusCopy = {
+            'not-configured': {
+                title: 'CURRENT FEED NOT CONFIGURED',
+                message: 'The public Serper snapshot is awaiting its server-side API key.',
+            },
+            unavailable: {
+                title: 'CURRENT FEED TEMPORARILY UNAVAILABLE',
+                message: 'The cached provider snapshot could not be refreshed. Public source links remain available.',
+            },
+            'network-error': {
+                title: 'CURRENT FEED CONNECTION FAILED',
+                message: 'The cached update service could not be reached. Public source links remain available.',
+            },
+            warming: {
+                title: 'CURRENT FEED IS WARMING',
+                message: 'The first fixed-query snapshot is being prepared. Public source links remain available.',
+            },
+        }[intelStatus];
         return {
-            title: 'NO CURRENT PROVIDER UPDATES',
-            message: 'Public source links remain available without a login.',
+            title: statusCopy?.title || 'NO CURRENT UPDATES AVAILABLE',
+            message: statusCopy?.message || 'The cached provider snapshot returned no current items. Public source links remain available.',
             actionLabel: 'SHOW PUBLIC SOURCES',
             action: 'show-public-sources',
         };

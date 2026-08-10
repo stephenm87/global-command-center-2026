@@ -100,6 +100,18 @@ test('rejects unapproved browser origins', async () => {
     assert.equal(result.response.statusCode, 403);
 });
 
+test('allows the project deploy-preview origin without weakening arbitrary origins', async () => {
+    const { isAllowedOrigin, protectPublicEndpoint } = require('../security');
+    const previewOrigin = 'https://deploy-preview-30--globalcommandcenter2026.netlify.app';
+
+    assert.equal(isAllowedOrigin(previewOrigin), true);
+    assert.equal(isAllowedOrigin('https://deploy-preview-30--attacker.netlify.app'), false);
+    assert.equal(protectPublicEndpoint(event({
+        httpMethod: 'GET',
+        headers: { origin: previewOrigin },
+    })).response, undefined);
+});
+
 test('rate limits repeated requests from the same authenticated user', async () => {
     global.fetch = async () => ({
         ok: true,

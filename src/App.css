@@ -266,6 +266,9 @@
     left: 50%;
     transform: translateX(-50%);
     z-index: 10;
+    display: grid;
+    justify-items: center;
+    gap: 8px;
 }
 
 .globe-title {
@@ -281,6 +284,34 @@
     -webkit-backdrop-filter: blur(10px);
     backdrop-filter: blur(10px);
 }
+
+.editorial-layer-toggle {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    min-height: 30px;
+    padding: 5px 9px;
+    border: 1px solid rgba(182, 156, 255, 0.42);
+    border-radius: 999px;
+    color: #9aa3ac;
+    background: rgba(5, 9, 13, 0.88);
+    cursor: pointer;
+    font: 700 0.52rem 'Roboto Mono', monospace;
+    letter-spacing: 0.06em;
+    white-space: nowrap;
+}
+
+.editorial-layer-toggle span,
+.editorial-layer-toggle strong { color: #b69cff; }
+.editorial-layer-toggle strong { font-size: 0.58rem; }
+.editorial-layer-toggle small { color: #7c8790; font-size: 0.46rem; }
+.editorial-layer-toggle.active {
+    border-color: #b69cff;
+    color: #e4ddff;
+    background: rgba(80, 58, 132, 0.42);
+    box-shadow: 0 0 14px rgba(182, 156, 255, 0.2);
+}
+.editorial-layer-toggle:focus-visible { outline: 2px solid #fff; outline-offset: 2px; }
 
 .pin-form {
     background: rgba(10, 14, 26, 0.95);
@@ -486,6 +517,14 @@
 
 .intel-source-status.provider {
     color: #00ff88;
+}
+
+.intel-source-status.cached {
+    color: #5eead4;
+}
+
+.intel-source-status.warning {
+    color: #f4d35e;
 }
 
 .intel-source-status.reference {
@@ -1391,6 +1430,11 @@
     font: 0.62rem/1.2 'Roboto Mono', monospace;
 }
 
+.case-study-meta .review-overdue {
+    border-color: rgba(255, 123, 141, 0.65);
+    color: #ff7b8d;
+}
+
 .case-study-status {
     margin: 0;
     color: #f1f6f8;
@@ -1435,9 +1479,10 @@
 }
 
 .case-study-sources li {
-    display: flex;
-    flex-direction: column;
-    gap: 0.2rem;
+    display: grid;
+    grid-template-columns: auto minmax(0, 1fr);
+    align-items: start;
+    gap: 0.2rem 0.5rem;
 }
 
 .case-study-sources a {
@@ -1446,9 +1491,35 @@
 }
 
 .case-study-sources span {
+    grid-column: 2;
     color: #83959e;
     font: 0.62rem/1.35 'Roboto Mono', monospace;
 }
+
+.case-study-sources small {
+    grid-column: 2;
+    color: #71828a;
+    font: 0.58rem/1.4 'Roboto Mono', monospace;
+}
+
+.case-source-badge {
+    min-width: 5.6rem;
+    padding: 0.2rem 0.4rem;
+    border: 1px solid currentColor;
+    border-radius: 999px;
+    color: #c9f4f7;
+    font: 700 0.5rem 'Roboto Mono', monospace;
+    text-align: center;
+    text-transform: uppercase;
+}
+.case-source-local { color: #62e6a7; }
+.case-source-institutional { color: #67d5f5; }
+.case-source-independent { color: #d990ff; }
+.case-study-sources details { margin-top: 0.75rem; padding-top: 0.65rem; border-top: 1px solid rgba(103, 213, 245, 0.18); }
+.case-study-sources summary { color: #9fb2bc; cursor: pointer; font: 0.62rem 'Roboto Mono', monospace; }
+.case-study-sources details ul { margin-top: 0.6rem; }
+.case-study-sources details li { display: flex; flex-direction: column; }
+.case-study-sources details li span { margin-top: 0.2rem; }
 
 .case-study-briefing-btn {
     align-self: flex-start;
