@@ -143,6 +143,9 @@ function App() {
     const [showMineralsModal, setShowMineralsModal] = useState(false);
     const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
     const [legendCollapsed, setLegendCollapsed] = useState(true);
+    const [largeText, setLargeText] = useState(false);
+    const [reducedEffects, setReducedEffects] = useState(false);
+    const [metricsCollapsed, setMetricsCollapsed] = useState(true);
     const [intelLastUpdated, setIntelLastUpdated] = useState(null);
     const [intelMeta, setIntelMeta] = useState(null);
     const [intelLoading, setIntelLoading] = useState(true);
@@ -237,6 +240,9 @@ function App() {
             if (typeof prefs.stressLevel === 'number') setStressLevel(prefs.stressLevel);
             if (typeof prefs.sidebarCollapsed === 'boolean') setSidebarCollapsed(prefs.sidebarCollapsed);
             if (typeof prefs.showEditorialCases === 'boolean') setShowEditorialCases(prefs.showEditorialCases);
+            if (typeof prefs.largeText === 'boolean') setLargeText(prefs.largeText);
+            if (typeof prefs.reducedEffects === 'boolean') setReducedEffects(prefs.reducedEffects);
+            if (typeof prefs.metricsCollapsed === 'boolean') setMetricsCollapsed(prefs.metricsCollapsed);
         };
 
         const restorePreferences = async () => {
@@ -270,14 +276,24 @@ function App() {
         const preferenceOwner = user?.id || 'anonymous';
         if (preferencesHydratedFor !== preferenceOwner) return;
 
-        const prefs = { selectedTheory, selectedCategory, timelineYear, stressLevel, sidebarCollapsed, showEditorialCases };
+        const prefs = {
+            selectedTheory,
+            selectedCategory,
+            timelineYear,
+            stressLevel,
+            sidebarCollapsed,
+            showEditorialCases,
+            largeText,
+            reducedEffects,
+            metricsCollapsed,
+        };
         writeStoredJson('gcc-preferences', prefs);
         if (!user) return;
         supabase.from('user_data').upsert(
             { user_id: user.id, key: 'gcc-preferences', value: prefs },
             { onConflict: 'user_id,key' }
         );
-    }, [selectedTheory, selectedCategory, timelineYear, stressLevel, sidebarCollapsed, showEditorialCases, preferencesHydratedFor, user?.id]);
+    }, [selectedTheory, selectedCategory, timelineYear, stressLevel, sidebarCollapsed, showEditorialCases, largeText, reducedEffects, metricsCollapsed, preferencesHydratedFor, user?.id]);
 
     // Initialize globe
     useEffect(() => {
@@ -337,6 +353,39 @@ function App() {
 
         return () => { cancelled = true; };
     }, [viewMode]);
+
+    // Keep the WebGL renderer aligned with the responsive workspace. Globe.gl
+    // only reads its initial dimensions, so drawer, zoom, and metrics changes
+    // otherwise leave an oversized or clipped canvas behind.
+    useEffect(() => {
+        if (viewMode !== 'globe' || !globeContainer.current) return undefined;
+        const container = globeContainer.current;
+        let resizeFrame = null;
+
+        const resizeGlobe = () => {
+            if (resizeFrame) cancelAnimationFrame(resizeFrame);
+            resizeFrame = requestAnimationFrame(() => {
+                const globe = globeEl.current;
+                if (!globe || !container.isConnected) return;
+                const width = Math.floor(container.clientWidth);
+                const height = Math.floor(container.clientHeight);
+                if (width > 0 && height > 0) globe.width(width).height(height);
+            });
+        };
+
+        const observer = typeof ResizeObserver === 'function'
+            ? new ResizeObserver(resizeGlobe)
+            : null;
+        observer?.observe(container);
+        window.addEventListener('resize', resizeGlobe);
+        resizeGlobe();
+
+        return () => {
+            observer?.disconnect();
+            window.removeEventListener('resize', resizeGlobe);
+            if (resizeFrame) cancelAnimationFrame(resizeFrame);
+        };
+    }, [viewMode, globeReady]);
 
 
     // Auto-open connections panel when entering CRITICAL
@@ -830,18 +879,18 @@ function App() {
             .pointLabel(d => {
                 if (d.isCluster) {
                     const caseDetail = d.caseCount ? ` · ${d.caseCount} EDITORIAL ${d.caseCount === 1 ? 'CASE' : 'CASES'}` : '';
-                    return `<div style="background:rgba(0,0,0,0.9);padding:8px 12px;border:1px solid #ffcc00;border-radius:20px;font-family:Roboto Mono;color:#ffcc00;font-size:0.75rem;font-weight:900;">${d.count} MAP ITEMS${caseDetail} — click to expand</div>`;
+                    return `<div style="background:rgba(0,0,0,0.9);padding:10px 14px;border:1px solid #ffcc00;border-radius:20px;font-family:Roboto Mono;color:#ffcc00;font-size:0.875rem;font-weight:900;line-height:1.4;">${d.count} MAP ITEMS${caseDetail} — click to expand</div>`;
                 }
                 const isLinked = d.data.url
-                    ? `<div style="color: #00ff88; font-size: 0.7rem; margin-top: 5px; font-weight: bold;">[ ${d.data.isCaseStudy ? 'OPEN CASE & BRIEFING' : 'CLICK FOR SOURCE'} ]</div>`
+                    ? `<div style="color:#00ff88;font-size:0.8rem;margin-top:7px;font-weight:bold;">[ ${d.data.isCaseStudy ? 'OPEN CASE & BRIEFING' : 'CLICK FOR SOURCE'} ]</div>`
                     : '';
                 const layerLabel = d.data.isCaseStudy
                     ? `◆ EDITORIAL CASE · ${d.data.sources?.length || 0} PERSPECTIVES`
                     : d.data.isLive ? '[LIVE] CURRENT SOURCE' : 'REFERENCE SOURCE';
-                const locationLabel = d.locationLabel ? `<div style="color:#9fb2bc;font-size:0.58rem;margin-top:4px;">📍 ${escHtml(d.locationLabel)}</div>` : '';
-                return `<div style="background: rgba(0,0,0,0.9); padding: 12px; border: 1px solid ${d.color}; border-radius: 4px; font-family: Roboto Mono; color: #00ffff; max-width: 300px; box-shadow: 0 0 15px ${d.color}44;">
-                    <div style="color: ${d.color}; font-weight: 700; margin-bottom: 5px;">${layerLabel}</div>
-                    <div style="font-size: 0.85rem; color: #fff;">${escHtml(d.data['Entity/Subject'])}</div>
+                const locationLabel = d.locationLabel ? `<div style="color:#b6c5ce;font-size:0.75rem;margin-top:5px;">📍 ${escHtml(d.locationLabel)}</div>` : '';
+                return `<div style="background:rgba(0,0,0,0.94);padding:14px;border:1px solid ${d.color};border-radius:6px;font-family:Roboto Mono;color:#00ffff;max-width:340px;box-shadow:0 0 15px ${d.color}44;line-height:1.45;">
+                    <div style="color:${d.color};font-size:0.75rem;font-weight:700;margin-bottom:6px;">${layerLabel}</div>
+                    <div style="font-size:1rem;color:#fff;">${escHtml(d.data['Entity/Subject'])}</div>
                     ${locationLabel}
                     ${isLinked}
                   </div>`;
@@ -938,12 +987,12 @@ function App() {
                 // E: rich hover label with type icon, both names, impact snippet
                 .arcLabel(d => `
                     <div style="background:rgba(5,3,3,0.92);padding:10px 14px;border:1px solid ${d.relHex};border-radius:6px;font-family:Roboto Mono,monospace;max-width:280px;box-shadow:0 0 16px ${d.relHex}55;">
-                        <div style="color:${d.relHex};font-size:0.62rem;font-weight:900;letter-spacing:1.5px;margin-bottom:6px;">${d.relIcon} ${d.relType} LINK</div>
-                        <div style="color:#fff;font-size:0.7rem;font-weight:700;">${escHtml(d.fromName)}</div>
-                        <div style="color:${d.relHex};font-size:0.75rem;text-align:center;margin:3px 0;">⇄</div>
-                        <div style="color:#fff;font-size:0.7rem;font-weight:700;margin-bottom:6px;">${escHtml(d.toName)}</div>
-                        <div style="color:#aaa;font-size:0.58rem;line-height:1.4;border-top:1px solid ${d.relHex}44;padding-top:5px;">${escHtml(d.fromImpact || '')}</div>
-                        <div style="color:#777;font-size:0.5rem;margin-top:5px;">CLICK ARC FOR FULL DETAIL</div>
+                        <div style="color:${d.relHex};font-size:0.75rem;font-weight:900;letter-spacing:1px;margin-bottom:7px;">${d.relIcon} ${d.relType} LINK</div>
+                        <div style="color:#fff;font-size:0.875rem;font-weight:700;">${escHtml(d.fromName)}</div>
+                        <div style="color:${d.relHex};font-size:1rem;text-align:center;margin:4px 0;">⇄</div>
+                        <div style="color:#fff;font-size:0.875rem;font-weight:700;margin-bottom:7px;">${escHtml(d.toName)}</div>
+                        <div style="color:#c0c0c0;font-size:0.8rem;line-height:1.5;border-top:1px solid ${d.relHex}44;padding-top:7px;">${escHtml(d.fromImpact || '')}</div>
+                        <div style="color:#aaa;font-size:0.75rem;margin-top:7px;">CLICK ARC FOR FULL DETAIL</div>
                     </div>`)
                 // B: click arc to open detail card
                 .onArcClick(d => setArcClickedInfo(d));
@@ -1025,7 +1074,7 @@ function App() {
 
 
     return (
-        <div className="command-center">
+        <div className={`command-center command-center--${viewMode}${largeText ? ' large-text' : ''}${reducedEffects ? ' reduced-effects' : ''}`}>
             {/* Skip navigation for accessibility */}
             <a href="#main-workspace" className="skip-nav">Skip to main content</a>
             {showModal && <AuthModal onClose={closeModal} />}
@@ -1036,15 +1085,15 @@ function App() {
                     <div className="globe-loading-text">INITIALIZING COMMAND CENTER...</div>
                 </div>
             )}
-            <div className="dashboard-view" ref={dashboardRef}>
+            <div className={`dashboard-view dashboard-view--${viewMode}`} ref={dashboardRef}>
                 {/* Header */}
-                <div className="header" role="navigation" aria-label="Main navigation">
+                <header className="header" role="navigation" aria-label="Main navigation">
                     <div className="logo">
                         <span className="logo-icon" aria-hidden="true">⬢</span>
                         <span className="logo-text">GLOBAL COMMAND CENTER</span>
                     </div>
                     
-                    <div className="view-mode-selector" role="group" aria-label="Intelligence views">
+                    <nav className="view-mode-selector" aria-label="Intelligence views">
                         {[
                             ['globe', '🌎', 'LIVE GLOBE'],
                             ['briefings', '▤', 'GUIDED BRIEFINGS'],
@@ -1066,12 +1115,13 @@ function App() {
                                     }
                                 }}
                             >
-                                <span aria-hidden="true">{icon}</span> {label}
+                                <span aria-hidden="true">{icon}</span>
+                                <span className="view-mode-label">{label}</span>
                             </button>
                         ))}
-                    </div>
+                    </nav>
 
-                    <div className="date-time">
+                    <div className="date-time header-actions">
                         <a
                             href="https://glopocompanion.netlify.app/"
                             target="_blank"
@@ -1080,6 +1130,38 @@ function App() {
                         >
                             LAUNCH GLOPO COMPANION
                         </a>
+                        <details className="header-tools">
+                            <summary>TOOLS &amp; DISPLAY</summary>
+                            <div className="header-tools-panel">
+                                <div className="display-preferences" role="group" aria-label="Display preferences">
+                                    <span className="display-preferences-label">DISPLAY</span>
+                                    <button
+                                        type="button"
+                                        className="preference-toggle"
+                                        aria-pressed={largeText}
+                                        onClick={() => setLargeText(value => !value)}
+                                    >
+                                        A+ LARGER TEXT
+                                    </button>
+                                    <button
+                                        type="button"
+                                        className="preference-toggle"
+                                        aria-pressed={reducedEffects}
+                                        onClick={() => setReducedEffects(value => !value)}
+                                    >
+                                        ◌ REDUCE EFFECTS
+                                    </button>
+                                    {viewMode === 'globe' && (
+                                        <button
+                                            type="button"
+                                            className="preference-toggle"
+                                            aria-pressed={metricsCollapsed}
+                                            onClick={() => setMetricsCollapsed(value => !value)}
+                                        >
+                                            {metricsCollapsed ? '▤ SHOW METRICS' : '▾ HIDE METRICS'}
+                                        </button>
+                                    )}
+                                </div>
                         <button
                             className="credits-link"
                             onClick={() => attributionRef.current?.scrollIntoView({ behavior: 'smooth' })}
@@ -1110,19 +1192,21 @@ function App() {
                             📄 EXPORT BRIEFING
                         </button>
 
-                        {/* 📡 Live News Scan — fixed-width controls only, scan results float below */}
-                        <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-end', gap: '4px', marginLeft: '4px', flexShrink: 0, position: 'relative' }}>
+                        {/* 📡 Live News Scan */}
+                        <div className="news-tools">
                             {/* Search row */}
-                            <div style={{ display: 'flex', alignItems: 'center', gap: '6px', flexWrap: 'nowrap' }}>
+                            <div className="news-search-row">
+                                <label className="sr-only" htmlFor="news-topic-search">Search current geopolitical news by topic</label>
                                 <input
+                                    id="news-topic-search"
+                                    className="news-input"
                                     value={newsQuery}
                                     onChange={e => setNewsQuery(e.target.value)}
                                     onKeyDown={e => e.key === 'Enter' && fetchLiveNews()}
-                                    placeholder="topic..."
-                                    style={{ background: 'rgba(0,255,200,0.05)', border: '1px solid rgba(0,255,200,0.2)', borderRadius: '6px', padding: '4px 8px', color: '#00ffcc', fontFamily: 'Roboto Mono', fontSize: '0.65rem', width: '110px', minWidth: '80px', maxWidth: '140px', outline: 'none', flexShrink: 0 }}
+                                    placeholder="Search news topic…"
                                 />
                                 <button
-                                    className="export-btn"
+                                    className="export-btn news-scan-btn"
                                     onClick={() => fetchLiveNews()}
                                     disabled={newsScanLoading}
                                     style={{ background: newsScanLoading ? 'rgba(0,255,200,0.05)' : 'rgba(0,255,200,0.1)', borderColor: 'rgba(0,255,200,0.3)', color: '#00ffcc' }}
@@ -1132,7 +1216,7 @@ function App() {
                                 </button>
                             </div>
                             {newsScanError && (
-                                <div style={{ background: 'rgba(255,50,50,0.15)', border: '1px solid rgba(255,50,50,0.4)', borderRadius: '6px', padding: '3px 8px', color: '#ff6666', fontSize: '0.55rem', fontFamily: 'Roboto Mono', maxWidth: '260px', lineHeight: 1.4, textAlign: 'right' }}>
+                                <div className="news-scan-error" role="status">
                                     ⚠ {newsScanError}
                                 </div>
                             )}
@@ -1143,64 +1227,47 @@ function App() {
                                 const econCount = newsNodes.filter(n => n.Broad_Category === 'Economy & Trade').length;
                                 const otherCount = newsNodes.length - conflictCount - econCount;
                                 return (
-                                    <div style={{
-                                        position: 'absolute',
-                                        top: '100%',
-                                        right: 0,
-                                        marginTop: '6px',
-                                        background: 'rgba(8,14,26,0.97)',
-                                        border: '1px solid rgba(0,255,200,0.3)',
-                                        borderRadius: '8px',
-                                        padding: '10px 14px',
-                                        fontFamily: 'Roboto Mono',
-                                        minWidth: '340px',
-                                        boxShadow: '0 8px 24px rgba(0,0,0,0.6), 0 0 14px rgba(0,255,200,0.12)',
-                                        zIndex: 200,
-                                    }}>
+                                    <div className="news-action-panel">
                                         {/* Header */}
-                                        <div style={{ color: '#00ffcc', fontSize: '0.62rem', fontWeight: 900, letterSpacing: '1.5px', marginBottom: '5px' }}>
+                                        <div className="news-action-title" role="status">
                                             ✅ SCAN COMPLETE — +{newsNodes.length} NODES PLOTTED
                                         </div>
                                         {/* Category mini-stats */}
-                                        <div style={{ display: 'flex', gap: '10px', marginBottom: '8px', fontSize: '0.55rem', color: '#888', letterSpacing: '0.5px' }}>
+                                        <div className="news-action-stats">
                                             <span style={{ color: '#ff0066' }}>⚔️ {conflictCount} Conflict</span>
                                             <span style={{ color: '#00ccff' }}>💰 {econCount} Economy</span>
                                             <span style={{ color: '#aaa' }}>🌍 {otherCount} Other</span>
                                         </div>
                                         {/* Action buttons */}
-                                        <div style={{ display: 'flex', gap: '5px', flexWrap: 'wrap' }}>
+                                        <div className="news-action-buttons">
                                             <button
+                                                type="button"
+                                                className="news-action-btn news-action-btn--feed"
                                                 onClick={() => { setSelectedCategory('Live Intel'); }}
-                                                style={{ background: 'rgba(0,255,200,0.08)', border: '1px solid rgba(0,255,200,0.35)', borderRadius: '5px', color: '#00ffcc', fontFamily: 'Roboto Mono', fontSize: '0.58rem', padding: '4px 8px', cursor: 'pointer', letterSpacing: '0.5px', transition: 'all 0.15s' }}
-                                                onMouseEnter={e => e.currentTarget.style.background = 'rgba(0,255,200,0.18)'}
-                                                onMouseLeave={e => e.currentTarget.style.background = 'rgba(0,255,200,0.08)'}
                                                 title="Filter Intel Feed to show only news nodes"
                                             >
                                                 📋 VIEW IN FEED
                                             </button>
                                             <button
+                                                type="button"
+                                                className={`news-action-btn news-action-btn--globe${globeNewsOnly ? ' active' : ''}`}
                                                 onClick={() => setGlobeNewsOnly(prev => !prev)}
-                                                style={{ background: globeNewsOnly ? 'rgba(0,200,255,0.25)' : 'rgba(0,200,255,0.08)', border: `1px solid ${globeNewsOnly ? 'rgba(0,200,255,0.7)' : 'rgba(0,200,255,0.35)'}`, borderRadius: '5px', color: '#00ccff', fontFamily: 'Roboto Mono', fontSize: '0.58rem', padding: '4px 8px', cursor: 'pointer', letterSpacing: '0.5px', transition: 'all 0.15s' }}
-                                                onMouseEnter={e => e.currentTarget.style.background = 'rgba(0,200,255,0.25)'}
-                                                onMouseLeave={e => e.currentTarget.style.background = globeNewsOnly ? 'rgba(0,200,255,0.25)' : 'rgba(0,200,255,0.08)'}
                                                 title={globeNewsOnly ? 'Showing news nodes only — click to restore all' : 'Filter globe to show only scanned news nodes'}
                                             >
                                                 {globeNewsOnly ? '🎯 NEWS ONLY ✓' : '🎯 FILTER GLOBE'}
                                             </button>
                                             <button
+                                                type="button"
+                                                className="news-action-btn news-action-btn--export"
                                                 onClick={exportNewsReport}
-                                                style={{ background: 'rgba(255,153,0,0.08)', border: '1px solid rgba(255,153,0,0.35)', borderRadius: '5px', color: '#ff9900', fontFamily: 'Roboto Mono', fontSize: '0.58rem', padding: '4px 8px', cursor: 'pointer', letterSpacing: '0.5px', transition: 'all 0.15s' }}
-                                                onMouseEnter={e => e.currentTarget.style.background = 'rgba(255,153,0,0.18)'}
-                                                onMouseLeave={e => e.currentTarget.style.background = 'rgba(255,153,0,0.08)'}
                                                 title="Export a printable briefing of the scanned news nodes"
                                             >
                                                 📄 EXPORT BRIEFING
                                             </button>
                                             <button
+                                                type="button"
+                                                className="news-action-btn news-action-btn--danger"
                                                 onClick={clearNewsNodes}
-                                                style={{ background: 'rgba(255,50,50,0.08)', border: '1px solid rgba(255,50,50,0.3)', borderRadius: '5px', color: '#ff4444', fontFamily: 'Roboto Mono', fontSize: '0.58rem', padding: '4px 8px', cursor: 'pointer', letterSpacing: '0.5px', transition: 'all 0.15s' }}
-                                                onMouseEnter={e => e.currentTarget.style.background = 'rgba(255,50,50,0.18)'}
-                                                onMouseLeave={e => e.currentTarget.style.background = 'rgba(255,50,50,0.08)'}
                                                 title="Clear news scan and reset globe"
                                             >
                                                 🗑️ CLEAR SCAN
@@ -1211,11 +1278,13 @@ function App() {
                             })()}
                         </div>
                         </>}
+                            </div>
+                        </details>
                     </div>
-                </div>
+                </header>
 
                 {/* Main Content */}
-                <div id="main-workspace" className="main-content" role="main" tabIndex="-1">
+                <div id="main-workspace" className={`main-content main-content--${viewMode}${sidebarCollapsed ? ' main-content--feed-collapsed' : ''}`} role="main" tabIndex="-1">
                     {/* Globe Center Stage */}
                     <GlobeErrorBoundary>
                     <div className={`globe-container ${stressLevel > 70 ? 'critical-vignette' : ''}`} style={viewMode !== 'globe' ? { display: 'none' } : {}}>
@@ -1243,18 +1312,21 @@ function App() {
 
                         {/* Node Key & Theory Lens — collapsible compact panel */}
                         {viewMode === 'globe' && (
-                        <div className="arc-legend" style={{ maxHeight: legendCollapsed ? '28px' : '460px', overflow: 'hidden', transition: 'max-height 0.3s ease' }}>
-                            <div
+                        <div className="arc-legend" style={{ maxHeight: legendCollapsed ? '48px' : 'min(70vh, 540px)', overflow: 'hidden', transition: 'max-height 0.3s ease' }}>
+                            <button
+                                type="button"
+                                className="arc-legend-toggle"
                                 onClick={() => setLegendCollapsed(!legendCollapsed)}
-                                style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', cursor: 'pointer', marginBottom: legendCollapsed ? 0 : '6px', userSelect: 'none' }}
+                                aria-expanded={!legendCollapsed}
+                                style={{ marginBottom: legendCollapsed ? 0 : '6px' }}
                             >
-                                <div className="arc-legend-title" style={{ margin: 0 }}>
+                                <span className="arc-legend-title" style={{ margin: 0 }}>
                                     {legendCollapsed ? '◀ KEY / THEORY' : '▼ KEY / THEORY'}
-                                </div>
-                                <span style={{ color: '#ffffff55', fontSize: '0.5rem', fontFamily: 'Roboto Mono' }}>
+                                </span>
+                                <span className="arc-legend-state">
                                     {legendCollapsed ? 'EXPAND' : 'COLLAPSE'}
                                 </span>
-                            </div>
+                            </button>
 
                             {!legendCollapsed && (
                                 <>
@@ -1272,7 +1344,7 @@ function App() {
                                         ].map(([label, color]) => (
                                             <div key={label} className="arc-legend-item" style={{ marginBottom: '1px' }}>
                                                 <span className="arc-legend-dot" style={{ background: color, boxShadow: `0 0 4px ${color}`, width: '6px', height: '6px' }} />
-                                                <span style={{ color, fontSize: '0.5rem' }}>{label}</span>
+                                                <span className="arc-legend-label" style={{ color }}>{label}</span>
                                             </div>
                                         ))}
                                     </div>
@@ -1285,7 +1357,7 @@ function App() {
                                                 {[['⚔️', 'Military', '#ff2200'], ['💰', 'Economic', '#ff9900'], ['🗺️', 'Territory', '#ffdd00'], ['🏥', 'Humanit.', '#00ff99'], ['🤝', 'Diplom.', '#cc44ff']].map(([icon, label, color]) => (
                                                     <div key={label} className="arc-legend-item" style={{ marginBottom: '1px' }}>
                                                         <span className="arc-legend-dot" style={{ background: color, boxShadow: `0 0 4px ${color}`, width: '6px', height: '6px' }} />
-                                                        <span style={{ color, fontSize: '0.5rem' }}>{icon} {label}</span>
+                                                        <span className="arc-legend-label" style={{ color }}>{icon} {label}</span>
                                                     </div>
                                                 ))}
                                             </div>
@@ -1301,18 +1373,17 @@ function App() {
                                             return (
                                                 <button
                                                     key={key}
+                                                    type="button"
+                                                    className="theory-btn"
                                                     onClick={() => setTheoryLens(isActive ? null : key)}
+                                                    aria-pressed={isActive}
                                                     style={{
                                                         background: isActive ? color + '30' : 'transparent',
                                                         border: `1px solid ${isActive ? color : color + '33'}`,
                                                         borderRadius: '10px',
-                                                        padding: '2px 6px',
-                                                        cursor: 'pointer',
                                                         display: 'inline-flex',
                                                         alignItems: 'center',
                                                         gap: '3px',
-                                                        transition: 'all 0.15s',
-                                                        lineHeight: 1,
                                                     }}
                                                     onMouseEnter={e => { if (!isActive) e.currentTarget.style.background = color + '18'; }}
                                                     onMouseLeave={e => { if (!isActive) e.currentTarget.style.background = 'transparent'; }}
@@ -1325,11 +1396,8 @@ function App() {
                                                     }} />
                                                     <span style={{
                                                         color: isActive ? color : color + '99',
-                                                        fontSize: '0.45rem',
-                                                        fontFamily: 'Roboto Mono',
                                                         fontWeight: isActive ? 700 : 400,
-                                                        letterSpacing: '0.3px',
-                                                    }}>
+                                                    }} className="theory-btn-label">
                                                         {label.length > 12 ? label.slice(0, 10).toUpperCase() + '…' : label.toUpperCase()}
                                                     </span>
                                                 </button>
@@ -1337,8 +1405,8 @@ function App() {
                                         })}
                                     </div>
                                     {theoryLens && (
-                                        <div style={{ marginTop: '4px', padding: '3px 6px', background: THEORY_COLORS[theoryLens] + '12', border: `1px solid ${THEORY_COLORS[theoryLens]}33`, borderRadius: '4px' }}>
-                                            <div style={{ color: THEORY_COLORS[theoryLens], fontSize: '0.42rem', fontFamily: 'Roboto Mono', lineHeight: 1.3 }}>
+                                        <div className="theory-filter-status" style={{ background: THEORY_COLORS[theoryLens] + '12', borderColor: THEORY_COLORS[theoryLens] + '33', color: THEORY_COLORS[theoryLens] }}>
+                                            <div>
                                                 Filtering: {THEORY_LABELS[theoryLens]} keywords
                                             </div>
                                         </div>
@@ -1454,6 +1522,7 @@ function App() {
                     {/* Right Sidebar - Intel Feed */}
                     <aside id="intel-feed" className={`intel-feed ${sidebarCollapsed ? 'collapsed' : ''}`} role="complementary" aria-label="Intelligence Feed" style={viewMode !== 'globe' ? { display: 'none' } : {}}>
                         <button
+                            type="button"
                             className="sidebar-toggle"
                             onClick={() => setSidebarCollapsed(!sidebarCollapsed)}
                             title={sidebarCollapsed ? 'Expand Intel Feed (Space)' : 'Collapse Intel Feed (Space)'}
@@ -1464,7 +1533,7 @@ function App() {
                                 {historicalData ? `📅 ${timelineYear} ARCHIVE` : 'INTEL FEED'}
                             </span>
                             {historicalData ? (
-                                <span style={{ fontSize: '0.6rem', color: '#ffcc0099', display: 'block', marginTop: '2px' }}>
+                                <span className="intel-history-status">
                                     {historicalLoading ? '⟳ LOADING...' : `${historicalData.length} EVENTS • SOURCED`}
                                 </span>
                             ) : intelLastUpdated && (
@@ -1521,7 +1590,7 @@ function App() {
 
                         <div className="intel-cards">
                             {historicalLoading ? (
-                                <div style={{ color: '#ffcc00', fontFamily: 'Roboto Mono', fontSize: '0.7rem', padding: '20px', textAlign: 'center', opacity: 0.8 }}>
+                                <div className="feed-loading-state historical">
                                     ⟳ Loading {timelineYear} historical data...
                                 </div>
                             ) : intelLoading ? (
@@ -1611,29 +1680,49 @@ function App() {
                 </aside>
                 </div> {/* end .main-content */}
 
-                {/* Bottom Bar - Key Metrics (hidden in nexus mode) */}
-                <div className="metrics-bar" style={viewMode !== 'globe' ? { display: 'none' } : {}}>
+                {/* Bottom operational dashboard */}
+                <section
+                    className={`metrics-shell${metricsCollapsed ? ' collapsed' : ''}`}
+                    aria-label="Operational metrics and scenario controls"
+                    style={viewMode !== 'globe' ? { display: 'none' } : {}}
+                >
+                    <button
+                        type="button"
+                        className="metrics-collapse-toggle"
+                        aria-expanded={!metricsCollapsed}
+                        aria-controls="operational-metrics"
+                        onClick={() => setMetricsCollapsed(value => !value)}
+                    >
+                        <span>OPERATIONAL DASHBOARD</span>
+                        <span aria-hidden="true">{metricsCollapsed ? '▲ SHOW' : '▼ HIDE'}</span>
+                    </button>
+                    <div id="operational-metrics" className="metrics-bar" hidden={metricsCollapsed}>
                     <div className="metric-item">
                         <span className="metric-label">TOTAL EVENTS</span>
                         <span className="metric-value">{keyMetrics.totalEvents || 0}</span>
                     </div>
-                    <div className="metric-item minerals-panel" onClick={() => setShowMineralsModal(true)} style={{ cursor: 'pointer' }}>
+                    <button
+                        type="button"
+                        className="metric-item minerals-panel"
+                        onClick={() => setShowMineralsModal(true)}
+                        aria-label="Open critical minerals prices"
+                    >
                         <span className="metric-label">⛏️ CRITICAL MINERALS</span>
-                        <div className="minerals-grid">
-                            <div className="mineral-item">
+                        <span className="minerals-grid">
+                            <span className="mineral-item">
                                 <span className="mineral-symbol">Au</span>
                                 <span className="mineral-price gold">{minerals.gold?.price || 'N/A'}</span>
-                            </div>
-                            <div className="mineral-item">
+                            </span>
+                            <span className="mineral-item">
                                 <span className="mineral-symbol">Ag</span>
                                 <span className="mineral-price silver">{minerals.silver?.price || 'N/A'}</span>
-                            </div>
-                            <div className="mineral-item">
+                            </span>
+                            <span className="mineral-item">
                                 <span className="mineral-symbol">+4</span>
-                                <span className="mineral-price" style={{ color: '#888', fontSize: '0.6rem' }}>VIEW ALL</span>
-                            </div>
-                        </div>
-                    </div>
+                                <span className="mineral-price mineral-price--more">VIEW ALL</span>
+                            </span>
+                        </span>
+                    </button>
                     <div className="metric-item tension-meter">
                         <span className="metric-label">CONFLICT EVENT RATIO</span>
                         <div className="tension-bar">
@@ -1673,6 +1762,7 @@ function App() {
                             <div className="timeline-year-btns">
                                 {['ALL', '2023', '2024', '2025', '2026'].map(y => (
                                     <button key={y}
+                                        type="button"
                                         className={`timeline-year-btn${timelineYear === y ? ' active' : ''}`}
                                         onClick={() => setTimelineYear(y)}
                                     >{y === 'ALL' ? 'ALL' : `'${y.slice(2)}`}</button>
@@ -1680,7 +1770,8 @@ function App() {
                             </div>
                         </div>
                     </div>
-                </div>
+                    </div>
+                </section>
             </div>
 
             {/* Fixed floating escalation links panel */}
@@ -1759,7 +1850,7 @@ function App() {
                     <a href="/CODE_OF_CONDUCT.md" style={{
                         color: '#fff',
                         background: '#ff00ff',
-                        padding: '10px 20px',
+                        padding: '12px 20px',
                         textDecoration: 'none',
                         fontSize: '14px',
                         fontWeight: '900',

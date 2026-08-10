@@ -15,3 +15,68 @@
     .nexus-presentation-switch > div { width: 100%; }
     .nexus-presentation-switch button { flex: 1; }
 }
+
+/* Readable workspace controls. Keep this block last so it supersedes the
+   original compact command-bar treatment at browser zoom and small widths. */
+.nexus-workspace {
+    --nexus-ui-target: 44px;
+    --nexus-ui-control: 0.875rem;
+    --nexus-ui-meta: 0.8125rem;
+}
+
+.nexus-presentation-switch {
+    flex: 0 0 auto;
+    gap: 10px;
+    min-height: 64px;
+    padding: 9px 16px;
+}
+
+.nexus-presentation-switch span {
+    font-size: 0.875rem;
+}
+
+.nexus-presentation-switch small {
+    margin-top: 4px;
+    color: #b1c1c8;
+    font-size: var(--nexus-ui-meta);
+    line-height: 1.4;
+}
+
+.nexus-presentation-switch button {
+    min-width: var(--nexus-ui-target);
+    min-height: var(--nexus-ui-target);
+    padding: 9px 15px;
+    font-size: var(--nexus-ui-control);
+    line-height: 1.3;
+}
+
+.nexus-spatial-loading {
+    font-size: 0.875rem;
+    line-height: 1.5;
+}
+
+@media (max-width: 1100px) {
+    .nexus-presentation-content {
+        overflow-y: auto;
+        overflow-x: hidden;
+        overscroll-behavior: contain;
+    }
+}
+
+@media (max-width: 600px) {
+    .nexus-presentation-switch {
+        display: grid;
+        grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+        min-height: 0;
+        padding: 10px 12px;
+    }
+
+    .nexus-presentation-switch > div {
+        grid-column: 1 / -1;
+        width: auto;
+    }
+
+    .nexus-presentation-switch button {
+        width: 100%;
+    }
+}

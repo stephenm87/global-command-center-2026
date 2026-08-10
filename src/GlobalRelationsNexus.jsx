@@ -1128,6 +1128,7 @@ export default function GlobalRelationsNexus({ forecasts, selectedTheory, theori
 
     // ── Anchor rotation animation ─────────────────────────────────────────────
     useEffect(() => {
+        if (window.matchMedia?.('(prefers-reduced-motion: reduce)').matches) return undefined;
         let animId;
         const animate = () => {
             if (fgRef.current) {
@@ -1154,14 +1155,14 @@ export default function GlobalRelationsNexus({ forecasts, selectedTheory, theori
         <div className="nexus-container" ref={nexusRootRef}>
             {/* ── Search Overlay ─────────────────────────────────── */}
             {searchOpen && (
-                <div className="nexus-search-overlay">
+                <div className="nexus-search-overlay" role="dialog" aria-label="Search Nexus actors and topics">
                     <div className="nexus-search-bar">
-                        <span className="search-icon">⌕</span>
-                        <input autoFocus placeholder="Search nodes, actors, topics... (Esc to close)"
+                        <span className="search-icon" aria-hidden="true">⌕</span>
+                        <input autoFocus aria-label="Search nodes, actors, and topics" placeholder="Search nodes, actors, topics... (Esc to close)"
                             value={searchQuery}
                             onChange={e => setSearchQuery(e.target.value)}
                             onKeyDown={e => { if (e.key === 'Escape') { setSearchOpen(false); setSearchQuery(''); } }} />
-                        <button className="search-close" onClick={() => { setSearchOpen(false); setSearchQuery(''); }}>✕</button>
+                        <button className="search-close" aria-label="Close Nexus search" onClick={() => { setSearchOpen(false); setSearchQuery(''); }}>✕</button>
                     </div>
                     {searchQuery.length > 1 && (
                         <div className="search-results">
@@ -1183,18 +1184,17 @@ export default function GlobalRelationsNexus({ forecasts, selectedTheory, theori
                     <span className="nexus-pulse-orb" />
                     <span>3D RELATIONS NEXUS SHIELD</span>
                 </div>
-                <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
-                    <span style={{ color: '#888', fontSize: '0.65rem', marginRight: '6px', letterSpacing: '1px' }}>ACTIVE LENS:</span>
+                <div className="nexus-lens-switch" role="group" aria-label="International relations theory lens">
+                    <span className="nexus-lens-label">ACTIVE LENS:</span>
                     {Object.keys(theories).map(t => {
                         const active = selectedTheory === t;
                         const c = theories[t]?.color || '#00ff88';
                         return (
-                            <button key={t} onClick={() => onTheorySelect?.(t)} style={{
+                            <button key={t} className="nexus-lens-btn" aria-pressed={active} onClick={() => onTheorySelect?.(t)} style={{
                                 background: active ? `${c}25` : 'transparent',
                                 border: `1px solid ${active ? c : 'rgba(255,255,255,0.15)'}`,
-                                color: active ? c : '#888', padding: '2px 8px', borderRadius: '4px',
-                                fontSize: '0.65rem', fontFamily: 'Roboto Mono, monospace', cursor: 'pointer',
-                                transition: 'all 0.2s', textShadow: active ? `0 0 6px ${c}` : 'none', outline: 'none',
+                                color: active ? c : '#a5b4bc', borderRadius: '4px', cursor: 'pointer',
+                                transition: 'all 0.2s', textShadow: active ? `0 0 6px ${c}` : 'none',
                             }}>{t.toUpperCase()}</button>
                         );
                     })}
@@ -1202,7 +1202,7 @@ export default function GlobalRelationsNexus({ forecasts, selectedTheory, theori
             </div>
 
             {/* ── Canvas ──────────────────────────────────────────────────── */}
-            <div className="nexus-canvas-wrapper" tabIndex="0" aria-label="Interactive 3D relationship map. Use arrow keys to move between a selected actor's connections.">
+            <div className="nexus-canvas-wrapper" role="region" tabIndex="0" aria-label="Interactive 3D relationship map. Use arrow keys to move between a selected actor's connections.">
                 <ForceGraph3D
                     ref={fgRef}
                     graphData={displayData}
@@ -1222,11 +1222,11 @@ export default function GlobalRelationsNexus({ forecasts, selectedTheory, theori
                             const t = typeof l.target === 'object' ? l.target.id : l.target;
                             return s === node.id || t === node.id;
                         }).length;
-                        return '<div style="background:rgba(0,2,8,0.92);color:#fff;padding:8px 12px;border-radius:5px;font-family:monospace;font-size:11px;border-left:3px solid ' + (node.color || '#fff') + ';max-width:280px;backdrop-filter:blur(10px)">'
+                        return '<div style="background:rgba(0,2,8,0.92);color:#fff;padding:10px 14px;border-radius:5px;font-family:monospace;font-size:14px;line-height:1.5;border-left:3px solid ' + (node.color || '#fff') + ';max-width:320px;backdrop-filter:blur(10px)">'
                             + '<strong style="color:' + (node.color || '#fff') + '">' + node.name + '</strong><br/>'
-                            + '<span style="color:#888;font-size:9px">' + (node.isAnchor ? (node.type || '').toUpperCase() : (node.category || '')) + '</span><br/>'
+                            + '<span style="color:#a5b4bc;font-size:12px">' + (node.isAnchor ? (node.type || '').toUpperCase() : (node.category || '')) + '</span><br/>'
                             + '<span style="color:#aaa">' + conns + ' connections</span>'
-                            + (node.isAnchor ? '<br/><span style="color:#555;font-size:9px">Double-click to lock · Right-click for menu</span>' : '')
+                            + (node.isAnchor ? '<br/><span style="color:#a5b4bc;font-size:12px">Double-click to lock · Right-click for menu</span>' : '')
                             + '</div>';
                     }}
                     linkLabel={lnk => {
@@ -1238,18 +1238,18 @@ export default function GlobalRelationsNexus({ forecasts, selectedTheory, theori
                         const dimLabel = (lnk.type || 'connection').toUpperCase();
                         const info = getEdgeInfo(sId, tId, lnk.type);
                         if (info) {
-                            return `<div style="background:rgba(0,2,8,0.94);color:#fff;padding:10px 14px;border-radius:5px;font-family:'Roboto Mono',monospace;font-size:11px;max-width:360px;border-left:4px solid ${dimColor};backdrop-filter:blur(12px);box-shadow:0 8px 32px rgba(0,0,0,0.8)">
-                                <div style="color:${dimColor};font-size:9px;letter-spacing:2px;margin-bottom:4px">${dimLabel}</div>
-                                <strong style="font-size:13px">${info.label}</strong><br/>
-                                <span style="color:#bbb;font-size:10px;line-height:1.5">${info.summary}</span>
-                                <div style="margin-top:6px;display:flex;gap:4px;flex-wrap:wrap">${info.dataPoints.slice(0,3).map(dp => '<span style="font-size:9px;color:#aaa;background:rgba(0,255,255,0.06);padding:2px 6px;border-radius:2px;border:1px solid rgba(0,255,255,0.1)">' + dp + '</span>').join('')}</div>
-                                <div style="margin-top:6px;font-size:9px;color:#666">Tension: <span style="color:${info.tension > 0.7 ? '#ff0066' : info.tension > 0.4 ? '#ff9900' : '#00ff88'}">${(info.tension * 100).toFixed(0)}%</span> · Click for full details</div>
+                            return `<div style="background:rgba(0,2,8,0.94);color:#fff;padding:12px 16px;border-radius:5px;font-family:'Roboto Mono',monospace;font-size:14px;line-height:1.5;max-width:400px;border-left:4px solid ${dimColor};backdrop-filter:blur(12px);box-shadow:0 8px 32px rgba(0,0,0,0.8)">
+                                <div style="color:${dimColor};font-size:12px;letter-spacing:1.5px;margin-bottom:6px">${dimLabel}</div>
+                                <strong style="font-size:16px">${info.label}</strong><br/>
+                                <span style="color:#d0d7da;font-size:14px;line-height:1.55">${info.summary}</span>
+                                <div style="margin-top:8px;display:flex;gap:5px;flex-wrap:wrap">${info.dataPoints.slice(0,3).map(dp => '<span style="font-size:12px;color:#c2cbd0;background:rgba(0,255,255,0.06);padding:3px 7px;border-radius:2px;border:1px solid rgba(0,255,255,0.1)">' + dp + '</span>').join('')}</div>
+                                <div style="margin-top:8px;font-size:12px;color:#a5b4bc">Tension: <span style="color:${info.tension > 0.7 ? '#ff668f' : info.tension > 0.4 ? '#ffb84d' : '#5eead4'}">${(info.tension * 100).toFixed(0)}%</span> · Click for full details</div>
                             </div>`;
                         }
-                        return `<div style="background:rgba(0,2,8,0.92);color:#ccc;padding:8px 12px;border-radius:4px;font-family:'Roboto Mono',monospace;font-size:11px;border-left:3px solid ${dimColor};backdrop-filter:blur(10px)">
-                            <span style="color:${dimColor};font-size:9px;letter-spacing:1.5px">${dimLabel}</span><br/>
+                        return `<div style="background:rgba(0,2,8,0.92);color:#ddd;padding:10px 14px;border-radius:4px;font-family:'Roboto Mono',monospace;font-size:14px;line-height:1.5;border-left:3px solid ${dimColor};backdrop-filter:blur(10px)">
+                            <span style="color:${dimColor};font-size:12px;letter-spacing:1.5px">${dimLabel}</span><br/>
                             <strong>${sName.split('(')[0].trim()}</strong> ⟷ <strong>${tName.split('(')[0].trim()}</strong><br/>
-                            <span style="font-size:9px;color:#888">Click for details</span>
+                            <span style="font-size:12px;color:#a5b4bc">Click for details</span>
                         </div>`;
                     }}
                     onLinkClick={handleLinkClick}
@@ -1328,7 +1328,7 @@ export default function GlobalRelationsNexus({ forecasts, selectedTheory, theori
                 </div>
 
                 {/* ── HUD Legend ──────────────────────────────────────────── */}
-                <div className="nexus-hud-legend">
+                <div className="nexus-hud-legend" role="region" aria-label="Advanced Nexus controls">
                     {/* ── Tabbed HUD ──────────────────────────── */}
                     <div className="hud-tabs" role="group" aria-label="Advanced Nexus controls">
                         <button aria-pressed={hudTab === 'filters'} className={`hud-tab ${hudTab === 'filters' ? 'active' : ''}`} onClick={() => setHudTab('filters')}>⬡ FILTERS</button>
@@ -1341,7 +1341,7 @@ export default function GlobalRelationsNexus({ forecasts, selectedTheory, theori
                     {hudTab === 'filters' && <>
                         <div className="hud-header">DIMENSION FILTERS</div>
                         {Object.entries({ trade: 'ECONOMY & TRADE', conflict: 'CONFLICT & FRICTION', diplomacy: 'DIPLOMACY & TREATIES', tech: 'TECH & MINERALS' }).map(([key, label]) => (
-                            <label key={key} className="dim-filter-row" style={{ display: 'flex', alignItems: 'center', gap: '8px', padding: '4px 0', cursor: 'pointer', fontSize: '0.6rem' }}>
+                            <label key={key} className="dim-filter-row" style={{ display: 'flex', alignItems: 'center', gap: '8px', cursor: 'pointer' }}>
                                 <input type="checkbox" checked={dimensions[key]} onChange={() => setDimensions(d => ({ ...d, [key]: !d[key] }))}
                                     style={{ accentColor: DIM_COLORS[key] }} />
                                 <span style={{ color: DIM_COLORS[key] }}>{label}</span>
@@ -1353,22 +1353,21 @@ export default function GlobalRelationsNexus({ forecasts, selectedTheory, theori
                             {[['security','🛡','Security'],['borders','🚧','Borders'],['identity','🧬','Identity'],['technology','💻','Technology'],['environment','🌍','Environment'],['health','🏥','Health'],['poverty','📉','Poverty'],['equality','⚖','Equality']].map(([key, icon, name]) => {
                                 const sel = selectedGPC === key;
                                 return (
-                                    <button key={key} onClick={() => setSelectedGPC(sel ? null : key)} style={{
+                                    <button key={key} className="gpc-filter-btn" aria-pressed={sel} onClick={() => setSelectedGPC(sel ? null : key)} style={{
                                         background: sel ? 'rgba(0,255,255,0.12)' : 'rgba(255,255,255,0.02)',
                                         border: `1px solid ${sel ? '#00ffff' : 'rgba(255,255,255,0.1)'}`,
-                                        color: sel ? '#00ffff' : '#aaa', fontSize: '0.52rem',
-                                        fontFamily: 'Roboto Mono, monospace', padding: '4px 2px', borderRadius: '4px',
-                                        cursor: 'pointer', textAlign: 'center', transition: 'all 0.15s', outline: 'none',
+                                        color: sel ? '#00ffff' : '#c0c8cc', fontFamily: 'Roboto Mono, monospace', borderRadius: '4px',
+                                        cursor: 'pointer', textAlign: 'center', transition: 'all 0.15s',
                                     }} title={`Focus on ${name}`}>{icon} {name.toUpperCase()}</button>
                                 );
                             })}
                         </div>
                         {selectedGPC && (
-                            <div style={{ marginBottom: '8px', padding: '6px 10px', background: 'rgba(0,255,255,0.06)',
+                            <div className="nexus-gpc-status" style={{ marginBottom: '8px', padding: '6px 10px', background: 'rgba(0,255,255,0.06)',
                                 border: '1px solid rgba(0,255,255,0.15)', borderRadius: '4px',
-                                fontSize: '0.55rem', color: '#00ffff', letterSpacing: '1px', textAlign: 'center' }}>
+                                color: '#00ffff', letterSpacing: '1px', textAlign: 'center' }}>
                                 VIEWING: {selectedGPC.toUpperCase()} CHALLENGE
-                                <br/><span style={{ color: '#888', fontSize: '0.45rem' }}>{GPC_NODE_MAP[selectedGPC] ? GPC_NODE_MAP[selectedGPC].length + ' relevant actors' : ''}</span>
+                                <br/><span className="nexus-gpc-status-count" style={{ color: '#a5b4bc' }}>{GPC_NODE_MAP[selectedGPC] ? GPC_NODE_MAP[selectedGPC].length + ' relevant actors' : ''}</span>
                             </div>
                         )}
 
@@ -1395,13 +1394,15 @@ export default function GlobalRelationsNexus({ forecasts, selectedTheory, theori
                         <div className="graph-control-row">
                             <label className="ctrl-label">Satellites</label>
                             <button className={`ctrl-toggle ${showSatellites ? 'on' : ''}`}
+                                aria-pressed={showSatellites}
                                 onClick={() => setShowSatellites(prev => !prev)}>
                                 {showSatellites ? 'ON' : 'OFF'}
                             </button>
                         </div>
                         <div className="graph-control-row">
-                            <label className="ctrl-label">Link Intensity</label>
-                            <input type="range" min="0" max="3" step="0.2" value={intensityThreshold}
+                            <label className="ctrl-label" htmlFor="nexus-link-intensity">Link Intensity</label>
+                            <input id="nexus-link-intensity" type="range" min="0" max="3" step="0.2" value={intensityThreshold}
+                                aria-valuetext={intensityThreshold > 0 ? `At least ${intensityThreshold.toFixed(1)}` : 'All links'}
                                 onChange={e => setIntensityThreshold(parseFloat(e.target.value))}
                                 className="audio-slider" />
                             <span className="ctrl-value">{intensityThreshold > 0 ? '≥' + intensityThreshold.toFixed(1) : 'ALL'}</span>
@@ -1412,12 +1413,11 @@ export default function GlobalRelationsNexus({ forecasts, selectedTheory, theori
                             {[['balance','⚖️ BALANCE'],['friction','⚡ FRICTION'],['core','⬢ CORE-PERIPH.']].map(([id, label]) => {
                                 const act = physicsPreset === id;
                                 return (
-                                    <button key={id} onClick={() => setPhysicsPreset(id)} style={{
+                                    <button key={id} className="physics-preset-btn" aria-pressed={act} onClick={() => setPhysicsPreset(id)} style={{
                                         flex: 1, background: act ? 'rgba(0,255,136,0.15)' : 'rgba(255,255,255,0.02)',
                                         border: `1px solid ${act ? '#00ff88' : 'rgba(255,255,255,0.1)'}`,
-                                        color: act ? '#00ff88' : '#888', fontSize: '0.55rem',
-                                        fontFamily: 'Roboto Mono, monospace', padding: '4px 0', borderRadius: '4px',
-                                        cursor: 'pointer', textAlign: 'center', transition: 'all 0.15s', outline: 'none',
+                                        color: act ? '#00ff88' : '#b4bec3', fontFamily: 'Roboto Mono, monospace', borderRadius: '4px',
+                                        cursor: 'pointer', textAlign: 'center', transition: 'all 0.15s',
                                     }}>{label}</button>
                                 );
                             })}
@@ -1440,6 +1440,7 @@ export default function GlobalRelationsNexus({ forecasts, selectedTheory, theori
                         <div className="graph-control-row" style={{ marginBottom: '6px' }}>
                             <label className="ctrl-label">Ambient Pad</label>
                             <button className={`ctrl-toggle ${ambientOn ? 'on' : ''}`}
+                                aria-pressed={ambientOn}
                                 onClick={() => {
                                     if (ambientOn) { NexusAudio.stopAmbient(); setAmbientOn(false); }
                                     else { NexusAudio.startAmbient(); setAmbientOn(true); }
@@ -1448,11 +1449,11 @@ export default function GlobalRelationsNexus({ forecasts, selectedTheory, theori
                             </button>
                         </div>
                         <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-                            <button className="audio-mute-btn" onClick={() => { const m = NexusAudio.toggleMute(); setAudioMuted(m); }}
-                                style={{ fontSize: '0.55rem', padding: '3px 8px' }}>
+                            <button className="audio-mute-btn" aria-label={audioMuted ? 'Unmute Nexus audio' : 'Mute Nexus audio'} aria-pressed={audioMuted} onClick={() => { const m = NexusAudio.toggleMute(); setAudioMuted(m); }}>
                                 {audioMuted ? '🔇' : '🔊'}
                             </button>
                             <input type="range" min="0" max="1" step="0.05" value={audioVolume}
+                                aria-label="Nexus audio volume" aria-valuetext={`${Math.round(audioVolume * 100)} percent`}
                                 onChange={e => { const v = parseFloat(e.target.value); setAudioVolume(v); NexusAudio.setVolume(v); }}
                                 className="audio-slider" style={{ flex: 1 }} />
                         </div>
@@ -1462,8 +1463,8 @@ export default function GlobalRelationsNexus({ forecasts, selectedTheory, theori
                     {hudTab === 'actors' && <>
                         <div className="hud-header">ACTOR CLUSTERS</div>
                         <div style={{ display: 'flex', gap: '4px', marginBottom: '8px' }}>
-                            <button onClick={expandAll} className="nexus-ctrl-btn" style={{ flex: 1, fontSize: '0.48rem' }}>▼ EXPAND ALL</button>
-                            <button onClick={collapseAll} className="nexus-ctrl-btn" style={{ flex: 1, fontSize: '0.48rem' }}>▲ COLLAPSE ALL</button>
+                            <button onClick={expandAll} className="nexus-ctrl-btn" style={{ flex: 1 }}>▼ EXPAND ALL</button>
+                            <button onClick={collapseAll} className="nexus-ctrl-btn" style={{ flex: 1 }}>▲ COLLAPSE ALL</button>
                         </div>
                         <div className="anchor-legend-list">
                             {Object.entries(PRIMARY_ANCHORS).map(([id, a]) => {
@@ -1471,10 +1472,11 @@ export default function GlobalRelationsNexus({ forecasts, selectedTheory, theori
                                 const count = anchorSatCounts[id] || 0;
                                 return (
                                     <button key={id} className={`anchor-legend-item ${isExp ? 'expanded' : ''}`}
+                                        aria-expanded={isExp}
                                         onClick={() => toggleAnchorExpand(id)}
                                         style={{ '--anchor-color': a.color }}>
                                         <span className="anchor-dot" style={{ background: a.color }} />
-                                        <span className="anchor-label">{a.name.length > 20 ? a.name.slice(0, 18) + '..' : a.name}</span>
+                                        <span className="anchor-label">{a.name}</span>
                                         <span className="anchor-count">{isExp ? '▾' : '▸'} {count}</span>
                                     </button>
                                 );
@@ -1501,7 +1503,7 @@ export default function GlobalRelationsNexus({ forecasts, selectedTheory, theori
                 {/* ── Edge Inspector Panel ────────────────────────────── */}
                 {selectedEdge && !selectedNode && (
                     <aside className="nexus-inspect-panel edge-inspector">
-                        <button className="inspect-close" onClick={() => setSelectedEdge(null)}>✕</button>
+                        <button className="inspect-close" aria-label="Close relationship details" onClick={() => setSelectedEdge(null)}>✕</button>
                         <div className="edge-header">
                             <span style={{ color: typeof selectedEdge.source === 'object' ? selectedEdge.source.color : '#fff' }}>
                                 {typeof selectedEdge.source === 'object' ? selectedEdge.source.name : selectedEdge.source}
@@ -1579,23 +1581,23 @@ export default function GlobalRelationsNexus({ forecasts, selectedTheory, theori
                                 title={lockedNode ? 'Unlock view (Esc)' : 'Lock this node\'s connections'}>
                                 {lockedNode ? '🔒 LOCKED' : '🔓 LOCK'}
                             </button>
-                            <button className="inspect-close" onClick={() => { setSelectedNode(null); setLockedNode(null); setInspectTab('overview'); }}>✕</button>
+                            <button className="inspect-close" aria-label="Close actor details" onClick={() => { setSelectedNode(null); setLockedNode(null); setInspectTab('overview'); }}>✕</button>
                         </div>
 
 
                         {/* GPC Context Card */}
                         {selectedGPC && GPC_CONTEXT[selectedGPC] && GPC_CONTEXT[selectedGPC][selectedNode.id] && (
-                            <div style={{
+                            <div className="gpc-context-card" style={{
                                 background: 'rgba(0,255,255,0.04)', border: '1px solid rgba(0,255,255,0.2)',
                                 borderRadius: '6px', padding: '12px 14px', marginBottom: '14px',
                             }}>
-                                <div style={{ fontSize: '0.5rem', letterSpacing: '2px', color: '#00ffff', marginBottom: '6px' }}>
+                                <div className="gpc-context-heading" style={{ letterSpacing: '2px', color: '#00ffff', marginBottom: '6px' }}>
                                     🌐 {selectedGPC.toUpperCase()} CHALLENGE ANALYSIS
                                 </div>
-                                <p style={{ fontSize: '0.68rem', color: '#ddd', lineHeight: '1.55', margin: '0 0 8px' }}>
+                                <p className="gpc-context-insight" style={{ color: '#ddd', lineHeight: '1.55', margin: '0 0 8px' }}>
                                     {GPC_CONTEXT[selectedGPC][selectedNode.id].insight}
                                 </p>
-                                <div style={{ display: 'flex', alignItems: 'center', gap: '8px', fontSize: '0.55rem' }}>
+                                <div className="gpc-context-stakes" style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
                                     <span style={{ color: '#888' }}>STAKES:</span>
                                     <span style={{
                                         color: GPC_CONTEXT[selectedGPC][selectedNode.id].stakes === 'CRITICAL' ? '#ff0066'
@@ -1603,7 +1605,7 @@ export default function GlobalRelationsNexus({ forecasts, selectedTheory, theori
                                         fontWeight: 700
                                     }}>{GPC_CONTEXT[selectedGPC][selectedNode.id].stakes}</span>
                                 </div>
-                                <div style={{ marginTop: '8px', fontSize: '0.5rem', color: '#666' }}>
+                                <div className="gpc-context-connections" style={{ marginTop: '8px', color: '#a5b4bc' }}>
                                     Key connections: {GPC_CONTEXT[selectedGPC][selectedNode.id].connections.join(' · ')}
                                 </div>
                             </div>
@@ -1701,13 +1703,13 @@ export default function GlobalRelationsNexus({ forecasts, selectedTheory, theori
                                             ['Diplomatic Centrality', radarMetrics.diplomaticCentrality, '#00ff88', 50, 'Degree of involvement in multilateral institutions, treaties, and alliances'],
                                         ].map(([label, val, color, avg]) => (
                                             <div key={label} className="radar-metric" style={{ marginBottom: '6px' }}>
-                                                <div className="metric-title" style={{ fontSize: '0.62rem', color: '#aaa' }}>{label}</div>
+                                                <div className="metric-title" style={{ color: '#c0c8cc' }}>{label}</div>
                                                 <div className="metric-bar-wrapper" style={{ position: 'relative', height: '10px', background: 'rgba(255,255,255,0.03)', borderRadius: '2px', border: '1px solid rgba(255,255,255,0.05)', overflow: 'visible' }}>
                                                     <div style={{ position: 'absolute', left: `${avg}%`, top: '-4px', bottom: '-4px', width: '1px', borderLeft: '1px dashed rgba(255,255,255,0.4)', zIndex: 2 }} title={`Global Avg: ${avg}%`} />
                                                     <div className="metric-bar" style={{ width: `${val}%`, background: `linear-gradient(90deg, ${color}88, ${color})`, height: '100%', borderRadius: '1px', boxShadow: `0 0 6px ${color}`, transition: 'width 0.5s ease' }} />
                                                 </div>
-                                                <div style={{ textAlign: 'right', display: 'flex', justifyContent: 'space-between', fontSize: '0.58rem', marginTop: '1px' }}>
-                                                    <span style={{ color: '#666', fontSize: '0.45rem' }}>avg {avg}%</span>
+                                                <div className="metric-value-row" style={{ textAlign: 'right', display: 'flex', justifyContent: 'space-between', marginTop: '1px' }}>
+                                                    <span className="metric-average" style={{ color: '#a5b4bc' }}>avg {avg}%</span>
                                                     <span style={{ color: '#fff', fontWeight: 700 }}>{val}%</span>
                                                 </div>
                                             </div>

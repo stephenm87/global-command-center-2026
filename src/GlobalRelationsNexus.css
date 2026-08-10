@@ -4,6 +4,12 @@
 ---------------------------------------------------- */
 
 .nexus-container {
+    --nexus-body-size: 0.9375rem;
+    --nexus-control-size: 0.8125rem;
+    --nexus-meta-size: 0.75rem;
+    --nexus-control-target: 44px;
+    --nexus-header-height: 64px;
+    --nexus-hud-width: 340px;
     position: relative;
     width: 100%;
     height: 100%;
@@ -19,7 +25,7 @@
     top: 0;
     left: 0;
     width: 100%;
-    height: 50px;
+    height: var(--nexus-header-height);
     z-index: 10;
     display: flex;
     justify-content: space-between;
@@ -93,7 +99,7 @@
 .nexus-telemetry {
     position: absolute;
     bottom: 20px;
-    left: 20px;
+    left: calc(20px + var(--nexus-hud-width) + 12px);
     z-index: 10;
     font-size: 0.65rem;
     color: rgba(255, 255, 255, 0.35);
@@ -104,7 +110,7 @@
     border-radius: 4px;
     border: 1px solid rgba(255, 255, 255, 0.05);
     backdrop-filter: blur(4px);
-    pointer-events: none;
+    pointer-events: auto;
 }
 
 /* Tooltips matching main GCC style */
@@ -155,7 +161,10 @@
     bottom: 20px;
     left: 20px;
     z-index: 10;
-    width: 260px;
+    width: var(--nexus-hud-width);
+    max-height: calc(100% - var(--nexus-header-height) - 40px);
+    overflow-y: auto;
+    overflow-x: hidden;
     background: rgba(0, 5, 10, 0.85);
     border: 1px solid rgba(0, 255, 136, 0.2);
     border-radius: 6px;
@@ -1299,9 +1308,8 @@
 /* ══════════════════════════════════════════════════════════════════════════════
    ENLARGED PANEL OVERRIDES
    ══════════════════════════════════════════════════════════════════════════ */
-.nexus-hud {
-    width: 280px;
-    font-size: 0.78rem;
+.nexus-hud-legend {
+    font-size: var(--nexus-body-size);
 }
 .nexus-inspect-panel {
     width: 440px;
@@ -1327,15 +1335,15 @@
 .nexus-inspect-panel .badge-item {
     font-size: 0.62rem;
 }
-.nexus-hud .hud-header {
-    font-size: 0.62rem;
+.nexus-hud-legend .hud-header {
+    font-size: var(--nexus-meta-size);
 }
-.nexus-hud .nexus-ctrl-btn {
-    font-size: 0.6rem;
-    padding: 5px 10px;
+.nexus-hud-legend .nexus-ctrl-btn {
+    font-size: var(--nexus-control-size);
+    padding: 8px 12px;
 }
-.nexus-hud .anchor-legend-item {
-    font-size: 0.62rem;
+.nexus-hud-legend .anchor-legend-item {
+    font-size: var(--nexus-control-size);
 }
 .nexus-compare-panel {
     width: 460px;
@@ -1472,24 +1480,24 @@
 /* ══════════════════════════════════════════════════════════════════════════════
    HUD SCROLLABLE FIX
    ══════════════════════════════════════════════════════════════════════════ */
-.nexus-hud {
-    max-height: calc(100vh - 80px);
+.nexus-hud-legend {
+    max-height: calc(100% - var(--nexus-header-height) - 40px);
     overflow-y: auto;
     overflow-x: hidden;
     scrollbar-width: thin;
     scrollbar-color: rgba(0, 255, 255, 0.15) transparent;
 }
-.nexus-hud::-webkit-scrollbar {
+.nexus-hud-legend::-webkit-scrollbar {
     width: 4px;
 }
-.nexus-hud::-webkit-scrollbar-track {
+.nexus-hud-legend::-webkit-scrollbar-track {
     background: transparent;
 }
-.nexus-hud::-webkit-scrollbar-thumb {
+.nexus-hud-legend::-webkit-scrollbar-thumb {
     background: rgba(0, 255, 255, 0.15);
     border-radius: 2px;
 }
-.nexus-hud::-webkit-scrollbar-thumb:hover {
+.nexus-hud-legend::-webkit-scrollbar-thumb:hover {
     background: rgba(0, 255, 255, 0.3);
 }
 .actor-list {
@@ -1760,7 +1768,7 @@
 }
 
 /* Compact the HUD further */
-.nexus-hud .hud-header {
+.nexus-hud-legend .hud-header {
     margin-top: 8px !important;
     padding-bottom: 4px !important;
 }
@@ -1770,8 +1778,8 @@
    ══════════════════════════════════════════════════════════════════════════ */
 .nexus-inspect-panel {
     right: 0 !important;
-    top: 45px !important;
-    max-height: calc(100% - 45px) !important;
+    top: var(--nexus-header-height) !important;
+    max-height: calc(100% - var(--nexus-header-height)) !important;
     border-radius: 0 !important;
     border-right: none !important;
     border-top: none !important;
@@ -1780,8 +1788,8 @@
 }
 .nexus-compare-panel {
     right: 0 !important;
-    top: 45px !important;
-    max-height: calc(100% - 45px) !important;
+    top: var(--nexus-header-height) !important;
+    max-height: calc(100% - var(--nexus-header-height)) !important;
     border-radius: 0 !important;
     border-right: none !important;
     border-left: 1px solid rgba(0, 255, 255, 0.12) !important;
@@ -1901,4 +1909,361 @@
 .edge-metrics {
     font-size: 0.65rem;
     color: #999;
+}
+
+/* ══════════════════════════════════════════════════════════════════════════════
+   ACCESSIBLE TYPE, TARGETS, AND RESPONSIVE SPATIAL LAYOUT
+   Keep these rules last so they consistently replace legacy micro-type rules.
+   ══════════════════════════════════════════════════════════════════════════ */
+.nexus-container button,
+.nexus-container .gdelt-item {
+    min-height: var(--nexus-control-target);
+}
+
+.nexus-container button {
+    font-size: var(--nexus-control-size);
+    line-height: 1.25;
+}
+
+.nexus-container :is(button, a, input, select, [tabindex]):focus-visible {
+    outline: 3px solid #7df9ff !important;
+    outline-offset: 3px;
+    box-shadow: 0 0 0 2px #001319, 0 0 16px rgba(125, 249, 255, 0.45);
+}
+
+.nexus-container .nexus-canvas-wrapper:focus-visible {
+    outline-offset: -4px;
+}
+
+.nexus-lens-switch {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    min-width: 0;
+    overflow-x: auto;
+    padding: 4px;
+    scrollbar-width: thin;
+}
+
+.nexus-lens-label {
+    flex: 0 0 auto;
+    color: #a5b4bc;
+    font-size: var(--nexus-meta-size);
+    letter-spacing: 0.08em;
+}
+
+.nexus-lens-btn {
+    flex: 0 0 auto;
+    min-width: var(--nexus-control-target);
+    padding: 8px 12px !important;
+    font-family: 'Roboto Mono', monospace;
+    font-size: var(--nexus-control-size) !important;
+}
+
+.nexus-telemetry {
+    font-size: var(--nexus-meta-size);
+    color: rgba(232, 243, 245, 0.76);
+}
+
+.nexus-hint,
+.view-mode-label,
+.pulse-indicator,
+.ctrl-label,
+.ctrl-value,
+.anchor-count,
+.tour-progress,
+.edge-dimension,
+.hero-tension {
+    font-size: var(--nexus-meta-size);
+}
+
+.hud-header,
+.section-label,
+.inspect-cat,
+.node-badge,
+.hover-card-type,
+.hover-card-players,
+.hero-rank,
+.hero-dim,
+.hero-chip,
+.timeline-year,
+.conn-dim-pill,
+.search-cat,
+.search-empty,
+.tour-subtitle,
+.compare-type,
+.hero-label,
+.lock-breadcrumb,
+.radar-metric,
+.tooltip-type,
+.tooltip-players,
+.tooltip-action {
+    font-size: var(--nexus-meta-size);
+}
+
+.section-body,
+.lens-text,
+.gpc-card-body,
+.edge-summary,
+.hero-summary,
+.timeline-text,
+.hover-card-desc,
+.gdelt-item,
+.edge-metrics,
+.tour-narration-text {
+    font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    font-size: var(--nexus-body-size);
+    line-height: 1.55;
+}
+
+.nexus-tooltip {
+    font-size: var(--nexus-body-size);
+    line-height: 1.5;
+}
+
+.gpc-card-header,
+.edge-header,
+.tour-narration-title {
+    font-size: var(--nexus-control-size);
+}
+
+.nexus-ctrl-btn,
+.hud-tab,
+.ctrl-toggle,
+.view-toggle-btn,
+.anchor-legend-item,
+.conn-nav-btn,
+.lock-btn,
+.search-result-item,
+.actor-list-item,
+.edge-nav-btns button,
+.audio-mute-btn,
+.nexus-context-menu button,
+.tour-controls button,
+.tour-start-btn {
+    min-height: var(--nexus-control-target);
+    padding: 8px 12px;
+    font-size: var(--nexus-control-size) !important;
+}
+
+.inspect-tab {
+    min-height: var(--nexus-control-target);
+    font-size: var(--nexus-meta-size);
+}
+
+.inspect-close,
+.search-close,
+.audio-mute-btn {
+    min-width: var(--nexus-control-target);
+}
+
+.inspect-close,
+.search-close {
+    display: inline-grid;
+    place-items: center;
+    padding: 0;
+    font-size: 1.125rem !important;
+}
+
+.dim-filter-row,
+.gpc-filter-btn,
+.physics-preset-btn {
+    min-height: var(--nexus-control-target);
+    font-size: var(--nexus-control-size) !important;
+}
+
+.dim-filter-row {
+    padding: 8px 2px !important;
+}
+
+.dim-filter-row input[type='checkbox'] {
+    width: 20px;
+    height: 20px;
+    flex: 0 0 auto;
+}
+
+.gpc-filter-btn,
+.physics-preset-btn {
+    padding: 8px 6px !important;
+}
+
+.nexus-gpc-status,
+.gpc-context-heading,
+.gpc-context-stakes,
+.gpc-context-connections,
+.metric-title,
+.metric-value-row,
+.metric-average {
+    font-size: var(--nexus-meta-size);
+}
+
+.nexus-gpc-status-count {
+    font-size: var(--nexus-meta-size);
+    line-height: 1.5;
+}
+
+.gpc-context-insight {
+    font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    font-size: var(--nexus-body-size);
+}
+
+.audio-slider {
+    min-height: var(--nexus-control-target);
+    background: transparent;
+}
+
+.audio-slider::-webkit-slider-runnable-track {
+    height: 6px;
+    border-radius: 999px;
+    background: rgba(255, 255, 255, 0.18);
+}
+
+.audio-slider::-webkit-slider-thumb {
+    width: 20px;
+    height: 20px;
+    margin-top: -7px;
+}
+
+.nexus-search-bar input {
+    min-height: var(--nexus-control-target);
+    font-size: 1rem;
+}
+
+.search-name,
+.anchor-label,
+.conn-nav-name,
+.actor-list-item,
+.hover-card-name,
+.edge-label,
+.hero-name {
+    font-size: var(--nexus-control-size) !important;
+}
+
+.inspect-title {
+    font-size: clamp(1.25rem, 2vw, 1.6rem);
+}
+
+.nexus-inspect-panel,
+.nexus-compare-panel {
+    scrollbar-width: thin;
+    scrollbar-color: rgba(125, 249, 255, 0.35) transparent;
+}
+
+@media (max-width: 1100px) {
+    .nexus-container {
+        --nexus-hud-width: 320px;
+    }
+
+    .nexus-bar {
+        gap: 16px;
+        padding-inline: 14px;
+    }
+
+    .nexus-title {
+        flex: 0 0 auto;
+        font-size: 0.875rem;
+    }
+
+    .nexus-lens-switch {
+        flex: 1 1 auto;
+        justify-content: flex-start;
+    }
+
+    .nexus-inspect-panel,
+    .nexus-compare-panel {
+        width: min(440px, calc(100% - 24px));
+    }
+}
+
+@media (max-width: 760px) {
+    .nexus-container {
+        --nexus-hud-width: calc(100% - 24px);
+    }
+
+    .nexus-hud-legend {
+        left: 12px;
+        bottom: 12px;
+        max-height: min(44svh, 430px);
+        padding: 12px;
+    }
+
+    .nexus-telemetry {
+        top: calc(var(--nexus-header-height) + 10px);
+        bottom: auto;
+        left: 12px;
+        max-width: calc(100% - 24px);
+    }
+
+    .nexus-hover-card {
+        top: calc(var(--nexus-header-height) + 10px);
+        max-width: calc(100% - 32px);
+    }
+
+    .nexus-inspect-panel,
+    .nexus-compare-panel {
+        top: auto !important;
+        right: 0 !important;
+        bottom: 0;
+        left: 0;
+        width: 100%;
+        max-height: min(68svh, 620px) !important;
+        border-top: 1px solid rgba(0, 255, 255, 0.2) !important;
+        border-left: 0 !important;
+        padding: 20px;
+    }
+
+    .nexus-search-overlay {
+        top: calc(var(--nexus-header-height) + 8px);
+        width: calc(100% - 24px);
+        max-width: none;
+    }
+
+    .tour-narration {
+        bottom: 12px;
+        width: calc(100% - 24px);
+        max-width: none;
+        box-sizing: border-box;
+    }
+}
+
+@media (max-width: 520px) {
+    .nexus-title > span:last-child {
+        display: none;
+    }
+
+    .nexus-pulse-orb {
+        margin-right: 0;
+    }
+
+    .nexus-lens-label {
+        position: absolute;
+        width: 1px;
+        height: 1px;
+        padding: 0;
+        margin: -1px;
+        overflow: hidden;
+        clip: rect(0, 0, 0, 0);
+        white-space: nowrap;
+        border: 0;
+    }
+
+    .nexus-telemetry .nexus-hint {
+        display: none;
+    }
+
+    .nexus-inspect-panel,
+    .nexus-compare-panel {
+        padding: 18px 16px;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .nexus-container *,
+    .nexus-container *::before,
+    .nexus-container *::after {
+        scroll-behavior: auto !important;
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+    }
 }

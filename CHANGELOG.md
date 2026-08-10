@@ -2,6 +2,8 @@
 
 ## [Unreleased]
 ### Added
+- Persisted display preferences for larger text, reduced effects, and the operational dashboard's collapsed state.
+- Accessible case-library, source-card, map-legend, Intel Feed, and Nexus controls with 44px primary interaction targets and visible keyboard focus.
 - Versioned, validated AI intelligence brief responses and contract tests.
 - Searchable keyboard-accessible intelligence feed and accessible dialog semantics.
 - Provider provenance, freshness, and private-cache metadata.
@@ -16,6 +18,10 @@
 - A documented current-intelligence coverage policy spanning seven regions, six issue lenses, and five non-evaluative source roles.
 
 ### Changed
+- Reworked Globe, Guided Briefings, and Nexus into zoom-safe responsive layouts with readable body text, restrained visual effects, normal document flow where appropriate, and breakpoint-specific panel stacking.
+- Guided Briefings now show six library results initially, center the active mobile step, and present the three core perspectives as full comparison cards with source role, health, viewpoint, rationale, and fallbacks.
+- The Globe canvas now follows its responsive container with `ResizeObserver`; the Intel Feed uses a bounded scroll region without card overlap, and secondary header actions live in a compact Tools & Display menu.
+- The default Focus Nexus now becomes a single-column relationship view below 1100px, while the advanced spatial Nexus restores telemetry clickability, separates overlapping panels, and respects reduced-motion preferences.
 - Revalidated the Sudan, Guyana–Venezuela, Tuvalu, and Greenland briefings against current primary and independent evidence, and replaced the broken Somaliland source with a reachable local report plus fallback and contested-area context.
 - Current provider intelligence now precedes clearly dated editorial context.
 - Serper news queries were consolidated and provider calls now have bounded timeouts.
