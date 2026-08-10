@@ -1468,20 +1468,29 @@ function App() {
                                     {historicalLoading ? '⟳ LOADING...' : `${historicalData.length} EVENTS • SOURCED`}
                                 </span>
                             ) : intelLastUpdated && (
-                                <span
-                                    className={`intel-source-status ${intelSummary.sourceMode === 'provider' ? 'provider' : intelSummary.sourceMode === 'public-cache' ? (intelSummary.feedStatus === 'stale' ? 'warning' : 'cached') : ['not-configured', 'unavailable', 'network-error'].includes(intelSummary.feedStatus) ? 'warning' : 'reference'}`}
-                                    role="status"
-                                >
-                                    {intelSummary.sourceMode === 'provider'
-                                        ? `● ${intelSummary.liveItemCount} PROVIDER-CURRENT · ${intelLastUpdated.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' })}`
-                                        : intelSummary.sourceMode === 'public-cache'
-                                            ? `${intelSummary.feedStatus === 'stale' ? '◐' : '●'} ${intelSummary.liveItemCount} ${intelSummary.feedStatus === 'stale' ? 'STALE' : 'CACHED'} CURRENT · ${intelLastUpdated.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' })}`
-                                            : intelSummary.feedStatus === 'not-configured'
-                                                ? `△ CURRENT FEED NOT CONFIGURED · ${intelSummary.linkedReferenceCount} PUBLIC SOURCES`
-                                                : ['unavailable', 'network-error'].includes(intelSummary.feedStatus)
-                                                    ? `△ CURRENT FEED UNAVAILABLE · ${intelSummary.linkedReferenceCount} PUBLIC SOURCES`
-                                                    : `○ PUBLIC REFERENCE MODE · ${intelSummary.linkedReferenceCount} LINKED SOURCES`}
-                                </span>
+                                <>
+                                    <span
+                                        className={`intel-source-status ${intelSummary.sourceMode === 'provider' ? 'provider' : intelSummary.sourceMode === 'public-cache' ? (intelSummary.feedStatus === 'stale' ? 'warning' : 'cached') : ['not-configured', 'unavailable', 'network-error'].includes(intelSummary.feedStatus) ? 'warning' : 'reference'}`}
+                                        role="status"
+                                    >
+                                        {intelSummary.sourceMode === 'provider'
+                                            ? `● ${intelSummary.liveItemCount} PROVIDER-CURRENT · ${intelLastUpdated.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' })}`
+                                            : intelSummary.sourceMode === 'public-cache'
+                                                ? `${intelSummary.feedStatus === 'stale' ? '◐' : '●'} ${intelSummary.liveItemCount} ${intelSummary.feedStatus === 'stale' ? 'STALE' : 'CACHED'} CURRENT · ${intelLastUpdated.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' })}`
+                                                : intelSummary.feedStatus === 'not-configured'
+                                                    ? `△ CURRENT FEED NOT CONFIGURED · ${intelSummary.linkedReferenceCount} PUBLIC SOURCES`
+                                                    : ['unavailable', 'network-error'].includes(intelSummary.feedStatus)
+                                                        ? `△ CURRENT FEED UNAVAILABLE · ${intelSummary.linkedReferenceCount} PUBLIC SOURCES`
+                                                        : `○ PUBLIC REFERENCE MODE · ${intelSummary.linkedReferenceCount} LINKED SOURCES`}
+                                    </span>
+                                    {intelSummary.liveItemCount > 0 && intelSummary.coverage && (
+                                        <div className="intel-coverage-summary" aria-label="Current intelligence coverage">
+                                            <span>{intelSummary.coverage.coveredRegionCount}/{intelSummary.coverage.targetRegionCount} REGIONS</span>
+                                            <span>{intelSummary.coverage.coveredIssueCount}/{intelSummary.coverage.targetIssueCount} ISSUES</span>
+                                            <span>{intelSummary.coverage.coveredSourceRoleCount}/{intelSummary.coverage.targetSourceRoleCount} SOURCE ROLES</span>
+                                        </div>
+                                    )}
+                                </>
                             )}
                             <label className="feed-search-label" htmlFor="feed-search">Search the intelligence list</label>
                             <input
@@ -1553,6 +1562,13 @@ function App() {
                                     style={{ borderLeftColor: forecast.isHistorical ? '#ffcc00' : forecast.isLive ? '#00ffff' : forecast.isEditorial ? '#b69cff' : categoryColors[forecast.Broad_Category] }}
                                 >
                                     {forecast.isLive && <div className="live-tag">● {forecast._scraperSource === 'serper-public-cache' ? 'CACHED CURRENT' : 'LIVE INTEL'}</div>}
+                                    {forecast.isLive && forecast.coverage && (
+                                        <div className="coverage-badges" aria-label="Coverage classification">
+                                            <span>{forecast.coverage.region}</span>
+                                            <span>{forecast.coverage.issue}</span>
+                                            <span>{forecast.coverage.sourceRoleLabel}</span>
+                                        </div>
+                                    )}
                                     {forecast.isCaseStudy
                                         ? <div className="case-study-tag">◆ VERIFIED CASE · {forecast.updatedAt}</div>
                                         : forecast.isEditorial && <div className="context-tag">◆ DATED CONTEXT</div>}
@@ -1867,6 +1883,18 @@ function App() {
                                         >
                                             OPEN GUIDED BRIEFING →
                                         </button>
+                                    </section>
+                                )}
+                                {selectedForecast.isLive && selectedForecast.coverage && (
+                                    <section className="current-source-context" aria-label="Automated source selection context">
+                                        <strong>WHY THIS UPDATE IS INCLUDED</strong>
+                                        <div className="coverage-badges coverage-badges-detail">
+                                            <span>{selectedForecast.coverage.region}</span>
+                                            <span>{selectedForecast.coverage.issue}</span>
+                                            <span>{selectedForecast.coverage.sourceRoleLabel}</span>
+                                        </div>
+                                        <p>{selectedForecast.coverage.selectionReason}</p>
+                                        <small>Automated discovery metadata supports coverage balance. A source role describes format and standpoint—not neutrality, accuracy, or endorsement.</small>
                                     </section>
                                 )}
                                 {/* 5W1H Analysis Section */}

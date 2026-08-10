@@ -531,6 +531,27 @@
     color: #9fb2c7;
 }
 
+.intel-coverage-summary {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.35rem;
+    margin-top: -0.4rem;
+}
+
+.intel-coverage-summary span,
+.coverage-badges span {
+    border: 1px solid rgba(94, 234, 212, 0.35);
+    border-radius: 999px;
+    background: rgba(94, 234, 212, 0.08);
+    color: #b8f5ea;
+    font: 700 0.56rem/1.25 'Roboto Mono', monospace;
+    letter-spacing: 0.04em;
+}
+
+.intel-coverage-summary span {
+    padding: 0.22rem 0.42rem;
+}
+
 .category-filter {
     background: rgba(0, 0, 0, 0.5);
     border: 1px solid #00ffff;
@@ -657,6 +678,62 @@
 .intel-card.editorial-item {
     border-color: rgba(182, 156, 255, 0.35);
     background: rgba(74, 50, 120, 0.14);
+}
+
+.coverage-badges {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.3rem;
+    margin: 0 0 0.6rem;
+}
+
+.coverage-badges span {
+    padding: 0.2rem 0.38rem;
+}
+
+.coverage-badges span:nth-child(2) {
+    border-color: rgba(255, 153, 0, 0.38);
+    background: rgba(255, 153, 0, 0.08);
+    color: #ffc36b;
+}
+
+.coverage-badges span:nth-child(3) {
+    border-color: rgba(182, 156, 255, 0.4);
+    background: rgba(182, 156, 255, 0.09);
+    color: #d6c7ff;
+}
+
+.current-source-context {
+    margin-bottom: 1rem;
+    padding: 0.9rem;
+    border: 1px solid rgba(94, 234, 212, 0.28);
+    border-left: 3px solid #5eead4;
+    border-radius: 5px;
+    background: rgba(94, 234, 212, 0.05);
+}
+
+.current-source-context > strong {
+    display: block;
+    margin-bottom: 0.65rem;
+    color: #5eead4;
+    font: 800 0.68rem 'Roboto Mono', monospace;
+    letter-spacing: 0.1em;
+}
+
+.coverage-badges-detail {
+    margin-bottom: 0.7rem;
+}
+
+.current-source-context p {
+    margin: 0 0 0.55rem;
+    color: #d7e4ef;
+    font: 0.74rem/1.55 'Roboto Mono', monospace;
+}
+
+.current-source-context small {
+    display: block;
+    color: #93a8bb;
+    font: 0.62rem/1.5 'Roboto Mono', monospace;
 }
 
 .context-tag {

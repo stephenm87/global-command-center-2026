@@ -13,6 +13,7 @@
 - A searchable Focus Nexus with relationship lenses, source-linked current cases, and actor deep links.
 - An anonymous, fixed-query Serper snapshot stored in Netlify Blobs and refreshed every 30 minutes without exposing the provider key.
 - Daily automated health classification for editorial source links, plus reusable alternate-source links and an official OCHA PDF fallback for the Myanmar briefing.
+- A documented current-intelligence coverage policy spanning seven regions, six issue lenses, and five non-evaluative source roles.
 
 ### Changed
 - Revalidated the Sudan, Guyana–Venezuela, Tuvalu, and Greenland briefings against current primary and independent evidence, and replaced the broken Somaliland source with a reachable local report plus fallback and contested-area context.
@@ -25,6 +26,7 @@
 - Case records now normalize `coverageRegion`, `featured`, `sensitivity`, `reviewCadenceDays`, `reviewBy`, perspective labels, and point, route, regional, or global map locations for use across the globe, Guided Briefings, and Nexus.
 - Feed states now distinguish cached, stale, unavailable, warming, and unconfigured provider data instead of presenting every failure as zero updates.
 - Authentication is reserved for visitor-supplied searches, Firecrawl extraction, and AI briefing generation; the fixed public snapshot is anonymously readable.
+- The public Serper snapshot now filters weak or promotional matches, limits repeated publishers and topic clusters, balances available region and issue coverage, and explains its automated selection decisions in the interface.
 
 ## [baseline-2026-08-03] - 2026-08-03
 ### Added
