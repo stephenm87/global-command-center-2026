@@ -1,10 +1,18 @@
-import { useEffect, useMemo, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import { GUIDED_TOURS } from './nexusTours';
 import { NEXUS_ACTORS } from './nexusFocusData';
 import { indexSourceHealth, shouldPreferAlternate, sourceHealthLabel } from './sourceHealth.mjs';
 import './GuidedBriefings.css';
 
 const validTour = id => GUIDED_TOURS.some(tour => tour.id === id);
+const INITIAL_LIBRARY_COUNT = 6;
+const NARROW_LIBRARY_QUERY = '(max-width: 1100px)';
+
+const isNarrowLibraryViewport = () => (
+    typeof window !== 'undefined'
+    && typeof window.matchMedia === 'function'
+    && window.matchMedia(NARROW_LIBRARY_QUERY).matches
+);
 
 const resolveStepIndex = (tourId, nodeId, step) => {
     const requestedTour = GUIDED_TOURS.find(item => item.id === tourId) || GUIDED_TOURS[0];
@@ -24,23 +32,32 @@ function SourceCitation({ source, healthByUrl, supplemental = false }) {
 
     return (
         <li className={supplemental ? 'source-citation source-citation-supplemental' : 'source-citation'}>
-            {!supplemental && source.perspectiveType && <strong className={`source-perspective source-perspective-${source.perspectiveType}`}>{source.perspectiveType}</strong>}
+            {((!supplemental && source.perspectiveType) || healthLabel) && (
+                <div className="source-citation-header">
+                    {!supplemental && source.perspectiveType && <strong className={`source-perspective source-perspective-${source.perspectiveType}`}>{source.perspectiveType}</strong>}
+                    {healthLabel && <em className={`source-health source-health-${health.status}`}>{healthLabel}{health.httpStatus ? ` · ${health.httpStatus}` : ''}</em>}
+                </div>
+            )}
             <div className="source-citation-main">
-                <a href={source.url} target="_blank" rel="noopener noreferrer">{source.title}</a>
-                {healthLabel && <em className={`source-health source-health-${health.status}`}>{healthLabel}{health.httpStatus ? ` · ${health.httpStatus}` : ''}</em>}
-                <span>{source.publisher}{source.dateLabel ? ` · ${source.dateLabel}` : ''}{source.perspective ? ` · ${source.perspective}` : ''}</span>
-                {source.supports && <small>Supports: {source.supports}</small>}
-                {alternates.map(alternate => (
-                    <a
-                        className={`source-alternate ${preferAlternate ? 'recommended' : ''}`}
-                        href={alternate.url}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        key={alternate.url}
-                    >
-                        {preferAlternate ? 'Recommended fallback: ' : 'Alternate: '}{alternate.label || 'Open alternate source'} ↗
-                    </a>
-                ))}
+                <a className="source-title" href={source.url} target="_blank" rel="noopener noreferrer">{source.title}<span aria-hidden="true"> ↗</span></a>
+                <span className="source-meta">{source.publisher}{source.dateLabel ? ` · ${source.dateLabel}` : ''}</span>
+                {source.perspective && <p className="source-perspective-copy">{source.perspective}</p>}
+                {source.supports && <p className="source-supports"><strong>Why this source is included:</strong> {source.supports}</p>}
+                {alternates.length > 0 && (
+                    <div className="source-actions">
+                        {alternates.map(alternate => (
+                            <a
+                                className={`source-alternate ${preferAlternate ? 'recommended' : ''}`}
+                                href={alternate.url}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                key={alternate.url}
+                            >
+                                {preferAlternate ? 'Recommended fallback: ' : 'Alternate: '}{alternate.label || 'Open alternate source'} ↗
+                            </a>
+                        ))}
+                    </div>
+                )}
             </div>
         </li>
     );
@@ -53,6 +70,10 @@ export default function GuidedBriefings({ initialTourId, initialNodeId, initialS
     const [regionFilter, setRegionFilter] = useState('all');
     const [issueFilter, setIssueFilter] = useState('all');
     const [sourceHealth, setSourceHealth] = useState(null);
+    const [libraryOpen, setLibraryOpen] = useState(() => !isNarrowLibraryViewport());
+    const [visibleCaseCount, setVisibleCaseCount] = useState(INITIAL_LIBRARY_COUNT);
+    const stageHeadingRef = useRef(null);
+    const progressRef = useRef(null);
 
     const tour = useMemo(() => GUIDED_TOURS.find(item => item.id === tourId) || GUIDED_TOURS[0], [tourId]);
     const waypoint = tour?.waypoints[stepIndex];
@@ -84,6 +105,8 @@ export default function GuidedBriefings({ initialTourId, initialNodeId, initialS
         });
     }, [librarySearch, regionFilter, issueFilter]);
     const healthByUrl = useMemo(() => indexSourceHealth(sourceHealth), [sourceHealth]);
+    const displayedTours = visibleTours.slice(0, visibleCaseCount);
+    const remainingTourCount = Math.max(visibleTours.length - displayedTours.length, 0);
 
     useEffect(() => {
         const controller = new AbortController();
@@ -101,6 +124,21 @@ export default function GuidedBriefings({ initialTourId, initialNodeId, initialS
     }, [initialTourId, initialNodeId, initialStep]);
 
     useEffect(() => {
+        setVisibleCaseCount(INITIAL_LIBRARY_COUNT);
+    }, [librarySearch, regionFilter, issueFilter]);
+
+    useEffect(() => {
+        const activeStep = progressRef.current?.querySelector('.active');
+        if (!activeStep) return;
+        const reduceMotion = window.matchMedia?.('(prefers-reduced-motion: reduce)').matches;
+        activeStep.scrollIntoView({
+            behavior: reduceMotion ? 'auto' : 'smooth',
+            block: 'nearest',
+            inline: 'center',
+        });
+    }, [stepIndex, tour?.id]);
+
+    useEffect(() => {
         if (!tour) return;
         const url = new URL(window.location.href);
         url.searchParams.set('view', 'briefings');
@@ -116,13 +154,17 @@ export default function GuidedBriefings({ initialTourId, initialNodeId, initialS
     const chooseTour = id => {
         setTourId(id);
         setStepIndex(0);
+        if (isNarrowLibraryViewport()) {
+            setLibraryOpen(false);
+            window.requestAnimationFrame(() => stageHeadingRef.current?.focus());
+        }
     };
 
     const move = delta => setStepIndex(index => Math.min(Math.max(index + delta, 0), tour.waypoints.length - 1));
 
     return (
         <section
-            className="guided-briefings"
+            className={`guided-briefings ${libraryOpen ? '' : 'library-collapsed'}`.trim()}
             aria-label="Guided geopolitical briefings"
             onKeyDown={event => {
                 if (event.target.closest('button, a, input, select, textarea, [contenteditable="true"]')) return;
@@ -130,10 +172,19 @@ export default function GuidedBriefings({ initialTourId, initialNodeId, initialS
                 if (event.key === 'ArrowRight') { event.preventDefault(); move(1); }
             }}
         >
-            <aside className="briefing-library">
+            <aside id="briefing-case-library" className="briefing-library" aria-label="Guided briefing case library" hidden={!libraryOpen}>
                 <div className="briefing-library-heading">
                     <span>GUIDED BRIEFINGS</span>
                     <p>Explore {GUIDED_TOURS.length} sourced, multi-perspective cases.</p>
+                    <button
+                        type="button"
+                        className="briefing-library-close"
+                        onClick={() => setLibraryOpen(false)}
+                        aria-controls="briefing-case-library"
+                        aria-expanded={libraryOpen}
+                    >
+                        Close library
+                    </button>
                 </div>
                 <div className="briefing-library-tools" role="search" aria-label="Filter guided briefings">
                     <label>
@@ -175,8 +226,8 @@ export default function GuidedBriefings({ initialTourId, initialNodeId, initialS
                         )}
                     </div>
                 </div>
-                <div className="briefing-tour-list">
-                    {visibleTours.map(item => (
+                <div id="briefing-case-list" className="briefing-tour-list">
+                    {displayedTours.map(item => (
                         <button
                             key={item.id}
                             type="button"
@@ -194,20 +245,47 @@ export default function GuidedBriefings({ initialTourId, initialNodeId, initialS
                         <div className="briefing-library-empty">No cases match these filters.</div>
                     )}
                 </div>
+                {visibleTours.length > INITIAL_LIBRARY_COUNT && (
+                    <button
+                        type="button"
+                        className="briefing-library-more"
+                        aria-controls="briefing-case-list"
+                        onClick={() => setVisibleCaseCount(current => (
+                            current >= visibleTours.length
+                                ? INITIAL_LIBRARY_COUNT
+                                : Math.min(current + INITIAL_LIBRARY_COUNT, visibleTours.length)
+                        ))}
+                    >
+                        {remainingTourCount > 0
+                            ? `Show ${Math.min(INITIAL_LIBRARY_COUNT, remainingTourCount)} more cases`
+                            : 'Show fewer cases'}
+                    </button>
+                )}
                 <p className="briefing-library-note">Every case has three perspective-labelled readings, appears on the globe, and opens into the Focus Nexus.</p>
             </aside>
 
             <div className="briefing-stage" style={{ '--tour-color': tour.color }}>
+                <div className="briefing-stage-toolbar">
+                    <button
+                        type="button"
+                        className="briefing-library-toggle"
+                        onClick={() => setLibraryOpen(value => !value)}
+                        aria-controls="briefing-case-library"
+                        aria-expanded={libraryOpen}
+                    >
+                        {libraryOpen ? 'Hide case library' : `Browse ${GUIDED_TOURS.length} cases`}
+                    </button>
+                </div>
                 <header className="briefing-stage-header">
                     <div>
                         <span className="briefing-kicker">EDITORIAL BRIEFING{tour.updatedAt ? ` · AS OF ${tour.updatedAt}` : ''}</span>
-                        <h1>{tour.title}</h1>
+                        <h1 ref={stageHeadingRef} tabIndex="-1">{tour.title}</h1>
                         <p>{tour.subtitle}</p>
                     </div>
                     <div className="briefing-progress-label">STEP {stepIndex + 1} / {tour.waypoints.length}</div>
                 </header>
 
-                <div className="briefing-progress" aria-label={`Step ${stepIndex + 1} of ${tour.waypoints.length}`}>
+                <div ref={progressRef} className="briefing-progress" aria-label={`Step ${stepIndex + 1} of ${tour.waypoints.length}`}>
                     {tour.waypoints.map((item, index) => (
                         <button
                             key={`${item.nodeId}-${index}`}
