@@ -11,6 +11,7 @@ const publicHeaders = {
     'Content-Type': 'application/json',
     'Cache-Control': 'public, max-age=60',
     'Netlify-CDN-Cache-Control': 'public, max-age=900, stale-while-revalidate=21600',
+    'Netlify-Vary': 'header=Origin',
 };
 
 async function refreshSnapshot() {
@@ -34,16 +35,17 @@ export default async request => {
     const event = toLegacyEvent(request);
     const security = protectPublicEndpoint(event, { methods: ['GET'] });
     if (security.response) return toResponse(security.response);
+    const responseHeaders = { ...security.headers, ...publicHeaders };
 
     try {
         const cached = await readSnapshot(SNAPSHOT_KEY);
         const configurationBecameAvailable = cached?.meta?.status === 'not-configured' && process.env.SERPER_API_KEY;
         if (cached?.meta && !configurationBecameAvailable) {
-            return new Response(JSON.stringify(withSnapshotAge(cached)), { status: 200, headers: publicHeaders });
+            return new Response(JSON.stringify(withSnapshotAge(cached)), { status: 200, headers: responseHeaders });
         }
 
         const snapshot = await refreshSnapshot();
-        return new Response(JSON.stringify(withSnapshotAge(snapshot)), { status: 200, headers: publicHeaders });
+        return new Response(JSON.stringify(withSnapshotAge(snapshot)), { status: 200, headers: responseHeaders });
     } catch (error) {
         console.error('[public-intel] Snapshot unavailable:', error.message);
         const status = process.env.SERPER_API_KEY ? 'unavailable' : 'not-configured';
@@ -60,7 +62,7 @@ export default async request => {
                 },
             }), {
             status: 200,
-            headers: { ...publicHeaders, 'Netlify-CDN-Cache-Control': 'public, max-age=60' },
+            headers: { ...responseHeaders, 'Netlify-CDN-Cache-Control': 'public, max-age=60' },
         });
     }
 };

@@ -10,7 +10,7 @@ Provider API keys must never use the `VITE_` prefix because Vite exposes those v
 
 ## Server-Side Variables (Netlify Functions Only)
 - `GEMINI_API_KEY`: Used by `ai-summary.js`.
-- `GEMINI_SUMMARY_MODEL`: Optional intelligence-brief model override; defaults to `gemini-2.5-flash`. Evaluate any replacement against representative articles before deployment.
+- `GEMINI_SUMMARY_MODEL`: Optional intelligence-brief model override; defaults to `gemini-3.5-flash-lite` ahead of the `2026-12-01` `gemini-2.5-flash` auto-routing date. Evaluate any replacement against representative articles before deployment.
 - `SERPER_API_KEY`: Server-only key used by the scheduled public snapshot, its first-run warmup, the legacy protected aggregator, and authenticated custom search. The key is never returned to anonymous visitors.
 - `GNEWS_API_KEY`: Backup news source used by `fetch-intel.js`.
 - `GOOGLE_NL_API_KEY`: Optional entity analysis used by `fetch-news.js`.

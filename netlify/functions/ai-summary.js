@@ -5,15 +5,22 @@ const { callGeminiWithRetry } = require('./gemini-retry');
 const { protectEndpoint } = require('./security');
 
 const BRIEF_SCHEMA_VERSION = '1.0';
-const GEMINI_MODEL = process.env.GEMINI_SUMMARY_MODEL || 'gemini-2.5-flash';
-const GEMINI_API_BASE = `https://generativelanguage.googleapis.com/v1beta/models/${GEMINI_MODEL}:generateContent`;
+const DEFAULT_GEMINI_MODEL = 'gemini-3.5-flash-lite';
 const MIN_ARTICLE_CONTENT_LENGTH = 200;
 const MAX_ARTICLE_CONTENT_LENGTH = 12000;
+const HANDLER_BUDGET_MS = 21500;
+const BLOCKED_FINISH_REASONS = new Set(['SAFETY', 'BLOCKLIST', 'PROHIBITED_CONTENT', 'SPII', 'RECITATION']);
 
 const SOURCE_TYPES = new Set([
     'State Media', 'Wire Service', 'Independent Media', 'Think Tank',
     'NGO Report', 'Social Media', 'Academic'
 ]);
+
+function resolveGeminiModel(envModel = process.env.GEMINI_SUMMARY_MODEL) {
+    return typeof envModel === 'string' && envModel.trim()
+        ? envModel.trim()
+        : DEFAULT_GEMINI_MODEL;
+}
 
 function cleanText(value, fallback = '') {
     return typeof value === 'string' ? value.trim() : fallback;
@@ -36,7 +43,7 @@ function selectArticleContent(content) {
     return `${normalized.slice(0, leadLength)}\n\n[...middle omitted for cost control...]\n\n${normalized.slice(-tailLength)}`;
 }
 
-function sanitizeBrief(brief = {}) {
+function sanitizeBrief(brief = {}, model = resolveGeminiModel()) {
     const riskLevel = ['HIGH', 'MEDIUM', 'LOW'].includes(brief.riskLevel)
         ? brief.riskLevel
         : 'MEDIUM';
@@ -44,7 +51,7 @@ function sanitizeBrief(brief = {}) {
 
     return {
         schemaVersion: BRIEF_SCHEMA_VERSION,
-        model: GEMINI_MODEL,
+        model,
         oneLiner: cleanText(brief.oneLiner, 'Analysis unavailable — insufficient article content.'),
         keyActors: cleanList(brief.keyActors, 5),
         ibThemes: cleanList(brief.ibThemes, 3),
@@ -99,14 +106,81 @@ Rules:
 - Only return valid JSON — no markdown, no code blocks, no extra text
 - If content is insufficient, still return valid JSON with best-effort analysis`;
 
+function buildGenerationConfig(model) {
+    if (/^gemini-2\.5\b/i.test(model)) {
+        return {
+            temperature: 0.3,
+            maxOutputTokens: 1500,
+            responseMimeType: 'application/json',
+            ...(/pro/i.test(model) ? {} : { thinkingConfig: { thinkingBudget: 0 } })
+        };
+    }
+
+    // Gemini 3.5 Flash-Lite and Flash models deprecate sampling parameters (temperature)
+    // and configure reasoning effort via thinkingLevel: 'minimal'; Pro overrides omit minimal.
+    return {
+        maxOutputTokens: 1500,
+        responseMimeType: 'application/json',
+        ...(/pro/i.test(model) ? {} : { thinkingConfig: { thinkingLevel: 'minimal' } })
+    };
+}
+
+function buildGeminiRequest(model, userMessage, geminiKey) {
+    const resolvedModel = resolveGeminiModel(model);
+    return {
+        url: `https://generativelanguage.googleapis.com/v1beta/models/${encodeURIComponent(resolvedModel)}:generateContent`,
+        headers: {
+            'x-goog-api-key': geminiKey
+        },
+        body: {
+            systemInstruction: {
+                parts: [{ text: SYSTEM_PROMPT }]
+            },
+            contents: [
+                {
+                    role: 'user',
+                    parts: [{ text: userMessage }]
+                }
+            ],
+            generationConfig: buildGenerationConfig(resolvedModel)
+        }
+    };
+}
+
+function extractCandidateJsonText(geminiData) {
+    const blockReason = geminiData?.promptFeedback?.blockReason;
+    const finishReason = geminiData?.candidates?.[0]?.finishReason;
+    if (blockReason || BLOCKED_FINISH_REASONS.has(finishReason)) {
+        const err = new Error(`Gemini blocked response due to safety or policy (${blockReason || finishReason})`);
+        err.statusCode = 422;
+        throw err;
+    }
+
+    const parts = geminiData?.candidates?.[0]?.content?.parts || [];
+    const responsePart = parts.find(p => typeof p?.text === 'string' && p.text.trim() && !p.thought)
+        || parts.find(p => typeof p?.text === 'string' && p.text.trim());
+
+    if (!responsePart) {
+        const err = new Error('Empty candidate response from Gemini');
+        err.statusCode = 502;
+        throw err;
+    }
+
+    if (finishReason === 'MAX_TOKENS') {
+        const err = new Error('Gemini output was truncated at MAX_TOKENS');
+        err.statusCode = 502;
+        throw err;
+    }
+
+    return responsePart.text;
+}
+
 exports.handler = async (event) => {
-    const security = await protectEndpoint(event, { maxRequests: 12 });
+    const startedAt = Date.now();
+    const security = await protectEndpoint(event, { maxRequests: 12, scope: 'ai-summary' });
     if (security.response) return security.response;
 
-    const headers = {
-        'Content-Type': 'application/json',
-        'Cache-Control': 'private, no-store'
-    };
+    const headers = security.headers;
 
     try {
         const { url, title, content } = JSON.parse(event.body || '{}');
@@ -131,6 +205,7 @@ exports.handler = async (event) => {
             };
         }
 
+        const activeModel = resolveGeminiModel();
         const userMessage = `Article URL: ${url || 'Unknown'}
 Article Title: ${title || 'Untitled'}
 
@@ -139,21 +214,12 @@ ${articleContent}
 
 Generate the intelligence brief JSON now.`;
 
-        const geminiRes = await callGeminiWithRetry(`${GEMINI_API_BASE}?key=${geminiKey}`, {
-            contents: [
-                {
-                    role: 'user',
-                    parts: [{ text: SYSTEM_PROMPT + '\n\n' + userMessage }]
-                }
-            ],
-            generationConfig: {
-                temperature: 0.3,
-                maxOutputTokens: 1500,
-                response_mime_type: 'application/json',
-                // Disable thinking for structured JSON output — faster, cheaper, avoids
-                // the thinking parts interfering with JSON parsing
-                thinkingConfig: { thinkingBudget: 0 }
-            }
+        const reqSpec = buildGeminiRequest(activeModel, userMessage, geminiKey);
+        const remainingMs = Math.max(2500, HANDLER_BUDGET_MS - (Date.now() - startedAt));
+        const geminiRes = await callGeminiWithRetry(reqSpec.url, reqSpec.body, {
+            headers: reqSpec.headers,
+            deadlineAt: startedAt + HANDLER_BUDGET_MS,
+            deadlineMs: remainingMs
         });
 
         if (!geminiRes.ok) {
@@ -162,18 +228,12 @@ Generate the intelligence brief JSON now.`;
         }
 
         const geminiData = await geminiRes.json();
-        // gemini-2.5-flash is a thinking model: parts may contain { thought: true } entries.
-        // Find the actual (non-thought) text part for JSON parsing.
-        const parts = geminiData.candidates?.[0]?.content?.parts || [];
-        const responsePart = parts.find(p => p.text && !p.thought) || parts.find(p => p.text) || {};
-        const rawText = responsePart.text || '{}';
+        const rawText = extractCandidateJsonText(geminiData);
 
-        // Parse the JSON response from Gemini
         let brief;
         try {
             brief = JSON.parse(rawText);
-        } catch (parseErr) {
-            // Attempt to extract JSON from response if it's wrapped in markdown
+        } catch {
             const jsonMatch = rawText.match(/\{[\s\S]*\}/);
             if (jsonMatch) {
                 brief = JSON.parse(jsonMatch[0]);
@@ -182,12 +242,25 @@ Generate the intelligence brief JSON now.`;
             }
         }
 
-        const safeBrief = sanitizeBrief(brief);
-
+        const safeBrief = sanitizeBrief(brief, activeModel);
         return { statusCode: 200, headers, body: JSON.stringify(safeBrief) };
 
     } catch (error) {
         console.error('[ai-summary] Error:', error.message);
+        if (error.statusCode === 422) {
+            return {
+                statusCode: 422,
+                headers,
+                body: JSON.stringify({ error: 'AI summary unavailable because article content triggered safety filters.' })
+            };
+        }
+        if (error.statusCode === 502) {
+            return {
+                statusCode: 502,
+                headers,
+                body: JSON.stringify({ error: 'AI analysis returned an empty response. Please try again.' })
+            };
+        }
         return {
             statusCode: 500,
             headers,
@@ -198,8 +271,13 @@ Generate the intelligence brief JSON now.`;
 
 exports._test = {
     BRIEF_SCHEMA_VERSION,
+    DEFAULT_GEMINI_MODEL,
     MIN_ARTICLE_CONTENT_LENGTH,
     MAX_ARTICLE_CONTENT_LENGTH,
+    resolveGeminiModel,
+    buildGenerationConfig,
+    buildGeminiRequest,
+    extractCandidateJsonText,
     sanitizeBrief,
     selectArticleContent
 };
