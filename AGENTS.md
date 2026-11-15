@@ -12,10 +12,11 @@ When AI agents are interacting with this repository, they should adhere to the f
 
 Three agents work on this project: Antigravity, Claude Code and Codex. All three read this file (Claude through `CLAUDE.md`).
 
-- Antigravity is the lead unless the owner says otherwise. It edits files, runs the app and the tests on the desktop, and asks Claude Code or Codex for a read-only review before it finishes a task.
-- Claude Code and Codex are reviewers. They return their feedback as text and edit nothing, including `HANDOFF.md`. If the owner gives one of them a task directly, it is the lead for that task and the same rules apply.
-- Before starting, the lead reads `HANDOFF.md`. Before stopping, it adds an entry: what it did, what it tested and how, what is unfinished, what the next agent should check.
-- Each agent can be asked for a review from the terminal (run from the project root; the commands are launchers in `~/.local/bin`):
-  - Claude: `claude -p "<prompt>" < /dev/null`
-  - Codex: `codex exec --sandbox read-only "<prompt>"`
+- **Lead & Specialist Collaborator (`docs/AGENT_COLLABORATION.md`)**: Antigravity is the lead unless the owner says otherwise. Claude Code is a specialist collaborator the lead may call deliberately across five modes: read-only (`Consult`, `Second opinion`, `Review` via `--permission-mode plan`) and scoped editing (`Implement`, `Draft content` via `--permission-mode acceptEdits`, never committing, one agent editing at a time). Codex remains a read-only reviewer unless assigned a task directly by the owner.
+- **Models & Cost**: For Claude Code, use `claude-fable-5-2` for visual design, hard architecture, large refactors, editorial drafting, and high-stakes second opinions; `claude-opus-5-5` as default for reviews, consults, and routine implementation; and `claude-sonnet-5-5` for quick checks (step down one level and note in `HANDOFF.md` if unavailable; stay within ~10 Claude calls per phase).
+- **Handoff & Verification**: Before starting, read `HANDOFF.md` (including `Reviewer Suggestions Backlog`). Before stopping, add an entry (newest first): what was done, what was tested and how, what is unfinished, what the next agent should check, plus Claude mode, model, and `ACCEPT` / `ACCEPT-LATER` / `DISMISS` decisions. Save Claude transcripts to `review/claude-<mode>-YYYYMMDD-HHMM.md` and verify every claim or edit against source code (`npm test`, `npm run build`, `git diff`, screenshots). Case-study content requires owner sign-off.
+- **Terminal Launchers (run from project root; launchers live in `~/.local/bin`; full Claude commands & briefing rules in `docs/AGENT_COLLABORATION.md`)**:
+  - Claude (read-only): `claude -p --model <model> --permission-mode plan "<prompt>" < /dev/null`
+  - Claude (implement/draft): `claude -p --model <model> --permission-mode acceptEdits --allowedTools "Read,Edit,Write,Bash(npm run build),Bash(npm test),Bash(git diff*),Bash(git status)" "<prompt>" < /dev/null`
+  - Codex (read-only): `codex exec --sandbox read-only "<prompt>"`
   - Antigravity: `agy -p "<prompt>"`

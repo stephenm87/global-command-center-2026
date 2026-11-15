@@ -1,0 +1,1526 @@
+{
+  "routes": {
+    "briefings": {
+      "threeOrGlobeLoadedOnBriefings": false,
+      "headingText": "Tuvalu–Australia Falepili Union",
+      "stepTextBeforeReload": "STEP 3 / 4",
+      "stepTextAfterReload": "STEP 3 / 4",
+      "urlAfterReload": "http://127.0.0.1:5173/?view=briefings&tour=tuvalu-australia-falepili-union&step=3",
+      "statusText": "29 cases shown",
+      "renderedCardsCount": 6,
+      "overdueBadge": "Source review overdue since 2026-09-09",
+      "stepAfterNext": "STEP 4 / 4",
+      "handoffUrl": "http://127.0.0.1:5173/?view=nexus&actor=UN_OPEC",
+      "logs": [
+        {
+          "type": "debug",
+          "text": "[vite] connecting..."
+        },
+        {
+          "type": "info",
+          "text": "%cDownload the React DevTools for a better development experience: https://reactjs.org/link/react-devtools font-weight:bold"
+        },
+        {
+          "type": "warning",
+          "text": "[GCC] Supabase client env vars are missing or invalid.\nAuth/cloud-sync features disabled. Set VITE_SUPABASE_URL and\nVITE_SUPABASE_PUBLISHABLE_KEY in Netlify env vars."
+        },
+        {
+          "type": "debug",
+          "text": "[vite] connected."
+        },
+        {
+          "type": "error",
+          "text": "Failed to load resource: the server responded with a status of 404 (Not Found)"
+        },
+        {
+          "type": "debug",
+          "text": "[vite] connecting..."
+        },
+        {
+          "type": "debug",
+          "text": "[vite] connected."
+        },
+        {
+          "type": "info",
+          "text": "%cDownload the React DevTools for a better development experience: https://reactjs.org/link/react-devtools font-weight:bold"
+        },
+        {
+          "type": "warning",
+          "text": "[GCC] Supabase client env vars are missing or invalid.\nAuth/cloud-sync features disabled. Set VITE_SUPABASE_URL and\nVITE_SUPABASE_PUBLISHABLE_KEY in Netlify env vars."
+        }
+      ],
+      "pageErrors": [],
+      "notableResponses": [
+        {
+          "url": "https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;700;900&family=Roboto+Mono:wght@300;400;500;700&display=swap",
+          "status": 200,
+          "contentType": "text/css; charset=utf-8"
+        },
+        {
+          "url": "http://127.0.0.1:5173/.netlify/functions/public-intel",
+          "status": 200,
+          "contentType": "text/html"
+        },
+        {
+          "url": "http://127.0.0.1:5173/.netlify/functions/source-health",
+          "status": 200,
+          "contentType": "text/html"
+        },
+        {
+          "url": "http://127.0.0.1:5173/.netlify/functions/source-health",
+          "status": 200,
+          "contentType": "text/html"
+        },
+        {
+          "url": "https://www.netlify.com/img/global/badges/netlify-color-accent.svg",
+          "status": 301,
+          "contentType": "text/plain"
+        },
+        {
+          "url": "https://fonts.gstatic.com/s/orbitron/v35/yMJRMIlzdpvBhQQL_Qq7dy1biN15.woff2",
+          "status": 200,
+          "contentType": "font/woff2"
+        },
+        {
+          "url": "https://www.netlify.com/assets/badges/netlify-badge-color-accent.svg",
+          "status": 200,
+          "contentType": "image/svg+xml"
+        },
+        {
+          "url": "https://fonts.gstatic.com/s/robotomono/v31/L0x5DF4xlVMF-BfR8bXMIjhLq3-cXbKD.woff2",
+          "status": 200,
+          "contentType": "font/woff2"
+        },
+        {
+          "url": "https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;700;900&family=Roboto+Mono:wght@300;400;500;700&display=swap",
+          "status": 200,
+          "contentType": "text/css; charset=utf-8"
+        },
+        {
+          "url": "https://fonts.gstatic.com/s/orbitron/v35/yMJRMIlzdpvBhQQL_Qq7dy1biN15.woff2",
+          "status": 200,
+          "contentType": "font/woff2"
+        },
+        {
+          "url": "https://fonts.gstatic.com/s/robotomono/v31/L0x5DF4xlVMF-BfR8bXMIjhLq3-cXbKD.woff2",
+          "status": 200,
+          "contentType": "font/woff2"
+        },
+        {
+          "url": "http://127.0.0.1:5173/.netlify/functions/public-intel",
+          "status": 200,
+          "contentType": "text/html"
+        },
+        {
+          "url": "http://127.0.0.1:5173/.netlify/functions/source-health",
+          "status": 200,
+          "contentType": "text/html"
+        },
+        {
+          "url": "http://127.0.0.1:5173/.netlify/functions/source-health",
+          "status": 200,
+          "contentType": "text/html"
+        },
+        {
+          "url": "https://www.netlify.com/img/global/badges/netlify-color-accent.svg",
+          "status": 301,
+          "contentType": "text/plain"
+        },
+        {
+          "url": "https://www.netlify.com/assets/badges/netlify-badge-color-accent.svg",
+          "status": 200,
+          "contentType": "image/svg+xml"
+        }
+      ]
+    },
+    "nexus": {
+      "threeLoadedInFocus": false,
+      "focusedHeading": "European Union and United Kingdom",
+      "lowercaseFallbackHeading": "United States",
+      "cyberCasesBtnText": "Current cases (0)",
+      "hasCyberBriefingBtn": false,
+      "threeLoadedOnOptIn": true,
+      "newRequestsFor3DSample": [
+        "http://127.0.0.1:5173/src/GlobalRelationsNexus.jsx",
+        "http://127.0.0.1:5173/node_modules/.vite/deps/react-force-graph-3d.js?v=1e531de2",
+        "http://127.0.0.1:5173/node_modules/.vite/deps/three.js?v=1e531de2",
+        "http://127.0.0.1:5173/src/GlobalRelationsNexus.css",
+        "http://127.0.0.1:5173/src/nexusAudio.js",
+        "http://127.0.0.1:5173/src/nexusNarrative.js",
+        "http://127.0.0.1:5173/src/nexusGDELT.js",
+        "http://127.0.0.1:5173/src/graphReadiness.mjs",
+        "http://127.0.0.1:5173/node_modules/.vite/deps/chunk-5VRZ5EDJ.js?v=1e531de2",
+        "http://127.0.0.1:5173/node_modules/.vite/deps/chunk-TYNJ3I6B.js?v=1e531de2",
+        "https://api.gdeltproject.org/api/v2/doc/doc?query=Iran%20Israel%20Hezbollah&mode=ArtList&maxrecords=10&format=json&sort=DateDesc",
+        "https://api.gdeltproject.org/api/v2/doc/doc?query=Russia%20NATO%20military&mode=ArtList&maxrecords=10&format=json&sort=DateDesc"
+      ],
+      "canvasCount3D": 1,
+      "urlAfterReturnToFocus": "http://127.0.0.1:5173/?view=nexus&actor=Europe",
+      "headingAfterReturn": "European Union and United Kingdom",
+      "logs": [
+        {
+          "type": "debug",
+          "text": "[vite] connecting..."
+        },
+        {
+          "type": "info",
+          "text": "%cDownload the React DevTools for a better development experience: https://reactjs.org/link/react-devtools font-weight:bold"
+        },
+        {
+          "type": "warning",
+          "text": "[GCC] Supabase client env vars are missing or invalid.\nAuth/cloud-sync features disabled. Set VITE_SUPABASE_URL and\nVITE_SUPABASE_PUBLISHABLE_KEY in Netlify env vars."
+        },
+        {
+          "type": "debug",
+          "text": "[vite] connected."
+        },
+        {
+          "type": "debug",
+          "text": "[vite] connecting..."
+        },
+        {
+          "type": "debug",
+          "text": "[vite] connected."
+        },
+        {
+          "type": "info",
+          "text": "%cDownload the React DevTools for a better development experience: https://reactjs.org/link/react-devtools font-weight:bold"
+        },
+        {
+          "type": "warning",
+          "text": "[GCC] Supabase client env vars are missing or invalid.\nAuth/cloud-sync features disabled. Set VITE_SUPABASE_URL and\nVITE_SUPABASE_PUBLISHABLE_KEY in Netlify env vars."
+        },
+        {
+          "type": "debug",
+          "text": "[vite] connecting..."
+        },
+        {
+          "type": "debug",
+          "text": "[vite] connected."
+        },
+        {
+          "type": "info",
+          "text": "%cDownload the React DevTools for a better development experience: https://reactjs.org/link/react-devtools font-weight:bold"
+        },
+        {
+          "type": "warning",
+          "text": "[GCC] Supabase client env vars are missing or invalid.\nAuth/cloud-sync features disabled. Set VITE_SUPABASE_URL and\nVITE_SUPABASE_PUBLISHABLE_KEY in Netlify env vars."
+        },
+        {
+          "type": "debug",
+          "text": "[vite] connecting..."
+        },
+        {
+          "type": "debug",
+          "text": "[vite] connected."
+        },
+        {
+          "type": "info",
+          "text": "%cDownload the React DevTools for a better development experience: https://reactjs.org/link/react-devtools font-weight:bold"
+        },
+        {
+          "type": "warning",
+          "text": "[GCC] Supabase client env vars are missing or invalid.\nAuth/cloud-sync features disabled. Set VITE_SUPABASE_URL and\nVITE_SUPABASE_PUBLISHABLE_KEY in Netlify env vars."
+        },
+        {
+          "type": "error",
+          "text": "Failed to load resource: the server responded with a status of 404 (Not Found)"
+        }
+      ],
+      "pageErrors": [],
+      "notableResponses": [
+        {
+          "url": "https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;700;900&family=Roboto+Mono:wght@300;400;500;700&display=swap",
+          "status": 200,
+          "contentType": "text/css; charset=utf-8"
+        },
+        {
+          "url": "http://127.0.0.1:5173/.netlify/functions/public-intel",
+          "status": 200,
+          "contentType": "text/html"
+        },
+        {
+          "url": "https://www.netlify.com/img/global/badges/netlify-color-accent.svg",
+          "status": 301,
+          "contentType": "text/plain"
+        },
+        {
+          "url": "https://fonts.gstatic.com/s/orbitron/v35/yMJRMIlzdpvBhQQL_Qq7dy1biN15.woff2",
+          "status": 200,
+          "contentType": "font/woff2"
+        },
+        {
+          "url": "https://www.netlify.com/assets/badges/netlify-badge-color-accent.svg",
+          "status": 200,
+          "contentType": "image/svg+xml"
+        },
+        {
+          "url": "https://fonts.gstatic.com/s/robotomono/v31/L0x5DF4xlVMF-BfR8bXMIjhLq3-cXbKD.woff2",
+          "status": 200,
+          "contentType": "font/woff2"
+        },
+        {
+          "url": "https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;700;900&family=Roboto+Mono:wght@300;400;500;700&display=swap",
+          "status": 200,
+          "contentType": "text/css; charset=utf-8"
+        },
+        {
+          "url": "https://fonts.gstatic.com/s/orbitron/v35/yMJRMIlzdpvBhQQL_Qq7dy1biN15.woff2",
+          "status": 200,
+          "contentType": "font/woff2"
+        },
+        {
+          "url": "https://fonts.gstatic.com/s/robotomono/v31/L0x5DF4xlVMF-BfR8bXMIjhLq3-cXbKD.woff2",
+          "status": 200,
+          "contentType": "font/woff2"
+        },
+        {
+          "url": "http://127.0.0.1:5173/.netlify/functions/public-intel",
+          "status": 200,
+          "contentType": "text/html"
+        },
+        {
+          "url": "https://www.netlify.com/img/global/badges/netlify-color-accent.svg",
+          "status": 301,
+          "contentType": "text/plain"
+        },
+        {
+          "url": "https://www.netlify.com/assets/badges/netlify-badge-color-accent.svg",
+          "status": 200,
+          "contentType": "image/svg+xml"
+        },
+        {
+          "url": "https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;700;900&family=Roboto+Mono:wght@300;400;500;700&display=swap",
+          "status": 200,
+          "contentType": "text/css; charset=utf-8"
+        },
+        {
+          "url": "https://fonts.gstatic.com/s/orbitron/v35/yMJRMIlzdpvBhQQL_Qq7dy1biN15.woff2",
+          "status": 200,
+          "contentType": "font/woff2"
+        },
+        {
+          "url": "https://fonts.gstatic.com/s/robotomono/v31/L0x5DF4xlVMF-BfR8bXMIjhLq3-cXbKD.woff2",
+          "status": 200,
+          "contentType": "font/woff2"
+        },
+        {
+          "url": "http://127.0.0.1:5173/.netlify/functions/public-intel",
+          "status": 200,
+          "contentType": "text/html"
+        },
+        {
+          "url": "https://www.netlify.com/img/global/badges/netlify-color-accent.svg",
+          "status": 301,
+          "contentType": "text/plain"
+        },
+        {
+          "url": "https://www.netlify.com/assets/badges/netlify-badge-color-accent.svg",
+          "status": 200,
+          "contentType": "image/svg+xml"
+        },
+        {
+          "url": "https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;700;900&family=Roboto+Mono:wght@300;400;500;700&display=swap",
+          "status": 200,
+          "contentType": "text/css; charset=utf-8"
+        },
+        {
+          "url": "https://fonts.gstatic.com/s/orbitron/v35/yMJRMIlzdpvBhQQL_Qq7dy1biN15.woff2",
+          "status": 200,
+          "contentType": "font/woff2"
+        },
+        {
+          "url": "https://fonts.gstatic.com/s/robotomono/v31/L0x5DF4xlVMF-BfR8bXMIjhLq3-cXbKD.woff2",
+          "status": 200,
+          "contentType": "font/woff2"
+        },
+        {
+          "url": "http://127.0.0.1:5173/.netlify/functions/public-intel",
+          "status": 200,
+          "contentType": "text/html"
+        },
+        {
+          "url": "https://www.netlify.com/img/global/badges/netlify-color-accent.svg",
+          "status": 301,
+          "contentType": "text/plain"
+        },
+        {
+          "url": "https://www.netlify.com/assets/badges/netlify-badge-color-accent.svg",
+          "status": 200,
+          "contentType": "image/svg+xml"
+        }
+      ]
+    },
+    "globe": {
+      "externalRequests": [
+        "https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;700;900&family=Roboto+Mono:wght@300;400;500;700&display=swap",
+        "https://www.netlify.com/img/global/badges/netlify-color-accent.svg",
+        "https://fonts.gstatic.com/s/robotomono/v31/L0x5DF4xlVMF-BfR8bXMIjhLq3-cXbKD.woff2",
+        "https://fonts.gstatic.com/s/orbitron/v35/yMJRMIlzdpvBhQQL_Qq7dy1biN15.woff2",
+        "https://cdn.jsdelivr.net/npm/world-atlas@2/countries-110m.json",
+        "https://unpkg.com/three-globe/example/img/earth-night.jpg",
+        "https://unpkg.com/three-globe/example/img/night-sky.png",
+        "https://www.netlify.com/assets/badges/netlify-badge-color-accent.svg",
+        "https://unpkg.com/three-globe@2.45.6/example/img/earth-night.jpg",
+        "https://unpkg.com/three-globe@2.45.6/example/img/night-sky.png"
+      ],
+      "editorialInitialText": "◆\nEDITORIAL CASES\n29\nON",
+      "editorialAfterOff": "◆\nEDITORIAL CASES\n29\nOFF",
+      "mineralsSymbols": [
+        "GO",
+        "SI",
+        "LI",
+        "CO",
+        "CO",
+        "RA"
+      ],
+      "mineralsPrices": [
+        "N/A",
+        "N/A",
+        "N/A",
+        "N/A",
+        "N/A",
+        "N/A"
+      ],
+      "archiveTitle2024": "📅 2024 ARCHIVE",
+      "archiveStatus2024": "30 EVENTS • SOURCED",
+      "detailOverdueText": "Africa\nHorn of Africa\nSahel\nAs of 2026-08-10\nhigh source confidence\nReview overdue since 2026-08-24",
+      "deepScanErrorText": "⚠ Deep scan unavailable",
+      "focusEscapedAuthModal": true,
+      "authClosedOnEscape": true,
+      "footerHasLiteralAsterisks": true,
+      "logs": [
+        {
+          "type": "debug",
+          "text": "[vite] connecting..."
+        },
+        {
+          "type": "info",
+          "text": "%cDownload the React DevTools for a better development experience: https://reactjs.org/link/react-devtools font-weight:bold"
+        },
+        {
+          "type": "warning",
+          "text": "[GCC] Supabase client env vars are missing or invalid.\nAuth/cloud-sync features disabled. Set VITE_SUPABASE_URL and\nVITE_SUPABASE_PUBLISHABLE_KEY in Netlify env vars."
+        },
+        {
+          "type": "debug",
+          "text": "[vite] connected."
+        }
+      ],
+      "pageErrors": [],
+      "notableResponses": [
+        {
+          "url": "https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;700;900&family=Roboto+Mono:wght@300;400;500;700&display=swap",
+          "status": 200,
+          "contentType": "text/css; charset=utf-8"
+        },
+        {
+          "url": "http://127.0.0.1:5173/.netlify/functions/public-intel",
+          "status": 200,
+          "contentType": "text/html"
+        },
+        {
+          "url": "https://www.netlify.com/img/global/badges/netlify-color-accent.svg",
+          "status": 301,
+          "contentType": "text/plain"
+        },
+        {
+          "url": "https://fonts.gstatic.com/s/orbitron/v35/yMJRMIlzdpvBhQQL_Qq7dy1biN15.woff2",
+          "status": 200,
+          "contentType": "font/woff2"
+        },
+        {
+          "url": "https://cdn.jsdelivr.net/npm/world-atlas@2/countries-110m.json",
+          "status": 200,
+          "contentType": "application/json; charset=utf-8"
+        },
+        {
+          "url": "https://fonts.gstatic.com/s/robotomono/v31/L0x5DF4xlVMF-BfR8bXMIjhLq3-cXbKD.woff2",
+          "status": 200,
+          "contentType": "font/woff2"
+        },
+        {
+          "url": "https://www.netlify.com/assets/badges/netlify-badge-color-accent.svg",
+          "status": 200,
+          "contentType": "image/svg+xml"
+        },
+        {
+          "url": "https://unpkg.com/three-globe/example/img/earth-night.jpg",
+          "status": 302,
+          "contentType": "text/plain;charset=UTF-8"
+        },
+        {
+          "url": "https://unpkg.com/three-globe/example/img/night-sky.png",
+          "status": 302,
+          "contentType": "text/plain;charset=UTF-8"
+        },
+        {
+          "url": "https://unpkg.com/three-globe@2.45.6/example/img/earth-night.jpg",
+          "status": 200,
+          "contentType": "image/jpeg"
+        },
+        {
+          "url": "https://unpkg.com/three-globe@2.45.6/example/img/night-sky.png",
+          "status": 200,
+          "contentType": "image/png"
+        }
+      ]
+    },
+    "mobileGlobeMetrics": {
+      "headerHeight": 150,
+      "globeHeight": 844,
+      "topOverlayHeight": 122,
+      "legendHeight": 46
+    },
+    "teacherGuide": {
+      "status": 200,
+      "title": "AI-Powered Project Building — A Teacher's Guide",
+      "imgStats": [
+        {
+          "src": "guide-images/example-history-warlord-map.png",
+          "complete": true,
+          "naturalWidth": 2836,
+          "naturalHeight": 1476
+        },
+        {
+          "src": "guide-images/evolution-1-early.png",
+          "complete": true,
+          "naturalWidth": 2880,
+          "naturalHeight": 1564
+        },
+        {
+          "src": "guide-images/evolution-2-intel-feed.png",
+          "complete": true,
+          "naturalWidth": 2880,
+          "naturalHeight": 1564
+        },
+        {
+          "src": "guide-images/evolution-3-final.png",
+          "complete": true,
+          "naturalWidth": 2880,
+          "naturalHeight": 1564
+        },
+        {
+          "src": "guide-images/feature-theoretical-lens.png",
+          "complete": true,
+          "naturalWidth": 2880,
+          "naturalHeight": 1564
+        },
+        {
+          "src": "guide-images/feature-student-pin.png",
+          "complete": true,
+          "naturalWidth": 2880,
+          "naturalHeight": 1564
+        },
+        {
+          "src": "guide-images/feature-compliance.png",
+          "complete": true,
+          "naturalWidth": 2880,
+          "naturalHeight": 1564
+        }
+      ],
+      "logs": [
+        {
+          "type": "debug",
+          "text": "[vite] connecting..."
+        },
+        {
+          "type": "debug",
+          "text": "[vite] connected."
+        }
+      ],
+      "pageErrors": []
+    }
+  },
+  "wcag": {
+    "briefingsDesktop": {
+      "viewport": {
+        "w": 1440,
+        "h": 900
+      },
+      "scrollWidth": 1440,
+      "horizontalOverflow": false,
+      "totalInteractive": 37,
+      "undersizedCount": 1,
+      "undersizedSample": [
+        {
+          "tag": "a",
+          "cls": "skip-nav",
+          "text": "Skip to main content",
+          "w": 189.6,
+          "h": 36
+        }
+      ],
+      "lowContrastCount": 1,
+      "lowContrastSample": [
+        {
+          "tag": "a",
+          "cls": "",
+          "text": "OPEN ACCESS CODE OF CONDUCT",
+          "color": "rgb(255, 255, 255)",
+          "opacity": 1,
+          "bgResolved": [
+            255,
+            0,
+            255
+          ],
+          "fontSize": 14,
+          "ratio": 3.14,
+          "required": 4.5
+        }
+      ],
+      "unlabelledInputs": []
+    },
+    "focusNexusDesktop": {
+      "viewport": {
+        "w": 1440,
+        "h": 900
+      },
+      "scrollWidth": 1440,
+      "horizontalOverflow": false,
+      "totalInteractive": 33,
+      "undersizedCount": 1,
+      "undersizedSample": [
+        {
+          "tag": "a",
+          "cls": "skip-nav",
+          "text": "Skip to main content",
+          "w": 189.6,
+          "h": 36
+        }
+      ],
+      "lowContrastCount": 1,
+      "lowContrastSample": [
+        {
+          "tag": "a",
+          "cls": "",
+          "text": "OPEN ACCESS CODE OF CONDUCT",
+          "color": "rgb(255, 255, 255)",
+          "opacity": 1,
+          "bgResolved": [
+            255,
+            0,
+            255
+          ],
+          "fontSize": 14,
+          "ratio": 3.14,
+          "required": 4.5
+        }
+      ],
+      "unlabelledInputs": []
+    },
+    "advanced3DNexusDesktop": {
+      "viewport": {
+        "w": 1440,
+        "h": 900
+      },
+      "scrollWidth": 1440,
+      "horizontalOverflow": false,
+      "totalInteractive": 62,
+      "undersizedCount": 5,
+      "undersizedSample": [
+        {
+          "tag": "a",
+          "cls": "skip-nav",
+          "text": "Skip to main content",
+          "w": 189.6,
+          "h": 36
+        },
+        {
+          "tag": "input",
+          "cls": "",
+          "text": "",
+          "w": 20,
+          "h": 20
+        },
+        {
+          "tag": "input",
+          "cls": "",
+          "text": "",
+          "w": 20,
+          "h": 20
+        },
+        {
+          "tag": "input",
+          "cls": "",
+          "text": "",
+          "w": 20,
+          "h": 20
+        },
+        {
+          "tag": "input",
+          "cls": "",
+          "text": "",
+          "w": 20,
+          "h": 20
+        }
+      ],
+      "lowContrastCount": 10,
+      "lowContrastSample": [
+        {
+          "tag": "div",
+          "cls": "nexus-hint",
+          "text": "⬡ Esc: deselect · Ctrl+K: search · ←→: cycle",
+          "color": "rgba(255, 255, 255, 0.35)",
+          "opacity": 1,
+          "bgResolved": [
+            0,
+            0,
+            0
+          ],
+          "fontSize": 12,
+          "ratio": 3.01,
+          "required": 4.5
+        },
+        {
+          "tag": "button",
+          "cls": "hud-tab ",
+          "text": "⚙ CONTROLS",
+          "color": "rgb(85, 85, 85)",
+          "opacity": 1,
+          "bgResolved": [
+            5,
+            9,
+            13
+          ],
+          "fontSize": 13,
+          "ratio": 2.68,
+          "required": 4.5
+        },
+        {
+          "tag": "button",
+          "cls": "hud-tab ",
+          "text": "◉ ACTORS",
+          "color": "rgb(85, 85, 85)",
+          "opacity": 1,
+          "bgResolved": [
+            5,
+            9,
+            13
+          ],
+          "fontSize": 13,
+          "ratio": 2.68,
+          "required": 4.5
+        },
+        {
+          "tag": "button",
+          "cls": "inspect-close",
+          "text": "✕",
+          "color": "rgb(102, 102, 102)",
+          "opacity": 1,
+          "bgResolved": [
+            0,
+            4,
+            7
+          ],
+          "fontSize": 18,
+          "ratio": 3.59,
+          "required": 4.5
+        },
+        {
+          "tag": "button",
+          "cls": "inspect-tab ",
+          "text": "📊 METRICS",
+          "color": "rgb(102, 102, 102)",
+          "opacity": 1,
+          "bgResolved": [
+            0,
+            4,
+            7
+          ],
+          "fontSize": 13,
+          "ratio": 3.59,
+          "required": 4.5
+        },
+        {
+          "tag": "button",
+          "cls": "inspect-tab ",
+          "text": "🌐 GPC",
+          "color": "rgb(102, 102, 102)",
+          "opacity": 1,
+          "bgResolved": [
+            0,
+            4,
+            7
+          ],
+          "fontSize": 13,
+          "ratio": 3.59,
+          "required": 4.5
+        },
+        {
+          "tag": "button",
+          "cls": "inspect-tab ",
+          "text": "⚛ THEORY",
+          "color": "rgb(102, 102, 102)",
+          "opacity": 1,
+          "bgResolved": [
+            0,
+            4,
+            7
+          ],
+          "fontSize": 13,
+          "ratio": 3.59,
+          "required": 4.5
+        },
+        {
+          "tag": "div",
+          "cls": "section-label",
+          "text": "STRATEGIC IMPACT",
+          "color": "rgb(85, 85, 85)",
+          "opacity": 1,
+          "bgResolved": [
+            0,
+            4,
+            7
+          ],
+          "fontSize": 11.5,
+          "ratio": 2.76,
+          "required": 4.5
+        },
+        {
+          "tag": "div",
+          "cls": "section-label",
+          "text": "NAVIGATE CONNECTIONS (17)",
+          "color": "rgb(85, 85, 85)",
+          "opacity": 1,
+          "bgResolved": [
+            0,
+            4,
+            7
+          ],
+          "fontSize": 11.5,
+          "ratio": 2.76,
+          "required": 4.5
+        },
+        {
+          "tag": "a",
+          "cls": "",
+          "text": "OPEN ACCESS CODE OF CONDUCT",
+          "color": "rgb(255, 255, 255)",
+          "opacity": 1,
+          "bgResolved": [
+            255,
+            0,
+            255
+          ],
+          "fontSize": 14,
+          "ratio": 3.14,
+          "required": 4.5
+        }
+      ],
+      "unlabelledInputs": []
+    },
+    "globeDesktop": {
+      "viewport": {
+        "w": 1440,
+        "h": 900
+      },
+      "scrollWidth": 1440,
+      "horizontalOverflow": false,
+      "totalInteractive": 104,
+      "undersizedCount": 1,
+      "undersizedSample": [
+        {
+          "tag": "a",
+          "cls": "skip-nav",
+          "text": "Skip to main content",
+          "w": 189.6,
+          "h": 36
+        }
+      ],
+      "lowContrastCount": 2,
+      "lowContrastSample": [
+        {
+          "tag": "span",
+          "cls": "arc-legend-title",
+          "text": "◀ KEY / THEORY",
+          "color": "rgba(255, 255, 255, 0.4)",
+          "opacity": 1,
+          "bgResolved": [
+            4,
+            2,
+            7
+          ],
+          "fontSize": 12,
+          "ratio": 3.69,
+          "required": 4.5
+        },
+        {
+          "tag": "a",
+          "cls": "",
+          "text": "OPEN ACCESS CODE OF CONDUCT",
+          "color": "rgb(255, 255, 255)",
+          "opacity": 1,
+          "bgResolved": [
+            255,
+            0,
+            255
+          ],
+          "fontSize": 14,
+          "ratio": 3.14,
+          "required": 4.5
+        }
+      ],
+      "unlabelledInputs": []
+    },
+    "detailModal": {
+      "viewport": {
+        "w": 1440,
+        "h": 900
+      },
+      "scrollWidth": 1440,
+      "horizontalOverflow": false,
+      "totalInteractive": 56,
+      "undersizedCount": 11,
+      "undersizedSample": [
+        {
+          "tag": "a",
+          "cls": "skip-nav",
+          "text": "Skip to main content",
+          "w": 189.6,
+          "h": 36
+        },
+        {
+          "tag": "button",
+          "cls": "close-btn",
+          "text": "✕",
+          "w": 40,
+          "h": 40
+        },
+        {
+          "tag": "a",
+          "cls": "",
+          "text": "Emergency Response Rooms work in Sudan – we c",
+          "w": 600.4,
+          "h": 16.1
+        },
+        {
+          "tag": "a",
+          "cls": "",
+          "text": "Sudan situation",
+          "w": 600.4,
+          "h": 16.1
+        },
+        {
+          "tag": "a",
+          "cls": "",
+          "text": "More than 300 children killed or injured in S",
+          "w": 600.4,
+          "h": 16.1
+        },
+        {
+          "tag": "summary",
+          "cls": "",
+          "text": "4 supplemental sources",
+          "w": 698,
+          "h": 13
+        },
+        {
+          "tag": "a",
+          "cls": "",
+          "text": "",
+          "w": 483.9,
+          "h": 16.1
+        },
+        {
+          "tag": "a",
+          "cls": "",
+          "text": "",
+          "w": 366.4,
+          "h": 16.1
+        },
+        {
+          "tag": "a",
+          "cls": "",
+          "text": "",
+          "w": 504.7,
+          "h": 16.1
+        },
+        {
+          "tag": "a",
+          "cls": "",
+          "text": "",
+          "w": 193.6,
+          "h": 16.1
+        },
+        {
+          "tag": "button",
+          "cls": "case-study-briefing-btn",
+          "text": "OPEN GUIDED BRIEFING →",
+          "w": 187.2,
+          "h": 36.8
+        }
+      ],
+      "lowContrastCount": 11,
+      "lowContrastSample": [
+        {
+          "tag": "span",
+          "cls": "arc-legend-title",
+          "text": "◀ KEY / THEORY",
+          "color": "rgba(255, 255, 255, 0.4)",
+          "opacity": 1,
+          "bgResolved": [
+            4,
+            2,
+            7
+          ],
+          "fontSize": 12,
+          "ratio": 3.69,
+          "required": 4.5
+        },
+        {
+          "tag": "a",
+          "cls": "",
+          "text": "OPEN ACCESS CODE OF CONDUCT",
+          "color": "rgb(255, 255, 255)",
+          "opacity": 1,
+          "bgResolved": [
+            255,
+            0,
+            255
+          ],
+          "fontSize": 14,
+          "ratio": 3.14,
+          "required": 4.5
+        },
+        {
+          "tag": "button",
+          "cls": "theory-btn active",
+          "text": "REALISM",
+          "color": "rgb(0, 0, 0)",
+          "opacity": 1,
+          "bgResolved": [
+            30,
+            33,
+            44
+          ],
+          "fontSize": 7.2,
+          "ratio": 1.31,
+          "required": 4.5
+        },
+        {
+          "tag": "button",
+          "cls": "theory-btn ",
+          "text": "LIBERALISM",
+          "color": "rgba(255, 255, 255, 0.45)",
+          "opacity": 1,
+          "bgResolved": [
+            20,
+            24,
+            35
+          ],
+          "fontSize": 7.2,
+          "ratio": 4.49,
+          "required": 4.5
+        },
+        {
+          "tag": "button",
+          "cls": "theory-btn ",
+          "text": "MARXISM",
+          "color": "rgba(255, 255, 255, 0.45)",
+          "opacity": 1,
+          "bgResolved": [
+            20,
+            24,
+            35
+          ],
+          "fontSize": 7.2,
+          "ratio": 4.49,
+          "required": 4.5
+        },
+        {
+          "tag": "button",
+          "cls": "theory-btn ",
+          "text": "STRUCTURALISM",
+          "color": "rgba(255, 255, 255, 0.45)",
+          "opacity": 1,
+          "bgResolved": [
+            20,
+            24,
+            35
+          ],
+          "fontSize": 7.2,
+          "ratio": 4.49,
+          "required": 4.5
+        },
+        {
+          "tag": "button",
+          "cls": "theory-btn ",
+          "text": "CONSTRUCTIVISM",
+          "color": "rgba(255, 255, 255, 0.45)",
+          "opacity": 1,
+          "bgResolved": [
+            20,
+            24,
+            35
+          ],
+          "fontSize": 7.2,
+          "ratio": 4.49,
+          "required": 4.5
+        },
+        {
+          "tag": "button",
+          "cls": "theory-btn ",
+          "text": "FEMINISM",
+          "color": "rgba(255, 255, 255, 0.45)",
+          "opacity": 1,
+          "bgResolved": [
+            20,
+            24,
+            35
+          ],
+          "fontSize": 7.2,
+          "ratio": 4.49,
+          "required": 4.5
+        },
+        {
+          "tag": "button",
+          "cls": "theory-btn ",
+          "text": "POSTCOLONIALISM",
+          "color": "rgba(255, 255, 255, 0.45)",
+          "opacity": 1,
+          "bgResolved": [
+            20,
+            24,
+            35
+          ],
+          "fontSize": 7.2,
+          "ratio": 4.49,
+          "required": 4.5
+        },
+        {
+          "tag": "button",
+          "cls": "theory-btn ",
+          "text": "GREEN THEORY",
+          "color": "rgba(255, 255, 255, 0.45)",
+          "opacity": 1,
+          "bgResolved": [
+            20,
+            24,
+            35
+          ],
+          "fontSize": 7.2,
+          "ratio": 4.49,
+          "required": 4.5
+        },
+        {
+          "tag": "button",
+          "cls": "theory-btn ",
+          "text": "CRITICAL SECURITY",
+          "color": "rgba(255, 255, 255, 0.45)",
+          "opacity": 1,
+          "bgResolved": [
+            20,
+            24,
+            35
+          ],
+          "fontSize": 7.2,
+          "ratio": 4.49,
+          "required": 4.5
+        }
+      ],
+      "unlabelledInputs": []
+    },
+    "authModal": {
+      "viewport": {
+        "w": 1440,
+        "h": 900
+      },
+      "scrollWidth": 1440,
+      "horizontalOverflow": false,
+      "totalInteractive": 38,
+      "undersizedCount": 4,
+      "undersizedSample": [
+        {
+          "tag": "a",
+          "cls": "skip-nav",
+          "text": "Skip to main content",
+          "w": 189.6,
+          "h": 36
+        },
+        {
+          "tag": "button",
+          "cls": "gcc-auth-close",
+          "text": "×",
+          "w": 9.3,
+          "h": 16
+        },
+        {
+          "tag": "input",
+          "cls": "gcc-auth-input",
+          "text": "you@example.com",
+          "w": 318,
+          "h": 38
+        },
+        {
+          "tag": "button",
+          "cls": "gcc-auth-btn",
+          "text": "SEND MAGIC LINK",
+          "w": 318,
+          "h": 42
+        }
+      ],
+      "lowContrastCount": 5,
+      "lowContrastSample": [
+        {
+          "tag": "button",
+          "cls": "gcc-auth-close",
+          "text": "×",
+          "color": "rgba(0, 255, 200, 0.3)",
+          "opacity": 1,
+          "bgResolved": [
+            5,
+            13,
+            26
+          ],
+          "fontSize": 16,
+          "ratio": 2.26,
+          "required": 4.5
+        },
+        {
+          "tag": "div",
+          "cls": "gcc-auth-logo",
+          "text": "⬢ GLOBAL COMMAND CENTER",
+          "color": "rgba(0, 255, 200, 0.4)",
+          "opacity": 1,
+          "bgResolved": [
+            5,
+            13,
+            26
+          ],
+          "fontSize": 9.6,
+          "ratio": 3.14,
+          "required": 4.5
+        },
+        {
+          "tag": "p",
+          "cls": "gcc-auth-subtitle",
+          "text": "Enter your email to receive a magic link.",
+          "color": "rgba(255, 255, 255, 0.3)",
+          "opacity": 1,
+          "bgResolved": [
+            5,
+            13,
+            26
+          ],
+          "fontSize": 10.4,
+          "ratio": 2.62,
+          "required": 4.5
+        },
+        {
+          "tag": "span",
+          "cls": "arc-legend-title",
+          "text": "◀ KEY / THEORY",
+          "color": "rgba(255, 255, 255, 0.4)",
+          "opacity": 1,
+          "bgResolved": [
+            4,
+            2,
+            7
+          ],
+          "fontSize": 12,
+          "ratio": 3.69,
+          "required": 4.5
+        },
+        {
+          "tag": "a",
+          "cls": "",
+          "text": "OPEN ACCESS CODE OF CONDUCT",
+          "color": "rgb(255, 255, 255)",
+          "opacity": 1,
+          "bgResolved": [
+            255,
+            0,
+            255
+          ],
+          "fontSize": 14,
+          "ratio": 3.14,
+          "required": 4.5
+        }
+      ],
+      "unlabelledInputs": [
+        {
+          "id": "gcc-auth-email",
+          "cls": "gcc-auth-input",
+          "placeholder": "you@example.com"
+        }
+      ]
+    },
+    "globeTablet1024": {
+      "viewport": {
+        "w": 1024,
+        "h": 768
+      },
+      "scrollWidth": 1024,
+      "horizontalOverflow": false,
+      "totalInteractive": 104,
+      "undersizedCount": 1,
+      "undersizedSample": [
+        {
+          "tag": "a",
+          "cls": "skip-nav",
+          "text": "Skip to main content",
+          "w": 189.6,
+          "h": 36
+        }
+      ],
+      "lowContrastCount": 2,
+      "lowContrastSample": [
+        {
+          "tag": "span",
+          "cls": "arc-legend-title",
+          "text": "◀ KEY / THEORY",
+          "color": "rgba(255, 255, 255, 0.4)",
+          "opacity": 1,
+          "bgResolved": [
+            4,
+            2,
+            7
+          ],
+          "fontSize": 12,
+          "ratio": 3.69,
+          "required": 4.5
+        },
+        {
+          "tag": "a",
+          "cls": "",
+          "text": "OPEN ACCESS CODE OF CONDUCT",
+          "color": "rgb(255, 255, 255)",
+          "opacity": 1,
+          "bgResolved": [
+            255,
+            0,
+            255
+          ],
+          "fontSize": 14,
+          "ratio": 3.14,
+          "required": 4.5
+        }
+      ],
+      "unlabelledInputs": []
+    },
+    "globeMobile390": {
+      "viewport": {
+        "w": 390,
+        "h": 844
+      },
+      "scrollWidth": 390,
+      "horizontalOverflow": false,
+      "totalInteractive": 104,
+      "undersizedCount": 2,
+      "undersizedSample": [
+        {
+          "tag": "a",
+          "cls": "skip-nav",
+          "text": "Skip to main content",
+          "w": 189.6,
+          "h": 36
+        },
+        {
+          "tag": "button",
+          "cls": "back-to-top",
+          "text": "⏶ BACK TO COMMAND CENTER",
+          "w": 255.3,
+          "h": 36
+        }
+      ],
+      "lowContrastCount": 2,
+      "lowContrastSample": [
+        {
+          "tag": "span",
+          "cls": "arc-legend-title",
+          "text": "◀ KEY / THEORY",
+          "color": "rgba(255, 255, 255, 0.4)",
+          "opacity": 1,
+          "bgResolved": [
+            4,
+            2,
+            7
+          ],
+          "fontSize": 12,
+          "ratio": 3.69,
+          "required": 4.5
+        },
+        {
+          "tag": "a",
+          "cls": "",
+          "text": "OPEN ACCESS CODE OF CONDUCT",
+          "color": "rgb(255, 255, 255)",
+          "opacity": 1,
+          "bgResolved": [
+            255,
+            0,
+            255
+          ],
+          "fontSize": 14,
+          "ratio": 3.14,
+          "required": 4.5
+        }
+      ],
+      "unlabelledInputs": []
+    },
+    "teacherGuide": {
+      "viewport": {
+        "w": 1440,
+        "h": 900
+      },
+      "scrollWidth": 1440,
+      "horizontalOverflow": false,
+      "totalInteractive": 21,
+      "undersizedCount": 21,
+      "undersizedSample": [
+        {
+          "tag": "a",
+          "cls": "",
+          "text": "The Global Command Center",
+          "w": 186.4,
+          "h": 16
+        },
+        {
+          "tag": "a",
+          "cls": "",
+          "text": "The Big Idea: Teachers as Architects, AI as B",
+          "w": 356.8,
+          "h": 18
+        },
+        {
+          "tag": "a",
+          "cls": "",
+          "text": "What's Really Possible — A Creativity Showcas",
+          "w": 344.3,
+          "h": 18
+        },
+        {
+          "tag": "a",
+          "cls": "",
+          "text": "Phase 1 — Setting Up Antigravity",
+          "w": 232.5,
+          "h": 18
+        },
+        {
+          "tag": "a",
+          "cls": "",
+          "text": "Phase 2 — Scaffolding Your Project",
+          "w": 250.7,
+          "h": 18
+        },
+        {
+          "tag": "a",
+          "cls": "",
+          "text": "Phase 3 — Building with AI Prompts",
+          "w": 252.6,
+          "h": 18
+        },
+        {
+          "tag": "a",
+          "cls": "",
+          "text": "Phase 4 — Connecting Your Data & APIs",
+          "w": 284.4,
+          "h": 18
+        },
+        {
+          "tag": "a",
+          "cls": "",
+          "text": "Phase 5 — GitHub + Netlify: Go Live for Free",
+          "w": 312.6,
+          "h": 18
+        },
+        {
+          "tag": "a",
+          "cls": "",
+          "text": "Phase 6 — The Iteration Cycle",
+          "w": 213.5,
+          "h": 18
+        },
+        {
+          "tag": "a",
+          "cls": "",
+          "text": "Case Study: Building the Global Command Cente",
+          "w": 352,
+          "h": 18
+        },
+        {
+          "tag": "a",
+          "cls": "",
+          "text": "Troubleshooting & FAQ",
+          "w": 162.4,
+          "h": 18
+        },
+        {
+          "tag": "a",
+          "cls": "",
+          "text": "Appendix: Tech Stack & API Reference",
+          "w": 273.3,
+          "h": 18
+        },
+        {
+          "tag": "a",
+          "cls": "",
+          "text": "serper.dev",
+          "w": 70.9,
+          "h": 17
+        },
+        {
+          "tag": "a",
+          "cls": "",
+          "text": "firecrawl.dev",
+          "w": 86.6,
+          "h": 17
+        },
+        {
+          "tag": "a",
+          "cls": "",
+          "text": "nodejs.org",
+          "w": 73.9,
+          "h": 18
+        },
+        {
+          "tag": "a",
+          "cls": "",
+          "text": "git-scm.com",
+          "w": 87.3,
+          "h": 18
+        },
+        {
+          "tag": "a",
+          "cls": "",
+          "text": "github.com/signup",
+          "w": 130.3,
+          "h": 18
+        },
+        {
+          "tag": "a",
+          "cls": "",
+          "text": "app.netlify.com",
+          "w": 107.2,
+          "h": 18
+        },
+        {
+          "tag": "a",
+          "cls": "",
+          "text": "Contributor Covenant",
+          "w": 149.6,
+          "h": 18
+        },
+        {
+          "tag": "a",
+          "cls": "",
+          "text": "serper.dev",
+          "w": 70.9,
+          "h": 17
+        },
+        {
+          "tag": "a",
+          "cls": "",
+          "text": "firecrawl.dev",
+          "w": 86.6,
+          "h": 17
+        }
+      ],
+      "lowContrastCount": 0,
+      "lowContrastSample": [],
+      "unlabelledInputs": []
+    }
+  },
+  "screenshots": []
+}

@@ -1,0 +1,91 @@
+# Verbatim Command Logs — `npm test`, `npm run build` & `npm audit` (2026-11-15)
+
+Environment: Node `v22.23.1`, npm `10.9.8`, branch `codex/fix-readable-responsive-ui`.
+
+## 1. `npm test` (Exit Code: `0`)
+
+```text
+> global-command-center@1.0.0 test
+> npm run sources:manifest:check && node --test netlify/functions/__tests__/*.node.test.js src/__tests__/*.node.test.*
+
+
+> global-command-center@1.0.0 sources:manifest:check
+> node scripts/generate-source-health-manifest.mjs --check
+
+✔ sanitizes and preserves every UI-facing intelligence field (4.705834ms)
+✔ content selection preserves the lead and conclusion within the cost limit (0.3565ms)
+✔ sanitizer supplies safe shapes for malformed model output (0.465166ms)
+✔ curated items are explicitly dated editorial context rather than live intel (1.05225ms)
+✔ coordinate inference is deterministic for identical text (1.016834ms)
+✔ public snapshot uses fixed balanced queries and never accepts a visitor query (1.201583ms)
+✔ public snapshot reports not-configured without exposing or requiring a key (8.114625ms)
+✔ public snapshot normalizes, deduplicates, and labels cached provider results (10.817459ms)
+✔ duplicate URLs and duplicate headlines are each collapsed (0.127125ms)
+✔ promotional and weakly relevant discovery results are rejected (1.417625ms)
+✔ query region breaks ambiguous geographic ties without overriding stronger named-place evidence (1.5835ms)
+✔ repeated coverage of one named event is capped even when issue labels differ (0.690625ms)
+✔ selection balances regions and issues while limiting publishers, clusters, and discovery sources (0.751875ms)
+✔ rejects requests without a bearer token (2.09775ms)
+✔ rejects unsupported methods before authentication (1.269ms)
+✔ answers approved-origin preflight requests with authorization headers (5.126417ms)
+✔ validates the bearer token with Supabase Auth (1.356375ms)
+✔ rejects invalid tokens reported by Supabase Auth (0.659417ms)
+✔ rejects unapproved browser origins (0.228041ms)
+✔ allows the project deploy-preview origin without weakening arbitrary origins (0.216958ms)
+✔ rate limits repeated requests from the same authenticated user (0.637583ms)
+✔ source health distinguishes healthy, restricted, broken, and uncertain responses (1.417ms)
+✔ source health retries HEAD-incompatible publishers with a range GET (4.1035ms)
+✔ curated case studies remain balanced, auditable, and Nexus-compatible (328.379125ms)
+✔ does not reheat before the graph engine is ready (5.651375ms)
+✔ reheats exactly once after the graph engine is ready (0.279ms)
+✔ fails closed when the graph instance is unavailable (0.124292ms)
+✔ public fallback records remain linked references and are never relabelled as live (2.607166ms)
+✔ provider-current records lead public references and exact duplicates are removed (1.289ms)
+✔ provider static fallback records are dated references rather than live items (0.244208ms)
+✔ live-only filtering over references returns a clear public-source recovery action (0.760833ms)
+✔ public cached updates expose accurate fresh and unavailable labels (0.555209ms)
+✔ searching supports source metadata and reports a clear no-match action (0.358667ms)
+✔ loading suppresses false failures and archived years ignore a saved live-only filter (0.91425ms)
+✔ reads valid JSON state (1.317417ms)
+✔ falls back when saved JSON is malformed or storage is blocked (0.324833ms)
+✔ writes JSON and reports unavailable storage without throwing (0.140042ms)
+✔ briefing source health recommends alternates only for restricted or broken primaries (1.457416ms)
+ℹ tests 38
+ℹ suites 0
+ℹ pass 38
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 714.628667
+```
+
+## 2. `npm run build` (Exit Code: `0`)
+
+```text
+> global-command-center@1.0.0 build
+> npm run sources:manifest && vite build
+
+
+> global-command-center@1.0.0 sources:manifest
+> node scripts/generate-source-health-manifest.mjs
+
+Wrote 106 source-health targets across 29 cases.
+vite v5.4.21 building for production...
+✓ 628 modules transformed.
+dist/index.html                                    1.31 kB │ gzip:   0.63 kB
+dist/assets/NexusWorkspace-XDpF2poP.css           14.29 kB │ gzip:   3.11 kB
+dist/assets/GuidedBriefings-BcNJOnDO.css          14.47 kB │ gzip:   3.17 kB
+dist/assets/GlobalRelationsNexus-DjeG5IfZ.css     33.88 kB │ gzip:   6.82 kB
+dist/assets/index-CBNYZJ2R.css                    65.93 kB │ gzip:  13.36 kB
+dist/assets/NexusWorkspace-CQ24V3aQ.js             8.74 kB │ gzip:   3.05 kB
+dist/assets/GuidedBriefings-BalLlynj.js           11.31 kB │ gzip:   3.97 kB
+dist/assets/nexusFocusData-iad9gyr-.js            26.16 kB │ gzip:   9.87 kB
+dist/assets/GlobalRelationsNexus-D222hW-H.js     171.90 kB │ gzip:  55.45 kB
+dist/assets/index-ZmiksjGk.js                    439.74 kB │ gzip: 137.82 kB
+dist/assets/globe.gl-BXtVD3aW.js                 488.05 kB │ gzip: 159.43 kB
+dist/assets/three-render-objects-DW1eJVxJ.js   1,338.80 kB │ gzip: 361.78 kB
+
+(!) Some chunks are larger than 500 kB after minification.
+✓ built in 4.58s
+```
