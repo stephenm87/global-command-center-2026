@@ -6,42 +6,43 @@
 export const EDGE_DESCRIPTIONS = {
     // ═══ US-CHINA ═══
     'USA|China|trade':       { summary: '$690B bilateral trade, 301 tariffs since 2018, tech decoupling accelerating', label: 'TRADE WAR', dataPoints: ['$690B annual trade', '25-100% tariffs on $370B goods', 'De-risking replacing decoupling'], tension: 0.9, timeline: [
-            { year: '2018', event: 'Section 301 tariffs imposed' },
-            { year: '2020', event: 'Phase One trade deal signed' },
-            { year: '2022', event: 'CHIPS Act passed ($52B)' },
-            { year: '2023', event: 'De-risking replaces decoupling' },
-            { year: '2024', event: '100% EV tariffs announced' },
+            { year: '2018', event: 'U.S. Section 301 tariffs imposed on China' },
+            { year: '2020', event: 'U.S.-China Phase One trade deal signed' },
+            { year: '2022', event: 'U.S. CHIPS Act passed ($52B)' },
+            { year: '2023', event: 'Western de-risking policy toward China announced' },
+            { year: '2024', event: 'U.S. announces 100% tariffs on Chinese EVs' },
         ] },
     'USA|China|conflict':    { summary: 'Strategic competition across Taiwan Strait, South China Sea, and cyber domains', label: 'STRATEGIC RIVALRY', dataPoints: ['Taiwan contingency planning', '7 military bases in Indo-Pacific', 'Annual $886B US defense budget'], tension: 0.95, timeline: [
-            { year: '2018', event: 'Indo-Pacific Strategy released' },
-            { year: '2021', event: 'AUKUS submarine pact' },
-            { year: '2022', event: 'Pelosi Taiwan visit — PLA exercises' },
-            { year: '2023', event: 'Spy balloon incident' },
-            { year: '2024', event: 'Philippines confrontations escalate' },
+            { year: '2018', event: 'U.S. Indo-Pacific Strategy released' },
+            { year: '2021', event: 'AUKUS trilateral submarine pact announced' },
+            { year: '2022', event: 'Pelosi Taiwan visit — Chinese PLA exercises' },
+            { year: '2023', event: 'Chinese high-altitude balloon incident over U.S.' },
+            { year: '2024', event: 'South China Sea Philippines confrontations escalate' },
         ] },
     'USA|China|tech':        { summary: 'Export controls on advanced chips, AI compute restrictions, entity list expansions', label: 'TECH DECOUPLING', dataPoints: ['CHIPS Act: $52B subsidy', 'A100/H100 export ban', 'ASML EUV equipment blocked'], tension: 0.85, timeline: [
-            { year: '2019', event: 'Huawei entity list ban' },
-            { year: '2022', event: 'A100/H100 export controls' },
-            { year: '2023', event: 'Huawei Kirin 9000s surprise' },
-            { year: '2024', event: 'ASML servicing restrictions' },
+            { year: '2019', event: 'U.S. Commerce Department adds Huawei to Entity List' },
+            { year: '2022', event: 'U.S. A100/H100 chip export controls target China' },
+            { year: '2023', event: 'Chinese Huawei Kirin 9000s 7nm chip debuts' },
+            { year: '2024', event: 'Expanded ASML servicing restrictions on China' },
         ] },
 
     // ═══ US-RUSSIA ═══
     'USA|Russia|conflict':   { summary: 'Ukraine proxy war, nuclear posture tensions, NATO expansion friction', label: 'NEW COLD WAR', dataPoints: ['$175B+ US aid to Ukraine', 'INF Treaty collapsed 2019', 'Nuclear saber-rattling'], tension: 0.92, timeline: [
-            { year: '2014', event: 'Crimea annexation — first sanctions' },
-            { year: '2019', event: 'INF Treaty collapsed' },
-            { year: '2022', event: 'Full-scale Ukraine invasion' },
-            { year: '2023', event: 'Wagner mutiny' },
-            { year: '2024', event: '$175B+ US aid to Ukraine' },
+            { year: '2014', event: 'Russia annexes Crimea — first U.S. sanctions' },
+            { year: '2019', event: 'U.S.-Russia INF nuclear treaty collapses' },
+            { year: '2022', event: 'Full-scale Russian invasion of Ukraine' },
+            { year: '2023', event: 'Wagner mutiny inside Russia' },
+            { year: '2024', event: '$175B+ U.S. military and financial aid to Ukraine' },
         ] },
 
     // ═══ US-EUROPE ═══
     'USA|Europe|trade':      { summary: 'Transatlantic trade partnership, LNG replacement of Russian gas, IRA subsidy disputes', label: 'ALLIED TRADE', dataPoints: ['$1.1T bilateral trade', 'US LNG exports tripled', 'IRA green subsidy friction'], tension: 0.3 },
     'USA|Europe|diplomacy':  { summary: 'NATO backbone, intelligence sharing (Five Eyes+), coordinated Russia sanctions', label: 'WESTERN ALLIANCE', dataPoints: ['NATO 32 members', '2% GDP defense target', 'AUKUS trilateral pact'], tension: 0.15 },
     'USA|Europe|tech':       { summary: 'AI regulation divergence, ASML export controls coordination, data privacy conflicts', label: 'TECH ALIGNMENT', dataPoints: ['EU AI Act vs US approach', 'ASML chokepoint', 'Privacy Shield invalidated'], tension: 0.4, timeline: [
-            { year: '2013', event: 'Belt & Road Initiative launched' },
-            { year: '2017', event: 'Djibouti military base opens' },
-            { year: '2023', event: '$170B cumulative BRI investment' },
+            { year: '2020', event: 'EU-U.S. Privacy Shield invalidated (Schrems II)' },
+            { year: '2021', event: 'U.S.-EU Trade and Technology Council launched' },
+            { year: '2023', event: 'U.S.-EU Data Privacy Framework adopted' },
+            { year: '2024', event: 'European Union AI Act enters into force' },
         ] },
 
     // ═══ CHINA-RUSSIA ═══
@@ -49,7 +50,11 @@ export const EDGE_DESCRIPTIONS = {
     'China|Russia|diplomacy':{ summary: 'Joint military exercises, UN veto coordination, anti-Western institutional building', label: 'STRATEGIC ALIGNMENT', dataPoints: ['SCO/BRICS expansion', 'Joint naval drills', 'Parallel SWIFT alternatives'], tension: 0.15 },
 
     // ═══ CHINA-AFRICA ═══
-    'China|Africa|trade':    { summary: 'Belt & Road infrastructure-for-resources: ports, railways, mines across 52 countries', label: 'BRI CORRIDOR', dataPoints: ['$170B BRI investment', 'Djibouti military base', '13,000km railways built'], tension: 0.4 },
+    'China|Africa|trade':    { summary: 'Belt & Road infrastructure-for-resources: ports, railways, mines across 52 countries', label: 'BRI CORRIDOR', dataPoints: ['$170B BRI investment', 'Djibouti military base', '13,000km railways built'], tension: 0.4, timeline: [
+            { year: '2013', event: 'China Belt & Road Initiative launched across Africa' },
+            { year: '2017', event: 'China opens Djibouti military support base' },
+            { year: '2023', event: '$170B cumulative Chinese BRI African investment' },
+        ] },
     'China|Africa|tech':     { summary: 'Huawei 5G networks, digital surveillance exports, fiber-optic backbone construction', label: 'DIGITAL SILK ROAD', dataPoints: ['Huawei in 40+ African nations', 'Smart city surveillance', 'Undersea cables'], tension: 0.5 },
 
     // ═══ RUSSIA-AFRICA ═══
@@ -62,23 +67,24 @@ export const EDGE_DESCRIPTIONS = {
 
     // ═══ HEZBOLLAH / IRAN PROXIES ═══
     'Hezbollah|MiddleEast|conflict': { summary: 'Iran\'s "Axis of Resistance": Lebanon, Yemen Houthis, Iraq PMF — reshaping regional power', label: 'AXIS OF RESISTANCE', dataPoints: ['150,000 Hezbollah rockets', 'Houthi Red Sea attacks', 'Iraq PMF integration'], tension: 0.9, timeline: [
-            { year: '2014', event: 'Readiness Action Plan activated' },
-            { year: '2022', event: 'NATO 2022 Strategic Concept' },
-            { year: '2023', event: 'Finland joins NATO (31st member)' },
-            { year: '2024', event: 'Sweden joins — 300K high-readiness force' },
+            { year: '2006', event: 'Israel-Hezbollah Lebanon War — 33 days' },
+            { year: '2014', event: 'Iran-aligned Houthis seize Sanaa in Yemen' },
+            { year: '2023', event: 'Oct 8 — Hezbollah opens northern Israel-Lebanon front' },
+            { year: '2024', event: 'Houthi Red Sea shipping attacks escalate' },
         ] },
     'Hezbollah|USA|conflict':        { summary: 'US sanctions, CENTCOM operations, Beirut embassy bombing legacy', label: 'US CONTAINMENT', dataPoints: ['Treasury sanctions', 'CENTCOM deployments', 'Israeli proxy conflicts'], tension: 0.85, timeline: [
-            { year: '2019', event: 'Fentanyl declared national emergency' },
-            { year: '2023', event: '110K overdose deaths recorded' },
-            { year: '2024', event: 'Cartel-as-terrorist designation debated' },
+            { year: '1983', event: 'U.S. Beirut embassy and Marine barracks bombings' },
+            { year: '1997', event: 'United States designates Hezbollah a Foreign Terrorist Organization' },
+            { year: '2019', event: 'U.S. Treasury expands Hezbollah and Iran proxy sanctions' },
+            { year: '2024', event: 'U.S. CENTCOM strikes Houthi launch sites in Yemen' },
         ] },
 
     // ═══ JIHADIST ═══
     'Jihadist|Africa|conflict':      { summary: 'Sahel collapse: JNIM, Boko Haram, Al-Shabaab — 10,000+ annual fatalities', label: 'SAHEL INSURGENCY', dataPoints: ['JNIM controls Mali territory', 'Boko Haram 40K killed', 'Al-Shabaab in Somalia/Kenya'], tension: 0.95, timeline: [
-            { year: '2014', event: 'Boko Haram Chibok kidnapping' },
-            { year: '2020', event: 'JNIM expands across Sahel' },
-            { year: '2023', event: 'Sahel coups — France withdraws' },
-            { year: '2024', event: 'Al-Shabaab targets AU forces' },
+            { year: '2014', event: 'Boko Haram Chibok kidnapping in Nigeria' },
+            { year: '2020', event: 'JNIM expands across Mali and central Sahel' },
+            { year: '2023', event: 'Sahel coups — French forces withdraw from Niger and Mali' },
+            { year: '2024', event: 'Al-Shabaab attacks African Union transition forces in Somalia' },
         ] },
     'Jihadist|MiddleEast|conflict':  { summary: 'ISIS remnants in Syria/Iraq, ongoing insurgency, prison camp risks', label: 'ISIS REMNANTS', dataPoints: ['10,000 ISIS in Al-Hol camp', 'Sleeper cells active', 'Abu Bakr successor killed'], tension: 0.75 },
     'Jihadist|USA|conflict':         { summary: 'Global War on Terror legacy: drone strikes, SOF raids, intelligence operations', label: 'GWOT LEGACY', dataPoints: ['$8T spent since 2001', 'Drone program ongoing', 'CT partnerships in 85 countries'], tension: 0.6 },
@@ -86,25 +92,24 @@ export const EDGE_DESCRIPTIONS = {
 
     // ═══ CARTELS ═══
     'Cartels|LatinAmerica|conflict': { summary: 'Territorial control of cocaine/fentanyl routes: 100,000+ annual homicides across region', label: 'NARCO STATES', dataPoints: ['CJNG in 35 countries', '100K+ homicides/year', 'State capture in Honduras/Guatemala'], tension: 0.9, timeline: [
-            { year: '2006', event: 'Lebanon War — 33 days' },
-            { year: '2015', event: 'Houthis seize Sanaa' },
-            { year: '2023', event: 'Oct 7 — Hezbollah opens northern front' },
-            { year: '2024', event: 'Houthi Red Sea shipping attacks' },
+            { year: '2006', event: 'Mexico launches Operation Michoacán cartel campaign' },
+            { year: '2011', event: 'Sinaloa Cartel and CJNG rivalry reshapes Pacific corridors' },
+            { year: '2019', event: 'Culiacán Sinaloa Cartel standoff in Mexico' },
+            { year: '2024', event: 'Ecuador declares internal armed conflict against organized crime' },
         ] },
     'Cartels|USA|conflict':          { summary: 'Fentanyl crisis: 110,000 US overdose deaths/year, border security escalation', label: 'FENTANYL CRISIS', dataPoints: ['110K OD deaths/year', '$53B DEA budget', 'Cartel-as-terrorist debate'], tension: 0.85, timeline: [
-            { year: '2011', event: 'Nord Stream 1 operational' },
-            { year: '2022', event: 'Russia cuts gas — EU scrambles' },
-            { year: '2022', event: 'Nord Stream pipelines destroyed' },
-            { year: '2023', event: 'EU Russian gas share drops to <15%' },
+            { year: '2018', event: 'U.S. CBP reports synthetic fentanyl surge at southern border' },
+            { year: '2023', event: 'U.S. DOJ indicts Sinaloa Cartel fentanyl trafficking network' },
+            { year: '2024', event: 'U.S. debates terrorist designation for Mexican drug cartels' },
         ] },
     'Cartels|China|trade':           { summary: 'Chinese chemical precursors fuel fentanyl production in Mexican super-labs', label: 'PRECURSOR PIPELINE', dataPoints: ['Chinese precursor chemicals', 'WeChat-based transactions', 'Bilateral pressure agreements'], tension: 0.7 },
 
     // ═══ CYBER ═══
     'CyberActors|Russia|conflict':   { summary: 'APT28/Sandworm: election interference, critical infrastructure attacks, ransomware', label: 'HYBRID WARFARE', dataPoints: ['SolarWinds attack', 'Ukraine grid attacks', 'NotPetya $10B damage'], tension: 0.85, timeline: [
-            { year: '2016', event: 'DNC hack — election interference' },
-            { year: '2017', event: 'NotPetya — $10B global damage' },
-            { year: '2020', event: 'SolarWinds supply chain attack' },
-            { year: '2022', event: 'Ukraine grid cyberattacks' },
+            { year: '2016', event: 'Russian APT28 cyber operation targets DNC emails' },
+            { year: '2017', event: 'Russian Sandworm NotPetya cyberattack — $10B global damage' },
+            { year: '2020', event: 'Russian SVR SolarWinds supply-chain cyber espionage' },
+            { year: '2022', event: 'Russian wiper cyberattacks target Ukraine infrastructure' },
         ] },
     'CyberActors|China|conflict':    { summary: 'APT41: IP theft, military espionage, supply chain compromise at scale', label: 'CYBER ESPIONAGE', dataPoints: ['$600B IP theft annually', 'OPM hack 21.5M records', 'Volt Typhoon infrastructure'], tension: 0.8 },
     'CyberActors|USA|conflict':      { summary: 'Primary target for state-sponsored attacks: defense, energy, finance sectors', label: 'ATTACK SURFACE', dataPoints: ['CISA shields up alerts', '$10B+ cyber defense budget', 'Colonial Pipeline ransom'], tension: 0.8 },
@@ -119,14 +124,24 @@ export const EDGE_DESCRIPTIONS = {
     // ═══ NATO ═══
     'NATO|USA|diplomacy':    { summary: 'US provides 70% of NATO defense spending — burden-sharing debate intensifies', label: 'ALLIANCE BACKBONE', dataPoints: ['US 3.4% GDP defense', 'Only 11/32 at 2% target', 'Nuclear umbrella'], tension: 0.25 },
     'NATO|Europe|diplomacy': { summary: 'European pillar strengthening: Finland/Sweden accession, EU rapid deployment force', label: 'EUROPEAN DEFENSE', dataPoints: ['32 members after expansion', 'EU 5,000 rapid reaction', '€2B annual ammunition'], tension: 0.2 },
-    'NATO|Russia|conflict':  { summary: 'Largest military buildup since Cold War: 300,000 troops on high readiness', label: 'FORWARD DEFENSE', dataPoints: ['300K high-readiness troops', 'Baltic tripwire forces', 'Finland 1,300km border'], tension: 0.9 },
+    'NATO|Russia|conflict':  { summary: 'Largest military buildup since Cold War: 300,000 troops on high readiness', label: 'FORWARD DEFENSE', dataPoints: ['300K high-readiness troops', 'Baltic tripwire forces', 'Finland 1,300km border'], tension: 0.9, timeline: [
+            { year: '2014', event: 'NATO Readiness Action Plan activated after Russia annexes Crimea' },
+            { year: '2022', event: 'NATO Madrid Strategic Concept & 300K high-readiness force model' },
+            { year: '2023', event: 'Finland joins NATO (31st member, 1,340km Russia border)' },
+            { year: '2024', event: 'Sweden joins NATO as 32nd member' },
+        ] },
 
     // ═══ BIOTECH ═══
     'BiotechHub|USA|tech':   { summary: 'US pharma R&D dominance: Eli Lilly, Amgen — GLP-1 drugs reshaping $100B obesity market', label: 'PHARMA R&D HUB', dataPoints: ['GLP-1 market $100B+', 'Eli Lilly Mounjaro', 'FDA fast-track approvals'], tension: 0.2 },
     'BiotechHub|Europe|tech':{ summary: 'Novo Nordisk Ozempic phenomenon — Denmark\'s GDP boosted by single drug class', label: 'OZEMPIC EFFECT', dataPoints: ['Novo Nordisk > Denmark GDP', 'Wegovy supply shortages', 'EU pricing negotiations'], tension: 0.3 },
 
     // ═══ ENERGY ═══
-    'Russia|Europe|trade':   { summary: 'Post-Nord Stream energy divorce: EU cut Russian gas from 40% to <15% in 18 months', label: 'ENERGY DIVORCE', dataPoints: ['Nord Stream destroyed', 'Russian gas 40% → <15%', 'LNG terminals fast-tracked'], tension: 0.85 },
+    'Russia|Europe|trade':   { summary: 'Post-Nord Stream energy divorce: EU cut Russian gas from 40% to <15% in 18 months', label: 'ENERGY DIVORCE', dataPoints: ['Nord Stream destroyed', 'Russian gas 40% → <15%', 'LNG terminals fast-tracked'], tension: 0.85, timeline: [
+            { year: '2011', event: 'Nord Stream 1 Russia-Germany pipeline operational' },
+            { year: '2022', event: 'Russia cuts gas supplies — EU scrambles for LNG' },
+            { year: '2022', event: 'Nord Stream pipelines destroyed in Baltic Sea' },
+            { year: '2023', event: 'EU Russian pipeline gas share drops below 15%' },
+        ] },
 
     // ═══ UN/OPEC ═══
     'UN_OPEC|MiddleEast|trade':     { summary: 'OPEC+ controls 40% of global oil: production cuts keeping prices at $80-90/barrel', label: 'OIL CARTEL', dataPoints: ['OPEC+ 40% global output', 'Voluntary cuts 2.2Mb/d', '$80-90 target price'], tension: 0.5 },

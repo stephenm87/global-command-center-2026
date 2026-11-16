@@ -11,6 +11,7 @@ let convolver = null; // Reverb
 let ambientNodes = []; // For ambient pad
 let ambientPlaying = false;
 let ambientGain = null;
+let ambientTimer = null;
 
 function getCtx() {
     if (!audioCtx) {
@@ -157,7 +158,7 @@ export function startAmbient() {
         });
 
         // Schedule next chord
-        setTimeout(playNextPad, 8000 + Math.random() * 4000);
+        ambientTimer = setTimeout(playNextPad, 8000 + Math.random() * 4000);
     }
 
     playNextPad();
@@ -165,14 +166,33 @@ export function startAmbient() {
 
 export function stopAmbient() {
     ambientPlaying = false;
-    const ctx = getCtx();
+    if (ambientTimer) {
+        clearTimeout(ambientTimer);
+        ambientTimer = null;
+    }
+    if (!audioCtx) {
+        ambientNodes = [];
+        return;
+    }
     ambientNodes.forEach(({ osc, gain }) => {
         try {
-            gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 1);
-            osc.stop(ctx.currentTime + 1.5);
+            gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 1);
+            osc.stop(audioCtx.currentTime + 1.5);
         } catch (e) {}
     });
     ambientNodes = [];
+}
+
+export function disposeAudio() {
+    stopAmbient();
+    if (audioCtx) {
+        const ctxToClose = audioCtx;
+        audioCtx = null;
+        masterGain = null;
+        convolver = null;
+        ambientGain = null;
+        ctxToClose.close().catch(() => {});
+    }
 }
 
 export function isAmbientPlaying() { return ambientPlaying; }

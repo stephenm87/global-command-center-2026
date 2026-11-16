@@ -45,7 +45,7 @@ const STRUCTURAL_RELATIONSHIPS = [
     { source: 'MilitantPMC', target: 'Europe', dimensions: ['conflict'], salience: .44, label: 'SECURITY FRICTION', summary: 'Sanctions, accountability measures, and overseas operations connect armed networks to European security policy.' },
 ];
 
-const ACTOR_KEYWORDS = {
+export const ACTOR_KEYWORDS = {
     USA: /\bunited states\b|\bu\.s\.|\busa\b|washington|american|trump|biden/i,
     China: /\bchina\b|chinese|beijing|xi jinping/i,
     Russia: /\brussia\b|russian|moscow|kremlin|putin|wagner/i,

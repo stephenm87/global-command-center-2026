@@ -1,11 +1,12 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef, useCallback } from 'react';
 import { supabase } from './supabase';
 import './auth.css';
 
-function getDisplayName(user) {
+export function getDisplayName(user) {
     if (!user) return null;
-    const emailPart = user.email.split('@')[0];
-    const firstName = emailPart.split('.')[0];
+    const emailPart = typeof user.email === 'string' ? user.email.split('@')[0].trim() : '';
+    const firstName = emailPart.split('.')[0].trim();
+    if (!firstName) return 'Operator';
     return firstName.charAt(0).toUpperCase() + firstName.slice(1);
 }
 
@@ -16,20 +17,28 @@ export function AuthBadge({ user, onSignInClick }) {
     };
 
     if (user) {
-        const name = getDisplayName(user);
+        const name = getDisplayName(user) || 'Operator';
         return (
             <div className="auth-badge-wrapper">
                 <div className="auth-user-badge">
-                    <span className="auth-avatar">{name.charAt(0)}</span>
+                    <span className="auth-avatar" aria-hidden="true">{name.charAt(0)}</span>
                     <span className="auth-name">{name}</span>
-                    <button className="auth-signout" onClick={handleSignOut} title="Sign out">↗</button>
+                    <button
+                        type="button"
+                        className="auth-signout"
+                        onClick={handleSignOut}
+                        aria-label="Sign out"
+                        title="Sign out"
+                    >
+                        ↗
+                    </button>
                 </div>
             </div>
         );
     }
     return (
         <div className="auth-badge-wrapper">
-            <button className="auth-signin-btn" onClick={onSignInClick} id="gcc-signin-trigger">
+            <button type="button" className="auth-signin-btn" onClick={onSignInClick} id="gcc-signin-trigger">
                 SIGN IN
             </button>
         </div>
@@ -37,17 +46,68 @@ export function AuthBadge({ user, onSignInClick }) {
 }
 
 // ── Magic Link Modal ──────────────────────────────────────────────
-export function AuthModal({ onClose }) {
+export function AuthModal({ onClose, initialError = '' }) {
     const [email, setEmail] = useState('');
-    const [error, setError] = useState('');
+    const [error, setError] = useState(initialError || '');
     const [loading, setLoading] = useState(false);
     const [sent, setSent] = useState(false);
+    const cardRef = useRef(null);
+    const inputRef = useRef(null);
+    const closeBtnRef = useRef(null);
+    const onCloseRef = useRef(onClose);
+    onCloseRef.current = onClose;
 
     useEffect(() => {
-        const handleKey = (e) => { if (e.key === 'Escape') onClose(); };
+        if (initialError) setError(initialError);
+    }, [initialError]);
+
+    useEffect(() => {
+        if (sent) {
+            closeBtnRef.current?.focus();
+        }
+    }, [sent]);
+
+    useEffect(() => {
+        const previousActive = typeof document !== 'undefined' ? document.activeElement : null;
+        inputRef.current?.focus();
+
+        const handleKey = (e) => {
+            if (e.key === 'Escape') {
+                e.preventDefault();
+                onCloseRef.current?.();
+                return;
+            }
+            if (e.key === 'Tab' && cardRef.current) {
+                const focusable = Array.from(
+                    cardRef.current.querySelectorAll(
+                        'button:not(:disabled), input:not(:disabled), [href], [tabindex]:not([tabindex="-1"])'
+                    )
+                );
+                if (focusable.length === 0) return;
+                const first = focusable[0];
+                const last = focusable[focusable.length - 1];
+                const activeInside = cardRef.current.contains(document.activeElement);
+                if (!activeInside) {
+                    e.preventDefault();
+                    (e.shiftKey ? last : first).focus();
+                } else if (e.shiftKey && document.activeElement === first) {
+                    e.preventDefault();
+                    last.focus();
+                } else if (!e.shiftKey && document.activeElement === last) {
+                    e.preventDefault();
+                    first.focus();
+                }
+            }
+        };
+
         document.addEventListener('keydown', handleKey);
-        return () => document.removeEventListener('keydown', handleKey);
-    }, [onClose]);
+        return () => {
+            document.removeEventListener('keydown', handleKey);
+            if (previousActive && typeof previousActive.focus === 'function') {
+                previousActive.focus();
+            }
+        };
+    }, []);
 
     const handleSend = async () => {
         const trimmed = email.trim();
@@ -59,9 +119,12 @@ export function AuthModal({ onClose }) {
         setError('');
         setLoading(true);
         try {
+            const redirectUrl = typeof window !== 'undefined'
+                ? `${window.location.origin}${window.location.pathname}${window.location.search}`
+                : undefined;
             const { error: sbError } = await supabase.auth.signInWithOtp({
                 email: trimmed,
-                options: { emailRedirectTo: window.location.href, shouldCreateUser: true }
+                options: { emailRedirectTo: redirectUrl, shouldCreateUser: true }
             });
             if (sbError) throw sbError;
             setSent(true);
@@ -73,16 +136,23 @@ export function AuthModal({ onClose }) {
     };
 
     return (
-        <div className="gcc-auth-overlay" onClick={(e) => { if (e.target === e.currentTarget) onClose(); }}
-            role="dialog" aria-modal="true" aria-label="Sign in to GCC">
-            <div className="gcc-auth-card">
-                <button className="gcc-auth-close" onClick={onClose} aria-label="Close">&times;</button>
+        <div
+            className="gcc-auth-overlay"
+            onClick={(e) => { if (e.target === e.currentTarget) onClose(); }}
+            role="dialog"
+            aria-modal="true"
+            aria-labelledby="gcc-auth-heading"
+        >
+            <div className="gcc-auth-card" ref={cardRef}>
+                <button ref={closeBtnRef} type="button" className="gcc-auth-close" onClick={onClose} aria-label="Close sign-in dialog">&times;</button>
                 {!sent ? (
                     <>
                         <div className="gcc-auth-logo">⬢ GLOBAL COMMAND CENTER</div>
-                        <h2 className="gcc-auth-title">SIGN IN</h2>
+                        <h2 className="gcc-auth-title" id="gcc-auth-heading">SIGN IN</h2>
                         <p className="gcc-auth-subtitle">Enter your email to receive a magic link.</p>
+                        <label className="gcc-auth-label" htmlFor="gcc-auth-email">Email address</label>
                         <input
+                            ref={inputRef}
                             type="email"
                             className="gcc-auth-input"
                             placeholder="you@example.com"
@@ -93,15 +163,15 @@ export function AuthModal({ onClose }) {
                             inputMode="email"
                             id="gcc-auth-email"
                         />
-                        <button className="gcc-auth-btn" onClick={handleSend} disabled={loading} id="gcc-auth-send">
+                        <button type="button" className="gcc-auth-btn" onClick={handleSend} disabled={loading} id="gcc-auth-send">
                             {loading ? 'TRANSMITTING…' : 'SEND MAGIC LINK'}
                         </button>
-                        {error && <p className="gcc-auth-error">{error}</p>}
+                        {error && <p className="gcc-auth-error" role="alert">{error}</p>}
                     </>
                 ) : (
                     <div className="gcc-auth-success">
-                        <div className="gcc-auth-success-icon">📬</div>
-                        <h3>TRANSMISSION SENT</h3>
+                        <div className="gcc-auth-success-icon" aria-hidden="true">📬</div>
+                        <h3 id="gcc-auth-heading">TRANSMISSION SENT</h3>
                         <p>A sign-in link was dispatched to <strong>{email}</strong>.<br />
                             Click it to authenticate — no password required.</p>
                     </div>
@@ -115,17 +185,45 @@ export function AuthModal({ onClose }) {
 export function useAuth() {
     const [user, setUser] = useState(null);
     const [showModal, setShowModal] = useState(false);
+    const [authError, setAuthError] = useState('');
 
     useEffect(() => {
-        // Get initial session
-        supabase.auth.getUser().then(({ data: { user } }) => setUser(user));
-        // Listen for changes
+        if (typeof window !== 'undefined' && window.location.hash) {
+            const hashParams = new URLSearchParams(window.location.hash.replace(/^#/, ''));
+            const errorCode = hashParams.get('error_code') || hashParams.get('error');
+            if (errorCode) {
+                setAuthError(
+                    errorCode === 'otp_expired'
+                        ? 'That sign-in link expired or was already used. Enter your email for a fresh link.'
+                        : 'Sign-in link could not be verified. Request a new magic link below.'
+                );
+                setShowModal(true);
+                window.history.replaceState(null, '', `${window.location.pathname}${window.location.search}`);
+            }
+        }
+
+        supabase.auth.getUser().then(({ data: { user: initialUser } }) => setUser(initialUser));
         const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
             setUser(session?.user || null);
-            if (session?.user) setShowModal(false); // close on sign-in
+            if (session?.user) {
+                setAuthError('');
+                setShowModal(false);
+            }
         });
         return () => subscription.unsubscribe();
     }, []);
 
-    return { user, showModal, openModal: () => setShowModal(true), closeModal: () => setShowModal(false) };
+    const openModal = useCallback(() => setShowModal(true), []);
+    const closeModal = useCallback(() => {
+        setShowModal(false);
+        setAuthError('');
+    }, []);
+
+    return {
+        user,
+        showModal,
+        authError,
+        openModal,
+        closeModal,
+    };
 }

@@ -124,7 +124,7 @@ class NexusErrorBoundary extends React.Component {
 }
 
 function App() {
-    const { user, showModal, openModal, closeModal } = useAuth();
+    const { user, showModal, authError, openModal, closeModal } = useAuth();
     const [forecasts, setForecasts] = useState([]);
     const [filteredForecasts, setFilteredForecasts] = useState([]);
     const [selectedCategory, setSelectedCategory] = useState('All');
@@ -251,9 +251,10 @@ function App() {
 
             try {
                 if (user) {
-                    const { data } = await supabase
+                    const { data, error: selectError } = await supabase
                         .from('user_data').select('value')
-                        .eq('user_id', user.id).eq('key', 'gcc-preferences').single();
+                        .eq('user_id', user.id).eq('key', 'gcc-preferences').maybeSingle();
+                    if (selectError) throw selectError;
                     if (cancelled) return;
                     if (data?.value) {
                         applyPreferences(data.value);
@@ -288,11 +289,16 @@ function App() {
             metricsCollapsed,
         };
         writeStoredJson('gcc-preferences', prefs);
-        if (!user) return;
-        supabase.from('user_data').upsert(
-            { user_id: user.id, key: 'gcc-preferences', value: prefs },
-            { onConflict: 'user_id,key' }
-        );
+        if (!user) return undefined;
+        const syncTimer = setTimeout(() => {
+            supabase.from('user_data').upsert(
+                { user_id: user.id, key: 'gcc-preferences', value: prefs, updated_at: new Date().toISOString() },
+                { onConflict: 'user_id,key' }
+            ).then(({ error }) => {
+                if (error) console.warn('[GCC] Failed to sync cloud preferences:', error.message);
+            });
+        }, 400);
+        return () => clearTimeout(syncTimer);
     }, [selectedTheory, selectedCategory, timelineYear, stressLevel, sidebarCollapsed, showEditorialCases, largeText, reducedEffects, metricsCollapsed, preferencesHydratedFor, user?.id]);
 
     // Initialize globe
@@ -1077,7 +1083,7 @@ function App() {
         <div className={`command-center command-center--${viewMode}${largeText ? ' large-text' : ''}${reducedEffects ? ' reduced-effects' : ''}`}>
             {/* Skip navigation for accessibility */}
             <a href="#main-workspace" className="skip-nav">Skip to main content</a>
-            {showModal && <AuthModal onClose={closeModal} />}
+            {showModal && <AuthModal onClose={closeModal} initialError={authError} />}
             {/* Loading skeleton while globe initializes */}
             {viewMode === 'globe' && !globeReady && (
                 <div className="globe-loading-overlay" role="status" aria-label="Loading globe">

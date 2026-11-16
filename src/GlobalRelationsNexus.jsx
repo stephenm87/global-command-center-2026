@@ -4,172 +4,55 @@ import * as THREE from 'three';
 import { getGlobalChallenges, CHALLENGE_ICONS } from './eventAnalysis';
 import './GlobalRelationsNexus.css';
 import * as NexusAudio from './nexusAudio';
-import { getEdgeInfo, getEdgeLabel } from './nexusEdgeData';
-import { generateNodeNarrative, generateEdgeNarrative } from './nexusNarrative';
+import { getEdgeInfo } from './nexusEdgeData';
 import { fetchGlobalPulse } from './nexusGDELT';
 import { reheatGraphWhenReady } from './graphReadiness.mjs';
 import { readStoredJson, writeStoredJson } from './localState.mjs';
+import {
+    PRIMARY_ANCHORS,
+    ANCHOR_DESCS,
+    ACTOR_TYPE_LABELS,
+    DIM_COLORS,
+    GPC_NODE_MAP,
+    GPC_CONTEXT,
+    assignPrimaryAnchor,
+    linkId,
+    computeCameraFocusPosition,
+    stepNeighborIndex,
+    createAxisForce,
+} from './nexus/nexusData';
 
-// ── Primary Geopolitical Anchors ──────────────────────────────────────────────
-const PRIMARY_ANCHORS = {
-    USA:          { id: 'USA',          name: 'United States',                          type: 'state',    color: '#3399ff', size: 14 },
-    China:        { id: 'China',        name: 'China',                                  type: 'state',    color: '#ff4d4d', size: 14 },
-    Russia:       { id: 'Russia',       name: 'Russia',                                 type: 'state',    color: '#8d6e63', size: 11 },
-    Europe:       { id: 'Europe',       name: 'European Union & UK',                    type: 'bloc',     color: '#00ccff', size: 12 },
-    MiddleEast:   { id: 'MiddleEast',   name: 'Middle East Hub',                        type: 'bloc',     color: '#ff9900', size: 10 },
-    Africa:       { id: 'Africa',       name: 'African Union Zone',                     type: 'bloc',     color: '#66ff00', size: 8  },
-    AsiaPacific:  { id: 'AsiaPacific',  name: 'Asia-Pacific Core',                      type: 'bloc',     color: '#ff00ff', size: 9  },
-    LatinAmerica: { id: 'LatinAmerica', name: 'Latin America Triangle',                 type: 'bloc',     color: '#ffcc00', size: 8  },
-    NATO:         { id: 'NATO',         name: 'NATO Alliance',                          type: 'igo',      color: '#3f51b5', size: 11 },
-    UN_OPEC:      { id: 'UN_OPEC',      name: 'Global Institutions (UN/OPEC/WTO)',      type: 'igo',      color: '#e0f7fa', size: 12 },
-    BiotechHub:   { id: 'BiotechHub',   name: 'Global Pharma MNCs (Lilly/Novo/Amgen)',  type: 'mnc',      color: '#00ff88', size: 12 },
-    TechAIHub:    { id: 'TechAIHub',    name: 'Tech & Silicon MNCs (Nvidia/TSMC/ASML)', type: 'mnc',      color: '#00ffff', size: 12 },
-    MilitantPMC:  { id: 'MilitantPMC',  name: 'PMCs & Militias (Wagner/RSF)',             type: 'nonstate', color: '#ff3d00', size: 10 },
-    Jihadist:     { id: 'Jihadist',     name: 'Jihadist Networks (ISIS/AQ/Boko Haram)',    type: 'nonstate', color: '#cc0000', size: 9  },
-    Cartels:      { id: 'Cartels',      name: 'Transnational Cartels (Sinaloa/CJNG)',      type: 'nonstate', color: '#ff6f00', size: 8  },
-    CyberActors:  { id: 'CyberActors',  name: 'State-Backed Cyber Groups (APT28/Lazarus)', type: 'nonstate', color: '#9c27b0', size: 8  },
-    Hezbollah:    { id: 'Hezbollah',    name: 'Hezbollah / Iran Proxies (Houthis)',        type: 'nonstate', color: '#d50000', size: 8  },
-};
-
-const ANCHOR_DESCS = {
-    USA:          'Global maritime superpower; focus on relative power containment, high-tech supply chains, and liberal institutional alliances.',
-    China:        'East Asian economic powerhouse; focused on infrastructure diplomacy (BRI), trade connectivity, and raw mineral acquisition.',
-    Russia:       'Eurasian revisionist power; leverages energy resources, cyber-warfare capabilities, and private military networks.',
-    Europe:       'Regulatory and economic bloc; emphasizes multilateral treaties, trade integration, and green transition.',
-    MiddleEast:   'Energy corridor and diplomatic hub; balances multi-aligned ties with USA, China, and regional security concerns.',
-    Africa:       'Demographic frontier; regional resource development, gold corridors, and infrastructure investments.',
-    AsiaPacific:  'Indo-Pacific technology and security zone; crucial for global semiconductor fabrication and trade flows.',
-    LatinAmerica: 'Emerging lithium and agricultural corridor; balances trade diplomacy between Western and Eastern powerhouses.',
-    NATO:         'North Atlantic military alliance; coordinates collective security, deterrence, and high-intensity defense posture.',
-    UN_OPEC:      'Multilateral system managing international law, global energy supply controls, and trade dispute arbitrations.',
-    BiotechHub:   'Transnational pharmaceutical giants dictating global metabolic healthcare pipelines and pharmaceutical distribution networks.',
-    TechAIHub:    'Strategic high-tech corporate entities controlling semiconductor foundries, advanced photolithography, and AI hardware platforms.',
-    MilitantPMC:  'Private military contractors and paramilitary forces: Wagner Group in Africa/Syria, Sudan RSF, Sahel juntas — state-adjacent but deniable.',
-    Jihadist:     'Transnational jihadist networks: ISIS remnants in Syria/Sahel, Al-Qaeda affiliates (JNIM, Al-Shabaab), Boko Haram in Lake Chad Basin.',
-    Cartels:      'Mexican and Latin American drug cartels controlling fentanyl/cocaine supply chains: Sinaloa Cartel, CJNG — destabilizing states from Colombia to the US border.',
-    CyberActors:  'State-sponsored cyber warfare groups: Russia\'s APT28/Sandworm, China\'s APT41, North Korea\'s Lazarus Group, Iran\'s Charming Kitten — operating in the grey zone.',
-    Hezbollah:    'Iran\'s proxy network: Hezbollah in Lebanon, Houthis in Yemen, PMF in Iraq — the "Axis of Resistance" reshaping Middle East power dynamics.',
-};
-
-const ACTOR_TYPE_LABELS = {
-    state:    'NATION-STATE (SOVEREIGN)',
-    bloc:     'REGIONAL BLOCK / ALLIANCE',
-    igo:      'INTERGOVERNMENTAL ORGANIZATION (IGO)',
-    mnc:      'MULTINATIONAL CORPORATION (MNC)',
-    nonstate: 'ASYMMETRIC NON-STATE ACTOR / PMC',
-};
-
-const DIM_COLORS = {
-    trade:     '#00ccff',
-    conflict:  '#ff0066',
-    diplomacy: '#00ff88',
-    tech:      '#bf55ec',
-};
-
-const GPC_NODE_MAP = {
-    security:    ['USA','China','Russia','NATO','MiddleEast','Jihadist','Hezbollah','PMCs','CyberActors'],
-    borders:     ['Europe','MiddleEast','Africa','LatinAmerica','USA','Cartels'],
-    identity:    ['MiddleEast','Europe','Russia','Africa','LatinAmerica','Jihadist'],
-    technology:  ['USA','China','TechAIHub','CyberActors','Europe','AsiaPacific'],
-    environment: ['China','USA','Europe','Africa','AsiaPacific','MiddleEast','GlobalInstitutions'],
-    health:      ['GlobalInstitutions','Africa','LatinAmerica','AsiaPacific','GlobalPharmaMNCs'],
-    poverty:     ['Africa','LatinAmerica','AsiaPacific','MiddleEast','GlobalInstitutions'],
-    equality:    ['GlobalInstitutions','Europe','Africa','LatinAmerica','USA'],
-};
-
-const GPC_CONTEXT = {
-    security: {
-        USA: { insight: 'Global military hegemon with 750+ overseas bases. NATO anchor, AUKUS, Quad alliances.', stakes: 'HIGH', connections: ['NATO','China','Russia','MiddleEast'] },
-        China: { insight: 'Rapid military modernization, South China Sea island-building, Taiwan contingency.', stakes: 'CRITICAL', connections: ['USA','AsiaPacific','Russia'] },
-        Russia: { insight: 'Nuclear arsenal, Wagner Group proxy operations, Arctic militarization.', stakes: 'CRITICAL', connections: ['NATO','USA','MiddleEast','Europe','PMCs'] },
-        NATO: { insight: 'Post-Ukraine expansion (Finland, Sweden). Eastern flank reinforcement.', stakes: 'HIGH', connections: ['USA','Europe','Russia'] },
-        Europe: { insight: 'Re-arming post-Ukraine. Franco-German defense integration challenges.', stakes: 'MEDIUM', connections: ['NATO','Russia','MiddleEast'] },
-        MiddleEast: { insight: 'Iran nuclear threshold, Israel-Gaza, Saudi-Iran detente fragility.', stakes: 'CRITICAL', connections: ['USA','Russia','Hezbollah','Jihadist'] },
-    },
-    borders: {
-        USA: { insight: 'US-Mexico border crisis: 2.5M encounters/yr. Fentanyl trafficking, asylum policy.', stakes: 'CRITICAL', connections: ['LatinAmerica','Cartels','MiddleEast'] },
-        Europe: { insight: 'Mediterranean migration, Belarus hybrid warfare, Schengen stress-testing.', stakes: 'HIGH', connections: ['Africa','MiddleEast','LatinAmerica'] },
-        MiddleEast: { insight: 'Syrian refugee crisis, Iraqi displacement, Kurdish territorial disputes.', stakes: 'HIGH', connections: ['Europe','Africa','USA'] },
-        Africa: { insight: 'Sahel instability, Lake Chad basin displacement, Libya transit corridor.', stakes: 'CRITICAL', connections: ['Europe','MiddleEast','LatinAmerica'] },
-        LatinAmerica: { insight: 'Venezuelan exodus (7M+), Darien Gap corridor, Northern Triangle push factors.', stakes: 'CRITICAL', connections: ['USA','Cartels','Africa'] },
-        Cartels: { insight: 'Sinaloa/CJNG control migration corridors, human smuggling revenue $13B/yr.', stakes: 'CRITICAL', connections: ['USA','LatinAmerica','MiddleEast'] },
-    },
-    technology: {
-        USA: { insight: 'AI/chip dominance via Nvidia, TSMC leverage. CHIPS Act $52B reshoring.', stakes: 'CRITICAL', connections: ['China','TechAIHub','Europe'] },
-        China: { insight: 'Self-sufficiency drive post-sanctions. Huawei breakthrough chips, DeepSeek AI.', stakes: 'CRITICAL', connections: ['USA','TechAIHub','AsiaPacific'] },
-        TechAIHub: { insight: 'Big Tech ($3T+ market cap) as geopolitical actors. AI safety governance gap.', stakes: 'HIGH', connections: ['USA','China','Europe'] },
-        Europe: { insight: 'EU AI Act regulatory leadership. Digital sovereignty vs US tech dependence.', stakes: 'MEDIUM', connections: ['USA','China','TechAIHub'] },
-        CyberActors: { insight: 'State-backed APTs (Fancy Bear, Lazarus). Ransomware-as-a-service economy.', stakes: 'CRITICAL', connections: ['USA','China','Russia'] },
-    },
-    identity: {
-        Europe: { insight: 'Far-right surge, anti-immigration populism, EU values vs sovereignty debate.', stakes: 'HIGH', connections: ['MiddleEast','Africa','Russia'] },
-        MiddleEast: { insight: 'Sunni-Shia divide, pan-Arabism decline, Gulf modernization vs tradition.', stakes: 'CRITICAL', connections: ['Jihadist','Europe','Africa'] },
-        Russia: { insight: 'Civilizational state narrative, Orthodox identity politics, anti-Western ideology.', stakes: 'HIGH', connections: ['Europe','MiddleEast','USA'] },
-        Africa: { insight: 'Post-colonial identity reclamation, ethnic federalism tensions, youth bulge.', stakes: 'HIGH', connections: ['Europe','MiddleEast','LatinAmerica'] },
-    },
-    environment: {
-        China: { insight: 'Largest emitter (31% global CO2) but also largest renewable investor.', stakes: 'CRITICAL', connections: ['USA','Europe','Africa'] },
-        USA: { insight: 'IRA $369B green investment vs fossil fuel lobbying. Paris re-engagement fragile.', stakes: 'HIGH', connections: ['China','Europe','MiddleEast'] },
-        Europe: { insight: 'Green Deal leader, carbon border tax (CBAM), energy transition post-Russia gas.', stakes: 'HIGH', connections: ['China','USA','MiddleEast'] },
-        Africa: { insight: 'Climate vulnerability disproportionate. Critical minerals for green transition.', stakes: 'CRITICAL', connections: ['China','Europe','USA'] },
-        MiddleEast: { insight: 'Petro-state transition pressure. UAE/Saudi Vision diversification.', stakes: 'HIGH', connections: ['China','Europe','USA'] },
-    },
-    health: {
-        GlobalInstitutions: { insight: 'WHO pandemic preparedness reform. Vaccine equity gaps persist.', stakes: 'HIGH', connections: ['Africa','AsiaPacific','GlobalPharmaMNCs'] },
-        Africa: { insight: 'Lowest vaccine coverage globally. Disease surveillance infrastructure gaps.', stakes: 'CRITICAL', connections: ['GlobalInstitutions','GlobalPharmaMNCs','China'] },
-        GlobalPharmaMNCs: { insight: 'mRNA platform potential vs IP barriers. $1.5T global pharma market.', stakes: 'HIGH', connections: ['GlobalInstitutions','USA','Africa'] },
-    },
-    poverty: {
-        Africa: { insight: '60% of extreme poor by 2030. Debt distress in 22 countries.', stakes: 'CRITICAL', connections: ['GlobalInstitutions','China','Europe'] },
-        LatinAmerica: { insight: 'Inequality highest region globally. Informal economy 50%+ workforce.', stakes: 'HIGH', connections: ['USA','GlobalInstitutions','China'] },
-        AsiaPacific: { insight: 'Dramatic poverty reduction but 350M+ still in extreme poverty.', stakes: 'MEDIUM', connections: ['China','GlobalInstitutions','USA'] },
-    },
-    equality: {
-        GlobalInstitutions: { insight: 'SDG5 gender equality stalled. LGBTQ+ rights divergence globally.', stakes: 'HIGH', connections: ['Europe','Africa','USA'] },
-        Europe: { insight: 'Gender pay gap narrowing. Anti-discrimination framework strongest globally.', stakes: 'MEDIUM', connections: ['GlobalInstitutions','USA','Africa'] },
-        Africa: { insight: 'Child marriage, FGM prevalence. Women in parliament rising (Rwanda 61%).', stakes: 'HIGH', connections: ['GlobalInstitutions','Europe','LatinAmerica'] },
-    },
-};
-
-// ── Assign a forecast to a primary anchor ─────────────────────────────────────
-const assignPrimaryAnchor = (forecast) => {
-    const allText = [
-        forecast['Key Player/Organization'],
-        forecast['Entity/Subject'],
-        forecast['Topic/Sector'],
-        forecast.Broad_Category,
-    ].join(' ').toLowerCase();
-
-    if (/wagner|rsf|paramilitary|militia|mercenary|pmc/.test(allText)) return 'MilitantPMC';
-    if (/isis|isil|islamic.state|al.qaeda|boko.haram|jihadist|al.shabaab|jnim|aqim/.test(allText)) return 'Jihadist';
-    if (/cartel|sinaloa|cjng|fentanyl|narco|drug.trafficking|el.chapo/.test(allText)) return 'Cartels';
-    if (/cyber|apt28|apt41|lazarus|sandworm|hack|ransomware|charming.kitten/.test(allText)) return 'CyberActors';
-    if (/hezbollah|houthi|axis.of.resistance|iran.proxy|pmf|popular.mobilization/.test(allText)) return 'Hezbollah';
-    if (/insurgent|rebel|terrorist|guerrilla/.test(allText)) return 'MilitantPMC';
-    if (/\bnato\b|north atlantic treaty/.test(allText)) return 'NATO';
-    if (/united nations|\bun\b|\bopec\b|\bwto\b|\bwho\b|world health|world bank|\bimf\b|multilateral/.test(allText)) return 'UN_OPEC';
-    if (/novo nordisk|wegovy|semaglutide|eli lilly|amgen|retatrutide|cagrisema|maritide|bimagrumab|pharma|pharmaceuticals/.test(allText)) return 'BiotechHub';
-    if (/semiconductor|asml|nvidia|\bai\b|tsmc|microchip|quantum computing|technology/.test(allText)) return 'TechAIHub';
-    if (/trump|america|united states|\bus\b/.test(allText)) return 'USA';
-    if (/china|chinese|beijing/.test(allText)) return 'China';
-    if (/russia|russian|moscow|putin/.test(allText)) return 'Russia';
-    if (/\beu\b|european|\buk\b|britain|germany|france/.test(allText)) return 'Europe';
-    if (/sudan|egypt|africa|african/.test(allText)) return 'Africa';
-    if (/saudi|\buae\b|middle east|iran/.test(allText)) return 'MiddleEast';
-    if (/brazil|latin|mexico|south america/.test(allText)) return 'LatinAmerica';
-    if (/japan|india|korea|australia|pacific/.test(allText)) return 'AsiaPacific';
-    return 'USA';
-};
-
-// ── Helper: safe link id accessors ────────────────────────────────────────────
-const linkId = (end) => (typeof end === 'object' && end !== null) ? (end.id || '') : (end || '');
+function disposeThreeHierarchy(root) {
+    if (!root || typeof root.traverse !== 'function') return;
+    root.traverse(obj => {
+        if (obj.geometry && typeof obj.geometry.dispose === 'function') {
+            obj.geometry.dispose();
+        }
+        const materials = Array.isArray(obj.material) ? obj.material : (obj.material ? [obj.material] : []);
+        materials.forEach(mat => {
+            if (mat.map && typeof mat.map.dispose === 'function') {
+                mat.map.dispose();
+            }
+            if (typeof mat.dispose === 'function') {
+                mat.dispose();
+            }
+        });
+    });
+}
 
 // ══════════════════════════════════════════════════════════════════════════════
 
 
 
 export default function GlobalRelationsNexus({ forecasts, selectedTheory, theories, onTheorySelect, initialNodeId, onActorSelect }) {
-    const fgRef = useRef();
+    const fgRef = useRef(null);
+    const lastGraphInstanceRef = useRef(null);
+    const attachGraphRef = useCallback((instance) => {
+        fgRef.current = instance;
+        if (instance) {
+            lastGraphInstanceRef.current = instance;
+        }
+    }, []);
     const nexusRootRef = useRef(null);
     const [initialPreferences] = useState(() => readStoredJson('gcc-nexus-preferences', {}));
     // react-force-graph schedules its internal layout asynchronously. Calling
@@ -212,16 +95,14 @@ export default function GlobalRelationsNexus({ forecasts, selectedTheory, theori
     const [showSatellites, setShowSatellites] = useState(initialPreferences.showSatellites === true);
     const [intensityThreshold, setIntensityThreshold] = useState(typeof initialPreferences.intensityThreshold === 'number' ? initialPreferences.intensityThreshold : 0);
     const [introComplete, setIntroComplete] = useState(false);
-    // Context menu
-    const [contextMenu, setContextMenu] = useState(null);
-    // Double-click tracking
+    // Double-click & neighbor-cycle tracking
     const lastClickRef = useRef({ nodeId: null, time: 0 });
+    const prevTheoryRef = useRef(selectedTheory);
+    const cycleStateRef = useRef({ hubNode: null, cursorIndex: -1 });
     const [dimensions, setDimensions] = useState({ trade: true, conflict: true, diplomacy: true, tech: true, ...(initialPreferences.dimensions || {}) });
-    const [expandedAnchors, setExpandedAnchors] = useState({
-        USA: false, China: false, Russia: false, Europe: false,
-        MiddleEast: false, Africa: false, AsiaPacific: false, LatinAmerica: false,
-        NATO: false, UN_OPEC: false, BiotechHub: false, TechAIHub: false, MilitantPMC: false, Jihadist: false, Cartels: false, CyberActors: false, Hezbollah: false,
-    });
+    const [expandedAnchors, setExpandedAnchors] = useState(() => (
+        Object.fromEntries(Object.keys(PRIMARY_ANCHORS).map(id => [id, false]))
+    ));
 
     useEffect(() => {
         const anchor = PRIMARY_ANCHORS[initialNodeId];
@@ -549,6 +430,14 @@ export default function GlobalRelationsNexus({ forecasts, selectedTheory, theori
         });
     }, [searchQuery, graphData]);
 
+    // ── Theory switch audio cue (fire once per actual theory change) ──────────
+    useEffect(() => {
+        if (prevTheoryRef.current !== selectedTheory) {
+            prevTheoryRef.current = selectedTheory;
+            NexusAudio.soundTheorySwitch();
+        }
+    }, [selectedTheory]);
+
     // ── Physics engine ────────────────────────────────────────────────────────
     useEffect(() => {
         if (!fgRef.current) return;
@@ -562,31 +451,30 @@ export default function GlobalRelationsNexus({ forecasts, selectedTheory, theori
         else if (selectedTheory === 'Constructivism') { charge = -160; baseDist = 110; }
 
         fg.d3Force('charge').strength(charge);
+
+        // Register spatial lens forces once per effect run (never inside link.distance)
+        if (physicsPreset === 'balance' && selectedTheory === 'Marxism') {
+            fg.d3Force('x', null);
+            fg.d3Force('y', createAxisForce(
+                'y',
+                d => (['USA', 'Europe', 'Russia', 'NATO'].includes(d.id) ? -80 : 80),
+                d => (d.isAnchor ? 0.18 : 0)
+            ));
+        } else if (physicsPreset === 'balance' && selectedTheory === 'Postcolonialism') {
+            fg.d3Force('y', null);
+            fg.d3Force('x', createAxisForce(
+                'x',
+                d => (d.id === 'USA' ? -200 : d.id === 'Europe' ? 200 : 0),
+                d => (d.isAnchor && ['USA', 'Europe'].includes(d.id) ? 0.18 : 0)
+            ));
+        } else {
+            fg.d3Force('x', null);
+            fg.d3Force('y', null);
+        }
+
         fg.d3Force('link').distance(lnk => {
             if (physicsPreset === 'core')     return lnk.type === 'satellite' ? 20 : 75;
             if (physicsPreset === 'friction') return lnk.type === 'conflict' ? 260 : 160;
-            NexusAudio.soundTheorySwitch();
-            if (selectedTheory === 'Marxism') {
-                // Vertical split: Global North up, Global South down
-                fg.d3Force('y', d => {
-                    if (!d.isAnchor) return;
-                    const north = ['USA','Europe','Russia','NATO'].includes(d.id);
-                    return north ? -80 : 80;
-                });
-            } else if (selectedTheory === 'Postcolonialism') {
-                // Push former colonial powers to periphery
-                fg.d3Force('x', d => {
-                    if (!d.isAnchor) return;
-                    const peripheral = ['USA','Europe'].includes(d.id);
-                    return peripheral ? (d.id === 'USA' ? -200 : 200) : 0;
-                });
-            } else if (selectedTheory === 'Feminism') {
-                fg.d3Force('x', null);
-                fg.d3Force('y', null);
-            } else {
-                fg.d3Force('x', null);
-                fg.d3Force('y', null);
-            }
             if (selectedTheory === 'Realism') {
                 if (lnk.type === 'conflict') return 240;
                 if (lnk.type === 'satellite') return 40;
@@ -602,13 +490,30 @@ export default function GlobalRelationsNexus({ forecasts, selectedTheory, theori
         reheatGraphWhenReady(graphReadyRef, fg);
     }, [selectedTheory, physicsPreset, graphData]);
 
+    // Navigate to a specific node (used by connection table, search, and arrow-key cycling)
+    const navigateToNode = useCallback((nodeRef, { preserveCycle = false } = {}) => {
+        if (!nodeRef) return;
+        if (!preserveCycle) {
+            cycleStateRef.current = { hubNode: null, cursorIndex: -1 };
+        }
+        setSelectedNode(nodeRef);
+        setSelectedEdge(null);
+        setInspectTab('overview');
+        NexusAudio.soundConnectionNav();
+        if (fgRef.current && nodeRef.x != null) {
+            const camPos = computeCameraFocusPosition(nodeRef, 220);
+            fgRef.current.cameraPosition(camPos, nodeRef, 1200);
+        }
+    }, []);
+
     // ── Click handler ─────────────────────────────────────────────────────────
-    const handleNodeClick = useCallback((node) => {
-        setContextMenu(null);
+    const handleNodeClick = useCallback((node, isShiftKey = false) => {
+        if (!node) return;
+        cycleStateRef.current = { hubNode: null, cursorIndex: -1 };
+
         // Double-click detection → auto-lock
         const now = Date.now();
         if (lastClickRef.current.nodeId === node.id && now - lastClickRef.current.time < 400) {
-            // Double-click: lock the node
             setSelectedNode(node);
             setLockedNode(node);
             NexusAudio.soundLockEngage();
@@ -618,61 +523,33 @@ export default function GlobalRelationsNexus({ forecasts, selectedTheory, theori
         }
         lastClickRef.current = { nodeId: node.id, time: now };
 
-        setSelectedNode(prev => (prev && prev.id === node.id) ? null : node);
+        // Comparative mode: Shift+click with locked node
+        if (lockedNode && node.id !== lockedNode.id && isShiftKey) {
+            setCompareNode(prev => (prev?.id === node.id ? null : node));
+            NexusAudio.soundCompareEngage();
+            return;
+        }
+
+        const isDeselect = Boolean(selectedNode && selectedNode.id === node.id);
+        setSelectedNode(isDeselect ? null : node);
         setSelectedEdge(null);
         NexusAudio.soundNodeClick();
-        // Comparative mode: Shift+click with locked node
-        if (lockedNode && node.id !== lockedNode.id && window._lastClickShift) {
-            setCompareNode(node);
-            NexusAudio.soundCompareEngage();
+
+        if (!isDeselect && fgRef.current && node.x != null) {
+            const camPos = computeCameraFocusPosition(node, 220);
+            fgRef.current.cameraPosition(camPos, node, 1200);
         }
-        // Auto-zoom on first click
-        if (!lockedNode) navigateToNode(node);
-        // Smooth camera orbit — zoom to comfortable distance (not too close)
-        if (fgRef.current && node.x != null) {
-            const dist = 220; // comfortable viewing distance
-            const ratio = 1 + dist / Math.hypot(node.x, node.y, node.z);
-            fgRef.current.cameraPosition(
-                { x: node.x * ratio, y: node.y * ratio, z: node.z * ratio },
-                node, // lookAt target
-                1200  // transition ms
-            );
-        }
-    }, []);
+    }, [lockedNode, selectedNode, navigateToNode]);
 
     // Background click — deselect node but keep lock
     const handleBackgroundClick = useCallback(() => {
+        cycleStateRef.current = { hubNode: null, cursorIndex: -1 };
         if (lockedNode) {
-            // When locked, clicking background goes back to locked node
             setSelectedNode(lockedNode);
         } else {
             setSelectedNode(null);
         }
     }, [lockedNode]);
-
-    // Navigate to a specific node (used by connection table)
-    const navigateToNode = useCallback((nodeRef) => {
-        if (!nodeRef) return;
-        setSelectedNode(nodeRef);
-        setSelectedEdge(null);
-        setInspectTab('overview');
-        NexusAudio.soundConnectionNav();
-        if (fgRef.current && nodeRef.x != null) {
-            const dist = 220;
-            const ratio = 1 + dist / Math.hypot(nodeRef.x, nodeRef.y, nodeRef.z);
-            fgRef.current.cameraPosition(
-                { x: nodeRef.x * ratio, y: nodeRef.y * ratio, z: nodeRef.z * ratio },
-                nodeRef, 1200
-            );
-        }
-    }, []);
-
-    // Double-click anchor to expand/collapse its satellites
-    const handleNodeDblClick = useCallback((node) => {
-        if (node.isAnchor) {
-            toggleAnchorExpand(node.id);
-        }
-    }, [toggleAnchorExpand]);
 
     // Reset camera to default overview position
     const resetCamera = useCallback(() => {
@@ -834,16 +711,16 @@ export default function GlobalRelationsNexus({ forecasts, selectedTheory, theori
         return { autonomy, economicPenetration, conflictExposure, resourceSecurity, diplomaticCentrality };
     }, [selectedNode]);
 
-    // ── Connection summary for selected node ────────────────────────────────
-    const connectionSummary = useMemo(() => {
-        if (!selectedNode) return [];
+    // ── Helper: build unique neighbor list for any hub node ─────────────────
+    const getNodeConnections = useCallback((hubNode) => {
+        if (!hubNode) return [];
         const conns = [];
         const seen = new Set();
         graphData.links.forEach(lnk => {
             const sId = linkId(lnk.source), tId = linkId(lnk.target);
             let partnerId = null;
-            if (sId === selectedNode.id) partnerId = tId;
-            else if (tId === selectedNode.id) partnerId = sId;
+            if (sId === hubNode.id) partnerId = tId;
+            else if (tId === hubNode.id) partnerId = sId;
             if (!partnerId || lnk.type === 'satellite') return;
             const key = `${partnerId}-${lnk.type}`;
             if (seen.has(key)) return;
@@ -860,50 +737,14 @@ export default function GlobalRelationsNexus({ forecasts, selectedTheory, theori
             });
         });
         return conns;
-    }, [selectedNode, graphData]);
+    }, [graphData]);
 
-    // ── Right-click context menu ──────────────────────────────────────────────
-    const handleNodeRightClick = useCallback((node, event) => {
-        event.preventDefault();
-        setContextMenu({
-            node,
-            x: event.clientX,
-            y: event.clientY,
-        });
-    }, []);
-
-    const contextAction = useCallback((action, node) => {
-        setContextMenu(null);
-        switch (action) {
-            case 'lock':
-                setSelectedNode(node);
-                setLockedNode(node);
-                navigateToNode(node);
-                NexusAudio.soundLockEngage();
-                break;
-            case 'unlock':
-                setLockedNode(null);
-                setCompareNode(null);
-                reheatGraphWhenReady(graphReadyRef, fgRef);
-                NexusAudio.soundLockRelease();
-                break;
-            case 'compare':
-                if (lockedNode) {
-                    setCompareNode(node);
-                    NexusAudio.soundCompareEngage();
-                }
-                break;
-            case 'focus':
-                navigateToNode(node);
-                setSelectedNode(node);
-                NexusAudio.soundNodeClick();
-                break;
-            default: break;
-        }
-    }, [lockedNode, navigateToNode]);
+    // ── Connection summary for selected node ────────────────────────────────
+    const connectionSummary = useMemo(() => getNodeConnections(selectedNode), [selectedNode, getNodeConnections]);
 
     // ── Edge click handler ────────────────────────────────────────────────────
     const handleLinkClick = useCallback((link) => {
+        cycleStateRef.current = { hubNode: null, cursorIndex: -1 };
         setSelectedEdge(link);
         setSelectedNode(null);
         NexusAudio.soundEdgeClick();
@@ -938,40 +779,45 @@ export default function GlobalRelationsNexus({ forecasts, selectedTheory, theori
                 return;
             }
             if (e.key === 'Escape') {
+                cycleStateRef.current = { hubNode: null, cursorIndex: -1 };
                 if (lockedNode) {
                     setLockedNode(null);
+                    setCompareNode(null);
                     reheatGraphWhenReady(graphReadyRef, fgRef);
                 } else {
                     setSelectedNode(null);
                 }
                 return;
             }
-            // Arrow up/down to cycle through connections
-            if (selectedNode && connectionSummary.length > 0) {
-                if (e.key === 'ArrowDown' || e.key === 'ArrowRight') {
+            // Arrow keys cycle through the locked or initially selected hub's unique neighbors
+            if ((lockedNode || selectedNode) && ['ArrowDown', 'ArrowRight', 'ArrowUp', 'ArrowLeft'].includes(e.key)) {
+                const hubNode = lockedNode || cycleStateRef.current.hubNode || selectedNode;
+                const uniqueNeighbors = [];
+                const seenPartners = new Set();
+                getNodeConnections(hubNode).forEach(conn => {
+                    if (!seenPartners.has(conn.id)) {
+                        seenPartners.add(conn.id);
+                        uniqueNeighbors.push(conn);
+                    }
+                });
+                if (uniqueNeighbors.length > 0) {
                     e.preventDefault();
-                    // Navigate to next connection
-                    const currIdx = connectionSummary.findIndex(c => c.id === selectedNode.id);
-                    const nextIdx = currIdx < connectionSummary.length - 1 ? currIdx + 1 : 0;
-                    navigateToNode(connectionSummary[nextIdx].nodeRef);
-                } else if (e.key === 'ArrowUp' || e.key === 'ArrowLeft') {
-                    e.preventDefault();
-                    const currIdx = connectionSummary.findIndex(c => c.id === selectedNode.id);
-                    const prevIdx = currIdx > 0 ? currIdx - 1 : connectionSummary.length - 1;
-                    navigateToNode(connectionSummary[prevIdx].nodeRef);
+                    const direction = (e.key === 'ArrowDown' || e.key === 'ArrowRight') ? 1 : -1;
+                    const nextIdx = stepNeighborIndex(
+                        uniqueNeighbors,
+                        selectedNode?.id,
+                        cycleStateRef.current.hubNode?.id === hubNode.id ? cycleStateRef.current.cursorIndex : -1,
+                        direction
+                    );
+                    cycleStateRef.current = { hubNode, cursorIndex: nextIdx };
+                    navigateToNode(uniqueNeighbors[nextIdx].nodeRef, { preserveCycle: true });
                 }
             }
         };
         const root = nexusRootRef.current;
         root?.addEventListener('keydown', handler);
         return () => root?.removeEventListener('keydown', handler);
-    }, [selectedNode, lockedNode, connectionSummary, navigateToNode, searchOpen, activeCaseStudy]);
-
-    // ── Narrative generation for selected node ──────────────────────────────
-    const nodeNarrative = useMemo(() => {
-        if (!selectedNode) return '';
-        return generateNodeNarrative(selectedNode, connectionSummary, graphData.links, selectedTheory);
-    }, [selectedNode, connectionSummary, graphData, selectedTheory]);
+    }, [selectedNode, lockedNode, getNodeConnections, navigateToNode, searchOpen, activeCaseStudy]);
 
 
     // ── At-a-glance badges for selected node ──────────────────────────────────
@@ -1094,17 +940,27 @@ export default function GlobalRelationsNexus({ forecasts, selectedTheory, theori
 
     // ── Animated intro sequence ───────────────────────────────────────────────
     useEffect(() => {
-        if (introComplete) return;
-        // Stagger node appearance
+        if (introComplete) return undefined;
         const anchors = Object.keys(PRIMARY_ANCHORS);
-        anchors.forEach((id, i) => {
-            setTimeout(() => {
-                const node = graphData.nodes.find(n => n.id === id);
-                if (node) node.__visible = true;
-            }, i * 150);
-        });
-        setTimeout(() => setIntroComplete(true), anchors.length * 150 + 500);
+        const timers = anchors.map((id, i) => setTimeout(() => {
+            const node = graphData.nodes.find(n => n.id === id);
+            if (node) node.__visible = true;
+        }, i * 150));
+        timers.push(setTimeout(() => setIntroComplete(true), anchors.length * 150 + 500));
+        return () => timers.forEach(t => clearTimeout(t));
     }, [graphData, introComplete]);
+
+    // ── WebGL & WebAudio cleanup on unmount ───────────────────────────────────
+    useEffect(() => () => {
+        const fg = fgRef.current || lastGraphInstanceRef.current;
+        lastGraphInstanceRef.current = null;
+        if (fg) {
+            try { fg.pauseAnimation?.(); } catch {}
+            try { disposeThreeHierarchy(fg.scene?.()); } catch {}
+            try { fg.renderer?.()?.dispose?.(); } catch {}
+        }
+        NexusAudio.disposeAudio();
+    }, []);
 
     // ── 3D scene lighting ─────────────────────────────────────────────────────
     useEffect(() => {
@@ -1204,7 +1060,7 @@ export default function GlobalRelationsNexus({ forecasts, selectedTheory, theori
             {/* ── Canvas ──────────────────────────────────────────────────── */}
             <div className="nexus-canvas-wrapper" role="region" tabIndex="0" aria-label="Interactive 3D relationship map. Use arrow keys to move between a selected actor's connections.">
                 <ForceGraph3D
-                    ref={fgRef}
+                    ref={attachGraphRef}
                     graphData={displayData}
                     onEngineTick={() => { graphReadyRef.current = true; }}
                     backgroundColor="#000000"
@@ -1226,7 +1082,7 @@ export default function GlobalRelationsNexus({ forecasts, selectedTheory, theori
                             + '<strong style="color:' + (node.color || '#fff') + '">' + node.name + '</strong><br/>'
                             + '<span style="color:#a5b4bc;font-size:12px">' + (node.isAnchor ? (node.type || '').toUpperCase() : (node.category || '')) + '</span><br/>'
                             + '<span style="color:#aaa">' + conns + ' connections</span>'
-                            + (node.isAnchor ? '<br/><span style="color:#a5b4bc;font-size:12px">Double-click to lock · Right-click for menu</span>' : '')
+                            + (node.isAnchor ? '<br/><span style="color:#a5b4bc;font-size:12px">Double-click to lock · Arrow keys cycle connections</span>' : '')
                             + '</div>';
                     }}
                     linkLabel={lnk => {
@@ -1285,10 +1141,9 @@ export default function GlobalRelationsNexus({ forecasts, selectedTheory, theori
                     linkDirectionalParticleSpeed={() => 0.008}
                     linkDirectionalParticleWidth={lnk => lnk.width * 1.5}
                     linkDirectionalParticleColor={lnk => lnk.color}
-                    onNodeClick={(node, event) => { window._lastClickShift = event && event.shiftKey; handleNodeClick(node); }}
-                    onNodeRightClick={handleNodeRightClick}
+                    onNodeClick={(node, event) => handleNodeClick(node, Boolean(event?.shiftKey))}
                     onNodeHover={node => setHoveredNode(node || null)}
-                    onBackgroundClick={() => { handleBackgroundClick(); setContextMenu(null); }}
+                    onBackgroundClick={handleBackgroundClick}
                     enableNodeDrag={true}
                     enableNavigationControls={true}
                     linkHoverPrecision={8}

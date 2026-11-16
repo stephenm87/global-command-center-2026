@@ -28,8 +28,11 @@ const assertValidEditorialDate = (value, message) => {
 
 test('curated case studies remain balanced, auditable, and Nexus-compatible', async t => {
     const vite = await createServer({
+        configFile: false,
+        cacheDir: `/tmp/vite-gcc-content-test-${process.pid}`,
         appType: 'custom',
         logLevel: 'silent',
+        optimizeDeps: { noDiscovery: true },
         server: { middlewareMode: true },
     });
     t.after(() => vite.close());

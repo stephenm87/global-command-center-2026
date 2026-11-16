@@ -12,15 +12,17 @@
 .auth-user-badge {
     display: flex;
     align-items: center;
-    gap: 8px;
-    padding: 4px 10px 4px 4px;
+    gap: 6px;
+    padding: 2px 4px 2px 6px;
+    min-height: 44px;
     background: rgba(0, 255, 200, 0.06);
-    border: 1px solid rgba(0, 255, 200, 0.2);
+    border: 1px solid rgba(0, 255, 200, 0.25);
     border-radius: 999px;
+    box-sizing: border-box;
 }
 .auth-avatar {
-    width: 26px;
-    height: 26px;
+    width: 28px;
+    height: 28px;
     border-radius: 50%;
     background: linear-gradient(135deg, #00ffcc, #0088ff);
     color: #000;
@@ -28,15 +30,15 @@
     align-items: center;
     justify-content: center;
     font-weight: 900;
-    font-size: 0.7rem;
+    font-size: 0.72rem;
     flex-shrink: 0;
     font-family: 'Roboto Mono', monospace;
 }
 .auth-name {
     font-family: 'Roboto Mono', monospace;
-    font-size: 0.7rem;
-    color: #00ffcc;
-    max-width: 90px;
+    font-size: 0.75rem;
+    color: #b8fff0;
+    max-width: 96px;
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
@@ -45,33 +47,50 @@
 .auth-signout {
     background: none;
     border: none;
-    color: rgba(0, 255, 200, 0.3);
+    color: #9fd8cb;
     cursor: pointer;
-    font-size: 0.65rem;
-    padding: 0 2px;
+    font-size: 0.85rem;
+    min-width: 44px;
+    min-height: 44px;
+    padding: 0 8px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
     line-height: 1;
-    transition: color 0.2s;
+    border-radius: 999px;
+    transition: color 0.2s, background 0.2s;
     font-family: 'Roboto Mono', monospace;
 }
-.auth-signout:hover { color: #00ffcc; }
+.auth-signout:hover,
+.auth-signout:focus-visible {
+    color: #00ffcc;
+    background: rgba(0, 255, 200, 0.12);
+}
 
 .auth-signin-btn {
-    background: rgba(0, 255, 200, 0.06);
-    border: 1px solid rgba(0, 255, 200, 0.2);
-    color: rgba(0, 255, 200, 0.6);
-    padding: 4px 10px;
-    border-radius: 4px;
+    background: rgba(0, 255, 200, 0.08);
+    border: 1px solid rgba(0, 255, 200, 0.35);
+    color: #b8fff0;
+    min-height: 44px;
+    min-width: 44px;
+    padding: 6px 12px;
+    border-radius: 6px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
     font-family: 'Roboto Mono', monospace;
-    font-size: 0.65rem;
+    font-size: 0.72rem;
+    font-weight: 600;
     letter-spacing: 1px;
     cursor: pointer;
     transition: all 0.2s;
     white-space: nowrap;
 }
-.auth-signin-btn:hover {
-    border-color: rgba(0, 255, 200, 0.5);
+.auth-signin-btn:hover,
+.auth-signin-btn:focus-visible {
+    border-color: rgba(0, 255, 200, 0.65);
     color: #00ffcc;
-    background: rgba(0, 255, 200, 0.1);
+    background: rgba(0, 255, 200, 0.14);
 }
 
 /* ── Auth Modal Overlay ─────────────────────────────── */
@@ -87,9 +106,9 @@
 }
 .gcc-auth-card {
     background: #050d1a;
-    border: 1px solid rgba(0, 255, 200, 0.25);
+    border: 1px solid rgba(0, 255, 200, 0.3);
     border-radius: 12px;
-    padding: 36px 40px;
+    padding: 40px 40px 36px;
     width: 100%;
     max-width: 400px;
     box-shadow: 0 0 60px rgba(0, 255, 200, 0.08), 0 24px 80px rgba(0,0,0,0.6);
@@ -102,74 +121,90 @@
 }
 .gcc-auth-logo {
     font-family: 'Roboto Mono', monospace;
-    font-size: 0.6rem;
-    letter-spacing: 4px;
-    color: rgba(0, 255, 200, 0.4);
+    font-size: 0.68rem;
+    letter-spacing: 3px;
+    color: #8ccfc2;
     text-align: center;
     margin-bottom: 12px;
 }
 .gcc-auth-title {
     font-family: 'Roboto Mono', monospace;
-    font-size: 1rem;
+    font-size: 1.05rem;
     font-weight: 700;
     color: #00ffcc;
     text-align: center;
-    margin: 0 0 4px;
+    margin: 0 0 6px;
     letter-spacing: 2px;
 }
 .gcc-auth-subtitle {
     font-family: 'Roboto Mono', monospace;
-    font-size: 0.65rem;
-    color: rgba(255,255,255,0.3);
+    font-size: 0.75rem;
+    color: #b8c7d4;
     text-align: center;
-    margin: 0 0 24px;
+    margin: 0 0 20px;
+    letter-spacing: 0.3px;
+    line-height: 1.5;
+}
+.gcc-auth-label {
+    display: block;
+    font-family: 'Roboto Mono', monospace;
+    font-size: 0.72rem;
+    color: #cfe4ee;
+    margin: 0 0 6px;
     letter-spacing: 0.5px;
 }
 .gcc-auth-input {
     width: 100%;
+    min-height: 44px;
     padding: 10px 14px;
-    background: rgba(0, 255, 200, 0.04);
-    border: 1px solid rgba(0, 255, 200, 0.15);
+    background: rgba(0, 255, 200, 0.05);
+    border: 1px solid rgba(0, 255, 200, 0.28);
     border-radius: 6px;
     color: #fff;
     font-family: 'Roboto Mono', monospace;
-    font-size: 0.8rem;
+    font-size: 0.85rem;
     outline: none;
-    transition: border-color 0.2s;
+    transition: border-color 0.2s, box-shadow 0.2s;
     box-sizing: border-box;
-    margin-bottom: 10px;
+    margin-bottom: 12px;
 }
-.gcc-auth-input:focus { border-color: rgba(0, 255, 200, 0.5); }
-.gcc-auth-input::placeholder { color: rgba(255,255,255,0.2); }
+.gcc-auth-input:focus {
+    border-color: #00ffcc;
+    box-shadow: 0 0 0 2px rgba(0, 255, 204, 0.2);
+}
+.gcc-auth-input::placeholder { color: #7e93a4; }
 
 .gcc-auth-btn {
     width: 100%;
+    min-height: 44px;
     padding: 12px;
-    background: linear-gradient(90deg, rgba(0,255,200,0.15), rgba(0,136,255,0.15));
-    border: 1px solid rgba(0, 255, 200, 0.35);
+    background: linear-gradient(90deg, rgba(0,255,200,0.18), rgba(0,136,255,0.18));
+    border: 1px solid rgba(0, 255, 200, 0.45);
     color: #00ffcc;
     font-family: 'Roboto Mono', monospace;
     font-weight: 700;
-    font-size: 0.75rem;
+    font-size: 0.78rem;
     letter-spacing: 2px;
     border-radius: 6px;
     cursor: pointer;
     transition: all 0.2s;
 }
-.gcc-auth-btn:hover:not(:disabled) {
-    background: linear-gradient(90deg, rgba(0,255,200,0.25), rgba(0,136,255,0.25));
-    box-shadow: 0 0 20px rgba(0, 255, 200, 0.15);
+.gcc-auth-btn:hover:not(:disabled),
+.gcc-auth-btn:focus-visible:not(:disabled) {
+    background: linear-gradient(90deg, rgba(0,255,200,0.28), rgba(0,136,255,0.28));
+    box-shadow: 0 0 20px rgba(0, 255, 200, 0.18);
 }
-.gcc-auth-btn:disabled { opacity: 0.4; cursor: default; }
+.gcc-auth-btn:disabled { opacity: 0.5; cursor: default; }
 
 .gcc-auth-error {
-    color: #ff4444;
+    color: #ff7b7b;
     font-family: 'Roboto Mono', monospace;
-    font-size: 0.65rem;
-    margin-top: 8px;
-    min-height: 16px;
+    font-size: 0.75rem;
+    line-height: 1.45;
+    margin-top: 10px;
+    min-height: 18px;
     text-align: center;
-    letter-spacing: 0.5px;
+    letter-spacing: 0.3px;
 }
 .gcc-auth-success {
     text-align: center;
@@ -179,64 +214,70 @@
 .gcc-auth-success h3 {
     font-family: 'Roboto Mono', monospace;
     color: #00ffcc;
-    font-size: 0.85rem;
+    font-size: 0.9rem;
     letter-spacing: 2px;
     margin: 0 0 8px;
 }
 .gcc-auth-success p {
-    color: rgba(255,255,255,0.4);
+    color: #b8c7d4;
     font-family: 'Roboto Mono', monospace;
-    font-size: 0.65rem;
+    font-size: 0.75rem;
+    line-height: 1.5;
     margin: 0;
     letter-spacing: 0.3px;
 }
 .gcc-auth-close {
     position: absolute;
-    top: 14px;
-    right: 16px;
+    top: 8px;
+    right: 8px;
+    width: 44px;
+    height: 44px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
     background: none;
-    border: none;
-    color: rgba(0, 255, 200, 0.3);
-    font-size: 1rem;
+    border: 1px solid transparent;
+    border-radius: 8px;
+    color: #9fd8cb;
+    font-size: 1.25rem;
     cursor: pointer;
-    transition: color 0.2s;
+    transition: color 0.2s, background 0.2s, border-color 0.2s;
     line-height: 1;
 }
-.gcc-auth-close:hover { color: #00ffcc; }
+.gcc-auth-close:hover,
+.gcc-auth-close:focus-visible {
+    color: #00ffcc;
+    background: rgba(0, 255, 200, 0.1);
+    border-color: rgba(0, 255, 200, 0.35);
+}
 
 /* ── Mobile Responsive ──────────────────────────────── */
 @media (max-width: 768px) {
     .auth-name {
-        max-width: 60px;
-        font-size: 0.6rem;
+        max-width: 68px;
+        font-size: 0.68rem;
     }
     .auth-signin-btn {
-        font-size: 0.55rem;
-        padding: 3px 7px;
+        font-size: 0.68rem;
+        padding: 6px 10px;
         letter-spacing: 0.5px;
     }
-    .auth-user-badge {
-        gap: 5px;
-        padding: 3px 8px 3px 3px;
-    }
     .gcc-auth-card {
-        padding: 28px 24px;
+        padding: 36px 24px 28px;
         max-width: calc(100vw - 32px);
     }
 }
 
 @media (max-width: 480px) {
-    /* On phones, hide the name — show avatar + signout only */
     .auth-name { display: none; }
-    /* Collapse sign-in to minimal text */
     .auth-signin-btn {
-        font-size: 0.5rem;
-        padding: 2px 6px;
-        letter-spacing: 0;
+        font-size: 0.65rem;
+        padding: 6px 9px;
+        letter-spacing: 0.3px;
     }
-    .auth-avatar { width: 22px; height: 22px; font-size: 0.6rem; }
+    .auth-avatar { width: 24px; height: 24px; font-size: 0.65rem; }
     .gcc-auth-card {
-        padding: 24px 20px;
+        padding: 36px 20px 24px;
         border-radius: 8px;
     }
 }
