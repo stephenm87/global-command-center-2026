@@ -3,7 +3,7 @@
  * records so the feed, evidence panel, and Nexus never drift into separate
  * versions of the same current claim.
  */
-import { CASE_STUDIES_2026 } from './caseStudies2026';
+import { CASE_STUDIES_2026, ARCHIVED_CASE_STUDIES_2026 } from './caseStudies2026';
 
 const TOUR_COLORS = {
     'sudan-displacement-regional-spillover': '#ff7b8d',
@@ -19,15 +19,20 @@ const TOUR_COLORS = {
 const REGION_COLORS = {
     Africa: '#8fda66',
     'Middle East': '#f7b955',
+    'Middle East & North Africa': '#f7b955',
     Asia: '#dc88ef',
     'Asia-Pacific': '#dc88ef',
     Pacific: '#62e6a7',
+    'Pacific Islands': '#62e6a7',
     Europe: '#67d5f5',
+    'Europe & Eurasia': '#67d5f5',
     'Latin America': '#f4d35e',
     Caribbean: '#f4d35e',
+    'Americas & Caribbean': '#f4d35e',
     'North America': '#5eead4',
     Arctic: '#8495ff',
     Global: '#c9f4f7',
+    'Global / Transnational': '#c9f4f7',
 };
 
 const getTourColor = caseStudy => TOUR_COLORS[caseStudy.id]
@@ -35,28 +40,39 @@ const getTourColor = caseStudy => TOUR_COLORS[caseStudy.id]
     || caseStudy.regionTags.map(tag => REGION_COLORS[tag]).find(Boolean)
     || '#5eead4';
 
-export const GUIDED_TOURS = CASE_STUDIES_2026.map(caseStudy => ({
-    id: caseStudy.id,
-    caseStudyId: caseStudy.id,
-    title: caseStudy.title,
-    subtitle: caseStudy.subtitle,
-    color: getTourColor(caseStudy),
-    coverageRegion: caseStudy.coverageRegion,
-    featured: Boolean(caseStudy.featured),
-    sensitivity: caseStudy.sensitivity,
-    reviewBy: caseStudy.reviewBy,
-    broadCategory: caseStudy.broadCategory,
-    map: caseStudy.map ? {
-        ...caseStudy.map,
-        locations: caseStudy.map.locations.map(location => ({ ...location })),
-    } : null,
-    regionTags: [...caseStudy.regionTags],
-    issueDimensions: [...caseStudy.issueDimensions],
-    actors: [...caseStudy.actors],
-    updatedAt: caseStudy.updatedAt,
-    confidence: caseStudy.confidence,
-    uncertainty: caseStudy.uncertainty,
-    sources: caseStudy.sources.map(source => ({ ...source })),
-    supplementalSources: caseStudy.supplementalSources.map(source => ({ ...source })),
-    waypoints: caseStudy.waypoints.map(waypoint => ({ ...waypoint })),
-}));
+export function projectGuidedTour(caseStudy) {
+    return {
+        id: caseStudy.id,
+        caseStudyId: caseStudy.id,
+        status: caseStudy.status || 'active',
+        archivedAt: caseStudy.archivedAt || undefined,
+        archivedReason: caseStudy.archivedReason || undefined,
+        supersededById: caseStudy.supersededById || undefined,
+        title: caseStudy.title,
+        subtitle: caseStudy.subtitle,
+        color: getTourColor(caseStudy),
+        coverageRegion: caseStudy.coverageRegion,
+        featured: Boolean(caseStudy.featured),
+        sensitivity: caseStudy.sensitivity,
+        reviewBy: caseStudy.reviewBy,
+        issueLens: caseStudy.issueLens,
+        broadCategory: caseStudy.broadCategory,
+        map: caseStudy.map ? {
+            ...caseStudy.map,
+            locations: caseStudy.map.locations.map(location => ({ ...location })),
+        } : null,
+        regionTags: [...caseStudy.regionTags],
+        issueDimensions: [...caseStudy.issueDimensions],
+        actors: [...caseStudy.actors],
+        updatedAt: caseStudy.updatedAt,
+        confidence: caseStudy.confidence,
+        uncertainty: caseStudy.uncertainty,
+        sources: caseStudy.sources.map(source => ({ ...source })),
+        supplementalSources: caseStudy.supplementalSources.map(source => ({ ...source })),
+        waypoints: caseStudy.waypoints.map(waypoint => ({ ...waypoint })),
+    };
+}
+
+export const GUIDED_TOURS = CASE_STUDIES_2026.map(projectGuidedTour);
+export const ARCHIVED_GUIDED_TOURS = ARCHIVED_CASE_STUDIES_2026.map(projectGuidedTour);
+export const ALL_GUIDED_TOURS = [...GUIDED_TOURS, ...ARCHIVED_GUIDED_TOURS];

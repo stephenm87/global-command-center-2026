@@ -400,4 +400,35 @@ test('extracted 3D Nexus components & Three.js helpers build node meshes, escape
     assert.match(inspectorHtml, /United States/);
     assert.match(inspectorHtml, /SECURITY CHALLENGE ANALYSIS/);
     assert.match(inspectorHtml, /MARXISM INTERPRETATION/);
+
+    // Verify GuidedBriefings SSR-renders archived deep-link snapshot banner, successor button,
+    // archive toggle, and omits the red overdue alert on archived snapshots
+    const { default: GuidedBriefings } = await vite.ssrLoadModule('/src/GuidedBriefings.jsx');
+    const { GUIDED_TOURS } = await vite.ssrLoadModule('/src/nexusTours.js');
+    const archivedFixtureTour = {
+        ...GUIDED_TOURS[0],
+        id: 'archived-usmca-2026',
+        caseStudyId: 'archived-usmca-2026',
+        title: 'Archived USMCA 2026 Review Snapshot',
+        status: 'archived',
+        reviewBy: '2020-01-01',
+        archivedAt: '2027-01-15',
+        archivedReason: 'Superseded after the joint commission protocol entered into force.',
+        supersededById: GUIDED_TOURS[0].id,
+    };
+    const archivedBriefingHtml = renderToStaticMarkup(React.createElement(GuidedBriefings, {
+        initialTourId: 'archived-usmca-2026',
+        initialStep: 2,
+        onExploreNode: () => {},
+        onRouteChange: () => {},
+        activeTours: GUIDED_TOURS,
+        archivedTours: [archivedFixtureTour],
+    }));
+    assert.match(archivedBriefingHtml, /ARCHIVED HISTORICAL SNAPSHOT/);
+    assert.match(archivedBriefingHtml, /briefing-archived-banner/);
+    assert.match(archivedBriefingHtml, /Superseded after the joint commission protocol entered into force\./);
+    assert.match(archivedBriefingHtml, /Open current successor briefing →/);
+    assert.match(archivedBriefingHtml, /Show archived snapshots \(1\)/);
+    assert.match(archivedBriefingHtml, /STEP 2 \//);
+    assert.ok(!archivedBriefingHtml.includes('Source review overdue since'), 'Archived snapshots must suppress overdue alerts');
 });

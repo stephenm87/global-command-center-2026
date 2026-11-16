@@ -265,6 +265,43 @@
     gap: 24px;
 }
 
+.briefing-archive-toggle {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    min-height: 44px;
+    margin-top: 4px;
+    color: var(--briefing-muted);
+    font: var(--briefing-label-size)/1.4 'Roboto Mono', monospace;
+    cursor: pointer;
+}
+
+.briefing-archived-banner {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    margin-top: 18px;
+    padding: 12px 16px;
+    border: 1px solid rgba(251, 191, 36, 0.45);
+    border-radius: 10px;
+    background: rgba(251, 191, 36, 0.08);
+    color: #fde68a;
+    font: var(--briefing-secondary-size)/1.5 'Roboto Mono', monospace;
+}
+
+.briefing-successor-btn {
+    min-height: 44px;
+    padding: 8px 14px;
+    border: 1px solid #fbbf24;
+    border-radius: 8px;
+    background: rgba(251, 191, 36, 0.14);
+    color: #fef3c7;
+    font: 700 var(--briefing-label-size)/1.2 'Roboto Mono', monospace;
+    cursor: pointer;
+}
+
 .briefing-stage-header h1 {
     margin: 8px 0 7px;
     font-family: 'Orbitron', sans-serif;

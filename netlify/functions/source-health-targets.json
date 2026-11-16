@@ -11,6 +11,7 @@
       "publisher": "Chatham House",
       "group": "core",
       "kind": "primary",
+      "lifecycle": "active",
       "url": "https://www.chathamhouse.org/publications/the-world-today/2026-06/emergency-response-rooms-work-sudan-we-could-change-aid-models"
     },
     {
@@ -21,6 +22,7 @@
       "publisher": "UNHCR Operational Data Portal",
       "group": "core",
       "kind": "primary",
+      "lifecycle": "active",
       "url": "https://data.unhcr.org/en/situations/sudansituation"
     },
     {
@@ -31,6 +33,7 @@
       "publisher": "Associated Press",
       "group": "core",
       "kind": "primary",
+      "lifecycle": "active",
       "url": "https://apnews.com/article/sudan-war-children-drone-rsf-army-9ac6245afb2c0e3cfc96da5ceda14f48"
     },
     {
@@ -41,6 +44,7 @@
       "publisher": "The New Humanitarian",
       "group": "supplemental",
       "kind": "primary",
+      "lifecycle": "active",
       "url": "https://www.thenewhumanitarian.org/opinion/2026/04/14/sudanese-communities-are-rebuilding-under-fire-will-berlin-back-them"
     },
     {
@@ -51,6 +55,7 @@
       "publisher": "UNHCR",
       "group": "supplemental",
       "kind": "primary",
+      "lifecycle": "active",
       "url": "https://www.unhcr.org/news/briefing-notes/three-years-war-weary-sudanese-remain-move"
     },
     {
@@ -61,6 +66,7 @@
       "publisher": "Associated Press",
       "group": "supplemental",
       "kind": "primary",
+      "lifecycle": "active",
       "url": "https://apnews.com/article/32a416bfbd680ea42edf6c0298d2617b"
     },
     {
@@ -71,6 +77,7 @@
       "publisher": "United Nations",
       "group": "supplemental",
       "kind": "primary",
+      "lifecycle": "active",
       "url": "https://www.un.org/sg/en/content/highlight/2026-07-09.html"
     },
     {
@@ -81,6 +88,7 @@
       "publisher": "The Irrawaddy",
       "group": "core",
       "kind": "primary",
+      "lifecycle": "active",
       "url": "https://www.irrawaddy.com/news/burma/150000-people-displaced-by-fighting-in-pakokku-in-urgent-need.html"
     },
     {
@@ -91,6 +99,7 @@
       "publisher": "OCHA / United Nations in Myanmar",
       "group": "core",
       "kind": "primary",
+      "lifecycle": "active",
       "url": "https://myanmar.un.org/en/319232-myanmar-humanitarian-update-no-52"
     },
     {
@@ -101,6 +110,7 @@
       "publisher": "OCHA / United Nations in Myanmar",
       "group": "core",
       "kind": "alternate",
+      "lifecycle": "active",
       "primaryUrl": "https://myanmar.un.org/en/319232-myanmar-humanitarian-update-no-52",
       "label": "Open the official OCHA PDF directly",
       "url": "https://myanmar.un.org/en/download/212411/319232"
@@ -113,6 +123,7 @@
       "publisher": "Office of the UN High Commissioner for Human Rights",
       "group": "core",
       "kind": "primary",
+      "lifecycle": "active",
       "url": "https://bangkok.ohchr.org/myanmar"
     },
     {
@@ -123,6 +134,7 @@
       "publisher": "Department of Foreign Affairs of the Philippines",
       "group": "core",
       "kind": "primary",
+      "lifecycle": "active",
       "url": "https://newdelhipe.dfa.gov.ph/index.php/newsroom/embassy-news/1230-delhi-roundtable-accentuates-abiding-relevance-of-south-china-sea-arbitral-award-on-decennial"
     },
     {
@@ -133,6 +145,7 @@
       "publisher": "Permanent Court of Arbitration (registry)",
       "group": "core",
       "kind": "primary",
+      "lifecycle": "active",
       "url": "https://docs.pca-cpa.org/2016/07/PH-CN-20160712-Award.pdf"
     },
     {
@@ -143,6 +156,7 @@
       "publisher": "Associated Press",
       "group": "core",
       "kind": "primary",
+      "lifecycle": "active",
       "url": "https://apnews.com/article/d0148a4175f80eedf70dcf2696f03ddd"
     },
     {
@@ -153,6 +167,7 @@
       "publisher": "Ministry of Foreign Affairs of the People's Republic of China",
       "group": "supplemental",
       "kind": "primary",
+      "lifecycle": "active",
       "url": "https://www.mfa.gov.cn/eng/xw/fyrbt/202607/t20260714_11982116.html"
     },
     {
@@ -163,6 +178,7 @@
       "publisher": "Syrians for Truth and Justice",
       "group": "core",
       "kind": "primary",
+      "lifecycle": "active",
       "url": "https://stj-sy.org/en/syria-one-year-after-political-change-peace-spring-areas-block-displaced-persons-return/"
     },
     {
@@ -173,6 +189,7 @@
       "publisher": "Council of the European Union",
       "group": "core",
       "kind": "primary",
+      "lifecycle": "active",
       "url": "https://www.consilium.europa.eu/en/press/press-releases/2026/05/18/syria-council-renews-restrictive-measures-targeting-the-former-al-assad-regime-for-one-year-and-de-lists-certain-entities/"
     },
     {
@@ -183,6 +200,7 @@
       "publisher": "University of Oxford COMPAS",
       "group": "core",
       "kind": "primary",
+      "lifecycle": "active",
       "url": "https://www.compas.ox.ac.uk/article/beyond-safety-and-necessity-understanding-syrias-mass-return"
     },
     {
@@ -193,6 +211,7 @@
       "publisher": "UNHCR",
       "group": "supplemental",
       "kind": "primary",
+      "lifecycle": "active",
       "url": "https://www.unhcr.org/sites/default/files/2026-04/unhcr-syria-operational-update-march.pdf"
     },
     {
@@ -203,6 +222,7 @@
       "publisher": "Caribbean Community",
       "group": "core",
       "kind": "primary",
+      "lifecycle": "active",
       "url": "https://caricom.org/communique-fifty-first-regular-meeting-of-the-conference-of-heads-of-government-of-the-caribbean-community-caricom-saint-lucia/"
     },
     {
@@ -213,6 +233,7 @@
       "publisher": "International Court of Justice",
       "group": "core",
       "kind": "primary",
+      "lifecycle": "active",
       "url": "https://www.icj-cij.org/case/171"
     },
     {
@@ -223,6 +244,7 @@
       "publisher": "International Court of Justice",
       "group": "core",
       "kind": "alternate",
+      "lifecycle": "active",
       "primaryUrl": "https://www.icj-cij.org/case/171",
       "label": "Open the current ICJ docket mirror",
       "url": "https://icj-web.leman.un-icc.cloud/case/171"
@@ -235,6 +257,7 @@
       "publisher": "Associated Press",
       "group": "core",
       "kind": "primary",
+      "lifecycle": "active",
       "url": "https://apnews.com/article/2c9d13b0dbcf7f92d6f53264003ce626"
     },
     {
@@ -245,6 +268,7 @@
       "publisher": "International Court of Justice",
       "group": "supplemental",
       "kind": "primary",
+      "lifecycle": "active",
       "url": "https://www.icj-cij.org/sites/default/files/case-related/171/171-20260508-ora-01-00-bi.pdf"
     },
     {
@@ -255,6 +279,7 @@
       "publisher": "Secretaría de Economía de México",
       "group": "core",
       "kind": "primary",
+      "lifecycle": "active",
       "url": "https://www.gob.mx/se/prensa/quinta-reunion-de-la-comision-de-libre-comercio-del-t-mec-proceso-de-revision-conjunta-previsto-en-el-articulo-34-7?idiom=es-MX"
     },
     {
@@ -265,6 +290,7 @@
       "publisher": "Office of the United States Trade Representative",
       "group": "core",
       "kind": "primary",
+      "lifecycle": "active",
       "url": "https://www.ustr.gov/about/policy-offices/press-office/press-releases/2026/july/american-farmers-ranchers-manufacturers-and-businesses-applaud-president-trump-not-rubber-stamping"
     },
     {
@@ -275,6 +301,7 @@
       "publisher": "Center for Strategic and International Studies",
       "group": "core",
       "kind": "primary",
+      "lifecycle": "active",
       "url": "https://www.csis.org/analysis/united-states-has-opted-not-extend-usmca"
     },
     {
@@ -285,6 +312,7 @@
       "publisher": "Global Affairs Canada",
       "group": "supplemental",
       "kind": "primary",
+      "lifecycle": "active",
       "url": "https://www.canada.ca/en/global-affairs/news/2026/07/minister-leblanc-updates-provincial-and-territorial-ministers-responsible-for-international-trade-on-cusma-joint-review.html"
     },
     {
@@ -295,6 +323,7 @@
       "publisher": "Development Policy Centre",
       "group": "core",
       "kind": "primary",
+      "lifecycle": "active",
       "url": "https://devpolicy.org/hope-in-tuvalus-climate-change-response-from-falepili-to-digital-nation-20260220/"
     },
     {
@@ -305,6 +334,7 @@
       "publisher": "Australian Department of Home Affairs",
       "group": "core",
       "kind": "primary",
+      "lifecycle": "active",
       "url": "https://immi.homeaffairs.gov.au/visas/getting-a-visa/visa-listing/pacific-engagement/subclass-192-treaty-stream/ballot-registration"
     },
     {
@@ -315,6 +345,7 @@
       "publisher": "Victoria University of Wellington Law Review",
       "group": "core",
       "kind": "primary",
+      "lifecycle": "active",
       "url": "https://ojs.victoria.ac.nz/vuwlr/article/view/10760"
     },
     {
@@ -325,6 +356,7 @@
       "publisher": "Australian Department of Foreign Affairs and Trade",
       "group": "supplemental",
       "kind": "primary",
+      "lifecycle": "active",
       "url": "https://www.dfat.gov.au/geo/tuvalu/australia-tuvalu-falepili-union-treaty"
     },
     {
@@ -335,6 +367,7 @@
       "publisher": "Australian Department of Home Affairs",
       "group": "supplemental",
       "kind": "primary",
+      "lifecycle": "active",
       "url": "https://immi.homeaffairs.gov.au/visas/getting-a-visa/visa-listing/pacific-engagement/subclass-192-treaty-stream/ballot-registration/ballot-country-status"
     },
     {
@@ -345,6 +378,7 @@
       "publisher": "KNR",
       "group": "core",
       "kind": "primary",
+      "lifecycle": "active",
       "url": "https://www.knr.gl/da/nyheder/trump-tilbagetraekning-af-styrker-i-europa-afhaenger-af-groenland"
     },
     {
@@ -355,6 +389,7 @@
       "publisher": "Mineral Resources Authority, Government of Greenland",
       "group": "core",
       "kind": "primary",
+      "lifecycle": "active",
       "url": "https://govmin.gl/publications/greenland-mineral-resources-strategy-2025-2029/"
     },
     {
@@ -365,6 +400,7 @@
       "publisher": "The Polar Journal",
       "group": "core",
       "kind": "primary",
+      "lifecycle": "active",
       "url": "https://www.tandfonline.com/doi/full/10.1080/2154896X.2026.2628474"
     },
     {
@@ -375,6 +411,7 @@
       "publisher": "Associated Press",
       "group": "supplemental",
       "kind": "primary",
+      "lifecycle": "active",
       "url": "https://apnews.com/article/bbece2f899116788fe45525dcfe7d030"
     },
     {
@@ -385,6 +422,7 @@
       "publisher": "Naalakkersuisut, Government of Greenland",
       "group": "supplemental",
       "kind": "primary",
+      "lifecycle": "active",
       "url": "https://naalakkersuisut.gl/Nyheder/2026/01/1401_forsvaret?sc_lang=da"
     },
     {
@@ -395,6 +433,7 @@
       "publisher": "Naalakkersuisut, Government of Greenland",
       "group": "supplemental",
       "kind": "primary",
+      "lifecycle": "active",
       "url": "https://naalakkersuisut.gl/Nyheder/2026/03/1903_kommission?sc_lang=da"
     },
     {
@@ -405,6 +444,7 @@
       "publisher": "BEUC, The European Consumer Organisation",
       "group": "core",
       "kind": "primary",
+      "lifecycle": "active",
       "url": "https://www.beuc.eu/news/eu-adopts-ai-omnibus-what-it-means-consumers"
     },
     {
@@ -415,6 +455,7 @@
       "publisher": "European Commission",
       "group": "core",
       "kind": "primary",
+      "lifecycle": "active",
       "url": "https://digital-strategy.ec.europa.eu/en/news/commission-publishes-guidelines-transparency-obligations-providers-and-deployers-certain-ai-systems"
     },
     {
@@ -425,6 +466,7 @@
       "publisher": "ITPro",
       "group": "core",
       "kind": "primary",
+      "lifecycle": "active",
       "url": "https://www.itpro.com/business/policy-and-legislation/three-things-you-need-to-know-about-the-new-eu-ai-act-rules"
     },
     {
@@ -435,6 +477,7 @@
       "publisher": "EUR-Lex, European Union",
       "group": "supplemental",
       "kind": "primary",
+      "lifecycle": "active",
       "url": "https://eur-lex.europa.eu/eli/reg/2024/1689/oj?locale=en"
     },
     {
@@ -445,6 +488,7 @@
       "publisher": "European Commission",
       "group": "supplemental",
       "kind": "primary",
+      "lifecycle": "active",
       "url": "https://digital-strategy.ec.europa.eu/en/news/ai-omnibus-enters-force"
     },
     {
@@ -455,6 +499,7 @@
       "publisher": "Presidency of the Democratic Republic of the Congo",
       "group": "core",
       "kind": "primary",
+      "lifecycle": "active",
       "url": "https://www.presidence.cd/actualite-detail/actualite/exclusif_la_rdc_et_le_rwanda_ont_signe_un_accord_de_paix_ce_vendredi_aux_etats_unis_damerique"
     },
     {
@@ -465,6 +510,7 @@
       "publisher": "United Nations Security Council",
       "group": "core",
       "kind": "primary",
+      "lifecycle": "active",
       "url": "https://main.un.org/securitycouncil/en/content/alliance-fleuve-congo-afc"
     },
     {
@@ -475,6 +521,7 @@
       "publisher": "Institute for Security Studies",
       "group": "core",
       "kind": "primary",
+      "lifecycle": "active",
       "url": "https://issafrica.org/iss-today/diplomacy-without-deterrence-won-t-bring-peace-in-eastern-drc"
     },
     {
@@ -485,6 +532,7 @@
       "publisher": "Economic Community of West African States",
       "group": "core",
       "kind": "primary",
+      "lifecycle": "active",
       "url": "https://www.ecowas.int/press-statement-2/"
     },
     {
@@ -495,6 +543,7 @@
       "publisher": "United Nations Office for West Africa and the Sahel",
       "group": "core",
       "kind": "primary",
+      "lifecycle": "active",
       "url": "https://unowas.unmissions.org/en/news/before-the-security-council-special-representative-leonardo-santos-simao-calls-for"
     },
     {
@@ -505,6 +554,7 @@
       "publisher": "Institute for Security Studies",
       "group": "core",
       "kind": "primary",
+      "lifecycle": "active",
       "url": "https://issafrica.org/iss-today/how-ecowas-can-make-its-new-counter-terrorism-force-effective"
     },
     {
@@ -515,6 +565,7 @@
       "publisher": "Horn Diplomat",
       "group": "core",
       "kind": "primary",
+      "lifecycle": "active",
       "url": "https://www.horndiplomat.com/israel-officially-recognizes-somaliland-as-sovereign-state/"
     },
     {
@@ -525,6 +576,7 @@
       "publisher": "United Nations Department of Political and Peacebuilding Affairs",
       "group": "core",
       "kind": "primary",
+      "lifecycle": "active",
       "url": "https://dppa.dfs.un.org/en/mtg-sc-10084-asg-khiari-29-dec-2025"
     },
     {
@@ -535,6 +587,7 @@
       "publisher": "Associated Press",
       "group": "core",
       "kind": "primary",
+      "lifecycle": "active",
       "url": "https://apnews.com/article/2447736e7355da4ac1ed182771f2e85e"
     },
     {
@@ -545,6 +598,7 @@
       "publisher": "The EastAfrican",
       "group": "supplemental",
       "kind": "primary",
+      "lifecycle": "active",
       "url": "https://www.theeastafrican.co.ke/tea/news/east-africa/why-ssc-khaatumo-opposes-somaliland-s-bid-for-recognition-5086894"
     },
     {
@@ -555,6 +609,7 @@
       "publisher": "Ministry of Energy, Republic of Zambia",
       "group": "core",
       "kind": "primary",
+      "lifecycle": "active",
       "url": "https://www.moe.gov.zm/?p=6323"
     },
     {
@@ -565,6 +620,7 @@
       "publisher": "Zambezi River Authority",
       "group": "core",
       "kind": "primary",
+      "lifecycle": "active",
       "url": "https://www.zambezira.org/hydrology/lake-levels"
     },
     {
@@ -575,6 +631,7 @@
       "publisher": "World Bank",
       "group": "core",
       "kind": "primary",
+      "lifecycle": "active",
       "url": "https://www.worldbank.org/en/country/zambia/publication/powering-zambia-s-transformation-from-electricity-crisis-to-catalyst-for-growth-and-jobs"
     },
     {
@@ -585,6 +642,7 @@
       "publisher": "Ministry of Foreign Affairs, African Cooperation and Moroccan Expatriates",
       "group": "core",
       "kind": "primary",
+      "lifecycle": "active",
       "url": "https://diplomatie.ma/en/moroccan-sahara-spain-welcomes-adoption-resolution-2797-which-emphasizes-genuine-autonomy-under-moroccan-sovereignty-most-feasible-solution"
     },
     {
@@ -595,6 +653,7 @@
       "publisher": "United Nations Digital Library",
       "group": "core",
       "kind": "primary",
+      "lifecycle": "active",
       "url": "https://digitallibrary.un.org/record/4093666?ln=en"
     },
     {
@@ -605,6 +664,7 @@
       "publisher": "Human Rights Watch",
       "group": "core",
       "kind": "primary",
+      "lifecycle": "active",
       "url": "https://www.hrw.org/news/2026/03/25/un-western-sahara-peoples-self-determination-at-risk"
     },
     {
@@ -615,6 +675,7 @@
       "publisher": "The Libya Observer",
       "group": "core",
       "kind": "primary",
+      "lifecycle": "active",
       "url": "https://libyaobserver.ly/news/un-led-talks-libya-seek-ways-break-electoral-deadlock"
     },
     {
@@ -625,6 +686,7 @@
       "publisher": "United Nations Security Council",
       "group": "core",
       "kind": "primary",
+      "lifecycle": "active",
       "url": "https://main.un.org/securitycouncil/en/content/sres28192026"
     },
     {
@@ -635,6 +697,7 @@
       "publisher": "Chatham House",
       "group": "core",
       "kind": "primary",
+      "lifecycle": "active",
       "url": "https://www.chathamhouse.org/2026/07/why-us-plans-power-sharing-libya-will-not-work"
     },
     {
@@ -645,6 +708,7 @@
       "publisher": "Sana'a Center for Strategic Studies",
       "group": "core",
       "kind": "primary",
+      "lifecycle": "active",
       "url": "https://sanaacenter.org/publications/policy-research/26389"
     },
     {
@@ -655,6 +719,7 @@
       "publisher": "International Maritime Organization",
       "group": "core",
       "kind": "primary",
+      "lifecycle": "active",
       "url": "https://www.imo.org/en/mediacentre/pressbriefings/pages/statement-on-recent-attacks-in-the-red-sea.aspx"
     },
     {
@@ -665,6 +730,7 @@
       "publisher": "Chatham House",
       "group": "core",
       "kind": "primary",
+      "lifecycle": "active",
       "url": "https://www.chathamhouse.org/2026/07/houthi-red-sea-blockade-will-collective-maritime-security-be-defended-or-break-down"
     },
     {
@@ -675,6 +741,7 @@
       "publisher": "Ministry of Foreign Affairs, Government of Pakistan",
       "group": "core",
       "kind": "primary",
+      "lifecycle": "active",
       "url": "https://mofa.gov.pk/press-releases/statement-by-the-spokesperson-regarding-indian-home-ministers-assertion-that-the-indus-waters-treaty-will-never-be-restored"
     },
     {
@@ -685,6 +752,7 @@
       "publisher": "Permanent Court of Arbitration",
       "group": "core",
       "kind": "primary",
+      "lifecycle": "active",
       "url": "https://pca-cpa.org/en/news/pca-press-release-pca-case-no-2023-01-the-indus-waters-western-rivers-arbitration-islamic-republic-of-pakistan-v-republic-of-india-3/"
     },
     {
@@ -695,6 +763,7 @@
       "publisher": "Chatham House",
       "group": "core",
       "kind": "primary",
+      "lifecycle": "active",
       "url": "https://www.chathamhouse.org/2025/05/india-pakistan-ceasefire-remains-shaky-relations-unlikely-return-status-quo"
     },
     {
@@ -705,6 +774,7 @@
       "publisher": "Government of Bangladesh, Support to Sustainable Graduation Project",
       "group": "core",
       "kind": "primary",
+      "lifecycle": "active",
       "url": "https://ssgp.erd.gov.bd/news-posts/cdp-recommends-favorable-consideration-of-bangladeshs-request-for-extension-of-ldc-graduation-preparatory-period/"
     },
     {
@@ -715,6 +785,7 @@
       "publisher": "United Nations LDC Portal",
       "group": "core",
       "kind": "primary",
+      "lifecycle": "active",
       "url": "https://www.un.org/ldcportal/en/content/bangladesh-graduation-status"
     },
     {
@@ -725,6 +796,7 @@
       "publisher": "Centre for Policy Dialogue",
       "group": "core",
       "kind": "primary",
+      "lifecycle": "active",
       "url": "https://cpd.org.bd/deferring-bangladeshs-ldc-graduation-and-the-road-ahead/"
     },
     {
@@ -735,6 +807,7 @@
       "publisher": "President of the Kyrgyz Republic",
       "group": "core",
       "kind": "primary",
+      "lifecycle": "active",
       "url": "https://president.kg/ru/news/21/38920"
     },
     {
@@ -745,6 +818,7 @@
       "publisher": "United Nations Sustainable Development Group",
       "group": "core",
       "kind": "primary",
+      "lifecycle": "active",
       "url": "https://unsdg.un.org/latest/stories/women-leaders-build-interethnic-cohesion-border-communities-kyrgyzstan"
     },
     {
@@ -755,6 +829,7 @@
       "publisher": "Carnegie Endowment for International Peace",
       "group": "core",
       "kind": "primary",
+      "lifecycle": "active",
       "url": "https://carnegieendowment.org/russia-eurasia/politika/2025/04/kyrgyzstan-tajikistan-border-deal"
     },
     {
@@ -765,6 +840,7 @@
       "publisher": "Government of Mongolia",
       "group": "core",
       "kind": "primary",
+      "lifecycle": "active",
       "url": "https://mongolia.gov.mn/news/view/27582"
     },
     {
@@ -775,6 +851,7 @@
       "publisher": "United Nations Development Programme Mongolia",
       "group": "core",
       "kind": "primary",
+      "lifecycle": "active",
       "url": "https://www.undp.org/mongolia/publications/just-energy-transition-framework"
     },
     {
@@ -785,6 +862,7 @@
       "publisher": "Think Mongol Institute",
       "group": "core",
       "kind": "primary",
+      "lifecycle": "active",
       "url": "https://thinkmongol.mn/en/post/policybrief-7"
     },
     {
@@ -795,6 +873,7 @@
       "publisher": "Ministry of Investment and Downstreaming, Republic of Indonesia",
       "group": "core",
       "kind": "primary",
+      "lifecycle": "active",
       "url": "https://www.bkpm.go.id/en/info/press-release/investment-realization-reaches-idr-1-010-6-trillion-in-the-first-half-of-2026-creating-1-4-million-jobs"
     },
     {
@@ -805,6 +884,7 @@
       "publisher": "World Trade Organization",
       "group": "core",
       "kind": "primary",
+      "lifecycle": "active",
       "url": "https://www.wto.org/english/tratop_e/dispu_e/cases_e/ds592_e.htm"
     },
     {
@@ -815,6 +895,7 @@
       "publisher": "Lowy Institute",
       "group": "core",
       "kind": "primary",
+      "lifecycle": "active",
       "url": "https://www.lowyinstitute.org/the-interpreter/indonesia-downstreaming-dilemma"
     },
     {
@@ -825,6 +906,7 @@
       "publisher": "Ministry of Agriculture and Environment, Viet Nam",
       "group": "core",
       "kind": "primary",
+      "lifecycle": "active",
       "url": "https://en.mae.gov.vn/Pages/chi-tiet-tin-Eng.aspx?ItemID=9133"
     },
     {
@@ -835,6 +917,7 @@
       "publisher": "Mekong River Commission",
       "group": "core",
       "kind": "primary",
+      "lifecycle": "active",
       "url": "https://www.mrcmekong.org/publications/an-inception-report-on-piloting-a-joint-environmental-monitoring-programme-on-two-mekong-mainstream-dams-don-sahong-hydropower-project-and-xayaburi-hydropower-project-6/"
     },
     {
@@ -845,6 +928,7 @@
       "publisher": "Stimson Center",
       "group": "core",
       "kind": "primary",
+      "lifecycle": "active",
       "url": "https://www.stimson.org/2025/balancing-energy-and-ecology-floating-solar-in-the-3s-river-basin/"
     },
     {
@@ -855,6 +939,7 @@
       "publisher": "Government of the Republic of Nauru",
       "group": "core",
       "kind": "primary",
+      "lifecycle": "active",
       "url": "https://www.nauru.gov.nr/government-information-office/media-release/media-release-nauru%2C-tmc-sign-new-agreement_6jun2025.aspx"
     },
     {
@@ -865,6 +950,7 @@
       "publisher": "International Seabed Authority",
       "group": "core",
       "kind": "primary",
+      "lifecycle": "active",
       "url": "https://isa.org.jm/session-31-council-part-2-july-2026/"
     },
     {
@@ -875,6 +961,7 @@
       "publisher": "Nature",
       "group": "core",
       "kind": "primary",
+      "lifecycle": "active",
       "url": "https://www.nature.com/articles/s41586-025-08921-3"
     },
     {
@@ -885,6 +972,7 @@
       "publisher": "National Human Rights Defense Network (RNDDH)",
       "group": "core",
       "kind": "primary",
+      "lifecycle": "active",
       "url": "https://web.rnddh.org/wp-content/uploads/2026/06/5-Rap-PNH-12Juin2026.ENG_.pdf"
     },
     {
@@ -895,6 +983,7 @@
       "publisher": "Office of the UN Secretary-General",
       "group": "core",
       "kind": "primary",
+      "lifecycle": "active",
       "url": "https://www.un.org/sg/en/content/highlight/2026-04-01.html"
     },
     {
@@ -905,6 +994,7 @@
       "publisher": "Human Rights Watch",
       "group": "core",
       "kind": "primary",
+      "lifecycle": "active",
       "url": "https://www.hrw.org/world-report/2026/country-chapters/haiti"
     },
     {
@@ -915,6 +1005,7 @@
       "publisher": "Coordinator of Indigenous Organizations of the Amazon River Basin (COICA)",
       "group": "core",
       "kind": "primary",
+      "lifecycle": "active",
       "url": "https://coicamazonia.org/13933-2/"
     },
     {
@@ -925,6 +1016,7 @@
       "publisher": "Amazon Cooperation Treaty Organization",
       "group": "core",
       "kind": "primary",
+      "lifecycle": "active",
       "url": "https://otca.org/en/wp-content/uploads/2025/08/BOGOTA-DECLARATION_Presidential-Summit.pdf"
     },
     {
@@ -935,6 +1027,7 @@
       "publisher": "WRI Brasil",
       "group": "core",
       "kind": "primary",
+      "lifecycle": "active",
       "url": "https://www.wribrasil.org.br/cop30/principais-temas"
     },
     {
@@ -945,6 +1038,7 @@
       "publisher": "Comisión Nacional del Agua, Government of Mexico",
       "group": "core",
       "kind": "primary",
+      "lifecycle": "active",
       "url": "https://www.gob.mx/conagua/prensa/mexico-y-estados-unidos-acuerdan-un-plan-tecnico-para-la-gestion-del-agua-en-la-cuenca-del-rio-bravo-conforme-al-tratado-de-1944-418614?idiom=es"
     },
     {
@@ -955,6 +1049,7 @@
       "publisher": "International Boundary and Water Commission, United States and Mexico",
       "group": "core",
       "kind": "primary",
+      "lifecycle": "active",
       "url": "https://www.ibwc.gov/wp-content/uploads/2024/11/IBWC-Signs-Minute-331-Focused-on-Improving-Reliability-Predictability-of-Rio-Grande-Water-Deliveries.pdf"
     },
     {
@@ -965,6 +1060,7 @@
       "publisher": "The Texas Tribune",
       "group": "core",
       "kind": "primary",
+      "lifecycle": "active",
       "url": "https://www.texastribune.org/2025/05/15/texas-water-rio-grande-valley-drought/"
     },
     {
@@ -975,6 +1071,7 @@
       "publisher": "Promo-LEX Association",
       "group": "core",
       "kind": "primary",
+      "lifecycle": "active",
       "url": "https://promolex.md/en/promo-lex-association-launches-the-report-human-rights-in-the-transnistrian-region-of-the-republic-of-moldova-retrospective-of-2025/"
     },
     {
@@ -985,6 +1082,7 @@
       "publisher": "Council of the European Union",
       "group": "core",
       "kind": "primary",
+      "lifecycle": "active",
       "url": "https://www.consilium.europa.eu/en/policies/moldova/"
     },
     {
@@ -995,6 +1093,7 @@
       "publisher": "European Council on Foreign Relations",
       "group": "core",
       "kind": "primary",
+      "lifecycle": "active",
       "url": "https://ecfr.eu/article/cold-calculations-why-a-freezing-transnistria-helps-moscow/"
     },
     {
@@ -1005,6 +1104,7 @@
       "publisher": "Pacific Small Island Developing States",
       "group": "core",
       "kind": "primary",
+      "lifecycle": "active",
       "url": "https://www.un.org/bbnjagreement/sites/default/files/2026-03/PSIDS_SubBodiesCorr_25March.pdf"
     },
     {
@@ -1015,6 +1115,7 @@
       "publisher": "United Nations, Division for Ocean Affairs and the Law of the Sea",
       "group": "core",
       "kind": "primary",
+      "lifecycle": "active",
       "url": "https://www.un.org/bbnjagreement/en"
     },
     {
@@ -1025,6 +1126,7 @@
       "publisher": "Earth Negotiations Bulletin, International Institute for Sustainable Development",
       "group": "core",
       "kind": "primary",
+      "lifecycle": "active",
       "url": "https://enb.iisd.org/sites/default/files/2026-04/enb25262e.pdf"
     },
     {
@@ -1035,6 +1137,7 @@
       "publisher": "African Union",
       "group": "core",
       "kind": "primary",
+      "lifecycle": "active",
       "url": "https://au.int/sites/default/files/pressreleases/46323-pr-Press_release_Ambassadors_workshop_23_April_2026_E_FINAL.pdf"
     },
     {
@@ -1045,6 +1148,7 @@
       "publisher": "World Health Organization",
       "group": "core",
       "kind": "primary",
+      "lifecycle": "active",
       "url": "https://www.who.int/news/item/20-07-2026-who-member-states-continue-negotiations-on-the-pathogen-access-and-benefit-sharing-annex"
     },
     {
@@ -1055,6 +1159,7 @@
       "publisher": "The BMJ",
       "group": "core",
       "kind": "primary",
+      "lifecycle": "active",
       "url": "https://www.bmj.com/content/392/bmj-2025-086069"
     }
   ]

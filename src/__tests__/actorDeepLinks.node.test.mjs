@@ -42,12 +42,14 @@ test('resolveActorId normalizes case-insensitive ?actor= deep links across Focus
     assert.ok(focusSource.includes('resolveActorId('), 'NexusFocusView.jsx must normalize initialNodeId via resolveActorId');
     assert.ok(spatialSource.includes('resolveActorId('), 'GlobalRelationsNexus.jsx must normalize initialNodeId via resolveActorId');
 
-    // Verify all 4 previously 404 URLs are replaced in case files
-    const africaCases = fs.readFileSync(path.join(REPO_ROOT, 'src/caseStudiesAfricaMena2026.js'), 'utf8');
-    const asiaCases = fs.readFileSync(path.join(REPO_ROOT, 'src/caseStudiesAsiaPacific2026.js'), 'utf8');
-    const baseCases = fs.readFileSync(path.join(REPO_ROOT, 'src/caseStudies2026.js'), 'utf8');
+    // Verify all 4 previously 404 URLs remain absent across modular src/cases/active/*.mjs
+    const activeCasesDir = path.join(REPO_ROOT, 'src/cases/active');
+    const combinedCaseSources = fs.readdirSync(activeCasesDir)
+        .filter(f => f.endsWith('.mjs'))
+        .map(f => fs.readFileSync(path.join(activeCasesDir, f), 'utf8'))
+        .join('\n');
 
-    assert.ok(!africaCases.includes('horntribune.com'), 'Broken horntribune.com 404 URLs must be replaced');
-    assert.ok(!asiaCases.includes('un.org/ldcportal/node/858'), 'Broken un.org/ldcportal/node/858 404 URL must be replaced');
-    assert.ok(!baseCases.includes('mppre.gob.ve/publicacion/7224'), 'Broken mppre.gob.ve 404 URL must be replaced');
+    assert.ok(!combinedCaseSources.includes('horntribune.com'), 'Broken horntribune.com 404 URLs must be replaced');
+    assert.ok(!combinedCaseSources.includes('un.org/ldcportal/node/858'), 'Broken un.org/ldcportal/node/858 404 URL must be replaced');
+    assert.ok(!combinedCaseSources.includes('mppre.gob.ve/publicacion/7224'), 'Broken mppre.gob.ve 404 URL must be replaced');
 });

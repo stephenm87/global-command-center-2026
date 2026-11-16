@@ -1,10 +1,10 @@
 import { useEffect, useMemo, useRef, useState } from 'react';
-import { GUIDED_TOURS } from './nexusTours';
+import { GUIDED_TOURS, ARCHIVED_GUIDED_TOURS, ALL_GUIDED_TOURS } from './nexusTours';
 import { NEXUS_ACTORS } from './nexusFocusData';
+import { isReviewOverdue } from './navigationState.mjs';
 import { indexSourceHealth, shouldPreferAlternate, sourceHealthLabel } from './sourceHealth.mjs';
 import './GuidedBriefings.css';
 
-const validTour = id => GUIDED_TOURS.some(tour => tour.id === id);
 const INITIAL_LIBRARY_COUNT = 6;
 const NARROW_LIBRARY_QUERY = '(max-width: 1100px)';
 
@@ -14,8 +14,8 @@ const isNarrowLibraryViewport = () => (
     && window.matchMedia(NARROW_LIBRARY_QUERY).matches
 );
 
-const resolveStepIndex = (tourId, nodeId, step) => {
-    const requestedTour = GUIDED_TOURS.find(item => item.id === tourId) || GUIDED_TOURS[0];
+const resolveStepIndex = (allTours, activeTours, tourId, nodeId, step) => {
+    const requestedTour = allTours.find(item => item.id === tourId) || activeTours[0];
     const numericStep = Number(step);
     if (Number.isInteger(numericStep) && numericStep >= 1) {
         return Math.min(numericStep - 1, Math.max((requestedTour?.waypoints.length || 1) - 1, 0));
@@ -63,33 +63,67 @@ function SourceCitation({ source, healthByUrl, supplemental = false }) {
     );
 }
 
-export default function GuidedBriefings({ initialTourId, initialNodeId, initialStep, onExploreNode, onRouteChange }) {
-    const [tourId, setTourId] = useState(validTour(initialTourId) ? initialTourId : GUIDED_TOURS[0]?.id);
-    const [stepIndex, setStepIndex] = useState(() => resolveStepIndex(initialTourId, initialNodeId, initialStep));
+export default function GuidedBriefings({
+    initialTourId,
+    initialNodeId,
+    initialStep,
+    onExploreNode,
+    onRouteChange,
+    activeTours = GUIDED_TOURS,
+    archivedTours = ARCHIVED_GUIDED_TOURS,
+}) {
+    const allTours = useMemo(
+        () => (activeTours === GUIDED_TOURS && archivedTours === ARCHIVED_GUIDED_TOURS
+            ? ALL_GUIDED_TOURS
+            : [...activeTours, ...archivedTours]),
+        [activeTours, archivedTours]
+    );
+    const isValidTourId = useMemo(() => {
+        const ids = new Set(allTours.map(item => item.id));
+        return id => ids.has(id);
+    }, [allTours]);
+
+    const [tourId, setTourId] = useState(() => (isValidTourId(initialTourId) ? initialTourId : activeTours[0]?.id));
+    const [stepIndex, setStepIndex] = useState(() => resolveStepIndex(allTours, activeTours, initialTourId, initialNodeId, initialStep));
     const [librarySearch, setLibrarySearch] = useState('');
     const [regionFilter, setRegionFilter] = useState('all');
     const [issueFilter, setIssueFilter] = useState('all');
+    const [showArchived, setShowArchived] = useState(false);
     const [sourceHealth, setSourceHealth] = useState(null);
     const [libraryOpen, setLibraryOpen] = useState(() => !isNarrowLibraryViewport());
     const [visibleCaseCount, setVisibleCaseCount] = useState(INITIAL_LIBRARY_COUNT);
     const stageHeadingRef = useRef(null);
     const progressRef = useRef(null);
 
-    const tour = useMemo(() => GUIDED_TOURS.find(item => item.id === tourId) || GUIDED_TOURS[0], [tourId]);
+    const tour = useMemo(() => allTours.find(item => item.id === tourId) || activeTours[0], [allTours, activeTours, tourId]);
     const waypoint = tour?.waypoints[stepIndex];
     const actor = waypoint ? NEXUS_ACTORS[waypoint.nodeId] : null;
     const perspectiveLabel = waypoint?.perspectiveLabel || actor?.shortName || waypoint?.nodeId;
-    const reviewOverdue = Boolean(tour?.reviewBy && tour.reviewBy < new Date().toISOString().slice(0, 10));
+    const isArchivedTour = tour?.status === 'archived';
+    const reviewOverdue = !isArchivedTour && isReviewOverdue(tour?.reviewBy);
 
-    const regionOptions = useMemo(() => [...new Set(GUIDED_TOURS
+    const catalogTours = useMemo(
+        () => (showArchived ? allTours : activeTours),
+        [showArchived, allTours, activeTours]
+    );
+    const regionOptions = useMemo(() => [...new Set(catalogTours
         .map(item => item.coverageRegion || item.regionTags?.[0])
-        .filter(Boolean))].sort(), []);
-    const issueOptions = useMemo(() => [...new Set(GUIDED_TOURS
+        .filter(Boolean))].sort(), [catalogTours]);
+    const issueOptions = useMemo(() => [...new Set(catalogTours
         .map(item => item.broadCategory)
-        .filter(Boolean))].sort(), []);
+        .filter(Boolean))].sort(), [catalogTours]);
+
+    useEffect(() => {
+        if (regionFilter !== 'all' && !regionOptions.includes(regionFilter)) {
+            setRegionFilter('all');
+        }
+        if (issueFilter !== 'all' && !issueOptions.includes(issueFilter)) {
+            setIssueFilter('all');
+        }
+    }, [regionFilter, regionOptions, issueFilter, issueOptions]);
     const visibleTours = useMemo(() => {
         const query = librarySearch.trim().toLowerCase();
-        return GUIDED_TOURS.filter(item => {
+        return catalogTours.filter(item => {
             const region = item.coverageRegion || item.regionTags?.[0];
             if (regionFilter !== 'all' && region !== regionFilter) return false;
             if (issueFilter !== 'all' && item.broadCategory !== issueFilter) return false;
@@ -103,7 +137,7 @@ export default function GuidedBriefings({ initialTourId, initialNodeId, initialS
                 ...(item.sources || []).map(source => `${source.publisher} ${source.title}`),
             ].join(' ').toLowerCase().includes(query);
         });
-    }, [librarySearch, regionFilter, issueFilter]);
+    }, [catalogTours, librarySearch, regionFilter, issueFilter]);
     const healthByUrl = useMemo(() => indexSourceHealth(sourceHealth), [sourceHealth]);
     const displayedTours = visibleTours.slice(0, visibleCaseCount);
     const remainingTourCount = Math.max(visibleTours.length - displayedTours.length, 0);
@@ -118,10 +152,10 @@ export default function GuidedBriefings({ initialTourId, initialNodeId, initialS
     }, []);
 
     useEffect(() => {
-        if (!validTour(initialTourId)) return;
+        if (!isValidTourId(initialTourId)) return;
         setTourId(initialTourId);
-        setStepIndex(resolveStepIndex(initialTourId, initialNodeId, initialStep));
-    }, [initialTourId, initialNodeId, initialStep]);
+        setStepIndex(resolveStepIndex(allTours, activeTours, initialTourId, initialNodeId, initialStep));
+    }, [isValidTourId, allTours, activeTours, initialTourId, initialNodeId, initialStep]);
 
     useEffect(() => {
         setVisibleCaseCount(INITIAL_LIBRARY_COUNT);
@@ -175,7 +209,7 @@ export default function GuidedBriefings({ initialTourId, initialNodeId, initialS
             <aside id="briefing-case-library" className="briefing-library" aria-label="Guided briefing case library" hidden={!libraryOpen}>
                 <div className="briefing-library-heading">
                     <span>GUIDED BRIEFINGS</span>
-                    <p>Explore {GUIDED_TOURS.length} sourced, multi-perspective cases.</p>
+                    <p>Explore {activeTours.length} sourced, multi-perspective cases.</p>
                     <button
                         type="button"
                         className="briefing-library-close"
@@ -212,6 +246,16 @@ export default function GuidedBriefings({ initialTourId, initialNodeId, initialS
                             </select>
                         </label>
                     </div>
+                    {archivedTours.length > 0 && (
+                        <label className="briefing-archive-toggle">
+                            <input
+                                type="checkbox"
+                                checked={showArchived}
+                                onChange={event => setShowArchived(event.target.checked)}
+                            />
+                            <span>Show archived snapshots ({archivedTours.length})</span>
+                        </label>
+                    )}
                     <div className="briefing-results-status" role="status">
                         <span>
                             Showing {displayedTours.length} of {visibleTours.length} {visibleTours.length === 1 ? 'case' : 'cases'}
@@ -298,17 +342,38 @@ export default function GuidedBriefings({ initialTourId, initialNodeId, initialS
                         aria-controls="briefing-case-library"
                         aria-expanded={libraryOpen}
                     >
-                        {libraryOpen ? 'Hide case library' : `Browse ${GUIDED_TOURS.length} cases`}
+                        {libraryOpen ? 'Hide case library' : `Browse ${activeTours.length} cases`}
                     </button>
                 </div>
                 <header className="briefing-stage-header">
                     <div>
-                        <span className="briefing-kicker">EDITORIAL BRIEFING{tour.updatedAt ? ` · AS OF ${tour.updatedAt}` : ''}</span>
+                        <span className="briefing-kicker">
+                            {isArchivedTour ? 'ARCHIVED HISTORICAL SNAPSHOT' : 'EDITORIAL BRIEFING'}
+                            {tour.updatedAt ? ` · AS OF ${tour.updatedAt}` : ''}
+                        </span>
                         <h1 ref={stageHeadingRef} tabIndex="-1">{tour.title}</h1>
                         <p>{tour.subtitle}</p>
                     </div>
                     <div className="briefing-progress-label">STEP {stepIndex + 1} / {tour.waypoints.length}</div>
                 </header>
+
+                {isArchivedTour && (
+                    <div className="briefing-archived-banner" role="status">
+                        <div>
+                            <strong>Archived historical snapshot{tour.archivedAt ? ` (${tour.archivedAt})` : ''}:</strong>{' '}
+                            {tour.archivedReason || `Frozen as reviewed on ${tour.updatedAt} for syllabus continuity and longitudinal comparison.`}
+                        </div>
+                        {tour.supersededById && isValidTourId(tour.supersededById) && (
+                            <button
+                                type="button"
+                                className="briefing-successor-btn"
+                                onClick={() => chooseTour(tour.supersededById)}
+                            >
+                                Open current successor briefing →
+                            </button>
+                        )}
+                    </div>
+                )}
 
                 <div ref={progressRef} className="briefing-progress" aria-label={`Step ${stepIndex + 1} of ${tour.waypoints.length}`}>
                     {tour.waypoints.map((item, index) => (
@@ -344,7 +409,7 @@ export default function GuidedBriefings({ initialTourId, initialNodeId, initialS
                         <h3>Three-perspective reading set</h3>
                         <p>{tour.sources?.length ? `${tour.sources.length} core readings · ${tour.confidence || 'unrated'} evidence confidence.` : 'Source review is required before this briefing is presented as current intelligence.'}</p>
                         {tour.issueDimensions?.length > 0 && <p className="briefing-issues">{tour.issueDimensions.join(' · ')}</p>}
-                        {tour.reviewBy && (
+                        {!isArchivedTour && tour.reviewBy && (
                             <p className={`briefing-review-date ${reviewOverdue ? 'overdue' : ''}`}>
                                 {reviewOverdue ? 'Source review overdue since' : 'Review by'} {tour.reviewBy}
                             </p>

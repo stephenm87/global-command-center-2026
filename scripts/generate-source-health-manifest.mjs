@@ -1,39 +1,14 @@
-import { mkdtemp, readFile, rm, writeFile } from 'node:fs/promises';
-import { tmpdir } from 'node:os';
-import { basename, join, resolve } from 'node:path';
-import { pathToFileURL } from 'node:url';
+import { readFile, writeFile } from 'node:fs/promises';
+import { join, resolve } from 'node:path';
+import { ALL_CASE_STUDIES_2026 } from '../src/cases/index.mjs';
 
 const projectRoot = resolve(import.meta.dirname, '..');
-const sourceDir = join(projectRoot, 'src');
 const outputPath = join(projectRoot, 'netlify/functions/source-health-targets.json');
-const sourceFiles = [
-    'caseStudies2026.js',
-    'caseStudiesAfricaMena2026.js',
-    'caseStudiesAmericasGlobal2026.js',
-    'caseStudiesAsiaPacific2026.js',
-];
-
-async function loadCaseStudies() {
-    const temporaryDir = await mkdtemp(join(tmpdir(), 'gcc-source-manifest-'));
-    try {
-        for (const file of sourceFiles) {
-            const input = await readFile(join(sourceDir, file), 'utf8');
-            const esm = input.replace(
-                /from '(\.\/caseStudies[^']+)'/g,
-                (_, specifier) => `from '${specifier}.mjs'`
-            );
-            await writeFile(join(temporaryDir, basename(file, '.js') + '.mjs'), esm);
-        }
-        const module = await import(`${pathToFileURL(join(temporaryDir, 'caseStudies2026.mjs')).href}?v=${Date.now()}`);
-        return module.CASE_STUDIES_2026;
-    } finally {
-        await rm(temporaryDir, { recursive: true, force: true });
-    }
-}
 
 export function buildManifest(caseStudies) {
     const targets = [];
     for (const caseStudy of caseStudies) {
+        const lifecycle = caseStudy.status === 'archived' ? 'archived' : 'active';
         const groups = [
             ['core', caseStudy.sources || []],
             ['supplemental', caseStudy.supplementalSources || []],
@@ -49,6 +24,7 @@ export function buildManifest(caseStudies) {
                     publisher: source.publisher,
                     group,
                     kind: 'primary',
+                    lifecycle,
                     url: source.url,
                 });
                 (source.alternateUrls || []).forEach((alternate, alternateIndex) => {
@@ -61,6 +37,7 @@ export function buildManifest(caseStudies) {
                         publisher: source.publisher,
                         group,
                         kind: 'alternate',
+                        lifecycle,
                         primaryUrl: source.url,
                         label: alternate.label,
                         url: alternate.url,
@@ -72,7 +49,7 @@ export function buildManifest(caseStudies) {
     return { schemaVersion: 1, caseStudyCount: caseStudies.length, targetCount: targets.length, targets };
 }
 
-const manifest = buildManifest(await loadCaseStudies());
+const manifest = buildManifest(ALL_CASE_STUDIES_2026);
 const serialized = `${JSON.stringify(manifest, null, 2)}\n`;
 if (process.argv.includes('--check')) {
     const current = await readFile(outputPath, 'utf8').catch(() => '');
