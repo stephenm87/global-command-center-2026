@@ -2,9 +2,7 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import fs from 'node:fs';
 import path from 'node:path';
-import { fileURLToPath } from 'node:url';
-
-const REPO_ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '../..');
+import { REPO_ROOT, readAppWorkspaceSource } from './_helpers/readAppSources.mjs';
 
 function hexToLuminance(hex) {
     const clean = hex.replace('#', '');
@@ -22,7 +20,8 @@ function contrastRatio(fgHex, bgHex) {
 }
 
 test('intel-card uses valid phrasing content inside <button>, calls openBriefing on BRIEFING ->, and avoids raw footer asterisks', () => {
-    const appSource = fs.readFileSync(path.join(REPO_ROOT, 'src/App.jsx'), 'utf8');
+    const appSource = readAppWorkspaceSource();
+    const appRootJsx = fs.readFileSync(path.join(REPO_ROOT, 'src/App.jsx'), 'utf8');
     const teacherGuide = fs.readFileSync(path.join(REPO_ROOT, 'teacher-guide.html'), 'utf8');
 
     assert.ok(!appSource.includes('aria-label={`Open intelligence detail:'), 'intel-card must not override visible text with mismatched aria-label');
@@ -32,12 +31,13 @@ test('intel-card uses valid phrasing content inside <button>, calls openBriefing
     assert.ok(triggerBlockMatch, 'Expected <button className="intel-card-trigger"> block');
     assert.ok(!/<div\b/.test(triggerBlockMatch[0]), 'HTML <button className="intel-card-trigger"> must contain phrasing <span> elements, never <div>');
 
-    // Blocker #2 regression guard: card BRIEFING -> must invoke openBriefing(forecast.caseStudyId) so briefingEntry updates
+    // Blocker #2 regression guard: card BRIEFING -> must invoke onOpenBriefing/openBriefing(forecast.caseStudyId) and App.jsx wires onOpenBriefing={openBriefing}
     assert.match(
         appSource,
-        /className="card-briefing-btn"[\s\S]{0,160}?onClick=\{\(\)\s*=>\s*openBriefing\(forecast\.caseStudyId\)\}/,
-        'card-briefing-btn must call openBriefing(forecast.caseStudyId) rather than navigateView directly'
+        /className="card-briefing-btn"[\s\S]{0,160}?onClick=\{\(\)\s*=>\s*(?:onOpenBriefing|openBriefing)\(forecast\.caseStudyId\)\}/,
+        'card-briefing-btn must call openBriefing/onOpenBriefing(forecast.caseStudyId) rather than navigateView directly'
     );
+    assert.match(appRootJsx, /onOpenBriefing=\{openBriefing\}/, 'App.jsx must pass openBriefing to IntelSidebar');
 
     assert.ok(!appSource.includes('**Stephen Martinez'), 'Footer attribution must use <strong> rather than raw Markdown asterisks');
     assert.match(appSource, /<strong>Stephen Martinez/);

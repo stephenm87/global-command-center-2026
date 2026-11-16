@@ -2,12 +2,10 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import fs from 'node:fs';
 import path from 'node:path';
-import { fileURLToPath } from 'node:url';
 import React from 'react';
 import { renderToStaticMarkup } from 'react-dom/server';
 import { createServer } from 'vite';
-
-const REPO_ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '../..');
+import { REPO_ROOT, readAppWorkspaceSource } from './_helpers/readAppSources.mjs';
 
 async function createTestViteServer(t) {
     const vite = await createServer({
@@ -96,10 +94,12 @@ test('App.jsx uses maybeSingle() + debounced upsert, createDebouncedRunner coale
     assert.equal(calls, 1, 'Five rapid slider updates must coalesce into a single upsert');
     assert.equal(lastValue, 5);
 
-    const appSource = fs.readFileSync(path.join(REPO_ROOT, 'src/App.jsx'), 'utf8');
-    assert.ok(appSource.includes('.maybeSingle()'), 'App.jsx preference hydration must use .maybeSingle() instead of .single()');
-    assert.ok(!/from\('user_data'\)[\s\S]{0,140}\.single\(\)/.test(appSource), 'App.jsx must not call .single() on user_data');
-    assert.match(appSource, /setTimeout\(\(\)\s*=>\s*\{\s*supabase\.from\('user_data'\)\.upsert\([\s\S]{0,500}?,\s*400\)/, 'App.jsx must debounce user_data upserts by 400ms');
+    const appSource = readAppWorkspaceSource();
+    const appRootJsx = fs.readFileSync(path.join(REPO_ROOT, 'src/App.jsx'), 'utf8');
+    assert.match(appRootJsx, /\buseSupabasePreferences\s*\(\s*\{/, 'App.jsx must invoke useSupabasePreferences');
+    assert.ok(appSource.includes('.maybeSingle()'), 'Preference hydration must use .maybeSingle() instead of .single()');
+    assert.ok(!/from\('user_data'\)[\s\S]{0,140}\.single\(\)/.test(appSource), 'App workspace must not call .single() on user_data');
+    assert.match(appSource, /setTimeout\(\(\)\s*=>\s*\{\s*supabase\.from\('user_data'\)\.upsert\([\s\S]{0,500}?,\s*400\)/, 'useSupabasePreferences must debounce user_data upserts by 400ms');
 
     const migrationsDir = path.join(REPO_ROOT, 'supabase/migrations');
     assert.ok(fs.existsSync(migrationsDir), 'supabase/migrations directory must exist');

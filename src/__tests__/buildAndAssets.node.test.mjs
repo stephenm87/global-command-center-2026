@@ -2,13 +2,11 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import fs from 'node:fs';
 import path from 'node:path';
-import { fileURLToPath } from 'node:url';
+import { REPO_ROOT, readAppWorkspaceSource } from './_helpers/readAppSources.mjs';
 
-const REPO_ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '../..');
-
-test('index.html, App.jsx, and nexusGDELT.js use self-hosted assets, favicon, and server GDELT proxy instead of third-party CDNs', () => {
+test('index.html, App workspace modules, and nexusGDELT.js use self-hosted assets, favicon, and server GDELT proxy instead of third-party CDNs', () => {
     const indexHtml = fs.readFileSync(path.join(REPO_ROOT, 'index.html'), 'utf8');
-    const appJsx = fs.readFileSync(path.join(REPO_ROOT, 'src/App.jsx'), 'utf8');
+    const appJsx = readAppWorkspaceSource();
     const gdeltJs = fs.readFileSync(path.join(REPO_ROOT, 'src/nexusGDELT.js'), 'utf8');
 
     assert.ok(fs.existsSync(path.join(REPO_ROOT, 'public/favicon.svg')), 'public/favicon.svg must exist');

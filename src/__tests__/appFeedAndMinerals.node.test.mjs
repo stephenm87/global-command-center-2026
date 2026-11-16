@@ -2,11 +2,10 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import fs from 'node:fs';
 import path from 'node:path';
-import { fileURLToPath } from 'node:url';
 import { createRequire } from 'node:module';
 import { filterIntelForecasts, ALL_INTEL_CATEGORY, LIVE_INTEL_CATEGORY } from '../intelFeed.mjs';
+import { REPO_ROOT, readAppWorkspaceSource } from './_helpers/readAppSources.mjs';
 
-const REPO_ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '../..');
 const require = createRequire(import.meta.url);
 
 test('filterIntelForecasts filters live, category, archive year, and news-only modes without any Globe instance', () => {
@@ -57,9 +56,12 @@ test('public-intel snapshot and frontend share one cited criticalMinerals.json c
     }
 });
 
-test('App.jsx decouples filteredForecasts from globeEl, pauses hidden Globe, surfaces Deep Scan sign-in CTA, and scopes theory-btn CSS', () => {
-    const appSource = fs.readFileSync(path.join(REPO_ROOT, 'src/App.jsx'), 'utf8');
+test('App workspace decouples filteredForecasts from globeEl, pauses hidden Globe, surfaces Deep Scan sign-in CTA, and scopes theory-btn CSS', () => {
+    const appSource = readAppWorkspaceSource();
+    const appRootJsx = fs.readFileSync(path.join(REPO_ROOT, 'src/App.jsx'), 'utf8');
     const cssSource = fs.readFileSync(path.join(REPO_ROOT, 'src/App.css'), 'utf8');
+
+    assert.match(appRootJsx, /\buseGlobeLayerSync\s*\(\s*\{/, 'App.jsx must invoke useGlobeLayerSync');
 
     // F-11: filteredForecasts derived via useMemo rather than useState gated behind globeEl.current
     assert.ok(!appSource.includes('setFilteredForecasts('), 'filteredForecasts must be derived via useMemo, not stored via setFilteredForecasts');
