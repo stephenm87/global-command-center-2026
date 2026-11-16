@@ -159,6 +159,7 @@ export default function GlobalRelationsNexus({ forecasts, selectedTheory, theori
             const cat = f.Broad_Category || '';
             let color = '#ffffff';
             if (cat.includes('Conflict'))    color = '#ff0066';
+            else if (cat.includes('Governance') || cat.includes('Rights')) color = '#fbbf24';
             else if (cat.includes('Economy') || cat.includes('Trade')) color = '#00ccff';
             else if (cat.includes('Tech'))   color = '#bf55ec';
             else if (cat.includes('Health')) color = '#00ff88';

@@ -185,10 +185,14 @@ test('selection balances regions and issues while limiting publishers, clusters,
     assert.equal(selected.every(item => !('_publisherDomain' in item) && !('_topicCluster' in item)), true);
 });
 
-test('shared intel-normalization coordinate inference is deterministic for identical text', () => {
-    const { getCoords } = require('../_shared/intel-normalization');
+test('shared intel-normalization coordinate inference is deterministic and categorizeSector uses word-bounded Governance & Rights matching', () => {
+    const { getCoords, categorizeSector } = require('../_shared/intel-normalization');
     assert.deepEqual(
         getCoords('Diplomatic talks involving Ukraine'),
         getCoords('Diplomatic talks involving Ukraine')
     );
+    assert.equal(categorizeSector('National human rights commission reviews indigenous constitutional referendum'), 'Governance & Rights');
+    assert.equal(categorizeSector('Parliamentary elections scheduled after judicial ruling'), 'Governance & Rights');
+    assert.notEqual(categorizeSector('Data selection methodology in quarterly commodity market report'), 'Governance & Rights', '"selection" must not match "election"');
+    assert.equal(categorizeSector('Data selection methodology in quarterly commodity market report'), 'Economy & Trade');
 });

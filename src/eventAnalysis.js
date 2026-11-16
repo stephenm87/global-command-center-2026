@@ -8,6 +8,11 @@ const CATEGORY_CHALLENGES = {
         Borders: (event) => `${event['Entity/Subject'] || 'This situation'} raises critical questions about territorial sovereignty and border integrity. In an interconnected world, ${event['Key Player/Organization'] || 'major powers'} must navigate the tension between national borders and transnational security threats.`,
         Identity: (event) => `The conflict involving ${event['Entity/Subject'] || 'these actors'} is deeply tied to questions of national and cultural identity. Competing narratives about who 'belongs' and who has legitimate claims shape both the causes and the potential resolution of this dispute.`
     },
+    'Governance & Rights': {
+        Equality: (event) => `${event['Entity/Subject'] || 'This governance issue'} tests who holds political representation, legal standing, and accountability. ${event['Key Player/Organization'] || 'Institutions and communities'} confront unequal access to rights, participation, and remedies.`,
+        Identity: (event) => `Questions of legitimacy, citizenship, Indigenous self-determination, and minority protections sit at the center of ${event['Entity/Subject'] || 'this case'}, shaping how authority is contested or recognized.`,
+        Security: (event) => `Governance crises and rights protections in ${event['Entity/Subject'] || 'this context'} directly shape human security, institutional trust, and durable peace.`
+    },
     'Economy & Trade': {
         Poverty: (event) => `Economic developments around ${event['Entity/Subject'] || 'this issue'} have direct implications for global poverty. Trade policies and economic sanctions disproportionately impact developing nations, potentially deepening structural inequality in the international system.`,
         Equality: (event) => `${event['Entity/Subject'] || 'This economic shift'} highlights the fundamental inequality embedded in global economic governance. The question is: who benefits and who bears the costs of these changes? ${event['Key Player/Organization'] || 'Key actors'} play a decisive role in shaping outcomes.`,
@@ -77,6 +82,7 @@ export function generate5W1H(event) {
 function generateWhy(category, entity, impact) {
     const whyMap = {
         'Geopolitics & Conflict': `Strategic competition and security concerns drive this development. ${entity} is positioned at the intersection of power rivalries and territorial disputes, with regional stability at stake.`,
+        'Governance & Rights': `Contested political legitimacy, institutional accountability, and rights claims drive this development. ${entity} highlights the tension between formal authority, international norms, and lived participation.`,
         'Economy & Trade': `Economic interests and trade dynamics underpin this event. Shifts in global supply chains, sanctions, or market forces are reshaping how states pursue economic security and competitive advantage.`,
         'Technology & Science': `Technological competition and innovation drive this development. Control over emerging technologies translates directly into geopolitical power, creating new frontiers of interstate competition.`,
         'Health & Society': `Public health and social welfare concerns are at the core of this issue. Global health governance gaps and social inequality create vulnerabilities that transcend national borders.`,
@@ -89,6 +95,7 @@ function generateWhy(category, entity, impact) {
 function generateHow(category, players, impact) {
     const howMap = {
         'Geopolitics & Conflict': `Through diplomatic maneuvering, military posturing, and alliance management. ${players} navigate between hard power (military, sanctions) and soft power (diplomacy, international law) approaches.`,
+        'Governance & Rights': `Through constitutional processes, judicial review, civil-society mobilization, and international human-rights mechanisms. ${players} contest how authority is exercised and held accountable.`,
         'Economy & Trade': `Via trade agreements, sanctions, tariff policies, and institutional mechanisms (WTO, IMF, bilateral deals). ${players} leverage economic tools to advance strategic interests.`,
         'Technology & Science': `Through R&D investment, regulatory frameworks, export controls, and technological standard-setting. ${players} compete to define the norms and infrastructure of the digital age.`,
         'Health & Society': `Via international health governance (WHO), bilateral aid, vaccine diplomacy, and domestic policy responses. ${players} balance sovereignty with the need for coordinated global health action.`,

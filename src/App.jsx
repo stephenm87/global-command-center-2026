@@ -326,6 +326,7 @@ function App() {
 
         metrics.totalEvents = data.length;
         metrics.conflictEvents = categoryCounts['Geopolitics & Conflict'] || 0;
+        metrics.governanceEvents = categoryCounts['Governance & Rights'] || 0;
         metrics.economyEvents = categoryCounts['Economy & Trade'] || 0;
         metrics.techEvents = categoryCounts['Technology & Science'] || 0;
         metrics.goldPrice = goldMentions.length > 0 ? '$4,500' : 'N/A';
@@ -918,6 +919,7 @@ function App() {
                                             <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1px 8px', marginBottom: '8px' }}>
                                                 {[
                                                     ['Conflict', '#ff5c99'],
+                                                    ['Gov/Rights', '#fbbf24'],
                                                     ['Economy', '#00ccff'],
                                                     ['Tech', '#00ff88'],
                                                     ['Health', '#ff9900'],

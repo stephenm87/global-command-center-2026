@@ -4,6 +4,7 @@ export const VIEW_MODES = Object.freeze(['globe', 'briefings', 'nexus']);
 
 export const categoryColors = Object.freeze({
     'Geopolitics & Conflict': '#ff0066',
+    'Governance & Rights': '#fbbf24',
     'Economy & Trade': '#00ccff',
     'Technology & Science': '#00ff88',
     'Health & Society': '#ff9900',

@@ -19,6 +19,7 @@ const REGION_COORDS = {
 
 const SECTOR_LABELS = {
     'Geopolitics & Conflict': 'Geopolitics / Conflict',
+    'Governance & Rights': 'Governance / Human Rights',
     'Economy & Trade': 'Economy / Global',
     'Environment & Energy': 'Environment / Energy',
     'Technology & Science': 'Technology / Security',
@@ -37,6 +38,8 @@ function categorizeSector(text) {
     const value = String(text || '').toLowerCase();
     if (/war|conflict|military|attack|missile|sanction|nato|nuclear|troops|coup|siege|weapons|drone/.test(value))
         return 'Geopolitics & Conflict';
+    if (/\b(?:elections?|parliaments?|constitutional|judiciar(?:y|ies)|human rights|indigenous|democrac(?:y|ies)|civil liberties|referendums?|self-determination|co-governance)\b/.test(value))
+        return 'Governance & Rights';
     if (/economy|economic|trade|gdp|inflation|tariff|market|debt|recession|bank|finance|investment|development|labor|worker|employment|currency|export|import|commodity|supply chain|crypto/.test(value))
         return 'Economy & Trade';
     if (/climate|energy|oil|gas|carbon|emissions|environment|water|ocean|mineral|biodiversity|forest|flooding|drought|cop/.test(value))
