@@ -226,10 +226,33 @@ function protectPublicEndpoint(event, { methods = ['GET'] } = {}) {
     return { headers: publicResponseHeaders(event) };
 }
 
+function protectBackgroundCron(eventOrRequest, { secret = process.env.CRON_SECRET } = {}) {
+    const method = typeof eventOrRequest?.method === 'string'
+        ? eventOrRequest.method
+        : eventOrRequest?.httpMethod;
+    if (method !== 'POST') {
+        return { ok: false, status: 405, message: 'Method not allowed.' };
+    }
+    const configuredSecret = typeof secret === 'string' ? secret.trim() : '';
+    if (configuredSecret.length < 16) {
+        return { ok: false, status: 503, message: 'Background worker secret not configured.' };
+    }
+    const provided = typeof eventOrRequest?.headers?.get === 'function'
+        ? (eventOrRequest.headers.get('x-cron-secret') || '')
+        : getHeader(eventOrRequest, 'x-cron-secret');
+    const expectedBuf = Buffer.from(configuredSecret, 'utf8');
+    const providedBuf = Buffer.from(String(provided || ''), 'utf8');
+    if (expectedBuf.length !== providedBuf.length || !crypto.timingSafeEqual(expectedBuf, providedBuf)) {
+        return { ok: false, status: 403, message: 'Forbidden.' };
+    }
+    return { ok: true };
+}
+
 module.exports = {
     isAllowedOrigin,
     responseHeaders,
     publicResponseHeaders,
     protectEndpoint,
     protectPublicEndpoint,
+    protectBackgroundCron,
 };

@@ -25,8 +25,16 @@ export default async request => {
     const responseHeaders = { ...security.headers, ...headers };
     try {
         const snapshot = await readSnapshot(SNAPSHOT_KEY);
+        if (!snapshot) {
+            return new Response(
+                JSON.stringify({ status: 'pending', stale: true, results: [], summary: null }),
+                { status: 200, headers: responseHeaders },
+            );
+        }
+        const checkedMs = snapshot.checkedAt ? Date.parse(snapshot.checkedAt) : Number.NaN;
+        const stale = !Number.isFinite(checkedMs) || (Date.now() - checkedMs) > 36 * 60 * 60 * 1000;
         return new Response(
-            JSON.stringify(snapshot || { status: 'pending', results: [], summary: null }),
+            JSON.stringify({ ...snapshot, stale }),
             { status: 200, headers: responseHeaders },
         );
     } catch (error) {

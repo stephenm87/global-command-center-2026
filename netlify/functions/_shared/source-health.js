@@ -1,5 +1,6 @@
 const CHECK_TIMEOUT_MS = 5000;
-const DEFAULT_CONCURRENCY = 16;
+const DEFAULT_CONCURRENCY = 4;
+const DEFAULT_MAX_PER_HOST = 2;
 const DEFAULT_DEADLINE_MS = 24000;
 const RESTRICTED_STATUSES = new Set([401, 403, 429, 451]);
 const BROKEN_STATUSES = new Set([404, 410]);
@@ -9,6 +10,14 @@ function classifyStatus(status) {
     if (RESTRICTED_STATUSES.has(status)) return 'restricted';
     if (BROKEN_STATUSES.has(status)) return 'broken';
     return 'unknown';
+}
+
+function getHostname(rawUrl) {
+    try {
+        return new URL(rawUrl).hostname.toLowerCase();
+    } catch {
+        return 'unknown';
+    }
 }
 
 async function requestUrl(fetchImpl, url, method, timeoutMs = CHECK_TIMEOUT_MS) {
@@ -59,10 +68,7 @@ async function checkTarget(target, fetchImpl = fetch, { timeoutMs = CHECK_TIMEOU
 function interleaveByHost(indexedTargets) {
     const byHost = new Map();
     for (const item of indexedTargets) {
-        let host = 'unknown';
-        try {
-            host = new URL(item.target.url).hostname.toLowerCase();
-        } catch {}
+        const host = getHostname(item.target.url);
         if (!byHost.has(host)) byHost.set(host, []);
         byHost.get(host).push(item);
     }
@@ -86,6 +92,7 @@ async function checkTargets(
     {
         fetchImpl = fetch,
         concurrency = DEFAULT_CONCURRENCY,
+        maxPerHost = DEFAULT_MAX_PER_HOST,
         timeoutMs = CHECK_TIMEOUT_MS,
         deadlineMs = null,
     } = {}
@@ -104,44 +111,79 @@ async function checkTargets(
 
     const uniqueItems = [...urlGroups.values()].map((group, uniqueIndex) => ({
         target: group.representative,
+        host: getHostname(group.representative?.url),
         indices: group.indices,
         index: uniqueIndex,
     }));
-    const schedule = interleaveByHost(uniqueItems);
+    const pending = interleaveByHost(uniqueItems);
     const results = new Array(targets.length);
     const deadlineAt = Number.isFinite(deadlineMs) && deadlineMs > 0 ? Date.now() + deadlineMs : Infinity;
+    const activePerHost = new Map();
+    const hostWaiters = [];
 
-    let cursor = 0;
-    const worker = async () => {
-        while (cursor < schedule.length) {
-            const item = schedule[cursor++];
-            const remainingMs = deadlineAt - Date.now();
-            let outcome;
-            if (remainingMs <= 50) {
-                outcome = {
-                    id: item.target.id,
-                    url: item.target.url,
-                    status: 'unknown',
-                    httpStatus: null,
-                    checkedAt: new Date().toISOString(),
-                    reason: 'deadline-exceeded',
-                };
-            } else {
-                const effectiveTimeout = Number.isFinite(remainingMs)
-                    ? Math.max(50, Math.min(timeoutMs, remainingMs))
-                    : timeoutMs;
-                outcome = await checkTarget(item.target, fetchImpl, { timeoutMs: effectiveTimeout });
+    const releaseHost = host => {
+        const nextCount = Math.max(0, (activePerHost.get(host) || 1) - 1);
+        if (nextCount === 0) activePerHost.delete(host);
+        else activePerHost.set(host, nextCount);
+        while (hostWaiters.length > 0) {
+            hostWaiters.shift()();
+        }
+    };
+
+    const claimNextEligible = async () => {
+        while (pending.length > 0) {
+            const eligibleIdx = pending.findIndex(item => (activePerHost.get(item.host) || 0) < maxPerHost);
+            if (eligibleIdx >= 0) {
+                const [item] = pending.splice(eligibleIdx, 1);
+                activePerHost.set(item.host, (activePerHost.get(item.host) || 0) + 1);
+                return item;
             }
-            for (const origIdx of item.indices) {
-                results[origIdx] = {
-                    ...outcome,
-                    id: targets[origIdx].id,
-                    url: targets[origIdx].url,
-                };
+            if (Date.now() >= deadlineAt - 50) {
+                const item = pending.shift();
+                activePerHost.set(item.host, (activePerHost.get(item.host) || 0) + 1);
+                return item;
+            }
+            await new Promise(resolve => hostWaiters.push(resolve));
+        }
+        return null;
+    };
+
+    const worker = async () => {
+        while (true) {
+            const item = await claimNextEligible();
+            if (!item) return;
+            try {
+                const remainingMs = deadlineAt - Date.now();
+                let outcome;
+                if (remainingMs <= 50) {
+                    outcome = {
+                        id: item.target.id,
+                        url: item.target.url,
+                        status: 'unknown',
+                        httpStatus: null,
+                        checkedAt: new Date().toISOString(),
+                        reason: 'deadline-exceeded',
+                    };
+                } else {
+                    const effectiveTimeout = Number.isFinite(remainingMs)
+                        ? Math.max(50, Math.min(timeoutMs, remainingMs))
+                        : timeoutMs;
+                    outcome = await checkTarget(item.target, fetchImpl, { timeoutMs: effectiveTimeout });
+                }
+                for (const origIdx of item.indices) {
+                    results[origIdx] = {
+                        ...outcome,
+                        id: targets[origIdx].id,
+                        url: targets[origIdx].url,
+                    };
+                }
+            } finally {
+                releaseHost(item.host);
             }
         }
     };
-    await Promise.all(Array.from({ length: Math.min(concurrency, schedule.length) }, worker));
+
+    await Promise.all(Array.from({ length: Math.min(concurrency, pending.length) }, worker));
     return results;
 }
 
@@ -155,6 +197,7 @@ function summarizeHealth(results) {
 module.exports = {
     CHECK_TIMEOUT_MS,
     DEFAULT_CONCURRENCY,
+    DEFAULT_MAX_PER_HOST,
     DEFAULT_DEADLINE_MS,
     checkTarget,
     checkTargets,

@@ -17,6 +17,7 @@ Provider API keys must never use the `VITE_` prefix because Vite exposes those v
 - `SUPABASE_URL`: Supabase project URL used to validate bearer tokens.
 - `SUPABASE_PUBLISHABLE_KEY`: Publishable key used by the Supabase Auth user endpoint. `SUPABASE_ANON_KEY` remains supported for legacy projects.
 - `ALLOWED_ORIGINS`: Optional comma-separated list of additional preview or custom-domain origins.
+- `CRON_SECRET`: Optional `>= 16`-character shared secret used by the daily `refresh-source-health` scheduler to authenticate `POST` dispatch to `refresh-source-health-background` (Netlify 15-minute Background Function). When unset, `refresh-source-health` automatically falls back to its inline `24s` deadline-bounded check.
 
 The fixed public snapshot and source-health snapshot are anonymously readable, use only server-controlled inputs, and are cached through Netlify. Visitor-supplied searches, Firecrawl scans, and AI summaries require a valid Supabase access token. Never configure a Supabase service-role or secret key for this validation path.
 

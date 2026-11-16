@@ -36,8 +36,10 @@ test('every HTTP-reachable Netlify function invokes protectEndpoint or protectPu
 
     for (const fileName of entries) {
         const source = stripJsComments(fs.readFileSync(path.join(FUNCTIONS_DIR, fileName), 'utf8'));
-        const hasGuard = /\bawait\s+protectEndpoint\s*\(/.test(source) || /\bprotectPublicEndpoint\s*\(/.test(source);
-        assert.ok(hasGuard, `${fileName} must guard requests with protectEndpoint or protectPublicEndpoint`);
+        const hasGuard = /\bawait\s+protectEndpoint\s*\(/.test(source)
+            || /\bprotectPublicEndpoint\s*\(/.test(source)
+            || /\bprotectBackgroundCron\s*\(/.test(source);
+        assert.ok(hasGuard, `${fileName} must guard requests with protectEndpoint, protectPublicEndpoint, or protectBackgroundCron`);
     }
 });
 

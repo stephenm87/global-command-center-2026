@@ -6,17 +6,75 @@ const require = createRequire(import.meta.url);
 const manifest = require('./source-health-targets.json');
 const { DEFAULT_DEADLINE_MS, checkTargets, summarizeHealth } = sourceHealthModule;
 const SNAPSHOT_KEY = 'source-health/current.json';
+const DISPATCH_TIMEOUT_MS = 4000;
+export const STALE_SNAPSHOT_THRESHOLD_MS = 36 * 60 * 60 * 1000;
 
-export default async () => {
+export function isSnapshotMissingOrStale(snapshot, nowMs = Date.now()) {
+    const parsed = snapshot?.checkedAt ? Date.parse(snapshot.checkedAt) : Number.NaN;
+    if (!Number.isFinite(parsed)) return true;
+    return (nowMs - parsed) > STALE_SNAPSHOT_THRESHOLD_MS;
+}
+
+export async function dispatchOrRunInline({
+    siteUrl = process.env.URL || '',
+    cronSecret = process.env.CRON_SECRET || '',
+    fetchImpl = fetch,
+    previousSnapshot = null,
+    nowMs = Date.now(),
+    runInline,
+} = {}) {
+    const trimmedUrl = siteUrl.trim().replace(/\/+$/, '');
+    const trimmedSecret = cronSecret.trim();
+    const staleBeforeDispatch = isSnapshotMissingOrStale(previousSnapshot, nowMs);
+
+    if (/^https?:\/\//i.test(trimmedUrl) && trimmedSecret.length >= 16) {
+        const controller = new AbortController();
+        const timer = setTimeout(() => controller.abort(), DISPATCH_TIMEOUT_MS);
+        try {
+            const response = await fetchImpl(`${trimmedUrl}/.netlify/functions/refresh-source-health-background`, {
+                method: 'POST',
+                signal: controller.signal,
+                headers: {
+                    'x-cron-secret': trimmedSecret,
+                },
+            });
+            if (response.status >= 200 && response.status < 300) {
+                if (staleBeforeDispatch) {
+                    // Netlify returns 202 before background user code runs; if the stored snapshot
+                    // is missing or >36h old, seed/recover via the bounded inline check as well so a
+                    // misconfigured secret or background crash never leaves link-health permanently stale.
+                    console.warn('[refresh-source-health] Snapshot missing or >36h stale; running inline bounded safety refresh alongside background dispatch.');
+                    const snapshot = await runInline(previousSnapshot);
+                    return { mode: 'background-dispatched-with-stale-guard', status: response.status, snapshot };
+                }
+                console.log(`[refresh-source-health] Dispatched background worker (HTTP ${response.status}).`);
+                return { mode: 'background-dispatched', status: response.status };
+            }
+            console.warn(`[refresh-source-health] Background dispatch returned HTTP ${response.status}; falling back to inline deadline-bounded run.`);
+        } catch (error) {
+            console.warn(`[refresh-source-health] Background dispatch failed (${error?.message || 'error'}); falling back to inline deadline-bounded run.`);
+        } finally {
+            clearTimeout(timer);
+        }
+    }
+
+    const snapshot = await runInline(previousSnapshot);
+    return { mode: 'inline-bounded', status: 204, snapshot };
+}
+
+async function runInlineBoundedRefresh(preloadedPrevious = undefined) {
     const checkedAt = new Date().toISOString();
-    const previous = await readSnapshot(SNAPSHOT_KEY).catch(() => null);
+    const previous = preloadedPrevious !== undefined
+        ? preloadedPrevious
+        : await readSnapshot(SNAPSHOT_KEY).catch(() => null);
     const previousByUrl = new Map(
         Array.isArray(previous?.results)
             ? previous.results.filter(r => r?.url && r.status !== 'unknown').map(r => [r.url, r])
             : []
     );
 
-    const rawResults = await checkTargets(manifest.targets, { deadlineMs: DEFAULT_DEADLINE_MS });
+    const activeTargets = manifest.targets.filter(target => target.lifecycle !== 'archived');
+    const rawResults = await checkTargets(activeTargets, { deadlineMs: DEFAULT_DEADLINE_MS });
     const results = rawResults.map(result => {
         if (result.reason === 'deadline-exceeded' && previousByUrl.has(result.url)) {
             const carried = previousByUrl.get(result.url);
@@ -29,13 +87,23 @@ export default async () => {
     const snapshot = {
         schemaVersion: 1,
         checkedAt,
+        workerMode: 'inline-24s',
         targetCount: results.length,
         incompleteCount,
         summary: summarizeHealth(results),
         results,
     };
     await writeSnapshot(SNAPSHOT_KEY, snapshot);
-    console.log(`[refresh-source-health] Checked ${results.length} links (${incompleteCount} deadline-deferred): ${JSON.stringify(snapshot.summary)}.`);
+    console.log(`[refresh-source-health] Checked ${results.length} active links (${incompleteCount} deadline-deferred): ${JSON.stringify(snapshot.summary)}.`);
+    return snapshot;
+}
+
+export default async () => {
+    const previousSnapshot = await readSnapshot(SNAPSHOT_KEY).catch(() => null);
+    await dispatchOrRunInline({
+        previousSnapshot,
+        runInline: runInlineBoundedRefresh,
+    });
     return new Response(null, { status: 204 });
 };
 
