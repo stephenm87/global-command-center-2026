@@ -383,9 +383,9 @@ const CORE_CASE_STUDIES_2026 = [
         issueDimensions: ['Territorial sovereignty', 'International adjudication', 'Regional diplomacy', 'Peaceful dispute settlement'],
         actors: ['Guyana', 'Venezuela', 'International Court of Justice', 'CARICOM'],
         nexusNodeIds: ['LatinAmerica', 'UN_OPEC'],
-        statusSummary: 'As reviewed on 10 August 2026, the International Court of Justice docket\'s latest development remained the conclusion of merits hearings held from 4 to 11 May 2026; the merits judgment was still pending. CARICOM\'s 10 July communiqué reaffirmed support for the judicial process and for Guyana\'s sovereignty and territorial integrity. Venezuela\'s Foreign Ministry stated on 6 May that it does not recognize the Court\'s jurisdiction in this matter and regards the 1966 Geneva Agreement as the valid route to resolution.',
+        statusSummary: 'As reviewed on 16 November 2026, the International Court of Justice docket\'s latest development remained the conclusion of merits hearings held from 4 to 11 May 2026; the merits judgment was still pending. CARICOM\'s 10 July communiqué reaffirmed support for the judicial process and for Guyana\'s sovereignty and territorial integrity. In the May 2026 public sittings before the Court, Venezuela reiterated that it does not recognize the Court\'s jurisdiction in this matter and regards the 1966 Geneva Agreement as the valid route to resolution.',
         whyItMatters: 'The case tests whether international adjudication and regional diplomacy can manage a high-stakes territorial controversy without coercive alteration of the status quo.',
-        updatedAt: '2026-08-10',
+        updatedAt: '2026-11-16',
         confidence: 'high',
         uncertainty: 'The Court has not announced a judgment date. Timing estimates from officials or media must not be presented as a Court schedule, and neither side\'s prediction of the merits outcome should be treated as fact. CARICOM\'s support for Guyana and Venezuela\'s jurisdictional objection remain attributed policy positions.',
         coordinates: { latitude: 6.4, longitude: -59 },
@@ -395,7 +395,7 @@ const CORE_CASE_STUDIES_2026 = [
         sensitivity: 'high',
         editorialCaution: 'Attribute each government and regional institution\'s legal position, do not treat advocacy as the Court\'s finding, and do not forecast the judgment or imply a Court timetable.',
         reviewCadenceDays: 14,
-        reviewBy: '2026-08-24',
+        reviewBy: '2026-11-30',
         map: {
             mode: 'regional',
             locations: [
@@ -419,7 +419,7 @@ const CORE_CASE_STUDIES_2026 = [
                 publisher: 'International Court of Justice',
                 publishedAt: null,
                 sourceType: 'living-reference',
-                reviewedAt: CONTENT_REVIEW_DATE,
+                reviewedAt: '2026-11-16',
                 milestoneDate: '2026-05-11',
                 milestoneLabel: 'Merits hearings concluded',
                 url: 'https://www.icj-cij.org/case/171',
@@ -445,11 +445,11 @@ const CORE_CASE_STUDIES_2026 = [
         ],
         supplementalSources: [
             {
-                title: 'Venezuela desmontó ante la CIJ argumentos de Guyana y ratifica Acuerdo de Ginebra',
-                publisher: 'Ministry of Foreign Affairs of Venezuela',
-                publishedAt: '2026-05-06',
-                url: 'https://mppre.gob.ve/publicacion/7224-venezuela-desmonto-ante-la-cij-argumentos-de-guyana-y-ratifica-acuerdo-de-ginebra',
-                perspective: 'Official Venezuelan position rejecting the Court\'s jurisdiction and prioritizing the 1966 Geneva Agreement',
+                title: 'Verbatim Record CR 2026/28 — Public sitting held on Friday 8 May 2026 (Arbitral Award of 3 October 1899, Guyana v. Venezuela)',
+                publisher: 'International Court of Justice',
+                publishedAt: '2026-05-08',
+                url: 'https://www.icj-cij.org/sites/default/files/case-related/171/171-20260508-ora-01-00-bi.pdf',
+                perspective: 'Official ICJ verbatim transcript of Venezuela\'s oral intervention contesting the Court\'s jurisdiction and invoking the 1966 Geneva Agreement',
             },
         ],
         waypoints: [

@@ -13,15 +13,15 @@ The application is a Single Page Application (SPA) built with React and bundled 
 
 ## Backend (Netlify Functions)
 Located in `netlify/functions`:
-- `ai-summary.js`: Uses Gemini API for text summarization.
-- `deep-scan.js`: Uses Firecrawl for deep web scraping.
-- `fetch-intel.js`: Aggregates current intel from two broad Serper queries with GNews fallback, adds explicitly dated editorial context after current results, and emits provenance/cache metadata.
-- `public-intel.mjs`: Reads the anonymous fixed-query snapshot from Netlify Blobs and uses CDN cache headers. It creates the first snapshot on demand if the scheduled job has not run.
-- `refresh-public-intel.mjs`: Rebuilds the public snapshot every 30 minutes from four fixed editorial queries.
-- `fetch-news.js`: Runs authenticated visitor-supplied news searches.
+- `ai-summary.js`: Uses Gemini API (`gemini-3.5-flash-lite` default) for authenticated intelligence summarization.
+- `deep-scan.js`: Uses Firecrawl for authenticated article extraction with SSRF/URL normalization guards.
+- `public-intel.mjs`: Reads the anonymous fixed-query snapshot (including canonical critical-minerals reference metadata) from Netlify Blobs and uses CDN cache headers. It creates the first snapshot on demand if the scheduled job has not run.
+- `refresh-public-intel.mjs`: Rebuilds the public snapshot every 30 minutes from fixed editorial queries.
+- `fetch-news.js`: Runs authenticated visitor-supplied news searches via Serper.
+- `gdelt-pulse.mjs`: Public CDN-cached proxy for allowlisted 3D Nexus GDELT topic pulse queries (`protectPublicEndpoint`).
 - `source-health.mjs` and `refresh-source-health.mjs`: Publish and refresh the daily editorial link-health snapshot generated from all case-study sources and declared alternates.
-- `gemini-retry.js`: Utility for handling Gemini API retries.
-- `security.js`: Validates Supabase bearer tokens and applies per-user throttling before provider calls.
+- `gemini-retry.js`: Bounded wall-clock retry helper for Gemini API requests.
+- `security.js`: Validates Supabase bearer tokens, origin allowlists, and classroom-safe per-user/IP rate limits before provider calls.
 
 The frontend reads `public-intel.js` without authentication. It uses `src/api.js` to attach the current Supabase access token only to custom search, Firecrawl, and AI-summary requests. Static forecast, linked-reference, verified-case, and historical assets also remain public. If cached current items are unavailable, the interface identifies the precise state and exposes a direct public-source recovery action instead of rendering an unexplained zero.
 

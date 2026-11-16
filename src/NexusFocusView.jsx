@@ -5,6 +5,7 @@ import {
     RELATIONSHIP_DIMENSIONS,
     getNexusRelationships,
     inferForecastActorIds,
+    resolveActorId,
 } from './nexusFocusData';
 import './NexusFocusView.css';
 
@@ -23,14 +24,15 @@ const strengthLabel = salience => salience >= 0.8 ? 'High salience' : salience >
 
 export default function NexusFocusView({ forecasts = [], initialNodeId, onSelectActor, onOpenSpatial, onOpenBriefing }) {
     const relationships = useMemo(() => getNexusRelationships(), []);
-    const [selectedId, setSelectedId] = useState(NEXUS_ACTORS[initialNodeId] ? initialNodeId : 'USA');
+    const [selectedId, setSelectedId] = useState(() => resolveActorId(initialNodeId, 'USA'));
     const [dimension, setDimension] = useState('all');
     const [expanded, setExpanded] = useState(false);
     const [query, setQuery] = useState('');
     const [detailTab, setDetailTab] = useState('summary');
 
     useEffect(() => {
-        if (NEXUS_ACTORS[initialNodeId]) setSelectedId(initialNodeId);
+        const resolved = resolveActorId(initialNodeId, null);
+        if (resolved && NEXUS_ACTORS[resolved]) setSelectedId(resolved);
     }, [initialNodeId]);
 
     const actor = NEXUS_ACTORS[selectedId];

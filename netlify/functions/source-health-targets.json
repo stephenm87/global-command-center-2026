@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
   "caseStudyCount": 29,
-  "targetCount": 106,
+  "targetCount": 105,
   "targets": [
     {
       "id": "sudan-displacement-regional-spillover:core:0",
@@ -241,11 +241,11 @@
       "id": "guyana-venezuela-essequibo-icj:supplemental:0",
       "caseStudyId": "guyana-venezuela-essequibo-icj",
       "caseStudyTitle": "Guyana–Venezuela: Essequibo Before the ICJ",
-      "sourceTitle": "Venezuela desmontó ante la CIJ argumentos de Guyana y ratifica Acuerdo de Ginebra",
-      "publisher": "Ministry of Foreign Affairs of Venezuela",
+      "sourceTitle": "Verbatim Record CR 2026/28 — Public sitting held on Friday 8 May 2026 (Arbitral Award of 3 October 1899, Guyana v. Venezuela)",
+      "publisher": "International Court of Justice",
       "group": "supplemental",
       "kind": "primary",
-      "url": "https://mppre.gob.ve/publicacion/7224-venezuela-desmonto-ante-la-cij-argumentos-de-guyana-y-ratifica-acuerdo-de-ginebra"
+      "url": "https://www.icj-cij.org/sites/default/files/case-related/171/171-20260508-ora-01-00-bi.pdf"
     },
     {
       "id": "usmca-2026-joint-review:core:0",
@@ -511,23 +511,11 @@
       "id": "somaliland-recognition-red-sea-order:core:0",
       "caseStudyId": "somaliland-recognition-red-sea-order",
       "caseStudyTitle": "Somaliland Recognition and the Red Sea Order",
-      "sourceTitle": "A Diplomatic Breakthrough: Somaliland’s Foreign DG hails Israel’s Recognition of Sovereignty",
-      "publisher": "The Horn Tribune",
+      "sourceTitle": "Israel Officially Recognizes Somaliland as Sovereign State",
+      "publisher": "Horn Diplomat",
       "group": "core",
       "kind": "primary",
-      "url": "https://horntribune.com/2025/12/29/a-diplomatic-breakthrough-somalilands-foreign-ministry-director-general-marks-israels-recognition-of-sovereignty/"
-    },
-    {
-      "id": "somaliland-recognition-red-sea-order:core:0:alternate:0",
-      "caseStudyId": "somaliland-recognition-red-sea-order",
-      "caseStudyTitle": "Somaliland Recognition and the Red Sea Order",
-      "sourceTitle": "A Diplomatic Breakthrough: Somaliland’s Foreign DG hails Israel’s Recognition of Sovereignty",
-      "publisher": "The Horn Tribune",
-      "group": "core",
-      "kind": "alternate",
-      "primaryUrl": "https://horntribune.com/2025/12/29/a-diplomatic-breakthrough-somalilands-foreign-ministry-director-general-marks-israels-recognition-of-sovereignty/",
-      "label": "The Horn Tribune print edition — 4 January 2026, front-page lead and page 5 continuation",
-      "url": "https://horntribune.com/wp-content/uploads/2026/01/THT-04-January-2026front.pdf"
+      "url": "https://www.horndiplomat.com/israel-officially-recognizes-somaliland-as-sovereign-state/"
     },
     {
       "id": "somaliland-recognition-red-sea-order:core:1",
@@ -723,11 +711,11 @@
       "id": "bangladesh-ldc-graduation-decision:core:1",
       "caseStudyId": "bangladesh-ldc-graduation-decision",
       "caseStudyTitle": "Bangladesh at the Graduation Gate",
-      "sourceTitle": "Bangladesh graduation status and preparatory-period extension request",
+      "sourceTitle": "Bangladesh graduation status",
       "publisher": "United Nations LDC Portal",
       "group": "core",
       "kind": "primary",
-      "url": "https://www.un.org/ldcportal/node/858"
+      "url": "https://www.un.org/ldcportal/en/content/bangladesh-graduation-status"
     },
     {
       "id": "bangladesh-ldc-graduation-decision:core:2",

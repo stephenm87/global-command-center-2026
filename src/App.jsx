@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef, useCallback, Component } from 'react';
+import React, { useState, useEffect, useRef, useCallback, useMemo, Component } from 'react';
 import Papa from 'papaparse';
 import * as topojson from 'topojson-client';
 import { theories, getTheoryInterpretation } from './theories';
@@ -8,6 +8,8 @@ import { supabase } from './supabase';
 import { secureFetch } from './api';
 import { readStoredJson, writeStoredJson } from './localState.mjs';
 import { CASE_STUDIES_2026, toForecastRecord } from './caseStudies2026';
+import { resolveActorId } from './nexus/actorIds';
+import criticalMineralsCatalog from './data/criticalMinerals.json';
 import {
     ALL_INTEL_CATEGORY,
     LIVE_INTEL_CATEGORY,
@@ -44,7 +46,7 @@ const getBriefingEntryFromLocation = () => {
     const numericStep = rawStep === null ? undefined : Number(rawStep);
     return {
         tourId: params.get('tour') || undefined,
-        nodeId: params.get('actor') || undefined,
+        nodeId: resolveActorId(params.get('actor'), undefined),
         step: Number.isInteger(numericStep) && numericStep >= 1 ? numericStep : undefined,
     };
 };
@@ -96,6 +98,16 @@ const categoryColors = {
     'Culture & Entertainment': '#ff00ff'
 };
 
+const ACCESSIBLE_TEXT_ACCENTS = {
+    '#ff0066': '#ff5c99',
+    '#cc0000': '#ff6b6b',
+    '#ff00ff': '#f472ff',
+};
+
+const getAccessibleTextAccent = hex => ACCESSIBLE_TEXT_ACCENTS[String(hex || '').toLowerCase()] || hex;
+
+const DEFAULT_MINERALS = criticalMineralsCatalog.minerals;
+
 
 class NexusErrorBoundary extends React.Component {
     constructor(props) { super(props); this.state = { error: null, info: null }; }
@@ -126,12 +138,11 @@ class NexusErrorBoundary extends React.Component {
 function App() {
     const { user, showModal, authError, openModal, closeModal } = useAuth();
     const [forecasts, setForecasts] = useState([]);
-    const [filteredForecasts, setFilteredForecasts] = useState([]);
     const [selectedCategory, setSelectedCategory] = useState('All');
     const [selectedForecast, setSelectedForecast] = useState(null);
     const [selectedTheory, setSelectedTheory] = useState('Realism');
     const [viewMode, setViewMode] = useState(getViewFromLocation);
-    const [nexusEntry, setNexusEntry] = useState(() => ({ nodeId: new URLSearchParams(window.location.search).get('actor') || 'USA' }));
+    const [nexusEntry, setNexusEntry] = useState(() => ({ nodeId: resolveActorId(new URLSearchParams(window.location.search).get('actor'), 'USA') }));
     const [briefingEntry, setBriefingEntry] = useState(getBriefingEntryFromLocation);
 
     const [stressLevel, setStressLevel] = useState(0);
@@ -139,7 +150,7 @@ function App() {
     const [showConnections, setShowConnections] = useState(false);
     const [arcClickedInfo, setArcClickedInfo] = useState(null);
     const [keyMetrics, setKeyMetrics] = useState({});
-    const [minerals, setMinerals] = useState({});
+    const [minerals, setMinerals] = useState(() => ({ ...DEFAULT_MINERALS }));
     const [showMineralsModal, setShowMineralsModal] = useState(false);
     const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
     const [legendCollapsed, setLegendCollapsed] = useState(true);
@@ -168,6 +179,9 @@ function App() {
     const [showEditorialCases, setShowEditorialCases] = useState(true);
     const [preferencesHydratedFor, setPreferencesHydratedFor] = useState(null);
     const [globeReady, setGlobeReady] = useState(false); // loading skeleton
+    const [mobileGlobeEnabled, setMobileGlobeEnabled] = useState(() => (
+        typeof window !== 'undefined' ? !window.matchMedia?.('(max-width: 767px)').matches : true
+    ));
     const [feedPage, setFeedPage] = useState(1); // Intel Feed pagination
     const FEED_PAGE_SIZE = 40;
     const globeEl = useRef();
@@ -220,7 +234,7 @@ function App() {
         const handleHistory = () => {
             const params = new URLSearchParams(window.location.search);
             setViewMode(getViewFromLocation());
-            setNexusEntry({ nodeId: params.get('actor') || 'USA' });
+            setNexusEntry({ nodeId: resolveActorId(params.get('actor'), 'USA') });
             setBriefingEntry(getBriefingEntryFromLocation());
         };
         window.addEventListener('popstate', handleHistory);
@@ -301,22 +315,38 @@ function App() {
         return () => clearTimeout(syncTimer);
     }, [selectedTheory, selectedCategory, timelineYear, stressLevel, sidebarCollapsed, showEditorialCases, largeText, reducedEffects, metricsCollapsed, preferencesHydratedFor, user?.id]);
 
-    // Initialize globe
+    // Auto-enable 3D Globe if viewport expands to tablet/desktop (>= 768px)
     useEffect(() => {
-        if (viewMode !== 'globe' || globeEl.current) return undefined;
+        if (mobileGlobeEnabled || typeof window === 'undefined' || !window.matchMedia) return undefined;
+        const mql = window.matchMedia('(min-width: 768px)');
+        const onChange = (e) => { if (e.matches) setMobileGlobeEnabled(true); };
+        if (mql.matches) {
+            setMobileGlobeEnabled(true);
+            return undefined;
+        }
+        mql.addEventListener?.('change', onChange);
+        return () => mql.removeEventListener?.('change', onChange);
+    }, [mobileGlobeEnabled]);
+
+    // Initialize globe (auto-mounted on >=768px; 1-tap opt-in on mobile <768px)
+    useEffect(() => {
+        if (viewMode !== 'globe' || !mobileGlobeEnabled || globeEl.current) return undefined;
         if (!globeContainer.current) return undefined;
         let cancelled = false;
 
         import('globe.gl').then(({ default: Globe }) => {
             if (cancelled || !globeContainer.current) return;
             const globe = Globe()(globeContainer.current)
-                .globeImageUrl('https://unpkg.com/three-globe/example/img/earth-night.jpg')
-                .backgroundImageUrl('https://unpkg.com/three-globe/example/img/night-sky.png')
+                .globeImageUrl('/assets/globe/earth-night.jpg')
+                .backgroundImageUrl('/assets/globe/night-sky.jpg')
                 .atmosphereColor('#0088ff')
                 .atmosphereAltitude(0.15)
                 .showGraticules(false);
 
             globeEl.current = globe;
+            if (window.matchMedia?.('(max-width: 767px)').matches) {
+                globe.renderer?.()?.setPixelRatio?.(Math.min(window.devicePixelRatio || 1, 1.5));
+            }
 
             // Set globe renderer to match container (not window) dimensions
             const cw = globeContainer.current.offsetWidth || 600;
@@ -324,8 +354,8 @@ function App() {
             globe.width(cw).height(ch);
             globe.pointOfView({ lat: 40, lng: 30, altitude: 2.5 });
 
-            // Load country boundaries GeoJSON
-            fetch('https://cdn.jsdelivr.net/npm/world-atlas@2/countries-110m.json')
+            // Load bundled country boundaries TopoJSON (no third-party CDN fallback)
+            fetch('/assets/globe/countries-110m.json')
                 .then(res => res.json())
                 .then(worldData => {
                     const countries = topojson.feature(worldData, worldData.objects.countries).features;
@@ -338,19 +368,7 @@ function App() {
                             .polygonStrokeColor(() => 'rgba(0, 255, 255, 0.3)');
                     }
                 })
-                .catch(() => {
-                    fetch('https://raw.githubusercontent.com/datasets/geo-countries/master/data/countries.geojson')
-                        .then(r => r.json())
-                        .then(geoData => {
-                            globe
-                                .polygonsData(geoData.features)
-                                .polygonAltitude(0.005)
-                                .polygonCapColor(() => 'rgba(0, 255, 255, 0.02)')
-                                .polygonSideColor(() => 'rgba(0, 255, 255, 0.05)')
-                                .polygonStrokeColor(() => 'rgba(0, 255, 255, 0.3)');
-                        })
-                        .catch(e => console.log('Country borders unavailable:', e.message));
-                });
+                .catch(e => console.warn('Bundled country borders unavailable:', e.message));
             setGlobeReady(true);
         }).catch((err) => {
             console.error('[Globe] Initialization failed:', err);
@@ -358,7 +376,7 @@ function App() {
         });
 
         return () => { cancelled = true; };
-    }, [viewMode]);
+    }, [viewMode, mobileGlobeEnabled]);
 
     // Keep the WebGL renderer aligned with the responsive workspace. Globe.gl
     // only reads its initial dimensions, so drawer, zoom, and metrics changes
@@ -391,6 +409,20 @@ function App() {
             window.removeEventListener('resize', resizeGlobe);
             if (resizeFrame) cancelAnimationFrame(resizeFrame);
         };
+    }, [viewMode, globeReady]);
+
+    // Pause WebGL render loop and orbit controls whenever the Globe workspace is hidden
+    useEffect(() => {
+        const globe = globeEl.current;
+        if (!globe) return;
+        const controls = typeof globe.controls === 'function' ? globe.controls() : null;
+        if (viewMode === 'globe') {
+            globe.resumeAnimation?.();
+            if (controls) controls.enabled = true;
+        } else {
+            globe.pauseAnimation?.();
+            if (controls) controls.enabled = false;
+        }
     }, [viewMode, globeReady]);
 
 
@@ -502,7 +534,6 @@ function App() {
             const sourceSummary = summarizeIntelSources(combinedData, providerMeta);
             setIntelMeta({ ...providerMeta, ...sourceSummary });
             setForecasts(combinedData);
-            setFilteredForecasts(combinedData);
 
             if (globeEl.current) {
                 const points = combinedData.map(item => ({
@@ -616,6 +647,13 @@ function App() {
         if (!url) return;
         setDeepScanResult(null);
         setAiSummary(null);
+        if (!user) {
+            setDeepScanResult({
+                error: 'Sign in with a magic link to run Firecrawl article extraction and AI intelligence briefs.',
+                requiresAuth: true,
+            });
+            return;
+        }
         setDeepScanLoading(true);
         try {
             const res = await secureFetch('/.netlify/functions/deep-scan', {
@@ -625,58 +663,37 @@ function App() {
                 signal: AbortSignal.timeout(30000)
             });
             const data = await res.json();
+            if (res.status === 401) {
+                setDeepScanResult({
+                    error: data?.error || 'Your session expired. Sign in again to run Deep Scan.',
+                    requiresAuth: true,
+                });
+                return;
+            }
             setDeepScanResult(data);
             // Auto-trigger AI summary once article is extracted
             if (!data.error && (data.content || data.title)) {
                 handleAiSummary(data.content, data.title, url);
             }
         } catch (e) {
-            setDeepScanResult({ error: 'Deep scan unavailable' });
+            const needsSignIn = /sign in/i.test(e?.message || '');
+            setDeepScanResult({
+                error: needsSignIn
+                    ? 'Sign in with a magic link to run Firecrawl article extraction and AI intelligence briefs.'
+                    : 'Deep scan unavailable. Please try again later.',
+                requiresAuth: needsSignIn,
+            });
         } finally {
             setDeepScanLoading(false);
         }
     };
 
-    // (Student pins removed — setStudentPins was never declared)
-
-    // ── Live News Scan: tries Netlify fn first, falls back to direct Serper call ──
+    // ── Live News Scan: authenticated server-side query via Netlify function ──
     const fetchLiveNews = async (queryOverride) => {
         setNewsScanLoading(true);
         setNewsScanError(null);
 
         const query = queryOverride || newsQuery || 'geopolitical crisis conflict war sanctions sovereignty 2026';
-
-        // Country → coords map for frontend fallback
-        const COORDS = {
-            'united states': [38.9, -77.0], 'usa': [38.9, -77.0], 'russia': [55.7, 37.6],
-            'ukraine': [50.4, 30.5], 'china': [39.9, 116.4], 'israel': [31.8, 35.2],
-            'iran': [35.7, 51.4], 'north korea': [39.0, 125.7], 'taiwan': [25.0, 121.5],
-            'india': [28.6, 77.2], 'pakistan': [33.7, 73.1], 'saudi arabia': [24.7, 46.7],
-            'turkey': [39.9, 32.9], 'europe': [50.0, 10.0], 'germany': [52.5, 13.4],
-            'france': [48.9, 2.3], 'uk': [51.5, -0.1], 'united kingdom': [51.5, -0.1],
-            'brazil': [-15.8, -47.9], 'africa': [0, 25], 'egypt': [30.0, 31.2],
-            'syria': [33.5, 36.3], 'iraq': [33.3, 44.4], 'afghanistan': [34.5, 69.2],
-            'japan': [35.7, 139.7], 'south korea': [37.6, 127.0], 'venezuela': [10.5, -66.9],
-            'gaza': [31.5, 34.5], 'lebanon': [33.9, 35.5], 'yemen': [15.4, 44.2],
-            'myanmar': [19.7, 96.1], 'philippines': [14.6, 121.0], 'thailand': [13.7, 100.5],
-        };
-        const inferCoords = (text) => {
-            const t = text.toLowerCase();
-            for (const [name, coords] of Object.entries(COORDS)) {
-                if (t.includes(name)) return { lat: coords[0] + (Math.random() - 0.5) * 2, lng: coords[1] + (Math.random() - 0.5) * 2 };
-            }
-            return null;
-        };
-        const inferCategory = (text) => {
-            const t = text.toLowerCase();
-            if (/war|military|nuclear|coup|missile|conflict|troops/.test(t)) return 'Geopolitics & Conflict';
-            if (/sanction|tariff|trade|inflation|gdp|currency/.test(t)) return 'Economy & Trade';
-            if (/climate|energy|oil|solar|emissions/.test(t)) return 'Environment & Energy';
-            if (/pandemic|health|disease|refugee/.test(t)) return 'Health & Society';
-            if (/tech|ai|cyber|space/.test(t)) return 'Technology & Science';
-            return 'Geopolitics & Conflict';
-        };
-
         let path1Error = null;
         try {
             // 1. Try Netlify function first
@@ -805,20 +822,20 @@ function App() {
         return clusters;
     };
 
-    // Update Globe Points (including Student Pins)
+    // Derive filtered forecasts independently of WebGL globe initialization
+    const filteredForecasts = useMemo(() => filterIntelForecasts({
+        forecasts,
+        historicalData,
+        selectedCategory,
+        timelineYear,
+        globeNewsOnly,
+    }), [forecasts, historicalData, selectedCategory, timelineYear, globeNewsOnly]);
+
+    // Update Globe Points
     const updateGlobeData = () => {
         if (!globeEl.current) return;
 
-        // News-only filtering takes precedence; every other feed filter shares one tested path.
-        const filtered = filterIntelForecasts({
-            forecasts,
-            historicalData,
-            selectedCategory,
-            timelineYear,
-            globeNewsOnly,
-        });
-
-        setFilteredForecasts(filtered);
+        const filtered = filteredForecasts;
 
         // Theory lens coloring
         const getPointColor = (item, baseColor) => {
@@ -1023,7 +1040,7 @@ function App() {
 
     useEffect(() => {
         updateGlobeData();
-    }, [selectedCategory, forecasts, stressLevel, theoryLens, timelineYear, historicalData, globeNewsOnly, showEditorialCases, globeReady, viewMode]);
+    }, [filteredForecasts, stressLevel, theoryLens, showEditorialCases, globeReady, viewMode]);
 
     // Filter logic moved to updateGlobeData
 
@@ -1085,7 +1102,7 @@ function App() {
             <a href="#main-workspace" className="skip-nav">Skip to main content</a>
             {showModal && <AuthModal onClose={closeModal} initialError={authError} />}
             {/* Loading skeleton while globe initializes */}
-            {viewMode === 'globe' && !globeReady && (
+            {viewMode === 'globe' && mobileGlobeEnabled && !globeReady && (
                 <div className="globe-loading-overlay" role="status" aria-label="Loading globe">
                     <div className="globe-loading-spinner">⬢</div>
                     <div className="globe-loading-text">INITIALIZING COMMAND CENTER...</div>
@@ -1132,10 +1149,17 @@ function App() {
                             href="https://glopocompanion.netlify.app/"
                             target="_blank"
                             rel="noopener noreferrer"
-                            className="companion-btn"
+                            className="companion-btn companion-btn--header"
+                            aria-label="Launch GloPo Companion in a new tab"
                         >
-                            LAUNCH GLOPO COMPANION
+                            GLOPO GPT ↗
                         </a>
+                        <AuthBadge
+                            user={user}
+                            onSignInClick={openModal}
+                            triggerId="gcc-signin-header-trigger"
+                            className="auth-badge-wrapper--header"
+                        />
                         <details className="header-tools">
                             <summary>TOOLS &amp; DISPLAY</summary>
                             <div className="header-tools-panel">
@@ -1168,13 +1192,27 @@ function App() {
                                         </button>
                                     )}
                                 </div>
+                        <a
+                            href="https://glopocompanion.netlify.app/"
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="companion-btn companion-btn--menu"
+                            aria-label="Launch GloPo Companion in a new tab"
+                        >
+                            GLOPO COMPANION GPT ↗
+                        </a>
                         <button
                             className="credits-link"
                             onClick={() => attributionRef.current?.scrollIntoView({ behavior: 'smooth' })}
                         >
                             CREDITS & LICENSE
                         </button>
-                        <AuthBadge user={user} onSignInClick={openModal} />
+                        <AuthBadge
+                            user={user}
+                            onSignInClick={openModal}
+                            triggerId="gcc-signin-trigger"
+                            className="auth-badge-wrapper--menu"
+                        />
                         {viewMode === 'globe' && <>
                         <span className={`live-indicator ${['provider', 'public-cache'].includes(intelSummary.sourceMode) ? '' : 'reference-mode'}`}>
                             {intelLoading
@@ -1293,10 +1331,54 @@ function App() {
                 <div id="main-workspace" className={`main-content main-content--${viewMode}${sidebarCollapsed ? ' main-content--feed-collapsed' : ''}`} role="main" tabIndex="-1">
                     {/* Globe Center Stage */}
                     <GlobeErrorBoundary>
-                    <div className={`globe-container ${stressLevel > 70 ? 'critical-vignette' : ''}`} style={viewMode !== 'globe' ? { display: 'none' } : {}}>
-                        <div ref={globeContainer} style={{ width: '100%', height: '100%', display: viewMode === 'globe' ? 'block' : 'none' }} />
+                    <div className={`globe-container ${stressLevel > 70 ? 'critical-vignette' : ''}${!mobileGlobeEnabled ? ' globe-container--mobile-optin' : ''}`} style={viewMode !== 'globe' ? { display: 'none' } : {}}>
+                        <div ref={globeContainer} style={{ width: '100%', height: '100%', display: viewMode === 'globe' && mobileGlobeEnabled ? 'block' : 'none' }} />
+                        {viewMode === 'globe' && !mobileGlobeEnabled && (
+                            <div className="mobile-globe-optin-card">
+                                <div className="mobile-globe-optin-badge">⬢ MOBILE COMMAND BRIEF</div>
+                                <h2 className="mobile-globe-optin-title">GLOBAL ISSUES &amp; CASE MAP</h2>
+                                <p className="mobile-globe-optin-copy">
+                                    {forecasts.length} tracked records and {CASE_STUDIES_2026.length} sourced editorial case studies ready below. Load the interactive 3D WebGL globe on demand to save battery and mobile data.
+                                </p>
+                                <div className="mobile-globe-optin-actions">
+                                    <button
+                                        type="button"
+                                        className="mobile-globe-load-btn"
+                                        onClick={() => setMobileGlobeEnabled(true)}
+                                    >
+                                        🌐 LOAD 3D GLOBE
+                                    </button>
+                                    <button
+                                        type="button"
+                                        className="mobile-jump-feed-btn"
+                                        onClick={() => {
+                                            setSidebarCollapsed(false);
+                                            requestAnimationFrame(() => {
+                                                document.getElementById('intel-feed')?.scrollIntoView({ behavior: 'smooth' });
+                                            });
+                                        }}
+                                    >
+                                        ↓ JUMP TO INTEL FEED
+                                    </button>
+                                </div>
+                            </div>
+                        )}
+                        {viewMode === 'globe' && mobileGlobeEnabled && (
+                            <button
+                                type="button"
+                                className="mobile-floating-feed-jump"
+                                onClick={() => {
+                                    setSidebarCollapsed(false);
+                                    requestAnimationFrame(() => {
+                                        document.getElementById('intel-feed')?.scrollIntoView({ behavior: 'smooth' });
+                                    });
+                                }}
+                            >
+                                ↓ JUMP TO INTEL FEED
+                            </button>
+                        )}
                         
-                        {viewMode === 'globe' && (
+                        {viewMode === 'globe' && mobileGlobeEnabled && (
                             <div className="globe-overlay">
                                 <div className="globe-title">GLOBAL ISSUES & CASE MAP</div>
                                 <button
@@ -1317,7 +1399,7 @@ function App() {
 
 
                         {/* Node Key & Theory Lens — collapsible compact panel */}
-                        {viewMode === 'globe' && (
+                        {viewMode === 'globe' && mobileGlobeEnabled && (
                         <div className="arc-legend" style={{ maxHeight: legendCollapsed ? '48px' : 'min(70vh, 540px)', overflow: 'hidden', transition: 'max-height 0.3s ease' }}>
                             <button
                                 type="button"
@@ -1380,7 +1462,7 @@ function App() {
                                                 <button
                                                     key={key}
                                                     type="button"
-                                                    className="theory-btn"
+                                                    className={`legend-theory-btn ${isActive ? 'active' : ''}`}
                                                     onClick={() => setTheoryLens(isActive ? null : key)}
                                                     aria-pressed={isActive}
                                                     style={{
@@ -1553,10 +1635,10 @@ function App() {
                                             : intelSummary.sourceMode === 'public-cache'
                                                 ? `${intelSummary.feedStatus === 'stale' ? '◐' : '●'} ${intelSummary.liveItemCount} ${intelSummary.feedStatus === 'stale' ? 'STALE' : 'CACHED'} CURRENT · ${intelLastUpdated.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' })}`
                                                 : intelSummary.feedStatus === 'not-configured'
-                                                    ? `△ CURRENT FEED NOT CONFIGURED · ${intelSummary.linkedReferenceCount} PUBLIC SOURCES`
+                                                    ? `△ CURRENT FEED NOT CONFIGURED · ${CASE_STUDIES_2026.length} CASES + ${intelSummary.linkedReferenceCount} PUBLIC SOURCES`
                                                     : ['unavailable', 'network-error'].includes(intelSummary.feedStatus)
-                                                        ? `△ CURRENT FEED UNAVAILABLE · ${intelSummary.linkedReferenceCount} PUBLIC SOURCES`
-                                                        : `○ PUBLIC REFERENCE MODE · ${intelSummary.linkedReferenceCount} LINKED SOURCES`}
+                                                        ? `△ CURRENT FEED UNAVAILABLE · ${CASE_STUDIES_2026.length} CASES + ${intelSummary.linkedReferenceCount} PUBLIC SOURCES`
+                                                        : `○ PUBLIC REFERENCE MODE · ${CASE_STUDIES_2026.length} CASES + ${intelSummary.linkedReferenceCount} LINKED SOURCES`}
                                     </span>
                                     {intelSummary.liveItemCount > 0 && intelSummary.coverage && (
                                         <div className="intel-coverage-summary" aria-label="Current intelligence coverage">
@@ -1621,56 +1703,64 @@ function App() {
                                     )}
                                 </div>
                             ) : feedItems.slice(0, feedPage * FEED_PAGE_SIZE).map((forecast, idx) => (
-                                <div
+                                <article
                                     key={`${forecast.caseStudyId || forecast.url || forecast['Entity/Subject'] || forecast['Topic/Sector'] || 'forecast'}-${idx}`}
                                     className={`intel-card ${selectedForecast === forecast ? 'selected' : ''} ${forecast.isLive ? 'live-item' : ''} ${forecast.isEditorial ? 'editorial-item' : ''}`}
-                                    onClick={() => setSelectedForecast(forecast)}
-                                    onKeyDown={(event) => {
-                                        if (event.key === 'Enter' || event.key === ' ') {
-                                            event.preventDefault();
-                                            setSelectedForecast(forecast);
-                                        }
-                                    }}
-                                    role="button"
-                                    tabIndex="0"
-                                    aria-label={`Open intelligence detail: ${forecast['Entity/Subject'] || forecast['Topic/Sector']}`}
                                     style={{ borderLeftColor: forecast.isHistorical ? '#ffcc00' : forecast.isLive ? '#00ffff' : forecast.isEditorial ? '#b69cff' : categoryColors[forecast.Broad_Category] }}
                                 >
-                                    {forecast.isLive && <div className="live-tag">● {forecast._scraperSource === 'serper-public-cache' ? 'CACHED CURRENT' : 'LIVE INTEL'}</div>}
-                                    {forecast.isLive && forecast.coverage && (
-                                        <div className="coverage-badges" aria-label="Coverage classification">
-                                            <span>{forecast.coverage.region}</span>
-                                            <span>{forecast.coverage.issue}</span>
-                                            <span>{forecast.coverage.sourceRoleLabel}</span>
+                                    <button
+                                        type="button"
+                                        className="intel-card-trigger"
+                                        onClick={() => setSelectedForecast(forecast)}
+                                    >
+                                        {forecast.isLive && <span className="live-tag">● {forecast._scraperSource === 'serper-public-cache' ? 'CACHED CURRENT' : 'LIVE INTEL'}</span>}
+                                        {forecast.isLive && forecast.coverage && (
+                                            <span className="coverage-badges" aria-label="Coverage classification">
+                                                <span>{forecast.coverage.region}</span>
+                                                <span>{forecast.coverage.issue}</span>
+                                                <span>{forecast.coverage.sourceRoleLabel}</span>
+                                            </span>
+                                        )}
+                                        {forecast.isCaseStudy
+                                            ? <span className="case-study-tag">◆ CASE BRIEF · {forecast.updatedAt}</span>
+                                            : forecast.isEditorial && <span className="context-tag">◆ DATED CONTEXT</span>}
+                                        {forecast.isReference && !forecast.isEditorial && !forecast.isCaseStudy && (
+                                            <span className="reference-tag">
+                                                {forecast.url ? '◇ PUBLIC SOURCE' : '◇ LEGACY REFERENCE'}
+                                            </span>
+                                        )}
+                                        {forecast.isHistorical && <span className="live-tag" style={{ background: '#ffcc0022', color: '#ffcc00', borderColor: '#ffcc0044' }}>📅 {timelineYear}</span>}
+                                        <span className="card-category" style={{ color: forecast.isHistorical ? '#ffcc00' : forecast.isLive ? '#00ffff' : getAccessibleTextAccent(categoryColors[forecast.Broad_Category]) }}>
+                                            {forecast.Broad_Category}
+                                        </span>
+                                        <span className="card-title">{forecast.isCaseStudy ? forecast['Entity/Subject'] : forecast['Topic/Sector']}</span>
+                                        <span className="card-timeline">⏱ {forecast.isCaseStudy ? `${forecast.regionTags?.join(' · ')} · ${forecast.Timeline}` : forecast.Timeline}</span>
+                                        <span className="card-impact">{(forecast.isCaseStudy ? forecast.statusSummary : forecast['Expected Impact/Value'])?.substring(0, 120)}...</span>
+                                    </button>
+                                    {(forecast.url || forecast.caseStudyId) && (
+                                        <div className="card-actions">
+                                            {forecast.url && (
+                                                <a
+                                                    href={forecast.url}
+                                                    target="_blank"
+                                                    rel="noopener noreferrer"
+                                                    className="card-link"
+                                                >
+                                                    OPEN SOURCE ↗
+                                                </a>
+                                            )}
+                                            {forecast.caseStudyId && (
+                                                <button
+                                                    type="button"
+                                                    className="card-briefing-btn"
+                                                    onClick={() => openBriefing(forecast.caseStudyId)}
+                                                >
+                                                    BRIEFING →
+                                                </button>
+                                            )}
                                         </div>
                                     )}
-                                    {forecast.isCaseStudy
-                                        ? <div className="case-study-tag">◆ VERIFIED CASE · {forecast.updatedAt}</div>
-                                        : forecast.isEditorial && <div className="context-tag">◆ DATED CONTEXT</div>}
-                                    {forecast.isReference && !forecast.isEditorial && !forecast.isCaseStudy && (
-                                        <div className="reference-tag">
-                                            {forecast.url ? '◇ PUBLIC SOURCE' : '◇ LEGACY REFERENCE'}
-                                        </div>
-                                    )}
-                                    {forecast.isHistorical && <div className="live-tag" style={{ background: '#ffcc0022', color: '#ffcc00', borderColor: '#ffcc0044' }}>📅 {timelineYear}</div>}
-                                    <div className="card-category" style={{ color: forecast.isHistorical ? '#ffcc00' : forecast.isLive ? '#00ffff' : categoryColors[forecast.Broad_Category] }}>
-                                        {forecast.Broad_Category}
-                                    </div>
-                                    <div className="card-title">{forecast.isCaseStudy ? forecast['Entity/Subject'] : forecast['Topic/Sector']}</div>
-                                    <div className="card-timeline">⏱ {forecast.isCaseStudy ? `${forecast.regionTags?.join(' · ')} · ${forecast.Timeline}` : forecast.Timeline}</div>
-                                    <div className="card-impact">{(forecast.isCaseStudy ? forecast.statusSummary : forecast['Expected Impact/Value'])?.substring(0, 120)}...</div>
-                                    {forecast.url && (
-                                        <a
-                                            href={forecast.url}
-                                            target="_blank"
-                                            rel="noopener noreferrer"
-                                            className="card-link"
-                                            onClick={(e) => e.stopPropagation()}
-                                        >
-                                            OPEN SOURCE ↗
-                                        </a>
-                                    )}
-                                </div>
+                                </article>
                             ))}
                             {/* Show More button for pagination */}
                             {feedPage * FEED_PAGE_SIZE < feedItems.length && (
@@ -1846,24 +1936,28 @@ function App() {
             }}>
                 <div style={{ marginBottom: '30px', maxWidth: '600px', margin: '0 auto 30px auto' }}>
                     <p style={{ color: '#00ffff', fontSize: '12px', fontWeight: 'bold', letterSpacing: '2px', marginBottom: '10px' }}>NON-COMMERCIAL ACADEMIC TOOL</p>
-                    <p style={{ color: '#fff', fontSize: '11px', opacity: '0.7', lineHeight: '1.6' }}>
-                        This project is a 100% academic tool created by **Stephen Martinez (Project Lead & IB Global Politics Teacher)**
+                    <p style={{ color: '#d4dde6', fontSize: '12px', lineHeight: '1.65' }}>
+                        This project is a 100% academic tool created by <strong>Stephen Martinez (Project Lead &amp; IB Global Politics Teacher)</strong>{' '}
                         to support scholars in the IB Global Politics 2026 Syllabus.
                         It is not a commercial product and provides free pedagogical resources.
                     </p>
                 </div>
                 <div style={{ marginBottom: '30px' }}>
                     <a href="/CODE_OF_CONDUCT.md" style={{
-                        color: '#fff',
-                        background: '#ff00ff',
+                        display: 'inline-flex',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        minHeight: '44px',
+                        color: '#ffffff',
+                        background: '#7a0099',
                         padding: '12px 20px',
                         textDecoration: 'none',
                         fontSize: '14px',
                         fontWeight: '900',
                         letterSpacing: '2px',
                         borderRadius: '0',
-                        border: '2px solid #fff',
-                        boxShadow: '0 0 20px #ff00ff'
+                        border: '2px solid #ffffff',
+                        boxShadow: '0 0 20px rgba(255, 0, 255, 0.55)'
                     }}>
                         OPEN ACCESS CODE OF CONDUCT
                     </a>
@@ -1885,7 +1979,9 @@ function App() {
                     }}
                 >
                     <img
-                        src="https://www.netlify.com/img/global/badges/netlify-color-accent.svg"
+                        src="/assets/netlify-badge-color-accent.svg"
+                        width="114"
+                        height="50"
                         alt="Deploys by Netlify"
                         style={{ height: '35px', width: 'auto' }}
                     />
@@ -1910,7 +2006,7 @@ function App() {
                                 className="modal-header"
                                 style={{ borderBottomColor: categoryColors[selectedForecast.Broad_Category] }}
                             >
-                                <span className="modal-category" style={{ color: categoryColors[selectedForecast.Broad_Category] }}>
+                                <span className="modal-category" style={{ color: getAccessibleTextAccent(categoryColors[selectedForecast.Broad_Category]) }}>
                                     {selectedForecast.Broad_Category}
                                 </span>
                                 <h2 id="forecast-dialog-title">{selectedForecast.isCaseStudy ? selectedForecast['Entity/Subject'] : selectedForecast['Topic/Sector']}</h2>
@@ -2060,7 +2156,7 @@ function App() {
                                     </div>
                                     <div className="theory-content" style={{ borderColor: theories[selectedTheory].color }}>
                                         <div className="theory-meta">
-                                            <span className="theory-name" style={{ color: theories[selectedTheory].color }}>{selectedTheory}</span>
+                                            <span className="theory-name" style={{ color: getAccessibleTextAccent(theories[selectedTheory].color) }}>{selectedTheory}</span>
                                             <p className="theory-desc">{theories[selectedTheory].description}</p>
                                         </div>
                                         <div className="theory-interpretation">
@@ -2270,7 +2366,18 @@ function App() {
                                             </details>
                                         )}
                                         {deepScanResult?.error && (
-                                            <div className="scan-error"><span>⚠</span> {deepScanResult.error}</div>
+                                            <div className={`scan-error${deepScanResult.requiresAuth ? ' scan-error--auth' : ''}`} role="alert">
+                                                <span>{deepScanResult.requiresAuth ? '🔒' : '⚠'} {deepScanResult.error}</span>
+                                                {deepScanResult.requiresAuth && (
+                                                    <button
+                                                        type="button"
+                                                        className="deep-scan-signin-cta"
+                                                        onClick={openModal}
+                                                    >
+                                                        SIGN IN TO UNLOCK →
+                                                    </button>
+                                                )}
+                                            </div>
                                         )}
                                     </div>
                                 )}
@@ -2295,43 +2402,51 @@ function App() {
                                     <tr>
                                         <th>SYMBOL</th>
                                         <th>MINERAL</th>
-                                        <th>LIVE PRICE</th>
+                                        <th>BENCHMARK / STATUS</th>
                                         <th>PRIMARY ORIGINS</th>
                                         <th>MAJOR PLAYERS</th>
                                     </tr>
                                 </thead>
                                 <tbody>
                                     {[
-                                        { key: 'gold', name: 'Gold', color: '#ffd700' },
-                                        { key: 'silver', name: 'Silver', color: '#c0c0c0' },
-                                        { key: 'lithium', name: 'Lithium', color: '#00ccff' },
-                                        { key: 'cobalt', name: 'Cobalt', color: '#9966ff' },
-                                        { key: 'copper', name: 'Copper', color: '#ff9900' },
-                                        { key: 'rareEarths', name: 'Rare Earths', color: '#00ff88' }
-                                    ].map(m => (
-                                        <tr key={m.key}>
-                                            <td>
-                                                <span className="table-symbol" style={{ color: m.color, textShadow: `0 0 8px ${m.color}44` }}>
-                                                    {minerals[m.key]?.symbol || m.key.substring(0, 2).toUpperCase()}
-                                                </span>
-                                            </td>
-                                            <td className="mineral-name">{m.name}</td>
-                                            <td>
-                                                <span className="table-price" style={{ color: m.color }}>
-                                                    {minerals[m.key]?.price || 'N/A'}
-                                                    {minerals[m.key]?.unit && minerals[m.key]?.price && !minerals[m.key]?.price?.includes('/') && (
-                                                        <span className="price-unit">{minerals[m.key].unit}</span>
-                                                    )}
-                                                </span>
-                                            </td>
-                                            <td className="origins-cell">{minerals[m.key]?.origins || '—'}</td>
-                                            <td className="players-cell">{minerals[m.key]?.players || '—'}</td>
-                                        </tr>
-                                    ))}
+                                        { key: 'gold', symbol: 'Au', name: 'Gold', color: '#ffd700' },
+                                        { key: 'silver', symbol: 'Ag', name: 'Silver', color: '#c0c0c0' },
+                                        { key: 'lithium', symbol: 'Li', name: 'Lithium', color: '#00ccff' },
+                                        { key: 'cobalt', symbol: 'Co', name: 'Cobalt', color: '#9966ff' },
+                                        { key: 'copper', symbol: 'Cu', name: 'Copper', color: '#ff9900' },
+                                        { key: 'rareEarths', symbol: 'REE', name: 'Rare Earths', color: '#00ff88' }
+                                    ].map(m => {
+                                        const entry = { ...DEFAULT_MINERALS[m.key], ...(minerals[m.key] || {}) };
+                                        return (
+                                            <tr key={m.key}>
+                                                <td>
+                                                    <span className="table-symbol" style={{ color: m.color, textShadow: `0 0 8px ${m.color}44` }}>
+                                                        {entry.symbol || m.symbol}
+                                                    </span>
+                                                </td>
+                                                <td className="mineral-name">{m.name}</td>
+                                                <td>
+                                                    <span className="table-price" style={{ color: m.color }}>
+                                                        {entry.price || DEFAULT_MINERALS[m.key].price}
+                                                        {entry.unit && entry.price && !entry.price.includes('/') && !entry.price.includes('ref') && (
+                                                            <span className="price-unit">{entry.unit}</span>
+                                                        )}
+                                                    </span>
+                                                </td>
+                                                <td className="origins-cell">{entry.origins || '—'}</td>
+                                                <td className="players-cell">{entry.players || '—'}</td>
+                                            </tr>
+                                        );
+                                    })}
                                 </tbody>
                             </table>
                             <div className="minerals-footer">
-                                <span>⟳ Prices scraped via Serper API • 30-min cache</span>
+                                <span>
+                                    📊 {criticalMineralsCatalog.asOf} reference baselines —{' '}
+                                    <a href={criticalMineralsCatalog.sourceUrl} target="_blank" rel="noopener noreferrer" style={{ color: '#5eead4' }}>
+                                        {criticalMineralsCatalog.sourceLabel} ↗
+                                    </a>
+                                </span>
                                 <span>Data for educational purposes only</span>
                             </div>
                         </div>

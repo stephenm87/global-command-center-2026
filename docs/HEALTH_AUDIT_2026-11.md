@@ -403,7 +403,7 @@ Extract in 5 incremental commits, adding/running protecting tests (`npm test && 
 
 - **Dead / Duplicate Files to Remove (`4.3 MB` total):**
   1. `netlify/functions/fetch-intel.js` (`22 KB` — orphaned authenticated Serper/GNews function superseded by `public-intel.mjs`; retire together with `netlify/functions/__tests__/fetch-intel.node.test.js` and `GNEWS_API_KEY` in `.env.example:12` / `docs/ENVIRONMENT.md:15`)
-  2. `public/context-cards/*.png` (`3.9 MB` — 5 unreferenced 1927–1936 Chinese history cards shipped to `dist/`)
+  2. `public/context-cards/` (`3.9 MB` — `index.html` printable handout + 5 unreferenced 1927–1936 Republican China JPG portraits shipped to `dist/`)
   3. `src/GlobalRelationsNexus.jsx.backup` (`100 KB`) & `src/GlobalRelationsNexus.jsx.full` (`96 KB`)
   4. Root `Global_Forecasts_2026_Enriched.csv` (`70 KB` — exact duplicate of `public/Global_Forecasts_2026_Enriched.csv`)
   5. `deno.lock` (`24 B`), `public/news_brief.json` (`1.6 KB`), `src/nexusNarrative.js` (`6.8 KB`), and dead `COORDS`/`inferCoords`/`inferCategory` (`src/App.jsx:644-672`).

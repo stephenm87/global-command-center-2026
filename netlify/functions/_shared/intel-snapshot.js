@@ -111,6 +111,29 @@ const SOURCE_ROLE_LABELS = Object.freeze({
     discovery: 'Additional discovery source',
 });
 
+const criticalMineralsCatalog = require('../../../src/data/criticalMinerals.json');
+
+const MINERAL_REFERENCE = Object.freeze(criticalMineralsCatalog.minerals);
+
+function buildMineralBaseline() {
+    return Object.fromEntries(
+        Object.entries(MINERAL_REFERENCE).map(([key, entry]) => [
+            key,
+            {
+                symbol: entry.symbol,
+                price: String(entry.price || '').trim(),
+                unit: entry.unit,
+                origins: entry.origins,
+                players: entry.players,
+                sourceMode: entry.sourceMode || 'reference',
+                asOf: criticalMineralsCatalog.asOf,
+                sourceLabel: criticalMineralsCatalog.sourceLabel,
+                sourceUrl: criticalMineralsCatalog.sourceUrl,
+            },
+        ])
+    );
+}
+
 const SOURCE_ROLE_DOMAINS = Object.freeze({
     institutional: [
         'un.org', 'undp.org', 'unhcr.org', 'unicef.org', 'who.int', 'worldbank.org',
@@ -432,7 +455,7 @@ async function buildPublicSnapshot({
         const coverage = buildCoverageSummary([]);
         return {
             items: [],
-            minerals: {},
+            minerals: buildMineralBaseline(),
             meta: {
                 generatedAt: now.toISOString(),
                 sourceMode: 'public-cache',
@@ -465,7 +488,7 @@ async function buildPublicSnapshot({
 
     return {
         items,
-        minerals: {},
+        minerals: buildMineralBaseline(),
         meta: {
             generatedAt: now.toISOString(),
             sourceMode: 'public-cache',
@@ -500,6 +523,7 @@ function withSnapshotAge(snapshot, now = Date.now()) {
 module.exports = {
     FIXED_QUERIES,
     MAX_SNAPSHOT_ITEMS,
+    MINERAL_REFERENCE,
     REQUEST_TIMEOUT_MS,
     SNAPSHOT_TTL_MS,
     SOURCE_ROLE_LABELS,
@@ -508,6 +532,7 @@ module.exports = {
     TARGET_SOURCE_ROLES,
     assessArticle,
     buildCoverageSummary,
+    buildMineralBaseline,
     buildPublicSnapshot,
     dedupeArticles,
     getPublisherDomain,

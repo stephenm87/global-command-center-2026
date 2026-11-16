@@ -201,9 +201,9 @@ export const AFRICA_MENA_CASE_STUDIES_2026 = [
         issueDimensions: ['Recognition diplomacy', 'Self-determination', 'Territorial integrity', 'Maritime security', 'Regional order'],
         actors: ['Somaliland authorities', 'Federal Government of Somalia', 'Israel', 'African Union, IGAD, and United Nations', 'Communities in contested eastern areas'],
         nexusNodeIds: ['Africa', 'MiddleEast', 'UN_OPEC'],
-        statusSummary: 'A Somaliland foreign-ministry official welcomed Israel\'s 26 December 2025 recognition as a statehood milestone and basis for broader partnership. A 29 December United Nations political-affairs briefing recorded Somaliland\'s statement that the recognition established full diplomatic relations and Somalia\'s rejection, while Associated Press reporting documented the subsequent high-level visit and the wider dispute over sovereignty, precedent, and Red Sea strategy.',
+        statusSummary: 'On 26 December 2025, Somaliland President Abdirahman Mohamed Abdillahi Cirro and Israeli leaders signed a joint declaration formalizing Israel\'s recognition of Somaliland, accompanied by stated plans to expand cooperation in agriculture, health, technology, and economic development. A 29 December United Nations political-affairs briefing recorded Somaliland\'s statement that the recognition established full diplomatic relations alongside Somalia\'s rejection, while Associated Press reporting documented the subsequent high-level visit and wider dispute over sovereignty, precedent, and Red Sea strategy.',
         whyItMatters: 'The case links a long-running claim to statehood with African norms on inherited borders, Somalia\'s territorial-integrity claim, Middle Eastern diplomacy, and competition around Red Sea ports and security routes.',
-        updatedAt: '2026-08-10',
+        updatedAt: '2026-11-16',
         confidence: 'medium',
         uncertainty: 'Recognition policy can change, terminology is politically contested, and views within Somaliland and the disputed eastern territories are not uniform. Claims about security arrangements or future recognitions require direct confirmation.',
         coordinates: { latitude: 9.5624, longitude: 44.0770 },
@@ -212,7 +212,7 @@ export const AFRICA_MENA_CASE_STUDIES_2026 = [
         featured: true,
         sensitivity: 'high',
         reviewCadenceDays: 14,
-        reviewBy: '2026-08-24',
+        reviewBy: '2026-11-30',
         map: {
             mode: 'regional',
             locations: [
@@ -225,19 +225,13 @@ export const AFRICA_MENA_CASE_STUDIES_2026 = [
         },
         sources: [
             {
-                title: 'A Diplomatic Breakthrough: Somaliland’s Foreign DG hails Israel’s Recognition of Sovereignty',
-                publisher: 'The Horn Tribune',
-                publishedAt: '2025-12-29',
-                url: 'https://horntribune.com/2025/12/29/a-diplomatic-breakthrough-somalilands-foreign-ministry-director-general-marks-israels-recognition-of-sovereignty/',
-                alternateUrls: [
-                    {
-                        label: 'The Horn Tribune print edition — 4 January 2026, front-page lead and page 5 continuation',
-                        url: 'https://horntribune.com/wp-content/uploads/2026/01/THT-04-January-2026front.pdf',
-                    },
-                ],
+                title: 'Israel Officially Recognizes Somaliland as Sovereign State',
+                publisher: 'Horn Diplomat',
+                publishedAt: '2025-12-26',
+                url: 'https://www.horndiplomat.com/israel-officially-recognizes-somaliland-as-sovereign-state/',
                 perspectiveType: 'local',
-                perspective: 'Somaliland-based reporting of an interview with the foreign ministry director general, presenting the authorities\' statehood case and intended areas of partnership',
-                supports: 'Supports the attributed Somaliland foreign-ministry view that Israel\'s 26 December 2025 recognition was welcomed as a statehood milestone and a basis for expanded bilateral cooperation in diplomacy, trade, tourism, and agriculture.',
+                perspective: 'Somaliland newsroom report (datelined Hargeisa/Jerusalem) on the 26 December 2025 joint recognition declaration quoting President Abdirahman Mohamed Abdillahi Cirro and Israeli officials',
+                supports: 'Supports the 26 December 2025 joint declaration signed with Somaliland President Abdirahman Mohamed Abdillahi Cirro, his welcome of recognition, and stated plans for cooperation in agriculture, health, technology, and economic development.',
             },
             {
                 title: 'Assistant Secretary-General Khiari Briefs the Security Council on Somalia',

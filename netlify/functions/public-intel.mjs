@@ -3,7 +3,7 @@ import snapshotModule from './_shared/intel-snapshot.js';
 import { readSnapshot, writeSnapshot } from './_shared/snapshot-store.mjs';
 
 const { protectPublicEndpoint } = securityModule;
-const { buildPublicSnapshot, withSnapshotAge } = snapshotModule;
+const { buildMineralBaseline, buildPublicSnapshot, withSnapshotAge } = snapshotModule;
 const SNAPSHOT_KEY = 'public-intel/current.json';
 let inFlightRefresh = null;
 
@@ -51,7 +51,7 @@ export default async request => {
         const status = process.env.SERPER_API_KEY ? 'unavailable' : 'not-configured';
         return new Response(JSON.stringify({
                 items: [],
-                minerals: {},
+                minerals: buildMineralBaseline(),
                 meta: {
                     generatedAt: new Date().toISOString(),
                     sourceMode: 'public-cache',

@@ -65,55 +65,55 @@
 ## 3. Top 5 UX Issues — Before / After Visual Evidence
 
 > [!NOTE]
-> **Read-Only Phase Note:** Per Phase 1–2 ground rules, zero application source files have been modified yet. All five **"After"** screenshots below are **live DOM/CSS prototypes injected transiently in Playwright** against the running dev server (`1440×900` desktop and `390×844` mobile) to preview and validate the proposed changes before implementation.
+> **Local Production Build Verification Update (2026-11-16):** All five **"After"** screenshots below were recaptured directly from the **local production `dist/` bundle** served with exact `netlify.toml` `[[headers]]` (`script-src 'self'`, `0` CSP violations; see `docs/audit-evidence/csp-and-ui-verification-2026-11-16.json`), replacing the earlier read-only DOM/CSS prototypes.
 
-### Issue 1: Globe Header Competition & Center-Overlay Clutter (`src/App.jsx:1090-1308`, `src/App.css:54,89,252`)
+### Issue 1: Globe Header Competition & Center-Overlay Clutter (`src/App.jsx:1123-1382`, `src/App.css:158,254,3522`)
 - **Before (`screenshots/ux-01-globe-hierarchy-before.png`):** Neon magenta/cyan `LAUNCH GLOPO COMPANION` dominates visual hierarchy over the workspace tabs; `GLOBAL ISSUES & CASE MAP` + `EDITORIAL CASES 29 ON` sit centered over Europe/Arctic; `SIGN IN` is tucked inside `TOOLS & DISPLAY ▾`.
-- **After — Live DOM/CSS Prototype (`screenshots/ux-01-globe-hierarchy-after.png`):** Demotes `LAUNCH GLOPO COMPANION` to an outlined external-tool pill, docks the compact map status pill to top-left (clearing the full globe hemisphere), and surfaces `SIGN IN` in `.header-actions`. *(Empirical layout finding: at `1440px`, keeping `.view-mode-selector` at `position: absolute; left: 50%` causes a `6px` overlap when a 3rd button is added to `.header-actions` — therefore Tier B Recommendation **B1** converts `.header` from absolute-centered flex to a collision-proof 3-column CSS Grid `grid-template-columns: 1fr auto 1fr` and shortens the external button label to `GLOPO GPT ↗`.)*
+- **After — Local Production Build (`dist/`): (`screenshots/ux-01-globe-hierarchy-after.png`):** Demotes the external companion link to a high-contrast outlined `GLOPO GPT ↗` pill, docks the compact map status overlay to top-left (clearing the full globe hemisphere), and surfaces `SIGN IN` in `.header-actions` inside the 3-column `.header` grid.
 
-| Before (Current App) | After (Live DOM/CSS Prototype — Not Yet Shipped) |
+| Before (Baseline Audit) | After (Local Production Build `dist/` — 2026-11-16) |
 |---|---|
-| ![Globe hierarchy before](screenshots/ux-01-globe-hierarchy-before.png) | ![Globe hierarchy after prototype](screenshots/ux-01-globe-hierarchy-after.png) |
+| ![Globe hierarchy before](screenshots/ux-01-globe-hierarchy-before.png) | ![Globe hierarchy after shipped](screenshots/ux-01-globe-hierarchy-after.png) |
 
 ---
 
-### Issue 2: Near-Invisible Active Theory Button (`1.31:1`) & Dead-End Signed-Out Deep Scan (`src/App.css:1671,2900`, `src/App.jsx:627-629`)
+### Issue 2: Near-Invisible Active Theory Button (`1.31:1`) & Dead-End Signed-Out Deep Scan (`src/App.css:1685,2915`, `src/App.jsx:2370-2383`)
 - **Before (`screenshots/ux-02-deepscan-signin-before.png`):** Selected `REALISM` button renders black text (`rgb(0,0,0)`) on dark navy (`1.31:1` contrast at `7.2px`), and clicking `🔥 FIRECRAWL + AI BRIEF` while signed out shows unhelpful red `⚠ Deep scan unavailable`.
-- **After — Live DOM/CSS Prototype (`screenshots/ux-02-deepscan-signin-after.png`):** Scopes `.detail-modal .theory-btn` with crisp light/accent contrast (`>= 7.4:1` at `11.5px`) and replaces generic `"Deep scan unavailable"` with an actionable inline prompt + `SIGN IN WITH MAGIC LINK →` button (adding `padding-bottom: 1.5rem` to `.modal-body` in production implementation so the CTA sits comfortably inside the scroll container).
+- **After — Local Production Build (`dist/`): (`screenshots/ux-02-deepscan-signin-after.png`):** Scopes `.detail-modal .theory-btn.active` with `#ffffff` on dark navy (`19.1:1` contrast across all 9 lenses, shown on worst-case `MARXISM` `#cc0000`) and replaces `"Deep scan unavailable"` with an actionable prompt + `44px`-tall `SIGN IN TO UNLOCK →` button that opens `AuthModal` directly.
 
-| Before (Current App) | After (Live DOM/CSS Prototype — Not Yet Shipped) |
+| Before (Baseline Audit) | After (Local Production Build `dist/` — 2026-11-16) |
 |---|---|
-| ![Detail modal theory contrast and Deep Scan error before](screenshots/ux-02-deepscan-signin-before.png) | ![Detail modal theory contrast and Deep Scan sign-in CTA prototype](screenshots/ux-02-deepscan-signin-after.png) |
+| ![Detail modal theory contrast and Deep Scan error before](screenshots/ux-02-deepscan-signin-before.png) | ![Detail modal theory contrast and Deep Scan sign-in CTA shipped](screenshots/ux-02-deepscan-signin-after.png) |
 
 ---
 
-### Issue 3: Auth Modal Contrast, Missing Label & `9.3×16px` Close Target (`src/AuthModal.jsx:40-112`, `src/auth.css:104-204`)
+### Issue 3: Auth Modal Contrast, Missing Label & `9.3×16px` Close Target (`src/AuthModal.jsx:49-181`, `src/auth.css:104-215`)
 - **Before (`screenshots/ux-03-auth-modal-before.png`):** `×` button is `9.3×16px` at `2.26:1` contrast, subtitle is `2.62:1`, `#gcc-auth-email` has no visible `<label>`, and `Tab` focus escapes behind the modal.
-- **After — Live DOM/CSS Prototype (`screenshots/ux-03-auth-modal-after.png`):** Enlarges `.gcc-auth-close` to a `44×44px` bordered control (`>= 8.5:1` contrast), adds an explicit `EMAIL ADDRESS` `<label htmlFor="gcc-auth-email">`, raises subtitle/eyebrow contrast above `6.2:1`, raises input/button heights to `>= 44px`, and displays a visible cyan `:focus-visible` ring.
+- **After — Local Production Build (`dist/`): (`screenshots/ux-03-auth-modal-after.png`):** Enlarges `.gcc-auth-close` to a `44×44px` control (`>= 8.5:1` contrast), adds an explicit `Email address` `<label htmlFor="gcc-auth-email">`, enforces a `Tab`/`Shift+Tab` focus trap with trigger focus restoration on close, raises subtitle/eyebrow contrast above `6.2:1`, and sets input/button heights to `>= 44px`.
 
-| Before (Current App) | After (Live DOM/CSS Prototype — Not Yet Shipped) |
+| Before (Baseline Audit) | After (Local Production Build `dist/` — 2026-11-16) |
 |---|---|
-| ![Auth modal before](screenshots/ux-03-auth-modal-before.png) | ![Auth modal after prototype](screenshots/ux-03-auth-modal-after.png) |
+| ![Auth modal before](screenshots/ux-03-auth-modal-before.png) | ![Auth modal after shipped](screenshots/ux-03-auth-modal-after.png) |
 
 ---
 
-### Issue 4: Guided Briefings `"29 cases shown"` vs 6 Initially Displayed Sidebar Cards (`src/GuidedBriefings.jsx:215-217,248-263`)
-- **Before (`screenshots/ux-04-briefings-before.png`):** Left rail states `29 cases shown` (`L216`) while slicing the initial visible list to 6 cards (`INITIAL_LIBRARY_COUNT = 6`), pushing `Show 6 more cases` (`L248-263`) below the `900px` desktop fold.
-- **After — Live DOM/CSS Prototype (`screenshots/ux-04-briefings-after.png`):** Clarifies status copy (`Showing 6 of 29 cases · Sorted by featured & region`) paired with an inline `Show all 29` action in Tier B (**B4**).
+### Issue 4: Guided Briefings `"29 cases shown"` vs 6 Initially Displayed Sidebar Cards (`src/GuidedBriefings.jsx:215-235,260-285`)
+- **Before (`screenshots/ux-04-briefings-before.png`):** Left rail states `29 cases shown` (`L216`) while slicing the initial visible list to 6 cards (`INITIAL_LIBRARY_COUNT = 6`), pushing `Show 6 more cases` below the `900px` desktop fold.
+- **After — Local Production Build (`dist/`): (`screenshots/ux-04-briefings-after.png`):** Displays `Showing 6 of 29 cases` paired with an inline top-rail `Show all 29` action right inside `.briefing-results-status`.
 
-| Before (Current App) | After (Live DOM/CSS Prototype — Not Yet Shipped) |
+| Before (Baseline Audit) | After (Local Production Build `dist/` — 2026-11-16) |
 |---|---|
-| ![Guided Briefings count mismatch before](screenshots/ux-04-briefings-before.png) | ![Guided Briefings explicit count prototype](screenshots/ux-04-briefings-after.png) |
+| ![Guided Briefings count mismatch before](screenshots/ux-04-briefings-before.png) | ![Guided Briefings explicit count shipped](screenshots/ux-04-briefings-after.png) |
 
 ---
 
-### Issue 5: Mobile (`390×844`) Header/Banner Stack & Unreachable Intel Feed (`src/App.css:2295-2560,4290`)
+### Issue 5: Mobile (`390×844`) Header/Banner Stack & Unreachable Intel Feed (`src/App.jsx:1325-1365`, `src/App.css:4075-4205,4503`)
 - **Before (`screenshots/ux-05-mobile-globe-before.png`):** `318px` of stacked chrome (`150px` header + `122px` `GLOBAL ISSUES & CASE MAP` box + `46px` legend) crowds the `390×844` screen, and users must scroll past an `844px` touch-capturing WebGL globe to discover `#intel-feed`.
-- **After — Live DOM/CSS Prototype (`screenshots/ux-05-mobile-globe-after.png`):** Collapses the redundant mobile `GLOBAL ISSUES & CASE MAP` box, moves external `LAUNCH GLOPO COMPANION` into `TOOLS & DISPLAY ▾` on `<768px`, tightens header height from `150px` to `96px`, and pairs with a `44px`-tall `JUMP TO INTEL FEED ↓` pill in Tier B (**B5**).
+- **After — Local Production Build (`dist/`): (`screenshots/ux-05-mobile-globe-after.png`):** Moves external `GLOPO COMPANION GPT ↗` into `TOOLS & DISPLAY` on `<768px`, defers the `1.83 MB` WebGL Globe behind a 1-tap `🌐 LOAD 3D GLOBE` opt-in card paired with `↓ JUMP TO INTEL FEED`, and brings `#intel-feed` directly above the fold on mobile cold entry (plus a floating `↓ JUMP TO INTEL FEED` pill once the 3D Globe is loaded).
 
-| Before (Current App) | After (Live DOM/CSS Prototype — Not Yet Shipped) |
+| Before (Baseline Audit) | After (Local Production Build `dist/` — 2026-11-16) |
 |---|---|
-| ![Mobile globe viewport before](screenshots/ux-05-mobile-globe-before.png) | ![Mobile globe viewport prototype](screenshots/ux-05-mobile-globe-after.png) |
+| ![Mobile globe viewport before](screenshots/ux-05-mobile-globe-before.png) | ![Mobile globe viewport shipped](screenshots/ux-05-mobile-globe-after.png) |
 
 ---
 

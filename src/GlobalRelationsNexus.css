@@ -300,11 +300,13 @@
 
 .inspect-close {
     position: absolute;
-    top: 15px;
-    right: 15px;
+    top: 12px;
+    right: 12px;
+    width: 44px;
+    height: 44px;
     background: none;
     border: none;
-    color: #666;
+    color: #b4c2cc;
     font-size: 1.1rem;
     cursor: pointer;
     transition: color 0.2s;
@@ -347,12 +349,11 @@
 
 .section-label {
     font-size: 0.72rem;
-    font-size: 0.7rem;
     font-weight: 700;
-    color: #555;
+    color: #a8bac6;
     letter-spacing: 1.5px;
     margin-bottom: 8px;
-    border-left: 2px solid rgba(0, 255, 255, 0.3);
+    border-left: 2px solid rgba(0, 255, 255, 0.45);
     padding-left: 8px;
 }
 
@@ -464,8 +465,8 @@
 }
 .nexus-hint {
     margin-top: 6px;
-    font-size: 0.52rem;
-    color: rgba(255, 255, 255, 0.35);
+    font-size: 0.68rem;
+    color: #b0c0cc;
     letter-spacing: 0.5px;
     font-style: italic;
 }
@@ -571,12 +572,13 @@
 }
 .inspect-tab {
     flex: 1;
+    min-height: 44px;
     background: transparent;
     border: none;
     border-bottom: 2px solid transparent;
-    color: #666;
+    color: #a8bac6;
     font-family: 'Roboto Mono', monospace;
-    font-size: 0.62rem;
+    font-size: 0.68rem;
     letter-spacing: 0.5px;
     padding: 10px 6px;
     cursor: pointer;
@@ -585,8 +587,8 @@
     text-align: center;
 }
 .inspect-tab:hover {
-    color: #aaa;
-    background: rgba(255, 255, 255, 0.02);
+    color: #ffffff;
+    background: rgba(255, 255, 255, 0.04);
 }
 .inspect-tab.active {
     color: #00ffff;
@@ -1820,18 +1822,19 @@
 }
 .hud-tab {
     flex: 1;
+    min-height: 44px;
     background: rgba(255, 255, 255, 0.02);
     border: none;
-    color: #555;
+    color: #aebec9;
     font-family: 'Roboto Mono', monospace;
-    font-size: 0.5rem;
+    font-size: 0.68rem;
     font-weight: 700;
-    padding: 7px 4px;
+    padding: 8px 4px;
     cursor: pointer;
     letter-spacing: 0.5px;
     transition: all 0.2s;
     text-align: center;
-    border-right: 1px solid rgba(255, 255, 255, 0.05);
+    border-right: 1px solid rgba(255, 255, 255, 0.08);
 }
 .hud-tab:last-child {
     border-right: none;
@@ -2073,13 +2076,46 @@
 }
 
 .dim-filter-row {
-    padding: 8px 2px !important;
+    padding: 2px 2px !important;
 }
 
 .dim-filter-row input[type='checkbox'] {
-    width: 20px;
-    height: 20px;
+    appearance: none;
+    -webkit-appearance: none;
+    width: 44px;
+    height: 44px;
+    margin: 0 -6px 0 -10px;
     flex: 0 0 auto;
+    display: inline-grid;
+    place-items: center;
+    background: transparent;
+    border: 0;
+    cursor: pointer;
+}
+
+.dim-filter-row input[type='checkbox']::before {
+    content: '';
+    width: 18px;
+    height: 18px;
+    border: 1.5px solid rgba(159, 178, 199, 0.55);
+    border-radius: 3px;
+    background: rgba(5, 12, 20, 0.9);
+    display: grid;
+    place-items: center;
+    color: #05090d;
+    font: 900 12px/1 'Roboto Mono', monospace;
+    transition: background 0.15s ease, border-color 0.15s ease;
+}
+
+.dim-filter-row input[type='checkbox']:checked::before {
+    content: '✓';
+    background: var(--dim-color, #5eead4);
+    border-color: var(--dim-color, #5eead4);
+}
+
+.dim-filter-row input[type='checkbox']:focus-visible::before {
+    outline: 2px solid #5eead4;
+    outline-offset: 2px;
 }
 
 .gpc-filter-btn,

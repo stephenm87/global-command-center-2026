@@ -213,17 +213,30 @@ export default function GuidedBriefings({ initialTourId, initialNodeId, initialS
                         </label>
                     </div>
                     <div className="briefing-results-status" role="status">
-                        {visibleTours.length} {visibleTours.length === 1 ? 'case' : 'cases'} shown
-                        {(librarySearch || regionFilter !== 'all' || issueFilter !== 'all') && (
-                            <button
-                                type="button"
-                                onClick={() => {
-                                    setLibrarySearch('');
-                                    setRegionFilter('all');
-                                    setIssueFilter('all');
-                                }}
-                            >Clear</button>
-                        )}
+                        <span>
+                            Showing {displayedTours.length} of {visibleTours.length} {visibleTours.length === 1 ? 'case' : 'cases'}
+                        </span>
+                        <div className="briefing-results-actions">
+                            {remainingTourCount > 0 && (
+                                <button
+                                    type="button"
+                                    aria-controls="briefing-case-list"
+                                    onClick={() => setVisibleCaseCount(visibleTours.length)}
+                                >
+                                    Show all {visibleTours.length}
+                                </button>
+                            )}
+                            {(librarySearch || regionFilter !== 'all' || issueFilter !== 'all') && (
+                                <button
+                                    type="button"
+                                    onClick={() => {
+                                        setLibrarySearch('');
+                                        setRegionFilter('all');
+                                        setIssueFilter('all');
+                                    }}
+                                >Clear</button>
+                            )}
+                        </div>
                     </div>
                 </div>
                 <div id="briefing-case-list" className="briefing-tour-list">
@@ -246,20 +259,32 @@ export default function GuidedBriefings({ initialTourId, initialNodeId, initialS
                     )}
                 </div>
                 {visibleTours.length > INITIAL_LIBRARY_COUNT && (
-                    <button
-                        type="button"
-                        className="briefing-library-more"
-                        aria-controls="briefing-case-list"
-                        onClick={() => setVisibleCaseCount(current => (
-                            current >= visibleTours.length
-                                ? INITIAL_LIBRARY_COUNT
-                                : Math.min(current + INITIAL_LIBRARY_COUNT, visibleTours.length)
-                        ))}
-                    >
-                        {remainingTourCount > 0
-                            ? `Show ${Math.min(INITIAL_LIBRARY_COUNT, remainingTourCount)} more cases`
-                            : 'Show fewer cases'}
-                    </button>
+                    <div className="briefing-library-more-group">
+                        <button
+                            type="button"
+                            className="briefing-library-more"
+                            aria-controls="briefing-case-list"
+                            onClick={() => setVisibleCaseCount(current => (
+                                current >= visibleTours.length
+                                    ? INITIAL_LIBRARY_COUNT
+                                    : Math.min(current + INITIAL_LIBRARY_COUNT, visibleTours.length)
+                            ))}
+                        >
+                            {remainingTourCount > 0
+                                ? `Show ${Math.min(INITIAL_LIBRARY_COUNT, remainingTourCount)} more cases`
+                                : 'Show fewer cases'}
+                        </button>
+                        {remainingTourCount > INITIAL_LIBRARY_COUNT && (
+                            <button
+                                type="button"
+                                className="briefing-library-more briefing-library-more--all"
+                                aria-controls="briefing-case-list"
+                                onClick={() => setVisibleCaseCount(visibleTours.length)}
+                            >
+                                Show all {visibleTours.length}
+                            </button>
+                        )}
+                    </div>
                 )}
                 <p className="briefing-library-note">Every case has three perspective-labelled readings, appears on the globe, and opens into the Focus Nexus.</p>
             </aside>

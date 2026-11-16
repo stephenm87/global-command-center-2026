@@ -119,6 +119,12 @@
     font-size: var(--briefing-secondary-size);
 }
 
+.briefing-results-actions {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+}
+
 .briefing-results-status button,
 .briefing-library-more,
 .briefing-library-close,
@@ -137,6 +143,21 @@
     border-color: transparent;
     background: transparent;
     text-decoration: underline;
+}
+
+.briefing-library-more-group {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+}
+
+.briefing-library-more-group .briefing-library-more {
+    flex: 1 1 auto;
+}
+
+.briefing-library-more--all {
+    color: #c8f5ef;
+    background: rgba(94, 234, 212, 0.08);
 }
 
 .briefing-tour-list {

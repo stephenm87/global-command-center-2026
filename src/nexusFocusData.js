@@ -1,5 +1,8 @@
 import { EDGE_DESCRIPTIONS } from './nexusEdgeData';
 import { CASE_STUDIES_2026 } from './caseStudies2026';
+import { resolveActorId } from './nexus/actorIds';
+
+export { resolveActorId };
 
 export const NEXUS_ACTORS = {
     USA: { id: 'USA', name: 'United States', shortName: 'United States', type: 'State', region: 'North America', color: '#5eead4', description: 'A central security, technology, financial, and alliance actor whose decisions connect multiple regional systems.' },

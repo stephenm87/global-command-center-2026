@@ -41,20 +41,23 @@ test('every HTTP-reachable Netlify function invokes protectEndpoint or protectPu
     }
 });
 
-test('netlify.toml CSP omits unsafe-eval/unsafe-inline in script-src and permits raw.githubusercontent.com in connect-src', () => {
+test('netlify.toml CSP omits unsafe-eval/unsafe-inline in script-src and restricts fonts/images/connect to self + Supabase', () => {
     const toml = fs.readFileSync(path.join(REPO_ROOT, 'netlify.toml'), 'utf8');
     const cspLine = toml.split('\n').find(line => line.includes('Content-Security-Policy'));
     assert.ok(cspLine, 'Expected Content-Security-Policy in netlify.toml');
 
     const scriptSrcMatch = cspLine.match(/script-src\s+([^;]+)/);
+    const fontSrcMatch = cspLine.match(/font-src\s+([^;]+)/);
+    const imgSrcMatch = cspLine.match(/img-src\s+([^;]+)/);
     const connectSrcMatch = cspLine.match(/connect-src\s+([^;]+)/);
-    assert.ok(scriptSrcMatch, 'Expected script-src directive');
-    assert.ok(connectSrcMatch, 'Expected connect-src directive');
+    assert.ok(scriptSrcMatch && fontSrcMatch && imgSrcMatch && connectSrcMatch, 'Expected CSP directives');
 
     assert.ok(!scriptSrcMatch[1].includes("'unsafe-eval'"), "script-src must not allow 'unsafe-eval'");
     assert.ok(!scriptSrcMatch[1].includes("'unsafe-inline'"), "script-src must not allow 'unsafe-inline'");
-    assert.ok(
-        connectSrcMatch[1].includes('https://raw.githubusercontent.com'),
-        'connect-src must include https://raw.githubusercontent.com for fallback GeoJSON fetch'
-    );
+    assert.equal(fontSrcMatch[1].trim(), "'self'", 'font-src must be restricted to self after local bundling');
+
+    for (const retiredOrigin of ['unpkg.com', 'jsdelivr.net', 'fonts.googleapis.com', 'fonts.gstatic.com', 'api.gdeltproject.org', 'raw.githubusercontent.com', 'www.netlify.com']) {
+        assert.ok(!cspLine.includes(retiredOrigin), `Retired third-party origin ${retiredOrigin} must be removed from netlify.toml CSP`);
+    }
+    assert.ok(connectSrcMatch[1].includes('https://*.supabase.co'), 'connect-src must permit Supabase auth/sync');
 });

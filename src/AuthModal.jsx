@@ -11,15 +11,17 @@ export function getDisplayName(user) {
 }
 
 // ── Auth Badge rendered in the header ─────────────────────────────
-export function AuthBadge({ user, onSignInClick }) {
+export function AuthBadge({ user, onSignInClick, triggerId = 'gcc-signin-trigger', className = '' }) {
     const handleSignOut = async () => {
         await supabase.auth.signOut();
     };
 
+    const wrapperClass = className ? `auth-badge-wrapper ${className}` : 'auth-badge-wrapper';
+
     if (user) {
         const name = getDisplayName(user) || 'Operator';
         return (
-            <div className="auth-badge-wrapper">
+            <div className={wrapperClass}>
                 <div className="auth-user-badge">
                     <span className="auth-avatar" aria-hidden="true">{name.charAt(0)}</span>
                     <span className="auth-name">{name}</span>
@@ -37,8 +39,8 @@ export function AuthBadge({ user, onSignInClick }) {
         );
     }
     return (
-        <div className="auth-badge-wrapper">
-            <button type="button" className="auth-signin-btn" onClick={onSignInClick} id="gcc-signin-trigger">
+        <div className={wrapperClass}>
+            <button type="button" className="auth-signin-btn" onClick={onSignInClick} id={triggerId}>
                 SIGN IN
             </button>
         </div>

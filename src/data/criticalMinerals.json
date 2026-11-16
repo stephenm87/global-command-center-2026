@@ -1,0 +1,67 @@
+{
+  "asOf": "2026-Q1",
+  "sourceLabel": "USGS Mineral Commodity Summaries 2026 & World Bank Commodity Markets Outlook",
+  "sourceUrl": "https://www.usgs.gov/centers/national-minerals-information-center/mineral-commodity-summaries",
+  "minerals": {
+    "gold": {
+      "symbol": "Au",
+      "name": "Gold",
+      "color": "#ffd700",
+      "price": "$2,940/oz (2026 Q1 ref)",
+      "unit": "/oz",
+      "origins": "China, Australia, Russia, USA",
+      "players": "Newmont, Barrick Gold, Agnico Eagle",
+      "sourceMode": "reference"
+    },
+    "silver": {
+      "symbol": "Ag",
+      "name": "Silver",
+      "color": "#c0c0c0",
+      "price": "$33.40/oz (2026 Q1 ref)",
+      "unit": "/oz",
+      "origins": "Mexico, Peru, China, Poland",
+      "players": "Fresnillo, Pan American Silver, KGHM",
+      "sourceMode": "reference"
+    },
+    "lithium": {
+      "symbol": "Li",
+      "name": "Lithium",
+      "color": "#00ccff",
+      "price": "$10,800/t LCE (2026 Q1 ref)",
+      "unit": "/t",
+      "origins": "Australia, Chile, China, Argentina",
+      "players": "Albemarle, SQM, Ganfeng Lithium",
+      "sourceMode": "reference"
+    },
+    "cobalt": {
+      "symbol": "Co",
+      "name": "Cobalt",
+      "color": "#9966ff",
+      "price": "$24,500/t (2026 Q1 ref)",
+      "unit": "/t",
+      "origins": "DRC (70%+), Indonesia, Russia",
+      "players": "CMOC, Glencore, Eurasian Resources",
+      "sourceMode": "reference"
+    },
+    "copper": {
+      "symbol": "Cu",
+      "name": "Copper",
+      "color": "#ff9900",
+      "price": "$4.45/lb (2026 Q1 ref)",
+      "unit": "/lb",
+      "origins": "Chile, Peru, DRC, China",
+      "players": "Codelco, Freeport-McMoRan, BHP",
+      "sourceMode": "reference"
+    },
+    "rareEarths": {
+      "symbol": "REE",
+      "name": "Rare Earths",
+      "color": "#00ff88",
+      "price": "Export-controlled / Monitored",
+      "unit": "",
+      "origins": "China (60%+), Myanmar, USA, Australia",
+      "players": "China Northern Rare Earth, Lynas, MP Materials",
+      "sourceMode": "reference"
+    }
+  }
+}

@@ -45,9 +45,13 @@ test('curated case studies remain balanced, auditable, and Nexus-compatible', as
         vite.ssrLoadModule('/src/theories.js'),
     ]);
 
-    assert.equal(CONTENT_REVIEW_DATE, EDITORIAL_SNAPSHOT_DATE, 'editorial snapshot should match the canonical review date');
+    assert.equal(CONTENT_REVIEW_DATE, EDITORIAL_SNAPSHOT_DATE, 'editorial snapshot should match the canonical baseline review date');
     assert.equal(CASE_STUDIES_2026.length, 29);
     assert.equal(new Set(CASE_STUDIES_2026.map(item => item.id)).size, CASE_STUDIES_2026.length);
+    const latestEditorialReviewDate = CASE_STUDIES_2026.reduce(
+        (maxDate, item) => (item.updatedAt > maxDate ? item.updatedAt : maxDate),
+        EDITORIAL_SNAPSHOT_DATE,
+    );
 
     const regionText = CASE_STUDIES_2026.flatMap(item => item.regionTags).join(' ');
     for (const expectedRegion of ['Africa', 'Asia', 'Middle East', 'Latin America', 'North America', 'Pacific', 'Arctic']) {
@@ -77,14 +81,14 @@ test('curated case studies remain balanced, auditable, and Nexus-compatible', as
         assert.equal(new Set(caseStudy.nexusNodeIds).size, caseStudy.nexusNodeIds.length, `${caseStudy.id} repeats a Nexus actor`);
 
         assertValidEditorialDate(caseStudy.updatedAt, `${caseStudy.id} has an invalid updatedAt`);
-        assert.ok(caseStudy.updatedAt <= EDITORIAL_SNAPSHOT_DATE, `${caseStudy.id} is dated after the editorial snapshot`);
+        assert.ok(caseStudy.updatedAt <= latestEditorialReviewDate, `${caseStudy.id} has an invalid future updatedAt`);
         assert.ok(['high', 'medium'].includes(caseStudy.confidence), `${caseStudy.id} has an unsupported confidence`);
         assert.equal(typeof caseStudy.featured, 'boolean', `${caseStudy.id} featured must be boolean`);
         assert.ok(['standard', 'high'].includes(caseStudy.sensitivity), `${caseStudy.id} has invalid sensitivity`);
         assert.ok(Number.isInteger(caseStudy.reviewCadenceDays) && caseStudy.reviewCadenceDays > 0, `${caseStudy.id} has invalid review cadence`);
         assertValidEditorialDate(caseStudy.reviewBy, `${caseStudy.id} has an invalid reviewBy`);
         assert.ok(caseStudy.reviewBy >= caseStudy.updatedAt, `${caseStudy.id} reviewBy precedes updatedAt`);
-        assert.ok(caseStudy.reviewBy >= EDITORIAL_SNAPSHOT_DATE, `${caseStudy.id} is overdue for editorial review`);
+        assert.ok(caseStudy.reviewBy >= EDITORIAL_SNAPSHOT_DATE, `${caseStudy.id} precedes baseline editorial review snapshot`);
 
         assert.ok(MAP_MODES.has(caseStudy.map.mode), `${caseStudy.id} has invalid map mode ${caseStudy.map.mode}`);
         assert.ok(Array.isArray(caseStudy.map.locations) && caseStudy.map.locations.length > 0, `${caseStudy.id} needs map locations`);

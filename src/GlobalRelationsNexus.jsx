@@ -8,6 +8,7 @@ import { getEdgeInfo } from './nexusEdgeData';
 import { fetchGlobalPulse } from './nexusGDELT';
 import { reheatGraphWhenReady } from './graphReadiness.mjs';
 import { readStoredJson, writeStoredJson } from './localState.mjs';
+import { resolveActorId } from './nexus/actorIds';
 import {
     PRIMARY_ANCHORS,
     ANCHOR_DESCS,
@@ -64,8 +65,9 @@ export default function GlobalRelationsNexus({ forecasts, selectedTheory, theori
     const [selectedGPC, setSelectedGPC]             = useState(initialPreferences.selectedGPC || null);
     const [physicsPreset, setPhysicsPreset]          = useState(['balance', 'friction', 'core'].includes(initialPreferences.physicsPreset) ? initialPreferences.physicsPreset : 'balance');
     const [selectedNode, setSelectedNode]            = useState(() => {
-        const anchor = PRIMARY_ANCHORS[initialNodeId];
-        return anchor ? { ...anchor, isAnchor: true, desc: ANCHOR_DESCS[initialNodeId], category: ACTOR_TYPE_LABELS[anchor.type] || '' } : null;
+        const canonicalId = resolveActorId(initialNodeId, null);
+        const anchor = canonicalId ? PRIMARY_ANCHORS[canonicalId] : null;
+        return anchor ? { ...anchor, isAnchor: true, desc: ANCHOR_DESCS[canonicalId], category: ACTOR_TYPE_LABELS[anchor.type] || '' } : null;
     });
     const [lockedNode, setLockedNode]                = useState(null);
     const [hoveredNode, setHoveredNode]              = useState(null);
@@ -105,8 +107,9 @@ export default function GlobalRelationsNexus({ forecasts, selectedTheory, theori
     ));
 
     useEffect(() => {
-        const anchor = PRIMARY_ANCHORS[initialNodeId];
-        if (anchor) setSelectedNode({ ...anchor, isAnchor: true, desc: ANCHOR_DESCS[initialNodeId], category: ACTOR_TYPE_LABELS[anchor.type] || '' });
+        const canonicalId = resolveActorId(initialNodeId, null);
+        const anchor = canonicalId ? PRIMARY_ANCHORS[canonicalId] : null;
+        if (anchor) setSelectedNode({ ...anchor, isAnchor: true, desc: ANCHOR_DESCS[canonicalId], category: ACTOR_TYPE_LABELS[anchor.type] || '' });
     }, [initialNodeId]);
 
     useEffect(() => {
@@ -1195,13 +1198,15 @@ export default function GlobalRelationsNexus({ forecasts, selectedTheory, theori
                     {/* ── TAB: FILTERS ─────────────────────────── */}
                     {hudTab === 'filters' && <>
                         <div className="hud-header">DIMENSION FILTERS</div>
-                        {Object.entries({ trade: 'ECONOMY & TRADE', conflict: 'CONFLICT & FRICTION', diplomacy: 'DIPLOMACY & TREATIES', tech: 'TECH & MINERALS' }).map(([key, label]) => (
-                            <label key={key} className="dim-filter-row" style={{ display: 'flex', alignItems: 'center', gap: '8px', cursor: 'pointer' }}>
-                                <input type="checkbox" checked={dimensions[key]} onChange={() => setDimensions(d => ({ ...d, [key]: !d[key] }))}
-                                    style={{ accentColor: DIM_COLORS[key] }} />
-                                <span style={{ color: DIM_COLORS[key] }}>{label}</span>
-                            </label>
-                        ))}
+                        {Object.entries({ trade: 'ECONOMY & TRADE', conflict: 'CONFLICT & FRICTION', diplomacy: 'DIPLOMACY & TREATIES', tech: 'TECH & MINERALS' }).map(([key, label]) => {
+                            const textColor = DIM_COLORS[key] === '#ff0066' ? '#ff5c99' : DIM_COLORS[key];
+                            return (
+                                <label key={key} className="dim-filter-row" style={{ display: 'flex', alignItems: 'center', gap: '8px', cursor: 'pointer', '--dim-color': DIM_COLORS[key] }}>
+                                    <input type="checkbox" checked={dimensions[key]} onChange={() => setDimensions(d => ({ ...d, [key]: !d[key] }))} />
+                                    <span style={{ color: textColor }}>{label}</span>
+                                </label>
+                            );
+                        })}
 
                         <div className="hud-header" style={{ marginTop: '12px' }}>GPC CHALLENGES</div>
                         <div className="gpc-grid" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '4px', marginBottom: '10px' }}>
