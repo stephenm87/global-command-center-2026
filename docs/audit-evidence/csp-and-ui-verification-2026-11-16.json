@@ -1,5 +1,5 @@
 {
-  "verifiedAt": "2026-11-16T05:15:40.296Z",
+  "verifiedAt": "2026-11-16T07:44:13.554Z",
   "cspHeader": "default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; font-src 'self'; img-src 'self' data: blob:; connect-src 'self' https://*.supabase.co; frame-src 'none'; object-src 'none'; base-uri 'self'; form-action 'self'; worker-src blob:",
   "routes": {
     "briefings": {
@@ -78,7 +78,7 @@
       "deepScanErrorText": "🔒 Sign in with a magic link to run Firecrawl article extraction and AI intelligence briefs.\nSIGN IN TO UNLOCK →",
       "focusEscapedAuthModal": false,
       "footerHasLiteralAsterisks": false,
-      "cardBriefingNavUrl": "http://127.0.0.1:56068/?view=briefings&tour=tuvalu-australia-falepili-union&step=1",
+      "cardBriefingNavUrl": "http://127.0.0.1:64212/?view=briefings&tour=tuvalu-australia-falepili-union&step=1",
       "cardBriefingHeading": "Tuvalu–Australia Falepili Union",
       "pageErrors": [],
       "failedResponses": [],

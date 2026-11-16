@@ -1,0 +1,403 @@
+import test from 'node:test';
+import assert from 'node:assert/strict';
+import React from 'react';
+import { renderToStaticMarkup } from 'react-dom/server';
+import { createServer } from 'vite';
+import { REPO_ROOT } from './_helpers/readAppSources.mjs';
+
+async function createSsrViteServer(t) {
+    const vite = await createServer({
+        configFile: false,
+        root: REPO_ROOT,
+        cacheDir: `/tmp/vite-gcc-decomposed-test-${process.pid}`,
+        appType: 'custom',
+        logLevel: 'silent',
+        esbuild: { jsx: 'automatic' },
+        optimizeDeps: { noDiscovery: true },
+        plugins: [
+            {
+                name: 'ignore-css-in-node-ssr',
+                load(id) {
+                    if (id.endsWith('.css')) return 'export default {};';
+                    return null;
+                },
+            },
+        ],
+        server: { middlewareMode: true },
+    });
+    t.after(() => vite.close());
+    return vite;
+}
+
+function findElementByClass(node, classToken) {
+    if (!node || typeof node !== 'object') return null;
+    if (Array.isArray(node)) {
+        for (const child of node) {
+            const hit = findElementByClass(child, classToken);
+            if (hit) return hit;
+        }
+        return null;
+    }
+    const cls = typeof node.props?.className === 'string' ? node.props.className.split(/\s+/) : [];
+    if (cls.includes(classToken)) return node;
+    return findElementByClass(node.props?.children, classToken);
+}
+
+test('navigationState.mjs distinguishes raw safeHttpUrl (for JSX & API calls) from HTML-escaped safeHref (for document.write)', async () => {
+    const nav = await import('../navigationState.mjs');
+
+    assert.equal(nav.parseViewFromSearch('?view=briefings'), 'briefings');
+    assert.equal(nav.parseViewFromSearch('?view=nexus'), 'nexus');
+    assert.equal(nav.parseViewFromSearch('?view=invalid'), 'globe');
+
+    const entry = nav.parseBriefingEntryFromSearch('?view=briefings&tour=sudan-rsf-saf&actor=africa&step=3');
+    assert.deepEqual(entry, {
+        tourId: 'sudan-rsf-saf',
+        nodeId: 'Africa',
+        step: 3,
+    });
+    assert.equal(nav.parseBriefingEntryFromSearch('?step=0').step, undefined, 'step=0 is not a valid 1-based briefing step');
+
+    assert.equal(nav.safeHttpUrl('javascript:alert(1)'), '');
+    assert.equal(nav.safeHttpUrl('data:text/html,<script>alert(1)</script>'), '');
+    assert.equal(nav.safeHttpUrl('  https://www.un.org/en?a=1&b=2  '), 'https://www.un.org/en?a=1&b=2', 'safeHttpUrl must return raw unescaped URL for React JSX and fetch');
+    assert.equal(nav.safeHref('https://www.un.org/en?a=1&b=2'), 'https://www.un.org/en?a=1&amp;b=2', 'safeHref escapes HTML entities for document.write templates');
+
+    assert.equal(nav.getAccessibleTextAccent('#ff0066'), '#ff5c99');
+    assert.equal(nav.getAccessibleTextAccent('#cc0000'), '#ff6b6b');
+
+    const deduped = nav.dedupeClusterItems([
+        { isCaseStudy: true, caseStudyId: 'case-a', 'Entity/Subject': 'A1' },
+        { isCaseStudy: true, caseStudyId: 'case-a', 'Entity/Subject': 'A2' },
+        { isCaseStudy: false, 'Entity/Subject': 'Live Event' },
+    ]);
+    assert.equal(deduped.length, 2, 'dedupeClusterItems collapses duplicate waypoints of the same case study');
+
+    const clustered = nav.clusterPoints([
+        { lat: 15.5, lng: 32.5, size: 1.0, color: '#b69cff', data: { isCaseStudy: true, caseStudyId: 'case-a' } },
+        { lat: 16.0, lng: 33.0, size: 1.0, color: '#b69cff', data: { isCaseStudy: true, caseStudyId: 'case-a' } },
+        { lat: -34.0, lng: -58.0, size: 0.8, color: '#00ccff', data: { isCaseStudy: false } },
+    ]);
+    assert.equal(clustered.length, 2);
+    const khartoumCluster = clustered.find(p => p.isCluster);
+    assert.ok(khartoumCluster);
+    assert.equal(khartoumCluster.count, 2);
+    assert.equal(khartoumCluster.caseCount, 1, 'Cluster caseCount counts unique caseStudyId records');
+});
+
+test('extracted App components preserve unescaped & query URLs, guard invalid theories, and render accessible dialogs & AI briefs', async t => {
+    const vite = await createSsrViteServer(t);
+    const { default: IntelSidebar } = await vite.ssrLoadModule('/src/components/IntelSidebar.jsx');
+    const { default: DetailModal } = await vite.ssrLoadModule('/src/components/DetailModal.jsx');
+    const { default: MineralsModal } = await vite.ssrLoadModule('/src/components/MineralsModal.jsx');
+    const { default: OperationalDashboard } = await vite.ssrLoadModule('/src/components/OperationalDashboard.jsx');
+    const { default: AppFooter } = await vite.ssrLoadModule('/src/components/AppFooter.jsx');
+
+    const queryUrl = 'https://www.un.org/ldcportal/en/content/bangladesh-graduation-status?section=1&lang=en';
+    const sampleCaseForecast = {
+        isCaseStudy: true,
+        isEditorial: true,
+        caseStudyId: 'bangladesh-ldc-graduation',
+        'Entity/Subject': 'Bangladesh LDC Graduation Deferral',
+        'Topic/Sector': 'Trade Preferences & UNGA Deferral',
+        'Key Player/Organization': 'Bangladesh / UNGA / WTO',
+        'Expected Impact/Value': 'UNGA postponed graduation to 24 November 2029.',
+        Broad_Category: 'Economy & Trade',
+        Timeline: '2026–2029',
+        updatedAt: '2026-11-16',
+        reviewBy: '2026-12-16',
+        confidence: 'High',
+        regionTags: ['South Asia'],
+        statusSummary: 'UNGA resolution A/81/L.8 deferred graduation to 24 November 2029.',
+        whyItMatters: 'Tests trade preference cliff management.',
+        uncertainty: 'EU GSP+ transition benchmarks remain contested.',
+        issueDimensions: ['Trade', 'Development'],
+        url: queryUrl,
+        sources: [
+            {
+                title: 'Bangladesh graduation status',
+                publisher: 'UN LDC Portal',
+                url: queryUrl,
+                perspectiveType: 'multilateral',
+                dateLabel: 'Reviewed Nov 2026',
+                supports: 'UNGA A/81/L.8 deferral to Nov 2029',
+            },
+            {
+                title: 'Unsafe Source Scheme',
+                publisher: 'Bad Actor',
+                url: 'javascript:alert(1)',
+                perspectiveType: 'local',
+                dateLabel: '2026',
+                supports: 'Should render as inert span',
+            },
+        ],
+    };
+
+    const sidebarHtml = renderToStaticMarkup(React.createElement(IntelSidebar, {
+        visible: true,
+        sidebarCollapsed: false,
+        onToggleCollapse: () => {},
+        historicalData: null,
+        historicalLoading: false,
+        timelineYear: '2026',
+        intelLoading: false,
+        intelLastUpdated: new Date('2026-11-16T12:00:00Z'),
+        intelSummary: {
+            sourceMode: 'reference',
+            feedStatus: 'not-configured',
+            liveItemCount: 0,
+            linkedReferenceCount: 162,
+        },
+        caseStudyCount: 29,
+        feedSearch: '',
+        onSearchChange: () => {},
+        visibleSelectedCategory: 'All',
+        onCategoryChange: () => {},
+        currentFeedLabel: 'CURRENT FEED (0)',
+        feedEmptyState: null,
+        feedItems: [sampleCaseForecast, { ...sampleCaseForecast, url: 'javascript:alert(1)', caseStudyId: undefined }],
+        feedPage: 1,
+        feedPageSize: 40,
+        onShowMore: () => {},
+        selectedForecast: null,
+        onSelectForecast: () => {},
+        onOpenBriefing: () => {},
+    }));
+    assert.match(sidebarHtml, /CURRENT FEED NOT CONFIGURED/);
+    assert.match(sidebarHtml, /<article class="intel-card/);
+    assert.match(sidebarHtml, /BRIEFING →/);
+    assert.ok(!sidebarHtml.includes('javascript:alert(1)'), 'IntelSidebar must reject javascript: URLs');
+    assert.ok(!sidebarHtml.includes('&amp;amp;'), 'IntelSidebar must not double-escape & query parameters in href');
+    assert.ok(sidebarHtml.includes('href="https://www.un.org/ldcportal/en/content/bangladesh-graduation-status?section=1&amp;lang=en"'));
+
+    // Verify onDeepScan receives the exact unescaped URL (not &amp;)
+    let receivedDeepScanUrl = null;
+    const detailTree = DetailModal({
+        selectedForecast: sampleCaseForecast,
+        modalRef: { current: null },
+        selectedTheory: 'Marxism',
+        onSelectTheory: () => {},
+        onClose: () => {},
+        onOpenBriefing: () => {},
+        onOpenAuthModal: () => {},
+        onDeepScan: u => { receivedDeepScanUrl = u; },
+        deepScanResult: { error: 'Sign in required to run Firecrawl + AI Brief.', requiresAuth: true },
+        deepScanLoading: false,
+        aiSummary: {
+            model: 'gemini-3.5-flash-lite',
+            oneLiner: 'UNGA extended Bangladesh transition window to 2029.',
+            riskLevel: 'HIGH',
+            riskReason: 'Export preference cliff.',
+            paper2Prompts: { identify: 'Identify key stakeholders.' },
+        },
+        aiSummaryLoading: false,
+    });
+    const deepScanBtn = findElementByClass(detailTree, 'deep-scan-btn');
+    assert.ok(deepScanBtn, 'Expected .deep-scan-btn in DetailModal tree');
+    deepScanBtn.props.onClick();
+    assert.equal(receivedDeepScanUrl, queryUrl, 'onDeepScan must receive raw unescaped URL with & intact');
+
+    const detailHtml = renderToStaticMarkup(detailTree);
+    assert.match(detailHtml, /role="dialog"/);
+    assert.match(detailHtml, /aria-labelledby="forecast-dialog-title"/);
+    assert.match(detailHtml, /Three-perspective reading set/);
+    assert.match(detailHtml, /SIGN IN TO UNLOCK →/);
+    assert.match(detailHtml, /IB PAPER 2 PRACTICE PROMPTS/);
+    assert.match(detailHtml, /color:#ff6b6b/i, 'Marxism theory name in DetailModal must use accessible #ff6b6b accent');
+    assert.ok(!detailHtml.includes('javascript:alert(1)'), 'DetailModal case-study sources must strip non-http(s) URLs');
+    assert.ok(!detailHtml.includes('&amp;amp;'), 'DetailModal must not double-escape & query parameters');
+
+    // Verify unknown stored selectedTheory falls back safely to Realism without throwing
+    const fallbackTheoryHtml = renderToStaticMarkup(React.createElement(DetailModal, {
+        selectedForecast: sampleCaseForecast,
+        modalRef: { current: null },
+        selectedTheory: 'CorruptedStoredTheory',
+        onSelectTheory: () => {},
+        onClose: () => {},
+        onOpenBriefing: () => {},
+        onOpenAuthModal: () => {},
+        onDeepScan: () => {},
+        deepScanResult: null,
+        deepScanLoading: false,
+        aiSummary: null,
+        aiSummaryLoading: false,
+    }));
+    assert.match(fallbackTheoryHtml, />Realism<\/span>/);
+
+    const mineralsHtml = renderToStaticMarkup(React.createElement(MineralsModal, {
+        open: true,
+        minerals: {},
+        modalRef: { current: null },
+        onClose: () => {},
+    }));
+    assert.match(mineralsHtml, /CRITICAL MINERALS MATRIX/);
+    assert.match(mineralsHtml, /2026-Q1 reference baselines/);
+
+    const dashHtml = renderToStaticMarkup(React.createElement(OperationalDashboard, {
+        visible: true,
+        metricsCollapsed: false,
+        onToggleCollapse: () => {},
+        keyMetrics: { totalEvents: 191 },
+        minerals: {},
+        onOpenMinerals: () => {},
+        tensionMeter: 48,
+        stressLevel: 30,
+        onStressLevelChange: () => {},
+        escalationPairs: [],
+        showConnections: false,
+        onToggleConnections: () => {},
+        timelineYear: '2026',
+        onTimelineYearChange: () => {},
+    }));
+    assert.match(dashHtml, /OPERATIONAL DASHBOARD/);
+    assert.match(dashHtml, /CRITICAL MINERALS/);
+
+    const footerHtml = renderToStaticMarkup(React.createElement(AppFooter, {
+        attributionRef: { current: null },
+        onScrollToTop: () => {},
+    }));
+    assert.match(footerHtml, /<strong>Stephen Martinez \(Project Lead &amp; IB Global Politics Teacher\)<\/strong>/);
+    assert.match(footerHtml, /\/CODE_OF_CONDUCT\.md/);
+    assert.match(footerHtml, /width="114" height="50"/);
+});
+
+test('extracted 3D Nexus components & Three.js helpers build node meshes, escape tooltips, render edge/lock views, and dispose scenes', async t => {
+    const vite = await createSsrViteServer(t);
+    const THREE = await import('three');
+    const { default: NexusHudControls } = await vite.ssrLoadModule('/src/nexus/NexusHudControls.jsx');
+    const { default: NexusInspectorPanel } = await vite.ssrLoadModule('/src/nexus/NexusInspectorPanel.jsx');
+    const {
+        disposeThreeHierarchy,
+        createNexusNodeObject,
+        formatNexusNodeTooltip,
+        formatNexusLinkTooltip,
+    } = await vite.ssrLoadModule('/src/nexus/threeSpriteHelpers.js');
+    const { theories } = await vite.ssrLoadModule('/src/theories.js');
+
+    // Verify tooltip HTML escaping + preserved Double-click to lock hint
+    const nodeTip = formatNexusNodeTooltip({ id: 'USA', name: '<img src=x onerror=alert(1)>', color: '#00ff88', isAnchor: true, type: 'state' }, []);
+    assert.ok(!nodeTip.includes('<img'), 'formatNexusNodeTooltip must escape raw HTML tags');
+    assert.match(nodeTip, /&lt;img src=x onerror=alert\(1\)&gt;/);
+    assert.match(nodeTip, /Double-click to lock/);
+
+    const linkTip = formatNexusLinkTooltip({ source: '<script>1</script>', target: 'China', type: 'trade', width: 2 });
+    assert.ok(!linkTip.includes('<script>'), 'formatNexusLinkTooltip must escape raw HTML tags');
+
+    // Verify createNexusNodeObject builds distinct anchor vs satellite groups and dims outside highlightSet
+    const mockMakeSprite = () => new THREE.Object3D();
+    const dimmedAnchorGroup = createNexusNodeObject(
+        { id: 'UN_OPEC', name: 'UN / Multilateral', isAnchor: true, type: 'igo', val: 16, color: '#00ff88' },
+        { highlightSet: new Set(['USA']), makeSprite: mockMakeSprite },
+    );
+    assert.equal(dimmedAnchorGroup.userData.anchorType, 'igo');
+    assert.ok(Math.abs(dimmedAnchorGroup.children[0].material.opacity - 0.30) < 1e-6, 'Anchor outside highlightSet should dim to 0.30 opacity');
+
+    const focusedSatelliteGroup = createNexusNodeObject(
+        { id: 'forecast-1', name: 'Chip Controls', isAnchor: false, val: 4, color: '#00ccff' },
+        { highlightSet: new Set(['forecast-1']), makeSprite: mockMakeSprite },
+    );
+    assert.ok(Math.abs(focusedSatelliteGroup.children[0].material.opacity - 0.90) < 1e-6);
+
+    const disposedCounts = disposeThreeHierarchy(dimmedAnchorGroup);
+    assert.ok(disposedCounts.geometries >= 2 && disposedCounts.materials >= 2);
+
+    const hudHtml = renderToStaticMarkup(React.createElement(NexusHudControls, {
+        nodeCount: 16,
+        edgeCount: 74,
+        onResetCamera: () => {},
+        lockedNode: null,
+        onUnlock: () => {},
+        selectedNode: null,
+        hudTab: 'filters',
+        onSelectHudTab: () => {},
+        dimensions: { trade: true, conflict: true, diplomacy: true, tech: true },
+        onToggleDimension: () => {},
+        selectedGPC: 'security',
+        onSelectGPC: () => {},
+        pulseSignals: ['USA'],
+        gdeltArticles: [
+            { title: 'Valid HTTPS Pulse', url: 'https://example.org/news', tone: -3 },
+            { title: 'Unsafe JS Link', url: 'javascript:alert(1)', tone: 0 },
+        ],
+        showSatellites: false,
+        onToggleSatellites: () => {},
+        intensityThreshold: 0,
+        onIntensityChange: () => {},
+        physicsPreset: 'balance',
+        onSelectPhysicsPreset: () => {},
+        is2D: false,
+        onSetIs2D: () => {},
+        ambientOn: false,
+        onSetAmbientOn: () => {},
+        audioMuted: false,
+        onSetAudioMuted: () => {},
+        audioVolume: 0.3,
+        onSetAudioVolume: () => {},
+        expandedAnchors: {},
+        anchorSatCounts: { USA: 5 },
+        onToggleAnchorExpand: () => {},
+        onExpandAll: () => {},
+        onCollapseAll: () => {},
+        onSelectQuickActor: () => {},
+    }));
+    assert.match(hudHtml, /NODES: 16 · EDGES: 74/);
+    assert.match(hudHtml, /VIEWING: SECURITY CHALLENGE/);
+    assert.match(hudHtml, /https:\/\/example\.org\/news/);
+    assert.ok(!hudHtml.includes('javascript:alert(1)'), 'NexusHudControls must filter non-http(s) GDELT links');
+
+    // Edge inspector branch (selectedEdge without selectedNode)
+    const edgeHtml = renderToStaticMarkup(React.createElement(NexusInspectorPanel, {
+        selectedEdge: {
+            source: { id: 'USA', name: 'United States', color: '#3399ff' },
+            target: { id: 'China', name: 'China', color: '#ff3366' },
+            type: 'conflict',
+            width: 2.5,
+        },
+        selectedNode: null,
+        lockedNode: null,
+        selectedGPC: null,
+        onCloseEdge: () => {},
+        onJumpToNodeById: () => {},
+    }));
+    assert.match(edgeHtml, /edge-inspector/);
+    assert.match(edgeHtml, /United States/);
+    assert.match(edgeHtml, /China/);
+    assert.match(edgeHtml, /TIMELINE/);
+
+    // Node inspector with lock breadcrumb + theory tab
+    const inspectorHtml = renderToStaticMarkup(React.createElement(NexusInspectorPanel, {
+        selectedEdge: null,
+        selectedNode: {
+            id: 'USA',
+            name: 'United States',
+            type: 'state',
+            color: '#3399ff',
+            isAnchor: true,
+            desc: 'Anchor power projection.',
+        },
+        lockedNode: {
+            id: 'China',
+            name: 'China',
+            color: '#ff3366',
+        },
+        selectedGPC: 'security',
+        inspectTab: 'theory',
+        onSelectInspectTab: () => {},
+        onCloseEdge: () => {},
+        onCloseNode: () => {},
+        onToggleLock: () => {},
+        onReturnToLockedNode: () => {},
+        onJumpToNodeById: () => {},
+        onNavigateToNode: () => {},
+        nodeBadges: [{ label: 'HIGH CONFLICT', color: '#ff0066', icon: '🔴' }],
+        connectionSummary: [],
+        radarMetrics: null,
+        theories,
+        selectedTheory: 'Marxism',
+    }));
+    assert.match(inspectorHtml, /lock-breadcrumb/);
+    assert.match(inspectorHtml, /🔒 China/);
+    assert.match(inspectorHtml, /United States/);
+    assert.match(inspectorHtml, /SECURITY CHALLENGE ANALYSIS/);
+    assert.match(inspectorHtml, /MARXISM INTERPRETATION/);
+});
