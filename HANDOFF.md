@@ -2,6 +2,25 @@
 
 Newest entry first. Each agent adds an entry before it stops. Keep entries short.
 
+## 2026-11-17 — Antigravity (Carbon) — Unit 13c: PR #34, `/context-cards` Deploy-Preview Check & `refresh-source-health-background` Live Verification
+- **Owner Gate Status:** `#12 somaliland-recognition-red-sea-order` remains **`awaiting owner read`** before merge to `main` (PR #34 is open and **unmerged**). Standing 3D Advanced Nexus freeze / post-pilot 2D `"Connections"` consultation directive (`claude-fable-5-2` `Consult` first) remains active.
+- **GitHub PR & Deploy Preview:**
+  - Pull Request #34 (`fix/audit-remediation-2026-11` -> `main`, unmerged): `https://github.com/stephenm87/global-command-center-2026/pull/34`
+  - Netlify Deploy Preview (`globalcommandcenter2026`, deploy `6afbe260b0e93888935c0c16`, `state: ready`): `https://deploy-preview-34--globalcommandcenter2026.netlify.app` (`target_url` reported on PR #34).
+- **Live `/context-cards` Redirect, Header & Rendering Check (`S7`):**
+  - `curl -sI .../context-cards` -> `HTTP/2 301` with `location: /context-cards/` (Netlify directory canonicalization, no redirect loop).
+  - `curl -sI .../context-cards/` -> `HTTP/2 200`, `content-type: text/html; charset=UTF-8`, `content-security-policy: default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; font-src 'self'; img-src 'self' data: blob:; connect-src 'self' https://*.supabase.co; frame-src 'none'; object-src 'none'; base-uri 'self'; form-action 'self'; worker-src blob:`.
+  - Live Playwright check against `.../context-cards/`: `HTTP 200`, `5/5` portraits rendered (`naturalWidth`: `3134`, `300`, `1585`, `248`, `787`), `Playfair Display` loaded (`italic:400` & `normal:400 900`), `0` external requests, `0` font/image/script CSP violations (`1` preview-only `frame-src` event from Netlify's own preview-toolbar iframe at `https://app.netlify.com`).
+- **`CRON_SECRET` & `refresh-source-health-background` Live Verification:**
+  - Set `CRON_SECRET` on Netlify project `globalcommandcenter2026` (`a41e4e7a-7187-426a-b2e7-fb9069bb4954`, `scopes: ["functions"]`, `context: "all"`). Deleted temporary local secret file `/tmp/gcc-cron-secret.txt`.
+  - Sent three `POST /.netlify/functions/refresh-source-health-background` requests (no secret, wrong secret, valid `x-cron-secret`); Netlify Background Functions gateway returned `202` immediately on enqueue, and async execution rejected unauthenticated/wrong-secret invocations early (`358 ms` cold-start / `6 ms` warm) while the authorized invocation ran to completion (`21369 ms`, `121 MB` memory).
+  - Verified stored Netlify Blobs snapshot via `GET .../source-health` (`HTTP 200`): `schemaVersion: 1`, `checkedAt: "2026-11-17T05:18:54.583Z"`, `workerMode: "background-15m"`, `targetCount: 127`, `incompleteCount: 0`, `stale: false`, `summary: {"healthy":90,"restricted":31,"broken":0,"unknown":6}` (6 `unknown` are transient gov/UN timeouts/network errors; zero `broken`).
+  - Function log output (`netlify logs --json --source functions --function refresh-source-health-background --url https://6afbe260b0e93888935c0c16--globalcommandcenter2026.netlify.app --since 1h`):
+    - `2026-11-17T05:18:53.924Z INFO Duration: 358 ms\tMemory Usage: 100 MB`
+    - `2026-11-17T05:18:54.286Z INFO Duration: 6 ms\tMemory Usage: 101 MB`
+    - `2026-11-17T05:18:54.582Z INFO Duration: 21369 ms\tMemory Usage: 121 MB`
+    - `2026-11-17T05:19:15.945Z INFO [refresh-source-health-background] Checked 127 active links (0 deferred): {"healthy":90,"restricted":31,"broken":0,"unknown":6}.`
+
 ## 2026-11-17 — Antigravity (Carbon) — Unit 13b: Pre-Pilot Overdue-Case Split (`18` Substantive Renewals + `8` `"Last reviewed <date>, update in progress"` Notices)
 - **Owner Gate Status:** `#12 somaliland-recognition-red-sea-order` remains **`awaiting owner read`** before merge to `main` (and all 18 renewed Group 1 cases — especially `#9 western-sahara-autonomy-self-determination`, where MINURSO ended after the 30 October 2026 Security Council votes — are presented for owner review on the PR). Standing 3D Advanced Nexus freeze / post-pilot 2D `"Connections"` consultation directive (`claude-fable-5-2` `Consult` first) remains active.
 - **Did:**
