@@ -65,6 +65,72 @@ test('navigationState.mjs distinguishes raw safeHttpUrl (for JSX & API calls) fr
 
     assert.equal(nav.getAccessibleTextAccent('#ff0066'), '#ff5c99');
     assert.equal(nav.getAccessibleTextAccent('#cc0000'), '#ff6b6b');
+    assert.match(nav.getLocalIsoDate(new Date(2026, 10, 17, 1, 30, 0)), /^2026-11-17$/);
+    assert.equal(
+        nav.getCaseReviewNotice(
+            { updatedAt: '2026-08-09', reviewBy: '2026-09-08', status: 'active', reviewStatus: 'update-in-progress' },
+            '2026-11-17',
+        ),
+        'Last reviewed 2026-08-09, update in progress',
+    );
+    assert.equal(
+        nav.getCaseReviewNotice(
+            { updatedAt: '2026-08-09', reviewBy: '2026-09-08', status: 'active' },
+            '2026-11-17',
+        ),
+        'Last reviewed 2026-08-09 · review overdue since 2026-09-08',
+        'Overdue case without explicit reviewStatus must not falsely claim update in progress',
+    );
+    assert.equal(
+        nav.getCaseReviewNotice({ updatedAt: '2026-11-17', reviewBy: '2026-12-17', status: 'active' }, '2026-11-17'),
+        null,
+    );
+    assert.equal(
+        nav.getCaseReviewNotice(
+            { updatedAt: '2026-08-09', reviewBy: '2026-09-08', status: 'archived', reviewStatus: 'update-in-progress' },
+            '2026-11-17',
+        ),
+        null,
+    );
+
+    const overdueGlobeTooltip = nav.formatGlobePointTooltip(
+        {
+            isCluster: false,
+            color: '#b69cff',
+            locationLabel: 'Damascus',
+            data: {
+                isCaseStudy: true,
+                'Entity/Subject': 'Synthetic Briefing',
+                updatedAt: '2026-06-30<script>',
+                reviewBy: '2026-09-28',
+                reviewStatus: 'update-in-progress',
+                sources: [{}, {}, {}],
+                url: 'https://example.org/case',
+            },
+        },
+        '2026-11-17',
+    );
+    assert.match(overdueGlobeTooltip, /⚠ Last reviewed 2026-06-30&lt;script&gt;, update in progress/);
+    assert.ok(!overdueGlobeTooltip.includes('<script>'), 'formatGlobePointTooltip must escape updatedAt HTML');
+
+    const freshGlobeTooltip = nav.formatGlobePointTooltip(
+        {
+            isCluster: false,
+            color: '#b69cff',
+            locationLabel: 'Geneva',
+            data: {
+                isCaseStudy: true,
+                'Entity/Subject': 'Fresh Briefing',
+                updatedAt: '2026-11-17',
+                reviewBy: '2026-12-17',
+                sources: [{}, {}, {}],
+                url: 'https://example.org/fresh',
+            },
+        },
+        '2026-11-17',
+    );
+    assert.match(freshGlobeTooltip, /Last reviewed 2026-11-17/);
+    assert.ok(!freshGlobeTooltip.includes('update in progress'));
 
     const deduped = nav.dedupeClusterItems([
         { isCaseStudy: true, caseStudyId: 'case-a', 'Entity/Subject': 'A1' },
@@ -430,5 +496,113 @@ test('extracted 3D Nexus components & Three.js helpers build node meshes, escape
     assert.match(archivedBriefingHtml, /Open current successor briefing →/);
     assert.match(archivedBriefingHtml, /Show archived snapshots \(1\)/);
     assert.match(archivedBriefingHtml, /STEP 2 \//);
-    assert.ok(!archivedBriefingHtml.includes('Source review overdue since'), 'Archived snapshots must suppress overdue alerts');
+    assert.ok(!archivedBriefingHtml.includes('update in progress'), 'Archived snapshots must suppress update-in-progress notices');
+
+    // Verify synthetic update-in-progress active case renders honest "Last reviewed <date>, update in progress"
+    // across GuidedBriefings, IntelSidebar, DetailModal, NexusFocusView, and 5W1H without depending on wall-clock date
+    const { CASE_STUDIES_2026, normalizeCaseStudy, toForecastRecord } = await vite.ssrLoadModule('/src/caseStudies2026.js');
+    const { projectGuidedTour } = await vite.ssrLoadModule('/src/nexusTours.js');
+    const { default: IntelSidebar } = await vite.ssrLoadModule('/src/components/IntelSidebar.jsx');
+    const { default: DetailModal } = await vite.ssrLoadModule('/src/components/DetailModal.jsx');
+    const { default: NexusFocusView } = await vite.ssrLoadModule('/src/NexusFocusView.jsx');
+    const { generate5W1H } = await vite.ssrLoadModule('/src/eventAnalysis.js');
+
+    const syntheticUpdateInProgressCase = normalizeCaseStudy({
+        ...CASE_STUDIES_2026[0],
+        id: 'synthetic-update-in-progress',
+        status: 'active',
+        reviewStatus: 'update-in-progress',
+        updatedAt: '2026-06-30',
+        reviewCadenceDays: 90,
+        reviewBy: '2026-09-28',
+        nexusNodeIds: ['USA'],
+        waypoints: CASE_STUDIES_2026[0].waypoints.map((wp, idx) => (idx === 0 ? { ...wp, nodeId: 'USA' } : wp)),
+    });
+    const syntheticTour = projectGuidedTour(syntheticUpdateInProgressCase);
+    const syntheticForecast = toForecastRecord(syntheticUpdateInProgressCase);
+    assert.ok(!syntheticForecast.Timeline.includes('Current as of'), 'toForecastRecord must not label snapshots Current as of');
+
+    assert.equal(
+        generate5W1H(syntheticForecast, '2026-11-17').when,
+        'Last reviewed 2026-06-30, update in progress (scheduled review 2026-09-28).',
+    );
+    const unflaggedOverdueForecast = toForecastRecord(normalizeCaseStudy({
+        ...CASE_STUDIES_2026[0],
+        id: 'synthetic-unflagged-overdue',
+        status: 'active',
+        updatedAt: '2026-08-09',
+        reviewCadenceDays: 30,
+        reviewBy: '2026-09-08',
+    }));
+    assert.equal(
+        generate5W1H(unflaggedOverdueForecast, '2026-11-17').when,
+        'Last reviewed 2026-08-09 · review overdue since 2026-09-08 (scheduled review 2026-09-08).',
+    );
+
+    const overdueBriefingHtml = renderToStaticMarkup(React.createElement(GuidedBriefings, {
+        initialTourId: 'synthetic-update-in-progress',
+        initialStep: 1,
+        onExploreNode: () => {},
+        onRouteChange: () => {},
+        activeTours: [syntheticTour],
+        archivedTours: [],
+    }));
+    assert.match(overdueBriefingHtml, /Last reviewed 2026-06-30, update in progress/);
+    assert.match(overdueBriefingHtml, /briefing-update-banner/);
+    assert.match(overdueBriefingHtml, /Update in progress/);
+    assert.ok(!overdueBriefingHtml.includes('AS OF 2026-06-30'), 'Overdue briefings must not display AS OF wording');
+
+    const overdueSidebarHtml = renderToStaticMarkup(React.createElement(IntelSidebar, {
+        visible: true,
+        sidebarCollapsed: false,
+        onToggleCollapse: () => {},
+        historicalData: null,
+        historicalLoading: false,
+        timelineYear: '2026',
+        intelLoading: false,
+        intelLastUpdated: new Date('2026-11-17T00:00:00Z'),
+        intelSummary: { sourceMode: 'reference', feedStatus: 'ready', liveItemCount: 0, linkedReferenceCount: 56 },
+        caseStudyCount: 29,
+        feedSearch: '',
+        onSearchChange: () => {},
+        visibleSelectedCategory: 'ALL SOURCED INTELLIGENCE',
+        onCategoryChange: () => {},
+        currentFeedLabel: 'CURRENT',
+        feedEmptyState: null,
+        feedItems: [syntheticForecast],
+        feedPage: 1,
+        feedPageSize: 40,
+        onShowMore: () => {},
+        selectedForecast: null,
+        onSelectForecast: () => {},
+        onOpenBriefing: () => {},
+    }));
+    assert.match(overdueSidebarHtml, /Last reviewed 2026-06-30, update in progress/);
+    assert.match(overdueSidebarHtml, /case-study-tag--overdue/);
+
+    const overdueModalHtml = renderToStaticMarkup(React.createElement(DetailModal, {
+        selectedForecast: syntheticForecast,
+        modalRef: { current: null },
+        selectedTheory: 'Realism',
+        onSelectTheory: () => {},
+        onClose: () => {},
+        onOpenBriefing: () => {},
+        onOpenAuthModal: () => {},
+        onDeepScan: () => {},
+        deepScanResult: null,
+        deepScanLoading: false,
+        aiSummary: null,
+        aiSummaryLoading: false,
+    }));
+    assert.match(overdueModalHtml, /Last reviewed 2026-06-30, update in progress/);
+    assert.match(overdueModalHtml, /case-study-update-notice/);
+
+    const focusNexusHtml = renderToStaticMarkup(React.createElement(NexusFocusView, {
+        forecasts: [syntheticForecast],
+        initialNodeId: 'USA',
+        onSelectActor: () => {},
+        onOpenSpatial: () => {},
+        onOpenBriefing: () => {},
+    }));
+    assert.match(focusNexusHtml, /Current cases \(1\)/);
 });

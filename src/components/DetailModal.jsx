@@ -1,7 +1,7 @@
 import React from 'react';
 import { theories, getTheoryInterpretation } from '../theories';
 import { generate5W1H, getGlobalChallenges, CHALLENGE_ICONS } from '../eventAnalysis';
-import { categoryColors, getAccessibleTextAccent, isReviewOverdue, safeHttpUrl } from '../navigationState.mjs';
+import { categoryColors, getAccessibleTextAccent, getCaseReviewNotice, isReviewOverdue, safeHttpUrl } from '../navigationState.mjs';
 
 export default function DetailModal({
     selectedForecast,
@@ -25,6 +25,7 @@ export default function DetailModal({
     const activeTheoryKey = theories[selectedTheory] ? selectedTheory : 'Realism';
     const activeTheory = theories[activeTheoryKey];
     const validReportUrl = safeHttpUrl(selectedForecast.url);
+    const overdueNotice = selectedForecast.isCaseStudy ? getCaseReviewNotice(selectedForecast) : null;
 
     return (
         <div className="detail-modal" onClick={onClose}>
@@ -51,16 +52,21 @@ export default function DetailModal({
                 <div className="modal-body">
                     {selectedForecast.isCaseStudy && (
                         <section className="case-study-overview" aria-label="Verified case-study evidence">
+                            {overdueNotice && (
+                                <div className="case-study-update-notice" role="status">
+                                    <strong>Editorial review notice:</strong> {overdueNotice} (scheduled review {selectedForecast.reviewBy}).
+                                </div>
+                            )}
                             <div className="case-study-meta">
                                 {selectedForecast.regionTags?.map(region => <span key={region}>{region}</span>)}
-                                <time dateTime={selectedForecast.updatedAt}>As of {selectedForecast.updatedAt}</time>
+                                <time dateTime={selectedForecast.updatedAt}>Last reviewed {selectedForecast.updatedAt}</time>
                                 <span>{selectedForecast.confidence} source confidence</span>
                                 {selectedForecast.reviewBy && (
                                     <time
                                         className={isReviewOverdue(selectedForecast.reviewBy) ? 'review-overdue' : ''}
                                         dateTime={selectedForecast.reviewBy}
                                     >
-                                        {isReviewOverdue(selectedForecast.reviewBy) ? 'Review overdue since' : 'Review by'} {selectedForecast.reviewBy}
+                                        {overdueNotice || `Review by ${selectedForecast.reviewBy}`}
                                     </time>
                                 )}
                             </div>

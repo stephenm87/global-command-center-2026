@@ -7,6 +7,7 @@ import {
     THEORY_LABELS,
     escHtml,
     clusterPoints,
+    formatGlobePointTooltip,
 } from '../navigationState.mjs';
 
 export function useGlobeLayerSync({
@@ -199,25 +200,7 @@ export function useGlobeLayerSync({
                     if (theoryLens) setSelectedTheory(THEORY_LABELS[theoryLens] || 'Realism');
                 }
             })
-            .pointLabel(d => {
-                if (d.isCluster) {
-                    const caseDetail = d.caseCount ? ` · ${d.caseCount} EDITORIAL ${d.caseCount === 1 ? 'CASE' : 'CASES'}` : '';
-                    return `<div style="background:rgba(0,0,0,0.9);padding:10px 14px;border:1px solid #ffcc00;border-radius:20px;font-family:Roboto Mono;color:#ffcc00;font-size:0.875rem;font-weight:900;line-height:1.4;">${d.count} MAP ITEMS${caseDetail} — click to expand</div>`;
-                }
-                const isLinked = d.data.url
-                    ? `<div style="color:#00ff88;font-size:0.8rem;margin-top:7px;font-weight:bold;">[ ${d.data.isCaseStudy ? 'OPEN CASE & BRIEFING' : 'CLICK FOR SOURCE'} ]</div>`
-                    : '';
-                const layerLabel = d.data.isCaseStudy
-                    ? `◆ EDITORIAL CASE · ${d.data.sources?.length || 0} PERSPECTIVES`
-                    : d.data.isLive ? '[LIVE] CURRENT SOURCE' : 'REFERENCE SOURCE';
-                const locationLabel = d.locationLabel ? `<div style="color:#b6c5ce;font-size:0.75rem;margin-top:5px;">📍 ${escHtml(d.locationLabel)}</div>` : '';
-                return `<div style="background:rgba(0,0,0,0.94);padding:14px;border:1px solid ${d.color};border-radius:6px;font-family:Roboto Mono;color:#00ffff;max-width:340px;box-shadow:0 0 15px ${d.color}44;line-height:1.45;">
-                    <div style="color:${d.color};font-size:0.75rem;font-weight:700;margin-bottom:6px;">${layerLabel}</div>
-                    <div style="font-size:1rem;color:#fff;">${escHtml(d.data['Entity/Subject'])}</div>
-                    ${locationLabel}
-                    ${isLinked}
-                  </div>`;
-            });
+            .pointLabel(d => formatGlobePointTooltip(d));
 
         const stressColor = stressLevel > 70 ? '#ff3300' : stressLevel > 40 ? '#ff9900' : '#0088ff';
         globeEl.current.atmosphereColor(stressColor);

@@ -128,10 +128,14 @@ export function normalizeCaseStudy(caseStudy) {
         || ISSUE_LENS_TO_BROAD_CATEGORY[issueLens]
         || 'Geopolitics & Conflict';
     const status = caseStudy.status === 'archived' ? 'archived' : 'active';
+    const reviewStatus = status === 'active' && caseStudy.reviewStatus === 'update-in-progress'
+        ? 'update-in-progress'
+        : undefined;
 
     return {
         ...caseStudy,
         status,
+        reviewStatus,
         archivedAt: status === 'archived' ? (caseStudy.archivedAt || null) : undefined,
         archivedReason: status === 'archived' ? (caseStudy.archivedReason || '') : undefined,
         supersededById: status === 'archived' ? (caseStudy.supersededById || undefined) : undefined,
@@ -188,7 +192,7 @@ export function toForecastRecord(caseStudy) {
         'Topic/Sector': caseStudy.issueDimensions.join(' / '),
         'Entity/Subject': caseStudy.title,
         'Key Player/Organization': caseStudy.actors.join(', '),
-        Timeline: `Current as of ${caseStudy.updatedAt}`,
+        Timeline: `Last reviewed ${caseStudy.updatedAt}`,
         'Expected Impact/Value': `${caseStudy.statusSummary} ${caseStudy.whyItMatters}`,
         Source: sourceLabel,
         url: primarySource?.url || '',
@@ -197,6 +201,7 @@ export function toForecastRecord(caseStudy) {
         Broad_Category: caseStudy.broadCategory,
         issueLens: caseStudy.issueLens,
         status: caseStudy.status || 'active',
+        reviewStatus: caseStudy.reviewStatus === 'update-in-progress' ? 'update-in-progress' : undefined,
         caseStudyId: caseStudy.id,
         statusSummary: caseStudy.statusSummary,
         whyItMatters: caseStudy.whyItMatters,

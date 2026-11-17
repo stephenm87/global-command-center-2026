@@ -1,6 +1,6 @@
 import React from 'react';
 import { ALL_INTEL_CATEGORY, LIVE_INTEL_CATEGORY } from '../intelFeed.mjs';
-import { categoryColors, getAccessibleTextAccent, safeHttpUrl } from '../navigationState.mjs';
+import { categoryColors, getAccessibleTextAccent, getCaseReviewNotice, safeHttpUrl } from '../navigationState.mjs';
 
 export default function IntelSidebar({
     visible,
@@ -133,7 +133,9 @@ export default function IntelSidebar({
                             </button>
                         )}
                     </div>
-                ) : feedItems.slice(0, feedPage * feedPageSize).map((forecast, idx) => (
+                ) : feedItems.slice(0, feedPage * feedPageSize).map((forecast, idx) => {
+                    const overdueNotice = forecast.isCaseStudy ? getCaseReviewNotice(forecast) : null;
+                    return (
                     <article
                         key={`${forecast.caseStudyId || forecast.url || forecast['Entity/Subject'] || forecast['Topic/Sector'] || 'forecast'}-${idx}`}
                         className={`intel-card ${selectedForecast === forecast ? 'selected' : ''} ${forecast.isLive ? 'live-item' : ''} ${forecast.isEditorial ? 'editorial-item' : ''}`}
@@ -165,7 +167,11 @@ export default function IntelSidebar({
                                 </span>
                             )}
                             {forecast.isCaseStudy
-                                ? <span className="case-study-tag">◆ CASE BRIEF · {forecast.updatedAt}</span>
+                                ? (
+                                    <span className={`case-study-tag ${overdueNotice ? 'case-study-tag--overdue' : ''}`.trim()}>
+                                        ◆ CASE BRIEF · {overdueNotice || `Last reviewed ${forecast.updatedAt}`}
+                                    </span>
+                                )
                                 : forecast.isEditorial && <span className="context-tag">◆ DATED CONTEXT</span>}
                             {forecast.isReference && !forecast.isEditorial && !forecast.isCaseStudy && (
                                 <span className="reference-tag">
@@ -193,7 +199,9 @@ export default function IntelSidebar({
                                 {forecast.isCaseStudy ? forecast['Entity/Subject'] : forecast['Topic/Sector']}
                             </span>
                             <span className="card-timeline">
-                                ⏱ {forecast.isCaseStudy ? `${forecast.regionTags?.join(' · ')} · ${forecast.Timeline}` : forecast.Timeline}
+                                ⏱ {forecast.isCaseStudy
+                                    ? `${forecast.regionTags?.join(' · ')} · ${overdueNotice || forecast.Timeline}`
+                                    : forecast.Timeline}
                             </span>
                             <span className="card-impact">
                                 {(forecast.isCaseStudy ? forecast.statusSummary : forecast['Expected Impact/Value'])?.substring(0, 120)}...
@@ -223,7 +231,8 @@ export default function IntelSidebar({
                             </div>
                         )}
                     </article>
-                ))}
+                    );
+                })}
                 {feedPage * feedPageSize < feedItems.length && (
                     <button
                         type="button"

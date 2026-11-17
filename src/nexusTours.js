@@ -45,6 +45,7 @@ export function projectGuidedTour(caseStudy) {
         id: caseStudy.id,
         caseStudyId: caseStudy.id,
         status: caseStudy.status || 'active',
+        reviewStatus: caseStudy.reviewStatus === 'update-in-progress' ? 'update-in-progress' : undefined,
         archivedAt: caseStudy.archivedAt || undefined,
         archivedReason: caseStudy.archivedReason || undefined,
         supersededById: caseStudy.supersededById || undefined,

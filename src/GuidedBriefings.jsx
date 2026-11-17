@@ -1,7 +1,7 @@
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { GUIDED_TOURS, ARCHIVED_GUIDED_TOURS, ALL_GUIDED_TOURS } from './nexusTours';
 import { NEXUS_ACTORS } from './nexusFocusData';
-import { isReviewOverdue } from './navigationState.mjs';
+import { getCaseReviewNotice, isReviewOverdue } from './navigationState.mjs';
 import { indexSourceHealth, shouldPreferAlternate, sourceHealthLabel } from './sourceHealth.mjs';
 import './GuidedBriefings.css';
 
@@ -101,6 +101,7 @@ export default function GuidedBriefings({
     const perspectiveLabel = waypoint?.perspectiveLabel || actor?.shortName || waypoint?.nodeId;
     const isArchivedTour = tour?.status === 'archived';
     const reviewOverdue = !isArchivedTour && isReviewOverdue(tour?.reviewBy);
+    const reviewNotice = !isArchivedTour ? getCaseReviewNotice(tour) : null;
 
     const catalogTours = useMemo(
         () => (showArchived ? allTours : activeTours),
@@ -295,7 +296,14 @@ export default function GuidedBriefings({
                         >
                             <strong>{item.title}</strong>
                             <span>{item.subtitle}</span>
-                            <small>{item.waypoints.length} steps · {item.coverageRegion || item.regionTags?.[0]} · {item.sources?.length || 0} views</small>
+                            <small>
+                                {item.waypoints.length} steps · {item.coverageRegion || item.regionTags?.[0]} · {item.sources?.length || 0} views
+                                {item.reviewStatus === 'update-in-progress'
+                                    ? ' · Update in progress'
+                                    : getCaseReviewNotice(item)
+                                        ? ' · Review overdue'
+                                        : ''}
+                            </small>
                         </button>
                     ))}
                     {visibleTours.length === 0 && (
@@ -348,14 +356,23 @@ export default function GuidedBriefings({
                 <header className="briefing-stage-header">
                     <div>
                         <span className="briefing-kicker">
-                            {isArchivedTour ? 'ARCHIVED HISTORICAL SNAPSHOT' : 'EDITORIAL BRIEFING'}
-                            {tour.updatedAt ? ` · AS OF ${tour.updatedAt}` : ''}
+                            {isArchivedTour
+                                ? `ARCHIVED HISTORICAL SNAPSHOT${tour.updatedAt ? ` · REVIEWED ${tour.updatedAt}` : ''}`
+                                : reviewNotice
+                                    ? `EDITORIAL BRIEFING · ${reviewNotice.toUpperCase()}`
+                                    : `EDITORIAL BRIEFING${tour.updatedAt ? ` · LAST REVIEWED ${tour.updatedAt}` : ''}`}
                         </span>
                         <h1 ref={stageHeadingRef} tabIndex="-1">{tour.title}</h1>
                         <p>{tour.subtitle}</p>
                     </div>
                     <div className="briefing-progress-label">STEP {stepIndex + 1} / {tour.waypoints.length}</div>
                 </header>
+
+                {reviewNotice && (
+                    <div className="briefing-update-banner" role="status">
+                        <strong>Editorial review notice:</strong> {reviewNotice} (scheduled review {tour.reviewBy}). Verify recent developments against primary sources before treating earlier figures or mandates as current.
+                    </div>
+                )}
 
                 {isArchivedTour && (
                     <div className="briefing-archived-banner" role="status">
@@ -411,7 +428,7 @@ export default function GuidedBriefings({
                         {tour.issueDimensions?.length > 0 && <p className="briefing-issues">{tour.issueDimensions.join(' · ')}</p>}
                         {!isArchivedTour && tour.reviewBy && (
                             <p className={`briefing-review-date ${reviewOverdue ? 'overdue' : ''}`}>
-                                {reviewOverdue ? 'Source review overdue since' : 'Review by'} {tour.reviewBy}
+                                {reviewNotice ? `${reviewNotice} (scheduled review ${tour.reviewBy})` : `Review by ${tour.reviewBy}`}
                             </p>
                         )}
                         {tour.uncertainty && <p className="briefing-uncertainty"><strong>Uncertainty:</strong> {tour.uncertainty}</p>}

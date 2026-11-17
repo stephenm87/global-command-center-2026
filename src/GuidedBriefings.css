@@ -237,6 +237,8 @@
 
 .briefing-stage-toolbar,
 .briefing-stage-header,
+.briefing-archived-banner,
+.briefing-update-banner,
 .briefing-progress,
 .briefing-focus-card,
 .briefing-evidence,
@@ -276,7 +278,8 @@
     cursor: pointer;
 }
 
-.briefing-archived-banner {
+.briefing-archived-banner,
+.briefing-update-banner {
     display: flex;
     flex-wrap: wrap;
     align-items: center;

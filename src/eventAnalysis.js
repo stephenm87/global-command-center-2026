@@ -1,5 +1,6 @@
 // eventAnalysis.js — Generates 5W1H analysis and Global Challenges from event data
 // Parallels the GloPo Companion case library format
+import { getCaseReviewNotice } from './navigationState.mjs';
 
 // Map Broad_Category → relevant IB HL Global Challenges
 const CATEGORY_CHALLENGES = {
@@ -44,7 +45,7 @@ const CATEGORY_CHALLENGES = {
  * Generate 5W1H analysis from event data fields
  * Extracts structured Who/What/When/Where/Why/How from the event's CSV/live fields
  */
-export function generate5W1H(event) {
+export function generate5W1H(event, referenceDate) {
     if (!event) return null;
 
     const entity = event['Entity/Subject'] || 'Unknown entity';
@@ -55,13 +56,16 @@ export function generate5W1H(event) {
     const topic = event['Topic/Sector'] || '';
 
     if (event.isCaseStudy) {
+        const overdueNotice = getCaseReviewNotice(event, referenceDate);
         return {
             who: `Key actors: ${players}.`,
             what: event.statusSummary || impact,
             where: event.regionTags?.length
                 ? event.regionTags.join(' · ')
                 : `Representative map anchor: ${parseFloat(event.Latitude).toFixed(1)}°, ${parseFloat(event.Longitude).toFixed(1)}°`,
-            when: `Evidence reviewed ${event.updatedAt || timeline.replace('Current as of ', '')}.`,
+            when: overdueNotice
+                ? `${overdueNotice} (scheduled review ${event.reviewBy}).`
+                : `Evidence reviewed ${event.updatedAt || timeline.replace(/^(Current as of|Last reviewed)\s+/, '')}.`,
             why: event.whyItMatters || generateWhy(category, entity, impact),
             how: `Analyze the case across ${event.issueDimensions?.join(', ') || topic}. Track the stated uncertainty as conditions and official positions change: ${event.uncertainty || 'recheck current evidence before drawing conclusions.'}`,
         };

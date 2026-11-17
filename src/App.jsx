@@ -16,6 +16,7 @@ import {
     escHtml,
     safeHref,
     dedupeClusterItems,
+    getCaseReviewNotice,
 } from './navigationState.mjs';
 import { useSupabasePreferences } from './hooks/useSupabasePreferences';
 import { useGlobeLayerSync } from './hooks/useGlobeLayerSync';
@@ -1096,20 +1097,28 @@ function App() {
                                                         {cat} ({items.length})
                                                     </div>
                                                     <div style={{ display: 'flex', flexDirection: 'column', gap: '5px' }}>
-                                                        {items.map((item, i) => (
-                                                            <button
-                                                                key={i}
-                                                                type="button"
-                                                                onClick={() => { setSelectedForecast(item); setExpandedCluster(null); }}
-                                                                style={{ textAlign: 'left', background: `${catColor}0d`, border: `1px solid ${catColor}33`, borderRadius: '6px', padding: '8px 10px', minHeight: '44px', cursor: 'pointer', transition: 'all 0.15s' }}
-                                                            >
-                                                                <div style={{ color: '#ddd', fontSize: '0.68rem', lineHeight: 1.3 }}>
-                                                                    {item.isLive ? <span style={{ color: '#00ffff', fontWeight: 700, marginRight: '4px' }}>[LIVE]</span> : null}
-                                                                    {item.isCaseStudy ? <span style={{ color: '#b69cff', fontWeight: 700, marginRight: '4px' }}>[CASE]</span> : null}
-                                                                    {item['Entity/Subject']?.substring(0, 70)}
-                                                                </div>
-                                                            </button>
-                                                        ))}
+                                                        {items.map((item, i) => {
+                                                            const clusterNotice = item.isCaseStudy ? getCaseReviewNotice(item) : null;
+                                                            return (
+                                                                <button
+                                                                    key={i}
+                                                                    type="button"
+                                                                    onClick={() => { setSelectedForecast(item); setExpandedCluster(null); }}
+                                                                    style={{ textAlign: 'left', background: `${catColor}0d`, border: `1px solid ${catColor}33`, borderRadius: '6px', padding: '8px 10px', minHeight: '44px', cursor: 'pointer', transition: 'all 0.15s' }}
+                                                                >
+                                                                    <div style={{ color: '#ddd', fontSize: '0.68rem', lineHeight: 1.3 }}>
+                                                                        {item.isLive ? <span style={{ color: '#00ffff', fontWeight: 700, marginRight: '4px' }}>[LIVE]</span> : null}
+                                                                        {item.isCaseStudy ? <span style={{ color: '#b69cff', fontWeight: 700, marginRight: '4px' }}>[CASE]</span> : null}
+                                                                        {item['Entity/Subject']?.substring(0, 70)}
+                                                                    </div>
+                                                                    {clusterNotice && (
+                                                                        <div style={{ color: '#fde68a', fontSize: '0.62rem', marginTop: '3px', lineHeight: 1.3 }}>
+                                                                            {clusterNotice}
+                                                                        </div>
+                                                                    )}
+                                                                </button>
+                                                            );
+                                                        })}
                                                     </div>
                                                 </div>
                                             );

@@ -38,7 +38,11 @@ test('vite.config.mjs wires teacher-guide.html multi-page input, manualChunks ca
     assert.match(viteConfig, /manualChunks/, 'vite.config.mjs must split heavy static chunks via manualChunks');
     assert.match(viteConfig, /\/\.netlify\/functions\/public-intel/, 'vite.config.mjs dev middleware must serve JSON for public-intel');
     assert.match(redirects, /\/teacher-guide\.html\s+\/teacher-guide\.html\s+200/, '_redirects must pass through /teacher-guide.html before SPA catch-all');
-    assert.match(redirects, /\/context-cards\/\s+\/context-cards\/index\.html\s+200/, '_redirects must pass through /context-cards/ before SPA catch-all');
+    assert.match(redirects, /\/context-cards\s+\/context-cards\/index\.html\s+200/, '_redirects must pass through /context-cards without 301 loop');
+    assert.ok(
+        redirects.indexOf('/context-cards /context-cards/index.html 200') < redirects.indexOf('/* /index.html 200'),
+        '/context-cards rule must appear before /* /index.html 200 catch-all',
+    );
 });
 
 test('public/context-cards/ live classroom page, 5 portraits, self-hosted Playfair Display fonts, and source-health targets remain intact', () => {

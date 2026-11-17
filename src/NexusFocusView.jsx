@@ -7,6 +7,7 @@ import {
     inferForecastActorIds,
     resolveActorId,
 } from './nexusFocusData';
+import { getCaseReviewNotice } from './navigationState.mjs';
 import './NexusFocusView.css';
 
 const RING_POSITIONS = [
@@ -186,7 +187,14 @@ export default function NexusFocusView({ forecasts = [], initialNodeId, onSelect
                         <div className="focus-detail-content focus-scroll-list">
                             {actorCases.length > 0 ? actorCases.map((item, index) => (
                                 <article className="focus-case-row" key={item.caseStudyId || item.url || `${item['Entity/Subject']}-${index}`}>
-                                    <div>{(item.region || item.regionTags?.[0]) && <span>{item.region || item.regionTags[0]}</span>}{item.updatedAt && <time dateTime={item.updatedAt}>Updated {item.updatedAt}</time>}</div>
+                                    <div>
+                                        {(item.region || item.regionTags?.[0]) && <span>{item.region || item.regionTags[0]}</span>}
+                                        {item.updatedAt && (
+                                            <time dateTime={item.updatedAt}>
+                                                {item.isCaseStudy ? (getCaseReviewNotice(item) || `Last reviewed ${item.updatedAt}`) : `Updated ${item.updatedAt}`}
+                                            </time>
+                                        )}
+                                    </div>
                                     <h3>{item['Entity/Subject']}</h3>
                                     <p>{item['Expected Impact/Value']}</p>
                                     {item.url && <a href={item.url} target="_blank" rel="noopener noreferrer">Primary source ↗</a>}

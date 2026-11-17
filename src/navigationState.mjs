@@ -103,9 +103,52 @@ export const safeHttpUrl = url => {
 
 export const safeHref = url => escHtml(safeHttpUrl(url));
 
-export const isReviewOverdue = (reviewBy, referenceDate = new Date().toISOString().slice(0, 10)) => (
+export function getLocalIsoDate(now = new Date()) {
+    const year = now.getFullYear();
+    const month = String(now.getMonth() + 1).padStart(2, '0');
+    const day = String(now.getDate()).padStart(2, '0');
+    return `${year}-${month}-${day}`;
+}
+
+export const isReviewOverdue = (reviewBy, referenceDate = getLocalIsoDate()) => (
     Boolean(reviewBy && reviewBy < referenceDate)
 );
+
+export function getCaseReviewNotice(item, referenceDate = getLocalIsoDate()) {
+    if (!item || item.status === 'archived') return null;
+    if (item.reviewStatus === 'update-in-progress') {
+        return `Last reviewed ${item.updatedAt}, update in progress`;
+    }
+    if (isReviewOverdue(item.reviewBy, referenceDate)) {
+        return `Last reviewed ${item.updatedAt} · review overdue since ${item.reviewBy}`;
+    }
+    return null;
+}
+
+export function formatGlobePointTooltip(d, referenceDate = getLocalIsoDate()) {
+    if (d.isCluster) {
+        const caseDetail = d.caseCount ? ` · ${d.caseCount} EDITORIAL ${d.caseCount === 1 ? 'CASE' : 'CASES'}` : '';
+        return `<div style="background:rgba(0,0,0,0.9);padding:10px 14px;border:1px solid #ffcc00;border-radius:20px;font-family:Roboto Mono;color:#ffcc00;font-size:0.875rem;font-weight:900;line-height:1.4;">${d.count} MAP ITEMS${caseDetail} — click to expand</div>`;
+    }
+    const isLinked = d.data.url
+        ? `<div style="color:#00ff88;font-size:0.8rem;margin-top:7px;font-weight:bold;">[ ${d.data.isCaseStudy ? 'OPEN CASE & BRIEFING' : 'CLICK FOR SOURCE'} ]</div>`
+        : '';
+    const layerLabel = d.data.isCaseStudy
+        ? `◆ EDITORIAL CASE · ${d.data.sources?.length || 0} PERSPECTIVES`
+        : d.data.isLive ? '[LIVE] CURRENT SOURCE' : 'REFERENCE SOURCE';
+    const overdueNotice = d.data.isCaseStudy ? getCaseReviewNotice(d.data, referenceDate) : null;
+    const reviewLabel = d.data.isCaseStudy
+        ? `<div style="color:${overdueNotice ? '#fbbf24' : '#c4b5fd'};font-size:0.75rem;font-weight:700;margin-top:5px;">${overdueNotice ? `⚠ ${escHtml(overdueNotice)}` : `Last reviewed ${escHtml(d.data.updatedAt)}`}</div>`
+        : '';
+    const locationLabel = d.locationLabel ? `<div style="color:#b6c5ce;font-size:0.75rem;margin-top:5px;">📍 ${escHtml(d.locationLabel)}</div>` : '';
+    return `<div style="background:rgba(0,0,0,0.94);padding:14px;border:1px solid ${d.color};border-radius:6px;font-family:Roboto Mono;color:#00ffff;max-width:340px;box-shadow:0 0 15px ${d.color}44;line-height:1.45;">
+                    <div style="color:${d.color};font-size:0.75rem;font-weight:700;margin-bottom:6px;">${layerLabel}</div>
+                    <div style="font-size:1rem;color:#fff;">${escHtml(d.data['Entity/Subject'])}</div>
+                    ${locationLabel}
+                    ${reviewLabel}
+                    ${isLinked}
+                  </div>`;
+}
 
 export const dedupeClusterItems = items => {
     const caseIds = new Set();
