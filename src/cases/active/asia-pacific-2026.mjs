@@ -28,7 +28,7 @@ export const ASIA_PACIFIC_CASES_2026 = [
             "AsiaPacific",
             "UN_OPEC"
         ],
-        "statusSummary": "OCHA reported on 13 July 2026 that more than 16 million people needed humanitarian assistance across Myanmar and nearly 3.8 million were displaced, while conflict, movement restrictions, and administrative requirements continued to obstruct aid access. At the November 2026 ASEAN Summit in Manila, Southeast Asian leaders again denounced ongoing violence in Myanmar and extended the ban on its military leader attending the bloc's summits.",
+        "statusSummary": "OCHA reported on 13 July 2026 that more than 16 million people needed humanitarian assistance across Myanmar and nearly 3.8 million were displaced, while conflict, movement restrictions, and administrative requirements continued to obstruct aid access. At the November 2026 ASEAN Summit in Manila, Southeast Asian leaders again denounced ongoing violence in Myanmar and extended the bloc's summit ban on Myanmar's leader.",
         "whyItMatters": "Myanmar shows how competing claims to authority, territorial fragmentation, and restricted humanitarian access can weaken both domestic governance and regional diplomacy.",
         "updatedAt": "2026-11-17",
         "confidence": "high",
@@ -153,7 +153,7 @@ export const ASIA_PACIFIC_CASES_2026 = [
             "China",
             "UN_OPEC"
         ],
-        "statusSummary": "Ten years after the 2016 award, the Philippine government continues to present it as a final and binding guide to maritime rights under UNCLOS, while China's government continues to reject the arbitration and award as invalid. These are attributed government positions; the underlying award addressed maritime entitlements and conduct, not sovereignty over land territory or boundary delimitation. At the November 2026 ASEAN Summit in Manila, Philippine officials reported tentative ASEAN–China agreement on roughly 80 percent of a draft Code of Conduct while confirming that negotiations missed their year-end target amid unresolved disputes over legal bindingness, geographic scope, and UNCLOS alignment.",
+        "statusSummary": "Ten years after the 2016 award, the Philippine government continues to present it as a final and binding guide to maritime rights under UNCLOS, while China's government continues to reject the arbitration and award as invalid. These are attributed government positions; the underlying award addressed maritime entitlements and conduct, not sovereignty over land territory or boundary delimitation. At the November 2026 ASEAN Summit in Manila, Philippine officials reported tentative ASEAN–China agreement on roughly 80 percent of a draft Code of Conduct while confirming that negotiations missed their year-end target amid unresolved disputes over legal bindingness and alignment with international law.",
         "whyItMatters": "The dispute offers a direct test of the relationship between formal legal decisions, state consent, material power, and peaceful management of competing maritime claims.",
         "updatedAt": "2026-11-17",
         "confidence": "high",
@@ -278,7 +278,7 @@ export const ASIA_PACIFIC_CASES_2026 = [
             "AsiaPacific",
             "UN_OPEC"
         ],
-        "statusSummary": "India says it has placed the Indus Waters Treaty in abeyance as part of its security response, while Pakistan rejects unilateral abeyance and maintains the treaty remains binding. On 31 August 2026, the Court of Arbitration administered through the Permanent Court of Arbitration unanimously ruled that none of the grounds cited by India legally justified suspending or terminating the 1960 treaty—holding that the treaty remains in force—and issued an interim-measures order on the Ratle project, while India continues to reject the Court's authority.",
+        "statusSummary": "India says it has placed the Indus Waters Treaty in abeyance as part of its security response, while Pakistan rejects unilateral abeyance and maintains the treaty remains binding. On 31 August 2026, the Court of Arbitration administered through the Permanent Court of Arbitration unanimously found that none of the reasons presented by India justified suspending or terminating the 1960 treaty—affirming that the treaty remains in force—and issued an interim-measures order on the Ratle project, while India continues to reject the Court's authority.",
         "whyItMatters": "The case links deterrence and treaty compliance to irrigation, hydropower, food security, and the daily needs of communities that cannot be separated from a shared river system.",
         "updatedAt": "2026-11-17",
         "confidence": "medium",
@@ -354,11 +354,22 @@ export const ASIA_PACIFIC_CASES_2026 = [
                 "url": "https://pca-cpa.org/en/news/pca-press-release-pca-case-no-2023-01-the-indus-waters-western-rivers-arbitration-islamic-republic-of-pakistan-v-republic-of-india-6/",
                 "alternateUrls": [
                     {
+                        "label": "Open mirrored 31 August 2026 PCA press release PDF (italaw)",
+                        "url": "https://www.italaw.com/sites/default/files/case-documents/pca/PCA-2023-01/italaw181268432%20-%20Pakistan%20v.%20India%20-%20PCA%20Press%20Release%20-%20Award%20on%20Status%20of%20Indus%20Waters%20Treaty%20and%20Order%20on%20Interim%20Measures%2C%20August%2031%2C%202026.pdf"
+                    },
+                    {
                         "label": "Open the official PCA Indus Waters case repository",
                         "url": "https://pca-cpa.org/en/cases/291/"
                     }
                 ],
                 "perspective": "Official arbitral registry press release summarizing the unanimous 31 August 2026 treaty-status award and Ratle interim-measures order"
+            },
+            {
+                "title": "Court of Arbitration Finds that the Indus Water Treaty Remains in Force",
+                "publisher": "American Society of International Law",
+                "publishedAt": "2026-09-21",
+                "url": "https://asil.org/ilib/court-of-arbitration-finds-that-the-indus-water-treaty-remains-in-force/",
+                "perspective": "Accessible legal-brief summary of the 31 August 2026 unanimous treaty-status award, Ratle interim measures, and India's jurisdictional rejection"
             }
         ],
         "waypoints": [

@@ -181,7 +181,7 @@ export const PACIFIC_ISLANDS_CASES_2026 = [
             "UN_OPEC",
             "TechAIHub"
         ],
-        "statusSummary": "The International Seabed Authority concluded Part II of its 31st Session in Kingston (29 June – 31 July 2026), advancing consolidated draft exploitation regulations toward its 32nd Session while key environmental, compliance, and financial rules remain under negotiation. Nauru continues to present sponsored seabed development as a route to participation in the energy transition and national benefit, while peer-reviewed research finds that physical and biological effects remained visible decades after a historic collector test.",
+        "statusSummary": "The International Seabed Authority concluded Part II of its 31st Session in Kingston (29 June – 31 July 2026), advancing consolidated draft exploitation regulations toward its 32nd Session while key outstanding issues and environmental thresholds remain under negotiation. Nauru continues to present sponsored seabed development as a route to participation in the energy transition and national benefit, while independent research finds that physical and biological effects remained visible decades after a historic collector test.",
         "whyItMatters": "The case asks who should decide how minerals beyond national jurisdiction are used, how uncertain ecological losses should be valued, and whether small island states can gain development agency without carrying disproportionate ocean risk.",
         "updatedAt": "2026-11-17",
         "confidence": "high",

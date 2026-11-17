@@ -30,7 +30,7 @@ export const AFRICA_CASES_2026 = [
             "MilitantPMC",
             "UN_OPEC"
         ],
-        "statusSummary": "At review on 17 November 2026, UNHCR Operational Data Portal component figures with cutoffs ranging from 19 October to 9 November summed to 11,351,393 people forcibly displaced by the current crisis. The total comprised 6,412,058 conflict-related internally displaced people inside Sudan (19 October cutoff), 4,665,518 newly arrived refugees, asylum-seekers, and refugee returnees outside Sudan (9 November cutoff), and 273,817 refugees already in Sudan who had self-relocated (9 November cutoff). Fighting and civilian harm continued in Darfur, Kordofan, and Blue Nile, while the humanitarian response remained underfunded.",
+        "statusSummary": "At review on 17 November 2026, UNHCR Operational Data Portal component figures with cutoffs ranging from 19 October to 9 November summed to 11,351,393 people forcibly displaced by the current crisis. The total comprised 6,412,058 conflict-related internally displaced people inside Sudan (19 October cutoff), 4,665,518 newly arrived refugees, asylum-seekers, and refugee returnees outside Sudan (9 November cutoff), and 273,817 refugees already in Sudan who had self-relocated (9 November cutoff). Associated Press and United Nations reporting published in July 2026 documented fighting and civilian harm in Darfur, Kordofan, and Blue Nile alongside an underfunded humanitarian response.",
         "whyItMatters": "The case connects state fragmentation, paramilitary power, civilian protection, regional burden-sharing, and the limits of international humanitarian response.",
         "updatedAt": "2026-11-17",
         "confidence": "high",
@@ -140,7 +140,7 @@ export const AFRICA_CASES_2026 = [
                 "title": "A War Without an Endpoint",
                 "perspectiveLabel": "Independent and United Nations reporting",
                 "perspectiveType": "independent",
-                "narration": "Independent and United Nations reporting reviewed through November 2026 described continued fighting and civilian harm in Darfur, Kordofan, and Blue Nile.",
+                "narration": "Independent and United Nations reporting published in July 2026 described continued fighting and civilian harm in Darfur, Kordofan, and Blue Nile.",
                 "focusQuestion": "What prevents military pressure from becoming a durable political settlement?"
             },
             {
@@ -201,7 +201,7 @@ export const AFRICA_CASES_2026 = [
             "MilitantPMC",
             "UN_OPEC"
         ],
-        "statusSummary": "The Congolese presidency describes the June 2025 DRC–Rwanda agreement as a framework for peace and regional economic integration, and an April 2026 fifth Joint Oversight Committee statement tracked continuing implementation work alongside parallel mediation. Although UN Great Lakes Special Envoy Huang Xia told the Security Council on 13 October 2026 that US- and Qatar-led tracks had achieved notable progress, Al Jazeera (14 October 2026) reported his warning that eastern DRC's security and humanitarian situation continued to worsen amid fighting involving M23 and Congolese forces. The UN Security Council sanctioned Alliance Fleuve Congo (AFC) in July 2026, MONUSCO's October summary (9 November 2026) documented continuing joint FARDC–peacekeeper patrols in North Kivu and Ituri, and The New Times via AllAfrica (10 November 2026) reported that the Kabila-led Front for the Refoundation of the Nation (regrouping AFC/M23 in October) warned Qatari mediators on 1 November and MONUSCO head James Swan in Goma on 3 November that proposed constitutional changes could collapse the Doha process. Institute for Security Studies analysis argues overlapping tracks still face coordination and deterrence gaps.",
+        "statusSummary": "The Congolese presidency describes the June 2025 DRC–Rwanda agreement as a framework for peace and regional economic integration, and an April 2026 fifth Joint Oversight Committee statement tracked continuing implementation work alongside parallel mediation. Although UN Great Lakes Special Envoy Huang Xia told the Security Council on 13 October 2026 that US- and Qatar-led tracks had achieved notable progress, AFP reporting via Al Jazeera (14 October 2026) cited his warning that eastern DRC's security and humanitarian situation continued to worsen amid fighting involving M23 and Congolese forces. The UN Security Council sanctions committee added Alliance Fleuve Congo (AFC) to its sanctions list in July 2026, MONUSCO's October summary (9 November 2026) documented continuing joint FARDC–peacekeeper patrols in North Kivu and Ituri, and The New Times via AllAfrica (10 November 2026) reported that the Kabila-led Front for the Refoundation of the Nation (regrouping AFC/M23 in October) warned Qatari mediators on 1 November and MONUSCO head James Swan in Goma on 3 November that proposed constitutional changes could collapse the Doha process. Institute for Security Studies analysis argues overlapping tracks still face coordination and deterrence gaps.",
         "whyItMatters": "The case tests whether agreements among states and armed actors can improve civilian protection when authority, security guarantees, and accountability remain fragmented across borders.",
         "updatedAt": "2026-11-17",
         "confidence": "medium",
@@ -286,16 +286,22 @@ export const AFRICA_CASES_2026 = [
             },
             {
                 "title": "UN official says ‘window of opportunity’ for peace in DR Congo",
-                "publisher": "Al Jazeera",
+                "publisher": "Al Jazeera (AFP wire)",
                 "publishedAt": "2026-10-14",
                 "url": "https://www.aljazeera.com/news/2026/10/14/un-official-says-window-of-opportunity-for-peace-in-dr-congo",
-                "perspective": "Independent reporting on Great Lakes Special Envoy Huang Xia's 13 October 2026 Security Council briefing warning that security and humanitarian conditions continued to worsen despite US and Qatari mediation"
+                "perspective": "Wire reporting on Great Lakes Special Envoy Huang Xia's 13 October 2026 Security Council briefing warning that security and humanitarian conditions continued to worsen despite US and Qatari mediation"
             },
             {
                 "title": "Joint Statement on the Fifth Joint Oversight Committee for the Peace Agreement Between the Democratic Republic of the Congo and the Republic of Rwanda",
                 "publisher": "African Union Peace and Security Department",
                 "publishedAt": "2026-04-24",
                 "url": "https://www.peaceau.org/en/article/joint-statement-on-the-fifth-joint-oversight-committee-for-the-peace-agreement-between-the-democratic-republic-of-the-congo-and-the-republic-of-rwanda",
+                "alternateUrls": [
+                    {
+                        "label": "Open the Qatar Foreign Ministry mirror of the Fifth JOC statement",
+                        "url": "https://mofa.gov.qa/en/latest-articles/statements/joint-statement-on-the-fifth-joint-oversight-committee-for-the-peace-agreement-between-the-democratic-republic-of-the-congo-and-the-republic-of-rwanda"
+                    }
+                ],
                 "perspective": "Dated multilateral Joint Oversight Committee statement (24 April 2026) tracking implementation sessions under the DRC–Rwanda peace agreement"
             }
         ],
@@ -366,7 +372,7 @@ export const AFRICA_CASES_2026 = [
             "UN_OPEC",
             "Jihadist"
         ],
-        "statusSummary": "After Burkina Faso, Mali, and Niger formally withdrew from ECOWAS in January 2025 under temporary movement and trade arrangements, ECOWAS and the Alliance of Sahel States held their first official joint ministerial meeting in Dakar on 17 October 2026, agreeing in a joint communiqué to establish thematic working groups for a post-withdrawal cooperation framework. A July 2026 UNOWAS briefing called for sustained regional cooperation amid continuing insecurity, while Institute for Security Studies analysis warns that fragmented security initiatives can duplicate effort and weaken accountability.",
+        "statusSummary": "After Burkina Faso, Mali, and Niger formally withdrew from ECOWAS in January 2025 under temporary movement and trade arrangements, ECOWAS and the Alliance of Sahel States held the inaugural session of their ministerial dialogue on cooperation in Dakar on 17 October 2026, agreeing in a joint communiqué to establish joint thematic working groups toward a cooperation framework agreement (referencing earlier consultations in Bamako on 22 May 2025). A July 2026 UNOWAS briefing called for sustained regional cooperation amid continuing insecurity, while Institute for Security Studies analysis warns that fragmented security initiatives can duplicate effort and weaken accountability.",
         "whyItMatters": "The split forces governments and citizens to renegotiate how security cooperation, cross-border movement, trade, and political legitimacy work across a region where threats and livelihoods do not stop at institutional borders.",
         "updatedAt": "2026-11-17",
         "confidence": "medium",
@@ -436,11 +442,11 @@ export const AFRICA_CASES_2026 = [
         ],
         "supplementalSources": [
             {
-                "title": "Joint Communiqué: First Official Ministerial Meeting Between ECOWAS and the Confederation of Sahel States (AES), Dakar",
+                "title": "Joint Communiqué: Inaugural Session of the Ministerial Dialogue on Cooperation between ECOWAS and the Alliance of Sahel States (AES)",
                 "publisher": "Economic Community of West African States",
                 "publishedAt": "2026-10-17",
                 "url": "https://www.ecowas.int/wp-content/uploads/2026/10/ENG-COMMUNIQUE_1st-JOINT-ECOWAS-AES-MTG_DKR.pdf",
-                "perspective": "Official joint communiqué establishing thematic working groups to negotiate a post-withdrawal ECOWAS–AES cooperation framework"
+                "perspective": "Official joint communiqué establishing joint thematic working groups toward a post-withdrawal ECOWAS–AES cooperation framework agreement"
             }
         ],
         "waypoints": [
@@ -473,7 +479,7 @@ export const AFRICA_CASES_2026 = [
                 "title": "Negotiated Coexistence",
                 "perspectiveLabel": "ECOWAS, African Union, and United Nations",
                 "perspectiveType": "institutional",
-                "narration": "On 17 October 2026 in Dakar, ECOWAS and AES ministers agreed to establish joint working groups on trade, mobility, and security cooperation, testing negotiated coexistence outside formal bloc membership.",
+                "narration": "On 17 October 2026 in Dakar, ECOWAS and AES ministers agreed to establish joint thematic working groups toward a cooperation framework agreement, testing negotiated coexistence outside formal bloc membership.",
                 "focusQuestion": "What minimum framework could preserve cooperation while respecting the political split?"
             }
         ]

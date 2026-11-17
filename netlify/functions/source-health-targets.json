@@ -2,7 +2,7 @@
   "schemaVersion": 1,
   "caseStudyCount": 29,
   "staticPageCount": 1,
-  "targetCount": 137,
+  "targetCount": 140,
   "targets": [
     {
       "id": "sudan-displacement-regional-spillover:core:0",
@@ -482,19 +482,6 @@
       "url": "https://news.mongabay.com/short-article/2026/10/a-decision-to-decide-greenland-moves-to-suspend-seabed-mining-until-2029/"
     },
     {
-      "id": "greenland-autonomy-security-minerals:supplemental:3:alternate:0",
-      "caseStudyId": "greenland-autonomy-security-minerals",
-      "caseStudyTitle": "Greenland: Autonomy, Arctic Security, and Critical Minerals",
-      "sourceTitle": "‘A decision to decide’: Greenland moves to suspend seabed mining until 2029",
-      "publisher": "Mongabay",
-      "group": "supplemental",
-      "kind": "alternate",
-      "lifecycle": "active",
-      "primaryUrl": "https://news.mongabay.com/short-article/2026/10/a-decision-to-decide-greenland-moves-to-suspend-seabed-mining-until-2029/",
-      "label": "Open Greenland's official Mineral Resources Authority portal",
-      "url": "https://govmin.gl/"
-    },
-    {
       "id": "eu-ai-act-transparency-implementation:core:0",
       "caseStudyId": "eu-ai-act-transparency-implementation",
       "caseStudyTitle": "EU AI Act: Transparency and a Revised Implementation Timeline",
@@ -609,7 +596,7 @@
       "caseStudyId": "eastern-drc-peace-civilian-protection",
       "caseStudyTitle": "Eastern DRC: Peace Agreements, Armed Authority, and Civilian Protection",
       "sourceTitle": "UN official says ‘window of opportunity’ for peace in DR Congo",
-      "publisher": "Al Jazeera",
+      "publisher": "Al Jazeera (AFP wire)",
       "group": "supplemental",
       "kind": "primary",
       "lifecycle": "active",
@@ -625,6 +612,19 @@
       "kind": "primary",
       "lifecycle": "active",
       "url": "https://www.peaceau.org/en/article/joint-statement-on-the-fifth-joint-oversight-committee-for-the-peace-agreement-between-the-democratic-republic-of-the-congo-and-the-republic-of-rwanda"
+    },
+    {
+      "id": "eastern-drc-peace-civilian-protection:supplemental:3:alternate:0",
+      "caseStudyId": "eastern-drc-peace-civilian-protection",
+      "caseStudyTitle": "Eastern DRC: Peace Agreements, Armed Authority, and Civilian Protection",
+      "sourceTitle": "Joint Statement on the Fifth Joint Oversight Committee for the Peace Agreement Between the Democratic Republic of the Congo and the Republic of Rwanda",
+      "publisher": "African Union Peace and Security Department",
+      "group": "supplemental",
+      "kind": "alternate",
+      "lifecycle": "active",
+      "primaryUrl": "https://www.peaceau.org/en/article/joint-statement-on-the-fifth-joint-oversight-committee-for-the-peace-agreement-between-the-democratic-republic-of-the-congo-and-the-republic-of-rwanda",
+      "label": "Open the Qatar Foreign Ministry mirror of the Fifth JOC statement",
+      "url": "https://mofa.gov.qa/en/latest-articles/statements/joint-statement-on-the-fifth-joint-oversight-committee-for-the-peace-agreement-between-the-democratic-republic-of-the-congo-and-the-republic-of-rwanda"
     },
     {
       "id": "sahel-after-ecowas-regional-order:core:0",
@@ -663,7 +663,7 @@
       "id": "sahel-after-ecowas-regional-order:supplemental:0",
       "caseStudyId": "sahel-after-ecowas-regional-order",
       "caseStudyTitle": "The Sahel After ECOWAS: Competing Regional Orders",
-      "sourceTitle": "Joint Communiqué: First Official Ministerial Meeting Between ECOWAS and the Confederation of Sahel States (AES), Dakar",
+      "sourceTitle": "Joint Communiqué: Inaugural Session of the Ministerial Dialogue on Cooperation between ECOWAS and the Alliance of Sahel States (AES)",
       "publisher": "Economic Community of West African States",
       "group": "supplemental",
       "kind": "primary",
@@ -784,6 +784,17 @@
       "id": "western-sahara-autonomy-self-determination:supplemental:0",
       "caseStudyId": "western-sahara-autonomy-self-determination",
       "caseStudyTitle": "Western Sahara: Self-Determination, Autonomy, and Representation",
+      "sourceTitle": "General Assembly Scrutinizes Veto that Ended UN Mission in Western Sahara After 35 Years",
+      "publisher": "United Nations Meetings Coverage and Press Releases",
+      "group": "supplemental",
+      "kind": "primary",
+      "lifecycle": "active",
+      "url": "https://press.un.org/en/2026/ga12807.doc.htm"
+    },
+    {
+      "id": "western-sahara-autonomy-self-determination:supplemental:1",
+      "caseStudyId": "western-sahara-autonomy-self-determination",
+      "caseStudyTitle": "Western Sahara: Self-Determination, Autonomy, and Representation",
       "sourceTitle": "Security Council Resolutions and Statements on MINURSO",
       "publisher": "United Nations Mission for the Referendum in Western Sahara (MINURSO)",
       "group": "supplemental",
@@ -792,7 +803,7 @@
       "url": "https://minurso.unmissions.org/en/security-council-resolutions-and-statements"
     },
     {
-      "id": "western-sahara-autonomy-self-determination:supplemental:1",
+      "id": "western-sahara-autonomy-self-determination:supplemental:2",
       "caseStudyId": "western-sahara-autonomy-self-determination",
       "caseStudyTitle": "Western Sahara: Self-Determination, Autonomy, and Representation",
       "sourceTitle": "UN: Western Sahara Peoples' Self-Determination at Risk",
@@ -944,8 +955,32 @@
       "kind": "alternate",
       "lifecycle": "active",
       "primaryUrl": "https://pca-cpa.org/en/news/pca-press-release-pca-case-no-2023-01-the-indus-waters-western-rivers-arbitration-islamic-republic-of-pakistan-v-republic-of-india-6/",
+      "label": "Open mirrored 31 August 2026 PCA press release PDF (italaw)",
+      "url": "https://www.italaw.com/sites/default/files/case-documents/pca/PCA-2023-01/italaw181268432%20-%20Pakistan%20v.%20India%20-%20PCA%20Press%20Release%20-%20Award%20on%20Status%20of%20Indus%20Waters%20Treaty%20and%20Order%20on%20Interim%20Measures%2C%20August%2031%2C%202026.pdf"
+    },
+    {
+      "id": "indus-water-regime-under-strain:supplemental:0:alternate:1",
+      "caseStudyId": "indus-water-regime-under-strain",
+      "caseStudyTitle": "Indus Waters Treaty: Security, Law, and Basin Livelihoods",
+      "sourceTitle": "PCA Case No. 2023-01: Award on the Continued Legal Force of the Indus Waters Treaty and Order on Interim Measures",
+      "publisher": "Permanent Court of Arbitration",
+      "group": "supplemental",
+      "kind": "alternate",
+      "lifecycle": "active",
+      "primaryUrl": "https://pca-cpa.org/en/news/pca-press-release-pca-case-no-2023-01-the-indus-waters-western-rivers-arbitration-islamic-republic-of-pakistan-v-republic-of-india-6/",
       "label": "Open the official PCA Indus Waters case repository",
       "url": "https://pca-cpa.org/en/cases/291/"
+    },
+    {
+      "id": "indus-water-regime-under-strain:supplemental:1",
+      "caseStudyId": "indus-water-regime-under-strain",
+      "caseStudyTitle": "Indus Waters Treaty: Security, Law, and Basin Livelihoods",
+      "sourceTitle": "Court of Arbitration Finds that the Indus Water Treaty Remains in Force",
+      "publisher": "American Society of International Law",
+      "group": "supplemental",
+      "kind": "primary",
+      "lifecycle": "active",
+      "url": "https://asil.org/ilib/court-of-arbitration-finds-that-the-indus-water-treaty-remains-in-force/"
     },
     {
       "id": "bangladesh-ldc-graduation-decision:core:0",

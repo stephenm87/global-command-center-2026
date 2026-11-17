@@ -151,7 +151,7 @@ export const MENA_CASES_2026 = [
             "UN_OPEC",
             "Europe"
         ],
-        "statusSummary": "UN Security Council Resolution 2797 extended MINURSO through October 2026 while making Morocco's autonomy proposal a basis for negotiations, but according to the UN mission record and Carnegie Endowment analysis (5 November 2026), competing US and Russian renewal drafts failed in the Security Council on 30 October 2026—with Russia vetoing an autonomy-centered draft after arguing it sidelined Polisario and self-determination parameters—ending MINURSO's 35-year peacekeeping presence. Morocco continues to present autonomy under Moroccan sovereignty as the most feasible solution, while Carnegie and Human Rights Watch document objections that narrowing the framework risks undermining genuine Sahrawi self-determination and human-rights safeguards.",
+        "statusSummary": "UN Security Council Resolution 2797 extended MINURSO through October 2026 while making Morocco's autonomy proposal a basis for negotiations. According to UN General Assembly veto-debate coverage (10 November 2026), the UN mission record, and Carnegie Endowment analysis (5 November 2026), competing US and Russian renewal drafts failed in the Security Council on 30 October 2026—with Russia vetoing the US-drafted text after arguing it marginalized the Polisario Front and departed from established UN self-determination parameters—ending MINURSO's 35-year peacekeeping presence when its mandate expired on 31 October. Morocco continues to present autonomy under Moroccan sovereignty as the most feasible solution, while Carnegie, General Assembly speakers, and Human Rights Watch document objections that narrowing the framework risks undermining Sahrawi self-determination and rights safeguards.",
         "whyItMatters": "The dispute tests how international institutions reconcile territorial claims, self-determination, human rights, refugee representation, and the different meanings parties attach to an acceptable political settlement.",
         "updatedAt": "2026-11-17",
         "confidence": "medium",
@@ -215,21 +215,28 @@ export const MENA_CASES_2026 = [
                 "publishedAt": "2026-11-05",
                 "url": "https://carnegieendowment.org/emissary/2026/11/minurso-western-sahara-un-peacekeeping-security-council-conflict",
                 "perspectiveType": "independent",
-                "perspective": "Independent diplomatic analysis of the 30 October 2026 Security Council votes, Polisario and Russian objections, and the closure of MINURSO",
-                "supports": "Supports the account of the 30 October 2026 US–Russia Security Council deadlock, competing interpretations of self-determination, and the end of MINURSO's mandate."
+                "perspective": "Independent diplomatic analysis of the US–Russia Security Council standoff, Polisario and Russian objections, and the closure of MINURSO",
+                "supports": "Supports the account of the US–Russia Security Council stalemate, competing positions on Morocco's autonomy proposal, and the 31 October 2026 expiration of MINURSO."
             }
         ],
         "supplementalSources": [
+            {
+                "title": "General Assembly Scrutinizes Veto that Ended UN Mission in Western Sahara After 35 Years",
+                "publisher": "United Nations Meetings Coverage and Press Releases",
+                "publishedAt": "2026-11-10",
+                "url": "https://press.un.org/en/2026/ga12807.doc.htm",
+                "perspective": "Official UN General Assembly veto-initiative meeting coverage confirming the 30 October 2026 Security Council votes, Russian, Algerian, US, Moroccan, and EU statements, and the 31 October mandate expiration"
+            },
             {
                 "title": "Security Council Resolutions and Statements on MINURSO",
                 "publisher": "United Nations Mission for the Referendum in Western Sahara (MINURSO)",
                 "publishedAt": null,
                 "sourceType": "living-reference",
                 "reviewedAt": "2026-11-17",
-                "milestoneDate": "2026-11-01",
-                "milestoneLabel": "MINURSO mandate expired following 30 October Security Council deadlock",
+                "milestoneDate": "2026-10-31",
+                "milestoneLabel": "MINURSO mandate expired (mission ceased operations 1 November 2026)",
                 "url": "https://minurso.unmissions.org/en/security-council-resolutions-and-statements",
-                "perspective": "Official UN mission record of Security Council resolutions and the mission's mandate history through October 2026"
+                "perspective": "Official UN mission record of Security Council resolutions and the mission's mandate expiration through 31 October 2026"
             },
             {
                 "title": "UN: Western Sahara Peoples' Self-Determination at Risk",

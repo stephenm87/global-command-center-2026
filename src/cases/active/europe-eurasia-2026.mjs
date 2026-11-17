@@ -130,12 +130,6 @@ export const EUROPE_EURASIA_CASES_2026 = [
                 "publisher": "Mongabay",
                 "publishedAt": "2026-10-22",
                 "url": "https://news.mongabay.com/short-article/2026/10/a-decision-to-decide-greenland-moves-to-suspend-seabed-mining-until-2029/",
-                "alternateUrls": [
-                    {
-                        "label": "Open Greenland's official Mineral Resources Authority portal",
-                        "url": "https://govmin.gl/"
-                    }
-                ],
                 "perspective": "Independent environmental reporting on Greenland's parliamentary move toward a precautionary seabed-mining pause through 2029"
             }
         ],

@@ -179,7 +179,7 @@ export const AMERICAS_CARIBBEAN_CASES_2026 = [
             "USA",
             "LatinAmerica"
         ],
-        "statusSummary": "The United States declined an immediate 16-year extension at the 1 July 2026 joint review, moving the agreement into annual joint reviews while Canadian, Mexican, and US statements confirm USMCA remains in force through 2036. On 2 October 2026, USTR opened a formal public-comment and hearing process (closing 12 January 2027) in advance of the 2027 annual joint review.",
+        "statusSummary": "The United States declined an immediate 16-year extension at the 1 July 2026 joint review, moving the agreement into annual joint reviews while Canadian and Mexican statements confirm USMCA remains in force through 2036. On 2 October 2026, USTR opened a formal public-comment and hearing process (closing 12 January 2027) in advance of the 2027 annual joint review.",
         "whyItMatters": "USMCA makes it possible to examine how deeply integrated economies use recurring negotiations to balance shared production networks against national industrial and political priorities.",
         "updatedAt": "2026-11-17",
         "confidence": "high",
