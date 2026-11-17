@@ -1,7 +1,8 @@
 {
   "schemaVersion": 1,
   "caseStudyCount": 29,
-  "targetCount": 105,
+  "staticPageCount": 1,
+  "targetCount": 110,
   "targets": [
     {
       "id": "sudan-displacement-regional-spillover:core:0",
@@ -1161,6 +1162,66 @@
       "kind": "primary",
       "lifecycle": "active",
       "url": "https://www.bmj.com/content/392/bmj-2025-086069"
+    },
+    {
+      "id": "context-cards:citation:0",
+      "caseStudyId": "context-cards",
+      "caseStudyTitle": "Context Cards: Field Agents — Republican China",
+      "sourceTitle": "afe.easia.columbia.edu",
+      "publisher": "afe.easia.columbia.edu",
+      "group": "static-page",
+      "kind": "primary",
+      "lifecycle": "active",
+      "pagePath": "/context-cards/",
+      "url": "https://afe.easia.columbia.edu/special/china_1900_luxun.htm"
+    },
+    {
+      "id": "context-cards:citation:1",
+      "caseStudyId": "context-cards",
+      "caseStudyTitle": "Context Cards: Field Agents — Republican China",
+      "sourceTitle": "britannica.com/biography/Ding-Ling",
+      "publisher": "britannica.com",
+      "group": "static-page",
+      "kind": "primary",
+      "lifecycle": "active",
+      "pagePath": "/context-cards/",
+      "url": "https://www.britannica.com/biography/Ding-Ling"
+    },
+    {
+      "id": "context-cards:citation:2",
+      "caseStudyId": "context-cards",
+      "caseStudyTitle": "Context Cards: Field Agents — Republican China",
+      "sourceTitle": "chinadaily.com.cn",
+      "publisher": "chinadaily.com.cn",
+      "group": "static-page",
+      "kind": "primary",
+      "lifecycle": "active",
+      "pagePath": "/context-cards/",
+      "url": "https://www.chinadaily.com.cn/a/201108/07/WS5a2f8a56a3108bc8c6725902.html"
+    },
+    {
+      "id": "context-cards:citation:3",
+      "caseStudyId": "context-cards",
+      "caseStudyTitle": "Context Cards: Field Agents — Republican China",
+      "sourceTitle": "blogs.library.duke.edu",
+      "publisher": "blogs.library.duke.edu",
+      "group": "static-page",
+      "kind": "primary",
+      "lifecycle": "active",
+      "pagePath": "/context-cards/",
+      "url": "https://blogs.library.duke.edu/rubenstein/2014/05/22/charlie-soong-at-trinity-college/"
+    },
+    {
+      "id": "context-cards:citation:4",
+      "caseStudyId": "context-cards",
+      "caseStudyTitle": "Context Cards: Field Agents — Republican China",
+      "sourceTitle": "unesdoc.unesco.org",
+      "publisher": "unesdoc.unesco.org",
+      "group": "static-page",
+      "kind": "primary",
+      "lifecycle": "active",
+      "pagePath": "/context-cards/",
+      "url": "https://unesdoc.unesco.org/ark:/48223/pf0000074677"
     }
   ]
 }

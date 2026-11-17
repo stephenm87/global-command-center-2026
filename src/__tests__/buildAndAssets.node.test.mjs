@@ -38,4 +38,41 @@ test('vite.config.mjs wires teacher-guide.html multi-page input, manualChunks ca
     assert.match(viteConfig, /manualChunks/, 'vite.config.mjs must split heavy static chunks via manualChunks');
     assert.match(viteConfig, /\/\.netlify\/functions\/public-intel/, 'vite.config.mjs dev middleware must serve JSON for public-intel');
     assert.match(redirects, /\/teacher-guide\.html\s+\/teacher-guide\.html\s+200/, '_redirects must pass through /teacher-guide.html before SPA catch-all');
+    assert.match(redirects, /\/context-cards\/\s+\/context-cards\/index\.html\s+200/, '_redirects must pass through /context-cards/ before SPA catch-all');
+});
+
+test('public/context-cards/ live classroom page, 5 portraits, self-hosted Playfair Display fonts, and source-health targets remain intact', () => {
+    const contextCardsHtmlPath = path.join(REPO_ROOT, 'public/context-cards/index.html');
+    assert.ok(fs.existsSync(contextCardsHtmlPath), 'public/context-cards/index.html live teaching page must exist');
+    const html = fs.readFileSync(contextCardsHtmlPath, 'utf8');
+
+    for (const portrait of ['charlie_soong.jpg', 'ding_ling.jpg', 'lao_she.jpg', 'lin_qiaozhi.jpg', 'lu_xun.jpg']) {
+        assert.ok(fs.existsSync(path.join(REPO_ROOT, 'public/context-cards', portrait)), `public/context-cards/${portrait} must exist`);
+        assert.ok(html.includes(`/context-cards/${portrait}`), `context-cards/index.html must reference /context-cards/${portrait}`);
+    }
+
+    for (let i = 1; i <= 8; i += 1) {
+        assert.ok(
+            fs.existsSync(path.join(REPO_ROOT, `public/assets/fonts/playfair-display-${i}.woff2`)),
+            `self-hosted playfair-display-${i}.woff2 must exist`,
+        );
+        assert.ok(
+            html.includes(`/assets/fonts/playfair-display-${i}.woff2`),
+            `context-cards/index.html must declare /assets/fonts/playfair-display-${i}.woff2`,
+        );
+    }
+
+    assert.ok(!html.includes('fonts.googleapis.com'), 'context-cards/index.html must not import from fonts.googleapis.com');
+    assert.ok(!html.includes('fonts.gstatic.com'), 'context-cards/index.html must not reference fonts.gstatic.com');
+
+    const outboundLinks = [...html.matchAll(/<a\s+[^>]*href="([^"]+)"[^>]*>/gi)].map(m => m[1]);
+    assert.equal(outboundLinks.length, 5, 'context-cards/index.html must preserve all 5 outbound source citations');
+    for (const link of outboundLinks) {
+        assert.match(link, /^https:\/\//, `context-cards outbound link ${link} must use HTTPS`);
+    }
+
+    const manifest = JSON.parse(fs.readFileSync(path.join(REPO_ROOT, 'netlify/functions/source-health-targets.json'), 'utf8'));
+    const contextCardTargets = manifest.targets.filter(target => target.caseStudyId === 'context-cards');
+    assert.equal(contextCardTargets.length, 5, 'source-health-targets.json must monitor all 5 context-cards outbound links');
+    assert.deepEqual(contextCardTargets.map(t => t.url), outboundLinks);
 });

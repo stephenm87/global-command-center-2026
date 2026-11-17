@@ -2,6 +2,32 @@
 
 Newest entry first. Each agent adds an entry before it stops. Keep entries short.
 
+## 2026-11-17 — Antigravity (Carbon) — Unit 13a: Phase 0 Gate Sign-Off & `/context-cards/` Restoration with Self-Hosted `Playfair Display`
+- **Owner Sign-Off Decisions Recorded:**
+  1. **Case Repairs (`#5 Guyana`, `#12 Somaliland`, `#18 Bangladesh`):** Approved (Bangladesh UNGA deferral to `24 November 2029` independently confirmed). **Owner Review Gate:** `#12 somaliland-recognition-red-sea-order` is flagged **`awaiting owner read`** — owner will personally read it before it goes live on `main`.
+  2. **Category Reclassifications (Option A 6-Lens & 7-Region Mapping):** Approved as implemented.
+  3. **August `updatedAt` Reconciliation (`#17, #19–#29` -> `'2026-08-09'`):** Approved.
+  4. **Context Cards (`public/context-cards/`):** Deletion NOT approved — restored from `main`. **Audit Correction:** `public/context-cards/` (`index.html` + 5 public-domain `.jpg` portraits: `charlie_soong.jpg`, `ding_ling.jpg`, `lao_she.jpg`, `lin_qiaozhi.jpg`, `lu_xun.jpg`) is a live, self-contained classroom teaching page at `/context-cards/`, NOT unreferenced PNG dead assets. Corrected in `docs/HEALTH_AUDIT_2026-11.md`, `docs/KNOWN_ISSUES.md`, and this log.
+  5. **Standing Directive on 3D Advanced Nexus (Post-Pilot Gate Only):** Stop investing in the 3D Advanced Nexus (`src/GlobalRelationsNexus.jsx`) beyond bug fixes. **After** the 10-case pilot gate (no code and no proposal yet), first consult `claude-fable-5-2` (`Consult` mode) independently without showing it our design, then prepare a written proposal for replacing the 3D Advanced Nexus with a 2D `"Connections"` view built from case-study data.
+- **Did (`/context-cards/` Restoration & Hardening):**
+  - Restored `public/context-cards/` via `git checkout main -- public/context-cards` (`index.html` + 5 `.jpg` portraits).
+  - Self-hosted `Playfair Display` (`italic 400` + variable `normal 400..900`) as 8 WOFF2 subsets (`public/assets/fonts/playfair-display-1..8.woff2`), replacing the `fonts.googleapis.com` `@import` in `public/context-cards/index.html` with local `@font-face` rules while keeping `netlify.toml` CSP (`font-src 'self'`) unchanged.
+  - Checked all 5 outbound links in `public/context-cards/index.html`, adding `rel="noopener noreferrer"` and repairing broken/HTTP links:
+    - Columbia (`afe.easia.columbia.edu`): upgraded `http://` -> `https://afe.easia.columbia.edu/special/china_1900_luxun.htm` (`HTTP 200`).
+    - Britannica (`https://www.britannica.com/biography/Ding-Ling`): confirmed canonical live URL (`403` Cloudflare WAF to automated fetchers; classified `restricted`).
+    - China Daily (`201903/08/WS5c81e8c4a3106c65c34ee451.html` -> `HTTP 404`): replaced with verified live China Daily Lin Qiaozhi profile `https://www.chinadaily.com.cn/a/201108/07/WS5a2f8a56a3108bc8c6725902.html` (`HTTP 200`).
+    - Duke Rubenstein Library (`2017/09/05/...` -> `HTTP 404`): corrected publication date to `https://blogs.library.duke.edu/rubenstein/2014/05/22/charlie-soong-at-trinity-college/` (`HTTP 200`).
+    - UNESCO Digital Library (`https://unesdoc.unesco.org/ark:/48223/pf0000074677`): preserved canonical UNESDOC ARK permalink (`403` Cloudflare WAF to automated fetchers; classified `restricted`).
+  - Added `/context-cards` -> `/context-cards/` (`301`) and `/context-cards/` -> `/context-cards/index.html` (`200`) pass-through rules in `public/_redirects`, updated `scripts/generate-source-health-manifest.mjs` (`110` targets across 29 cases + `/context-cards/`), and added regression assertions in `src/__tests__/buildAndAssets.node.test.mjs` so `/context-cards/` is never flagged as dead again.
+- **Tested:** `npm run build` (`dist/context-cards/index.html` + 5 `.jpg`s + 8 `playfair-display-*.woff2` files emitted cleanly), `npm test` (`68/68` pass), and Playwright over local `dist/` with exact `netlify.toml` CSP headers (`/context-cards/` `HTTP 200`, `5/5` portraits rendered with `naturalWidth > 0`, `Playfair Display` active on headings/subtitles/dropcaps, `0` CSP violations, `0` external requests).
+- **Unfinished (Awaiting Owner List Confirmation & Netlify Sign-In Before Execution):**
+  - **`#12 somaliland-recognition-red-sea-order`:** `awaiting owner read` before merge to `main`.
+  - **Item 5(a) Overdue Case Split (`18` Renew Now vs `8` Label Now):** Two lists presented to owner for confirmation before starting renewals/labels.
+  - **Item 5(b) GitHub PR & Netlify Deploy Preview:** Blocked on Netlify plugin sign-in (`<plugin-card catalog-id="netlify">`) to verify `refresh-source-health-background` with `CRON_SECRET`.
+  - **Item 6 Claude Review (`claude-opus-5-5`, `Review` mode):** Scheduled immediately after completing the 18 case renewals + 8 `"update in progress"` labels so one combined review covers both `/context-cards/` and the case renewals per owner instructions.
+
+---
+
 ## 2026-11-17 — Antigravity (Carbon) — Unit 12: Phase 0 Editorial Infrastructure (6-Lens Option A, Modular `src/cases/`, Non-Destructive Archival, `content:staleness`, Controlled Concurrency Benchmark & Background Source-Health Worker)
 - **Backlog Pulled:** `#3` (`npm run content:staleness`), `#4` (`docs/CASE_STUDY_EDITORIAL_STANDARD.md` + 29-case -> 7-region × 6-lens baseline table), `#5` (`3000ms @ concurrency = 4` empirical benchmark + committed runner `docs/audit-evidence/run-source-health-3s-c4.mjs`), and `#6` (reconciled `#17, #19–#29` `updatedAt: '2026-08-09'` source-date vs review-date drift while preserving exact `reviewBy` dates; `review/claude-*.md` already in `.gitignore:36`; `ux-*-before.png` left uncompressed to preserve byte-identical Unit 1 audit baseline).
 - **Did:**

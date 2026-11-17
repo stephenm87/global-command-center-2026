@@ -4,8 +4,40 @@ import { ALL_CASE_STUDIES_2026 } from '../src/cases/index.mjs';
 
 const projectRoot = resolve(import.meta.dirname, '..');
 const outputPath = join(projectRoot, 'netlify/functions/source-health-targets.json');
+const contextCardsPath = join(projectRoot, 'public/context-cards/index.html');
 
-export function buildManifest(caseStudies) {
+export function extractContextCardTargets(html) {
+    const targets = [];
+    const anchorPattern = /<a\s+[^>]*href="(https?:\/\/[^"]+)"[^>]*>([\s\S]*?)<\/a>/gi;
+    let match;
+    let index = 0;
+    while ((match = anchorPattern.exec(html)) !== null) {
+        const url = match[1].trim();
+        const label = match[2].replace(/<[^>]+>/g, '').replace(/\s+/g, ' ').trim();
+        let publisher = label;
+        try {
+            publisher = new URL(url).hostname.replace(/^www\./, '');
+        } catch {
+            // keep label fallback
+        }
+        targets.push({
+            id: `context-cards:citation:${index}`,
+            caseStudyId: 'context-cards',
+            caseStudyTitle: 'Context Cards: Field Agents — Republican China',
+            sourceTitle: label || `Context Card Citation ${index + 1}`,
+            publisher,
+            group: 'static-page',
+            kind: 'primary',
+            lifecycle: 'active',
+            pagePath: '/context-cards/',
+            url,
+        });
+        index += 1;
+    }
+    return targets;
+}
+
+export function buildManifest(caseStudies, staticPageTargets = []) {
     const targets = [];
     for (const caseStudy of caseStudies) {
         const lifecycle = caseStudy.status === 'archived' ? 'archived' : 'active';
@@ -46,10 +78,22 @@ export function buildManifest(caseStudies) {
             });
         }
     }
-    return { schemaVersion: 1, caseStudyCount: caseStudies.length, targetCount: targets.length, targets };
+    targets.push(...staticPageTargets);
+    return {
+        schemaVersion: 1,
+        caseStudyCount: caseStudies.length,
+        staticPageCount: staticPageTargets.length > 0 ? 1 : 0,
+        targetCount: targets.length,
+        targets,
+    };
 }
 
-const manifest = buildManifest(ALL_CASE_STUDIES_2026);
+const contextCardsHtml = await readFile(contextCardsPath, 'utf8');
+const contextCardTargets = extractContextCardTargets(contextCardsHtml);
+if (contextCardTargets.length === 0) {
+    throw new Error('Expected outbound citation links in public/context-cards/index.html.');
+}
+const manifest = buildManifest(ALL_CASE_STUDIES_2026, contextCardTargets);
 const serialized = `${JSON.stringify(manifest, null, 2)}\n`;
 if (process.argv.includes('--check')) {
     const current = await readFile(outputPath, 'utf8').catch(() => '');
