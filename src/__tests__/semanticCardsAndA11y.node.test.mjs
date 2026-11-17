@@ -55,6 +55,8 @@ test('GuidedBriefings displays Showing X of Y cases with Show all button and UI 
 
     // Verify computed WCAG 2.1 AA (>= 4.5:1) contrast on accessible text accents & HUD labels
     assert.ok(contrastRatio('#ff5c99', '#0a0e1a') >= 4.5, '#ff5c99 conflict category label must achieve >=4.5:1 on #0a0e1a');
+    assert.ok(contrastRatio('#ff5c99', '#1b2b28') >= 4.5, '#ff5c99 conflict category label must achieve >=4.5:1 on active Africa-tinted library card (#8fda66 @ 9% over #101a22)');
+    assert.match(fs.readFileSync(path.join(REPO_ROOT, 'src/GuidedBriefings.css'), 'utf8'), /\.briefing-tour-list button\.active\s*\{[^}]*9%,\s*var\(--briefing-raised\)/);
     assert.ok(contrastRatio('#ff6b6b', '#101624') >= 4.5, '#ff6b6b Marxism theory label must achieve >=4.5:1 on #101624');
     assert.ok(contrastRatio('#9fb2bc', '#05090d') >= 4.5, '#9fb2bc 3D Nexus HUD label must achieve >=4.5:1 on #05090d');
     assert.ok(contrastRatio('#ffffff', '#7a0099') >= 4.5, 'Code of Conduct #ffffff on #7a0099 must achieve >=4.5:1');

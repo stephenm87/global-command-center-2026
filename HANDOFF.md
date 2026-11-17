@@ -2,6 +2,31 @@
 
 Newest entry first. Each agent adds an entry before it stops. Keep entries short.
 
+## 2026-11-17 — Antigravity (Carbon) — Unit 14 (Phase A2/A2b/A3): Grounded Map Locations, Conflict Classification Parity & Claude Review Triage
+- **Owner Gate Status:** PR #34 (`fix/audit-remediation-2026-11` → `main`) remains **open and unmerged**. Both `somaliland-recognition-red-sea-order` and `western-sahara-autonomy-self-determination` remain **`awaiting owner read`**, and Phase A stops cleanly after A4 awaiting `"go live"` before merge (A5), Phase B (`feat/visual-refresh`), or Phase C. (`CaseLocatorMap.jsx` remains scoped to Phase B on `feat/visual-refresh`.)
+- **Did (A2 — Grounded Case Map Locations & Region-Label Guard):**
+  - Replaced all 5 generic region/continent `map.locations[].label` records with independently verified real places, exact coordinates, `map.mode`, and source-grounded `role` fields:
+    - `south-china-sea-arbitral-award-ten-years` (`map.mode: 'regional'`): `Itu Aba / Taiping (Spratly Islands)` (`10.377, 114.366`, Primary), `Mischief Reef` (`9.917, 115.533`), `Second Thomas Shoal` (`9.733, 115.867`), `Scarborough Shoal` (`15.183, 117.767`), `Manila` (`14.5995, 120.9842`); no The Hague; updated `What the Tribunal Decided` waypoint so the features appear directly in case text.
+    - `myanmar-fragmented-sovereignty` (`map.mode: 'regional'`): `Naypyidaw` (`19.745, 96.1297`, Primary), `Pakokku` (`21.3349, 95.0844`), `Yangon` (`16.8053, 96.1561`), `Manila` (`14.5995, 120.9842`); updated `Repeated Displacement` waypoint to cite *The Irrawaddy*'s `2 July 2026` Pakokku reporting (`150,000` displaced) without conflating aid-access restrictions with causes of displacement.
+    - `syria-transition-return-sanctions` (`map.mode: 'regional'`): `Damascus` (`33.513, 36.292`, Primary), `Tell Abyad` (`36.6975, 38.9567`), `Ras al-Ain` (`36.8504, 40.0696`), `Aleppo` (`36.2012, 37.1612`); omitted unnamed refugee-host cities; kept Group 2 audited narration unchanged.
+    - `usmca-2026-joint-review` (`map.mode: 'regional'`): `Washington, DC` (`38.8951, -77.0364`, Primary), `Ottawa` (`45.4215, -75.6972`), `Mexico City` (`19.4326, -99.1332`); omitted border/industrial towns absent from cited releases.
+    - `eu-ai-act-transparency-implementation` (`map.mode: 'point'`): `Brussels` (`50.8503, 4.3517`), noting European Commission / EU AI Office implementation role (`S-10` deliberate single-pin exception for EU-wide regulatory institution).
+  - Exported `COVERAGE_REGION_ALIASES` (`src/cases/schema.mjs` → `src/cases/index.mjs` → `src/caseStudies2026.js`) and added a normalized region/continent guard in `src/__tests__/contentIntegrity.node.test.mjs` covering `CANONICAL_REGIONS_7`, `COVERAGE_REGION_ALIASES`, punctuation/dash variants, and non-empty `role` checks across all 5 upgraded cases.
+- **Did (A2b — Conflict Category Consistency Across Somaliland, Western Sahara & All Case Surfaces):**
+  - `src/hooks/useGlobeLayerSync.js`: colored editorial case markers by `categoryColors[item.Broad_Category]` (falling back to `#b69cff` only if unmapped) while preserving raised altitude (`0.035`) and larger radius (`1.35`).
+  - `src/components/IntelSidebar.jsx` & `src/App.css`: styled `.intel-card.editorial-item.case-study-item` with `categoryColors[forecast.Broad_Category]` (`#ff0066` conflict crimson on Somaliland & Western Sahara), neutral card frame, and intact `:hover` / `.selected` rules.
+  - `src/GuidedBriefings.jsx` & `src/GuidedBriefings.css`: displayed accessible issue category labels (`#ff5c99` `Geopolitics & Conflict`) inside every library card (`.briefing-card-category`) and stage header (`.briefing-stage-category`), and lowered selected library card mix from `14%` to `9%` (`5.09:1` AA on Somaliland's `#8fda66`-tinted active state; regression-tested in `semanticCardsAndA11y.node.test.mjs`).
+  - `src/App.jsx`: replaced the removed `Cases` legend dot with a key note (`◆ Larger raised pin = Editorial case`), switched `.editorial-layer-toggle` accent from purple to teal (`#5eead4`), grouped Globe Cluster Dialog items by `Broad_Category`, and replaced invalid `<div>` children inside cluster `<button>` elements with block `<span>` elements.
+- **Claude Review (`Mode: Review` read-only, `Model: claude-opus-5-5`, covering A1 + A2 + A2b):** `review/claude-review-20261117-1545.md` (`SHA-256: 5e5ba58ffe53bad5170310d3d6e1fd9032f27cee6329e3fe031798486107ac72` — `0 BLOCKING, 6 SHOULD-FIX, 8 SUGGESTION`):
+  - **All `6 SHOULD-FIX` (`SF-1..SF-6`):** `ACCEPT`ed and fixed in full (alias-backed normalized region-label check, neutral Syria roles + reverted Group 2 narration, trilateral Mexico City USMCA role, accurate Irrawaddy/OCHA Myanmar Pakokku narration, `.arc-legend-note` + teal toggle accent, `9%` selected-card mix clearing `5.09:1` AA contrast on Somaliland).
+  - **`SUGGESTION` Triage:**
+    - `S-7` (`asia-pacific-2026.mjs:186,193`): `ACCEPT` label precision (`"Itu Aba / Taiping (Spratly Islands)"`); `DISMISS` relocating Primary away from Spratlys/Itu Aba because the owner explicitly assigned Spratlys / Itu Aba as Primary and asked not to center in open water.
+    - `S-8` (`Mischief Reef` / `Second Thomas Shoal` roles), `S-9` (`Naypyidaw` role), `S-10` (`Brussels` `"implementing"` role + documented single-pin regulatory exception), `S-11` (`App.jsx` cluster button valid phrasing `<span>`), `S-12` (`App.css` `.case-study-item:hover`/`.selected` specificity): All `ACCEPT`ed and fixed.
+    - `S-13` (17 remaining active cases lacking `location.role`, including owner-gated Western Sahara): `ACCEPT-LATER` — queued in `Reviewer Suggestions Backlog` `#7` so unrelated cases and owner-gated Western Sahara stay untouched before `"go live"`.
+    - `S-14` (`Tuvalu` `reviewedAt: '2026-08-10'`): noted as intentional per Unit 13d audit log.
+- **Tested:** Re-running `npm run build`, `npm test`, `npm run content:staleness -- --as-of 2026-11-17`, and Playwright verification + screenshots on Deploy Preview #34 after push.
+- **Next:** Push `fix/audit-remediation-2026-11`, update PR #34, verify live Deploy Preview #34 in Playwright (`0` console errors, A2b conflict parity across briefing library / issue filter / globe / intel feed, screenshots of all 5 A2 briefings + Globe views), report at **A4**, and **stop** awaiting `"go live"`.
+
 ## 2026-11-17 — Antigravity (Carbon) — Unit 13d: Honest Renewal Audit Across 5 Cases & Independent `claude-fable-5-2` Fact-Check (`1299659..d5a2455`)
 - **Owner Gate Status:** Both **`somaliland-recognition-red-sea-order`** and **`western-sahara-autonomy-self-determination`** remain **`awaiting owner read`** on the Netlify deploy preview before merge to `main` (direct deep links pinned at top of PR #34). PR #34 remains open and **unmerged**; the 10-case pilot batch is **not started**. Standing 3D Advanced Nexus freeze / post-pilot 2D `"Connections"` consultation directive (`claude-fable-5-2` `Consult` first) remains active.
 - **Did (Five-Case Item-1 Remediation — commit `d5a2455` + post-fact-check commit):**
@@ -290,6 +315,7 @@ Each implementation commit / sub-step (including `A1..A5`, `N1..N4`, and Phase 0
 4. **[Unit 12 — Pre-Pilot]** Update `docs/CASE_STUDY_EDITORIAL_STANDARD.md` (`status`, `issueLens`, 6-value `broadCategory`) and publish the 29-case -> 6-lens baseline table.
 5. **[Unit 12 — Source-Health]** Controlled `CHECK_TIMEOUT_MS = 3000 @ concurrency = 4` benchmark using exact `source-health.js` rules before tuning timeout/concurrency.
 6. **[Pre-Commit / Unit 12]** Losslessly compress `docs/screenshots/*.png`, add `review/claude-*.md` to `.gitignore`, and reconcile `updatedAt` drift on `#17–#29`.
+7. **[Post-A4 / Future Case Refresh — Unit 14 `S-13`]** Backfill `map.locations[].role` across the remaining 17 active cases that currently lack location roles (including owner-gated `western-sahara-autonomy-self-determination`), and enforce `role` across all active cases in `contentIntegrity.node.test.mjs`.
 
 ---
 

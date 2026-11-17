@@ -190,16 +190,29 @@ export const AMERICAS_CARIBBEAN_CASES_2026 = [
         "reviewCadenceDays": 30,
         "reviewBy": "2026-12-17",
         "coordinates": {
-            "latitude": 39,
-            "longitude": -101
+            "latitude": 38.8951,
+            "longitude": -77.0364
         },
         "map": {
-            "mode": "point",
+            "mode": "regional",
             "locations": [
                 {
-                    "label": "North America",
-                    "latitude": 39,
-                    "longitude": -101
+                    "label": "Washington, DC",
+                    "latitude": 38.8951,
+                    "longitude": -77.0364,
+                    "role": "United States trade-policy capital and USTR seat driving the July 2026 non-extension decision and October 2026 review consultation"
+                },
+                {
+                    "label": "Ottawa",
+                    "latitude": 45.4215,
+                    "longitude": -75.6972,
+                    "role": "Canadian federal trade-negotiation capital where Global Affairs Canada leads provincial and national CUSMA review coordination"
+                },
+                {
+                    "label": "Mexico City",
+                    "latitude": 19.4326,
+                    "longitude": -99.1332,
+                    "role": "Mexican capital and Secretaría de Economía seat for the trilateral T-MEC / USMCA joint review emphasizing treaty continuity through 2036"
                 }
             ]
         },

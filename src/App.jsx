@@ -9,6 +9,7 @@ import criticalMineralsCatalog from './data/criticalMinerals.json';
 import {
     VIEW_MODES,
     categoryColors,
+    getAccessibleTextAccent,
     THEORY_COLORS,
     THEORY_LABELS,
     getViewFromLocation,
@@ -917,7 +918,7 @@ function App() {
 
                                     {!legendCollapsed && (
                                         <>
-                                            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1px 8px', marginBottom: '8px' }}>
+                                            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1px 8px', marginBottom: '6px' }}>
                                                 {[
                                                     ['Conflict', '#ff5c99'],
                                                     ['Gov/Rights', '#fbbf24'],
@@ -927,13 +928,15 @@ function App() {
                                                     ['Environ', '#66ff00'],
                                                     ['Culture', '#f472ff'],
                                                     ['Live', '#00ffff'],
-                                                    ['Cases', '#b69cff'],
                                                 ].map(([label, color]) => (
                                                     <div key={label} className="arc-legend-item" style={{ marginBottom: '1px' }}>
                                                         <span className="arc-legend-dot" style={{ background: color, boxShadow: `0 0 4px ${color}`, width: '6px', height: '6px' }} />
                                                         <span className="arc-legend-label" style={{ color }}>{label}</span>
                                                     </div>
                                                 ))}
+                                            </div>
+                                            <div className="arc-legend-note">
+                                                <span aria-hidden="true">◆</span> Larger raised pin = Editorial case
                                             </div>
 
                                             {stressLevel > 50 && (
@@ -1085,12 +1088,12 @@ function App() {
                                         const uniqueItems = dedupeClusterItems(expandedCluster.items);
                                         const groups = {};
                                         uniqueItems.forEach(item => {
-                                            const cat = item.isCaseStudy ? 'Editorial Cases' : item.isLive ? 'Live Intel' : (item.Broad_Category || 'Other');
+                                            const cat = item.isLive ? 'Live Intel' : (item.Broad_Category || (item.isCaseStudy ? 'Editorial Cases' : 'Other'));
                                             if (!groups[cat]) groups[cat] = [];
                                             groups[cat].push(item);
                                         });
                                         return Object.entries(groups).map(([cat, items]) => {
-                                            const catColor = items[0].isCaseStudy ? '#b69cff' : items[0].isLive ? '#00ffff' : (categoryColors[cat] || '#aaaaaa');
+                                            const catColor = items[0].isLive ? '#00ffff' : (categoryColors[cat] || (items[0].isCaseStudy ? '#b69cff' : '#aaaaaa'));
                                             return (
                                                 <div key={cat}>
                                                     <div style={{ color: catColor, fontSize: '0.6rem', fontWeight: 900, letterSpacing: '0.1em', textTransform: 'uppercase', marginBottom: '6px', paddingBottom: '4px', borderBottom: `1px solid ${catColor}33` }}>
@@ -1099,6 +1102,7 @@ function App() {
                                                     <div style={{ display: 'flex', flexDirection: 'column', gap: '5px' }}>
                                                         {items.map((item, i) => {
                                                             const clusterNotice = item.isCaseStudy ? getCaseReviewNotice(item) : null;
+                                                            const caseAccent = getAccessibleTextAccent(categoryColors[item.Broad_Category] || '#b69cff');
                                                             return (
                                                                 <button
                                                                     key={i}
@@ -1106,15 +1110,15 @@ function App() {
                                                                     onClick={() => { setSelectedForecast(item); setExpandedCluster(null); }}
                                                                     style={{ textAlign: 'left', background: `${catColor}0d`, border: `1px solid ${catColor}33`, borderRadius: '6px', padding: '8px 10px', minHeight: '44px', cursor: 'pointer', transition: 'all 0.15s' }}
                                                                 >
-                                                                    <div style={{ color: '#ddd', fontSize: '0.68rem', lineHeight: 1.3 }}>
+                                                                    <span style={{ display: 'block', color: '#ddd', fontSize: '0.68rem', lineHeight: 1.3 }}>
                                                                         {item.isLive ? <span style={{ color: '#00ffff', fontWeight: 700, marginRight: '4px' }}>[LIVE]</span> : null}
-                                                                        {item.isCaseStudy ? <span style={{ color: '#b69cff', fontWeight: 700, marginRight: '4px' }}>[CASE]</span> : null}
+                                                                        {item.isCaseStudy ? <span style={{ color: caseAccent, fontWeight: 700, marginRight: '4px' }}>[CASE]</span> : null}
                                                                         {item['Entity/Subject']?.substring(0, 70)}
-                                                                    </div>
+                                                                    </span>
                                                                     {clusterNotice && (
-                                                                        <div style={{ color: '#fde68a', fontSize: '0.62rem', marginTop: '3px', lineHeight: 1.3 }}>
+                                                                        <span style={{ display: 'block', color: '#fde68a', fontSize: '0.62rem', marginTop: '3px', lineHeight: 1.3 }}>
                                                                             {clusterNotice}
-                                                                        </div>
+                                                                        </span>
                                                                     )}
                                                                 </button>
                                                             );

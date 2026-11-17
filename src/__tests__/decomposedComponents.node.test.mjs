@@ -605,4 +605,50 @@ test('extracted 3D Nexus components & Three.js helpers build node meshes, escape
         onOpenBriefing: () => {},
     }));
     assert.match(focusNexusHtml, /Current cases \(1\)/);
+
+    const conflictCaseForecast = toForecastRecord(normalizeCaseStudy({
+        ...syntheticUpdateInProgressCase,
+        id: 'synthetic-conflict-case',
+        issueLens: 'Security & Diplomacy',
+        broadCategory: 'Geopolitics & Conflict',
+    }));
+    const conflictSidebarHtml = renderToStaticMarkup(React.createElement(IntelSidebar, {
+        visible: true,
+        sidebarCollapsed: false,
+        onToggleCollapse: () => {},
+        historicalData: null,
+        historicalLoading: false,
+        timelineYear: '2026',
+        intelLoading: false,
+        intelLastUpdated: new Date('2026-11-17T00:00:00Z'),
+        intelSummary: { sourceMode: 'reference', feedStatus: 'ready', liveItemCount: 0, linkedReferenceCount: 56 },
+        caseStudyCount: 29,
+        feedSearch: '',
+        onSearchChange: () => {},
+        visibleSelectedCategory: 'ALL SOURCED INTELLIGENCE',
+        onCategoryChange: () => {},
+        currentFeedLabel: 'CURRENT',
+        feedEmptyState: null,
+        feedItems: [conflictCaseForecast],
+        feedPage: 1,
+        feedPageSize: 40,
+        onShowMore: () => {},
+        selectedForecast: null,
+        onSelectForecast: () => {},
+        onOpenBriefing: () => {},
+    }));
+    assert.match(conflictSidebarHtml, /case-study-item/);
+    assert.match(conflictSidebarHtml, /border-left-color:#ff0066/i);
+    assert.match(conflictSidebarHtml, /Geopolitics &amp; Conflict/);
+
+    const conflictBriefingHtml = renderToStaticMarkup(React.createElement(GuidedBriefings, {
+        initialTourId: 'synthetic-conflict-tour',
+        initialStep: 1,
+        onExploreNode: () => {},
+        onRouteChange: () => {},
+        activeTours: [{ ...syntheticTour, id: 'synthetic-conflict-tour', broadCategory: 'Geopolitics & Conflict' }],
+        archivedTours: [],
+    }));
+    assert.match(conflictBriefingHtml, /briefing-card-category/);
+    assert.match(conflictBriefingHtml, /Geopolitics &amp; Conflict/);
 });

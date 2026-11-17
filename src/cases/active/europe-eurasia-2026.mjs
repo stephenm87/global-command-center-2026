@@ -223,9 +223,10 @@ export const EUROPE_EURASIA_CASES_2026 = [
             "mode": "point",
             "locations": [
                 {
-                    "label": "Europe",
+                    "label": "Brussels",
                     "latitude": 50.8503,
-                    "longitude": 4.3517
+                    "longitude": 4.3517,
+                    "role": "Seat of the European Commission and EU AI Office implementing the AI Act, Article 50 transparency guidelines, and the AI Omnibus"
                 }
             ]
         },

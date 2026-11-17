@@ -138,15 +138,13 @@ export default function IntelSidebar({
                     return (
                     <article
                         key={`${forecast.caseStudyId || forecast.url || forecast['Entity/Subject'] || forecast['Topic/Sector'] || 'forecast'}-${idx}`}
-                        className={`intel-card ${selectedForecast === forecast ? 'selected' : ''} ${forecast.isLive ? 'live-item' : ''} ${forecast.isEditorial ? 'editorial-item' : ''}`}
+                        className={`intel-card ${selectedForecast === forecast ? 'selected' : ''} ${forecast.isLive ? 'live-item' : ''} ${forecast.isEditorial ? 'editorial-item' : ''} ${forecast.isCaseStudy ? 'case-study-item' : ''}`.trim()}
                         style={{
                             borderLeftColor: forecast.isHistorical
                                 ? '#ffcc00'
                                 : forecast.isLive
                                     ? '#00ffff'
-                                    : forecast.isEditorial
-                                        ? '#b69cff'
-                                        : categoryColors[forecast.Broad_Category],
+                                    : (categoryColors[forecast.Broad_Category] || (forecast.isEditorial ? '#b69cff' : undefined)),
                         }}
                     >
                         <button

@@ -39,16 +39,35 @@ export const ASIA_PACIFIC_CASES_2026 = [
         "reviewCadenceDays": 30,
         "reviewBy": "2026-12-17",
         "coordinates": {
-            "latitude": 19.7633,
-            "longitude": 96.0785
+            "latitude": 19.745,
+            "longitude": 96.1297
         },
         "map": {
-            "mode": "point",
+            "mode": "regional",
             "locations": [
                 {
-                    "label": "Asia",
-                    "latitude": 19.7633,
-                    "longitude": 96.0785
+                    "label": "Naypyidaw",
+                    "latitude": 19.745,
+                    "longitude": 96.1297,
+                    "role": "Seat of Myanmar's government and target of ASEAN's extended summit representation ban"
+                },
+                {
+                    "label": "Pakokku",
+                    "latitude": 21.3349,
+                    "longitude": 95.0844,
+                    "role": "Magway Region town where local reporting documented 150,000 displaced people in urgent need of food, water, medicine, and shelter"
+                },
+                {
+                    "label": "Yangon",
+                    "latitude": 16.8053,
+                    "longitude": 96.1561,
+                    "role": "Primary United Nations and OCHA Myanmar coordination hub tracking nationwide humanitarian access and funding gaps"
+                },
+                {
+                    "label": "Manila",
+                    "latitude": 14.5995,
+                    "longitude": 120.9842,
+                    "role": "November 2026 ASEAN Summit host where regional leaders denounced ongoing violence in Myanmar and extended the summit ban"
                 }
             ]
         },
@@ -106,7 +125,7 @@ export const ASIA_PACIFIC_CASES_2026 = [
             {
                 "nodeId": "AsiaPacific",
                 "title": "Repeated Displacement",
-                "narration": "Nearly 3.8 million people were estimated to be displaced, with renewed fighting continuing to force new movements.",
+                "narration": "Nearly 3.8 million people were estimated to be displaced nationwide, while The Irrawaddy reported on 2 July 2026 that fighting had displaced 150,000 people in Pakokku.",
                 "focusQuestion": "How does repeated displacement change communities' political and economic choices?"
             },
             {
@@ -164,16 +183,41 @@ export const ASIA_PACIFIC_CASES_2026 = [
         "reviewCadenceDays": 30,
         "reviewBy": "2026-12-17",
         "coordinates": {
-            "latitude": 12,
-            "longitude": 114
+            "latitude": 10.377,
+            "longitude": 114.366
         },
         "map": {
-            "mode": "point",
+            "mode": "regional",
             "locations": [
                 {
-                    "label": "Asia-Pacific",
-                    "latitude": 12,
-                    "longitude": 114
+                    "label": "Itu Aba / Taiping (Spratly Islands)",
+                    "latitude": 10.377,
+                    "longitude": 114.366,
+                    "role": "Largest naturally formed high-tide feature in the Spratly Islands, found under UNCLOS Article 121(3) to generate no 200-nautical-mile EEZ or continental shelf"
+                },
+                {
+                    "label": "Mischief Reef",
+                    "latitude": 9.917,
+                    "longitude": 115.533,
+                    "role": "Low-tide elevation within the Philippines' EEZ and continental shelf where artificial-island construction infringed Philippine sovereign rights under UNCLOS"
+                },
+                {
+                    "label": "Second Thomas Shoal",
+                    "latitude": 9.733,
+                    "longitude": 115.867,
+                    "role": "Low-tide elevation inside the Philippines' EEZ addressed in the 2016 arbitral award's maritime-entitlement findings"
+                },
+                {
+                    "label": "Scarborough Shoal",
+                    "latitude": 15.183,
+                    "longitude": 117.767,
+                    "role": "High-tide feature where the tribunal addressed traditional fishing rights and interference with Philippine vessels"
+                },
+                {
+                    "label": "Manila",
+                    "latitude": 14.5995,
+                    "longitude": 120.9842,
+                    "role": "Venue of the November 2026 ASEAN Summit Code of Conduct talks and Philippine diplomatic seat defending the 2016 award"
                 }
             ]
         },
@@ -226,7 +270,7 @@ export const ASIA_PACIFIC_CASES_2026 = [
             {
                 "nodeId": "AsiaPacific",
                 "title": "What the Tribunal Decided",
-                "narration": "The tribunal addressed maritime entitlements and conduct under UNCLOS; it did not decide sovereignty over land territory or delimit a maritime boundary.",
+                "narration": "The tribunal addressed maritime entitlements and conduct under UNCLOS—evaluating Spratly high-tide features including Itu Aba, placing low-tide elevations Mischief Reef and Second Thomas Shoal within the Philippines' EEZ, and addressing fishing access at Scarborough Shoal—without deciding land sovereignty or delimiting a boundary.",
                 "focusQuestion": "Why does the legal scope of a ruling matter as much as its outcome?"
             },
             {

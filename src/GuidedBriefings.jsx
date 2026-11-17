@@ -1,7 +1,7 @@
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { GUIDED_TOURS, ARCHIVED_GUIDED_TOURS, ALL_GUIDED_TOURS } from './nexusTours';
 import { NEXUS_ACTORS } from './nexusFocusData';
-import { getCaseReviewNotice, isReviewOverdue } from './navigationState.mjs';
+import { categoryColors, getAccessibleTextAccent, getCaseReviewNotice, isReviewOverdue } from './navigationState.mjs';
 import { indexSourceHealth, shouldPreferAlternate, sourceHealthLabel } from './sourceHealth.mjs';
 import './GuidedBriefings.css';
 
@@ -285,27 +285,35 @@ export default function GuidedBriefings({
                     </div>
                 </div>
                 <div id="briefing-case-list" className="briefing-tour-list">
-                    {displayedTours.map(item => (
-                        <button
-                            key={item.id}
-                            type="button"
-                            className={item.id === tour.id ? 'active' : ''}
-                            onClick={() => chooseTour(item.id)}
-                            aria-pressed={item.id === tour.id}
-                            style={{ '--tour-color': item.color }}
-                        >
-                            <strong>{item.title}</strong>
-                            <span>{item.subtitle}</span>
-                            <small>
-                                {item.waypoints.length} steps · {item.coverageRegion || item.regionTags?.[0]} · {item.sources?.length || 0} views
-                                {item.reviewStatus === 'update-in-progress'
-                                    ? ' · Update in progress'
-                                    : getCaseReviewNotice(item)
-                                        ? ' · Review overdue'
-                                        : ''}
-                            </small>
-                        </button>
-                    ))}
+                    {displayedTours.map(item => {
+                        const categoryAccent = getAccessibleTextAccent(categoryColors[item.broadCategory]) || item.color;
+                        return (
+                            <button
+                                key={item.id}
+                                type="button"
+                                className={item.id === tour.id ? 'active' : ''}
+                                onClick={() => chooseTour(item.id)}
+                                aria-pressed={item.id === tour.id}
+                                style={{ '--tour-color': item.color }}
+                            >
+                                <strong>{item.title}</strong>
+                                <span>{item.subtitle}</span>
+                                {item.broadCategory && (
+                                    <span className="briefing-card-category" style={{ color: categoryAccent }}>
+                                        {item.broadCategory}
+                                    </span>
+                                )}
+                                <small>
+                                    {item.waypoints.length} steps · {item.coverageRegion || item.regionTags?.[0]} · {item.sources?.length || 0} views
+                                    {item.reviewStatus === 'update-in-progress'
+                                        ? ' · Update in progress'
+                                        : getCaseReviewNotice(item)
+                                            ? ' · Review overdue'
+                                            : ''}
+                                </small>
+                            </button>
+                        );
+                    })}
                     {visibleTours.length === 0 && (
                         <div className="briefing-library-empty">No cases match these filters.</div>
                     )}
@@ -361,6 +369,17 @@ export default function GuidedBriefings({
                                 : reviewNotice
                                     ? `EDITORIAL BRIEFING · ${reviewNotice.toUpperCase()}`
                                     : `EDITORIAL BRIEFING${tour.updatedAt ? ` · LAST REVIEWED ${tour.updatedAt}` : ''}`}
+                            {tour.broadCategory && (
+                                <>
+                                    {' · '}
+                                    <span
+                                        className="briefing-stage-category"
+                                        style={{ color: getAccessibleTextAccent(categoryColors[tour.broadCategory]) || tour.color }}
+                                    >
+                                        {tour.broadCategory}
+                                    </span>
+                                </>
+                            )}
                         </span>
                         <h1 ref={stageHeadingRef} tabIndex="-1">{tour.title}</h1>
                         <p>{tour.subtitle}</p>

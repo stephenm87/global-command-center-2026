@@ -41,16 +41,35 @@ export const MENA_CASES_2026 = [
         "reviewCadenceDays": 90,
         "reviewBy": "2026-09-28",
         "coordinates": {
-            "latitude": 33.5138,
-            "longitude": 36.2765
+            "latitude": 33.513,
+            "longitude": 36.292
         },
         "map": {
-            "mode": "point",
+            "mode": "regional",
             "locations": [
                 {
-                    "label": "Middle East",
-                    "latitude": 33.5138,
-                    "longitude": 36.2765
+                    "label": "Damascus",
+                    "latitude": 33.513,
+                    "longitude": 36.292,
+                    "role": "Syrian capital referenced in transitional-authority pledges regarding displaced-person return"
+                },
+                {
+                    "label": "Tell Abyad",
+                    "latitude": 36.6975,
+                    "longitude": 38.9567,
+                    "role": "Northern Peace Spring locality where STJ documented blocked displaced-person returns"
+                },
+                {
+                    "label": "Ras al-Ain",
+                    "latitude": 36.8504,
+                    "longitude": 40.0696,
+                    "role": "Northeastern Peace Spring border locality documented alongside Tell Abyad for blocked returns"
+                },
+                {
+                    "label": "Aleppo",
+                    "latitude": 36.2012,
+                    "longitude": 37.1612,
+                    "role": "Northern Syrian governorate referenced in local return-corridor and aid reporting"
                 }
             ]
         },

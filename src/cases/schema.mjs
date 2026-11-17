@@ -53,7 +53,7 @@ const BROAD_CATEGORY_ALIASES = {
     'Technology & Economics': 'Economy & Trade',
 };
 
-const COVERAGE_REGION_ALIASES = {
+export const COVERAGE_REGION_ALIASES = {
     'Sub-Saharan Africa': 'Africa',
     'Horn of Africa and Red Sea': 'Africa',
     'Southern Africa': 'Africa',

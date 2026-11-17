@@ -40,6 +40,7 @@ test('curated case studies remain balanced across 7 regions x 6 lenses, auditabl
             ARCHIVED_CASE_STUDIES_2026,
             ALL_CASE_STUDIES_2026,
             CANONICAL_REGIONS_7,
+            COVERAGE_REGION_ALIASES,
             ISSUE_LENSES_6,
             BROAD_CATEGORIES,
             ISSUE_LENS_TO_BROAD_CATEGORY,
@@ -371,4 +372,66 @@ test('curated case studies remain balanced across 7 regions x 6 lenses, auditabl
         Broad_Category: 'Governance & Rights',
     });
     assert.deepEqual(Object.keys(nonCaseGovChallenges), ['Equality', 'Identity', 'Security']);
+
+    // Every active case map location must name a real city, site, or country rather than a generic region/continent
+    const normalizeLocationLabel = value => String(value || '')
+        .trim()
+        .toLowerCase()
+        .replace(/&/g, ' and ')
+        .replace(/[\u2013\u2014\-/]+/g, ' ')
+        .replace(/\s+/g, ' ');
+    const REGION_OR_CONTINENT_LOCATION_LABELS = new Set([
+        ...CANONICAL_REGIONS_7,
+        ...Object.keys(COVERAGE_REGION_ALIASES),
+        'Africa',
+        'Americas',
+        'Antarctica',
+        'Arabian Gulf',
+        'Balkans',
+        'Caribbean',
+        'Central America',
+        'Central Europe',
+        'East Africa',
+        'Eastern Europe',
+        'Eurasia',
+        'Gulf',
+        'Indo-Pacific',
+        'Levant',
+        'Maghreb',
+        'Mediterranean',
+        'MENA',
+        'Middle East & North Africa',
+        'Oceania',
+        'Persian Gulf',
+        'Red Sea',
+        'Sahel',
+        'South America',
+        'West Africa',
+        'Western Europe',
+    ].map(normalizeLocationLabel));
+    for (const syntheticRegion of ['Asia–Pacific', 'Asia Pacific', 'Latin America & Caribbean', 'Eastern Europe & Eurasia', 'Global Oceans', 'Horn of Africa and Red Sea']) {
+        assert.ok(REGION_OR_CONTINENT_LOCATION_LABELS.has(normalizeLocationLabel(syntheticRegion)));
+    }
+    for (const item of CASE_STUDIES_2026) {
+        for (const loc of item.map.locations) {
+            const normalized = normalizeLocationLabel(loc.label);
+            assert.ok(
+                !REGION_OR_CONTINENT_LOCATION_LABELS.has(normalized),
+                `Active case ${item.id} uses generic region/continent map label "${loc.label}"`,
+            );
+        }
+    }
+    for (const upgradedId of [
+        'south-china-sea-arbitral-award-ten-years',
+        'myanmar-fragmented-sovereignty',
+        'syria-transition-return-sanctions',
+        'usmca-2026-joint-review',
+        'eu-ai-act-transparency-implementation',
+    ]) {
+        const record = byId.get(upgradedId);
+        assert.ok(record, `${upgradedId} must exist`);
+        for (const loc of record.map.locations) {
+            assertNonEmptyString(loc.role, `${upgradedId} map location "${loc.label}" must document its role`);
+        }
+    }
 });

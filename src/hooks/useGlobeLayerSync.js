@@ -155,9 +155,9 @@ export function useGlobeLayerSync({
 
         const globeItems = showEditorialCases ? filtered : filtered.filter(item => !item.isCaseStudy);
         const rawPoints = globeItems.flatMap(item => {
-            const baseColor = item.isCaseStudy
-                ? '#b69cff'
-                : item.isLive ? '#00ffff' : (categoryColors[item.Broad_Category] || '#ffffff');
+            const baseColor = item.isLive
+                ? '#00ffff'
+                : (categoryColors[item.Broad_Category] || (item.isCaseStudy ? '#b69cff' : '#ffffff'));
             const color = getPointColor(item, baseColor);
             const opacity = getPointOpacity(item);
             const fallbackLocation = {
