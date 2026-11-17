@@ -4,8 +4,8 @@ The application is a Single Page Application (SPA) built with React and bundled 
 
 ## Frontend
 - **Framework**: React 18 bundled with Vite 5, matching the repository toolchain contract
-- **Application views**: `src/App.jsx` owns the URL-addressable Live Globe, Guided Briefings, and Advanced Nexus views. Briefing tour/step and Nexus actor selections are encoded in query parameters for refresh-safe links.
-- **Visualization**: `Globe.gl` and `Three.js` render the live 3D globe. The default Nexus experience is a DOM/SVG Focus view with search, issue lenses, and a single selected actor. The full force-directed 3D Nexus is an optional secondary presentation.
+- **Application views & decomposed workspace**: `src/App.jsx` coordinates the URL-addressable Live Globe, Guided Briefings, and Advanced Nexus views while delegating pure URL/clustering/accent helpers to `src/navigationState.mjs`, cloud/local preference hydration to `src/hooks/useSupabasePreferences.js`, lazy WebGL Globe lifecycle and layer synchronization to `src/hooks/useGlobeLayerSync.js`, and focused UI panels to `src/components/IntelSidebar.jsx`, `src/components/OperationalDashboard.jsx`, `src/components/DetailModal.jsx`, `src/components/MineralsModal.jsx`, and `src/components/AppFooter.jsx`. Briefing tour/step and Nexus actor selections are encoded in query parameters for refresh-safe links.
+- **Visualization & Nexus modules**: `Globe.gl` and `Three.js` render the live 3D globe (1-tap opt-in on `<768px` mobile viewports, paused whenever hidden). The default Nexus experience is a DOM/SVG Focus view (`src/NexusFocusView.jsx`) with search, issue lenses, and a single selected actor. The optional force-directed 3D Nexus (`src/GlobalRelationsNexus.jsx`) delegates canonical actor IDs (`src/nexus/actorIds.js`), graph anchors/physics/GPC context (`src/nexus/nexusData.js`), Three.js sprite creation/escaped tooltips/scene disposal (`src/nexus/threeSpriteHelpers.js`), HUD filters/controls (`src/nexus/NexusHudControls.jsx`), and node/edge inspection (`src/nexus/NexusInspectorPanel.jsx`).
 - **Progressive loading**: The globe, Guided Briefings, Nexus workspace, and advanced 3D Nexus are split into separate chunks. `src/graphReadiness.mjs` prevents force-graph reheating until the 3D graph reports its first engine tick.
 - **Case-study projection**: `src/caseStudies2026.js` is the canonical source-aware editorial dataset. `src/nexusTours.js` projects it into guided learning paths, while `src/nexusFocusData.js` combines its dated connections with clearly labelled structural relationship context.
 - **Intelligence feed composition**: `src/intelFeed.mjs` merges an anonymous cached provider snapshot, the public linked-reference library, verified editorial cases, and legacy forecasts. Cached current records take precedence over exact duplicates, while distinct insights that share a source remain visible. Public references are always loaded independently and are never relabelled as current.
@@ -13,17 +13,17 @@ The application is a Single Page Application (SPA) built with React and bundled 
 
 ## Backend (Netlify Functions)
 Located in `netlify/functions`:
-- `ai-summary.js`: Uses Gemini API for text summarization.
-- `deep-scan.js`: Uses Firecrawl for deep web scraping.
-- `fetch-intel.js`: Aggregates current intel from two broad Serper queries with GNews fallback, adds explicitly dated editorial context after current results, and emits provenance/cache metadata.
-- `public-intel.mjs`: Reads the anonymous fixed-query snapshot from Netlify Blobs and uses CDN cache headers. It creates the first snapshot on demand if the scheduled job has not run.
-- `refresh-public-intel.mjs`: Rebuilds the public snapshot every 30 minutes from four fixed editorial queries.
-- `fetch-news.js`: Runs authenticated visitor-supplied news searches.
+- `ai-summary.js`: Uses Gemini API (`gemini-3.5-flash-lite` default) for authenticated intelligence summarization.
+- `deep-scan.js`: Uses Firecrawl for authenticated article extraction with SSRF/URL normalization guards.
+- `public-intel.mjs`: Reads the anonymous fixed-query snapshot (including canonical critical-minerals reference metadata) from Netlify Blobs and uses CDN cache headers. It creates the first snapshot on demand if the scheduled job has not run.
+- `refresh-public-intel.mjs`: Rebuilds the public snapshot every 30 minutes from fixed editorial queries.
+- `fetch-news.js`: Runs authenticated visitor-supplied news searches via Serper.
+- `gdelt-pulse.mjs`: Public CDN-cached proxy for allowlisted 3D Nexus GDELT topic pulse queries (`protectPublicEndpoint`).
 - `source-health.mjs` and `refresh-source-health.mjs`: Publish and refresh the daily editorial link-health snapshot generated from all case-study sources and declared alternates.
-- `gemini-retry.js`: Utility for handling Gemini API retries.
-- `security.js`: Validates Supabase bearer tokens and applies per-user throttling before provider calls.
+- `gemini-retry.js`: Bounded wall-clock retry helper for Gemini API requests.
+- `security.js`: Validates Supabase bearer tokens, origin allowlists, and classroom-safe per-user/IP rate limits before provider calls.
 
-The frontend reads `public-intel.js` without authentication. It uses `src/api.js` to attach the current Supabase access token only to custom search, Firecrawl, and AI-summary requests. Static forecast, linked-reference, verified-case, and historical assets also remain public. If cached current items are unavailable, the interface identifies the precise state and exposes a direct public-source recovery action instead of rendering an unexplained zero.
+The frontend reads `public-intel` without authentication. It uses `src/api.js` to attach the current Supabase access token only to custom search, Firecrawl, and AI-summary requests. Static forecast, linked-reference, verified-case, and historical assets also remain public. If cached current items are unavailable, the interface identifies the precise state and exposes a direct public-source recovery action instead of rendering an unexplained zero.
 
 Provider calls have explicit deadlines. Netlify Blobs provides cross-instance persistence for public snapshots, and Netlify CDN caching prevents visitor volume from mapping directly to Serper usage. Authenticated custom-search, Firecrawl, and AI responses remain private and are not placed in the shared CDN cache. Durable cross-instance rate limiting for those authenticated endpoints remains separate work.
 

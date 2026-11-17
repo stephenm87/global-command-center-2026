@@ -1,39 +1,46 @@
-import { mkdtemp, readFile, rm, writeFile } from 'node:fs/promises';
-import { tmpdir } from 'node:os';
-import { basename, join, resolve } from 'node:path';
-import { pathToFileURL } from 'node:url';
+import { readFile, writeFile } from 'node:fs/promises';
+import { join, resolve } from 'node:path';
+import { ALL_CASE_STUDIES_2026 } from '../src/cases/index.mjs';
 
 const projectRoot = resolve(import.meta.dirname, '..');
-const sourceDir = join(projectRoot, 'src');
 const outputPath = join(projectRoot, 'netlify/functions/source-health-targets.json');
-const sourceFiles = [
-    'caseStudies2026.js',
-    'caseStudiesAfricaMena2026.js',
-    'caseStudiesAmericasGlobal2026.js',
-    'caseStudiesAsiaPacific2026.js',
-];
+const contextCardsPath = join(projectRoot, 'public/context-cards/index.html');
 
-async function loadCaseStudies() {
-    const temporaryDir = await mkdtemp(join(tmpdir(), 'gcc-source-manifest-'));
-    try {
-        for (const file of sourceFiles) {
-            const input = await readFile(join(sourceDir, file), 'utf8');
-            const esm = input.replace(
-                /from '(\.\/caseStudies[^']+)'/g,
-                (_, specifier) => `from '${specifier}.mjs'`
-            );
-            await writeFile(join(temporaryDir, basename(file, '.js') + '.mjs'), esm);
+export function extractContextCardTargets(html) {
+    const targets = [];
+    const anchorPattern = /<a\s+[^>]*href="(https?:\/\/[^"]+)"[^>]*>([\s\S]*?)<\/a>/gi;
+    let match;
+    let index = 0;
+    while ((match = anchorPattern.exec(html)) !== null) {
+        const url = match[1].trim();
+        const label = match[2].replace(/<[^>]+>/g, '').replace(/\s+/g, ' ').trim();
+        let publisher = label;
+        try {
+            publisher = new URL(url).hostname.replace(/^www\./, '');
+        } catch {
+            // keep label fallback
         }
-        const module = await import(`${pathToFileURL(join(temporaryDir, 'caseStudies2026.mjs')).href}?v=${Date.now()}`);
-        return module.CASE_STUDIES_2026;
-    } finally {
-        await rm(temporaryDir, { recursive: true, force: true });
+        targets.push({
+            id: `context-cards:citation:${index}`,
+            caseStudyId: 'context-cards',
+            caseStudyTitle: 'Context Cards: Field Agents — Republican China',
+            sourceTitle: label || `Context Card Citation ${index + 1}`,
+            publisher,
+            group: 'static-page',
+            kind: 'primary',
+            lifecycle: 'active',
+            pagePath: '/context-cards/',
+            url,
+        });
+        index += 1;
     }
+    return targets;
 }
 
-export function buildManifest(caseStudies) {
+export function buildManifest(caseStudies, staticPageTargets = []) {
     const targets = [];
     for (const caseStudy of caseStudies) {
+        const lifecycle = caseStudy.status === 'archived' ? 'archived' : 'active';
         const groups = [
             ['core', caseStudy.sources || []],
             ['supplemental', caseStudy.supplementalSources || []],
@@ -49,6 +56,7 @@ export function buildManifest(caseStudies) {
                     publisher: source.publisher,
                     group,
                     kind: 'primary',
+                    lifecycle,
                     url: source.url,
                 });
                 (source.alternateUrls || []).forEach((alternate, alternateIndex) => {
@@ -61,6 +69,7 @@ export function buildManifest(caseStudies) {
                         publisher: source.publisher,
                         group,
                         kind: 'alternate',
+                        lifecycle,
                         primaryUrl: source.url,
                         label: alternate.label,
                         url: alternate.url,
@@ -69,10 +78,22 @@ export function buildManifest(caseStudies) {
             });
         }
     }
-    return { schemaVersion: 1, caseStudyCount: caseStudies.length, targetCount: targets.length, targets };
+    targets.push(...staticPageTargets);
+    return {
+        schemaVersion: 1,
+        caseStudyCount: caseStudies.length,
+        staticPageCount: staticPageTargets.length > 0 ? 1 : 0,
+        targetCount: targets.length,
+        targets,
+    };
 }
 
-const manifest = buildManifest(await loadCaseStudies());
+const contextCardsHtml = await readFile(contextCardsPath, 'utf8');
+const contextCardTargets = extractContextCardTargets(contextCardsHtml);
+if (contextCardTargets.length === 0) {
+    throw new Error('Expected outbound citation links in public/context-cards/index.html.');
+}
+const manifest = buildManifest(ALL_CASE_STUDIES_2026, contextCardTargets);
 const serialized = `${JSON.stringify(manifest, null, 2)}\n`;
 if (process.argv.includes('--check')) {
     const current = await readFile(outputPath, 'utf8').catch(() => '');

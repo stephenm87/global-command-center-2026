@@ -2,24 +2,44 @@
 
 ## Purpose and current scope
 
-The case-study library is an educational editorial product, not a live intelligence service. It currently contains 29 cases: nine original records and 20 additions. Every case is available as a Guided Briefing, as an Editorial Cases globe item, and as evidence-linked context for the Relations Nexus.
+The case-study library is an educational editorial product, not a live intelligence service. Active regional modules live under `src/cases/active/*.mjs` (`29` baseline active cases across `7` canonical regions) and retired historical snapshots live under `src/cases/archive/archived-2026.mjs`, re-exported through `src/caseStudies2026.js`. Every active case is available as a Guided Briefing, as an Editorial Cases globe item, and as evidence-linked context for the Relations Nexus.
 
-This standard applies whenever a case is added, materially revised, or reviewed.
+This standard applies whenever a case is added, materially revised, reviewed, or archived.
 
 ## Required case record
 
 Each case must provide:
 
-- A stable `id`, `title`, `subtitle`, `coverageRegion`, `regionTags`, `broadCategory`, and `issueDimensions`.
-- Named `actors` and valid `nexusNodeIds` that exist in `NEXUS_ACTORS`.
-- An attributed `statusSummary`, an analytical `whyItMatters`, an ISO `updatedAt` date, `confidence`, and explicit `uncertainty`.
-- A normalized `sensitivity` level (`standard` or `high`) and an editorial caution explaining representation, terminology, privacy, safety, or attribution risks. For compatibility, the normalizer currently converts a prose `sensitivity` value into `editorialCaution` and derives the level from review cadence; new edits should prefer an explicit level plus `editorialCaution`.
-- A deliberate `featured` value; this is a presentation choice, not a quality or importance ranking.
-- `reviewCadenceDays` and an ISO `reviewBy` date.
-- A `map` object with a supported `mode` and at least one valid location.
+- A permanent kebab-case `id`, lifecycle `status` (`'active'` or `'archived'`), `title`, `subtitle`, canonical `coverageRegion`, `regionTags`, `issueLens`, `broadCategory`, and `issueDimensions`.
+- Named `actors` and valid `nexusNodeIds` (`2–4` distinct IDs that exist in `NEXUS_ACTORS`).
+- An attributed `statusSummary`, an analytical `whyItMatters`, an ISO `updatedAt` date, `confidence` (`'high'` or `'medium'`), and explicit `uncertainty`.
+- An explicit `sensitivity` level (`'standard'` or `'high'`) and `editorialCaution` explaining representation, terminology, privacy, safety, or attribution risks.
+- A deliberate boolean `featured` value; this is a curatorial presentation choice, not a quality or importance ranking.
+- `reviewCadenceDays` and an explicit ISO `reviewBy` date (`reviewBy === addDays(updatedAt, reviewCadenceDays)`).
+- A `map` object with a supported `mode` (`'point'`, `'route'`, `'regional'`, or `'global'`) and at least one valid location.
 - Exactly three core `sources` and four or five Guided Briefing `waypoints`.
 
-The normalizer retains legacy `coordinates` as a point-map fallback, but new or substantially revised cases should author `map` explicitly.
+### Canonical 7-Region & 6-Lens Taxonomy (Option A)
+
+Every case uses one of the **7 canonical `coverageRegion` values**:
+- `'Africa'`
+- `'Asia-Pacific'`
+- `'Middle East & North Africa'`
+- `'Europe & Eurasia'` *(including Arctic cases, which retain `'Arctic'` in `regionTags`)*
+- `'Americas & Caribbean'` *(North America, Central America, South America, and the Caribbean)*
+- `'Pacific Islands'`
+- `'Global / Transnational'`
+
+Every case declares both `issueLens` and its corresponding **6-value `broadCategory`** (unified with the Intelligence Feed under Option A):
+
+| `issueLens` (6 Editorial Lenses) | `broadCategory` (`Broad_Category` across Feed, Briefings & Globe) |
+|---|---|
+| `'Security & Diplomacy'` | `'Geopolitics & Conflict'` |
+| `'Governance & Rights'` | `'Governance & Rights'` |
+| `'Economy & Development'` | `'Economy & Trade'` |
+| `'Climate & Resources'` | `'Environment & Energy'` |
+| `'Technology & Information'` | `'Technology & Science'` |
+| `'Health & Human Security'` | `'Health & Society'` |
 
 ## Three-perspective core reading set
 
@@ -51,7 +71,7 @@ Perspective labels describe source position, not neutrality or reliability. A re
 
 Each case uses four or five waypoints. Every waypoint must contain:
 
-- A valid `nodeId` from `NEXUS_ACTORS`.
+- A valid `nodeId` from `NEXUS_ACTORS` (which must also appear in `nexusNodeIds`).
 - `title`, `perspectiveLabel`, `perspectiveType`, `narration`, and `focusQuestion`.
 - Narration traceable to the core readings and a question framed for analysis rather than prediction.
 
@@ -68,6 +88,13 @@ Use the smallest map scope that accurately represents the case:
 
 Each `map.locations` entry requires a `label`, finite `latitude` and `longitude`, and should include a short `role`. A marker indicates relevance to the briefing; it does not assert that the entire issue occurs at that coordinate. Never force a global ocean, climate, health, digital, or treaty case into a misleading single pin.
 
+## Lifecycle & non-destructive archival (`status: 'active' | 'archived'`)
+
+Because teachers embed `?view=briefings&tour=<case-id>&step=<n>` URLs into syllabi and LMS assignments, superseded or concluded cases must **never** be deleted:
+
+1. Move the record from `src/cases/active/<region>.mjs` to `src/cases/archive/archived-2026.mjs` with `status: 'archived'`, ISO `archivedAt`, `archivedReason`, and optional `supersededById`.
+2. Active browse surfaces (Globe Editorial Cases, Intel Feed curated cards, Focus Nexus active counts, and the default Guided Briefings catalog) consume `CASE_STUDIES_2026` (`status === 'active'`), while Guided Briefings deep links and the opt-in archive toggle resolve against `ALL_CASE_STUDIES_2026` (`active + archived`) and display an **Archived Historical Snapshot** banner instead of an overdue alert.
+
 ## Review workflow
 
 Before adding or renewing a case:
@@ -76,19 +103,45 @@ Before adding or renewing a case:
 2. Open all three core URLs and confirm the title, publisher, date, HTTPS destination, and claims listed in `supports`.
 3. Check for newer local, institutional, and independent evidence, not merely a newer institutional announcement.
 4. Re-read the status, uncertainty, sensitivity, map roles, and every waypoint narration for overstatement or changed conditions.
-5. Set `updatedAt` to the date through which the status was substantively checked, select a risk-appropriate `reviewCadenceDays`, and set `reviewBy` explicitly.
-6. Run the content-integrity tests, application tests, production build, and a browser pass through Briefings, the Editorial Cases globe layer, and the linked Nexus actor.
+5. Set `updatedAt` to the date through which the status was substantively checked, select a risk-appropriate `reviewCadenceDays`, and set `reviewBy = addDays(updatedAt, reviewCadenceDays)` explicitly.
+6. Run `npm run content:staleness`, `npm test`, `npm run build`, and a browser pass through Briefings, the Editorial Cases globe layer, and the linked Nexus actor.
 
-Shorter review cadences are appropriate for active conflict, elections, emergencies, negotiations, and volatile operational data. Longer cadences may suit settled legal texts or slower institutional implementation, but no cadence replaces editorial judgment.
+## Discovery behavior & link health
 
-## Discovery behavior
+Guided Briefings search indexes case titles, subtitles, region tags, issue dimensions, actors, and source publishers and titles. Region filtering uses `coverageRegion`; issue filtering uses `broadCategory` (the 6-category taxonomy). The globe's **Editorial Cases** toggle controls the separate curated layer and may render more than one marker for a regional or global case.
 
-Guided Briefings search indexes case titles, subtitles, region tags, issue dimensions, and source publishers and titles. Region filtering uses `coverageRegion`; issue filtering uses `broadCategory`. The globe's **Editorial Cases** toggle controls the separate curated layer and may render more than one marker for a regional or global case.
+The application performs a daily reachability check (`refresh-source-health` -> `refresh-source-health-background` when `CRON_SECRET` is configured, with a `36h` staleness safety fallback to the inline `24s` bounded check) for active core, supplemental, and alternate URLs. Archived snapshots (`status: 'archived'`) are excluded from daily link probing so their historical record stays frozen and live link-health badges are omitted; editors should attach durable institutional or repository `alternateUrls` before archiving. Sources and supplemental sources may declare `alternateUrls: [{ label, url }]` pointing to legitimate publisher, institutional, repository, or PDF mirrors. Run `npm run content:staleness` (or `--strict` in scheduled CI) to inspect overdue and upcoming `reviewBy` dates.
 
-## Link health and current operational limitation
+## 29-Case Baseline Mapping (`7 Regions × 6 Issue Lenses`)
 
-The application performs a daily reachability check for every core, supplemental, and alternate URL. Results distinguish a reachable link from a publisher restriction, a confirmed 404/410, or an uncertain network response. These checks do not verify the article's claims, detect substantive revisions, or prove that a publisher page works from every visitor network.
-
-Sources may declare `alternateUrls: [{ label, url }]`. Alternates must be legitimate publisher, author, institutional, repository, or document mirrors—not mechanisms for bypassing access controls. The interface recommends an alternate when the primary is reported as restricted or broken.
-
-The application still does not assign named editorial owners, create review tasks, or alert on approaching and overdue review dates. Editors must therefore maintain the substantive review queue externally and treat every case as a dated snapshot even when all links are healthy.
+| # | Case `id` | Module (`src/cases/active/`) | `coverageRegion` | `issueLens` | `broadCategory` |
+|---:|---|---|---|---|---|
+| 1 | `sudan-displacement-regional-spillover` | `africa-2026.mjs` | `Africa` | `Health & Human Security` | `Health & Society` |
+| 2 | `myanmar-fragmented-sovereignty` | `asia-pacific-2026.mjs` | `Asia-Pacific` | `Health & Human Security` | `Health & Society` |
+| 3 | `south-china-sea-arbitral-award-ten-years` | `asia-pacific-2026.mjs` | `Asia-Pacific` | `Security & Diplomacy` | `Geopolitics & Conflict` |
+| 4 | `syria-transition-return-sanctions` | `mena-2026.mjs` | `Middle East & North Africa` | `Governance & Rights` | `Governance & Rights` |
+| 5 | `guyana-venezuela-essequibo-icj` | `americas-caribbean-2026.mjs` | `Americas & Caribbean` | `Security & Diplomacy` | `Geopolitics & Conflict` |
+| 6 | `usmca-2026-joint-review` | `americas-caribbean-2026.mjs` | `Americas & Caribbean` | `Economy & Development` | `Economy & Trade` |
+| 7 | `tuvalu-australia-falepili-union` | `pacific-islands-2026.mjs` | `Pacific Islands` | `Climate & Resources` | `Environment & Energy` |
+| 8 | `greenland-autonomy-security-minerals` | `europe-eurasia-2026.mjs` | `Europe & Eurasia` | `Climate & Resources` | `Environment & Energy` |
+| 9 | `eu-ai-act-transparency-implementation` | `europe-eurasia-2026.mjs` | `Europe & Eurasia` | `Technology & Information` | `Technology & Science` |
+| 10 | `eastern-drc-peace-civilian-protection` | `africa-2026.mjs` | `Africa` | `Security & Diplomacy` | `Geopolitics & Conflict` |
+| 11 | `sahel-after-ecowas-regional-order` | `africa-2026.mjs` | `Africa` | `Security & Diplomacy` | `Geopolitics & Conflict` |
+| 12 | `somaliland-recognition-red-sea-order` | `africa-2026.mjs` | `Africa` | `Security & Diplomacy` | `Geopolitics & Conflict` |
+| 13 | `zambia-electricity-reset-climate-access` | `africa-2026.mjs` | `Africa` | `Climate & Resources` | `Environment & Energy` |
+| 14 | `western-sahara-autonomy-self-determination` | `mena-2026.mjs` | `Middle East & North Africa` | `Security & Diplomacy` | `Geopolitics & Conflict` |
+| 15 | `libya-roadmap-elections-oil-assets` | `mena-2026.mjs` | `Middle East & North Africa` | `Governance & Rights` | `Governance & Rights` |
+| 16 | `red-sea-yemen-humanitarian-economy` | `mena-2026.mjs` | `Middle East & North Africa` | `Security & Diplomacy` | `Geopolitics & Conflict` |
+| 17 | `indus-water-regime-under-strain` | `asia-pacific-2026.mjs` | `Asia-Pacific` | `Security & Diplomacy` | `Geopolitics & Conflict` |
+| 18 | `bangladesh-ldc-graduation-decision` | `asia-pacific-2026.mjs` | `Asia-Pacific` | `Economy & Development` | `Economy & Trade` |
+| 19 | `kyrgyzstan-tajikistan-border-peace` | `asia-pacific-2026.mjs` | `Asia-Pacific` | `Security & Diplomacy` | `Geopolitics & Conflict` |
+| 20 | `mongolia-coal-critical-minerals-transition` | `asia-pacific-2026.mjs` | `Asia-Pacific` | `Climate & Resources` | `Environment & Energy` |
+| 21 | `indonesia-nickel-development-bargain` | `asia-pacific-2026.mjs` | `Asia-Pacific` | `Economy & Development` | `Economy & Trade` |
+| 22 | `mekong-energy-food-bargain` | `asia-pacific-2026.mjs` | `Asia-Pacific` | `Climate & Resources` | `Environment & Energy` |
+| 23 | `pacific-seabed-governance` | `pacific-islands-2026.mjs` | `Pacific Islands` | `Climate & Resources` | `Environment & Energy` |
+| 24 | `haiti-security-legitimacy-haitian-ownership` | `americas-caribbean-2026.mjs` | `Americas & Caribbean` | `Governance & Rights` | `Governance & Rights` |
+| 25 | `amazon-indigenous-co-governance` | `americas-caribbean-2026.mjs` | `Americas & Caribbean` | `Governance & Rights` | `Governance & Rights` |
+| 26 | `rio-bravo-rio-grande-water-treaty` | `americas-caribbean-2026.mjs` | `Americas & Caribbean` | `Climate & Resources` | `Environment & Energy` |
+| 27 | `moldova-transnistria-energy-eu-accession` | `europe-eurasia-2026.mjs` | `Europe & Eurasia` | `Climate & Resources` | `Environment & Energy` |
+| 28 | `high-seas-bbnj-implementation` | `global-institutions-2026.mjs` | `Global / Transnational` | `Climate & Resources` | `Environment & Energy` |
+| 29 | `who-pathogen-access-benefit-sharing` | `global-institutions-2026.mjs` | `Global / Transnational` | `Health & Human Security` | `Health & Society` |

@@ -1,175 +1,47 @@
 import { useState, useEffect, useRef, useMemo, useCallback } from 'react';
 import ForceGraph3D from 'react-force-graph-3d';
 import * as THREE from 'three';
-import { getGlobalChallenges, CHALLENGE_ICONS } from './eventAnalysis';
 import './GlobalRelationsNexus.css';
 import * as NexusAudio from './nexusAudio';
-import { getEdgeInfo, getEdgeLabel } from './nexusEdgeData';
-import { generateNodeNarrative, generateEdgeNarrative } from './nexusNarrative';
 import { fetchGlobalPulse } from './nexusGDELT';
 import { reheatGraphWhenReady } from './graphReadiness.mjs';
 import { readStoredJson, writeStoredJson } from './localState.mjs';
-
-// ── Primary Geopolitical Anchors ──────────────────────────────────────────────
-const PRIMARY_ANCHORS = {
-    USA:          { id: 'USA',          name: 'United States',                          type: 'state',    color: '#3399ff', size: 14 },
-    China:        { id: 'China',        name: 'China',                                  type: 'state',    color: '#ff4d4d', size: 14 },
-    Russia:       { id: 'Russia',       name: 'Russia',                                 type: 'state',    color: '#8d6e63', size: 11 },
-    Europe:       { id: 'Europe',       name: 'European Union & UK',                    type: 'bloc',     color: '#00ccff', size: 12 },
-    MiddleEast:   { id: 'MiddleEast',   name: 'Middle East Hub',                        type: 'bloc',     color: '#ff9900', size: 10 },
-    Africa:       { id: 'Africa',       name: 'African Union Zone',                     type: 'bloc',     color: '#66ff00', size: 8  },
-    AsiaPacific:  { id: 'AsiaPacific',  name: 'Asia-Pacific Core',                      type: 'bloc',     color: '#ff00ff', size: 9  },
-    LatinAmerica: { id: 'LatinAmerica', name: 'Latin America Triangle',                 type: 'bloc',     color: '#ffcc00', size: 8  },
-    NATO:         { id: 'NATO',         name: 'NATO Alliance',                          type: 'igo',      color: '#3f51b5', size: 11 },
-    UN_OPEC:      { id: 'UN_OPEC',      name: 'Global Institutions (UN/OPEC/WTO)',      type: 'igo',      color: '#e0f7fa', size: 12 },
-    BiotechHub:   { id: 'BiotechHub',   name: 'Global Pharma MNCs (Lilly/Novo/Amgen)',  type: 'mnc',      color: '#00ff88', size: 12 },
-    TechAIHub:    { id: 'TechAIHub',    name: 'Tech & Silicon MNCs (Nvidia/TSMC/ASML)', type: 'mnc',      color: '#00ffff', size: 12 },
-    MilitantPMC:  { id: 'MilitantPMC',  name: 'PMCs & Militias (Wagner/RSF)',             type: 'nonstate', color: '#ff3d00', size: 10 },
-    Jihadist:     { id: 'Jihadist',     name: 'Jihadist Networks (ISIS/AQ/Boko Haram)',    type: 'nonstate', color: '#cc0000', size: 9  },
-    Cartels:      { id: 'Cartels',      name: 'Transnational Cartels (Sinaloa/CJNG)',      type: 'nonstate', color: '#ff6f00', size: 8  },
-    CyberActors:  { id: 'CyberActors',  name: 'State-Backed Cyber Groups (APT28/Lazarus)', type: 'nonstate', color: '#9c27b0', size: 8  },
-    Hezbollah:    { id: 'Hezbollah',    name: 'Hezbollah / Iran Proxies (Houthis)',        type: 'nonstate', color: '#d50000', size: 8  },
-};
-
-const ANCHOR_DESCS = {
-    USA:          'Global maritime superpower; focus on relative power containment, high-tech supply chains, and liberal institutional alliances.',
-    China:        'East Asian economic powerhouse; focused on infrastructure diplomacy (BRI), trade connectivity, and raw mineral acquisition.',
-    Russia:       'Eurasian revisionist power; leverages energy resources, cyber-warfare capabilities, and private military networks.',
-    Europe:       'Regulatory and economic bloc; emphasizes multilateral treaties, trade integration, and green transition.',
-    MiddleEast:   'Energy corridor and diplomatic hub; balances multi-aligned ties with USA, China, and regional security concerns.',
-    Africa:       'Demographic frontier; regional resource development, gold corridors, and infrastructure investments.',
-    AsiaPacific:  'Indo-Pacific technology and security zone; crucial for global semiconductor fabrication and trade flows.',
-    LatinAmerica: 'Emerging lithium and agricultural corridor; balances trade diplomacy between Western and Eastern powerhouses.',
-    NATO:         'North Atlantic military alliance; coordinates collective security, deterrence, and high-intensity defense posture.',
-    UN_OPEC:      'Multilateral system managing international law, global energy supply controls, and trade dispute arbitrations.',
-    BiotechHub:   'Transnational pharmaceutical giants dictating global metabolic healthcare pipelines and pharmaceutical distribution networks.',
-    TechAIHub:    'Strategic high-tech corporate entities controlling semiconductor foundries, advanced photolithography, and AI hardware platforms.',
-    MilitantPMC:  'Private military contractors and paramilitary forces: Wagner Group in Africa/Syria, Sudan RSF, Sahel juntas — state-adjacent but deniable.',
-    Jihadist:     'Transnational jihadist networks: ISIS remnants in Syria/Sahel, Al-Qaeda affiliates (JNIM, Al-Shabaab), Boko Haram in Lake Chad Basin.',
-    Cartels:      'Mexican and Latin American drug cartels controlling fentanyl/cocaine supply chains: Sinaloa Cartel, CJNG — destabilizing states from Colombia to the US border.',
-    CyberActors:  'State-sponsored cyber warfare groups: Russia\'s APT28/Sandworm, China\'s APT41, North Korea\'s Lazarus Group, Iran\'s Charming Kitten — operating in the grey zone.',
-    Hezbollah:    'Iran\'s proxy network: Hezbollah in Lebanon, Houthis in Yemen, PMF in Iraq — the "Axis of Resistance" reshaping Middle East power dynamics.',
-};
-
-const ACTOR_TYPE_LABELS = {
-    state:    'NATION-STATE (SOVEREIGN)',
-    bloc:     'REGIONAL BLOCK / ALLIANCE',
-    igo:      'INTERGOVERNMENTAL ORGANIZATION (IGO)',
-    mnc:      'MULTINATIONAL CORPORATION (MNC)',
-    nonstate: 'ASYMMETRIC NON-STATE ACTOR / PMC',
-};
-
-const DIM_COLORS = {
-    trade:     '#00ccff',
-    conflict:  '#ff0066',
-    diplomacy: '#00ff88',
-    tech:      '#bf55ec',
-};
-
-const GPC_NODE_MAP = {
-    security:    ['USA','China','Russia','NATO','MiddleEast','Jihadist','Hezbollah','PMCs','CyberActors'],
-    borders:     ['Europe','MiddleEast','Africa','LatinAmerica','USA','Cartels'],
-    identity:    ['MiddleEast','Europe','Russia','Africa','LatinAmerica','Jihadist'],
-    technology:  ['USA','China','TechAIHub','CyberActors','Europe','AsiaPacific'],
-    environment: ['China','USA','Europe','Africa','AsiaPacific','MiddleEast','GlobalInstitutions'],
-    health:      ['GlobalInstitutions','Africa','LatinAmerica','AsiaPacific','GlobalPharmaMNCs'],
-    poverty:     ['Africa','LatinAmerica','AsiaPacific','MiddleEast','GlobalInstitutions'],
-    equality:    ['GlobalInstitutions','Europe','Africa','LatinAmerica','USA'],
-};
-
-const GPC_CONTEXT = {
-    security: {
-        USA: { insight: 'Global military hegemon with 750+ overseas bases. NATO anchor, AUKUS, Quad alliances.', stakes: 'HIGH', connections: ['NATO','China','Russia','MiddleEast'] },
-        China: { insight: 'Rapid military modernization, South China Sea island-building, Taiwan contingency.', stakes: 'CRITICAL', connections: ['USA','AsiaPacific','Russia'] },
-        Russia: { insight: 'Nuclear arsenal, Wagner Group proxy operations, Arctic militarization.', stakes: 'CRITICAL', connections: ['NATO','USA','MiddleEast','Europe','PMCs'] },
-        NATO: { insight: 'Post-Ukraine expansion (Finland, Sweden). Eastern flank reinforcement.', stakes: 'HIGH', connections: ['USA','Europe','Russia'] },
-        Europe: { insight: 'Re-arming post-Ukraine. Franco-German defense integration challenges.', stakes: 'MEDIUM', connections: ['NATO','Russia','MiddleEast'] },
-        MiddleEast: { insight: 'Iran nuclear threshold, Israel-Gaza, Saudi-Iran detente fragility.', stakes: 'CRITICAL', connections: ['USA','Russia','Hezbollah','Jihadist'] },
-    },
-    borders: {
-        USA: { insight: 'US-Mexico border crisis: 2.5M encounters/yr. Fentanyl trafficking, asylum policy.', stakes: 'CRITICAL', connections: ['LatinAmerica','Cartels','MiddleEast'] },
-        Europe: { insight: 'Mediterranean migration, Belarus hybrid warfare, Schengen stress-testing.', stakes: 'HIGH', connections: ['Africa','MiddleEast','LatinAmerica'] },
-        MiddleEast: { insight: 'Syrian refugee crisis, Iraqi displacement, Kurdish territorial disputes.', stakes: 'HIGH', connections: ['Europe','Africa','USA'] },
-        Africa: { insight: 'Sahel instability, Lake Chad basin displacement, Libya transit corridor.', stakes: 'CRITICAL', connections: ['Europe','MiddleEast','LatinAmerica'] },
-        LatinAmerica: { insight: 'Venezuelan exodus (7M+), Darien Gap corridor, Northern Triangle push factors.', stakes: 'CRITICAL', connections: ['USA','Cartels','Africa'] },
-        Cartels: { insight: 'Sinaloa/CJNG control migration corridors, human smuggling revenue $13B/yr.', stakes: 'CRITICAL', connections: ['USA','LatinAmerica','MiddleEast'] },
-    },
-    technology: {
-        USA: { insight: 'AI/chip dominance via Nvidia, TSMC leverage. CHIPS Act $52B reshoring.', stakes: 'CRITICAL', connections: ['China','TechAIHub','Europe'] },
-        China: { insight: 'Self-sufficiency drive post-sanctions. Huawei breakthrough chips, DeepSeek AI.', stakes: 'CRITICAL', connections: ['USA','TechAIHub','AsiaPacific'] },
-        TechAIHub: { insight: 'Big Tech ($3T+ market cap) as geopolitical actors. AI safety governance gap.', stakes: 'HIGH', connections: ['USA','China','Europe'] },
-        Europe: { insight: 'EU AI Act regulatory leadership. Digital sovereignty vs US tech dependence.', stakes: 'MEDIUM', connections: ['USA','China','TechAIHub'] },
-        CyberActors: { insight: 'State-backed APTs (Fancy Bear, Lazarus). Ransomware-as-a-service economy.', stakes: 'CRITICAL', connections: ['USA','China','Russia'] },
-    },
-    identity: {
-        Europe: { insight: 'Far-right surge, anti-immigration populism, EU values vs sovereignty debate.', stakes: 'HIGH', connections: ['MiddleEast','Africa','Russia'] },
-        MiddleEast: { insight: 'Sunni-Shia divide, pan-Arabism decline, Gulf modernization vs tradition.', stakes: 'CRITICAL', connections: ['Jihadist','Europe','Africa'] },
-        Russia: { insight: 'Civilizational state narrative, Orthodox identity politics, anti-Western ideology.', stakes: 'HIGH', connections: ['Europe','MiddleEast','USA'] },
-        Africa: { insight: 'Post-colonial identity reclamation, ethnic federalism tensions, youth bulge.', stakes: 'HIGH', connections: ['Europe','MiddleEast','LatinAmerica'] },
-    },
-    environment: {
-        China: { insight: 'Largest emitter (31% global CO2) but also largest renewable investor.', stakes: 'CRITICAL', connections: ['USA','Europe','Africa'] },
-        USA: { insight: 'IRA $369B green investment vs fossil fuel lobbying. Paris re-engagement fragile.', stakes: 'HIGH', connections: ['China','Europe','MiddleEast'] },
-        Europe: { insight: 'Green Deal leader, carbon border tax (CBAM), energy transition post-Russia gas.', stakes: 'HIGH', connections: ['China','USA','MiddleEast'] },
-        Africa: { insight: 'Climate vulnerability disproportionate. Critical minerals for green transition.', stakes: 'CRITICAL', connections: ['China','Europe','USA'] },
-        MiddleEast: { insight: 'Petro-state transition pressure. UAE/Saudi Vision diversification.', stakes: 'HIGH', connections: ['China','Europe','USA'] },
-    },
-    health: {
-        GlobalInstitutions: { insight: 'WHO pandemic preparedness reform. Vaccine equity gaps persist.', stakes: 'HIGH', connections: ['Africa','AsiaPacific','GlobalPharmaMNCs'] },
-        Africa: { insight: 'Lowest vaccine coverage globally. Disease surveillance infrastructure gaps.', stakes: 'CRITICAL', connections: ['GlobalInstitutions','GlobalPharmaMNCs','China'] },
-        GlobalPharmaMNCs: { insight: 'mRNA platform potential vs IP barriers. $1.5T global pharma market.', stakes: 'HIGH', connections: ['GlobalInstitutions','USA','Africa'] },
-    },
-    poverty: {
-        Africa: { insight: '60% of extreme poor by 2030. Debt distress in 22 countries.', stakes: 'CRITICAL', connections: ['GlobalInstitutions','China','Europe'] },
-        LatinAmerica: { insight: 'Inequality highest region globally. Informal economy 50%+ workforce.', stakes: 'HIGH', connections: ['USA','GlobalInstitutions','China'] },
-        AsiaPacific: { insight: 'Dramatic poverty reduction but 350M+ still in extreme poverty.', stakes: 'MEDIUM', connections: ['China','GlobalInstitutions','USA'] },
-    },
-    equality: {
-        GlobalInstitutions: { insight: 'SDG5 gender equality stalled. LGBTQ+ rights divergence globally.', stakes: 'HIGH', connections: ['Europe','Africa','USA'] },
-        Europe: { insight: 'Gender pay gap narrowing. Anti-discrimination framework strongest globally.', stakes: 'MEDIUM', connections: ['GlobalInstitutions','USA','Africa'] },
-        Africa: { insight: 'Child marriage, FGM prevalence. Women in parliament rising (Rwanda 61%).', stakes: 'HIGH', connections: ['GlobalInstitutions','Europe','LatinAmerica'] },
-    },
-};
-
-// ── Assign a forecast to a primary anchor ─────────────────────────────────────
-const assignPrimaryAnchor = (forecast) => {
-    const allText = [
-        forecast['Key Player/Organization'],
-        forecast['Entity/Subject'],
-        forecast['Topic/Sector'],
-        forecast.Broad_Category,
-    ].join(' ').toLowerCase();
-
-    if (/wagner|rsf|paramilitary|militia|mercenary|pmc/.test(allText)) return 'MilitantPMC';
-    if (/isis|isil|islamic.state|al.qaeda|boko.haram|jihadist|al.shabaab|jnim|aqim/.test(allText)) return 'Jihadist';
-    if (/cartel|sinaloa|cjng|fentanyl|narco|drug.trafficking|el.chapo/.test(allText)) return 'Cartels';
-    if (/cyber|apt28|apt41|lazarus|sandworm|hack|ransomware|charming.kitten/.test(allText)) return 'CyberActors';
-    if (/hezbollah|houthi|axis.of.resistance|iran.proxy|pmf|popular.mobilization/.test(allText)) return 'Hezbollah';
-    if (/insurgent|rebel|terrorist|guerrilla/.test(allText)) return 'MilitantPMC';
-    if (/\bnato\b|north atlantic treaty/.test(allText)) return 'NATO';
-    if (/united nations|\bun\b|\bopec\b|\bwto\b|\bwho\b|world health|world bank|\bimf\b|multilateral/.test(allText)) return 'UN_OPEC';
-    if (/novo nordisk|wegovy|semaglutide|eli lilly|amgen|retatrutide|cagrisema|maritide|bimagrumab|pharma|pharmaceuticals/.test(allText)) return 'BiotechHub';
-    if (/semiconductor|asml|nvidia|\bai\b|tsmc|microchip|quantum computing|technology/.test(allText)) return 'TechAIHub';
-    if (/trump|america|united states|\bus\b/.test(allText)) return 'USA';
-    if (/china|chinese|beijing/.test(allText)) return 'China';
-    if (/russia|russian|moscow|putin/.test(allText)) return 'Russia';
-    if (/\beu\b|european|\buk\b|britain|germany|france/.test(allText)) return 'Europe';
-    if (/sudan|egypt|africa|african/.test(allText)) return 'Africa';
-    if (/saudi|\buae\b|middle east|iran/.test(allText)) return 'MiddleEast';
-    if (/brazil|latin|mexico|south america/.test(allText)) return 'LatinAmerica';
-    if (/japan|india|korea|australia|pacific/.test(allText)) return 'AsiaPacific';
-    return 'USA';
-};
-
-// ── Helper: safe link id accessors ────────────────────────────────────────────
-const linkId = (end) => (typeof end === 'object' && end !== null) ? (end.id || '') : (end || '');
+import { resolveActorId } from './nexus/actorIds';
+import {
+    PRIMARY_ANCHORS,
+    ANCHOR_DESCS,
+    ACTOR_TYPE_LABELS,
+    DIM_COLORS,
+    GPC_NODE_MAP,
+    assignPrimaryAnchor,
+    linkId,
+    computeCameraFocusPosition,
+    stepNeighborIndex,
+    createAxisForce,
+} from './nexus/nexusData';
+import {
+    disposeThreeHierarchy,
+    createTextSprite,
+    createNexusNodeObject,
+    formatNexusNodeTooltip,
+    formatNexusLinkTooltip,
+} from './nexus/threeSpriteHelpers';
+import NexusHudControls from './nexus/NexusHudControls';
+import NexusInspectorPanel from './nexus/NexusInspectorPanel';
 
 // ══════════════════════════════════════════════════════════════════════════════
 
 
 
 export default function GlobalRelationsNexus({ forecasts, selectedTheory, theories, onTheorySelect, initialNodeId, onActorSelect }) {
-    const fgRef = useRef();
+    const fgRef = useRef(null);
+    const lastGraphInstanceRef = useRef(null);
+    const attachGraphRef = useCallback((instance) => {
+        fgRef.current = instance;
+        if (instance) {
+            lastGraphInstanceRef.current = instance;
+        }
+    }, []);
     const nexusRootRef = useRef(null);
     const [initialPreferences] = useState(() => readStoredJson('gcc-nexus-preferences', {}));
     // react-force-graph schedules its internal layout asynchronously. Calling
@@ -181,8 +53,9 @@ export default function GlobalRelationsNexus({ forecasts, selectedTheory, theori
     const [selectedGPC, setSelectedGPC]             = useState(initialPreferences.selectedGPC || null);
     const [physicsPreset, setPhysicsPreset]          = useState(['balance', 'friction', 'core'].includes(initialPreferences.physicsPreset) ? initialPreferences.physicsPreset : 'balance');
     const [selectedNode, setSelectedNode]            = useState(() => {
-        const anchor = PRIMARY_ANCHORS[initialNodeId];
-        return anchor ? { ...anchor, isAnchor: true, desc: ANCHOR_DESCS[initialNodeId], category: ACTOR_TYPE_LABELS[anchor.type] || '' } : null;
+        const canonicalId = resolveActorId(initialNodeId, null);
+        const anchor = canonicalId ? PRIMARY_ANCHORS[canonicalId] : null;
+        return anchor ? { ...anchor, isAnchor: true, desc: ANCHOR_DESCS[canonicalId], category: ACTOR_TYPE_LABELS[anchor.type] || '' } : null;
     });
     const [lockedNode, setLockedNode]                = useState(null);
     const [hoveredNode, setHoveredNode]              = useState(null);
@@ -190,8 +63,6 @@ export default function GlobalRelationsNexus({ forecasts, selectedTheory, theori
     // Search
     const [searchOpen, setSearchOpen]                = useState(false);
     const [searchQuery, setSearchQuery]              = useState('');
-    // Case Study Presets
-    const [activeCaseStudy, setActiveCaseStudy]      = useState(null);
     // Live Data Pulse
     const [pulseSignals, setPulseSignals]             = useState([]);
     // Comparative Mode
@@ -202,8 +73,6 @@ export default function GlobalRelationsNexus({ forecasts, selectedTheory, theori
     const [audioMuted, setAudioMuted]                = useState(initialPreferences.audioMuted === true);
     const [audioVolume, setAudioVolume]              = useState(typeof initialPreferences.audioVolume === 'number' ? initialPreferences.audioVolume : 0.3);
     const [ambientOn, setAmbientOn]                = useState(false);
-    // Mini-map
-    const miniMapRef = useRef(null);
     // 2D mode
     const [is2D, setIs2D] = useState(initialPreferences.is2D === true);
     // Tabbed HUD
@@ -212,20 +81,19 @@ export default function GlobalRelationsNexus({ forecasts, selectedTheory, theori
     const [showSatellites, setShowSatellites] = useState(initialPreferences.showSatellites === true);
     const [intensityThreshold, setIntensityThreshold] = useState(typeof initialPreferences.intensityThreshold === 'number' ? initialPreferences.intensityThreshold : 0);
     const [introComplete, setIntroComplete] = useState(false);
-    // Context menu
-    const [contextMenu, setContextMenu] = useState(null);
-    // Double-click tracking
+    // Double-click & neighbor-cycle tracking
     const lastClickRef = useRef({ nodeId: null, time: 0 });
+    const prevTheoryRef = useRef(selectedTheory);
+    const cycleStateRef = useRef({ hubNode: null, cursorIndex: -1 });
     const [dimensions, setDimensions] = useState({ trade: true, conflict: true, diplomacy: true, tech: true, ...(initialPreferences.dimensions || {}) });
-    const [expandedAnchors, setExpandedAnchors] = useState({
-        USA: false, China: false, Russia: false, Europe: false,
-        MiddleEast: false, Africa: false, AsiaPacific: false, LatinAmerica: false,
-        NATO: false, UN_OPEC: false, BiotechHub: false, TechAIHub: false, MilitantPMC: false, Jihadist: false, Cartels: false, CyberActors: false, Hezbollah: false,
-    });
+    const [expandedAnchors, setExpandedAnchors] = useState(() => (
+        Object.fromEntries(Object.keys(PRIMARY_ANCHORS).map(id => [id, false]))
+    ));
 
     useEffect(() => {
-        const anchor = PRIMARY_ANCHORS[initialNodeId];
-        if (anchor) setSelectedNode({ ...anchor, isAnchor: true, desc: ANCHOR_DESCS[initialNodeId], category: ACTOR_TYPE_LABELS[anchor.type] || '' });
+        const canonicalId = resolveActorId(initialNodeId, null);
+        const anchor = canonicalId ? PRIMARY_ANCHORS[canonicalId] : null;
+        if (anchor) setSelectedNode({ ...anchor, isAnchor: true, desc: ANCHOR_DESCS[canonicalId], category: ACTOR_TYPE_LABELS[anchor.type] || '' });
     }, [initialNodeId]);
 
     useEffect(() => {
@@ -256,6 +124,8 @@ export default function GlobalRelationsNexus({ forecasts, selectedTheory, theori
     const collapseAll = useCallback(() => {
         setExpandedAnchors(prev => Object.fromEntries(Object.keys(prev).map(k => [k, false])));
         setSelectedNode(null);
+        setLockedNode(null);
+        setCompareNode(null);
     }, []);
 
     // Count satellites per anchor
@@ -289,6 +159,7 @@ export default function GlobalRelationsNexus({ forecasts, selectedTheory, theori
             const cat = f.Broad_Category || '';
             let color = '#ffffff';
             if (cat.includes('Conflict'))    color = '#ff0066';
+            else if (cat.includes('Governance') || cat.includes('Rights')) color = '#fbbf24';
             else if (cat.includes('Economy') || cat.includes('Trade')) color = '#00ccff';
             else if (cat.includes('Tech'))   color = '#bf55ec';
             else if (cat.includes('Health')) color = '#00ff88';
@@ -433,61 +304,9 @@ export default function GlobalRelationsNexus({ forecasts, selectedTheory, theori
         return { nodes, links };
     }, [forecasts, expandedAnchors, dimensions]);
 
-    // ── Case Study preset logic ────────────────────────────────────────────────
-    const CASE_STUDIES = useMemo(() => [
-        { id: 'semiconductor', title: '🔬 Semiconductor Supply Chain', color: '#bf55ec',
-          nodes: ['TechAIHub','AsiaPacific','USA','Europe','China','LatinAmerica'],
-          dims: ['tech','trade','conflict'],
-          context: 'TSMC, ASML, Nvidia — the chokepoints controlling who can build advanced chips. US export controls vs China\'s self-sufficiency push.' },
-        { id: 'sudan', title: '⚔ Sudan Conflict Network', color: '#ff0066',
-          nodes: ['MilitantPMC','Africa','Russia','UN_OPEC','MiddleEast'],
-          dims: ['conflict','diplomacy'],
-          context: 'The RSF vs SAF civil war, Wagner mercenaries, 12M displaced, Gulf proxy competition, and multilateral paralysis.' },
-        { id: 'us-china', title: '🐉 US-China Strategic Competition', color: '#ff9900',
-          nodes: ['USA','China','AsiaPacific','TechAIHub','NATO','Europe','Russia'],
-          dims: ['conflict','trade','diplomacy','tech'],
-          context: 'The defining great power rivalry: Indo-Pacific theatre, tech decoupling, alliance architecture, and the Taiwan question.' },
-        { id: 'energy', title: '⚡ Energy Geopolitics', color: '#ff6600',
-          nodes: ['MiddleEast','UN_OPEC','Russia','Europe','Africa','China'],
-          dims: ['trade','conflict','diplomacy'],
-          context: 'OPEC+ production politics, Russia\'s energy weapon, Europe\'s transition, and Africa\'s resource frontier.' },
-        { id: 'health', title: '🏥 Global Health Pipeline', color: '#00ff88',
-          nodes: ['BiotechHub','USA','Europe','AsiaPacific','Africa','UN_OPEC'],
-          dims: ['trade','tech','diplomacy'],
-          context: 'GLP-1 drug wars, vaccine equity, TRIPS waivers, generic manufacturing in India, and pharma lobby power.' },
-        { id: 'bri', title: '🏗 Belt & Road Initiative', color: '#ffcc00',
-          nodes: ['China','Africa','LatinAmerica','AsiaPacific','Europe','MiddleEast'],
-          dims: ['trade','diplomacy','tech'],
-          context: 'China\'s $1T infrastructure diplomacy: debt traps, port acquisitions, digital silk road, and Western counter-offers (B3W/PGII).' },
-        { id: 'minerals', title: '⛏ Critical Minerals Race', color: '#66ff00',
-          nodes: ['Africa','LatinAmerica','China','TechAIHub','USA','Europe'],
-          dims: ['trade','tech'],
-          context: 'Lithium triangle, Congo cobalt, rare earths, supply chain reshoring — who controls the materials of the energy transition?' },
-        { id: 'africa', title: '🌍 Africa\'s Strategic Scramble', color: '#66ff00',
-          nodes: ['Africa','China','Russia','MilitantPMC','Europe','USA','UN_OPEC'],
-          dims: ['conflict','trade','diplomacy','tech'],
-          context: 'Sahel coups, Wagner expansion, critical minerals, EU migration deals, and competing infrastructure investments.' },
-    ], []);
-
-    // Case study highlight set — overrides normal highlightSet when active
-    const caseStudySet = useMemo(() => {
-        if (!activeCaseStudy) return null;
-        const cs = CASE_STUDIES.find(c => c.id === activeCaseStudy);
-        if (!cs) return null;
-        return new Set(cs.nodes);
-    }, [activeCaseStudy, CASE_STUDIES]);
-
-    const activeCaseData = useMemo(() => {
-        if (!activeCaseStudy) return null;
-        return CASE_STUDIES.find(c => c.id === activeCaseStudy) || null;
-    }, [activeCaseStudy, CASE_STUDIES]);
-
-
     // ── Highlighted (first-degree) set — uses lockedNode when locked ─────────
     const focusNode = lockedNode || selectedNode;
     const highlightSet = useMemo(() => {
-        // Case study mode overrides when no specific node is selected
-        if (!focusNode && caseStudySet) return caseStudySet;
         if (!focusNode) return null;
         const s = new Set([focusNode.id]);
         graphData.links.forEach(l => {
@@ -510,7 +329,7 @@ export default function GlobalRelationsNexus({ forecasts, selectedTheory, theori
             });
         }
         return s;
-    }, [focusNode, selectedNode, compareNode, caseStudySet, graphData]);
+    }, [focusNode, selectedNode, compareNode, graphData]);
 
     // ── Filtered graph data for display ─────────────────────────────────────
     const displayData = useMemo(() => {
@@ -549,6 +368,14 @@ export default function GlobalRelationsNexus({ forecasts, selectedTheory, theori
         });
     }, [searchQuery, graphData]);
 
+    // ── Theory switch audio cue (fire once per actual theory change) ──────────
+    useEffect(() => {
+        if (prevTheoryRef.current !== selectedTheory) {
+            prevTheoryRef.current = selectedTheory;
+            NexusAudio.soundTheorySwitch();
+        }
+    }, [selectedTheory]);
+
     // ── Physics engine ────────────────────────────────────────────────────────
     useEffect(() => {
         if (!fgRef.current) return;
@@ -562,31 +389,30 @@ export default function GlobalRelationsNexus({ forecasts, selectedTheory, theori
         else if (selectedTheory === 'Constructivism') { charge = -160; baseDist = 110; }
 
         fg.d3Force('charge').strength(charge);
+
+        // Register spatial lens forces once per effect run (never inside link.distance)
+        if (physicsPreset === 'balance' && selectedTheory === 'Marxism') {
+            fg.d3Force('x', null);
+            fg.d3Force('y', createAxisForce(
+                'y',
+                d => (['USA', 'Europe', 'Russia', 'NATO'].includes(d.id) ? -80 : 80),
+                d => (d.isAnchor ? 0.18 : 0)
+            ));
+        } else if (physicsPreset === 'balance' && selectedTheory === 'Postcolonialism') {
+            fg.d3Force('y', null);
+            fg.d3Force('x', createAxisForce(
+                'x',
+                d => (d.id === 'USA' ? -200 : d.id === 'Europe' ? 200 : 0),
+                d => (d.isAnchor && ['USA', 'Europe'].includes(d.id) ? 0.18 : 0)
+            ));
+        } else {
+            fg.d3Force('x', null);
+            fg.d3Force('y', null);
+        }
+
         fg.d3Force('link').distance(lnk => {
             if (physicsPreset === 'core')     return lnk.type === 'satellite' ? 20 : 75;
             if (physicsPreset === 'friction') return lnk.type === 'conflict' ? 260 : 160;
-            NexusAudio.soundTheorySwitch();
-            if (selectedTheory === 'Marxism') {
-                // Vertical split: Global North up, Global South down
-                fg.d3Force('y', d => {
-                    if (!d.isAnchor) return;
-                    const north = ['USA','Europe','Russia','NATO'].includes(d.id);
-                    return north ? -80 : 80;
-                });
-            } else if (selectedTheory === 'Postcolonialism') {
-                // Push former colonial powers to periphery
-                fg.d3Force('x', d => {
-                    if (!d.isAnchor) return;
-                    const peripheral = ['USA','Europe'].includes(d.id);
-                    return peripheral ? (d.id === 'USA' ? -200 : 200) : 0;
-                });
-            } else if (selectedTheory === 'Feminism') {
-                fg.d3Force('x', null);
-                fg.d3Force('y', null);
-            } else {
-                fg.d3Force('x', null);
-                fg.d3Force('y', null);
-            }
             if (selectedTheory === 'Realism') {
                 if (lnk.type === 'conflict') return 240;
                 if (lnk.type === 'satellite') return 40;
@@ -602,13 +428,30 @@ export default function GlobalRelationsNexus({ forecasts, selectedTheory, theori
         reheatGraphWhenReady(graphReadyRef, fg);
     }, [selectedTheory, physicsPreset, graphData]);
 
+    // Navigate to a specific node (used by connection table, search, and arrow-key cycling)
+    const navigateToNode = useCallback((nodeRef, { preserveCycle = false } = {}) => {
+        if (!nodeRef) return;
+        if (!preserveCycle) {
+            cycleStateRef.current = { hubNode: null, cursorIndex: -1 };
+        }
+        setSelectedNode(nodeRef);
+        setSelectedEdge(null);
+        setInspectTab('overview');
+        NexusAudio.soundConnectionNav();
+        if (fgRef.current && nodeRef.x != null) {
+            const camPos = computeCameraFocusPosition(nodeRef, 220);
+            fgRef.current.cameraPosition(camPos, nodeRef, 1200);
+        }
+    }, []);
+
     // ── Click handler ─────────────────────────────────────────────────────────
-    const handleNodeClick = useCallback((node) => {
-        setContextMenu(null);
+    const handleNodeClick = useCallback((node, isShiftKey = false) => {
+        if (!node) return;
+        cycleStateRef.current = { hubNode: null, cursorIndex: -1 };
+
         // Double-click detection → auto-lock
         const now = Date.now();
         if (lastClickRef.current.nodeId === node.id && now - lastClickRef.current.time < 400) {
-            // Double-click: lock the node
             setSelectedNode(node);
             setLockedNode(node);
             NexusAudio.soundLockEngage();
@@ -618,66 +461,39 @@ export default function GlobalRelationsNexus({ forecasts, selectedTheory, theori
         }
         lastClickRef.current = { nodeId: node.id, time: now };
 
-        setSelectedNode(prev => (prev && prev.id === node.id) ? null : node);
+        // Comparative mode: Shift+click with locked node
+        if (lockedNode && node.id !== lockedNode.id && isShiftKey) {
+            setCompareNode(prev => (prev?.id === node.id ? null : node));
+            NexusAudio.soundCompareEngage();
+            return;
+        }
+
+        const isDeselect = Boolean(selectedNode && selectedNode.id === node.id);
+        setSelectedNode(isDeselect ? null : node);
         setSelectedEdge(null);
         NexusAudio.soundNodeClick();
-        // Comparative mode: Shift+click with locked node
-        if (lockedNode && node.id !== lockedNode.id && window._lastClickShift) {
-            setCompareNode(node);
-            NexusAudio.soundCompareEngage();
+
+        if (!isDeselect && fgRef.current && node.x != null) {
+            const camPos = computeCameraFocusPosition(node, 220);
+            fgRef.current.cameraPosition(camPos, node, 1200);
         }
-        // Auto-zoom on first click
-        if (!lockedNode) navigateToNode(node);
-        // Smooth camera orbit — zoom to comfortable distance (not too close)
-        if (fgRef.current && node.x != null) {
-            const dist = 220; // comfortable viewing distance
-            const ratio = 1 + dist / Math.hypot(node.x, node.y, node.z);
-            fgRef.current.cameraPosition(
-                { x: node.x * ratio, y: node.y * ratio, z: node.z * ratio },
-                node, // lookAt target
-                1200  // transition ms
-            );
-        }
-    }, []);
+    }, [lockedNode, selectedNode, navigateToNode]);
 
     // Background click — deselect node but keep lock
     const handleBackgroundClick = useCallback(() => {
+        cycleStateRef.current = { hubNode: null, cursorIndex: -1 };
         if (lockedNode) {
-            // When locked, clicking background goes back to locked node
             setSelectedNode(lockedNode);
         } else {
             setSelectedNode(null);
         }
     }, [lockedNode]);
 
-    // Navigate to a specific node (used by connection table)
-    const navigateToNode = useCallback((nodeRef) => {
-        if (!nodeRef) return;
-        setSelectedNode(nodeRef);
-        setSelectedEdge(null);
-        setInspectTab('overview');
-        NexusAudio.soundConnectionNav();
-        if (fgRef.current && nodeRef.x != null) {
-            const dist = 220;
-            const ratio = 1 + dist / Math.hypot(nodeRef.x, nodeRef.y, nodeRef.z);
-            fgRef.current.cameraPosition(
-                { x: nodeRef.x * ratio, y: nodeRef.y * ratio, z: nodeRef.z * ratio },
-                nodeRef, 1200
-            );
-        }
-    }, []);
-
-    // Double-click anchor to expand/collapse its satellites
-    const handleNodeDblClick = useCallback((node) => {
-        if (node.isAnchor) {
-            toggleAnchorExpand(node.id);
-        }
-    }, [toggleAnchorExpand]);
-
     // Reset camera to default overview position
     const resetCamera = useCallback(() => {
         setSelectedNode(null);
         setLockedNode(null);
+        setCompareNode(null);
         if (fgRef.current) {
             fgRef.current.cameraPosition({ x: 0, y: 0, z: 600 }, { x: 0, y: 0, z: 0 }, 1500);
         }
@@ -706,47 +522,6 @@ export default function GlobalRelationsNexus({ forecasts, selectedTheory, theori
             }
         }
     }, [selectedNode, lockedNode]);
-
-    // ── Radar metrics ─────────────────────────────────────────────────────────
-    // ── Mini-map 2D projection ─────────────────────────────────────────────────
-    useEffect(() => {
-        const canvas = miniMapRef.current;
-        if (!canvas) return;
-        let animId;
-        const draw = () => {
-            const ctx = canvas.getContext('2d');
-            if (!ctx) return;
-            const W = 140, H = 140;
-            ctx.fillStyle = 'rgba(0, 5, 15, 0.9)';
-            ctx.fillRect(0, 0, W, H);
-            // Draw nodes
-            const nodes = graphData.nodes.filter(n => n.x !== undefined);
-            if (nodes.length === 0) { animId = requestAnimationFrame(draw); return; }
-            let minX = Infinity, maxX = -Infinity, minY = Infinity, maxY = -Infinity;
-            nodes.forEach(n => {
-                if (n.x < minX) minX = n.x;
-                if (n.x > maxX) maxX = n.x;
-                if (n.y < minY) minY = n.y;
-                if (n.y > maxY) maxY = n.y;
-            });
-            const rangeX = (maxX - minX) || 1, rangeY = (maxY - minY) || 1;
-            const pad = 12;
-            nodes.forEach(n => {
-                const px = pad + ((n.x - minX) / rangeX) * (W - pad * 2);
-                const py = pad + ((n.y - minY) / rangeY) * (H - pad * 2);
-                const r = n.isAnchor ? 3 : 1.5;
-                ctx.beginPath();
-                ctx.arc(px, py, r, 0, Math.PI * 2);
-                ctx.fillStyle = n.color || '#fff';
-                ctx.globalAlpha = (highlightSet && !highlightSet.has(n.id)) ? 0.2 : 0.8;
-                ctx.fill();
-            });
-            ctx.globalAlpha = 1;
-            animId = requestAnimationFrame(draw);
-        };
-        animId = requestAnimationFrame(draw);
-        return () => cancelAnimationFrame(animId);
-    }, [graphData, highlightSet]);
 
     // ── GDELT live data pulse ─────────────────────────────────────────────────
     const [gdeltArticles, setGdeltArticles] = useState([]);
@@ -834,16 +609,16 @@ export default function GlobalRelationsNexus({ forecasts, selectedTheory, theori
         return { autonomy, economicPenetration, conflictExposure, resourceSecurity, diplomaticCentrality };
     }, [selectedNode]);
 
-    // ── Connection summary for selected node ────────────────────────────────
-    const connectionSummary = useMemo(() => {
-        if (!selectedNode) return [];
+    // ── Helper: build unique neighbor list for any hub node ─────────────────
+    const getNodeConnections = useCallback((hubNode) => {
+        if (!hubNode) return [];
         const conns = [];
         const seen = new Set();
         graphData.links.forEach(lnk => {
             const sId = linkId(lnk.source), tId = linkId(lnk.target);
             let partnerId = null;
-            if (sId === selectedNode.id) partnerId = tId;
-            else if (tId === selectedNode.id) partnerId = sId;
+            if (sId === hubNode.id) partnerId = tId;
+            else if (tId === hubNode.id) partnerId = sId;
             if (!partnerId || lnk.type === 'satellite') return;
             const key = `${partnerId}-${lnk.type}`;
             if (seen.has(key)) return;
@@ -860,50 +635,14 @@ export default function GlobalRelationsNexus({ forecasts, selectedTheory, theori
             });
         });
         return conns;
-    }, [selectedNode, graphData]);
+    }, [graphData]);
 
-    // ── Right-click context menu ──────────────────────────────────────────────
-    const handleNodeRightClick = useCallback((node, event) => {
-        event.preventDefault();
-        setContextMenu({
-            node,
-            x: event.clientX,
-            y: event.clientY,
-        });
-    }, []);
-
-    const contextAction = useCallback((action, node) => {
-        setContextMenu(null);
-        switch (action) {
-            case 'lock':
-                setSelectedNode(node);
-                setLockedNode(node);
-                navigateToNode(node);
-                NexusAudio.soundLockEngage();
-                break;
-            case 'unlock':
-                setLockedNode(null);
-                setCompareNode(null);
-                reheatGraphWhenReady(graphReadyRef, fgRef);
-                NexusAudio.soundLockRelease();
-                break;
-            case 'compare':
-                if (lockedNode) {
-                    setCompareNode(node);
-                    NexusAudio.soundCompareEngage();
-                }
-                break;
-            case 'focus':
-                navigateToNode(node);
-                setSelectedNode(node);
-                NexusAudio.soundNodeClick();
-                break;
-            default: break;
-        }
-    }, [lockedNode, navigateToNode]);
+    // ── Connection summary for selected node ────────────────────────────────
+    const connectionSummary = useMemo(() => getNodeConnections(selectedNode), [selectedNode, getNodeConnections]);
 
     // ── Edge click handler ────────────────────────────────────────────────────
     const handleLinkClick = useCallback((link) => {
+        cycleStateRef.current = { hubNode: null, cursorIndex: -1 };
         setSelectedEdge(link);
         setSelectedNode(null);
         NexusAudio.soundEdgeClick();
@@ -933,45 +672,46 @@ export default function GlobalRelationsNexus({ forecasts, selectedTheory, theori
                 setSearchQuery('');
                 return;
             }
-            if (e.key === 'Escape' && activeCaseStudy) {
-                setActiveCaseStudy(null);
-                return;
-            }
             if (e.key === 'Escape') {
+                cycleStateRef.current = { hubNode: null, cursorIndex: -1 };
                 if (lockedNode) {
                     setLockedNode(null);
+                    setCompareNode(null);
                     reheatGraphWhenReady(graphReadyRef, fgRef);
                 } else {
                     setSelectedNode(null);
                 }
                 return;
             }
-            // Arrow up/down to cycle through connections
-            if (selectedNode && connectionSummary.length > 0) {
-                if (e.key === 'ArrowDown' || e.key === 'ArrowRight') {
+            // Arrow keys cycle through the locked or initially selected hub's unique neighbors
+            if ((lockedNode || selectedNode) && ['ArrowDown', 'ArrowRight', 'ArrowUp', 'ArrowLeft'].includes(e.key)) {
+                const hubNode = lockedNode || cycleStateRef.current.hubNode || selectedNode;
+                const uniqueNeighbors = [];
+                const seenPartners = new Set();
+                getNodeConnections(hubNode).forEach(conn => {
+                    if (!seenPartners.has(conn.id)) {
+                        seenPartners.add(conn.id);
+                        uniqueNeighbors.push(conn);
+                    }
+                });
+                if (uniqueNeighbors.length > 0) {
                     e.preventDefault();
-                    // Navigate to next connection
-                    const currIdx = connectionSummary.findIndex(c => c.id === selectedNode.id);
-                    const nextIdx = currIdx < connectionSummary.length - 1 ? currIdx + 1 : 0;
-                    navigateToNode(connectionSummary[nextIdx].nodeRef);
-                } else if (e.key === 'ArrowUp' || e.key === 'ArrowLeft') {
-                    e.preventDefault();
-                    const currIdx = connectionSummary.findIndex(c => c.id === selectedNode.id);
-                    const prevIdx = currIdx > 0 ? currIdx - 1 : connectionSummary.length - 1;
-                    navigateToNode(connectionSummary[prevIdx].nodeRef);
+                    const direction = (e.key === 'ArrowDown' || e.key === 'ArrowRight') ? 1 : -1;
+                    const nextIdx = stepNeighborIndex(
+                        uniqueNeighbors,
+                        selectedNode?.id,
+                        cycleStateRef.current.hubNode?.id === hubNode.id ? cycleStateRef.current.cursorIndex : -1,
+                        direction
+                    );
+                    cycleStateRef.current = { hubNode, cursorIndex: nextIdx };
+                    navigateToNode(uniqueNeighbors[nextIdx].nodeRef, { preserveCycle: true });
                 }
             }
         };
         const root = nexusRootRef.current;
         root?.addEventListener('keydown', handler);
         return () => root?.removeEventListener('keydown', handler);
-    }, [selectedNode, lockedNode, connectionSummary, navigateToNode, searchOpen, activeCaseStudy]);
-
-    // ── Narrative generation for selected node ──────────────────────────────
-    const nodeNarrative = useMemo(() => {
-        if (!selectedNode) return '';
-        return generateNodeNarrative(selectedNode, connectionSummary, graphData.links, selectedTheory);
-    }, [selectedNode, connectionSummary, graphData, selectedTheory]);
+    }, [selectedNode, lockedNode, getNodeConnections, navigateToNode, searchOpen]);
 
 
     // ── At-a-glance badges for selected node ──────────────────────────────────
@@ -996,82 +736,10 @@ export default function GlobalRelationsNexus({ forecasts, selectedTheory, theori
         return linkId(lnk.source) === focus.id || linkId(lnk.target) === focus.id;
     }, [selectedNode, lockedNode]);
 
-    // ── Create a text sprite for 3D labels ─────────────────────────────────────
-    const makeTextSprite = useCallback((text, color) => {
-        const canvas = document.createElement('canvas');
-        const ctx = canvas.getContext('2d');
-        const fontSize = 48;
-        ctx.font = `bold ${fontSize}px Roboto Mono, monospace`;
-        const w = ctx.measureText(text).width + 20;
-        canvas.width = w;
-        canvas.height = fontSize + 16;
-        ctx.font = `bold ${fontSize}px Roboto Mono, monospace`;
-        ctx.fillStyle = color;
-        ctx.textAlign = 'center';
-        ctx.textBaseline = 'middle';
-        ctx.fillText(text, w / 2, (fontSize + 16) / 2);
-        const texture = new THREE.CanvasTexture(canvas);
-        texture.needsUpdate = true;
-        const mat = new THREE.SpriteMaterial({ map: texture, transparent: true, depthTest: false });
-        const sprite = new THREE.Sprite(mat);
-        sprite.scale.set(w / 8, (fontSize + 16) / 8, 1);
-        return sprite;
-    }, []);
-
-    // ── 3D node rendering ─────────────────────────────────────────────────────
-    const buildNodeObject = useCallback((node) => {
-        const group = new THREE.Group();
-        const focused = !highlightSet || highlightSet.has(node.id);
-
-        if (!node.isAnchor) {
-            const g = new THREE.SphereGeometry(node.val / 2.2, 16, 16);
-            const m = new THREE.MeshBasicMaterial({ color: node.color, transparent: true, opacity: focused ? 0.9 : 0.35 });
-            group.add(new THREE.Mesh(g, m));
-            return group;
-        }
-
-        group.userData = { anchorType: node.type };
-        const op = focused ? 0.95 : 0.30;
-        if (node.type === 'igo') {
-            const g1 = new THREE.DodecahedronGeometry(node.val / 2.4);
-            group.add(new THREE.Mesh(g1, new THREE.MeshPhongMaterial({ color: node.color, emissive: node.color, emissiveIntensity: 0.2, transparent: true, opacity: op, wireframe: true })));
-            const g2 = new THREE.SphereGeometry(node.val / 4, 16, 16);
-            group.add(new THREE.Mesh(g2, new THREE.MeshBasicMaterial({ color: node.color, transparent: true, opacity: op * 0.7 })));
-        } else if (node.type === 'mnc') {
-            const g1 = new THREE.BoxGeometry(node.val / 2, node.val / 2, node.val / 2);
-            const m1 = new THREE.Mesh(g1, new THREE.MeshBasicMaterial({ color: node.color, transparent: true, opacity: op, wireframe: true }));
-            m1.rotation.set(Math.PI / 6, Math.PI / 6, 0);
-            group.add(m1);
-            const g2 = new THREE.BoxGeometry(node.val / 3.5, node.val / 3.5, node.val / 3.5);
-            const m2 = new THREE.Mesh(g2, new THREE.MeshBasicMaterial({ color: node.color, transparent: true, opacity: op * 0.8 }));
-            m2.rotation.set(Math.PI / 6, Math.PI / 6, 0);
-            group.add(m2);
-        } else if (node.type === 'nonstate') {
-            const g1 = new THREE.ConeGeometry(node.val / 1.8, node.val / 1.2, 3);
-            const m1 = new THREE.Mesh(g1, new THREE.MeshBasicMaterial({ color: node.color, transparent: true, opacity: op, wireframe: true }));
-            m1.rotation.x = Math.PI / 3;
-            group.add(m1);
-            const g2 = new THREE.ConeGeometry(node.val / 3, node.val / 2, 3);
-            const m2 = new THREE.Mesh(g2, new THREE.MeshBasicMaterial({ color: node.color, transparent: true, opacity: op * 0.8 }));
-            m2.rotation.x = Math.PI / 3;
-            group.add(m2);
-        } else {
-            const g1 = new THREE.SphereGeometry(node.val / 2.5, 32, 32);
-            group.add(new THREE.Mesh(g1, new THREE.MeshBasicMaterial({ color: node.color, transparent: true, opacity: op })));
-            const g2 = new THREE.RingGeometry(node.val / 1.5, node.val / 1.4, 64);
-            const m2 = new THREE.Mesh(g2, new THREE.MeshBasicMaterial({ color: node.color, side: THREE.DoubleSide, transparent: true, opacity: focused ? 0.35 : 0.12 }));
-            m2.rotation.x = Math.PI / 2;
-            group.add(m2);
-        }
-
-        // Floating label for anchor nodes
-        const shortName = node.name.length > 16 ? node.name.slice(0, 14) + '..' : node.name;
-        const label = makeTextSprite(shortName, node.color);
-        label.position.set(0, node.val / 1.5 + 3, 0);
-        group.add(label);
-
-        return group;
-    }, [highlightSet, makeTextSprite]);
+    const buildNodeObject = useCallback(
+        node => createNexusNodeObject(node, { highlightSet, makeSprite: createTextSprite }),
+        [highlightSet]
+    );
 
     // ── 2D mode: flatten z-coordinates ──────────────────────────────────────
     useEffect(() => {
@@ -1094,17 +762,27 @@ export default function GlobalRelationsNexus({ forecasts, selectedTheory, theori
 
     // ── Animated intro sequence ───────────────────────────────────────────────
     useEffect(() => {
-        if (introComplete) return;
-        // Stagger node appearance
+        if (introComplete) return undefined;
         const anchors = Object.keys(PRIMARY_ANCHORS);
-        anchors.forEach((id, i) => {
-            setTimeout(() => {
-                const node = graphData.nodes.find(n => n.id === id);
-                if (node) node.__visible = true;
-            }, i * 150);
-        });
-        setTimeout(() => setIntroComplete(true), anchors.length * 150 + 500);
+        const timers = anchors.map((id, i) => setTimeout(() => {
+            const node = graphData.nodes.find(n => n.id === id);
+            if (node) node.__visible = true;
+        }, i * 150));
+        timers.push(setTimeout(() => setIntroComplete(true), anchors.length * 150 + 500));
+        return () => timers.forEach(t => clearTimeout(t));
     }, [graphData, introComplete]);
+
+    // ── WebGL & WebAudio cleanup on unmount ───────────────────────────────────
+    useEffect(() => () => {
+        const fg = fgRef.current || lastGraphInstanceRef.current;
+        lastGraphInstanceRef.current = null;
+        if (fg) {
+            try { fg.pauseAnimation?.(); } catch {}
+            try { disposeThreeHierarchy(fg.scene?.()); } catch {}
+            try { fg.renderer?.()?.dispose?.(); } catch {}
+        }
+        NexusAudio.disposeAudio();
+    }, []);
 
     // ── 3D scene lighting ─────────────────────────────────────────────────────
     useEffect(() => {
@@ -1204,7 +882,7 @@ export default function GlobalRelationsNexus({ forecasts, selectedTheory, theori
             {/* ── Canvas ──────────────────────────────────────────────────── */}
             <div className="nexus-canvas-wrapper" role="region" tabIndex="0" aria-label="Interactive 3D relationship map. Use arrow keys to move between a selected actor's connections.">
                 <ForceGraph3D
-                    ref={fgRef}
+                    ref={attachGraphRef}
                     graphData={displayData}
                     onEngineTick={() => { graphReadyRef.current = true; }}
                     backgroundColor="#000000"
@@ -1215,43 +893,8 @@ export default function GlobalRelationsNexus({ forecasts, selectedTheory, theori
                         return n.color;
                     }}
                     nodeThreeObject={buildNodeObject}
-                    nodeLabel={node => {
-                        if (!node) return '';
-                        const conns = graphData.links.filter(l => {
-                            const s = typeof l.source === 'object' ? l.source.id : l.source;
-                            const t = typeof l.target === 'object' ? l.target.id : l.target;
-                            return s === node.id || t === node.id;
-                        }).length;
-                        return '<div style="background:rgba(0,2,8,0.92);color:#fff;padding:10px 14px;border-radius:5px;font-family:monospace;font-size:14px;line-height:1.5;border-left:3px solid ' + (node.color || '#fff') + ';max-width:320px;backdrop-filter:blur(10px)">'
-                            + '<strong style="color:' + (node.color || '#fff') + '">' + node.name + '</strong><br/>'
-                            + '<span style="color:#a5b4bc;font-size:12px">' + (node.isAnchor ? (node.type || '').toUpperCase() : (node.category || '')) + '</span><br/>'
-                            + '<span style="color:#aaa">' + conns + ' connections</span>'
-                            + (node.isAnchor ? '<br/><span style="color:#a5b4bc;font-size:12px">Double-click to lock · Right-click for menu</span>' : '')
-                            + '</div>';
-                    }}
-                    linkLabel={lnk => {
-                        const sId = typeof lnk.source === 'object' ? lnk.source.id : lnk.source;
-                        const tId = typeof lnk.target === 'object' ? lnk.target.id : lnk.target;
-                        const sName = typeof lnk.source === 'object' ? lnk.source.name : sId;
-                        const tName = typeof lnk.target === 'object' ? lnk.target.name : tId;
-                        const dimColor = DIM_COLORS[lnk.type] || '#fff';
-                        const dimLabel = (lnk.type || 'connection').toUpperCase();
-                        const info = getEdgeInfo(sId, tId, lnk.type);
-                        if (info) {
-                            return `<div style="background:rgba(0,2,8,0.94);color:#fff;padding:12px 16px;border-radius:5px;font-family:'Roboto Mono',monospace;font-size:14px;line-height:1.5;max-width:400px;border-left:4px solid ${dimColor};backdrop-filter:blur(12px);box-shadow:0 8px 32px rgba(0,0,0,0.8)">
-                                <div style="color:${dimColor};font-size:12px;letter-spacing:1.5px;margin-bottom:6px">${dimLabel}</div>
-                                <strong style="font-size:16px">${info.label}</strong><br/>
-                                <span style="color:#d0d7da;font-size:14px;line-height:1.55">${info.summary}</span>
-                                <div style="margin-top:8px;display:flex;gap:5px;flex-wrap:wrap">${info.dataPoints.slice(0,3).map(dp => '<span style="font-size:12px;color:#c2cbd0;background:rgba(0,255,255,0.06);padding:3px 7px;border-radius:2px;border:1px solid rgba(0,255,255,0.1)">' + dp + '</span>').join('')}</div>
-                                <div style="margin-top:8px;font-size:12px;color:#a5b4bc">Tension: <span style="color:${info.tension > 0.7 ? '#ff668f' : info.tension > 0.4 ? '#ffb84d' : '#5eead4'}">${(info.tension * 100).toFixed(0)}%</span> · Click for full details</div>
-                            </div>`;
-                        }
-                        return `<div style="background:rgba(0,2,8,0.92);color:#ddd;padding:10px 14px;border-radius:4px;font-family:'Roboto Mono',monospace;font-size:14px;line-height:1.5;border-left:3px solid ${dimColor};backdrop-filter:blur(10px)">
-                            <span style="color:${dimColor};font-size:12px;letter-spacing:1.5px">${dimLabel}</span><br/>
-                            <strong>${sName.split('(')[0].trim()}</strong> ⟷ <strong>${tName.split('(')[0].trim()}</strong><br/>
-                            <span style="font-size:12px;color:#a5b4bc">Click for details</span>
-                        </div>`;
-                    }}
+                    nodeLabel={node => formatNexusNodeTooltip(node, graphData.links)}
+                    linkLabel={formatNexusLinkTooltip}
                     onLinkClick={handleLinkClick}
                     linkColor={lnk => {
                         const s = typeof lnk.source === 'object' ? lnk.source.id : lnk.source;
@@ -1285,10 +928,9 @@ export default function GlobalRelationsNexus({ forecasts, selectedTheory, theori
                     linkDirectionalParticleSpeed={() => 0.008}
                     linkDirectionalParticleWidth={lnk => lnk.width * 1.5}
                     linkDirectionalParticleColor={lnk => lnk.color}
-                    onNodeClick={(node, event) => { window._lastClickShift = event && event.shiftKey; handleNodeClick(node); }}
-                    onNodeRightClick={handleNodeRightClick}
+                    onNodeClick={(node, event) => handleNodeClick(node, Boolean(event?.shiftKey))}
                     onNodeHover={node => setHoveredNode(node || null)}
-                    onBackgroundClick={() => { handleBackgroundClick(); setContextMenu(null); }}
+                    onBackgroundClick={handleBackgroundClick}
                     enableNodeDrag={true}
                     enableNavigationControls={true}
                     linkHoverPrecision={8}
@@ -1309,471 +951,89 @@ export default function GlobalRelationsNexus({ forecasts, selectedTheory, theori
                     </div>
                 )}
 
-                {/* Telemetry + Controls */}
-                <div className="nexus-telemetry">
-                    <div>NODES: {graphData.nodes.length} · EDGES: {graphData.links.length}</div>
-                    <div style={{ display: 'flex', gap: '6px', marginTop: '6px' }}>
-                        <button onClick={resetCamera} className="nexus-ctrl-btn" title="Reset camera to overview">⟲ RESET VIEW</button>
-                        {lockedNode && <button onClick={() => { setLockedNode(null); reheatGraphWhenReady(graphReadyRef, fgRef); }} className="nexus-ctrl-btn" style={{ borderColor: '#ff9900', color: '#ff9900' }} title="Unlock current view">🔓 UNLOCK</button>}
-                    </div>
-                    <div className="nexus-hint">
-                        {activeCaseStudy
-                            ? '📋 CASE STUDY active · click actors below · Esc to clear'
-                            : lockedNode
-                                ? '🔒 LOCKED — Shift+click to compare · Esc to unlock · ←→ cycle'
-                                : selectedNode
-                                    ? '⬡ Esc: deselect · Ctrl+K: search · ←→: cycle'
-                                    : '⬡ Click node to inspect · Ctrl+K to search · Lock to explore'}
-                    </div>
-                </div>
+                <NexusHudControls
+                    nodeCount={graphData.nodes.length}
+                    edgeCount={graphData.links.length}
+                    onResetCamera={resetCamera}
+                    lockedNode={lockedNode}
+                    onUnlock={() => {
+                        setLockedNode(null);
+                        setCompareNode(null);
+                        reheatGraphWhenReady(graphReadyRef, fgRef);
+                    }}
+                    selectedNode={selectedNode}
+                    hudTab={hudTab}
+                    onSelectHudTab={setHudTab}
+                    dimensions={dimensions}
+                    onToggleDimension={key => setDimensions(d => ({ ...d, [key]: !d[key] }))}
+                    selectedGPC={selectedGPC}
+                    onSelectGPC={setSelectedGPC}
+                    pulseSignals={pulseSignals}
+                    gdeltArticles={gdeltArticles}
+                    showSatellites={showSatellites}
+                    onToggleSatellites={() => setShowSatellites(prev => !prev)}
+                    intensityThreshold={intensityThreshold}
+                    onIntensityChange={setIntensityThreshold}
+                    physicsPreset={physicsPreset}
+                    onSelectPhysicsPreset={setPhysicsPreset}
+                    is2D={is2D}
+                    onSetIs2D={setIs2D}
+                    ambientOn={ambientOn}
+                    onSetAmbientOn={setAmbientOn}
+                    audioMuted={audioMuted}
+                    onSetAudioMuted={setAudioMuted}
+                    audioVolume={audioVolume}
+                    onSetAudioVolume={setAudioVolume}
+                    expandedAnchors={expandedAnchors}
+                    anchorSatCounts={anchorSatCounts}
+                    onToggleAnchorExpand={toggleAnchorExpand}
+                    onExpandAll={expandAll}
+                    onCollapseAll={collapseAll}
+                    onSelectQuickActor={actorId => {
+                        const node = graphData.nodes.find(n => n.id === actorId);
+                        if (node) {
+                            navigateToNode(node);
+                            setSelectedNode(node);
+                            NexusAudio.soundNodeClick();
+                        }
+                    }}
+                />
 
-                {/* ── HUD Legend ──────────────────────────────────────────── */}
-                <div className="nexus-hud-legend" role="region" aria-label="Advanced Nexus controls">
-                    {/* ── Tabbed HUD ──────────────────────────── */}
-                    <div className="hud-tabs" role="group" aria-label="Advanced Nexus controls">
-                        <button aria-pressed={hudTab === 'filters'} className={`hud-tab ${hudTab === 'filters' ? 'active' : ''}`} onClick={() => setHudTab('filters')}>⬡ FILTERS</button>
-                        <button aria-pressed={hudTab === 'controls'} className={`hud-tab ${hudTab === 'controls' ? 'active' : ''}`} onClick={() => setHudTab('controls')}>⚙ CONTROLS</button>
-                        <button aria-pressed={hudTab === 'actors'} className={`hud-tab ${hudTab === 'actors' ? 'active' : ''}`} onClick={() => setHudTab('actors')}>◉ ACTORS</button>
-                    </div>
-
-                    <div className="hud-tab-panel">
-                    {/* ── TAB: FILTERS ─────────────────────────── */}
-                    {hudTab === 'filters' && <>
-                        <div className="hud-header">DIMENSION FILTERS</div>
-                        {Object.entries({ trade: 'ECONOMY & TRADE', conflict: 'CONFLICT & FRICTION', diplomacy: 'DIPLOMACY & TREATIES', tech: 'TECH & MINERALS' }).map(([key, label]) => (
-                            <label key={key} className="dim-filter-row" style={{ display: 'flex', alignItems: 'center', gap: '8px', cursor: 'pointer' }}>
-                                <input type="checkbox" checked={dimensions[key]} onChange={() => setDimensions(d => ({ ...d, [key]: !d[key] }))}
-                                    style={{ accentColor: DIM_COLORS[key] }} />
-                                <span style={{ color: DIM_COLORS[key] }}>{label}</span>
-                            </label>
-                        ))}
-
-                        <div className="hud-header" style={{ marginTop: '12px' }}>GPC CHALLENGES</div>
-                        <div className="gpc-grid" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '4px', marginBottom: '10px' }}>
-                            {[['security','🛡','Security'],['borders','🚧','Borders'],['identity','🧬','Identity'],['technology','💻','Technology'],['environment','🌍','Environment'],['health','🏥','Health'],['poverty','📉','Poverty'],['equality','⚖','Equality']].map(([key, icon, name]) => {
-                                const sel = selectedGPC === key;
-                                return (
-                                    <button key={key} className="gpc-filter-btn" aria-pressed={sel} onClick={() => setSelectedGPC(sel ? null : key)} style={{
-                                        background: sel ? 'rgba(0,255,255,0.12)' : 'rgba(255,255,255,0.02)',
-                                        border: `1px solid ${sel ? '#00ffff' : 'rgba(255,255,255,0.1)'}`,
-                                        color: sel ? '#00ffff' : '#c0c8cc', fontFamily: 'Roboto Mono, monospace', borderRadius: '4px',
-                                        cursor: 'pointer', textAlign: 'center', transition: 'all 0.15s',
-                                    }} title={`Focus on ${name}`}>{icon} {name.toUpperCase()}</button>
-                                );
-                            })}
-                        </div>
-                        {selectedGPC && (
-                            <div className="nexus-gpc-status" style={{ marginBottom: '8px', padding: '6px 10px', background: 'rgba(0,255,255,0.06)',
-                                border: '1px solid rgba(0,255,255,0.15)', borderRadius: '4px',
-                                color: '#00ffff', letterSpacing: '1px', textAlign: 'center' }}>
-                                VIEWING: {selectedGPC.toUpperCase()} CHALLENGE
-                                <br/><span className="nexus-gpc-status-count" style={{ color: '#a5b4bc' }}>{GPC_NODE_MAP[selectedGPC] ? GPC_NODE_MAP[selectedGPC].length + ' relevant actors' : ''}</span>
-                            </div>
-                        )}
-
-                        {/* GDELT Live Feed */}
-                        {pulseSignals.length > 0 && (
-                            <div className="pulse-indicator">📡 LIVE: {pulseSignals.length} actors in news</div>
-                        )}
-                        {gdeltArticles.length > 0 && (
-                            <div className="gdelt-feed">
-                                <div className="section-label" style={{ marginTop: '6px', marginBottom: '4px' }}>LIVE INTEL</div>
-                                {gdeltArticles.slice(0, 4).map((a, i) => (
-                                    <a key={i} href={a.url} target="_blank" rel="noopener noreferrer" className="gdelt-item"
-                                        style={{ borderLeftColor: a.tone < -2 ? '#ff0066' : a.tone > 2 ? '#00ff88' : '#888' }}>
-                                        {a.title.slice(0, 80)}{a.title.length > 80 ? '…' : ''}
-                                    </a>
-                                ))}
-                            </div>
-                        )}
-                    </>}
-
-                    {/* ── TAB: CONTROLS ────────────────────────── */}
-                    {hudTab === 'controls' && <>
-                        <div className="hud-header">GRAPH CONTROLS</div>
-                        <div className="graph-control-row">
-                            <label className="ctrl-label">Satellites</label>
-                            <button className={`ctrl-toggle ${showSatellites ? 'on' : ''}`}
-                                aria-pressed={showSatellites}
-                                onClick={() => setShowSatellites(prev => !prev)}>
-                                {showSatellites ? 'ON' : 'OFF'}
-                            </button>
-                        </div>
-                        <div className="graph-control-row">
-                            <label className="ctrl-label" htmlFor="nexus-link-intensity">Link Intensity</label>
-                            <input id="nexus-link-intensity" type="range" min="0" max="3" step="0.2" value={intensityThreshold}
-                                aria-valuetext={intensityThreshold > 0 ? `At least ${intensityThreshold.toFixed(1)}` : 'All links'}
-                                onChange={e => setIntensityThreshold(parseFloat(e.target.value))}
-                                className="audio-slider" />
-                            <span className="ctrl-value">{intensityThreshold > 0 ? '≥' + intensityThreshold.toFixed(1) : 'ALL'}</span>
-                        </div>
-
-                        <div className="hud-header" style={{ marginTop: '12px' }}>PHYSICS</div>
-                        <div style={{ display: 'flex', gap: '4px', marginBottom: '10px' }}>
-                            {[['balance','⚖️ BALANCE'],['friction','⚡ FRICTION'],['core','⬢ CORE-PERIPH.']].map(([id, label]) => {
-                                const act = physicsPreset === id;
-                                return (
-                                    <button key={id} className="physics-preset-btn" aria-pressed={act} onClick={() => setPhysicsPreset(id)} style={{
-                                        flex: 1, background: act ? 'rgba(0,255,136,0.15)' : 'rgba(255,255,255,0.02)',
-                                        border: `1px solid ${act ? '#00ff88' : 'rgba(255,255,255,0.1)'}`,
-                                        color: act ? '#00ff88' : '#b4bec3', fontFamily: 'Roboto Mono, monospace', borderRadius: '4px',
-                                        cursor: 'pointer', textAlign: 'center', transition: 'all 0.15s',
-                                    }}>{label}</button>
-                                );
-                            })}
-                        </div>
-
-                        <div className="hud-header" style={{ marginTop: '12px' }}>VIEW MODE</div>
-                        <div className="view-toggle">
-                            <button className={`view-toggle-btn ${!is2D ? 'active' : ''}`}
-                                aria-pressed={!is2D}
-                                onClick={() => setIs2D(false)}>◈ 3D</button>
-                            <button className={`view-toggle-btn ${is2D ? 'active' : ''}`}
-                                aria-pressed={is2D}
-                                onClick={() => setIs2D(true)}>◻ 2D</button>
-                        </div>
-                        <div className="view-mode-label">
-                            ACTIVE: {is2D ? '2D FLAT MAP' : '3D SPATIAL'}
-                        </div>
-
-                        <div className="hud-header" style={{ marginTop: '12px' }}>AUDIO</div>
-                        <div className="graph-control-row" style={{ marginBottom: '6px' }}>
-                            <label className="ctrl-label">Ambient Pad</label>
-                            <button className={`ctrl-toggle ${ambientOn ? 'on' : ''}`}
-                                aria-pressed={ambientOn}
-                                onClick={() => {
-                                    if (ambientOn) { NexusAudio.stopAmbient(); setAmbientOn(false); }
-                                    else { NexusAudio.startAmbient(); setAmbientOn(true); }
-                                }}>
-                                {ambientOn ? 'ON' : 'OFF'}
-                            </button>
-                        </div>
-                        <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-                            <button className="audio-mute-btn" aria-label={audioMuted ? 'Unmute Nexus audio' : 'Mute Nexus audio'} aria-pressed={audioMuted} onClick={() => { const m = NexusAudio.toggleMute(); setAudioMuted(m); }}>
-                                {audioMuted ? '🔇' : '🔊'}
-                            </button>
-                            <input type="range" min="0" max="1" step="0.05" value={audioVolume}
-                                aria-label="Nexus audio volume" aria-valuetext={`${Math.round(audioVolume * 100)} percent`}
-                                onChange={e => { const v = parseFloat(e.target.value); setAudioVolume(v); NexusAudio.setVolume(v); }}
-                                className="audio-slider" style={{ flex: 1 }} />
-                        </div>
-                    </>}
-
-                    {/* ── TAB: ACTORS ──────────────────────────── */}
-                    {hudTab === 'actors' && <>
-                        <div className="hud-header">ACTOR CLUSTERS</div>
-                        <div style={{ display: 'flex', gap: '4px', marginBottom: '8px' }}>
-                            <button onClick={expandAll} className="nexus-ctrl-btn" style={{ flex: 1 }}>▼ EXPAND ALL</button>
-                            <button onClick={collapseAll} className="nexus-ctrl-btn" style={{ flex: 1 }}>▲ COLLAPSE ALL</button>
-                        </div>
-                        <div className="anchor-legend-list">
-                            {Object.entries(PRIMARY_ANCHORS).map(([id, a]) => {
-                                const isExp = expandedAnchors[id];
-                                const count = anchorSatCounts[id] || 0;
-                                return (
-                                    <button key={id} className={`anchor-legend-item ${isExp ? 'expanded' : ''}`}
-                                        aria-expanded={isExp}
-                                        onClick={() => toggleAnchorExpand(id)}
-                                        style={{ '--anchor-color': a.color }}>
-                                        <span className="anchor-dot" style={{ background: a.color }} />
-                                        <span className="anchor-label">{a.name}</span>
-                                        <span className="anchor-count">{isExp ? '▾' : '▸'} {count}</span>
-                                    </button>
-                                );
-                            })}
-                        </div>
-
-                        <div className="hud-header" style={{ marginTop: '12px' }}>QUICK NAV</div>
-                        <div className="actor-list">
-                            {Object.values(PRIMARY_ANCHORS).map(a => (
-                                <button key={a.id} className="actor-list-item"
-                                    style={{ borderLeftColor: a.color, color: (selectedNode && selectedNode.id === a.id) ? '#fff' : '#999' }}
-                                    onClick={() => {
-                                        const node = graphData.nodes.find(n => n.id === a.id);
-                                        if (node) { navigateToNode(node); setSelectedNode(node); NexusAudio.soundNodeClick(); }
-                                    }}>
-                                    {a.name.split('(')[0].trim()}
-                                </button>
-                            ))}
-                        </div>
-                    </>}
-                    </div>
-                </div>
-
-                {/* ── Edge Inspector Panel ────────────────────────────── */}
-                {selectedEdge && !selectedNode && (
-                    <aside className="nexus-inspect-panel edge-inspector">
-                        <button className="inspect-close" aria-label="Close relationship details" onClick={() => setSelectedEdge(null)}>✕</button>
-                        <div className="edge-header">
-                            <span style={{ color: typeof selectedEdge.source === 'object' ? selectedEdge.source.color : '#fff' }}>
-                                {typeof selectedEdge.source === 'object' ? selectedEdge.source.name : selectedEdge.source}
-                            </span>
-                            <span className="edge-arrow">⟷</span>
-                            <span style={{ color: typeof selectedEdge.target === 'object' ? selectedEdge.target.color : '#fff' }}>
-                                {typeof selectedEdge.target === 'object' ? selectedEdge.target.name : selectedEdge.target}
-                            </span>
-                        </div>
-                        <div className="edge-dimension" style={{ color: DIM_COLORS[selectedEdge.type] || '#fff' }}>
-                            {(selectedEdge.type || 'CONNECTION').toUpperCase()}
-                        </div>
-                        {(() => {
-                            const sId = typeof selectedEdge.source === 'object' ? selectedEdge.source.id : selectedEdge.source;
-                            const tId = typeof selectedEdge.target === 'object' ? selectedEdge.target.id : selectedEdge.target;
-                            const info = getEdgeInfo(sId, tId, selectedEdge.type);
-                            return info ? (
-                                <div className="edge-rich-data">
-                                    <div className="edge-label">{info.label}</div>
-                                    <p className="edge-summary">{info.summary}</p>
-                                    <div className="hero-chips">
-                                        {info.dataPoints.map((dp, j) => (
-                                            <span key={j} className="hero-chip">{dp}</span>
-                                        ))}
-                                    </div>
-                                    <div className="hero-tension" style={{ marginTop: '10px' }}>
-                                        <span>TENSION</span>
-                                        <div className="tension-bar">
-                                            <div className="tension-fill" style={{
-                                                width: (info.tension * 100) + '%',
-                                                background: info.tension > 0.7 ? '#ff0066' : info.tension > 0.4 ? '#ff9900' : '#00ff88'
-                                            }} />
-                                        </div>
-                                        <span style={{ color: info.tension > 0.7 ? '#ff0066' : info.tension > 0.4 ? '#ff9900' : '#00ff88' }}>
-                                            {(info.tension * 100).toFixed(0)}%
-                                        </span>
-                                    </div>
-                                    {info.timeline && (
-                                        <div className="edge-timeline">
-                                            <div className="section-label" style={{ marginTop: '12px' }}>TIMELINE</div>
-                                            {info.timeline.map((t, j) => (
-                                                <div key={j} className="timeline-event">
-                                                    <span className="timeline-year">{t.year}</span>
-                                                    <span className="timeline-text">{t.event}</span>
-                                                </div>
-                                            ))}
-                                        </div>
-                                    )}
-                                </div>
-                            ) : (
-                                <div className="edge-metrics">
-                                    <div>Link Strength: <strong>{((selectedEdge.width || 1) * 20).toFixed(0)}%</strong></div>
-                                </div>
-                            );
-                        })()}
-                        <div className="edge-nav-btns" style={{ marginTop: '12px', display: 'flex', gap: '6px' }}>
-                            <button className="nexus-ctrl-btn" style={{ flex: 1 }} onClick={() => {
-                                const n = graphData.nodes.find(n => n.id === (typeof selectedEdge.source === 'object' ? selectedEdge.source.id : selectedEdge.source));
-                                if (n) { navigateToNode(n); setSelectedNode(n); setSelectedEdge(null); }
-                            }}>→ Source</button>
-                            <button className="nexus-ctrl-btn" style={{ flex: 1 }} onClick={() => {
-                                const n = graphData.nodes.find(n => n.id === (typeof selectedEdge.target === 'object' ? selectedEdge.target.id : selectedEdge.target));
-                                if (n) { navigateToNode(n); setSelectedNode(n); setSelectedEdge(null); }
-                            }}>→ Target</button>
-                        </div>
-                    </aside>
-                )}
-
-                {/* ── Tabbed Inspect Panel ─────────────────────────────────── */}
-                {selectedNode && (
-                    <aside className="nexus-inspect-panel">
-                        <div className="inspect-header-actions">
-                            <button className={`lock-btn ${lockedNode ? 'locked' : ''}`}
-                                onClick={toggleLock}
-                                title={lockedNode ? 'Unlock view (Esc)' : 'Lock this node\'s connections'}>
-                                {lockedNode ? '🔒 LOCKED' : '🔓 LOCK'}
-                            </button>
-                            <button className="inspect-close" aria-label="Close actor details" onClick={() => { setSelectedNode(null); setLockedNode(null); setInspectTab('overview'); }}>✕</button>
-                        </div>
-
-
-                        {/* GPC Context Card */}
-                        {selectedGPC && GPC_CONTEXT[selectedGPC] && GPC_CONTEXT[selectedGPC][selectedNode.id] && (
-                            <div className="gpc-context-card" style={{
-                                background: 'rgba(0,255,255,0.04)', border: '1px solid rgba(0,255,255,0.2)',
-                                borderRadius: '6px', padding: '12px 14px', marginBottom: '14px',
-                            }}>
-                                <div className="gpc-context-heading" style={{ letterSpacing: '2px', color: '#00ffff', marginBottom: '6px' }}>
-                                    🌐 {selectedGPC.toUpperCase()} CHALLENGE ANALYSIS
-                                </div>
-                                <p className="gpc-context-insight" style={{ color: '#ddd', lineHeight: '1.55', margin: '0 0 8px' }}>
-                                    {GPC_CONTEXT[selectedGPC][selectedNode.id].insight}
-                                </p>
-                                <div className="gpc-context-stakes" style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-                                    <span style={{ color: '#888' }}>STAKES:</span>
-                                    <span style={{
-                                        color: GPC_CONTEXT[selectedGPC][selectedNode.id].stakes === 'CRITICAL' ? '#ff0066'
-                                            : GPC_CONTEXT[selectedGPC][selectedNode.id].stakes === 'HIGH' ? '#ff9900' : '#00ff88',
-                                        fontWeight: 700
-                                    }}>{GPC_CONTEXT[selectedGPC][selectedNode.id].stakes}</span>
-                                </div>
-                                <div className="gpc-context-connections" style={{ marginTop: '8px', color: '#a5b4bc' }}>
-                                    Key connections: {GPC_CONTEXT[selectedGPC][selectedNode.id].connections.join(' · ')}
-                                </div>
-                            </div>
-                        )}
-
-                        {/* Breadcrumb when navigating within a lock */}
-                        {lockedNode && selectedNode && lockedNode.id !== selectedNode.id && (
-                            <div className="lock-breadcrumb">
-                                <button className="breadcrumb-link" onClick={() => { setSelectedNode(lockedNode); setInspectTab('overview'); }}
-                                    style={{ color: lockedNode.color }}>
-                                    🔒 {lockedNode.name}
-                                </button>
-                                <span className="breadcrumb-arrow">→</span>
-                                <span className="breadcrumb-current">{selectedNode.name}</span>
-                            </div>
-                        )}
-
-                        {/* Header with badges */}
-                        <div className="inspect-glow-header" style={{ borderBottom: `2px solid ${selectedNode.color}` }}>
-                            <div className="inspect-cat">{selectedNode.isAnchor ? (ACTOR_TYPE_LABELS[selectedNode.type] || '') : (selectedNode.category || '').toUpperCase()}</div>
-                            <h2 className="inspect-title">{selectedNode.name}</h2>
-                            {/* At-a-Glance Badges */}
-                            {nodeBadges.length > 0 && (
-                                <div className="badge-row">
-                                    {nodeBadges.map(b => (
-                                        <span key={b.label} className="node-badge" style={{ borderColor: b.color, color: b.color }}>
-                                            {b.icon} {b.label}
-                                        </span>
-                                    ))}
-                                </div>
-                            )}
-                        </div>
-
-                        {/* Tab Bar */}
-                        <div className="inspect-tabs">
-                            {[['overview','⬡ OVERVIEW'],['metrics','📊 METRICS'],['gpc','🌐 GPC'],['theory','⚛ THEORY']].map(([id, label]) => (
-                                <button key={id} className={`inspect-tab ${inspectTab === id ? 'active' : ''}`}
-                                    aria-pressed={inspectTab === id}
-                                    onClick={() => setInspectTab(id)}>{label}</button>
-                            ))}
-                        </div>
-
-                        {/* ── Tab: Overview ──────────────────────────────── */}
-                        {inspectTab === 'overview' && (
-                            <div className="inspect-tab-content">
-                                <div className="inspect-section">
-                                    <div className="section-label">STRATEGIC IMPACT</div>
-                                    <p className="section-body">{selectedNode.desc || 'No detailed impact projection available.'}</p>
-                                </div>
-
-                                {selectedNode.players && (
-                                    <div className="inspect-section">
-                                        <div className="section-label">KEY PLAYERS</div>
-                                        <p className="section-body" style={{ color: '#00ff88', fontFamily: 'Roboto Mono' }}>{selectedNode.players}</p>
-                                    </div>
-                                )}
-                                {selectedNode.timeline && (
-                                    <div className="inspect-section">
-                                        <div className="section-label">TIMELINE</div>
-                                        <p className="section-body" style={{ color: '#00ccff', fontFamily: 'Roboto Mono' }}>{selectedNode.timeline}</p>
-                                    </div>
-                                )}
-
-                                {/* Connection Summary Table */}
-                                {connectionSummary.length > 0 && (
-                                    <div className="inspect-section">
-                                        <div className="section-label">NAVIGATE CONNECTIONS ({connectionSummary.length})</div>
-                                        <div className="conn-nav-list">
-                                            {connectionSummary.map((c, i) => (
-                                                <button key={i} className="conn-nav-btn" onClick={() => navigateToNode(c.nodeRef)}
-                                                    style={{ '--conn-color': c.color }}>
-                                                    <span className="conn-nav-dot" style={{ background: c.color }} />
-                                                    <span className="conn-nav-name">{c.name}</span>
-                                                    <span className="conn-dim-pill" style={{ borderColor: c.color, color: c.color }}>{c.type.toUpperCase()}</span>
-                                                    <span className="conn-nav-arrow">→</span>
-                                                </button>
-                                            ))}
-                                        </div>
-                                    </div>
-                                )}
-                            </div>
-                        )}
-
-                        {/* ── Tab: Metrics ───────────────────────────────── */}
-                        {inspectTab === 'metrics' && radarMetrics && (
-                            <div className="inspect-tab-content">
-                                <div className="inspect-section">
-                                    <div className="section-label">SYSTEMIC RADAR METRICS</div>
-                                    <div className="radar-grid">
-                                        {[
-                                            ['Sovereign Autonomy', radarMetrics.autonomy, '#3399ff', 50, 'Independence of action; ability to act unilaterally without external constraint'],
-                                            ['Economic Penetration', radarMetrics.economicPenetration, '#00ccff', 45, 'Depth of involvement in global trade, investment, and financial networks'],
-                                            ['Conflict Exposure', radarMetrics.conflictExposure, '#ff0066', 30, 'Proximity to active conflicts, military tensions, or asymmetric threats'],
-                                            ['Resource Security', radarMetrics.resourceSecurity, '#bf55ec', 40, 'Control over or access to critical resources: energy, minerals, technology, pharma'],
-                                            ['Diplomatic Centrality', radarMetrics.diplomaticCentrality, '#00ff88', 50, 'Degree of involvement in multilateral institutions, treaties, and alliances'],
-                                        ].map(([label, val, color, avg]) => (
-                                            <div key={label} className="radar-metric" style={{ marginBottom: '6px' }}>
-                                                <div className="metric-title" style={{ color: '#c0c8cc' }}>{label}</div>
-                                                <div className="metric-bar-wrapper" style={{ position: 'relative', height: '10px', background: 'rgba(255,255,255,0.03)', borderRadius: '2px', border: '1px solid rgba(255,255,255,0.05)', overflow: 'visible' }}>
-                                                    <div style={{ position: 'absolute', left: `${avg}%`, top: '-4px', bottom: '-4px', width: '1px', borderLeft: '1px dashed rgba(255,255,255,0.4)', zIndex: 2 }} title={`Global Avg: ${avg}%`} />
-                                                    <div className="metric-bar" style={{ width: `${val}%`, background: `linear-gradient(90deg, ${color}88, ${color})`, height: '100%', borderRadius: '1px', boxShadow: `0 0 6px ${color}`, transition: 'width 0.5s ease' }} />
-                                                </div>
-                                                <div className="metric-value-row" style={{ textAlign: 'right', display: 'flex', justifyContent: 'space-between', marginTop: '1px' }}>
-                                                    <span className="metric-average" style={{ color: '#a5b4bc' }}>avg {avg}%</span>
-                                                    <span style={{ color: '#fff', fontWeight: 700 }}>{val}%</span>
-                                                </div>
-                                            </div>
-                                        ))}
-                                    </div>
-                                </div>
-                            </div>
-                        )}
-
-                        {/* ── Tab: GPC ───────────────────────────────────── */}
-                        {inspectTab === 'gpc' && (
-                            <div className="inspect-tab-content">
-                                {!selectedNode.isAnchor && selectedNode.rawData ? (
-                                    <div className="inspect-section">
-                                        <div className="section-label">HL GLOBAL POLITICAL CHALLENGES</div>
-                                        <div style={{ display: 'flex', flexDirection: 'column', gap: '8px', marginTop: '6px' }}>
-                                            {Object.entries(getGlobalChallenges(selectedNode.rawData)).map(([ch, txt]) => (
-                                                <div key={ch} className="gpc-card">
-                                                    <div className="gpc-card-header">
-                                                        <span>{CHALLENGE_ICONS[ch] || '⬢'}</span><span>{ch.toUpperCase()}</span>
-                                                    </div>
-                                                    <p className="gpc-card-body">{txt}</p>
-                                                </div>
-                                            ))}
-                                        </div>
-                                    </div>
-                                ) : (
-                                    <div className="inspect-section">
-                                        <p className="section-body" style={{ color: '#666', fontStyle: 'italic' }}>GPC analysis available for forecast nodes. Click a satellite node to view challenge mapping.</p>
-                                    </div>
-                                )}
-                            </div>
-                        )}
-
-                        {/* ── Tab: Theory ────────────────────────────────── */}
-                        {inspectTab === 'theory' && (
-                            <div className="inspect-tab-content">
-                                {theories[selectedTheory] ? (
-                                    <div className="inspect-section theoretical-lens-box" style={{ borderLeft: `3px solid ${theories[selectedTheory].color}` }}>
-                                        <div className="lens-header" style={{ color: theories[selectedTheory].color }}>
-                                            <span>⚛ {selectedTheory.toUpperCase()} INTERPRETATION</span>
-                                        </div>
-                                        <p className="lens-text">
-                                            {theories[selectedTheory].getInterpretation
-                                                ? theories[selectedTheory].getInterpretation(selectedNode.rawData || {
-                                                    'Entity/Subject': selectedNode.name,
-                                                    'Key Player/Organization': selectedNode.players,
-                                                    'Expected Impact/Value': selectedNode.desc,
-                                                    Broad_Category: selectedNode.category,
-                                                })
-                                                : 'No lens translation available.'}
-                                        </p>
-                                    </div>
-                                ) : (
-                                    <div className="inspect-section">
-                                        <p className="section-body" style={{ color: '#666' }}>Select an IR theory lens from the top bar to see interpretation.</p>
-                                    </div>
-                                )}
-                            </div>
-                        )}
-                    </aside>
-                )}
+                <NexusInspectorPanel
+                    selectedEdge={selectedEdge}
+                    selectedNode={selectedNode}
+                    lockedNode={lockedNode}
+                    selectedGPC={selectedGPC}
+                    inspectTab={inspectTab}
+                    onSelectInspectTab={setInspectTab}
+                    onCloseEdge={() => setSelectedEdge(null)}
+                    onCloseNode={() => {
+                        setSelectedNode(null);
+                        setLockedNode(null);
+                        setCompareNode(null);
+                        setInspectTab('overview');
+                    }}
+                    onToggleLock={toggleLock}
+                    onReturnToLockedNode={() => {
+                        setSelectedNode(lockedNode);
+                        setInspectTab('overview');
+                    }}
+                    onJumpToNodeById={nodeId => {
+                        const n = graphData.nodes.find(node => node.id === nodeId);
+                        if (n) {
+                            navigateToNode(n);
+                            setSelectedNode(n);
+                            setSelectedEdge(null);
+                        }
+                    }}
+                    onNavigateToNode={navigateToNode}
+                    nodeBadges={nodeBadges}
+                    connectionSummary={connectionSummary}
+                    radarMetrics={radarMetrics}
+                    theories={theories}
+                    selectedTheory={selectedTheory}
+                />
             </div>
         </div>
-        
     );
 }

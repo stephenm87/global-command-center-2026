@@ -31,3 +31,6 @@ coverage/
 
 # Playwright browsers
 playwright/.cache/
+
+# Local agent collaboration transcripts (kept on disk, excluded from deploys)
+review/claude-*.md

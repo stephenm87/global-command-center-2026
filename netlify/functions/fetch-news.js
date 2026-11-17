@@ -40,8 +40,15 @@ const CATEGORY_MAP = {
     'emission': 'Environment & Energy',
     'pandemic': 'Health & Society',
     'health': 'Health & Society',
-    'human rights': 'Health & Society',
     'refugee': 'Health & Society',
+    'human rights': 'Governance & Rights',
+    'election': 'Governance & Rights',
+    'constitution': 'Governance & Rights',
+    'parliament': 'Governance & Rights',
+    'judiciary': 'Governance & Rights',
+    'indigenous': 'Governance & Rights',
+    'democracy': 'Governance & Rights',
+    'referendum': 'Governance & Rights',
     'tech': 'Technology & Science',
     'ai': 'Technology & Science',
     'cyber': 'Technology & Science',
@@ -117,11 +124,14 @@ function extractCoordsFromEntities(entities) {
 async function analyzeArticle(text, apiKey) {
     try {
         const res = await fetch(
-            `https://language.googleapis.com/v1/documents:analyzeEntities?key=${apiKey}`,
+            'https://language.googleapis.com/v1/documents:analyzeEntities',
             {
                 method: 'POST',
                 signal: AbortSignal.timeout(10000),
-                headers: { 'Content-Type': 'application/json' },
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-Goog-Api-Key': apiKey
+                },
                 body: JSON.stringify({ document: { type: 'PLAIN_TEXT', content: text }, encodingType: 'UTF8' })
             }
         );
@@ -133,15 +143,16 @@ async function analyzeArticle(text, apiKey) {
     }
 }
 
-exports.handler = async (event, context) => {
-    const security = await protectEndpoint(event, { maxRequests: 30 });
+exports.handler = async (event) => {
+    const security = await protectEndpoint(event, { maxRequests: 30, scope: 'fetch-news' });
     if (security.response) return security.response;
 
+    const headers = security.headers;
     const serperKey = process.env.SERPER_API_KEY;
     const googleNlKey = process.env.GOOGLE_NL_API_KEY;
 
     if (!serperKey) {
-        return { statusCode: 500, body: JSON.stringify({ error: 'SERPER_API_KEY not configured' }) };
+        return { statusCode: 503, headers, body: JSON.stringify({ error: 'SERPER_API_KEY not configured' }) };
     }
 
     try {
@@ -166,7 +177,7 @@ exports.handler = async (event, context) => {
         const articles = serperData.news || [];
 
         if (articles.length === 0) {
-            return { statusCode: 200, body: JSON.stringify({ nodes: [], count: 0 }) };
+            return { statusCode: 200, headers, body: JSON.stringify({ nodes: [], count: 0 }) };
         }
 
         // 2. For each article: text-based coord inference (always works) + optional NL API enhancement
@@ -212,12 +223,16 @@ exports.handler = async (event, context) => {
 
         return {
             statusCode: 200,
-            headers: { 'Content-Type': 'application/json' },
+            headers,
             body: JSON.stringify({ nodes, count: nodes.length })
         };
 
     } catch (err) {
         console.error('fetch-news error:', err);
-        return { statusCode: 500, body: JSON.stringify({ error: 'News scan failed. Please try again later.' }) };
+        return {
+            statusCode: 500,
+            headers,
+            body: JSON.stringify({ error: 'News scan failed. Please try again later.' })
+        };
     }
 };

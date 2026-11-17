@@ -5,9 +5,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>AI-Powered Project Building — A Teacher's Guide</title>
-    <link
-        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;900&family=JetBrains+Mono:wght@400;500&display=swap"
-        rel="stylesheet">
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+    <link rel="stylesheet" href="/assets/fonts/fonts.css">
     <style>
         :root {
             --bg: #ffffff;
@@ -179,7 +178,7 @@
 
         /* CODE */
         code {
-            font-family: 'JetBrains Mono', monospace;
+            font-family: 'Roboto Mono', ui-monospace, SFMono-Regular, Menlo, monospace;
             background: var(--code-bg);
             padding: 2px 6px;
             border-radius: 4px;
@@ -193,7 +192,7 @@
             padding: 14px 18px;
             border-radius: 8px;
             overflow-x: auto;
-            font-family: 'JetBrains Mono', monospace;
+            font-family: 'Roboto Mono', ui-monospace, SFMono-Regular, Menlo, monospace;
             font-size: 0.8rem;
             line-height: 1.6;
             margin: 10px 0 14px;
@@ -353,11 +352,14 @@
         }
 
         .toc li {
-            padding: 7px 0;
+            padding: 4px 0;
             border-bottom: 1px dotted var(--border);
         }
 
         .toc li a {
+            display: inline-flex;
+            align-items: center;
+            min-height: 44px;
             font-weight: 600;
         }
 
@@ -1178,9 +1180,8 @@ git push origin main                         # Push → auto-deploys</code></pre
                 get event-specific analysis</p>
         </div>
         <div class="screenshot-item">
-            <img src="guide-images/feature-student-pin.png" alt="Student observation pin form overlaid on the globe">
-            <p class="caption"><strong>Student Pins:</strong> Lat/long input form for student observations (later
-                removed to keep focus on verified data)</p>
+            <img src="guide-images/feature-student-pin.png" alt="Historical student pin prototype later replaced by Guided Briefings">
+            <p class="caption"><strong>Evolution to Guided Briefings:</strong> An early student-pin prototype was retired in favor of verified Guided Briefings and multi-perspective editorial case studies</p>
         </div>
     </div>
 
@@ -1256,12 +1257,13 @@ git push origin main                         # Push → auto-deploys</code></pre
 ├── CODE_OF_CONDUCT.md                      # Contributor Covenant
 ├── public/
 │   ├── Global_Forecasts_2026_Enriched.csv  # 85 forecast events
-│   ├── live_intel.json                     # Verified news links
-│   └── news_brief.json                     # Headlines
+│   └── live_intel.json                     # Public fallback references
 └── src/
-    ├── App.jsx                             # Main component
-    ├── App.css                             # Cyberpunk styling
-    └── theories.js                         # 7 IR theoretical lenses</code></pre>
+    ├── App.jsx                             # Main workspace shell
+    ├── GuidedBriefings.jsx                 # Curated IB case tours
+    ├── caseStudies2026.js                  # 29 multi-source editorial cases
+    ├── App.css                             # Command-center styling
+    └── theories.js                         # IR theoretical lenses</code></pre>
 
     <!-- ============================== -->
     <!-- TROUBLESHOOTING                -->

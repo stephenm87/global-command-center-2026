@@ -24,6 +24,7 @@
         "dev": "vite",
         "sources:manifest": "node scripts/generate-source-health-manifest.mjs",
         "sources:manifest:check": "node scripts/generate-source-health-manifest.mjs --check",
+        "content:staleness": "node scripts/check-case-staleness.mjs",
         "build": "npm run sources:manifest && vite build",
         "test": "npm run sources:manifest:check && node --test netlify/functions/__tests__/*.node.test.js src/__tests__/*.node.test.*",
         "preview": "vite preview"

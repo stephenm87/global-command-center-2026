@@ -1,0 +1,776 @@
+{
+  "benchmark": "controlled-3000ms-concurrency-4",
+  "ranAt": "2026-11-16T07:56:19.040Z",
+  "timeoutMs": 3000,
+  "concurrency": 4,
+  "targetCount": 105,
+  "elapsedMs": 50919,
+  "summary": {
+    "healthy": 61,
+    "restricted": 26,
+    "broken": 0,
+    "unknown": 18
+  },
+  "breakdownByReasonOrStatus": {
+    "http-403": 26,
+    "timeout": 15,
+    "http-202": 6,
+    "http-200": 55,
+    "network-error": 3
+  },
+  "results": [
+    {
+      "id": "sudan-displacement-regional-spillover:core:0",
+      "url": "https://www.chathamhouse.org/publications/the-world-today/2026-06/emergency-response-rooms-work-sudan-we-could-change-aid-models",
+      "status": "restricted",
+      "httpStatus": 403,
+      "checkedAt": "2026-11-16T07:55:28.116Z"
+    },
+    {
+      "id": "sudan-displacement-regional-spillover:core:1",
+      "url": "https://data.unhcr.org/en/situations/sudansituation",
+      "status": "unknown",
+      "httpStatus": null,
+      "checkedAt": "2026-11-16T07:55:28.229Z",
+      "reason": "timeout"
+    },
+    {
+      "id": "sudan-displacement-regional-spillover:core:2",
+      "url": "https://apnews.com/article/sudan-war-children-drone-rsf-army-9ac6245afb2c0e3cfc96da5ceda14f48",
+      "status": "restricted",
+      "httpStatus": 403,
+      "checkedAt": "2026-11-16T07:55:28.230Z"
+    },
+    {
+      "id": "sudan-displacement-regional-spillover:supplemental:0",
+      "url": "https://www.thenewhumanitarian.org/opinion/2026/04/14/sudanese-communities-are-rebuilding-under-fire-will-berlin-back-them",
+      "status": "restricted",
+      "httpStatus": 403,
+      "checkedAt": "2026-11-16T07:55:28.231Z"
+    },
+    {
+      "id": "sudan-displacement-regional-spillover:supplemental:1",
+      "url": "https://www.unhcr.org/news/briefing-notes/three-years-war-weary-sudanese-remain-move",
+      "status": "restricted",
+      "httpStatus": 403,
+      "checkedAt": "2026-11-16T07:55:29.610Z"
+    },
+    {
+      "id": "sudan-displacement-regional-spillover:supplemental:2",
+      "url": "https://apnews.com/article/32a416bfbd680ea42edf6c0298d2617b",
+      "status": "restricted",
+      "httpStatus": 403,
+      "checkedAt": "2026-11-16T07:56:10.508Z"
+    },
+    {
+      "id": "sudan-displacement-regional-spillover:supplemental:3",
+      "url": "https://www.un.org/sg/en/content/highlight/2026-07-09.html",
+      "status": "healthy",
+      "httpStatus": 202,
+      "checkedAt": "2026-11-16T07:55:29.846Z"
+    },
+    {
+      "id": "myanmar-fragmented-sovereignty:core:0",
+      "url": "https://www.irrawaddy.com/news/burma/150000-people-displaced-by-fighting-in-pakokku-in-urgent-need.html",
+      "status": "restricted",
+      "httpStatus": 403,
+      "checkedAt": "2026-11-16T07:55:29.879Z"
+    },
+    {
+      "id": "myanmar-fragmented-sovereignty:core:1",
+      "url": "https://myanmar.un.org/en/319232-myanmar-humanitarian-update-no-52",
+      "status": "healthy",
+      "httpStatus": 200,
+      "checkedAt": "2026-11-16T07:55:31.057Z"
+    },
+    {
+      "id": "myanmar-fragmented-sovereignty:core:1:alternate:0",
+      "url": "https://myanmar.un.org/en/download/212411/319232",
+      "status": "healthy",
+      "httpStatus": 200,
+      "checkedAt": "2026-11-16T07:56:11.437Z"
+    },
+    {
+      "id": "myanmar-fragmented-sovereignty:core:2",
+      "url": "https://bangkok.ohchr.org/myanmar",
+      "status": "unknown",
+      "httpStatus": null,
+      "checkedAt": "2026-11-16T07:55:31.232Z",
+      "reason": "timeout"
+    },
+    {
+      "id": "south-china-sea-arbitral-award-ten-years:core:0",
+      "url": "https://newdelhipe.dfa.gov.ph/index.php/newsroom/embassy-news/1230-delhi-roundtable-accentuates-abiding-relevance-of-south-china-sea-arbitral-award-on-decennial",
+      "status": "restricted",
+      "httpStatus": 403,
+      "checkedAt": "2026-11-16T07:55:31.332Z"
+    },
+    {
+      "id": "south-china-sea-arbitral-award-ten-years:core:1",
+      "url": "https://docs.pca-cpa.org/2016/07/PH-CN-20160712-Award.pdf",
+      "status": "healthy",
+      "httpStatus": 200,
+      "checkedAt": "2026-11-16T07:55:31.817Z"
+    },
+    {
+      "id": "south-china-sea-arbitral-award-ten-years:core:2",
+      "url": "https://apnews.com/article/d0148a4175f80eedf70dcf2696f03ddd",
+      "status": "restricted",
+      "httpStatus": 403,
+      "checkedAt": "2026-11-16T07:56:15.609Z"
+    },
+    {
+      "id": "south-china-sea-arbitral-award-ten-years:supplemental:0",
+      "url": "https://www.mfa.gov.cn/eng/xw/fyrbt/202607/t20260714_11982116.html",
+      "status": "unknown",
+      "httpStatus": null,
+      "checkedAt": "2026-11-16T07:55:32.701Z",
+      "reason": "timeout"
+    },
+    {
+      "id": "syria-transition-return-sanctions:core:0",
+      "url": "https://stj-sy.org/en/syria-one-year-after-political-change-peace-spring-areas-block-displaced-persons-return/",
+      "status": "healthy",
+      "httpStatus": 200,
+      "checkedAt": "2026-11-16T07:55:33.438Z"
+    },
+    {
+      "id": "syria-transition-return-sanctions:core:1",
+      "url": "https://www.consilium.europa.eu/en/press/press-releases/2026/05/18/syria-council-renews-restrictive-measures-targeting-the-former-al-assad-regime-for-one-year-and-de-lists-certain-entities/",
+      "status": "restricted",
+      "httpStatus": 403,
+      "checkedAt": "2026-11-16T07:55:33.990Z"
+    },
+    {
+      "id": "syria-transition-return-sanctions:core:2",
+      "url": "https://www.compas.ox.ac.uk/article/beyond-safety-and-necessity-understanding-syrias-mass-return",
+      "status": "healthy",
+      "httpStatus": 200,
+      "checkedAt": "2026-11-16T07:55:34.234Z"
+    },
+    {
+      "id": "syria-transition-return-sanctions:supplemental:0",
+      "url": "https://www.unhcr.org/sites/default/files/2026-04/unhcr-syria-operational-update-march.pdf",
+      "status": "restricted",
+      "httpStatus": 403,
+      "checkedAt": "2026-11-16T07:56:11.288Z"
+    },
+    {
+      "id": "guyana-venezuela-essequibo-icj:core:0",
+      "url": "https://caricom.org/communique-fifty-first-regular-meeting-of-the-conference-of-heads-of-government-of-the-caribbean-community-caricom-saint-lucia/",
+      "status": "healthy",
+      "httpStatus": 200,
+      "checkedAt": "2026-11-16T07:55:35.495Z"
+    },
+    {
+      "id": "guyana-venezuela-essequibo-icj:core:1",
+      "url": "https://www.icj-cij.org/case/171",
+      "status": "healthy",
+      "httpStatus": 200,
+      "checkedAt": "2026-11-16T07:55:35.499Z"
+    },
+    {
+      "id": "guyana-venezuela-essequibo-icj:core:1:alternate:0",
+      "url": "https://icj-web.leman.un-icc.cloud/case/171",
+      "status": "healthy",
+      "httpStatus": 200,
+      "checkedAt": "2026-11-16T07:55:35.702Z"
+    },
+    {
+      "id": "guyana-venezuela-essequibo-icj:core:2",
+      "url": "https://apnews.com/article/2c9d13b0dbcf7f92d6f53264003ce626",
+      "status": "restricted",
+      "httpStatus": 403,
+      "checkedAt": "2026-11-16T07:56:16.410Z"
+    },
+    {
+      "id": "guyana-venezuela-essequibo-icj:supplemental:0",
+      "url": "https://www.icj-cij.org/sites/default/files/case-related/171/171-20260508-ora-01-00-bi.pdf",
+      "status": "healthy",
+      "httpStatus": 200,
+      "checkedAt": "2026-11-16T07:56:12.451Z"
+    },
+    {
+      "id": "usmca-2026-joint-review:core:0",
+      "url": "https://www.gob.mx/se/prensa/quinta-reunion-de-la-comision-de-libre-comercio-del-t-mec-proceso-de-revision-conjunta-previsto-en-el-articulo-34-7?idiom=es-MX",
+      "status": "healthy",
+      "httpStatus": 200,
+      "checkedAt": "2026-11-16T07:55:36.289Z"
+    },
+    {
+      "id": "usmca-2026-joint-review:core:1",
+      "url": "https://www.ustr.gov/about/policy-offices/press-office/press-releases/2026/july/american-farmers-ranchers-manufacturers-and-businesses-applaud-president-trump-not-rubber-stamping",
+      "status": "healthy",
+      "httpStatus": 200,
+      "checkedAt": "2026-11-16T07:55:36.796Z"
+    },
+    {
+      "id": "usmca-2026-joint-review:core:2",
+      "url": "https://www.csis.org/analysis/united-states-has-opted-not-extend-usmca",
+      "status": "healthy",
+      "httpStatus": 200,
+      "checkedAt": "2026-11-16T07:55:37.194Z"
+    },
+    {
+      "id": "usmca-2026-joint-review:supplemental:0",
+      "url": "https://www.canada.ca/en/global-affairs/news/2026/07/minister-leblanc-updates-provincial-and-territorial-ministers-responsible-for-international-trade-on-cusma-joint-review.html",
+      "status": "unknown",
+      "httpStatus": null,
+      "checkedAt": "2026-11-16T07:55:37.732Z",
+      "reason": "timeout"
+    },
+    {
+      "id": "tuvalu-australia-falepili-union:core:0",
+      "url": "https://devpolicy.org/hope-in-tuvalus-climate-change-response-from-falepili-to-digital-nation-20260220/",
+      "status": "unknown",
+      "httpStatus": null,
+      "checkedAt": "2026-11-16T07:55:38.050Z",
+      "reason": "timeout"
+    },
+    {
+      "id": "tuvalu-australia-falepili-union:core:1",
+      "url": "https://immi.homeaffairs.gov.au/visas/getting-a-visa/visa-listing/pacific-engagement/subclass-192-treaty-stream/ballot-registration",
+      "status": "restricted",
+      "httpStatus": 403,
+      "checkedAt": "2026-11-16T07:55:38.893Z"
+    },
+    {
+      "id": "tuvalu-australia-falepili-union:core:2",
+      "url": "https://ojs.victoria.ac.nz/vuwlr/article/view/10760",
+      "status": "unknown",
+      "httpStatus": null,
+      "checkedAt": "2026-11-16T07:55:39.731Z",
+      "reason": "timeout"
+    },
+    {
+      "id": "tuvalu-australia-falepili-union:supplemental:0",
+      "url": "https://www.dfat.gov.au/geo/tuvalu/australia-tuvalu-falepili-union-treaty",
+      "status": "unknown",
+      "httpStatus": null,
+      "checkedAt": "2026-11-16T07:55:40.734Z",
+      "reason": "timeout"
+    },
+    {
+      "id": "tuvalu-australia-falepili-union:supplemental:1",
+      "url": "https://immi.homeaffairs.gov.au/visas/getting-a-visa/visa-listing/pacific-engagement/subclass-192-treaty-stream/ballot-registration/ballot-country-status",
+      "status": "restricted",
+      "httpStatus": 403,
+      "checkedAt": "2026-11-16T07:56:13.012Z"
+    },
+    {
+      "id": "greenland-autonomy-security-minerals:core:0",
+      "url": "https://www.knr.gl/da/nyheder/trump-tilbagetraekning-af-styrker-i-europa-afhaenger-af-groenland",
+      "status": "healthy",
+      "httpStatus": 200,
+      "checkedAt": "2026-11-16T07:55:41.051Z"
+    },
+    {
+      "id": "greenland-autonomy-security-minerals:core:1",
+      "url": "https://govmin.gl/publications/greenland-mineral-resources-strategy-2025-2029/",
+      "status": "restricted",
+      "httpStatus": 403,
+      "checkedAt": "2026-11-16T07:55:41.313Z"
+    },
+    {
+      "id": "greenland-autonomy-security-minerals:core:2",
+      "url": "https://www.tandfonline.com/doi/full/10.1080/2154896X.2026.2628474",
+      "status": "restricted",
+      "httpStatus": 403,
+      "checkedAt": "2026-11-16T07:55:42.733Z"
+    },
+    {
+      "id": "greenland-autonomy-security-minerals:supplemental:0",
+      "url": "https://apnews.com/article/bbece2f899116788fe45525dcfe7d030",
+      "status": "restricted",
+      "httpStatus": 403,
+      "checkedAt": "2026-11-16T07:56:17.326Z"
+    },
+    {
+      "id": "greenland-autonomy-security-minerals:supplemental:1",
+      "url": "https://naalakkersuisut.gl/Nyheder/2026/01/1401_forsvaret?sc_lang=da",
+      "status": "healthy",
+      "httpStatus": 200,
+      "checkedAt": "2026-11-16T07:55:42.996Z"
+    },
+    {
+      "id": "greenland-autonomy-security-minerals:supplemental:2",
+      "url": "https://naalakkersuisut.gl/Nyheder/2026/03/1903_kommission?sc_lang=da",
+      "status": "healthy",
+      "httpStatus": 200,
+      "checkedAt": "2026-11-16T07:56:13.572Z"
+    },
+    {
+      "id": "eu-ai-act-transparency-implementation:core:0",
+      "url": "https://www.beuc.eu/news/eu-adopts-ai-omnibus-what-it-means-consumers",
+      "status": "healthy",
+      "httpStatus": 200,
+      "checkedAt": "2026-11-16T07:55:43.531Z"
+    },
+    {
+      "id": "eu-ai-act-transparency-implementation:core:1",
+      "url": "https://digital-strategy.ec.europa.eu/en/news/commission-publishes-guidelines-transparency-obligations-providers-and-deployers-certain-ai-systems",
+      "status": "healthy",
+      "httpStatus": 200,
+      "checkedAt": "2026-11-16T07:55:43.736Z"
+    },
+    {
+      "id": "eu-ai-act-transparency-implementation:core:2",
+      "url": "https://www.itpro.com/business/policy-and-legislation/three-things-you-need-to-know-about-the-new-eu-ai-act-rules",
+      "status": "healthy",
+      "httpStatus": 200,
+      "checkedAt": "2026-11-16T07:55:44.153Z"
+    },
+    {
+      "id": "eu-ai-act-transparency-implementation:supplemental:0",
+      "url": "https://eur-lex.europa.eu/eli/reg/2024/1689/oj?locale=en",
+      "status": "healthy",
+      "httpStatus": 202,
+      "checkedAt": "2026-11-16T07:55:45.182Z"
+    },
+    {
+      "id": "eu-ai-act-transparency-implementation:supplemental:1",
+      "url": "https://digital-strategy.ec.europa.eu/en/news/ai-omnibus-enters-force",
+      "status": "healthy",
+      "httpStatus": 200,
+      "checkedAt": "2026-11-16T07:56:13.652Z"
+    },
+    {
+      "id": "eastern-drc-peace-civilian-protection:core:0",
+      "url": "https://www.presidence.cd/actualite-detail/actualite/exclusif_la_rdc_et_le_rwanda_ont_signe_un_accord_de_paix_ce_vendredi_aux_etats_unis_damerique",
+      "status": "unknown",
+      "httpStatus": null,
+      "checkedAt": "2026-11-16T07:55:45.494Z",
+      "reason": "timeout"
+    },
+    {
+      "id": "eastern-drc-peace-civilian-protection:core:1",
+      "url": "https://main.un.org/securitycouncil/en/content/alliance-fleuve-congo-afc",
+      "status": "healthy",
+      "httpStatus": 202,
+      "checkedAt": "2026-11-16T07:55:46.596Z"
+    },
+    {
+      "id": "eastern-drc-peace-civilian-protection:core:2",
+      "url": "https://issafrica.org/iss-today/diplomacy-without-deterrence-won-t-bring-peace-in-eastern-drc",
+      "status": "healthy",
+      "httpStatus": 200,
+      "checkedAt": "2026-11-16T07:55:46.618Z"
+    },
+    {
+      "id": "sahel-after-ecowas-regional-order:core:0",
+      "url": "https://www.ecowas.int/press-statement-2/",
+      "status": "unknown",
+      "httpStatus": null,
+      "checkedAt": "2026-11-16T07:55:47.297Z",
+      "reason": "timeout"
+    },
+    {
+      "id": "sahel-after-ecowas-regional-order:core:1",
+      "url": "https://unowas.unmissions.org/en/news/before-the-security-council-special-representative-leonardo-santos-simao-calls-for",
+      "status": "unknown",
+      "httpStatus": null,
+      "checkedAt": "2026-11-16T07:55:48.476Z",
+      "reason": "timeout"
+    },
+    {
+      "id": "sahel-after-ecowas-regional-order:core:2",
+      "url": "https://issafrica.org/iss-today/how-ecowas-can-make-its-new-counter-terrorism-force-effective",
+      "status": "healthy",
+      "httpStatus": 200,
+      "checkedAt": "2026-11-16T07:56:14.679Z"
+    },
+    {
+      "id": "somaliland-recognition-red-sea-order:core:0",
+      "url": "https://www.horndiplomat.com/israel-officially-recognizes-somaliland-as-sovereign-state/",
+      "status": "healthy",
+      "httpStatus": 200,
+      "checkedAt": "2026-11-16T07:55:48.495Z"
+    },
+    {
+      "id": "somaliland-recognition-red-sea-order:core:1",
+      "url": "https://dppa.dfs.un.org/en/mtg-sc-10084-asg-khiari-29-dec-2025",
+      "status": "unknown",
+      "httpStatus": null,
+      "checkedAt": "2026-11-16T07:55:48.882Z",
+      "reason": "timeout"
+    },
+    {
+      "id": "somaliland-recognition-red-sea-order:core:2",
+      "url": "https://apnews.com/article/2447736e7355da4ac1ed182771f2e85e",
+      "status": "restricted",
+      "httpStatus": 403,
+      "checkedAt": "2026-11-16T07:56:17.474Z"
+    },
+    {
+      "id": "somaliland-recognition-red-sea-order:supplemental:0",
+      "url": "https://www.theeastafrican.co.ke/tea/news/east-africa/why-ssc-khaatumo-opposes-somaliland-s-bid-for-recognition-5086894",
+      "status": "restricted",
+      "httpStatus": 403,
+      "checkedAt": "2026-11-16T07:55:50.299Z"
+    },
+    {
+      "id": "zambia-electricity-reset-climate-access:core:0",
+      "url": "https://www.moe.gov.zm/?p=6323",
+      "status": "unknown",
+      "httpStatus": null,
+      "checkedAt": "2026-11-16T07:55:50.432Z",
+      "reason": "network-error"
+    },
+    {
+      "id": "zambia-electricity-reset-climate-access:core:1",
+      "url": "https://www.zambezira.org/hydrology/lake-levels",
+      "status": "healthy",
+      "httpStatus": 200,
+      "checkedAt": "2026-11-16T07:55:51.480Z"
+    },
+    {
+      "id": "zambia-electricity-reset-climate-access:core:2",
+      "url": "https://www.worldbank.org/en/country/zambia/publication/powering-zambia-s-transformation-from-electricity-crisis-to-catalyst-for-growth-and-jobs",
+      "status": "healthy",
+      "httpStatus": 200,
+      "checkedAt": "2026-11-16T07:55:51.883Z"
+    },
+    {
+      "id": "western-sahara-autonomy-self-determination:core:0",
+      "url": "https://diplomatie.ma/en/moroccan-sahara-spain-welcomes-adoption-resolution-2797-which-emphasizes-genuine-autonomy-under-moroccan-sovereignty-most-feasible-solution",
+      "status": "healthy",
+      "httpStatus": 200,
+      "checkedAt": "2026-11-16T07:55:52.006Z"
+    },
+    {
+      "id": "western-sahara-autonomy-self-determination:core:1",
+      "url": "https://digitallibrary.un.org/record/4093666?ln=en",
+      "status": "healthy",
+      "httpStatus": 202,
+      "checkedAt": "2026-11-16T07:55:52.050Z"
+    },
+    {
+      "id": "western-sahara-autonomy-self-determination:core:2",
+      "url": "https://www.hrw.org/news/2026/03/25/un-western-sahara-peoples-self-determination-at-risk",
+      "status": "healthy",
+      "httpStatus": 200,
+      "checkedAt": "2026-11-16T07:55:53.339Z"
+    },
+    {
+      "id": "libya-roadmap-elections-oil-assets:core:0",
+      "url": "https://libyaobserver.ly/news/un-led-talks-libya-seek-ways-break-electoral-deadlock",
+      "status": "healthy",
+      "httpStatus": 200,
+      "checkedAt": "2026-11-16T07:55:53.361Z"
+    },
+    {
+      "id": "libya-roadmap-elections-oil-assets:core:1",
+      "url": "https://main.un.org/securitycouncil/en/content/sres28192026",
+      "status": "healthy",
+      "httpStatus": 202,
+      "checkedAt": "2026-11-16T07:56:14.246Z"
+    },
+    {
+      "id": "libya-roadmap-elections-oil-assets:core:2",
+      "url": "https://www.chathamhouse.org/2026/07/why-us-plans-power-sharing-libya-will-not-work",
+      "status": "restricted",
+      "httpStatus": 403,
+      "checkedAt": "2026-11-16T07:56:10.043Z"
+    },
+    {
+      "id": "red-sea-yemen-humanitarian-economy:core:0",
+      "url": "https://sanaacenter.org/publications/policy-research/26389",
+      "status": "healthy",
+      "httpStatus": 200,
+      "checkedAt": "2026-11-16T07:55:53.925Z"
+    },
+    {
+      "id": "red-sea-yemen-humanitarian-economy:core:1",
+      "url": "https://www.imo.org/en/mediacentre/pressbriefings/pages/statement-on-recent-attacks-in-the-red-sea.aspx",
+      "status": "healthy",
+      "httpStatus": 200,
+      "checkedAt": "2026-11-16T07:55:53.953Z"
+    },
+    {
+      "id": "red-sea-yemen-humanitarian-economy:core:2",
+      "url": "https://www.chathamhouse.org/2026/07/houthi-red-sea-blockade-will-collective-maritime-security-be-defended-or-break-down",
+      "status": "restricted",
+      "httpStatus": 403,
+      "checkedAt": "2026-11-16T07:56:15.314Z"
+    },
+    {
+      "id": "indus-water-regime-under-strain:core:0",
+      "url": "https://mofa.gov.pk/press-releases/statement-by-the-spokesperson-regarding-indian-home-ministers-assertion-that-the-indus-waters-treaty-will-never-be-restored",
+      "status": "unknown",
+      "httpStatus": null,
+      "checkedAt": "2026-11-16T07:55:54.417Z",
+      "reason": "network-error"
+    },
+    {
+      "id": "indus-water-regime-under-strain:core:1",
+      "url": "https://pca-cpa.org/en/news/pca-press-release-pca-case-no-2023-01-the-indus-waters-western-rivers-arbitration-islamic-republic-of-pakistan-v-republic-of-india-3/",
+      "status": "restricted",
+      "httpStatus": 403,
+      "checkedAt": "2026-11-16T07:55:55.335Z"
+    },
+    {
+      "id": "indus-water-regime-under-strain:core:2",
+      "url": "https://www.chathamhouse.org/2025/05/india-pakistan-ceasefire-remains-shaky-relations-unlikely-return-status-quo",
+      "status": "restricted",
+      "httpStatus": 403,
+      "checkedAt": "2026-11-16T07:56:16.252Z"
+    },
+    {
+      "id": "bangladesh-ldc-graduation-decision:core:0",
+      "url": "https://ssgp.erd.gov.bd/news-posts/cdp-recommends-favorable-consideration-of-bangladeshs-request-for-extension-of-ldc-graduation-preparatory-period/",
+      "status": "unknown",
+      "httpStatus": null,
+      "checkedAt": "2026-11-16T07:55:55.397Z",
+      "reason": "network-error"
+    },
+    {
+      "id": "bangladesh-ldc-graduation-decision:core:1",
+      "url": "https://www.un.org/ldcportal/en/content/bangladesh-graduation-status",
+      "status": "healthy",
+      "httpStatus": 200,
+      "checkedAt": "2026-11-16T07:56:11.421Z"
+    },
+    {
+      "id": "bangladesh-ldc-graduation-decision:core:2",
+      "url": "https://cpd.org.bd/deferring-bangladeshs-ldc-graduation-and-the-road-ahead/",
+      "status": "healthy",
+      "httpStatus": 200,
+      "checkedAt": "2026-11-16T07:55:55.672Z"
+    },
+    {
+      "id": "kyrgyzstan-tajikistan-border-peace:core:0",
+      "url": "https://president.kg/ru/news/21/38920",
+      "status": "healthy",
+      "httpStatus": 200,
+      "checkedAt": "2026-11-16T07:55:56.235Z"
+    },
+    {
+      "id": "kyrgyzstan-tajikistan-border-peace:core:1",
+      "url": "https://unsdg.un.org/latest/stories/women-leaders-build-interethnic-cohesion-border-communities-kyrgyzstan",
+      "status": "restricted",
+      "httpStatus": 403,
+      "checkedAt": "2026-11-16T07:55:57.009Z"
+    },
+    {
+      "id": "kyrgyzstan-tajikistan-border-peace:core:2",
+      "url": "https://carnegieendowment.org/russia-eurasia/politika/2025/04/kyrgyzstan-tajikistan-border-deal",
+      "status": "healthy",
+      "httpStatus": 200,
+      "checkedAt": "2026-11-16T07:55:57.387Z"
+    },
+    {
+      "id": "mongolia-coal-critical-minerals-transition:core:0",
+      "url": "https://mongolia.gov.mn/news/view/27582",
+      "status": "healthy",
+      "httpStatus": 200,
+      "checkedAt": "2026-11-16T07:55:58.119Z"
+    },
+    {
+      "id": "mongolia-coal-critical-minerals-transition:core:1",
+      "url": "https://www.undp.org/mongolia/publications/just-energy-transition-framework",
+      "status": "unknown",
+      "httpStatus": null,
+      "checkedAt": "2026-11-16T07:55:58.130Z",
+      "reason": "timeout"
+    },
+    {
+      "id": "mongolia-coal-critical-minerals-transition:core:2",
+      "url": "https://thinkmongol.mn/en/post/policybrief-7",
+      "status": "healthy",
+      "httpStatus": 200,
+      "checkedAt": "2026-11-16T07:55:58.295Z"
+    },
+    {
+      "id": "indonesia-nickel-development-bargain:core:0",
+      "url": "https://www.bkpm.go.id/en/info/press-release/investment-realization-reaches-idr-1-010-6-trillion-in-the-first-half-of-2026-creating-1-4-million-jobs",
+      "status": "healthy",
+      "httpStatus": 200,
+      "checkedAt": "2026-11-16T07:55:59.356Z"
+    },
+    {
+      "id": "indonesia-nickel-development-bargain:core:1",
+      "url": "https://www.wto.org/english/tratop_e/dispu_e/cases_e/ds592_e.htm",
+      "status": "healthy",
+      "httpStatus": 200,
+      "checkedAt": "2026-11-16T07:56:00.604Z"
+    },
+    {
+      "id": "indonesia-nickel-development-bargain:core:2",
+      "url": "https://www.lowyinstitute.org/the-interpreter/indonesia-downstreaming-dilemma",
+      "status": "healthy",
+      "httpStatus": 200,
+      "checkedAt": "2026-11-16T07:56:00.671Z"
+    },
+    {
+      "id": "mekong-energy-food-bargain:core:0",
+      "url": "https://en.mae.gov.vn/Pages/chi-tiet-tin-Eng.aspx?ItemID=9133",
+      "status": "unknown",
+      "httpStatus": null,
+      "checkedAt": "2026-11-16T07:56:01.132Z",
+      "reason": "timeout"
+    },
+    {
+      "id": "mekong-energy-food-bargain:core:1",
+      "url": "https://www.mrcmekong.org/publications/an-inception-report-on-piloting-a-joint-environmental-monitoring-programme-on-two-mekong-mainstream-dams-don-sahong-hydropower-project-and-xayaburi-hydropower-project-6/",
+      "status": "healthy",
+      "httpStatus": 200,
+      "checkedAt": "2026-11-16T07:56:02.032Z"
+    },
+    {
+      "id": "mekong-energy-food-bargain:core:2",
+      "url": "https://www.stimson.org/2025/balancing-energy-and-ecology-floating-solar-in-the-3s-river-basin/",
+      "status": "restricted",
+      "httpStatus": 403,
+      "checkedAt": "2026-11-16T07:56:02.090Z"
+    },
+    {
+      "id": "pacific-seabed-governance:core:0",
+      "url": "https://www.nauru.gov.nr/government-information-office/media-release/media-release-nauru%2C-tmc-sign-new-agreement_6jun2025.aspx",
+      "status": "healthy",
+      "httpStatus": 200,
+      "checkedAt": "2026-11-16T07:56:02.161Z"
+    },
+    {
+      "id": "pacific-seabed-governance:core:1",
+      "url": "https://isa.org.jm/session-31-council-part-2-july-2026/",
+      "status": "healthy",
+      "httpStatus": 200,
+      "checkedAt": "2026-11-16T07:56:03.438Z"
+    },
+    {
+      "id": "pacific-seabed-governance:core:2",
+      "url": "https://www.nature.com/articles/s41586-025-08921-3",
+      "status": "unknown",
+      "httpStatus": null,
+      "checkedAt": "2026-11-16T07:56:04.134Z",
+      "reason": "timeout"
+    },
+    {
+      "id": "haiti-security-legitimacy-haitian-ownership:core:0",
+      "url": "https://web.rnddh.org/wp-content/uploads/2026/06/5-Rap-PNH-12Juin2026.ENG_.pdf",
+      "status": "healthy",
+      "httpStatus": 200,
+      "checkedAt": "2026-11-16T07:56:04.231Z"
+    },
+    {
+      "id": "haiti-security-legitimacy-haitian-ownership:core:1",
+      "url": "https://www.un.org/sg/en/content/highlight/2026-04-01.html",
+      "status": "healthy",
+      "httpStatus": 202,
+      "checkedAt": "2026-11-16T07:56:15.868Z"
+    },
+    {
+      "id": "haiti-security-legitimacy-haitian-ownership:core:2",
+      "url": "https://www.hrw.org/world-report/2026/country-chapters/haiti",
+      "status": "healthy",
+      "httpStatus": 200,
+      "checkedAt": "2026-11-16T07:56:14.783Z"
+    },
+    {
+      "id": "amazon-indigenous-co-governance:core:0",
+      "url": "https://coicamazonia.org/13933-2/",
+      "status": "healthy",
+      "httpStatus": 200,
+      "checkedAt": "2026-11-16T07:56:05.115Z"
+    },
+    {
+      "id": "amazon-indigenous-co-governance:core:1",
+      "url": "https://otca.org/en/wp-content/uploads/2025/08/BOGOTA-DECLARATION_Presidential-Summit.pdf",
+      "status": "unknown",
+      "httpStatus": null,
+      "checkedAt": "2026-11-16T07:56:05.399Z",
+      "reason": "timeout"
+    },
+    {
+      "id": "amazon-indigenous-co-governance:core:2",
+      "url": "https://www.wribrasil.org.br/cop30/principais-temas",
+      "status": "healthy",
+      "httpStatus": 200,
+      "checkedAt": "2026-11-16T07:56:05.948Z"
+    },
+    {
+      "id": "rio-bravo-rio-grande-water-treaty:core:0",
+      "url": "https://www.gob.mx/conagua/prensa/mexico-y-estados-unidos-acuerdan-un-plan-tecnico-para-la-gestion-del-agua-en-la-cuenca-del-rio-bravo-conforme-al-tratado-de-1944-418614?idiom=es",
+      "status": "healthy",
+      "httpStatus": 200,
+      "checkedAt": "2026-11-16T07:56:12.748Z"
+    },
+    {
+      "id": "rio-bravo-rio-grande-water-treaty:core:1",
+      "url": "https://www.ibwc.gov/wp-content/uploads/2024/11/IBWC-Signs-Minute-331-Focused-on-Improving-Reliability-Predictability-of-Rio-Grande-Water-Deliveries.pdf",
+      "status": "healthy",
+      "httpStatus": 200,
+      "checkedAt": "2026-11-16T07:56:07.136Z"
+    },
+    {
+      "id": "rio-bravo-rio-grande-water-treaty:core:2",
+      "url": "https://www.texastribune.org/2025/05/15/texas-water-rio-grande-valley-drought/",
+      "status": "healthy",
+      "httpStatus": 200,
+      "checkedAt": "2026-11-16T07:56:07.298Z"
+    },
+    {
+      "id": "moldova-transnistria-energy-eu-accession:core:0",
+      "url": "https://promolex.md/en/promo-lex-association-launches-the-report-human-rights-in-the-transnistrian-region-of-the-republic-of-moldova-retrospective-of-2025/",
+      "status": "healthy",
+      "httpStatus": 200,
+      "checkedAt": "2026-11-16T07:56:07.828Z"
+    },
+    {
+      "id": "moldova-transnistria-energy-eu-accession:core:1",
+      "url": "https://www.consilium.europa.eu/en/policies/moldova/",
+      "status": "restricted",
+      "httpStatus": 403,
+      "checkedAt": "2026-11-16T07:56:11.670Z"
+    },
+    {
+      "id": "moldova-transnistria-energy-eu-accession:core:2",
+      "url": "https://ecfr.eu/article/cold-calculations-why-a-freezing-transnistria-helps-moscow/",
+      "status": "healthy",
+      "httpStatus": 200,
+      "checkedAt": "2026-11-16T07:56:08.403Z"
+    },
+    {
+      "id": "high-seas-bbnj-implementation:core:0",
+      "url": "https://www.un.org/bbnjagreement/sites/default/files/2026-03/PSIDS_SubBodiesCorr_25March.pdf",
+      "status": "healthy",
+      "httpStatus": 200,
+      "checkedAt": "2026-11-16T07:56:16.668Z"
+    },
+    {
+      "id": "high-seas-bbnj-implementation:core:1",
+      "url": "https://www.un.org/bbnjagreement/en",
+      "status": "healthy",
+      "httpStatus": 200,
+      "checkedAt": "2026-11-16T07:56:17.446Z"
+    },
+    {
+      "id": "high-seas-bbnj-implementation:core:2",
+      "url": "https://enb.iisd.org/sites/default/files/2026-04/enb25262e.pdf",
+      "status": "healthy",
+      "httpStatus": 200,
+      "checkedAt": "2026-11-16T07:56:08.591Z"
+    },
+    {
+      "id": "who-pathogen-access-benefit-sharing:core:0",
+      "url": "https://au.int/sites/default/files/pressreleases/46323-pr-Press_release_Ambassadors_workshop_23_April_2026_E_FINAL.pdf",
+      "status": "healthy",
+      "httpStatus": 200,
+      "checkedAt": "2026-11-16T07:56:08.656Z"
+    },
+    {
+      "id": "who-pathogen-access-benefit-sharing:core:1",
+      "url": "https://www.who.int/news/item/20-07-2026-who-member-states-continue-negotiations-on-the-pathogen-access-and-benefit-sharing-annex",
+      "status": "healthy",
+      "httpStatus": 200,
+      "checkedAt": "2026-11-16T07:56:09.830Z"
+    },
+    {
+      "id": "who-pathogen-access-benefit-sharing:core:2",
+      "url": "https://www.bmj.com/content/392/bmj-2025-086069",
+      "status": "restricted",
+      "httpStatus": 403,
+      "checkedAt": "2026-11-16T07:56:09.964Z"
+    }
+  ]
+}

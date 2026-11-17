@@ -1,5 +1,8 @@
 import { EDGE_DESCRIPTIONS } from './nexusEdgeData';
 import { CASE_STUDIES_2026 } from './caseStudies2026';
+import { resolveActorId } from './nexus/actorIds';
+
+export { resolveActorId };
 
 export const NEXUS_ACTORS = {
     USA: { id: 'USA', name: 'United States', shortName: 'United States', type: 'State', region: 'North America', color: '#5eead4', description: 'A central security, technology, financial, and alliance actor whose decisions connect multiple regional systems.' },
@@ -45,7 +48,7 @@ const STRUCTURAL_RELATIONSHIPS = [
     { source: 'MilitantPMC', target: 'Europe', dimensions: ['conflict'], salience: .44, label: 'SECURITY FRICTION', summary: 'Sanctions, accountability measures, and overseas operations connect armed networks to European security policy.' },
 ];
 
-const ACTOR_KEYWORDS = {
+export const ACTOR_KEYWORDS = {
     USA: /\bunited states\b|\bu\.s\.|\busa\b|washington|american|trump|biden/i,
     China: /\bchina\b|chinese|beijing|xi jinping/i,
     Russia: /\brussia\b|russian|moscow|kremlin|putin|wagner/i,

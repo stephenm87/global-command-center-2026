@@ -130,3 +130,79 @@ test('rate limits repeated requests from the same authenticated user', async () 
     assert.equal(second.response.statusCode, 429);
     assert.ok(second.response.headers['Retry-After']);
 });
+
+test('scopes rate-limit buckets per endpoint and returns CORS + private Cache-Control headers for 200 responses', async () => {
+    global.fetch = async (_url, init) => {
+        assert.ok(init.signal, 'Supabase /auth/v1/user fetch must include an AbortSignal timeout');
+        return {
+            ok: true,
+            json: async () => ({ id: 'scoped-user', email: 'scoped@example.com' }),
+        };
+    };
+
+    const { protectEndpoint } = require('../security');
+    const previewOrigin = 'https://deploy-preview-42--globalcommandcenter2026.netlify.app';
+    const reqEvent = event({
+        headers: {
+            authorization: 'Bearer access-token',
+            origin: previewOrigin,
+        },
+    });
+
+    const scan1 = await protectEndpoint(reqEvent, { maxRequests: 1, scope: 'deep-scan' });
+    const summary1 = await protectEndpoint(reqEvent, { maxRequests: 1, scope: 'ai-summary' });
+    const scan2 = await protectEndpoint(reqEvent, { maxRequests: 1, scope: 'deep-scan' });
+
+    assert.equal(scan1.response, undefined);
+    assert.equal(summary1.response, undefined, 'Different endpoint scope must not exhaust user quota');
+    assert.equal(scan2.response.statusCode, 429);
+    assert.equal(scan1.headers['Access-Control-Allow-Origin'], previewOrigin);
+    assert.equal(scan1.headers['Cache-Control'], 'private, no-store');
+});
+
+test('allows 30 distinct classroom users on one shared school IP even after repeated invalid tokens on that IP', async () => {
+    let supabaseCalls = 0;
+    global.fetch = async (_url, init) => {
+        supabaseCalls += 1;
+        const authHeader = init.headers.Authorization || '';
+        const match = authHeader.match(/^Bearer\s+student-token-(\d+)$/);
+        if (!match) {
+            return { ok: false };
+        }
+        const studentNum = match[1];
+        return {
+            ok: true,
+            json: async () => ({ id: `student-${studentNum}`, email: `student${studentNum}@school.edu` }),
+        };
+    };
+
+    const { protectEndpoint } = require('../security');
+    const sharedSchoolIp = '198.51.100.42';
+
+    // 50 invalid Bearer attempts on the same school NAT must not lock out valid students
+    // and repeated identical bad tokens should be cached locally rather than hammering Supabase 50 times.
+    for (let i = 0; i < 50; i += 1) {
+        const badRes = await protectEndpoint(event({
+            headers: {
+                authorization: 'Bearer invalid-classroom-token',
+                'x-nf-client-connection-ip': sharedSchoolIp,
+            },
+        }), { maxRequests: 15, scope: 'deep-scan' });
+        assert.equal(badRes.response.statusCode, 401);
+    }
+    assert.ok(supabaseCalls <= 5, `Expected repeated bad token to stop hitting Supabase after caching, got ${supabaseCalls} calls`);
+
+    // Now 30 students on that exact same IP each make 2 Deep Scan requests (60 valid requests total).
+    for (let student = 1; student <= 30; student += 1) {
+        for (let scan = 1; scan <= 2; scan += 1) {
+            const okRes = await protectEndpoint(event({
+                headers: {
+                    authorization: `Bearer student-token-${student}`,
+                    'x-nf-client-connection-ip': sharedSchoolIp,
+                },
+            }), { maxRequests: 15, scope: 'deep-scan' });
+            assert.equal(okRes.response, undefined, `Student ${student} scan ${scan} should not be blocked by school NAT sharing`);
+            assert.equal(okRes.user.id, `student-${student}`);
+        }
+    }
+});

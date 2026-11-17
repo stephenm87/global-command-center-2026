@@ -1,0 +1,281 @@
+{
+  "verifiedAt": "2026-11-16T22:52:50.592Z",
+  "cspHeader": "default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; font-src 'self'; img-src 'self' data: blob:; connect-src 'self' https://*.supabase.co; frame-src 'none'; object-src 'none'; base-uri 'self'; form-action 'self'; worker-src blob:",
+  "routes": {
+    "briefings": {
+      "threeOrGlobeLoaded": false,
+      "externalRequests": [],
+      "statusText": "Showing 6 of 29 cases\nShow all 29",
+      "pageErrors": [],
+      "failedResponses": [],
+      "audit": {
+        "viewport": {
+          "w": 1440,
+          "h": 900
+        },
+        "horizontalOverflow": false,
+        "undersizedCount": 0,
+        "undersizedSample": [],
+        "lowContrastCount": 0,
+        "lowContrastSample": [],
+        "unlabelledInputs": [],
+        "cspViolations": []
+      }
+    },
+    "nexus": {
+      "threeLoadedInFocus": false,
+      "lowercaseResolvedHeading": "European Union and United Kingdom",
+      "canvasCount3D": 1,
+      "externalRequests": [],
+      "pageErrors": [],
+      "failedResponses": [],
+      "focusAudit": {
+        "viewport": {
+          "w": 1440,
+          "h": 900
+        },
+        "horizontalOverflow": false,
+        "undersizedCount": 0,
+        "undersizedSample": [],
+        "lowContrastCount": 0,
+        "lowContrastSample": [],
+        "unlabelledInputs": [],
+        "cspViolations": []
+      },
+      "nexus3DAudit": {
+        "viewport": {
+          "w": 1440,
+          "h": 900
+        },
+        "horizontalOverflow": false,
+        "undersizedCount": 0,
+        "undersizedSample": [],
+        "lowContrastCount": 0,
+        "lowContrastSample": [],
+        "unlabelledInputs": [],
+        "cspViolations": []
+      }
+    },
+    "globeDesktop": {
+      "externalRequests": [],
+      "mineralsSymbols": [
+        "Au",
+        "Ag",
+        "Li",
+        "Co",
+        "Cu",
+        "REE"
+      ],
+      "mineralsPrices": [
+        "$2,940/oz (2026 Q1 ref)",
+        "$33.40/oz (2026 Q1 ref)",
+        "$10,800/t LCE (2026 Q1 ref)",
+        "$24,500/t (2026 Q1 ref)",
+        "$4.45/lb (2026 Q1 ref)",
+        "Export-controlled / Monitored"
+      ],
+      "deepScanCtaVisible": true,
+      "deepScanErrorText": "🔒 Sign in with a magic link to run Firecrawl article extraction and AI intelligence briefs.\nSIGN IN TO UNLOCK →",
+      "focusEscapedAuthModal": false,
+      "footerHasLiteralAsterisks": false,
+      "cardBriefingNavUrl": "http://127.0.0.1:55675/?view=briefings&tour=tuvalu-australia-falepili-union&step=1",
+      "cardBriefingHeading": "Tuvalu–Australia Falepili Union",
+      "pageErrors": [],
+      "failedResponses": [],
+      "globeAudit": {
+        "viewport": {
+          "w": 1440,
+          "h": 900
+        },
+        "horizontalOverflow": false,
+        "undersizedCount": 0,
+        "undersizedSample": [],
+        "lowContrastCount": 0,
+        "lowContrastSample": [],
+        "unlabelledInputs": [],
+        "cspViolations": []
+      },
+      "detailModalAudit": {
+        "viewport": {
+          "w": 1440,
+          "h": 900
+        },
+        "horizontalOverflow": false,
+        "undersizedCount": 0,
+        "undersizedSample": [],
+        "lowContrastCount": 0,
+        "lowContrastSample": [],
+        "unlabelledInputs": [],
+        "cspViolations": []
+      },
+      "authModalAudit": {
+        "viewport": {
+          "w": 1440,
+          "h": 900
+        },
+        "horizontalOverflow": false,
+        "undersizedCount": 0,
+        "undersizedSample": [],
+        "lowContrastCount": 0,
+        "lowContrastSample": [],
+        "unlabelledInputs": [],
+        "cspViolations": []
+      }
+    },
+    "mobileGlobe390": {
+      "threeLoadedBeforeOptIn": false,
+      "headerHeight": 150,
+      "canvasCountAfterOptIn": 1,
+      "cspViolationsAfterOptIn": [],
+      "pageErrors": [],
+      "failedResponses": [],
+      "mobileAuditBeforeOptIn": {
+        "viewport": {
+          "w": 390,
+          "h": 844
+        },
+        "horizontalOverflow": false,
+        "undersizedCount": 0,
+        "undersizedSample": [],
+        "lowContrastCount": 0,
+        "lowContrastSample": [],
+        "unlabelledInputs": [],
+        "cspViolations": []
+      }
+    },
+    "teacherGuide": {
+      "status": 200,
+      "externalRequests": [],
+      "imgStats": [
+        {
+          "src": "/assets/example-history-warlord-map-Bmw3d-XS.png",
+          "complete": true,
+          "naturalWidth": 1440,
+          "naturalHeight": 749
+        },
+        {
+          "src": "/assets/evolution-1-early-CgNMAJQS.png",
+          "complete": true,
+          "naturalWidth": 1440,
+          "naturalHeight": 782
+        },
+        {
+          "src": "/assets/evolution-2-intel-feed-BYdcWSDy.png",
+          "complete": true,
+          "naturalWidth": 1440,
+          "naturalHeight": 782
+        },
+        {
+          "src": "/assets/evolution-3-final-B2J0CYRQ.png",
+          "complete": true,
+          "naturalWidth": 1440,
+          "naturalHeight": 782
+        },
+        {
+          "src": "/assets/feature-theoretical-lens-1ziChXaH.png",
+          "complete": true,
+          "naturalWidth": 1440,
+          "naturalHeight": 782
+        },
+        {
+          "src": "/assets/feature-student-pin-AftsMKlY.png",
+          "complete": true,
+          "naturalWidth": 1440,
+          "naturalHeight": 782
+        },
+        {
+          "src": "/assets/feature-compliance-wdX_l7fk.png",
+          "complete": true,
+          "naturalWidth": 1440,
+          "naturalHeight": 782
+        }
+      ],
+      "pageErrors": [],
+      "failedResponses": [],
+      "teacherGuideAudit": {
+        "viewport": {
+          "w": 1440,
+          "h": 900
+        },
+        "horizontalOverflow": false,
+        "undersizedCount": 10,
+        "undersizedSample": [
+          {
+            "tag": "a",
+            "cls": "",
+            "text": "The Global Command Center",
+            "w": 182.3,
+            "h": 16
+          },
+          {
+            "tag": "a",
+            "cls": "",
+            "text": "serper.dev",
+            "w": 68.5,
+            "h": 17
+          },
+          {
+            "tag": "a",
+            "cls": "",
+            "text": "firecrawl.dev",
+            "w": 83,
+            "h": 17
+          },
+          {
+            "tag": "a",
+            "cls": "",
+            "text": "nodejs.org",
+            "w": 71.1,
+            "h": 17
+          },
+          {
+            "tag": "a",
+            "cls": "",
+            "text": "git-scm.com",
+            "w": 84.9,
+            "h": 17
+          },
+          {
+            "tag": "a",
+            "cls": "",
+            "text": "github.com/signup",
+            "w": 125.3,
+            "h": 17
+          },
+          {
+            "tag": "a",
+            "cls": "",
+            "text": "app.netlify.com",
+            "w": 103,
+            "h": 17
+          },
+          {
+            "tag": "a",
+            "cls": "",
+            "text": "Contributor Covenant",
+            "w": 145.2,
+            "h": 17
+          },
+          {
+            "tag": "a",
+            "cls": "",
+            "text": "serper.dev",
+            "w": 68.5,
+            "h": 17
+          },
+          {
+            "tag": "a",
+            "cls": "",
+            "text": "firecrawl.dev",
+            "w": 83,
+            "h": 17
+          }
+        ],
+        "lowContrastCount": 0,
+        "lowContrastSample": [],
+        "unlabelledInputs": [],
+        "cspViolations": []
+      }
+    }
+  }
+}
