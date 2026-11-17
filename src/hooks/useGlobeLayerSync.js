@@ -9,6 +9,18 @@ import {
     clusterPoints,
     formatGlobePointTooltip,
 } from '../navigationState.mjs';
+import {
+    caseColor,
+    hexToRgba,
+    buildCaseRings,
+    buildCaseArcs,
+    buildConflictCasePairs,
+} from '../globe/caseGlobeLayers.mjs';
+
+const prefersReducedMotion = () => (
+    typeof window !== 'undefined'
+    && window.matchMedia?.('(prefers-reduced-motion: reduce)').matches
+);
 
 export function useGlobeLayerSync({
     globeEl,
@@ -155,9 +167,9 @@ export function useGlobeLayerSync({
 
         const globeItems = showEditorialCases ? filtered : filtered.filter(item => !item.isCaseStudy);
         const rawPoints = globeItems.flatMap(item => {
-            const baseColor = item.isLive
-                ? '#00ffff'
-                : (categoryColors[item.Broad_Category] || (item.isCaseStudy ? '#b69cff' : '#ffffff'));
+            const baseColor = item.isCaseStudy
+                ? caseColor(item)
+                : item.isLive ? '#00ffff' : (categoryColors[item.Broad_Category] || '#ffffff');
             const color = getPointColor(item, baseColor);
             const opacity = getPointOpacity(item);
             const fallbackLocation = {
@@ -174,7 +186,7 @@ export function useGlobeLayerSync({
                 .map(location => ({
                     lat: Number(location.latitude),
                     lng: Number(location.longitude),
-                    size: (item.isCaseStudy ? 1.35 : item.isLive ? 1.2 : 0.8) * (theoryLens && opacity < 0.5 ? 0.4 : 1),
+                    size: (item.isCaseStudy ? 0.95 : item.isLive ? 1.2 : 0.8) * (theoryLens && opacity < 0.5 ? 0.4 : 1),
                     color,
                     opacity,
                     data: item,
@@ -187,7 +199,7 @@ export function useGlobeLayerSync({
 
         globeEl.current
             .pointsData(forecastPoints)
-            .pointAltitude(point => (point.data.isCaseStudy ? 0.035 : 0.01))
+            .pointAltitude(point => (point.data?.isCaseStudy ? 0.03 : 0.01))
             .pointRadius('size')
             .pointColor('color')
             .onPointClick(point => {
@@ -206,110 +218,44 @@ export function useGlobeLayerSync({
         globeEl.current.atmosphereColor(stressColor);
         globeEl.current.atmosphereAltitude(0.15 + (stressLevel / 500));
 
-        const classifyRelationship = (a, b) => {
-            const text = [
-                a.data['Entity/Subject'], a.data['Expected Impact/Value'],
-                b.data['Entity/Subject'], b.data['Expected Impact/Value'],
-            ].join(' ').toLowerCase();
-            if (/war|military|attack|missile|troops|drone|weapon|navy|armed|combat|siege|nuclear/.test(text))
-                return { type: 'MILITARY', color: ['#ff0033', '#ff4400', '#ff0033'], icon: '⚔️', hex: '#ff2200' };
-            if (/sanction|tariff|trade.war|embargo|export.ban|economic|gdp|inflation|currency/.test(text))
-                return { type: 'ECONOMIC', color: ['#ff9900', '#ffcc00', '#ff9900'], icon: '💰', hex: '#ff9900' };
-            if (/territory|border|sea|island|claim|sovereignty|occupation|annex/.test(text))
-                return { type: 'TERRITORIAL', color: ['#ffff00', '#ffe000', '#ffff00'], icon: '🗺️', hex: '#ffdd00' };
-            if (/famine|refugee|aid|disease|hunger|humanitarian|food.crisis|displaced/.test(text))
-                return { type: 'HUMANITARIAN', color: ['#00ff88', '#00ffcc', '#00ff88'], icon: '🏥', hex: '#00ff99' };
-            return { type: 'DIPLOMATIC', color: ['#cc00ff', '#ff00cc', '#cc00ff'], icon: '🤝', hex: '#cc44ff' };
-        };
+        // Editorial case layers: pulsing rings at every mapped case location,
+        // and arcs that connect only the locations a case itself maps.
+        const reducedMotion = prefersReducedMotion();
+        const caseItems = showEditorialCases ? globeItems.filter(item => item.isCaseStudy) : [];
+        const rings = reducedMotion ? [] : buildCaseRings(caseItems);
+        globeEl.current
+            .ringsData(rings)
+            .ringColor(ring => t => hexToRgba(ring.color, (ring.overdue ? 0.45 : 0.85) * (1 - t)))
+            .ringMaxRadius('maxRadius')
+            .ringPropagationSpeed('propagationSpeed')
+            .ringRepeatPeriod('repeatPeriod')
+            .ringAltitude(0.004);
 
-        if (stressLevel > 50) {
-            const conflictPoints = forecastPoints
-                .filter(p => p.data.Broad_Category === 'Geopolitics & Conflict')
-                .slice(0, 12);
+        const arcs = buildCaseArcs(caseItems);
+        const isCritical = stressLevel > 70;
+        const elevated = stressLevel > 50;
+        globeEl.current
+            .arcsData(arcs)
+            .arcColor('color')
+            .arcAltitude('altitude')
+            .arcStroke(isCritical ? 0.9 : elevated ? 0.7 : 0.5)
+            .arcDashLength(reducedMotion ? 1 : 0.45)
+            .arcDashGap(reducedMotion ? 0 : 0.25)
+            .arcDashInitialGap(() => Math.random())
+            .arcDashAnimateTime(reducedMotion ? 0 : isCritical ? 1400 : elevated ? 2400 : 3600)
+            .arcLabel(d => `
+                <div style="background:rgba(4,8,14,0.94);padding:10px 14px;border:1px solid ${d.relHex};border-radius:8px;font-family:Roboto Mono,monospace;max-width:300px;box-shadow:0 0 18px ${d.relHex}44;">
+                    <div style="color:${d.relHex};font-size:0.72rem;font-weight:800;letter-spacing:1px;margin-bottom:6px;">◆ ${escHtml(d.relType)} CASE · MAPPED LINK</div>
+                    <div style="color:#fff;font-size:0.85rem;font-weight:700;margin-bottom:6px;line-height:1.35;">${escHtml(d.caseTitle || '')}</div>
+                    <div style="color:#d6e4ea;font-size:0.8rem;">${escHtml(d.fromName)} <span style="color:${d.relHex}">→</span> ${escHtml(d.toName)}</div>
+                    <div style="color:#9fb2bc;font-size:0.72rem;margin-top:7px;">Locations mapped by this case · click for detail</div>
+                </div>`)
+            .onArcClick(d => setArcClickedInfo(d));
 
-            const isCritical = stressLevel > 70;
-            const arcs = [];
-            const pairs = [];
-            const connectedNodes = [];
+        // Retire the legacy HTML pulse elements; rings now carry this signal.
+        globeEl.current.htmlElementsData([]);
 
-            for (let i = 0; i < conflictPoints.length - 1; i += 2) {
-                const a = conflictPoints[i];
-                const b = conflictPoints[i + 1];
-                const rel = classifyRelationship(a, b);
-                const fromName = a.data['Key Player/Organization'] || a.data['Entity/Subject']?.substring(0, 28);
-                const toName = b.data['Key Player/Organization'] || b.data['Entity/Subject']?.substring(0, 28);
-
-                arcs.push({
-                    startLat: a.lat,
-                    startLng: a.lng,
-                    endLat: b.lat,
-                    endLng: b.lng,
-                    color: rel.color,
-                    altitude: isCritical ? 0.7 : 0.5,
-                    relType: rel.type,
-                    relIcon: rel.icon,
-                    relHex: rel.hex,
-                    fromName,
-                    toName,
-                    fromImpact: a.data['Expected Impact/Value']?.substring(0, 80),
-                    toImpact: b.data['Expected Impact/Value']?.substring(0, 80),
-                    fromFull: a.data,
-                    toFull: b.data,
-                });
-
-                pairs.push({
-                    from: a.data['Entity/Subject']?.substring(0, 50) || 'Unknown',
-                    to: b.data['Entity/Subject']?.substring(0, 50) || 'Unknown',
-                    fromOrg: a.data['Key Player/Organization'],
-                    toOrg: b.data['Key Player/Organization'],
-                    relType: rel.type,
-                    relIcon: rel.icon,
-                    relHex: rel.hex,
-                });
-
-                connectedNodes.push({ lat: a.lat, lng: a.lng, hex: rel.hex });
-                connectedNodes.push({ lat: b.lat, lng: b.lng, hex: rel.hex });
-            }
-
-            const animTime = isCritical ? 600 : 1800;
-            const dashLen = isCritical ? 0.9 : 0.5;
-            const dashGap = isCritical ? 0.15 : 1.2;
-            const stroke = isCritical ? 2.5 : 1.2;
-
-            globeEl.current
-                .arcsData(arcs)
-                .arcColor('color')
-                .arcDashLength(dashLen)
-                .arcDashGap(dashGap)
-                .arcDashAnimateTime(animTime)
-                .arcStroke(stroke)
-                .arcAltitude('altitude')
-                .arcLabel(d => `
-                    <div style="background:rgba(5,3,3,0.92);padding:10px 14px;border:1px solid ${d.relHex};border-radius:6px;font-family:Roboto Mono,monospace;max-width:280px;box-shadow:0 0 16px ${d.relHex}55;">
-                        <div style="color:${d.relHex};font-size:0.75rem;font-weight:900;letter-spacing:1px;margin-bottom:7px;">${d.relIcon} ${d.relType} LINK</div>
-                        <div style="color:#fff;font-size:0.875rem;font-weight:700;">${escHtml(d.fromName)}</div>
-                        <div style="color:${d.relHex};font-size:1rem;text-align:center;margin:4px 0;">⇄</div>
-                        <div style="color:#fff;font-size:0.875rem;font-weight:700;margin-bottom:7px;">${escHtml(d.toName)}</div>
-                        <div style="color:#c0c0c0;font-size:0.8rem;line-height:1.5;border-top:1px solid ${d.relHex}44;padding-top:7px;">${escHtml(d.fromImpact || '')}</div>
-                        <div style="color:#aaa;font-size:0.75rem;margin-top:7px;">CLICK ARC FOR FULL DETAIL</div>
-                    </div>`)
-                .onArcClick(d => setArcClickedInfo(d));
-
-            globeEl.current
-                .htmlElementsData(connectedNodes)
-                .htmlAltitude(0.015)
-                .htmlElement(d => {
-                    const el = document.createElement('div');
-                    el.className = 'node-pulse-ring';
-                    el.style.setProperty('--ring-color', d.hex);
-                    return el;
-                });
-
-            setEscalationPairs(pairs);
-        } else {
-            globeEl.current.arcsData([]).htmlElementsData([]);
-            setEscalationPairs([]);
-        }
+        setEscalationPairs(elevated ? buildConflictCasePairs(arcs) : []);
     }, [
         globeEl,
         filteredForecasts,

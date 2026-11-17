@@ -3,6 +3,7 @@ import { GUIDED_TOURS, ARCHIVED_GUIDED_TOURS, ALL_GUIDED_TOURS } from './nexusTo
 import { NEXUS_ACTORS } from './nexusFocusData';
 import { categoryColors, getAccessibleTextAccent, getCaseReviewNotice, isReviewOverdue } from './navigationState.mjs';
 import { indexSourceHealth, shouldPreferAlternate, sourceHealthLabel } from './sourceHealth.mjs';
+import CaseLocatorMap from './components/CaseLocatorMap';
 import './GuidedBriefings.css';
 
 const INITIAL_LIBRARY_COUNT = 6;
@@ -428,9 +429,14 @@ export default function GuidedBriefings({
                 </div>
 
                 <div className="briefing-focus-card">
-                    <div className="briefing-actor-mark" style={{ '--actor-color': actor?.color || tour.color }}>
-                        <span>{perspectiveLabel}</span>
-                        <small>{waypoint.perspectiveType || actor?.type || 'Perspective'}</small>
+                    <div className="briefing-visual" style={{ '--actor-color': actor?.color || tour.color }}>
+                        <CaseLocatorMap map={tour.map} color={tour.color} title={tour.title} />
+                        <div className="briefing-perspective-chip">
+                            <span className={`briefing-perspective-type type-${waypoint.perspectiveType || 'other'}`}>
+                                {waypoint.perspectiveType || actor?.type || 'Perspective'}
+                            </span>
+                            <strong>{perspectiveLabel}</strong>
+                        </div>
                     </div>
                     <div className="briefing-narrative">
                         <span className="briefing-step-label">{perspectiveLabel} · {waypoint.title}</span>
