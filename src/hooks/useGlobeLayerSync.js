@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import * as topojson from 'topojson-client';
 import {
     categoryColors,
@@ -40,6 +40,17 @@ export function useGlobeLayerSync({
     setEscalationPairs,
     setArcClickedInfo,
 }) {
+    const [reducedMotion, setReducedMotion] = useState(prefersReducedMotion);
+
+    useEffect(() => {
+        if (typeof window === 'undefined' || !window.matchMedia) return undefined;
+        const mql = window.matchMedia('(prefers-reduced-motion: reduce)');
+        const onChange = e => setReducedMotion(e.matches);
+        setReducedMotion(mql.matches);
+        mql.addEventListener?.('change', onChange);
+        return () => mql.removeEventListener?.('change', onChange);
+    }, []);
+
     // Auto-enable 3D Globe if viewport expands to tablet/desktop (>= 768px)
     useEffect(() => {
         if (mobileGlobeEnabled || typeof window === 'undefined' || !window.matchMedia) return undefined;
@@ -220,7 +231,6 @@ export function useGlobeLayerSync({
 
         // Editorial case layers: pulsing rings at every mapped case location,
         // and arcs that connect only the locations a case itself maps.
-        const reducedMotion = prefersReducedMotion();
         const caseItems = showEditorialCases ? globeItems.filter(item => item.isCaseStudy) : [];
         const rings = reducedMotion ? [] : buildCaseRings(caseItems);
         globeEl.current
@@ -241,7 +251,7 @@ export function useGlobeLayerSync({
             .arcStroke(isCritical ? 0.9 : elevated ? 0.7 : 0.5)
             .arcDashLength(reducedMotion ? 1 : 0.45)
             .arcDashGap(reducedMotion ? 0 : 0.25)
-            .arcDashInitialGap(() => Math.random())
+            .arcDashInitialGap(d => d.initialGap ?? 0)
             .arcDashAnimateTime(reducedMotion ? 0 : isCritical ? 1400 : elevated ? 2400 : 3600)
             .arcLabel(d => `
                 <div style="background:rgba(4,8,14,0.94);padding:10px 14px;border:1px solid ${d.relHex};border-radius:8px;font-family:Roboto Mono,monospace;max-width:300px;box-shadow:0 0 18px ${d.relHex}44;">
@@ -262,6 +272,7 @@ export function useGlobeLayerSync({
         stressLevel,
         theoryLens,
         showEditorialCases,
+        reducedMotion,
         globeReady,
         viewMode,
         setExpandedCluster,

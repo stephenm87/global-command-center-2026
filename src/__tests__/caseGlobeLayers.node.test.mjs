@@ -102,4 +102,18 @@ test('locator labels stay inside the frame and avoid each other when space allow
             assert.ok(!overlaps(boxes[i], boxes[j]), `labels ${labels[i].text} and ${labels[j].text} overlap`);
         }
     }
+
+    const [longLabel] = placeLabels([{ label: 'Very Long Border Settlement Beyond Limit', x: 180, y: 120 }], 360, 260);
+    assert.equal(longLabel.fullText, 'Very Long Border Settlement Beyond Limit');
+    assert.ok(longLabel.text.length <= 24);
+    assert.ok(longLabel.text.endsWith('…'));
+});
+
+test('case arcs assign deterministic initialGap in [0, 1)', () => {
+    const first = buildCaseArcs([fixture()]);
+    const second = buildCaseArcs([fixture()]);
+    assert.deepEqual(first.map(a => a.initialGap), second.map(a => a.initialGap));
+    for (const arc of first) {
+        assert.ok(Number.isFinite(arc.initialGap) && arc.initialGap >= 0 && arc.initialGap < 1);
+    }
 });

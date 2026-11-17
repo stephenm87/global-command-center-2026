@@ -46,6 +46,6 @@ export function placeLabels(points, width = 360, height = 260) {
         }
         const box = boxFor(choice);
         placed.push(box);
-        return { text, x: point.x + choice.dx, y: point.y + choice.dy, anchor: choice.anchor };
+        return { text, fullText: String(point.label || ''), x: point.x + choice.dx, y: point.y + choice.dy, anchor: choice.anchor };
     });
 }

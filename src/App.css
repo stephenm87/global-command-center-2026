@@ -4094,7 +4094,19 @@ input:focus-visible {
 .arc-legend {
     width: min(25rem, calc(100% - 2rem));
     padding: 0;
+}
+
+.arc-legend.is-collapsed {
+    max-height: 48px;
+    overflow: hidden !important;
+    transition: max-height 0.3s ease;
+}
+
+.arc-legend.is-expanded {
+    max-height: min(70vh, 520px);
     overflow-y: auto !important;
+    transition: max-height 0.3s ease;
+    z-index: 20;
 }
 
 .arc-legend-toggle {
@@ -4566,6 +4578,10 @@ button.metric-item:focus-visible {
         right: 0.75rem;
         bottom: 0.75rem;
         width: calc(100% - 1.5rem);
+    }
+
+    .arc-legend.is-expanded {
+        max-height: min(62dvh, calc(100% - 4.5rem));
     }
 
     .metrics-bar {

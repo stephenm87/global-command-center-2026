@@ -99,12 +99,14 @@ export function buildCaseArcs(items) {
         if (pairs.length === 0) continue;
         const color = caseColor(item);
         const label = CATEGORY_SHORT_LABELS[item.Broad_Category] || 'Case';
-        pairs.forEach(([origin, destination]) => {
+        const idHash = [...String(item.caseStudyId || '')].reduce((acc, ch) => (acc * 31 + ch.charCodeAt(0)) % 997, 0);
+        pairs.forEach(([origin, destination], pairIndex) => {
             const startLat = Number(origin.latitude);
             const startLng = Number(origin.longitude);
             const endLat = Number(destination.latitude);
             const endLng = Number(destination.longitude);
             const distance = Math.hypot(endLat - startLat, endLng - startLng);
+            const initialGap = ((idHash + pairIndex * 37) % 100) / 100;
             arcs.push({
                 startLat,
                 startLng,
@@ -112,6 +114,7 @@ export function buildCaseArcs(items) {
                 endLng,
                 color: [hexToRgba(color, 0.95), hexToRgba(color, 0.35)],
                 altitude: Math.min(0.45, 0.06 + distance / 260),
+                initialGap,
                 relType: label.toUpperCase(),
                 relHex: color,
                 caseTitle: item['Entity/Subject'],

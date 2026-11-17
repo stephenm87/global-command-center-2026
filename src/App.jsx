@@ -118,6 +118,11 @@ function App() {
     const [legendCollapsed, setLegendCollapsed] = useState(true);
     const [largeText, setLargeText] = useState(false);
     const [reducedEffects, setReducedEffects] = useState(false);
+    const [reducedMotion, setReducedMotion] = useState(() => (
+        typeof window !== 'undefined' && typeof window.matchMedia === 'function'
+            ? window.matchMedia('(prefers-reduced-motion: reduce)').matches
+            : false
+    ));
     const [metricsCollapsed, setMetricsCollapsed] = useState(true);
     const [intelLastUpdated, setIntelLastUpdated] = useState(null);
     const [intelMeta, setIntelMeta] = useState(null);
@@ -200,6 +205,15 @@ function App() {
         };
         window.addEventListener('popstate', handleHistory);
         return () => window.removeEventListener('popstate', handleHistory);
+    }, []);
+
+    useEffect(() => {
+        if (typeof window === 'undefined' || !window.matchMedia) return undefined;
+        const mql = window.matchMedia('(prefers-reduced-motion: reduce)');
+        const onChange = e => setReducedMotion(e.matches);
+        setReducedMotion(mql.matches);
+        mql.addEventListener?.('change', onChange);
+        return () => mql.removeEventListener?.('change', onChange);
     }, []);
 
     useSupabasePreferences({
@@ -900,7 +914,7 @@ function App() {
                             )}
 
                             {viewMode === 'globe' && mobileGlobeEnabled && (
-                                <div className="arc-legend" style={{ maxHeight: legendCollapsed ? '48px' : 'min(70vh, 540px)', overflow: 'hidden', transition: 'max-height 0.3s ease' }}>
+                                <div className={`arc-legend ${legendCollapsed ? 'is-collapsed' : 'is-expanded'}`}>
                                     <button
                                         type="button"
                                         className="arc-legend-toggle"
@@ -939,7 +953,12 @@ function App() {
                                             {showEditorialCases && (
                                                 <div className="arc-legend-case-key">
                                                     <div className="arc-legend-title" style={{ marginBottom: '4px' }}>EDITORIAL CASES</div>
-                                                    <p><span className="case-key-ring" aria-hidden="true" /> Pulsing ring = case location, colored by issue lens. Slow, faint pulse = review overdue.</p>
+                                                    <p>
+                                                        <span className="case-key-ring" aria-hidden="true" />{' '}
+                                                        {reducedMotion
+                                                            ? 'Static issue-colored case dots; pulsing rings paused for reduced motion (overdue status stays in cards/tooltips).'
+                                                            : 'Pulsing ring = case location, colored by issue lens. Slow, faint pulse = review overdue.'}
+                                                    </p>
                                                     <p><span className="case-key-arc" aria-hidden="true" /> Arcs join only the places a case itself maps.</p>
                                                 </div>
                                             )}

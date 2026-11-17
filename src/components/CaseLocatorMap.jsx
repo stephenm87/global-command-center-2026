@@ -160,6 +160,7 @@ export default function CaseLocatorMap({ map, color = '#67d5f5', title }) {
                             textAnchor={label.anchor}
                             className={index === 0 ? 'case-locator-label is-primary' : 'case-locator-label'}
                         >
+                            {label.fullText && label.fullText !== label.text && <title>{label.fullText}</title>}
                             {label.text}
                         </text>
                     ))}
@@ -168,7 +169,10 @@ export default function CaseLocatorMap({ map, color = '#67d5f5', title }) {
                 <rect x="0.5" y="0.5" width={WIDTH - 1} height={HEIGHT - 1} rx="14" className="case-locator-frame" />
             </svg>
             <figcaption>
-                <span>{mode === 'global' ? 'Global · representative sites' : mode === 'route' ? 'Route · in sequence' : mode === 'regional' ? 'Regional · mapped places' : 'Point case'}</span>
+                <span>
+                    {mode === 'global' ? 'Global · representative sites' : mode === 'route' ? 'Route · in sequence' : mode === 'regional' ? 'Regional · mapped places' : 'Point case'}
+                    {failed ? ' · Basemap unavailable' : ''}
+                </span>
                 <span className="case-locator-count">{locations.length} {locations.length === 1 ? 'location' : 'locations'}</span>
             </figcaption>
         </figure>
