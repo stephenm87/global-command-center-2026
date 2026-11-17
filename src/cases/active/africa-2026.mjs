@@ -201,7 +201,7 @@ export const AFRICA_CASES_2026 = [
             "MilitantPMC",
             "UN_OPEC"
         ],
-        "statusSummary": "The Congolese presidency describes the June 2025 DRC–Rwanda agreement as a framework for peace and regional economic integration, and an April 2026 joint statement by the fifth Joint Oversight Committee (including the DRC, Rwanda, the United States, Qatar, Togo, and the African Union Commission) tracked continuing implementation work. The UN Security Council sanctions committee added the Alliance Fleuve Congo to its sanctions list in July 2026, while Institute for Security Studies analysis argues that overlapping mediation tracks still face coordination, deterrence, and implementation gaps.",
+        "statusSummary": "The Congolese presidency describes the June 2025 DRC–Rwanda agreement as a framework for peace and regional economic integration, and an April 2026 fifth Joint Oversight Committee statement tracked continuing implementation work alongside parallel mediation. Although UN Great Lakes Special Envoy Huang Xia told the Security Council on 13 October 2026 that US- and Qatar-led tracks had achieved notable progress, Al Jazeera (14 October 2026) reported his warning that eastern DRC's security and humanitarian situation continued to worsen amid fighting involving M23 and Congolese forces. The UN Security Council sanctioned Alliance Fleuve Congo (AFC) in July 2026, MONUSCO's October summary (9 November 2026) documented continuing joint FARDC–peacekeeper patrols in North Kivu and Ituri, and The New Times via AllAfrica (10 November 2026) reported that the Kabila-led Front for the Refoundation of the Nation (regrouping AFC/M23 in October) warned Qatari mediators on 1 November and MONUSCO head James Swan in Goma on 3 November that proposed constitutional changes could collapse the Doha process. Institute for Security Studies analysis argues overlapping tracks still face coordination and deterrence gaps.",
         "whyItMatters": "The case tests whether agreements among states and armed actors can improve civilian protection when authority, security guarantees, and accountability remain fragmented across borders.",
         "updatedAt": "2026-11-17",
         "confidence": "medium",
@@ -270,6 +270,27 @@ export const AFRICA_CASES_2026 = [
             }
         ],
         "supplementalSources": [
+            {
+                "title": "Rwanda: FRN Warns Against Tshisekedi's Push to Change Constitution",
+                "publisher": "The New Times (Kigali) via AllAfrica",
+                "publishedAt": "2026-11-10",
+                "url": "https://allafrica.com/stories/202611100538.html",
+                "perspective": "Regional reporting on the October 2026 Front for the Refoundation of the Nation (FRN) regrouping of AFC/M23 under Joseph Kabila, its 1 November letter to Qatari Doha mediators, and its 3 November Goma talks with MONUSCO head James Swan"
+            },
+            {
+                "title": "Top contents of the month of October 2026",
+                "publisher": "MONUSCO",
+                "publishedAt": "2026-11-09",
+                "url": "https://monusco.unmissions.org/en/news/meilleurs-contenus-du-mois-doctobre-2026",
+                "perspective": "Official November 2026 MONUSCO update detailing October 2026 joint FARDC–peacekeeper patrols in North Kivu and Ituri alongside UNPOL justice dialogues"
+            },
+            {
+                "title": "UN official says ‘window of opportunity’ for peace in DR Congo",
+                "publisher": "Al Jazeera",
+                "publishedAt": "2026-10-14",
+                "url": "https://www.aljazeera.com/news/2026/10/14/un-official-says-window-of-opportunity-for-peace-in-dr-congo",
+                "perspective": "Independent reporting on Great Lakes Special Envoy Huang Xia's 13 October 2026 Security Council briefing warning that security and humanitarian conditions continued to worsen despite US and Qatari mediation"
+            },
             {
                 "title": "Joint Statement on the Fifth Joint Oversight Committee for the Peace Agreement Between the Democratic Republic of the Congo and the Republic of Rwanda",
                 "publisher": "African Union Peace and Security Department",

@@ -612,11 +612,11 @@ export const AMERICAS_CARIBBEAN_CASES_2026 = [
             "LatinAmerica",
             "UN_OPEC"
         ],
-        "statusSummary": "Mexico's National Water Commission said on 3 February 2026 that Mexico and the United States had agreed to a technical management plan under the 1944 Water Treaty amid extreme drought, with minimum deliveries conditioned on basin hydrology and Mexican human-consumption and agricultural needs. IBWC Minute 331 provides tools for earlier and more predictable deliveries, while Texas Tribune reporting shows how declining reliability affects farming, municipal growth, infrastructure, and the cost of alternative supplies in South Texas.",
+        "statusSummary": "On 24 October 2026, Year 1 of the 37th five-year cycle under the 1944 Water Treaty concluded. Mexico's Foreign Ministry stated on 24 October 2026 that Mexico met the Cycle 37 Year 1 annual minimum volume under February 2026 bilateral strategies while protecting community consumption, water as a human right, and border food production amid extreme drought. Regional reporting by the Rio Grande Valley Business Journal (31 October 2026, citing a 27 October Texas International Produce Association statement) confirmed at least 350,000 acre-feet delivered in Year 1 while warning that cumulative shortages still threaten South Texas agriculture. IBWC accounting separately tracks an 865,139 acre-feet deficit carried over from the 2020–2025 cycle (due by 24 October 2030), with 3,159 acre-feet credited toward that prior debt by 24 October 2026, while Texas Tribune reporting highlights ongoing agricultural, municipal, and groundwater-cost tradeoffs.",
         "whyItMatters": "The basin shows how a durable treaty must adapt to climate stress while balancing national obligations, human water needs, food production, ecosystems, and unequal local adjustment costs.",
         "updatedAt": "2026-11-17",
         "confidence": "high",
-        "uncertainty": "Reservoir levels, rainfall, allocations, deliveries, restrictions, and diplomatic understandings change quickly. Recheck IBWC/CILA hydrology and both governments' statements before presenting current compliance.",
+        "uncertainty": "Amistad and Falcon reservoir levels, rainfall, prior-cycle debt repayments (865,139 acre-feet carried over from 2020–2025), allocations, and diplomatic understandings change quickly. Recheck IBWC/CILA weekly cycle data and both governments' statements before presenting current compliance.",
         "sensitivity": "high",
         "editorialCaution": "Use both Rio Bravo and Rio Grande. Attribute treaty interpretations and avoid nationalist blame language; distinguish federal positions from those of states, tribes, irrigation districts, farmers, cities, and residents on both sides.",
         "featured": true,
@@ -657,40 +657,67 @@ export const AMERICAS_CARIBBEAN_CASES_2026 = [
         },
         "sources": [
             {
+                "title": "Mexico Completes First Year of 37th Rio Grande Water Delivery Cycle in Compliance with 1944 Water Treaty",
+                "publisher": "Secretaría de Relaciones Exteriores, Government of Mexico",
+                "publishedAt": "2026-10-24",
+                "url": "https://www.gob.mx/sre/prensa/mexico-completes-first-year-of-37th-rio-grande-water-delivery-cycle-in-compliance-with-1944-water-treaty",
+                "perspectiveType": "local",
+                "perspective": "Mexican governmental statement on Cycle 37 Year 1 compliance, extreme drought, national sovereignty, and domestic human-consumption priorities",
+                "supports": [
+                    "Mexico announced on 24 October 2026 that interagency coordination enabled compliance with Cycle 37 Year 1 minimum delivery volumes set under February 2026 bilateral strategies.",
+                    "The statement emphasizes water as a fundamental human right, community access, border food production, and national water sovereignty amid extreme drought."
+                ]
+            },
+            {
+                "title": "Weekly 5 Year Cycle Status (Mexico Deliveries)",
+                "publisher": "International Boundary and Water Commission, United States and Mexico",
+                "publishedAt": null,
+                "sourceType": "living-reference",
+                "reviewedAt": "2026-11-17",
+                "milestoneDate": "2026-10-24",
+                "milestoneLabel": "Close of Cycle 37 Year 1 (2025–2030)",
+                "url": "https://www.ibwc.gov/water-data/mexico-deliveries/",
+                "perspectiveType": "institutional",
+                "perspective": "Official binational accounting of Cycle 37 (2025–2030) treaty obligations, weekly deliveries, and prior-cycle deficit balances",
+                "supports": [
+                    "IBWC records that Mexico delivered 884,861 acre-feet against the 1,750,000 acre-feet requirement in the 2020–2025 cycle, leaving an 865,139 acre-feet deficit repayable by 24 October 2030 alongside the 1,750,000 acre-feet (350,000 acre-feet/year average) Cycle 37 requirement.",
+                    "As of the end of Cycle 37 Year 1 on 24 October 2026, 3,159 acre-feet had been credited toward the prior-cycle debt following the 3 February 2026 bilateral framework."
+                ]
+            },
+            {
+                "title": "Mexico delivers water, but Valley farmers are still paying the price",
+                "publisher": "Rio Grande Valley Business Journal",
+                "publishedAt": "2026-10-31",
+                "url": "https://www.rgvbusinessjournal.com/news/31/10/2026/mexico-water-treaty-deliveries-rgv-farmers-losses-article/",
+                "perspectiveType": "independent",
+                "perspective": "Independent regional business journalism examining the gap between annual treaty milestones and South Texas agricultural losses",
+                "supports": [
+                    "Citing a 27 October Texas International Produce Association announcement, regional reporting confirms Mexico delivered at least 350,000 acre-feet during Cycle 37 Year 1 ending 24 October 2026.",
+                    "It documents Valley agricultural leaders' warning that cumulative prior shortages continue to threaten South Texas's $1 billion farming industry."
+                ]
+            }
+        ],
+        "supplementalSources": [
+            {
                 "title": "México y Estados Unidos acuerdan un plan técnico para la gestión del agua en la cuenca del Río Bravo conforme al Tratado de 1944",
                 "publisher": "Comisión Nacional del Agua, Government of Mexico",
                 "publishedAt": "2026-02-03",
                 "url": "https://www.gob.mx/conagua/prensa/mexico-y-estados-unidos-acuerdan-un-plan-tecnico-para-la-gestion-del-agua-en-la-cuenca-del-rio-bravo-conforme-al-tratado-de-1944-418614?idiom=es",
-                "perspectiveType": "local",
-                "perspective": "Mexican governmental account of drought constraints, sovereignty, treaty mechanisms, and domestic water priorities",
-                "supports": [
-                    "Mexico describes a 2026 technical management plan agreed under the 1944 Water Treaty during extreme drought.",
-                    "The statement conditions minimum deliveries on hydrology and emphasizes human consumption and agricultural production in Mexico."
-                ]
+                "perspective": "Earlier 3 February 2026 Mexican water-authority announcement detailing the bilateral technical management plan"
             },
             {
                 "title": "IBWC Signs Minute 331 Focused on Improving Reliability, Predictability of Rio Grande Water Deliveries",
                 "publisher": "International Boundary and Water Commission, United States and Mexico",
                 "publishedAt": "2024-11-09",
                 "url": "https://www.ibwc.gov/wp-content/uploads/2024/11/IBWC-Signs-Minute-331-Focused-on-Improving-Reliability-Predictability-of-Rio-Grande-Water-Deliveries.pdf",
-                "perspectiveType": "institutional",
-                "perspective": "Binational treaty-body explanation of delivery flexibility, planning, conservation, and water-quality mechanisms",
-                "supports": [
-                    "Minute 331 provides tools for earlier deliveries during a five-year treaty cycle, subject to agreed conditions.",
-                    "It establishes work on conservation and environmental and water-quality issues while retaining treaty drought exceptions."
-                ]
+                "perspective": "Foundational binational treaty minute establishing flexibility, conservation, and water-quality tools"
             },
             {
                 "title": "As the Rio Grande runs dry, South Texas leaders look to new water supplies to sustain growth",
                 "publisher": "The Texas Tribune",
                 "publishedAt": "2025-05-15",
                 "url": "https://www.texastribune.org/2025/05/15/texas-water-rio-grande-valley-drought/",
-                "perspectiveType": "independent",
-                "perspective": "Independent regional reporting on municipal, agricultural, infrastructure, affordability, and development tradeoffs",
-                "supports": [
-                    "The reporting documents competition between agricultural and growing municipal demand in the Lower Rio Grande Valley.",
-                    "It examines climate, infrastructure, groundwater treatment, reuse, and affordability as parts of the regional supply problem."
-                ]
+                "perspective": "Structural Texas reporting on agricultural-municipal water competition, infrastructure losses, and alternative-supply costs"
             }
         ],
         "waypoints": [
@@ -699,7 +726,7 @@ export const AMERICAS_CARIBBEAN_CASES_2026 = [
                 "title": "Start With Mexico's Water Priorities",
                 "perspectiveLabel": "Mexican basin-management position",
                 "perspectiveType": "local",
-                "narration": "Mexico's 2026 statement frames the plan around extreme drought, treaty cooperation, national sovereignty, and protection of human consumption and agricultural production.",
+                "narration": "Mexico's October 2026 Foreign Ministry statement and February 2026 technical plan frame treaty compliance alongside extreme drought, national sovereignty, community water access, and food production.",
                 "focusQuestion": "How should treaty delivery expectations adjust when the supplying basin also faces severe scarcity?"
             },
             {
@@ -707,7 +734,7 @@ export const AMERICAS_CARIBBEAN_CASES_2026 = [
                 "title": "Use the Treaty's Adaptive Tools",
                 "perspectiveLabel": "Binational treaty administration",
                 "perspectiveType": "institutional",
-                "narration": "Minute 331 is designed to improve timing and predictability through planning, flexibility, conservation work, and bilateral agreement—not to eliminate hydrological uncertainty.",
+                "narration": "IBWC cycle accounting separates annual deliveries from repaying the remaining 865,139 acre-feet 2020–2025 deficit by 2030, while Minute 331 adds conservation and planning tools without eliminating hydrological risk.",
                 "focusQuestion": "Which shared rules can create predictability without promising water that the basin does not contain?"
             },
             {
@@ -715,7 +742,7 @@ export const AMERICAS_CARIBBEAN_CASES_2026 = [
                 "title": "See the Lower-Basin Tradeoffs",
                 "perspectiveLabel": "Independent South Texas reporting",
                 "perspectiveType": "independent",
-                "narration": "Texas Tribune reporting connects river reliability to farms, cities, housing, infrastructure losses, alternative-water costs, and regional economic choices.",
+                "narration": "Rio Grande Valley Business Journal and Texas Tribune reporting connect treaty timing and prior deficits to South Texas crop viability, municipal growth, infrastructure losses, and higher alternative-water costs.",
                 "focusQuestion": "Who pays when a region shifts from inexpensive river water to conservation, reuse, or treated groundwater?"
             },
             {

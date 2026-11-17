@@ -565,13 +565,13 @@ export const ASIA_PACIFIC_CASES_2026 = [
             "UN_OPEC",
             "Russia"
         ],
-        "statusSummary": "After signing a border treaty and reopening crossings in March 2025, Kyrgyzstan and Tajikistan began jointly installing physical border pillars from the Uzbekistan tri-junction in July 2026, advancing field demarcation through autumn 2026 toward projected completion in 2027. Independent and UN reporting indicates that durable everyday peace still depends on local trust, access to land and water, inclusive institutions, and managing border-community adjustments without renewed violence.",
+        "statusSummary": "After signing a border treaty and reopening crossings in March 2025, Kyrgyzstan and Tajikistan began jointly installing physical border pillars from the Uzbekistan tri-junction in July 2026 (Kabar). Regional reporting by Kazinform (29 October 2026, citing the Batken region governor) confirms completion of 327.5 kilometers of border fencing and hundreds of kilometers of field roads along the 1,008.14-kilometer border while demarcation continues, and The Times of Central Asia (30 October 2026) reports 338.5 kilometers of 2025–2026 patrol roads alongside resident questions about compensation for lost homes and farmland. UN and independent reporting indicates durable everyday peace still depends on local trust, land and water access, and inclusive institutions.",
         "whyItMatters": "The settlement is a rare opportunity to study whether elite diplomacy can resolve territorial disagreement while also repairing the community relationships and resource arrangements damaged by earlier clashes.",
         "updatedAt": "2026-11-17",
         "confidence": "high",
-        "uncertainty": "Physical demarcation is projected to continue into 2027, and local property access, fencing impacts, infrastructure, and community acceptance remain uneven and less visible than national ceremonies.",
+        "uncertainty": "Field demarcation and boundary-record preparation remain ongoing, and local property access, compensation claims for lost homes and farmland, fencing impacts, and community acceptance remain uneven and less visible than national ceremonies.",
         "sensitivity": "high",
-        "editorialCaution": "The treaty reduces formal territorial uncertainty, but local implementation, property access, infrastructure, and public acceptance remain uneven and less visible than national ceremonies.",
+        "editorialCaution": "The treaty reduces formal territorial uncertainty, but local implementation, property access, compensation questions, infrastructure, and public acceptance remain uneven and less visible than national ceremonies.",
         "featured": true,
         "reviewCadenceDays": 60,
         "reviewBy": "2027-01-16",
@@ -634,6 +634,20 @@ export const ASIA_PACIFIC_CASES_2026 = [
             }
         ],
         "supplementalSources": [
+            {
+                "title": "Kyrgyz-Tajik border fencing completed",
+                "publisher": "Kazinform International News Agency",
+                "publishedAt": "2026-10-29",
+                "url": "https://qazinform.com/news/kyrgyz-tajik-border-fencing-completed-9361a0",
+                "perspective": "Regional news report citing Batken's governor and Kabar on completion of 327.5 km (327 km 500.4 m) of fencing and field roads along the 1,008.14 km Kyrgyz–Tajik border"
+            },
+            {
+                "title": "Kyrgyzstan-Tajikistan Border Fencing Complete in Batken, Demarcation Continues",
+                "publisher": "The Times of Central Asia",
+                "publishedAt": "2026-10-30",
+                "url": "https://timesca.com/kyrgyzstan-tajikistan-border-fencing-complete/",
+                "perspective": "Independent regional reporting noting 338.5 km of 2025–2026 patrol roads in Batken and Leilek alongside residents' compensation questions over lost homes and farmland"
+            },
             {
                 "title": "Kyrgyzstan and Tajikistan installing first pillars on state borders",
                 "publisher": "Kabar Kyrgyz National News Agency",
@@ -845,11 +859,11 @@ export const ASIA_PACIFIC_CASES_2026 = [
             "Europe",
             "TechAIHub"
         ],
-        "statusSummary": "Indonesia's Ministry of Investment and Downstreaming reported in July 2026 that mineral downstreaming remained central to first-half 2026 investment realization. The WTO dispute record (DS592, rechecked November 2026) shows that a panel found challenged nickel measures inconsistent with trade rules and that Indonesia's appeal into a non-operational appellate system remains procedurally unresolved, while independent analysis argues that lasting competitiveness also depends on local skills, community benefit, and stronger labor and environmental performance.",
+        "statusSummary": "Jakarta Investment Centre reporting of Ministry of Investment and Downstreaming (BKPM) January–September 2026 data (3 November 2026) shows total investment realization reached IDR 1,539.2 trillion, with downstream industries drawing IDR 480.0 trillion led by mineral downstreaming (IDR 335.1 trillion across nickel, bauxite, iron and steel, and copper). Amid global oversupply, ANTARA News (2 November 2026) reported Energy and Mineral Resources Minister Bahlil Lahadalia citing an ~800,000-ton surplus and prices falling below US$16,000 to around US$15,000 per ton while ordering tighter nickel output controls via annual RKAB work-plan approvals. The WTO dispute record (DS592, rechecked November 2026) shows an adverse panel ruling and an unresolved appeal, while Lowy Institute analysis argues lasting gains depend on skills, community benefit, and stronger labor and environmental standards.",
         "whyItMatters": "Indonesia is testing whether control over a strategic mineral can create broad-based industrial development while meeting trade obligations and protecting communities and ecosystems near extraction and processing sites.",
         "updatedAt": "2026-11-17",
         "confidence": "high",
-        "uncertainty": "Investment announcements do not by themselves establish local welfare or environmental outcomes. The WTO appeal remains procedurally unresolved, and conditions vary across mining regions and firms.",
+        "uncertainty": "Investment announcements and RKAB quota directives do not by themselves establish local welfare, output-curb effectiveness, or environmental outcomes. The WTO appeal remains procedurally unresolved, and conditions vary across mining regions and firms.",
         "sensitivity": "high",
         "editorialCaution": "Investment announcements do not by themselves establish local welfare or environmental outcomes. The WTO appeal remains procedurally unresolved, and conditions vary across mining regions and firms.",
         "featured": true,
@@ -911,6 +925,22 @@ export const ASIA_PACIFIC_CASES_2026 = [
                 "perspectiveType": "independent",
                 "perspective": "Independent development analysis incorporating community and labor concerns",
                 "supports": "Trade-offs among value addition, skills, local livelihoods, environmental performance, and market access"
+            }
+        ],
+        "supplementalSources": [
+            {
+                "title": "Indonesia maintains positive investment realization in Q3 2026",
+                "publisher": "Jakarta Investment Centre (citing BKPM)",
+                "publishedAt": "2026-11-03",
+                "url": "https://invest.jakarta.go.id/news/318/indonesia-maintains-positive-investment-realization-in-q3-2026",
+                "perspective": "Regional official-data summary of BKPM January–September 2026 investment realization (IDR 1,539.2 trillion total; IDR 480.0 trillion downstreaming; IDR 335.1 trillion mineral downstreaming)"
+            },
+            {
+                "title": "Indonesia urges nickel producers to curb output amid falling prices",
+                "publisher": "ANTARA News",
+                "publishedAt": "2026-11-02",
+                "url": "https://en.antaranews.com/news/439683/indonesia-urges-nickel-producers-to-curb-output-amid-falling-prices",
+                "perspective": "State wire reporting on Minister Bahlil Lahadalia's 2 November 2026 directive to tighten nickel production via annual RKAB approvals amid an ~800,000-ton global surplus and prices around US$15,000/ton"
             }
         ],
         "waypoints": [

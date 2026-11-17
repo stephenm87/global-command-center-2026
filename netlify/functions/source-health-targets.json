@@ -2,7 +2,7 @@
   "schemaVersion": 1,
   "caseStudyCount": 29,
   "staticPageCount": 1,
-  "targetCount": 127,
+  "targetCount": 137,
   "targets": [
     {
       "id": "sudan-displacement-regional-spillover:core:0",
@@ -586,6 +586,39 @@
       "id": "eastern-drc-peace-civilian-protection:supplemental:0",
       "caseStudyId": "eastern-drc-peace-civilian-protection",
       "caseStudyTitle": "Eastern DRC: Peace Agreements, Armed Authority, and Civilian Protection",
+      "sourceTitle": "Rwanda: FRN Warns Against Tshisekedi's Push to Change Constitution",
+      "publisher": "The New Times (Kigali) via AllAfrica",
+      "group": "supplemental",
+      "kind": "primary",
+      "lifecycle": "active",
+      "url": "https://allafrica.com/stories/202611100538.html"
+    },
+    {
+      "id": "eastern-drc-peace-civilian-protection:supplemental:1",
+      "caseStudyId": "eastern-drc-peace-civilian-protection",
+      "caseStudyTitle": "Eastern DRC: Peace Agreements, Armed Authority, and Civilian Protection",
+      "sourceTitle": "Top contents of the month of October 2026",
+      "publisher": "MONUSCO",
+      "group": "supplemental",
+      "kind": "primary",
+      "lifecycle": "active",
+      "url": "https://monusco.unmissions.org/en/news/meilleurs-contenus-du-mois-doctobre-2026"
+    },
+    {
+      "id": "eastern-drc-peace-civilian-protection:supplemental:2",
+      "caseStudyId": "eastern-drc-peace-civilian-protection",
+      "caseStudyTitle": "Eastern DRC: Peace Agreements, Armed Authority, and Civilian Protection",
+      "sourceTitle": "UN official says ‘window of opportunity’ for peace in DR Congo",
+      "publisher": "Al Jazeera",
+      "group": "supplemental",
+      "kind": "primary",
+      "lifecycle": "active",
+      "url": "https://www.aljazeera.com/news/2026/10/14/un-official-says-window-of-opportunity-for-peace-in-dr-congo"
+    },
+    {
+      "id": "eastern-drc-peace-civilian-protection:supplemental:3",
+      "caseStudyId": "eastern-drc-peace-civilian-protection",
+      "caseStudyTitle": "Eastern DRC: Peace Agreements, Armed Authority, and Civilian Protection",
       "sourceTitle": "Joint Statement on the Fifth Joint Oversight Committee for the Peace Agreement Between the Democratic Republic of the Congo and the Republic of Rwanda",
       "publisher": "African Union Peace and Security Department",
       "group": "supplemental",
@@ -984,6 +1017,28 @@
       "id": "kyrgyzstan-tajikistan-border-peace:supplemental:0",
       "caseStudyId": "kyrgyzstan-tajikistan-border-peace",
       "caseStudyTitle": "Kyrgyzstan–Tajikistan: From Border Treaty to Everyday Peace",
+      "sourceTitle": "Kyrgyz-Tajik border fencing completed",
+      "publisher": "Kazinform International News Agency",
+      "group": "supplemental",
+      "kind": "primary",
+      "lifecycle": "active",
+      "url": "https://qazinform.com/news/kyrgyz-tajik-border-fencing-completed-9361a0"
+    },
+    {
+      "id": "kyrgyzstan-tajikistan-border-peace:supplemental:1",
+      "caseStudyId": "kyrgyzstan-tajikistan-border-peace",
+      "caseStudyTitle": "Kyrgyzstan–Tajikistan: From Border Treaty to Everyday Peace",
+      "sourceTitle": "Kyrgyzstan-Tajikistan Border Fencing Complete in Batken, Demarcation Continues",
+      "publisher": "The Times of Central Asia",
+      "group": "supplemental",
+      "kind": "primary",
+      "lifecycle": "active",
+      "url": "https://timesca.com/kyrgyzstan-tajikistan-border-fencing-complete/"
+    },
+    {
+      "id": "kyrgyzstan-tajikistan-border-peace:supplemental:2",
+      "caseStudyId": "kyrgyzstan-tajikistan-border-peace",
+      "caseStudyTitle": "Kyrgyzstan–Tajikistan: From Border Treaty to Everyday Peace",
       "sourceTitle": "Kyrgyzstan and Tajikistan installing first pillars on state borders",
       "publisher": "Kabar Kyrgyz National News Agency",
       "group": "supplemental",
@@ -1056,6 +1111,28 @@
       "kind": "primary",
       "lifecycle": "active",
       "url": "https://www.lowyinstitute.org/the-interpreter/indonesia-downstreaming-dilemma"
+    },
+    {
+      "id": "indonesia-nickel-development-bargain:supplemental:0",
+      "caseStudyId": "indonesia-nickel-development-bargain",
+      "caseStudyTitle": "Indonesia's Nickel Bargain",
+      "sourceTitle": "Indonesia maintains positive investment realization in Q3 2026",
+      "publisher": "Jakarta Investment Centre (citing BKPM)",
+      "group": "supplemental",
+      "kind": "primary",
+      "lifecycle": "active",
+      "url": "https://invest.jakarta.go.id/news/318/indonesia-maintains-positive-investment-realization-in-q3-2026"
+    },
+    {
+      "id": "indonesia-nickel-development-bargain:supplemental:1",
+      "caseStudyId": "indonesia-nickel-development-bargain",
+      "caseStudyTitle": "Indonesia's Nickel Bargain",
+      "sourceTitle": "Indonesia urges nickel producers to curb output amid falling prices",
+      "publisher": "ANTARA News",
+      "group": "supplemental",
+      "kind": "primary",
+      "lifecycle": "active",
+      "url": "https://en.antaranews.com/news/439683/indonesia-urges-nickel-producers-to-curb-output-amid-falling-prices"
     },
     {
       "id": "mekong-energy-food-bargain:core:0",
@@ -1215,31 +1292,64 @@
       "id": "rio-bravo-rio-grande-water-treaty:core:0",
       "caseStudyId": "rio-bravo-rio-grande-water-treaty",
       "caseStudyTitle": "Rio Bravo / Rio Grande: Sharing Water Under Extreme Drought",
-      "sourceTitle": "México y Estados Unidos acuerdan un plan técnico para la gestión del agua en la cuenca del Río Bravo conforme al Tratado de 1944",
-      "publisher": "Comisión Nacional del Agua, Government of Mexico",
+      "sourceTitle": "Mexico Completes First Year of 37th Rio Grande Water Delivery Cycle in Compliance with 1944 Water Treaty",
+      "publisher": "Secretaría de Relaciones Exteriores, Government of Mexico",
       "group": "core",
       "kind": "primary",
       "lifecycle": "active",
-      "url": "https://www.gob.mx/conagua/prensa/mexico-y-estados-unidos-acuerdan-un-plan-tecnico-para-la-gestion-del-agua-en-la-cuenca-del-rio-bravo-conforme-al-tratado-de-1944-418614?idiom=es"
+      "url": "https://www.gob.mx/sre/prensa/mexico-completes-first-year-of-37th-rio-grande-water-delivery-cycle-in-compliance-with-1944-water-treaty"
     },
     {
       "id": "rio-bravo-rio-grande-water-treaty:core:1",
       "caseStudyId": "rio-bravo-rio-grande-water-treaty",
       "caseStudyTitle": "Rio Bravo / Rio Grande: Sharing Water Under Extreme Drought",
-      "sourceTitle": "IBWC Signs Minute 331 Focused on Improving Reliability, Predictability of Rio Grande Water Deliveries",
+      "sourceTitle": "Weekly 5 Year Cycle Status (Mexico Deliveries)",
       "publisher": "International Boundary and Water Commission, United States and Mexico",
       "group": "core",
       "kind": "primary",
       "lifecycle": "active",
-      "url": "https://www.ibwc.gov/wp-content/uploads/2024/11/IBWC-Signs-Minute-331-Focused-on-Improving-Reliability-Predictability-of-Rio-Grande-Water-Deliveries.pdf"
+      "url": "https://www.ibwc.gov/water-data/mexico-deliveries/"
     },
     {
       "id": "rio-bravo-rio-grande-water-treaty:core:2",
       "caseStudyId": "rio-bravo-rio-grande-water-treaty",
       "caseStudyTitle": "Rio Bravo / Rio Grande: Sharing Water Under Extreme Drought",
+      "sourceTitle": "Mexico delivers water, but Valley farmers are still paying the price",
+      "publisher": "Rio Grande Valley Business Journal",
+      "group": "core",
+      "kind": "primary",
+      "lifecycle": "active",
+      "url": "https://www.rgvbusinessjournal.com/news/31/10/2026/mexico-water-treaty-deliveries-rgv-farmers-losses-article/"
+    },
+    {
+      "id": "rio-bravo-rio-grande-water-treaty:supplemental:0",
+      "caseStudyId": "rio-bravo-rio-grande-water-treaty",
+      "caseStudyTitle": "Rio Bravo / Rio Grande: Sharing Water Under Extreme Drought",
+      "sourceTitle": "México y Estados Unidos acuerdan un plan técnico para la gestión del agua en la cuenca del Río Bravo conforme al Tratado de 1944",
+      "publisher": "Comisión Nacional del Agua, Government of Mexico",
+      "group": "supplemental",
+      "kind": "primary",
+      "lifecycle": "active",
+      "url": "https://www.gob.mx/conagua/prensa/mexico-y-estados-unidos-acuerdan-un-plan-tecnico-para-la-gestion-del-agua-en-la-cuenca-del-rio-bravo-conforme-al-tratado-de-1944-418614?idiom=es"
+    },
+    {
+      "id": "rio-bravo-rio-grande-water-treaty:supplemental:1",
+      "caseStudyId": "rio-bravo-rio-grande-water-treaty",
+      "caseStudyTitle": "Rio Bravo / Rio Grande: Sharing Water Under Extreme Drought",
+      "sourceTitle": "IBWC Signs Minute 331 Focused on Improving Reliability, Predictability of Rio Grande Water Deliveries",
+      "publisher": "International Boundary and Water Commission, United States and Mexico",
+      "group": "supplemental",
+      "kind": "primary",
+      "lifecycle": "active",
+      "url": "https://www.ibwc.gov/wp-content/uploads/2024/11/IBWC-Signs-Minute-331-Focused-on-Improving-Reliability-Predictability-of-Rio-Grande-Water-Deliveries.pdf"
+    },
+    {
+      "id": "rio-bravo-rio-grande-water-treaty:supplemental:2",
+      "caseStudyId": "rio-bravo-rio-grande-water-treaty",
+      "caseStudyTitle": "Rio Bravo / Rio Grande: Sharing Water Under Extreme Drought",
       "sourceTitle": "As the Rio Grande runs dry, South Texas leaders look to new water supplies to sustain growth",
       "publisher": "The Texas Tribune",
-      "group": "core",
+      "group": "supplemental",
       "kind": "primary",
       "lifecycle": "active",
       "url": "https://www.texastribune.org/2025/05/15/texas-water-rio-grande-valley-drought/"
