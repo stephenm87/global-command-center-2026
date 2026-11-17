@@ -2,7 +2,7 @@
   "schemaVersion": 1,
   "caseStudyCount": 29,
   "staticPageCount": 1,
-  "targetCount": 110,
+  "targetCount": 127,
   "targets": [
     {
       "id": "sudan-displacement-regional-spillover:core:0",
@@ -128,6 +128,17 @@
       "url": "https://bangkok.ohchr.org/myanmar"
     },
     {
+      "id": "myanmar-fragmented-sovereignty:supplemental:0",
+      "caseStudyId": "myanmar-fragmented-sovereignty",
+      "caseStudyTitle": "Myanmar: Fragmented Sovereignty and Humanitarian Access",
+      "sourceTitle": "ASEAN, China fall short of agreeing on South China Sea code",
+      "publisher": "Al Jazeera",
+      "group": "supplemental",
+      "kind": "primary",
+      "lifecycle": "active",
+      "url": "https://www.aljazeera.com/news/2026/11/16/asean-china-fall-short-of-agreeing-on-south-china-sea-code"
+    },
+    {
       "id": "south-china-sea-arbitral-award-ten-years:core:0",
       "caseStudyId": "south-china-sea-arbitral-award-ten-years",
       "caseStudyTitle": "South China Sea: Ten Years After the Arbitral Award",
@@ -170,6 +181,17 @@
       "kind": "primary",
       "lifecycle": "active",
       "url": "https://www.mfa.gov.cn/eng/xw/fyrbt/202607/t20260714_11982116.html"
+    },
+    {
+      "id": "south-china-sea-arbitral-award-ten-years:supplemental:1",
+      "caseStudyId": "south-china-sea-arbitral-award-ten-years",
+      "caseStudyTitle": "South China Sea: Ten Years After the Arbitral Award",
+      "sourceTitle": "ASEAN, China fall short of agreeing on South China Sea code",
+      "publisher": "Al Jazeera",
+      "group": "supplemental",
+      "kind": "primary",
+      "lifecycle": "active",
+      "url": "https://www.aljazeera.com/news/2026/11/16/asean-china-fall-short-of-agreeing-on-south-china-sea-code"
     },
     {
       "id": "syria-transition-return-sanctions:core:0",
@@ -317,6 +339,17 @@
       "url": "https://www.canada.ca/en/global-affairs/news/2026/07/minister-leblanc-updates-provincial-and-territorial-ministers-responsible-for-international-trade-on-cusma-joint-review.html"
     },
     {
+      "id": "usmca-2026-joint-review:supplemental:1",
+      "caseStudyId": "usmca-2026-joint-review",
+      "caseStudyTitle": "USMCA After the 2026 Joint Review",
+      "sourceTitle": "USTR Seeks Public Comment on the 2027 Joint Review of USMCA",
+      "publisher": "Office of the United States Trade Representative",
+      "group": "supplemental",
+      "kind": "primary",
+      "lifecycle": "active",
+      "url": "https://ustr.gov/about/policy-offices/press-office/press-releases/2026/october/ustr-seeks-public-comment-2027-joint-review-usmca"
+    },
+    {
       "id": "tuvalu-australia-falepili-union:core:0",
       "caseStudyId": "tuvalu-australia-falepili-union",
       "caseStudyTitle": "Tuvalu–Australia Falepili Union",
@@ -438,6 +471,30 @@
       "url": "https://naalakkersuisut.gl/Nyheder/2026/03/1903_kommission?sc_lang=da"
     },
     {
+      "id": "greenland-autonomy-security-minerals:supplemental:3",
+      "caseStudyId": "greenland-autonomy-security-minerals",
+      "caseStudyTitle": "Greenland: Autonomy, Arctic Security, and Critical Minerals",
+      "sourceTitle": "‘A decision to decide’: Greenland moves to suspend seabed mining until 2029",
+      "publisher": "Mongabay",
+      "group": "supplemental",
+      "kind": "primary",
+      "lifecycle": "active",
+      "url": "https://news.mongabay.com/short-article/2026/10/a-decision-to-decide-greenland-moves-to-suspend-seabed-mining-until-2029/"
+    },
+    {
+      "id": "greenland-autonomy-security-minerals:supplemental:3:alternate:0",
+      "caseStudyId": "greenland-autonomy-security-minerals",
+      "caseStudyTitle": "Greenland: Autonomy, Arctic Security, and Critical Minerals",
+      "sourceTitle": "‘A decision to decide’: Greenland moves to suspend seabed mining until 2029",
+      "publisher": "Mongabay",
+      "group": "supplemental",
+      "kind": "alternate",
+      "lifecycle": "active",
+      "primaryUrl": "https://news.mongabay.com/short-article/2026/10/a-decision-to-decide-greenland-moves-to-suspend-seabed-mining-until-2029/",
+      "label": "Open Greenland's official Mineral Resources Authority portal",
+      "url": "https://govmin.gl/"
+    },
+    {
       "id": "eu-ai-act-transparency-implementation:core:0",
       "caseStudyId": "eu-ai-act-transparency-implementation",
       "caseStudyTitle": "EU AI Act: Transparency and a Revised Implementation Timeline",
@@ -526,6 +583,17 @@
       "url": "https://issafrica.org/iss-today/diplomacy-without-deterrence-won-t-bring-peace-in-eastern-drc"
     },
     {
+      "id": "eastern-drc-peace-civilian-protection:supplemental:0",
+      "caseStudyId": "eastern-drc-peace-civilian-protection",
+      "caseStudyTitle": "Eastern DRC: Peace Agreements, Armed Authority, and Civilian Protection",
+      "sourceTitle": "Joint Statement on the Fifth Joint Oversight Committee for the Peace Agreement Between the Democratic Republic of the Congo and the Republic of Rwanda",
+      "publisher": "African Union Peace and Security Department",
+      "group": "supplemental",
+      "kind": "primary",
+      "lifecycle": "active",
+      "url": "https://www.peaceau.org/en/article/joint-statement-on-the-fifth-joint-oversight-committee-for-the-peace-agreement-between-the-democratic-republic-of-the-congo-and-the-republic-of-rwanda"
+    },
+    {
       "id": "sahel-after-ecowas-regional-order:core:0",
       "caseStudyId": "sahel-after-ecowas-regional-order",
       "caseStudyTitle": "The Sahel After ECOWAS: Competing Regional Orders",
@@ -557,6 +625,17 @@
       "kind": "primary",
       "lifecycle": "active",
       "url": "https://issafrica.org/iss-today/how-ecowas-can-make-its-new-counter-terrorism-force-effective"
+    },
+    {
+      "id": "sahel-after-ecowas-regional-order:supplemental:0",
+      "caseStudyId": "sahel-after-ecowas-regional-order",
+      "caseStudyTitle": "The Sahel After ECOWAS: Competing Regional Orders",
+      "sourceTitle": "Joint Communiqué: First Official Ministerial Meeting Between ECOWAS and the Confederation of Sahel States (AES), Dakar",
+      "publisher": "Economic Community of West African States",
+      "group": "supplemental",
+      "kind": "primary",
+      "lifecycle": "active",
+      "url": "https://www.ecowas.int/wp-content/uploads/2026/10/ENG-COMMUNIQUE_1st-JOINT-ECOWAS-AES-MTG_DKR.pdf"
     },
     {
       "id": "somaliland-recognition-red-sea-order:core:0",
@@ -661,9 +740,31 @@
       "id": "western-sahara-autonomy-self-determination:core:2",
       "caseStudyId": "western-sahara-autonomy-self-determination",
       "caseStudyTitle": "Western Sahara: Self-Determination, Autonomy, and Representation",
+      "sourceTitle": "How a U.S.-Russia Standoff Ended a Decades-Old UN Mission in Western Sahara",
+      "publisher": "Carnegie Endowment for International Peace",
+      "group": "core",
+      "kind": "primary",
+      "lifecycle": "active",
+      "url": "https://carnegieendowment.org/emissary/2026/11/minurso-western-sahara-un-peacekeeping-security-council-conflict"
+    },
+    {
+      "id": "western-sahara-autonomy-self-determination:supplemental:0",
+      "caseStudyId": "western-sahara-autonomy-self-determination",
+      "caseStudyTitle": "Western Sahara: Self-Determination, Autonomy, and Representation",
+      "sourceTitle": "Security Council Resolutions and Statements on MINURSO",
+      "publisher": "United Nations Mission for the Referendum in Western Sahara (MINURSO)",
+      "group": "supplemental",
+      "kind": "primary",
+      "lifecycle": "active",
+      "url": "https://minurso.unmissions.org/en/security-council-resolutions-and-statements"
+    },
+    {
+      "id": "western-sahara-autonomy-self-determination:supplemental:1",
+      "caseStudyId": "western-sahara-autonomy-self-determination",
+      "caseStudyTitle": "Western Sahara: Self-Determination, Autonomy, and Representation",
       "sourceTitle": "UN: Western Sahara Peoples' Self-Determination at Risk",
       "publisher": "Human Rights Watch",
-      "group": "core",
+      "group": "supplemental",
       "kind": "primary",
       "lifecycle": "active",
       "url": "https://www.hrw.org/news/2026/03/25/un-western-sahara-peoples-self-determination-at-risk"
@@ -702,6 +803,17 @@
       "url": "https://www.chathamhouse.org/2026/07/why-us-plans-power-sharing-libya-will-not-work"
     },
     {
+      "id": "libya-roadmap-elections-oil-assets:supplemental:0",
+      "caseStudyId": "libya-roadmap-elections-oil-assets",
+      "caseStudyTitle": "Libya's 2026 Roadmap: Elections, Oil Assets, and Competing Authority",
+      "sourceTitle": "Security Council Renews Mandate of United Nations Support Mission in Libya for One Year (Resolution 2835)",
+      "publisher": "United Nations Support Mission in Libya",
+      "group": "supplemental",
+      "kind": "primary",
+      "lifecycle": "active",
+      "url": "https://unsmil.unmissions.org/en/news/security-council-renews-mandate-of-united-nations-support-mission-in-libya-for-one-year"
+    },
+    {
       "id": "red-sea-yemen-humanitarian-economy:core:0",
       "caseStudyId": "red-sea-yemen-humanitarian-economy",
       "caseStudyTitle": "Red Sea Security Through Yemen's Humanitarian Economy",
@@ -735,6 +847,17 @@
       "url": "https://www.chathamhouse.org/2026/07/houthi-red-sea-blockade-will-collective-maritime-security-be-defended-or-break-down"
     },
     {
+      "id": "red-sea-yemen-humanitarian-economy:supplemental:0",
+      "caseStudyId": "red-sea-yemen-humanitarian-economy",
+      "caseStudyTitle": "Red Sea Security Through Yemen's Humanitarian Economy",
+      "sourceTitle": "IMO Council urges stronger protection of seafarers amid threats to global shipping (C 138)",
+      "publisher": "International Maritime Organization",
+      "group": "supplemental",
+      "kind": "primary",
+      "lifecycle": "active",
+      "url": "https://www.imo.org/en/mediacentre/pressbriefings/pages/imo-council-c138-urges-stronger-protection-of-seafarers-amid-threats-to-global-shipping-.aspx"
+    },
+    {
       "id": "indus-water-regime-under-strain:core:0",
       "caseStudyId": "indus-water-regime-under-strain",
       "caseStudyTitle": "Indus Waters Treaty: Security, Law, and Basin Livelihoods",
@@ -766,6 +889,30 @@
       "kind": "primary",
       "lifecycle": "active",
       "url": "https://www.chathamhouse.org/2025/05/india-pakistan-ceasefire-remains-shaky-relations-unlikely-return-status-quo"
+    },
+    {
+      "id": "indus-water-regime-under-strain:supplemental:0",
+      "caseStudyId": "indus-water-regime-under-strain",
+      "caseStudyTitle": "Indus Waters Treaty: Security, Law, and Basin Livelihoods",
+      "sourceTitle": "PCA Case No. 2023-01: Award on the Continued Legal Force of the Indus Waters Treaty and Order on Interim Measures",
+      "publisher": "Permanent Court of Arbitration",
+      "group": "supplemental",
+      "kind": "primary",
+      "lifecycle": "active",
+      "url": "https://pca-cpa.org/en/news/pca-press-release-pca-case-no-2023-01-the-indus-waters-western-rivers-arbitration-islamic-republic-of-pakistan-v-republic-of-india-6/"
+    },
+    {
+      "id": "indus-water-regime-under-strain:supplemental:0:alternate:0",
+      "caseStudyId": "indus-water-regime-under-strain",
+      "caseStudyTitle": "Indus Waters Treaty: Security, Law, and Basin Livelihoods",
+      "sourceTitle": "PCA Case No. 2023-01: Award on the Continued Legal Force of the Indus Waters Treaty and Order on Interim Measures",
+      "publisher": "Permanent Court of Arbitration",
+      "group": "supplemental",
+      "kind": "alternate",
+      "lifecycle": "active",
+      "primaryUrl": "https://pca-cpa.org/en/news/pca-press-release-pca-case-no-2023-01-the-indus-waters-western-rivers-arbitration-islamic-republic-of-pakistan-v-republic-of-india-6/",
+      "label": "Open the official PCA Indus Waters case repository",
+      "url": "https://pca-cpa.org/en/cases/291/"
     },
     {
       "id": "bangladesh-ldc-graduation-decision:core:0",
@@ -832,6 +979,17 @@
       "kind": "primary",
       "lifecycle": "active",
       "url": "https://carnegieendowment.org/russia-eurasia/politika/2025/04/kyrgyzstan-tajikistan-border-deal"
+    },
+    {
+      "id": "kyrgyzstan-tajikistan-border-peace:supplemental:0",
+      "caseStudyId": "kyrgyzstan-tajikistan-border-peace",
+      "caseStudyTitle": "Kyrgyzstan–Tajikistan: From Border Treaty to Everyday Peace",
+      "sourceTitle": "Kyrgyzstan and Tajikistan installing first pillars on state borders",
+      "publisher": "Kabar Kyrgyz National News Agency",
+      "group": "supplemental",
+      "kind": "primary",
+      "lifecycle": "active",
+      "url": "https://en.kabar.kg/news/kyrgyzstan-and-tajikistan-installing-first-pillars-on-state-borders/"
     },
     {
       "id": "mongolia-coal-critical-minerals-transition:core:0",
@@ -966,6 +1124,17 @@
       "url": "https://www.nature.com/articles/s41586-025-08921-3"
     },
     {
+      "id": "pacific-seabed-governance:supplemental:0",
+      "caseStudyId": "pacific-seabed-governance",
+      "caseStudyTitle": "Who Governs the Pacific Seabed?",
+      "sourceTitle": "From the 31st to the 32nd Session: advancing the Mining Code and strengthening the Common Heritage of Humankind",
+      "publisher": "International Seabed Authority",
+      "group": "supplemental",
+      "kind": "primary",
+      "lifecycle": "active",
+      "url": "https://isa.org.jm/news/from-the-31st-to-the-32nd-session-advancing-the-mining-code-and-strengthening-the-common-heritage-of-humankind/"
+    },
+    {
       "id": "haiti-security-legitimacy-haitian-ownership:core:0",
       "caseStudyId": "haiti-security-legitimacy-haitian-ownership",
       "caseStudyTitle": "Haiti: Security, Legitimacy, and Haitian Ownership",
@@ -997,6 +1166,17 @@
       "kind": "primary",
       "lifecycle": "active",
       "url": "https://www.hrw.org/world-report/2026/country-chapters/haiti"
+    },
+    {
+      "id": "haiti-security-legitimacy-haitian-ownership:supplemental:0",
+      "caseStudyId": "haiti-security-legitimacy-haitian-ownership",
+      "caseStudyTitle": "Haiti: Security, Legitimacy, and Haitian Ownership",
+      "sourceTitle": "Security Council extends Gang Suppression Force and UNSOH mandates (Resolution 2829)",
+      "publisher": "United Nations Support Office in Haiti",
+      "group": "supplemental",
+      "kind": "primary",
+      "lifecycle": "active",
+      "url": "https://www.unmissions.org/en/unsoh/news/security-council-extends-gang-suppression-force-and-unsoh-mandates"
     },
     {
       "id": "amazon-indigenous-co-governance:core:0",
@@ -1145,12 +1325,12 @@
       "id": "who-pathogen-access-benefit-sharing:core:1",
       "caseStudyId": "who-pathogen-access-benefit-sharing",
       "caseStudyTitle": "Global Health: Pathogen Access and Benefit Sharing",
-      "sourceTitle": "WHO Member States continue negotiations on the Pathogen Access and Benefit Sharing Annex",
+      "sourceTitle": "Member States reiterate commitment to finalize Pandemic Agreement PABS Annex by May 2027",
       "publisher": "World Health Organization",
       "group": "core",
       "kind": "primary",
       "lifecycle": "active",
-      "url": "https://www.who.int/news/item/20-07-2026-who-member-states-continue-negotiations-on-the-pathogen-access-and-benefit-sharing-annex"
+      "url": "https://www.who.int/news/item/13-11-2026-member-states-reiterate-commitment-to-finalize-pandemic-agreement-pabs-annex-by-may-2027"
     },
     {
       "id": "who-pathogen-access-benefit-sharing:core:2",
@@ -1162,6 +1342,17 @@
       "kind": "primary",
       "lifecycle": "active",
       "url": "https://www.bmj.com/content/392/bmj-2025-086069"
+    },
+    {
+      "id": "who-pathogen-access-benefit-sharing:supplemental:0",
+      "caseStudyId": "who-pathogen-access-benefit-sharing",
+      "caseStudyTitle": "Global Health: Pathogen Access and Benefit Sharing",
+      "sourceTitle": "WHO Member States continue negotiations on the Pathogen Access and Benefit Sharing Annex",
+      "publisher": "World Health Organization",
+      "group": "supplemental",
+      "kind": "primary",
+      "lifecycle": "active",
+      "url": "https://www.who.int/news/item/20-07-2026-who-member-states-continue-negotiations-on-the-pathogen-access-and-benefit-sharing-annex"
     },
     {
       "id": "context-cards:citation:0",

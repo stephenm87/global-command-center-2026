@@ -28,16 +28,16 @@ export const ASIA_PACIFIC_CASES_2026 = [
             "AsiaPacific",
             "UN_OPEC"
         ],
-        "statusSummary": "OCHA reported on 13 July 2026 that more than 16 million people needed humanitarian assistance and nearly 3.8 million were displaced, while conflict, movement restrictions, and administrative requirements continued to obstruct aid access.",
+        "statusSummary": "OCHA reported on 13 July 2026 that more than 16 million people needed humanitarian assistance across Myanmar and nearly 3.8 million were displaced, while conflict, movement restrictions, and administrative requirements continued to obstruct aid access. At the November 2026 ASEAN Summit in Manila, Southeast Asian leaders again denounced ongoing violence in Myanmar and extended the ban on its military leader attending the bloc's summits.",
         "whyItMatters": "Myanmar shows how competing claims to authority, territorial fragmentation, and restricted humanitarian access can weaken both domestic governance and regional diplomacy.",
-        "updatedAt": "2026-07-13",
+        "updatedAt": "2026-11-17",
         "confidence": "high",
         "uncertainty": "Access constraints limit independent observation, so casualty counts, local control, and new displacement estimates require cautious attribution and frequent updates.",
         "sensitivity": "high",
         "editorialCaution": "Access constraints limit independent observation, so casualty counts, local control, and new displacement estimates require cautious attribution and frequent updates.",
         "featured": false,
         "reviewCadenceDays": 30,
-        "reviewBy": "2026-08-12",
+        "reviewBy": "2026-12-17",
         "coordinates": {
             "latitude": 19.7633,
             "longitude": 96.0785
@@ -85,6 +85,15 @@ export const ASIA_PACIFIC_CASES_2026 = [
                 "perspectiveType": "independent",
                 "perspective": "Independent human-rights monitoring of all major conflict actors",
                 "supports": "Civilian protection, accountability, inclusive governance, and limits on humanitarian access"
+            }
+        ],
+        "supplementalSources": [
+            {
+                "title": "ASEAN, China fall short of agreeing on South China Sea code",
+                "publisher": "Al Jazeera",
+                "publishedAt": "2026-11-16",
+                "url": "https://www.aljazeera.com/news/2026/11/16/asean-china-fall-short-of-agreeing-on-south-china-sea-code",
+                "perspective": "Summit reporting documenting ASEAN leaders' November 2026 denunciation of violence in Myanmar and extension of the summit representation ban"
             }
         ],
         "waypoints": [
@@ -144,16 +153,16 @@ export const ASIA_PACIFIC_CASES_2026 = [
             "China",
             "UN_OPEC"
         ],
-        "statusSummary": "Ten years after the 2016 award, the Philippine government continues to present it as a final and binding guide to maritime rights under UNCLOS, while China's government continues to reject the arbitration and award as invalid. These are attributed government positions; the underlying award addressed maritime entitlements and conduct, not sovereignty over land territory or boundary delimitation.",
+        "statusSummary": "Ten years after the 2016 award, the Philippine government continues to present it as a final and binding guide to maritime rights under UNCLOS, while China's government continues to reject the arbitration and award as invalid. These are attributed government positions; the underlying award addressed maritime entitlements and conduct, not sovereignty over land territory or boundary delimitation. At the November 2026 ASEAN Summit in Manila, Philippine officials reported tentative ASEAN–China agreement on roughly 80 percent of a draft Code of Conduct while confirming that negotiations missed their year-end target amid unresolved disputes over legal bindingness, geographic scope, and UNCLOS alignment.",
         "whyItMatters": "The dispute offers a direct test of the relationship between formal legal decisions, state consent, material power, and peaceful management of competing maritime claims.",
-        "updatedAt": "2026-07-21",
+        "updatedAt": "2026-11-17",
         "confidence": "high",
-        "uncertainty": "Official descriptions of incidents and legal meaning are contested. Each state claim should remain attributed, and operational developments at sea require separate, incident-specific verification.",
+        "uncertainty": "Official descriptions of incidents, Code of Conduct bargaining, and legal meaning are contested. Each state claim should remain attributed, and operational developments at sea require separate, incident-specific verification.",
         "sensitivity": "high",
         "editorialCaution": "Official descriptions of incidents and legal meaning are contested. Each state claim should remain attributed, and operational developments at sea require separate, incident-specific verification.",
         "featured": false,
         "reviewCadenceDays": 30,
-        "reviewBy": "2026-08-20",
+        "reviewBy": "2026-12-17",
         "coordinates": {
             "latitude": 12,
             "longitude": 114
@@ -204,6 +213,13 @@ export const ASIA_PACIFIC_CASES_2026 = [
                 "publishedAt": "2026-07-14",
                 "url": "https://www.mfa.gov.cn/eng/xw/fyrbt/202607/t20260714_11982116.html",
                 "perspective": "Official Chinese government position rejecting the arbitration and award"
+            },
+            {
+                "title": "ASEAN, China fall short of agreeing on South China Sea code",
+                "publisher": "Al Jazeera",
+                "publishedAt": "2026-11-16",
+                "url": "https://www.aljazeera.com/news/2026/11/16/asean-china-fall-short-of-agreeing-on-south-china-sea-code",
+                "perspective": "Independent summit reporting on the unfinished ASEAN–China Code of Conduct talks in Manila"
             }
         ],
         "waypoints": [
@@ -262,16 +278,16 @@ export const ASIA_PACIFIC_CASES_2026 = [
             "AsiaPacific",
             "UN_OPEC"
         ],
-        "statusSummary": "India says it has placed the Indus Waters Treaty in abeyance as part of its security response, while Pakistan rejects unilateral abeyance and says the treaty remains binding. The Permanent Court of Arbitration reported continuing proceedings under the treaty in February 2026. These are distinct attributed legal and policy positions, not a settled account of the treaty's present legal operation.",
+        "statusSummary": "India says it has placed the Indus Waters Treaty in abeyance as part of its security response, while Pakistan rejects unilateral abeyance and maintains the treaty remains binding. On 31 August 2026, the Court of Arbitration administered through the Permanent Court of Arbitration unanimously ruled that none of the grounds cited by India legally justified suspending or terminating the 1960 treaty—holding that the treaty remains in force—and issued an interim-measures order on the Ratle project, while India continues to reject the Court's authority.",
         "whyItMatters": "The case links deterrence and treaty compliance to irrigation, hydropower, food security, and the daily needs of communities that cannot be separated from a shared river system.",
-        "updatedAt": "2026-08-09",
+        "updatedAt": "2026-11-17",
         "confidence": "medium",
-        "uncertainty": "The parties dispute both the legal effect of India's action and the authority of ongoing proceedings. Project operations and basin conditions also change independently of the diplomatic dispute.",
+        "uncertainty": "Although the Court of Arbitration issued a unanimous treaty-status award in August 2026, India does not recognize the Court's jurisdiction, leaving practical compliance, data sharing, and basin operations contested.",
         "sensitivity": "high",
         "editorialCaution": "The parties dispute both the legal effect of India's action and the authority of ongoing proceedings. Project operations and basin conditions also change independently of the diplomatic dispute.",
         "featured": true,
         "reviewCadenceDays": 14,
-        "reviewBy": "2026-08-23",
+        "reviewBy": "2026-12-01",
         "coordinates": {
             "latitude": 32.5,
             "longitude": 73.5
@@ -330,6 +346,21 @@ export const ASIA_PACIFIC_CASES_2026 = [
                 "supports": "How the water dispute became embedded in a wider breakdown of bilateral relations"
             }
         ],
+        "supplementalSources": [
+            {
+                "title": "PCA Case No. 2023-01: Award on the Continued Legal Force of the Indus Waters Treaty and Order on Interim Measures",
+                "publisher": "Permanent Court of Arbitration",
+                "publishedAt": "2026-08-31",
+                "url": "https://pca-cpa.org/en/news/pca-press-release-pca-case-no-2023-01-the-indus-waters-western-rivers-arbitration-islamic-republic-of-pakistan-v-republic-of-india-6/",
+                "alternateUrls": [
+                    {
+                        "label": "Open the official PCA Indus Waters case repository",
+                        "url": "https://pca-cpa.org/en/cases/291/"
+                    }
+                ],
+                "perspective": "Official arbitral registry press release summarizing the unanimous 31 August 2026 treaty-status award and Ratle interim-measures order"
+            }
+        ],
         "waypoints": [
             {
                 "nodeId": "AsiaPacific",
@@ -352,7 +383,7 @@ export const ASIA_PACIFIC_CASES_2026 = [
                 "title": "Adjudication Without Consensus",
                 "perspectiveLabel": "Treaty institution",
                 "perspectiveType": "institutional",
-                "narration": "Proceedings registered through the Permanent Court of Arbitration continued in 2026 even as India and Pakistan disputed their legal significance.",
+                "narration": "On 31 August 2026, the Court of Arbitration unanimously ruled that the 1960 treaty remains legally in force, yet India continues to contest the tribunal's authority.",
                 "focusQuestion": "What practical influence can an arbitral process retain when one party rejects its authority?"
             },
             {
@@ -534,16 +565,16 @@ export const ASIA_PACIFIC_CASES_2026 = [
             "UN_OPEC",
             "Russia"
         ],
-        "statusSummary": "Kyrgyzstan and Tajikistan signed a border treaty and reopened crossings in March 2025, moving the dispute into an implementation phase. Independent and UN reporting indicates that durable peace still depends on local trust, access to land and water, inclusive institutions, and the ability to manage future disputes without renewed violence.",
+        "statusSummary": "After signing a border treaty and reopening crossings in March 2025, Kyrgyzstan and Tajikistan began jointly installing physical border pillars from the Uzbekistan tri-junction in July 2026, advancing field demarcation through autumn 2026 toward projected completion in 2027. Independent and UN reporting indicates that durable everyday peace still depends on local trust, access to land and water, inclusive institutions, and managing border-community adjustments without renewed violence.",
         "whyItMatters": "The settlement is a rare opportunity to study whether elite diplomacy can resolve territorial disagreement while also repairing the community relationships and resource arrangements damaged by earlier clashes.",
-        "updatedAt": "2026-08-09",
+        "updatedAt": "2026-11-17",
         "confidence": "high",
-        "uncertainty": "The treaty reduces formal territorial uncertainty, but local implementation, property access, infrastructure, and public acceptance remain uneven and less visible than national ceremonies.",
+        "uncertainty": "Physical demarcation is projected to continue into 2027, and local property access, fencing impacts, infrastructure, and community acceptance remain uneven and less visible than national ceremonies.",
         "sensitivity": "high",
         "editorialCaution": "The treaty reduces formal territorial uncertainty, but local implementation, property access, infrastructure, and public acceptance remain uneven and less visible than national ceremonies.",
         "featured": true,
         "reviewCadenceDays": 60,
-        "reviewBy": "2026-10-08",
+        "reviewBy": "2027-01-16",
         "coordinates": {
             "latitude": 40.0626,
             "longitude": 70.8194
@@ -602,6 +633,15 @@ export const ASIA_PACIFIC_CASES_2026 = [
                 "supports": "Regional diplomacy, domestic trade-offs, and reasons implementation may still face setbacks"
             }
         ],
+        "supplementalSources": [
+            {
+                "title": "Kyrgyzstan and Tajikistan installing first pillars on state borders",
+                "publisher": "Kabar Kyrgyz National News Agency",
+                "publishedAt": "2026-07-14",
+                "url": "https://en.kabar.kg/news/kyrgyzstan-and-tajikistan-installing-first-pillars-on-state-borders/",
+                "perspective": "Official Kyrgyz report on the launch of joint physical border-pillar demarcation starting at the Kyrgyzstan–Tajikistan–Uzbekistan tri-junction"
+            }
+        ],
         "waypoints": [
             {
                 "nodeId": "AsiaPacific",
@@ -640,6 +680,7 @@ export const ASIA_PACIFIC_CASES_2026 = [
     {
         "id": "mongolia-coal-critical-minerals-transition",
         "status": "active",
+        "reviewStatus": "update-in-progress",
         "title": "Mongolia Between Coal and Critical Minerals",
         "subtitle": "Resource dependence, public benefit, and a just energy transition",
         "coverageRegion": "Asia-Pacific",
@@ -804,16 +845,16 @@ export const ASIA_PACIFIC_CASES_2026 = [
             "Europe",
             "TechAIHub"
         ],
-        "statusSummary": "Indonesia's government continued in 2026 to present mineral downstreaming as a core investment and industrial policy. The WTO dispute record shows that a panel found challenged nickel measures inconsistent with trade rules and that Indonesia appealed into a non-operational appellate system. Independent analysis argues that lasting competitiveness also depends on local skills, community benefit, and stronger labor and environmental performance.",
+        "statusSummary": "Indonesia's Ministry of Investment and Downstreaming reported in July 2026 that mineral downstreaming remained central to first-half 2026 investment realization. The WTO dispute record (DS592, rechecked November 2026) shows that a panel found challenged nickel measures inconsistent with trade rules and that Indonesia's appeal into a non-operational appellate system remains procedurally unresolved, while independent analysis argues that lasting competitiveness also depends on local skills, community benefit, and stronger labor and environmental performance.",
         "whyItMatters": "Indonesia is testing whether control over a strategic mineral can create broad-based industrial development while meeting trade obligations and protecting communities and ecosystems near extraction and processing sites.",
-        "updatedAt": "2026-08-09",
+        "updatedAt": "2026-11-17",
         "confidence": "high",
         "uncertainty": "Investment announcements do not by themselves establish local welfare or environmental outcomes. The WTO appeal remains procedurally unresolved, and conditions vary across mining regions and firms.",
         "sensitivity": "high",
         "editorialCaution": "Investment announcements do not by themselves establish local welfare or environmental outcomes. The WTO appeal remains procedurally unresolved, and conditions vary across mining regions and firms.",
         "featured": true,
         "reviewCadenceDays": 30,
-        "reviewBy": "2026-09-08",
+        "reviewBy": "2026-12-17",
         "coordinates": {
             "latitude": -2.996,
             "longitude": 121.948
@@ -910,6 +951,7 @@ export const ASIA_PACIFIC_CASES_2026 = [
     {
         "id": "mekong-energy-food-bargain",
         "status": "active",
+        "reviewStatus": "update-in-progress",
         "title": "The Mekong Energy–Food Bargain",
         "subtitle": "Hydropower, fisheries, sediment, and the search for basin-wide evidence",
         "coverageRegion": "Asia-Pacific",

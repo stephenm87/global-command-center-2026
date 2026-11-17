@@ -179,16 +179,16 @@ export const AMERICAS_CARIBBEAN_CASES_2026 = [
             "USA",
             "LatinAmerica"
         ],
-        "statusSummary": "The United States declined an immediate 16-year extension at the 1 July 2026 joint review. Official statements from all three countries say the agreement remains in force while negotiations continue; Canadian and Mexican statements specify that it remains in force through 2036 and that annual reviews will continue.",
+        "statusSummary": "The United States declined an immediate 16-year extension at the 1 July 2026 joint review, moving the agreement into annual joint reviews while Canadian, Mexican, and US statements confirm USMCA remains in force through 2036. On 2 October 2026, USTR opened a formal public-comment and hearing process (closing 12 January 2027) in advance of the 2027 annual joint review.",
         "whyItMatters": "USMCA makes it possible to examine how deeply integrated economies use recurring negotiations to balance shared production networks against national industrial and political priorities.",
-        "updatedAt": "2026-07-23",
+        "updatedAt": "2026-11-17",
         "confidence": "high",
-        "uncertainty": "Negotiations remain active and each government frames the review differently. Failure to grant an immediate extension must not be described as termination of the agreement.",
+        "uncertainty": "Negotiations and public consultations remain active ahead of the 2027 annual review and each government frames the review differently. Failure to grant an immediate extension must not be described as termination of the agreement.",
         "sensitivity": "high",
         "editorialCaution": "Negotiations remain active and each government frames the review differently. Failure to grant an immediate extension must not be described as termination of the agreement.",
         "featured": false,
         "reviewCadenceDays": 30,
-        "reviewBy": "2026-08-22",
+        "reviewBy": "2026-12-17",
         "coordinates": {
             "latitude": 39,
             "longitude": -101
@@ -239,6 +239,13 @@ export const AMERICAS_CARIBBEAN_CASES_2026 = [
                 "publishedAt": "2026-07-03",
                 "url": "https://www.canada.ca/en/global-affairs/news/2026/07/minister-leblanc-updates-provincial-and-territorial-ministers-responsible-for-international-trade-on-cusma-joint-review.html",
                 "perspective": "Official Canadian account emphasizing continuity and Canadian priorities"
+            },
+            {
+                "title": "USTR Seeks Public Comment on the 2027 Joint Review of USMCA",
+                "publisher": "Office of the United States Trade Representative",
+                "publishedAt": "2026-10-02",
+                "url": "https://ustr.gov/about/policy-offices/press-office/press-releases/2026/october/ustr-seeks-public-comment-2027-joint-review-usmca",
+                "perspective": "Official USTR public-consultation and hearing notice for the 2027 annual joint review cycle (open through 12 January 2027)"
             }
         ],
         "waypoints": [
@@ -299,16 +306,16 @@ export const AMERICAS_CARIBBEAN_CASES_2026 = [
             "Cartels",
             "UN_OPEC"
         ],
-        "statusSummary": "On 1 April 2026, the UN Secretary-General's spokesperson said the UN Support Office in Haiti was prepared to provide logistical and operational support to the Gang Suppression Force. A June 2026 RNDDH assessment, based on visits to 50 police posts, reported persistent personnel, equipment, infrastructure, and safety constraints within the Haitian National Police. Human Rights Watch separately describes a wider crisis of criminal-group violence, weak accountability, displacement, and contested transitional legitimacy.",
+        "statusSummary": "On 29 September 2026, the UN Security Council adopted Resolution 2829 extending the Gang Suppression Force mandate through 31 March 2027 and continuing logistical and operational support through the UN Support Office in Haiti (backing over 1,500 deployed personnel), while emphasizing Haitian authorities' primary responsibility for civilian protection. A June 2026 RNDDH assessment across 50 police posts reported persistent personnel, equipment, infrastructure, and safety constraints within the Haitian National Police, and Human Rights Watch separately describes continuing criminal-group violence, weak accountability, displacement, and contested transitional legitimacy.",
         "whyItMatters": "Haiti tests whether outside security assistance can protect civilians while strengthening accountable Haitian institutions, public trust, and a Haitian-owned political process.",
-        "updatedAt": "2026-08-09",
+        "updatedAt": "2026-11-17",
         "confidence": "high",
         "uncertainty": "Territorial control, police readiness, security-force deployment, and the electoral timetable can change rapidly. Operational and political claims require fresh Haitian and international verification before publication.",
         "sensitivity": "high",
         "editorialCaution": "Do not treat Haitians, neighborhoods, civil society, or armed groups as monoliths. Attribute allegations and institutional assessments, protect survivor dignity, and distinguish Haitian ownership from endorsement of any particular political faction.",
         "featured": true,
         "reviewCadenceDays": 30,
-        "reviewBy": "2026-09-08",
+        "reviewBy": "2026-12-17",
         "coordinates": {
             "latitude": 18.5944,
             "longitude": -72.3074
@@ -380,6 +387,15 @@ export const AMERICAS_CARIBBEAN_CASES_2026 = [
                 ]
             }
         ],
+        "supplementalSources": [
+            {
+                "title": "Security Council extends Gang Suppression Force and UNSOH mandates (Resolution 2829)",
+                "publisher": "United Nations Support Office in Haiti",
+                "publishedAt": "2026-09-29",
+                "url": "https://www.unmissions.org/en/unsoh/news/security-council-extends-gang-suppression-force-and-unsoh-mandates",
+                "perspective": "Official UNSOH account of Resolution 2829 (2026) extending the GSF mandate through 31 March 2027 and scaling logistical support"
+            }
+        ],
         "waypoints": [
             {
                 "nodeId": "LatinAmerica",
@@ -418,6 +434,7 @@ export const AMERICAS_CARIBBEAN_CASES_2026 = [
     {
         "id": "amazon-indigenous-co-governance",
         "status": "active",
+        "reviewStatus": "update-in-progress",
         "title": "Amazon: Indigenous Co-Governance After the Bogotá Declaration",
         "subtitle": "Turning regional recognition into durable authority, finance, and territorial protection",
         "coverageRegion": "Americas & Caribbean",
@@ -597,14 +614,14 @@ export const AMERICAS_CARIBBEAN_CASES_2026 = [
         ],
         "statusSummary": "Mexico's National Water Commission said on 3 February 2026 that Mexico and the United States had agreed to a technical management plan under the 1944 Water Treaty amid extreme drought, with minimum deliveries conditioned on basin hydrology and Mexican human-consumption and agricultural needs. IBWC Minute 331 provides tools for earlier and more predictable deliveries, while Texas Tribune reporting shows how declining reliability affects farming, municipal growth, infrastructure, and the cost of alternative supplies in South Texas.",
         "whyItMatters": "The basin shows how a durable treaty must adapt to climate stress while balancing national obligations, human water needs, food production, ecosystems, and unequal local adjustment costs.",
-        "updatedAt": "2026-08-09",
+        "updatedAt": "2026-11-17",
         "confidence": "high",
         "uncertainty": "Reservoir levels, rainfall, allocations, deliveries, restrictions, and diplomatic understandings change quickly. Recheck IBWC/CILA hydrology and both governments' statements before presenting current compliance.",
         "sensitivity": "high",
         "editorialCaution": "Use both Rio Bravo and Rio Grande. Attribute treaty interpretations and avoid nationalist blame language; distinguish federal positions from those of states, tribes, irrigation districts, farmers, cities, and residents on both sides.",
         "featured": true,
         "reviewCadenceDays": 30,
-        "reviewBy": "2026-09-08",
+        "reviewBy": "2026-12-17",
         "coordinates": {
             "latitude": 26.5,
             "longitude": -99.1

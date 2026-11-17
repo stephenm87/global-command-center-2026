@@ -30,16 +30,16 @@ export const AFRICA_CASES_2026 = [
             "MilitantPMC",
             "UN_OPEC"
         ],
-        "statusSummary": "At review on 10 August 2026, UNHCR component figures with cutoffs ranging from 6 July to 3 August summed to 11,344,665 people forcibly displaced by the current crisis. The total comprised 6,490,949 conflict-related internally displaced people inside Sudan, 4,580,635 newly arrived refugees, asylum-seekers and refugee returnees outside Sudan, and 273,081 refugees already in Sudan who had self-relocated. Fighting and civilian harm continued in Darfur, Kordofan and Blue Nile, while the humanitarian response remained underfunded.",
+        "statusSummary": "At review on 17 November 2026, UNHCR Operational Data Portal component figures with cutoffs ranging from 19 October to 9 November summed to 11,351,393 people forcibly displaced by the current crisis. The total comprised 6,412,058 conflict-related internally displaced people inside Sudan (19 October cutoff), 4,665,518 newly arrived refugees, asylum-seekers, and refugee returnees outside Sudan (9 November cutoff), and 273,817 refugees already in Sudan who had self-relocated (9 November cutoff). Fighting and civilian harm continued in Darfur, Kordofan, and Blue Nile, while the humanitarian response remained underfunded.",
         "whyItMatters": "The case connects state fragmentation, paramilitary power, civilian protection, regional burden-sharing, and the limits of international humanitarian response.",
-        "updatedAt": "2026-08-10",
+        "updatedAt": "2026-11-17",
         "confidence": "high",
-        "uncertainty": "UNHCR products use different caseload scopes. Its separate Sudan country dashboard counted 8,805,506 total internally displaced people as of 30 June, including 2.21 million displaced before April 2023; that total should not be compared directly with the 6,490,949 conflict-related figure. Returns, repeated displacement, differing data cutoffs, access constraints, humanitarian funding, and territorial control also affect the totals.",
+        "uncertainty": "UNHCR products use different caseload scopes. Separate country-level IDP totals that include people displaced before April 2023 should not be compared directly with the 6,412,058 conflict-related figure on the situation portal. Returns, repeated displacement, differing data cutoffs, access constraints, humanitarian funding, and territorial control also affect the totals.",
         "sensitivity": "high",
         "editorialCaution": "Use dated, scoped displacement figures and attribute conflict, protection, and funding claims. Do not infer control, responsibility, or civilian experience from a single institutional dataset.",
         "featured": true,
         "reviewCadenceDays": 14,
-        "reviewBy": "2026-08-24",
+        "reviewBy": "2026-12-01",
         "coordinates": {
             "latitude": 15.5007,
             "longitude": 32.5599
@@ -88,7 +88,7 @@ export const AFRICA_CASES_2026 = [
                 "publisher": "UNHCR Operational Data Portal",
                 "publishedAt": null,
                 "sourceType": "living-reference",
-                "reviewedAt": "2026-08-10",
+                "reviewedAt": "2026-11-17",
                 "url": "https://data.unhcr.org/en/situations/sudansituation",
                 "perspectiveType": "institutional",
                 "perspective": "United Nations operational reporting with component-specific data cutoffs",
@@ -140,7 +140,7 @@ export const AFRICA_CASES_2026 = [
                 "title": "A War Without an Endpoint",
                 "perspectiveLabel": "Independent and United Nations reporting",
                 "perspectiveType": "independent",
-                "narration": "Independent and United Nations reporting reviewed in August 2026 described continued fighting and civilian harm in Darfur, Kordofan and Blue Nile.",
+                "narration": "Independent and United Nations reporting reviewed through November 2026 described continued fighting and civilian harm in Darfur, Kordofan, and Blue Nile.",
                 "focusQuestion": "What prevents military pressure from becoming a durable political settlement?"
             },
             {
@@ -156,7 +156,7 @@ export const AFRICA_CASES_2026 = [
                 "title": "Displacement Across Borders",
                 "perspectiveLabel": "UNHCR operational data",
                 "perspectiveType": "institutional",
-                "narration": "UNHCR's living portal recorded 6,490,949 conflict-related internally displaced people, 4,580,635 new cross-border arrivals and returns, and 273,081 self-relocated refugees, with component data cutoffs ranging from 6 July to 3 August 2026.",
+                "narration": "UNHCR's living portal recorded 6,412,058 conflict-related internally displaced people (19 October cutoff), 4,665,518 new cross-border arrivals and returns (9 November cutoff), and 273,817 self-relocated refugees (9 November cutoff), summing to 11,351,393 forcibly displaced people.",
                 "focusQuestion": "When does a domestic conflict become a regional security and development crisis?"
             },
             {
@@ -201,16 +201,16 @@ export const AFRICA_CASES_2026 = [
             "MilitantPMC",
             "UN_OPEC"
         ],
-        "statusSummary": "The Congolese presidency describes the June 2025 DRC–Rwanda agreement as a framework for peace and regional economic integration. The UN Security Council sanctions committee added the Alliance Fleuve Congo to its sanctions list in July 2026, while Institute for Security Studies analysis argues that overlapping mediation tracks still face coordination, deterrence, and implementation gaps.",
+        "statusSummary": "The Congolese presidency describes the June 2025 DRC–Rwanda agreement as a framework for peace and regional economic integration, and an April 2026 joint statement by the fifth Joint Oversight Committee (including the DRC, Rwanda, the United States, Qatar, Togo, and the African Union Commission) tracked continuing implementation work. The UN Security Council sanctions committee added the Alliance Fleuve Congo to its sanctions list in July 2026, while Institute for Security Studies analysis argues that overlapping mediation tracks still face coordination, deterrence, and implementation gaps.",
         "whyItMatters": "The case tests whether agreements among states and armed actors can improve civilian protection when authority, security guarantees, and accountability remain fragmented across borders.",
-        "updatedAt": "2026-08-09",
+        "updatedAt": "2026-11-17",
         "confidence": "medium",
         "uncertainty": "Territorial control, armed-group alliances, displacement, and humanitarian access can change rapidly. Government, armed-group, and international descriptions of responsibility remain contested and should always be attributed.",
         "sensitivity": "high",
         "editorialCaution": "Attribute recognition, sovereignty, and territorial-integrity claims to their proponents; represent contested eastern-area positions as internally diverse; and do not infer unconfirmed security arrangements or future recognitions.",
         "featured": true,
         "reviewCadenceDays": 14,
-        "reviewBy": "2026-08-23",
+        "reviewBy": "2026-12-01",
         "coordinates": {
             "latitude": -1.6585,
             "longitude": 29.2205
@@ -267,6 +267,15 @@ export const AFRICA_CASES_2026 = [
                 "perspectiveType": "independent",
                 "perspective": "Independent African policy analysis of mediation, enforcement, and regional security incentives",
                 "supports": "Supports the analytical caution that multiple negotiation tracks do not by themselves guarantee implementation or civilian protection."
+            }
+        ],
+        "supplementalSources": [
+            {
+                "title": "Joint Statement on the Fifth Joint Oversight Committee for the Peace Agreement Between the Democratic Republic of the Congo and the Republic of Rwanda",
+                "publisher": "African Union Peace and Security Department",
+                "publishedAt": "2026-04-24",
+                "url": "https://www.peaceau.org/en/article/joint-statement-on-the-fifth-joint-oversight-committee-for-the-peace-agreement-between-the-democratic-republic-of-the-congo-and-the-republic-of-rwanda",
+                "perspective": "Dated multilateral Joint Oversight Committee statement (24 April 2026) tracking implementation sessions under the DRC–Rwanda peace agreement"
             }
         ],
         "waypoints": [
@@ -336,16 +345,16 @@ export const AFRICA_CASES_2026 = [
             "UN_OPEC",
             "Jihadist"
         ],
-        "statusSummary": "ECOWAS stated that Burkina Faso, Mali, and Niger formally withdrew in January 2025 while temporary arrangements preserved movement and trade during negotiations. A July 2026 UNOWAS briefing called for dialogue amid continuing insecurity, and Institute for Security Studies analysis warns that fragmented regional security initiatives can duplicate effort and weaken accountability.",
+        "statusSummary": "After Burkina Faso, Mali, and Niger formally withdrew from ECOWAS in January 2025 under temporary movement and trade arrangements, ECOWAS and the Alliance of Sahel States held their first official joint ministerial meeting in Dakar on 17 October 2026, agreeing in a joint communiqué to establish thematic working groups for a post-withdrawal cooperation framework. A July 2026 UNOWAS briefing called for sustained regional cooperation amid continuing insecurity, while Institute for Security Studies analysis warns that fragmented security initiatives can duplicate effort and weaken accountability.",
         "whyItMatters": "The split forces governments and citizens to renegotiate how security cooperation, cross-border movement, trade, and political legitimacy work across a region where threats and livelihoods do not stop at institutional borders.",
-        "updatedAt": "2026-08-09",
+        "updatedAt": "2026-11-17",
         "confidence": "medium",
-        "uncertainty": "The legal and operational relationship between ECOWAS and the Alliance of Sahel States is still evolving. Security reporting is uneven, and official claims about counterterrorism effectiveness require independent corroboration.",
+        "uncertainty": "Joint ECOWAS–AES working groups launched in October 2026 have yet to conclude a final cooperation framework. Security reporting remains uneven, and official claims about counterterrorism effectiveness require independent corroboration.",
         "sensitivity": "high",
-        "editorialCaution": "The legal and operational relationship between ECOWAS and the Alliance of Sahel States is still evolving. Security reporting is uneven, and official claims about counterterrorism effectiveness require independent corroboration.",
+        "editorialCaution": "Attribute ECOWAS and AES sovereignty and legal positions to their proponents, distinguish ministerial working-group mandates from concluded agreements, and do not present official counterterrorism claims as independently verified.",
         "featured": false,
         "reviewCadenceDays": 14,
-        "reviewBy": "2026-08-23",
+        "reviewBy": "2026-12-01",
         "coordinates": {
             "latitude": 13.5116,
             "longitude": 2.1254
@@ -404,6 +413,15 @@ export const AFRICA_CASES_2026 = [
                 "supports": "Supports scrutiny of whether new security structures resolve or reproduce coordination problems."
             }
         ],
+        "supplementalSources": [
+            {
+                "title": "Joint Communiqué: First Official Ministerial Meeting Between ECOWAS and the Confederation of Sahel States (AES), Dakar",
+                "publisher": "Economic Community of West African States",
+                "publishedAt": "2026-10-17",
+                "url": "https://www.ecowas.int/wp-content/uploads/2026/10/ENG-COMMUNIQUE_1st-JOINT-ECOWAS-AES-MTG_DKR.pdf",
+                "perspective": "Official joint communiqué establishing thematic working groups to negotiate a post-withdrawal ECOWAS–AES cooperation framework"
+            }
+        ],
         "waypoints": [
             {
                 "nodeId": "Africa",
@@ -434,7 +452,7 @@ export const AFRICA_CASES_2026 = [
                 "title": "Negotiated Coexistence",
                 "perspectiveLabel": "ECOWAS, African Union, and United Nations",
                 "perspectiveType": "institutional",
-                "narration": "Regional and multilateral institutions continue to advocate dialogue because humanitarian, economic, and security systems remain interdependent.",
+                "narration": "On 17 October 2026 in Dakar, ECOWAS and AES ministers agreed to establish joint working groups on trade, mobility, and security cooperation, testing negotiated coexistence outside formal bloc membership.",
                 "focusQuestion": "What minimum framework could preserve cooperation while respecting the political split?"
             }
         ]
@@ -597,6 +615,7 @@ export const AFRICA_CASES_2026 = [
     {
         "id": "zambia-electricity-reset-climate-access",
         "status": "active",
+        "reviewStatus": "update-in-progress",
         "title": "Zambia's Electricity Reset: Copper, Climate, and Access",
         "subtitle": "Who benefits as a hydropower-dependent system diversifies",
         "coverageRegion": "Africa",

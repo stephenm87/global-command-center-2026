@@ -29,14 +29,14 @@ export const PACIFIC_ISLANDS_CASES_2026 = [
         ],
         "statusSummary": "The Falepili Union entered into force on 28 August 2024. The treaty recognizes Tuvalu's continuing statehood and sovereignty despite climate-related sea-level rise and establishes a permanent-residence mobility pathway. For the 2026–27 program year, Australia allocated up to 280 visa places. Registration closed on 1 June 2026, while the published selection period runs from 9 June 2026 through 30 June 2027.",
         "whyItMatters": "The arrangement links climate adaptation, mobility, legal continuity of a threatened state, culture, and security cooperation without treating mobility participants as refugees.",
-        "updatedAt": "2026-08-10",
+        "updatedAt": "2026-11-17",
         "confidence": "high",
         "uncertainty": "The published selection window extends through 30 June 2027; registration having closed does not mean that all places have been filled. Annual allocations and administrative timing can change. The pathway is permanent-residence mobility, not formal refugee recognition, and claims about demographic or brain-drain effects need separate evidence.",
         "sensitivity": "high",
         "editorialCaution": "Describe the pathway as permanent-residence mobility rather than refugee status, preserve Tuvaluan agency, and distinguish registration, random selection, visa application, and actual migration.",
         "featured": false,
         "reviewCadenceDays": 30,
-        "reviewBy": "2026-09-09",
+        "reviewBy": "2026-12-17",
         "coordinates": {
             "latitude": -8.5211,
             "longitude": 179.1962
@@ -74,7 +74,7 @@ export const PACIFIC_ISLANDS_CASES_2026 = [
                 "publishedAt": null,
                 "sourceType": "living-reference",
                 "updatedAt": "2026-04-16",
-                "reviewedAt": "2026-08-10",
+                "reviewedAt": "2026-11-17",
                 "url": "https://immi.homeaffairs.gov.au/visas/getting-a-visa/visa-listing/pacific-engagement/subclass-192-treaty-stream/ballot-registration",
                 "perspectiveType": "institutional",
                 "perspective": "Official eligibility, allocation, and 2026 ballot information",
@@ -96,7 +96,7 @@ export const PACIFIC_ISLANDS_CASES_2026 = [
                 "publisher": "Australian Department of Foreign Affairs and Trade",
                 "publishedAt": null,
                 "sourceType": "living-reference",
-                "reviewedAt": "2026-08-10",
+                "reviewedAt": "2026-11-17",
                 "milestoneDate": "2024-08-28",
                 "milestoneLabel": "Treaty entered into force",
                 "url": "https://www.dfat.gov.au/geo/tuvalu/australia-tuvalu-falepili-union-treaty",
@@ -107,7 +107,7 @@ export const PACIFIC_ISLANDS_CASES_2026 = [
                 "publisher": "Australian Department of Home Affairs",
                 "publishedAt": null,
                 "sourceType": "living-reference",
-                "reviewedAt": "2026-08-10",
+                "reviewedAt": "2026-11-17",
                 "milestoneDate": "2027-06-30",
                 "milestoneLabel": "Published 2026–27 selection period ends",
                 "url": "https://immi.homeaffairs.gov.au/visas/getting-a-visa/visa-listing/pacific-engagement/subclass-192-treaty-stream/ballot-registration/ballot-country-status",
@@ -180,16 +180,16 @@ export const PACIFIC_ISLANDS_CASES_2026 = [
             "UN_OPEC",
             "TechAIHub"
         ],
-        "statusSummary": "The International Seabed Authority continued negotiating exploitation regulations and associated safeguards in July 2026, with important issues still listed for further work. Nauru continues to present sponsored seabed development as a route to participation in the energy transition and national benefit, while independent research finds that physical and biological effects remained visible decades after a historic collector test.",
+        "statusSummary": "The International Seabed Authority concluded Part II of its 31st Session in Kingston (29 June – 31 July 2026), advancing consolidated draft exploitation regulations toward its 32nd Session while key environmental, compliance, and financial rules remain under negotiation. Nauru continues to present sponsored seabed development as a route to participation in the energy transition and national benefit, while peer-reviewed research finds that physical and biological effects remained visible decades after a historic collector test.",
         "whyItMatters": "The case asks who should decide how minerals beyond national jurisdiction are used, how uncertain ecological losses should be valued, and whether small island states can gain development agency without carrying disproportionate ocean risk.",
-        "updatedAt": "2026-08-09",
+        "updatedAt": "2026-11-17",
         "confidence": "high",
-        "uncertainty": "The mining code is still under negotiation, commercial authorization is not established by the cited session record, and evidence from historic or test-scale disturbance does not fully predict modern commercial-scale effects.",
+        "uncertainty": "The mining code remains under negotiation heading toward the 32nd Session, commercial authorization is not established by the cited session records, and evidence from historic or test-scale disturbance does not fully predict modern commercial-scale effects.",
         "sensitivity": "high",
         "editorialCaution": "The mining code is still under negotiation, commercial authorization is not established by the cited session record, and evidence from historic or test-scale disturbance does not fully predict modern commercial-scale effects.",
         "featured": true,
         "reviewCadenceDays": 14,
-        "reviewBy": "2026-08-23",
+        "reviewBy": "2026-12-01",
         "coordinates": {
             "latitude": 12,
             "longitude": -135
@@ -246,6 +246,15 @@ export const PACIFIC_ISLANDS_CASES_2026 = [
                 "perspectiveType": "independent",
                 "perspective": "Peer-reviewed independent evidence on ecological recovery after seabed disturbance",
                 "supports": "Persistent physical and biological effects, partial recolonization, and the limits of current evidence"
+            }
+        ],
+        "supplementalSources": [
+            {
+                "title": "From the 31st to the 32nd Session: advancing the Mining Code and strengthening the Common Heritage of Humankind",
+                "publisher": "International Seabed Authority",
+                "publishedAt": "2026-09-19",
+                "url": "https://isa.org.jm/news/from-the-31st-to-the-32nd-session-advancing-the-mining-code-and-strengthening-the-common-heritage-of-humankind/",
+                "perspective": "Official ISA post-session wrap-up summarizing 31st Session Part II outcomes and remaining Mining Code work toward the 32nd Session"
             }
         ],
         "waypoints": [

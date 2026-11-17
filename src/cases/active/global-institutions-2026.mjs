@@ -2,6 +2,7 @@ export const GLOBAL_INSTITUTIONS_CASES_2026 = [
     {
         "id": "high-seas-bbnj-implementation",
         "status": "active",
+        "reviewStatus": "update-in-progress",
         "title": "High Seas: Implementing the BBNJ Agreement",
         "subtitle": "From treaty entry into force to inclusive institutions, finance, and ocean protection",
         "coverageRegion": "Global / Transnational",
@@ -179,16 +180,16 @@ export const GLOBAL_INSTITUTIONS_CASES_2026 = [
             "BiotechHub",
             "Africa"
         ],
-        "statusSummary": "WHO reported on 20 July 2026 that member states had advanced but not completed negotiations on the Pathogen Access and Benefit Sharing annex to the WHO Pandemic Agreement; the eighth negotiating meeting is scheduled for 14–18 September 2026. The African Group says its common position is intended to protect continental interests and avoid a repeat of COVID-era inequities. A peer-reviewed BMJ analysis identifies equity, technology transfer, regional manufacturing, financing, national implementation, and accountability as continuing tests.",
+        "statusSummary": "Following the ninth meeting of the Intergovernmental Working Group in Geneva (2–13 November 2026), WHO reported on 13 November 2026 that member states had advanced access and benefit-sharing provisions on the Pathogen Access and Benefit Sharing (PABS) Annex to the WHO Pandemic Agreement and reiterated their commitment to finalize the text for consideration by the World Health Assembly in May 2027. The African Group says its common position is intended to protect continental interests and avoid a repeat of COVID-era inequities, while a peer-reviewed BMJ analysis identifies equity, technology transfer, regional manufacturing, financing, national implementation, and accountability as continuing tests.",
         "whyItMatters": "PABS sits at the core of a global bargain: rapid and safe sharing for research and response in exchange for fair, timely access to the health products and other benefits that sharing makes possible.",
-        "updatedAt": "2026-08-09",
+        "updatedAt": "2026-11-17",
         "confidence": "high",
-        "uncertainty": "The annex text, contractual terms, laboratory-network design, definitions of benefits, and adoption timetable remain under negotiation. Positions may change at the September session or a later World Health Assembly.",
+        "uncertainty": "The annex text, contractual terms, laboratory-network design, definitions of benefits, and adoption outcome remain under negotiation ahead of the May 2027 World Health Assembly target.",
         "sensitivity": "high",
         "editorialCaution": "Keep coverage at the governance level: do not include operational details that could facilitate pathogen acquisition, modification, or misuse. Attribute negotiating positions, distinguish equity concerns from scientific claims, and avoid treating countries, researchers, manufacturers, or regions as monoliths.",
         "featured": true,
         "reviewCadenceDays": 30,
-        "reviewBy": "2026-09-08",
+        "reviewBy": "2026-12-17",
         "map": {
             "mode": "global",
             "locations": [
@@ -232,15 +233,15 @@ export const GLOBAL_INSTITUTIONS_CASES_2026 = [
                 ]
             },
             {
-                "title": "WHO Member States continue negotiations on the Pathogen Access and Benefit Sharing Annex",
+                "title": "Member States reiterate commitment to finalize Pandemic Agreement PABS Annex by May 2027",
                 "publisher": "World Health Organization",
-                "publishedAt": "2026-07-20",
-                "url": "https://www.who.int/news/item/20-07-2026-who-member-states-continue-negotiations-on-the-pathogen-access-and-benefit-sharing-annex",
+                "publishedAt": "2026-11-13",
+                "url": "https://www.who.int/news/item/13-11-2026-member-states-reiterate-commitment-to-finalize-pandemic-agreement-pabs-annex-by-may-2027",
                 "perspectiveType": "institutional",
-                "perspective": "Official account of negotiation status, unresolved design questions, and the next scheduled meeting",
+                "perspective": "Official WHO account of the ninth IGWG session (2–13 November 2026), progress on access and benefit-sharing provisions, and the May 2027 World Health Assembly target",
                 "supports": [
-                    "Member states advanced but did not finalize the PABS annex during the July 2026 meeting.",
-                    "Negotiations covered contractual arrangements, laboratory networks, shared materials and information, and definitions of benefits; the next meeting is scheduled for September 2026."
+                    "Member states advanced access and benefit-sharing negotiations during the 2–13 November 2026 IGWG session in Geneva.",
+                    "Negotiators reaffirmed their commitment to finalize the draft PABS Annex for consideration by the World Health Assembly in May 2027."
                 ]
             },
             {
@@ -254,6 +255,15 @@ export const GLOBAL_INSTITUTIONS_CASES_2026 = [
                     "The authors identify unresolved PABS equity and trust concerns as a barrier to implementation.",
                     "They argue for regional manufacturing, stronger Global South participation, national investment, monitoring, and accountability."
                 ]
+            }
+        ],
+        "supplementalSources": [
+            {
+                "title": "WHO Member States continue negotiations on the Pathogen Access and Benefit Sharing Annex",
+                "publisher": "World Health Organization",
+                "publishedAt": "2026-07-20",
+                "url": "https://www.who.int/news/item/20-07-2026-who-member-states-continue-negotiations-on-the-pathogen-access-and-benefit-sharing-annex",
+                "perspective": "Earlier July 2026 WHO negotiation update retained for longitudinal tracking"
             }
         ],
         "waypoints": [

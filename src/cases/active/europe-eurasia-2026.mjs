@@ -31,16 +31,16 @@ export const EUROPE_EURASIA_CASES_2026 = [
             "NATO",
             "TechAIHub"
         ],
-        "statusSummary": "Greenland and Denmark announced an expanded military presence and continued allied exercises in and around Greenland on 14 January 2026. The Section 21 Commission held its constituting meeting on 18 March and is expected to deliver a legal study after one working year. On 9 July, after President Donald Trump renewed his demand for United States control, Greenland's prime minister again said Greenland was not for sale and called for respect for territorial integrity, international law, and Greenlandic self-determination. Greenland's 2025–2029 mineral strategy continues to emphasize sustainability, local benefit, critical minerals, and diversified international partnerships.",
+        "statusSummary": "Greenland and Denmark announced an expanded military presence and continued allied exercises in and around Greenland on 14 January 2026, while the Section 21 Commission held its constituting meeting on 18 March and is expected to deliver a legal study after one working year. On 9 July, after President Donald Trump renewed his demand for United States control, Greenland's prime minister again said Greenland was not for sale and called for respect for territorial integrity, international law, and Greenlandic self-determination. Alongside Greenland's 2025–2029 mineral strategy, independent reporting in October 2026 documented parliament's call for legislation suspending seabed-mining activity through 2029.",
         "whyItMatters": "Greenland brings self-determination, local consent, alliance security, Arctic strategic change, and competition for critical-mineral supply chains into one case without reducing Greenland to an object of outside strategy.",
-        "updatedAt": "2026-08-10",
+        "updatedAt": "2026-11-17",
         "confidence": "high",
         "uncertainty": "Security, autonomy, independence law, and mineral development are distinct policy tracks. External geopolitical rhetoric changes rapidly and should not be confused with a negotiated policy outcome. Mineral potential must not be presented as proven commercially recoverable reserves.",
         "sensitivity": "high",
         "editorialCaution": "Center Greenlandic consent and distinguish political rhetoric, announced exercises, legal study, mineral potential, and commercially demonstrated reserves. Do not imply that an independence decision or transfer of control is imminent.",
         "featured": false,
         "reviewCadenceDays": 14,
-        "reviewBy": "2026-08-24",
+        "reviewBy": "2026-12-01",
         "coordinates": {
             "latitude": 64.1814,
             "longitude": -51.6941
@@ -124,6 +124,19 @@ export const EUROPE_EURASIA_CASES_2026 = [
                 "publishedAt": "2026-03-19",
                 "url": "https://naalakkersuisut.gl/Nyheder/2026/03/1903_kommission?sc_lang=da",
                 "perspective": "Official Greenlandic account of the legal study concerning a possible independence process"
+            },
+            {
+                "title": "‘A decision to decide’: Greenland moves to suspend seabed mining until 2029",
+                "publisher": "Mongabay",
+                "publishedAt": "2026-10-22",
+                "url": "https://news.mongabay.com/short-article/2026/10/a-decision-to-decide-greenland-moves-to-suspend-seabed-mining-until-2029/",
+                "alternateUrls": [
+                    {
+                        "label": "Open Greenland's official Mineral Resources Authority portal",
+                        "url": "https://govmin.gl/"
+                    }
+                ],
+                "perspective": "Independent environmental reporting on Greenland's parliamentary move toward a precautionary seabed-mining pause through 2029"
             }
         ],
         "waypoints": [
@@ -172,6 +185,7 @@ export const EUROPE_EURASIA_CASES_2026 = [
     {
         "id": "eu-ai-act-transparency-implementation",
         "status": "active",
+        "reviewStatus": "update-in-progress",
         "title": "EU AI Act: Transparency and a Revised Implementation Timeline",
         "subtitle": "AI-generated content rules take effect as high-risk deadlines move",
         "coverageRegion": "Europe & Eurasia",
@@ -296,6 +310,7 @@ export const EUROPE_EURASIA_CASES_2026 = [
     {
         "id": "moldova-transnistria-energy-eu-accession",
         "status": "active",
+        "reviewStatus": "update-in-progress",
         "title": "Moldova and Transnistria: Energy Resilience During EU Accession",
         "subtitle": "How an energy shock reshapes rights, leverage, and a contested political settlement",
         "coverageRegion": "Europe & Eurasia",

@@ -2,6 +2,7 @@ export const MENA_CASES_2026 = [
     {
         "id": "syria-transition-return-sanctions",
         "status": "active",
+        "reviewStatus": "update-in-progress",
         "title": "Syria: Political Transition, Return, and Sanctions Relief",
         "subtitle": "Large-scale return inside a still-fragile recovery system",
         "coverageRegion": "Middle East & North Africa",
@@ -150,16 +151,16 @@ export const MENA_CASES_2026 = [
             "UN_OPEC",
             "Europe"
         ],
-        "statusSummary": "UN Security Council Resolution 2797 extended MINURSO through October 2026 and made Morocco's autonomy proposal a basis for negotiations while retaining language on self-determination. Morocco's foreign ministry presents autonomy under Moroccan sovereignty as the most feasible solution; Human Rights Watch argues that the framework risks narrowing meaningful self-determination and calls for genuine Sahrawi participation.",
+        "statusSummary": "UN Security Council Resolution 2797 extended MINURSO through October 2026 while making Morocco's autonomy proposal a basis for negotiations, but according to the UN mission record and Carnegie Endowment analysis (5 November 2026), competing US and Russian renewal drafts failed in the Security Council on 30 October 2026—with Russia vetoing an autonomy-centered draft after arguing it sidelined Polisario and self-determination parameters—ending MINURSO's 35-year peacekeeping presence. Morocco continues to present autonomy under Moroccan sovereignty as the most feasible solution, while Carnegie and Human Rights Watch document objections that narrowing the framework risks undermining genuine Sahrawi self-determination and human-rights safeguards.",
         "whyItMatters": "The dispute tests how international institutions reconcile territorial claims, self-determination, human rights, refugee representation, and the different meanings parties attach to an acceptable political settlement.",
-        "updatedAt": "2026-08-09",
+        "updatedAt": "2026-11-17",
         "confidence": "medium",
-        "uncertainty": "Sovereignty and legal terminology are contested, access to the territory and refugee camps is asymmetric, and Sahrawi views are not uniform. No source should be treated as speaking for every affected person.",
+        "uncertainty": "Following MINURSO's closure after the 30 October 2026 Security Council deadlock, future UN monitoring, mediation channels, and ceasefire oversight remain uncertain. Sovereignty and legal terminology are contested, access to the territory and refugee camps is asymmetric, and Sahrawi views are not uniform.",
         "sensitivity": "high",
         "editorialCaution": "Sovereignty and legal terminology are contested, access to the territory and refugee camps is asymmetric, and Sahrawi views are not uniform. No source should be treated as speaking for every affected person.",
         "featured": false,
         "reviewCadenceDays": 30,
-        "reviewBy": "2026-09-08",
+        "reviewBy": "2026-12-17",
         "coordinates": {
             "latitude": 27.1536,
             "longitude": -13.2033
@@ -206,16 +207,36 @@ export const MENA_CASES_2026 = [
                 "url": "https://digitallibrary.un.org/record/4093666?ln=en",
                 "perspectiveType": "institutional",
                 "perspective": "Official resolution record, vote, and extension of the MINURSO mandate through October 2026",
-                "supports": "Supports the institutional status of the UN mission and the formal framework under which negotiations continue."
+                "supports": "Supports the October 2025 mandate extension through October 2026 and the negotiating framework whose renewal failed in the 30 October 2026 Security Council votes."
+            },
+            {
+                "title": "How a U.S.-Russia Standoff Ended a Decades-Old UN Mission in Western Sahara",
+                "publisher": "Carnegie Endowment for International Peace",
+                "publishedAt": "2026-11-05",
+                "url": "https://carnegieendowment.org/emissary/2026/11/minurso-western-sahara-un-peacekeeping-security-council-conflict",
+                "perspectiveType": "independent",
+                "perspective": "Independent diplomatic analysis of the 30 October 2026 Security Council votes, Polisario and Russian objections, and the closure of MINURSO",
+                "supports": "Supports the account of the 30 October 2026 US–Russia Security Council deadlock, competing interpretations of self-determination, and the end of MINURSO's mandate."
+            }
+        ],
+        "supplementalSources": [
+            {
+                "title": "Security Council Resolutions and Statements on MINURSO",
+                "publisher": "United Nations Mission for the Referendum in Western Sahara (MINURSO)",
+                "publishedAt": null,
+                "sourceType": "living-reference",
+                "reviewedAt": "2026-11-17",
+                "milestoneDate": "2026-11-01",
+                "milestoneLabel": "MINURSO mandate expired following 30 October Security Council deadlock",
+                "url": "https://minurso.unmissions.org/en/security-council-resolutions-and-statements",
+                "perspective": "Official UN mission record of Security Council resolutions and the mission's mandate history through October 2026"
             },
             {
                 "title": "UN: Western Sahara Peoples' Self-Determination at Risk",
                 "publisher": "Human Rights Watch",
                 "publishedAt": "2026-03-25",
                 "url": "https://www.hrw.org/news/2026/03/25/un-western-sahara-peoples-self-determination-at-risk",
-                "perspectiveType": "independent",
-                "perspective": "Independent rights-based critique of the negotiating framework and the adequacy of Sahrawi participation",
-                "supports": "Supports scrutiny of whether the process preserves meaningful self-determination and human-rights safeguards."
+                "perspective": "Independent rights-based critique of the negotiating framework and the adequacy of Sahrawi participation"
             }
         ],
         "waypoints": [
@@ -245,10 +266,10 @@ export const MENA_CASES_2026 = [
             },
             {
                 "nodeId": "UN_OPEC",
-                "title": "Mandate, Mediation, and Rights",
+                "title": "Mandate Expiry, Veto Scrutiny, and Rights",
                 "perspectiveLabel": "United Nations process",
                 "perspectiveType": "institutional",
-                "narration": "Resolution 2797 keeps MINURSO in place and supplies a negotiating framework, while disagreements persist over how it should protect self-determination and rights.",
+                "narration": "After competing Security Council drafts failed on 30 October 2026, MINURSO's 35-year mandate ended and moved to General Assembly veto scrutiny on 10 November, sharpening debate over monitoring, self-determination, and rights protections.",
                 "focusQuestion": "How should mediators measure whether a settlement is both politically feasible and rights-consistent?"
             }
         ]
@@ -287,16 +308,16 @@ export const MENA_CASES_2026 = [
             "MilitantPMC",
             "Europe"
         ],
-        "statusSummary": "Libyan reporting describes the UN-facilitated roadmap as focused on completing the electoral framework and resolving the High National Elections Commission board impasse. Security Council Resolution 2819 adjusted measures governing Libyan assets in April 2026, while Chatham House analysis argues that external power-sharing proposals risk reinforcing elite fragmentation rather than producing accountable national institutions.",
+        "statusSummary": "Libyan reporting in August 2026 described the UN-facilitated roadmap as focused on completing the electoral framework and resolving the High National Elections Commission board impasse; on 30 October 2026, the UN Security Council adopted Resolution 2835 (13 in favor, 2 abstentions), extending UNSMIL's mandate through 31 October 2027 to support an inclusive political solution. Security Council Resolution 2819 earlier adjusted measures governing Libyan assets in April 2026, while Chatham House analysis argues that external power-sharing proposals risk reinforcing elite fragmentation rather than producing accountable national institutions.",
         "whyItMatters": "Libya links delayed elections to divided security authority, oil-revenue governance, sovereign assets, public services, and migration across the Mediterranean. A roadmap can succeed procedurally while leaving the political economy of division intact.",
-        "updatedAt": "2026-08-09",
+        "updatedAt": "2026-11-17",
         "confidence": "medium",
-        "uncertainty": "Timelines, elite bargains, security alignments, and oil flows can shift quickly. Rival institutions issue incompatible claims, and national-level reporting can obscure important municipal and civil-society perspectives.",
+        "uncertainty": "Timelines, elite bargains, security alignments, and oil flows can shift quickly. Rival institutions issue incompatible claims over electoral implementation, and national-level reporting can obscure municipal and civil-society perspectives.",
         "sensitivity": "high",
         "editorialCaution": "Timelines, elite bargains, security alignments, and oil flows can shift quickly. Rival institutions issue incompatible claims, and national-level reporting can obscure important municipal and civil-society perspectives.",
         "featured": false,
         "reviewCadenceDays": 14,
-        "reviewBy": "2026-08-23",
+        "reviewBy": "2026-12-01",
         "coordinates": {
             "latitude": 32.8872,
             "longitude": 13.1913
@@ -353,6 +374,15 @@ export const MENA_CASES_2026 = [
                 "perspectiveType": "independent",
                 "perspective": "Independent analysis of elite bargaining, divided institutions, and risks in externally sponsored power-sharing",
                 "supports": "Supports scrutiny of whether a negotiated elite arrangement would unify institutions or preserve fragmented authority."
+            }
+        ],
+        "supplementalSources": [
+            {
+                "title": "Security Council Renews Mandate of United Nations Support Mission in Libya for One Year (Resolution 2835)",
+                "publisher": "United Nations Support Mission in Libya",
+                "publishedAt": "2026-10-30",
+                "url": "https://unsmil.unmissions.org/en/news/security-council-renews-mandate-of-united-nations-support-mission-in-libya-for-one-year",
+                "perspective": "Official UNSMIL record of Resolution 2835 (2026) extending the mission's electoral and political-facilitation mandate through 31 October 2027"
             }
         ],
         "waypoints": [
@@ -424,16 +454,16 @@ export const MENA_CASES_2026 = [
             "UN_OPEC",
             "Africa"
         ],
-        "statusSummary": "The Sana'a Center describes a fragmented Yemeni trade-finance system that makes essential imports more costly and uncertain. The International Maritime Organization condemned renewed Red Sea attacks in July 2026 and highlighted risks to seafarers, supply chains, and the environment; Chatham House analysis warns that overlapping military and humanitarian activity increases escalation and miscalculation risks.",
+        "statusSummary": "The Sana'a Center describes a fragmented Yemeni trade-finance system that makes essential imports more costly and uncertain. Meeting for its 138th session on 2–6 November 2026, the International Maritime Organization Council again condemned attacks on merchant shipping in the Red Sea and wider regional lanes and urged stronger protection for seafarers, building on its July 2026 warnings; Chatham House analysis cautions that overlapping military and humanitarian activity increases escalation and miscalculation risks.",
         "whyItMatters": "Treating the Red Sea only as a global shipping lane hides how maritime coercion, port access, banking fragmentation, and import costs shape food, fuel, medicine, and livelihoods for people inside Yemen and around the corridor.",
-        "updatedAt": "2026-08-09",
+        "updatedAt": "2026-11-17",
         "confidence": "medium",
         "uncertainty": "Attack attribution, damage, shipping behavior, insurance costs, port access, and military deployments change rapidly. Economic effects vary across Yemen's divided monetary and political zones and require local corroboration.",
         "sensitivity": "high",
         "editorialCaution": "Attack attribution, damage, shipping behavior, insurance costs, port access, and military deployments change rapidly. Economic effects vary across Yemen's divided monetary and political zones and require local corroboration.",
         "featured": true,
         "reviewCadenceDays": 7,
-        "reviewBy": "2026-08-16",
+        "reviewBy": "2026-11-24",
         "coordinates": {
             "latitude": 14.7979,
             "longitude": 42.9545
@@ -490,6 +520,15 @@ export const MENA_CASES_2026 = [
                 "perspectiveType": "independent",
                 "perspective": "Independent analysis of escalation, overlapping naval operations, negotiations, and humanitarian movement",
                 "supports": "Supports assessment of miscalculation risks created by competing security and humanitarian operations in the corridor."
+            }
+        ],
+        "supplementalSources": [
+            {
+                "title": "IMO Council urges stronger protection of seafarers amid threats to global shipping (C 138)",
+                "publisher": "International Maritime Organization",
+                "publishedAt": "2026-11-06",
+                "url": "https://www.imo.org/en/mediacentre/pressbriefings/pages/imo-council-c138-urges-stronger-protection-of-seafarers-amid-threats-to-global-shipping-.aspx",
+                "perspective": "Official November 2026 IMO Council C138 summary condemning merchant-shipping attacks in the Red Sea and wider regional corridors"
             }
         ],
         "waypoints": [
