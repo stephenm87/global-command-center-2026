@@ -487,6 +487,7 @@ export const AFRICA_CASES_2026 = [
     {
         "id": "somaliland-recognition-red-sea-order",
         "status": "active",
+        "briefingVersion": 2,
         "title": "Somaliland Recognition and the Red Sea Order",
         "subtitle": "Self-determination, territorial integrity, and a new diplomatic precedent",
         "coverageRegion": "Africa",
@@ -516,7 +517,7 @@ export const AFRICA_CASES_2026 = [
             "MiddleEast",
             "UN_OPEC"
         ],
-        "statusSummary": "On 26 December 2025, Somaliland President Abdirahman Mohamed Abdillahi Cirro and Israeli leaders signed a joint declaration formalizing Israel's recognition of Somaliland, accompanied by stated plans to expand cooperation in agriculture, health, technology, and economic development. A 29 December United Nations political-affairs briefing recorded Somaliland's statement that the recognition established full diplomatic relations alongside Somalia's rejection, while Associated Press reporting documented the subsequent high-level visit and wider dispute over sovereignty, precedent, and Red Sea strategy.",
+        "statusSummary": "On 26 December 2025, Somaliland President Abdirahman Mohamed Abdillahi Cirro and Israeli leaders signed a joint declaration formalizing Israel's recognition of Somaliland, accompanied by stated plans to expand cooperation in agriculture, health, technology, and economic development. A 29 December United Nations political-affairs briefing recorded Somaliland's statement that the recognition established full diplomatic relations alongside Somalia's rejection, while Associated Press reporting documented the subsequent high-level visit and wider dispute over sovereignty, precedent, and Red Sea strategy. Al Jazeera reported on 1 November 2026 that Somaliland opened an embassy in West Jerusalem in June and Israel's first ambassador presented credentials in Hargeisa alongside an embassy cornerstone ceremony, while no other UN member state had recognized Somaliland.",
         "whyItMatters": "The case links a long-running claim to statehood with African norms on inherited borders, Somalia's territorial-integrity claim, Middle Eastern diplomacy, and competition around Red Sea ports and security routes.",
         "updatedAt": "2026-11-16",
         "confidence": "medium",
@@ -602,6 +603,101 @@ export const AFRICA_CASES_2026 = [
                 "url": "https://www.theeastafrican.co.ke/tea/news/east-africa/why-ssc-khaatumo-opposes-somaliland-s-bid-for-recognition-5086894",
                 "perspective": "Regional reporting that attributes opposition to Somaliland's recognition and territorial claims to SSC-Khaatumo officials",
                 "supports": "Supports the attributed claim that political and territorial preferences in Sool, Sanaag, and Cayn are contested."
+            },
+            {
+                "title": "The Chairperson of the African Union Commission rejects any recognition of Somaliland and reaffirms the African Union's unwavering commitment to the unity and sovereignty of Somalia",
+                "publisher": "African Union Commission",
+                "publishedAt": "2025-12-26",
+                "url": "https://au.int/en/pressreleases/20251226/auc-chairperson-rejects-any-recognition-somaliland",
+                "perspective": "Official statement of the African Union Commission Chairperson, Mahmoud Ali Youssouf, issued on the day of the recognition",
+                "supports": "Supports the African Union Commission's rejection of any recognition of Somaliland, its reliance on the Constitutive Act and the 1964 Organization of African Unity decision on borders inherited at independence, and its warning about precedent."
+            },
+            {
+                "title": "IGAD Secretariat Reiterates Its Firm Commitment to the Federal Republic of Somalia's Unity, Sovereignty, and Territorial Integrity",
+                "publisher": "Intergovernmental Authority on Development (IGAD)",
+                "publishedAt": "2025-12-27",
+                "url": "https://igad.int/igad-secretariat-reiterates-its-firm-commitment-to-the-federal-republic-of-somalias-unity-sovereignty-and-territorial-integrity",
+                "perspective": "Official statement of the Horn of Africa regional bloc's secretariat",
+                "supports": "Supports the IGAD Secretariat's position that unilateral recognition runs contrary to the UN Charter, the African Union Constitutive Act, and the Agreement establishing IGAD, and its call for dialogue."
+            },
+            {
+                "title": "Communique on the preservation of the sovereignty, territorial integrity, unity, and stability of the Federal Republic of Somalia",
+                "publisher": "African Union Peace and Security Council (published by the African Union Support and Stabilization Mission in Somalia)",
+                "publishedAt": "2026-01-07",
+                "url": "https://au-ssom.org/communique-on-the-preservation-of-the-sovereignty-territorial-integrity-unity-and-stability-of-the-federal-republic-of-somalia/",
+                "perspective": "Communique PSC/MIN/COMM.1324 (2026) of the African Union Peace and Security Council, adopted at ministerial level on 6 January 2026",
+                "supports": "Supports the Peace and Security Council's condemnation of the recognition, its call for immediate revocation, its statement that such recognition is null and void, and its request for inclusive dialogue within Somalia."
+            },
+            {
+                "title": "Constitutive Act of the African Union",
+                "publisher": "African Union",
+                "publishedAt": "2000-07-11",
+                "url": "https://au.int/en/treaties/constitutive-act-african-union",
+                "alternateUrls": [
+                    {
+                        "label": "English treaty text (PDF)",
+                        "url": "https://au.int/sites/default/files/treaties/7758-treaty-0021_-_CONSTITUTIVE_ACT_OF_THE_AFRICAN_UNION_E.pdf"
+                    }
+                ],
+                "perspective": "Founding treaty of the African Union, adopted 11 July 2000 and in force from 26 May 2001",
+                "supports": "Documents the adoption (11 July 2000) and entry into force (26 May 2001) of the African Union's founding treaty cited in AU statements rejecting recognition."
+            },
+            {
+                "title": "Somaliland: The Horn of Africa's Breakaway State",
+                "publisher": "Council on Foreign Relations",
+                "publishedAt": "2024-01-25",
+                "updatedAt": "2025-01-21",
+                "url": "https://www.cfr.org/backgrounder/somaliland-horn-africas-breakaway-state",
+                "perspective": "Independent think-tank backgrounder written before the December 2025 recognition",
+                "supports": "Supports the background history: British protectorate until 1960, union with the rest of present-day Somalia, the May 1991 declaration of independence, the 2001 constitutional referendum, elections since 2003, Somaliland's own currency, security forces and passports, the 2016 DP World agreement on the Port of Berbera, and its position on the Gulf of Aden."
+            },
+            {
+                "title": "African regional bodies reject Somaliland's recognition as independent nation by Israel",
+                "publisher": "Associated Press (published by PBS News)",
+                "publishedAt": "2025-12-27",
+                "url": "https://www.pbs.org/newshour/world/african-regional-bodies-reject-somalilands-recognition-as-independent-nation-by-israel",
+                "perspective": "Independent wire reporting from Nairobi on the first regional and international responses",
+                "supports": "Supports the Somali federal government's 26 December 2025 rejection of the recognition as unlawful, the statement that no country had recognized Somaliland since its 1991 declaration, and the African Union and IGAD responses."
+            },
+            {
+                "title": "UN Security Council members condemn Israel's recognition of Somaliland",
+                "publisher": "Al Jazeera",
+                "publishedAt": "2025-12-30",
+                "url": "https://www.aljazeera.com/news/2025/12/30/un-security-council-members-condemn-israels-recognition-of-somaliland",
+                "perspective": "Independent reporting on the emergency UN Security Council meeting, quoting the Somali, Israeli, United States, and Arab League representatives",
+                "supports": "Supports the statements made at the Security Council by Somalia, Israel, and the United States, and the report that 14 of 15 Council members condemned the recognition."
+            },
+            {
+                "title": "Israeli FM visits Somaliland after world-first recognition storm",
+                "publisher": "Al Jazeera",
+                "publishedAt": "2026-01-06",
+                "url": "https://www.aljazeera.com/news/2026/1/6/israeli-fm-visits-somaliland-after-world-first-recognition-storm",
+                "perspective": "Independent reporting on the Israeli foreign minister's 6 January 2026 visit to Hargeisa and the responses to it",
+                "supports": "Supports the account of Gideon Sa'ar's visit and embassy pledge, the Somali foreign ministry's response, the African Union emergency session, and the attributed allegation and denial about a military base and the resettlement of Palestinians."
+            },
+            {
+                "title": "Conflict in disputed Las Anod dims Somaliland's diplomatic dreams",
+                "publisher": "Al Jazeera",
+                "publishedAt": "2023-05-10",
+                "url": "https://www.aljazeera.com/features/2023/5/10/conflict-in-disputed-las-anod-dims-somalilands-diplomatic-dreams",
+                "perspective": "Independent feature reporting on the 2023 fighting in Las Anod / Laascaanood, quoting Somaliland, Puntland, and Dhulbahante figures",
+                "supports": "Supports the start of fighting on 6 February 2023 between Somaliland forces and Dhulbahante clan militia, the hospital-reported casualty and displacement figures as of May 2023, and the SSC-Khaatumo claim to Las Anod."
+            },
+            {
+                "title": "AUSSOM welcomes the UN Security Council's renewal of its mandate",
+                "publisher": "African Union Support and Stabilization Mission in Somalia (AUSSOM)",
+                "publishedAt": "2025-12-24",
+                "url": "https://au-ssom.org/aussom-welcomes-the-un-security-councils-renewal-of-its-mandate/",
+                "perspective": "Official press release of the African Union mission in Somalia",
+                "supports": "Supports the date to which UN Security Council Resolution 2809 (2025) renewed the mission's mandate: 31 December 2026."
+            },
+            {
+                "title": "Israel’s first ambassador to Somaliland presents credentials in Hargeisa",
+                "publisher": "Al Jazeera",
+                "publishedAt": "2026-11-01",
+                "url": "https://www.aljazeera.com/news/2026/11/1/israels-first-ambassador-to-somaliland-presents-credentials-in-hargeisa",
+                "perspective": "Independent reporting on Israeli Ambassador Michael Lotem presenting credentials in Hargeisa, the Israeli embassy cornerstone ceremony, Somaliland's June 2026 embassy opening in West Jerusalem, and Somali objections",
+                "supports": "Supports the late-October 2026 credentials and Israeli embassy cornerstone ceremonies in Hargeisa (announced 1 November 2026), Somaliland's June 2026 embassy opening in West Jerusalem, President Abdullahi's statement that no base talks had been held, and that no other UN member state had recognized Somaliland."
             }
         ],
         "waypoints": [
@@ -610,7 +706,8 @@ export const AFRICA_CASES_2026 = [
                 "title": "The Statehood Claim",
                 "perspectiveLabel": "Somaliland authorities and supporters",
                 "perspectiveType": "local",
-                "narration": "Somaliland presents its institutions, security record, and separate political history as the basis for international recognition.",
+                "conceptInFocus": "Sovereignty",
+                "narration": "President Abdirahman Mohamed Abdillahi Cirro welcomed Israel's recognition on 26 December 2025 as a historic step, Horn Diplomat reported from Hargeisa. The Council on Foreign Relations (CFR) notes that Somaliland declared independence in May 1991, approved a constitution by referendum in 2001, has held elections since 2003, and asserts its own currency and passports. CFR adds that its government cites the African norm of keeping colonial-era borders, claiming the former British protectorate's boundaries (Al Jazeera, May 2023).\n\nThis is a claim built on de facto sovereignty: practical control of institutions and territory. Yet for more than thirty years that control produced no de jure status, meaning legal standing as a state, because recognition is a choice other governments make. The criteria question is therefore which test should count: effective government, a people's vote, or the consent of the state being left.",
                 "focusQuestion": "Which legal and political criteria should determine whether a long-standing de facto state receives recognition?"
             },
             {
@@ -618,7 +715,8 @@ export const AFRICA_CASES_2026 = [
                 "title": "Territorial Integrity and Internal Plurality",
                 "perspectiveLabel": "Somalia and contested-area communities",
                 "perspectiveType": "local",
-                "narration": "Somalia rejects recognition as a violation of territorial integrity, while communities in disputed eastern areas complicate any claim that one local view is universal.",
+                "conceptInFocus": "Legitimacy",
+                "narration": "Somalia's federal government rejected the recognition on 26 December 2025 as an unlawful move, the Associated Press reported. At an emergency United Nations Security Council meeting, Somalia's ambassador urged members to reject what he called Israel's \"act of aggression\" (Al Jazeera, 30 December 2025). Opposition also exists inside the territory Somaliland claims. Al Jazeera reported in May 2023 that fighting began in Las Anod / Laascaanood on 6 February 2023 between Somaliland forces and Dhulbahante clan militia, and that hospital data counted more than 200,000 people displaced. The Dhulbahante claim the city as the capital of SSC-Khaatumo, which declared itself autonomous.\n\nBoth sides invoke a people and a border. Somalia defends the borders of the recognized state. Somaliland claims the borders of the old British protectorate, yet some communities inside those borders reject its rule. Recognition policy has to settle which unit counts before asking what its people want.",
                 "focusQuestion": "How should recognition policy account for both territorial integrity and non-uniform local preferences?"
             },
             {
@@ -626,7 +724,8 @@ export const AFRICA_CASES_2026 = [
                 "title": "Recognition as Strategy",
                 "perspectiveLabel": "Israeli diplomatic calculus",
                 "perspectiveType": "institutional",
-                "narration": "Recognition adds a Middle Eastern diplomatic actor to a Horn of Africa question already linked to ports, maritime routes, and regional security.",
+                "conceptInFocus": "Power",
+                "narration": "Prime Minister Benjamin Netanyahu's office said the 26 December 2025 declaration was issued \"in the spirit of the Abraham Accords\" and planned cooperation in agriculture, health, technology and economic development, Horn Diplomat reported. Somaliland opened an embassy in West Jerusalem in June 2026, and in late October Israeli Ambassador Michael Lotem presented credentials in Hargeisa alongside an embassy cornerstone ceremony (Al Jazeera, 1 November 2026). Somalia's President Hassan Sheikh Mohamud alleged Israel sought Red Sea naval access; Somaliland's president said no base talks had been held.\n\nRecognition is a lever one government controls alone. Its weight here reflects geography: the CFR places Somaliland on the Gulf of Aden near the Bab al-Mandeb Strait. A signal reshapes regional order when diplomatic missions or security pacts follow. By November 2026, sources confirm Somaliland's embassy in West Jerusalem and Israel's ambassador in Hargeisa, not a military base or a second recognition.",
                 "focusQuestion": "When does bilateral recognition alter a regional order rather than merely signal a political preference?"
             },
             {
@@ -634,8 +733,190 @@ export const AFRICA_CASES_2026 = [
                 "title": "The Precedent Question",
                 "perspectiveLabel": "African and multilateral institutions",
                 "perspectiveType": "synthesis",
-                "narration": "The African Union, IGAD, and United Nations must weigh self-determination claims against inherited-border norms and escalation risks.",
+                "conceptInFocus": "Interdependence",
+                "narration": "On 26 December 2025, African Union (AU) Commission Chairperson Mahmoud Ali Youssouf rejected any recognition, citing the 1964 Organization of African Unity decision on borders inherited at independence and warning of a \"dangerous precedent\". The Intergovernmental Authority on Development (IGAD), the Horn of Africa's regional bloc, said on 27 December that unilateral recognition runs contrary to the UN Charter. On 6 January 2026, the AU Peace and Security Council called for \"immediate revocation\". At the UN Security Council, Al Jazeera reported, 14 of 15 members condemned the move; the United States did not.\n\nThe AU Peace and Security Council cited the founding treaty principle of \"respect of borders existing on achievement of independence\" to warn that unilateral recognition threatens peace across the continent. That stance leaves little institutional space to test self-determination claims without Mogadishu's consent, so the Council urged inclusive dialogue inside Somalia.",
                 "focusQuestion": "What process could evaluate recognition claims without turning every disputed border into a security crisis?"
+            }
+        ],
+        "concepts": [
+            "Sovereignty",
+            "Legitimacy",
+            "Power",
+            "Interdependence"
+        ],
+        "background": "On 6 January 2026, Israeli Foreign Minister Gideon Sa'ar landed in Hargeisa, was received at the airport by Somaliland officials, and went on to the presidential palace. Somalia's foreign ministry called the visit an \"unauthorized incursion\" into its territory.\n\nBoth reactions grow from the same history. Somaliland was a British protectorate until 1960, when it united with the Italian-ruled south to form Somalia. After a war in which, the Council on Foreign Relations (CFR) reports, Siad Barre's forces killed tens of thousands of Somalilanders, it declared independence in May 1991. CFR notes that it maintains its own currency, security forces and passports, and has held democratic elections since 2003. Recognition means one state formally accepting another as a sovereign state, and the African Union (AU) commits members to respect borders existing at independence.\n\nControl on the ground is also contested: fighting began in Las Anod / Laascaanood on 6 February 2023. After Israel recognized Somaliland on 26 December 2025, Somaliland opened an embassy in West Jerusalem and Israel's ambassador presented credentials in Hargeisa in 2026, while no other UN member state followed.",
+        "backgroundSources": [
+            "https://www.aljazeera.com/news/2026/1/6/israeli-fm-visits-somaliland-after-world-first-recognition-storm",
+            "https://www.cfr.org/backgrounder/somaliland-horn-africas-breakaway-state",
+            "https://au-ssom.org/communique-on-the-preservation-of-the-sovereignty-territorial-integrity-unity-and-stability-of-the-federal-republic-of-somalia/",
+            "https://www.aljazeera.com/features/2023/5/10/conflict-in-disputed-las-anod-dims-somalilands-diplomatic-dreams",
+            "https://www.horndiplomat.com/israel-officially-recognizes-somaliland-as-sovereign-state/",
+            "https://www.aljazeera.com/news/2026/11/1/israels-first-ambassador-to-somaliland-presents-credentials-in-hargeisa"
+        ],
+        "keyTerms": [
+            {
+                "term": "Recognition",
+                "definition": "A government's formal decision to treat another entity as a sovereign state. Each state decides for itself. Horn Diplomat described Israel's 26 December 2025 declaration as the first publicly announced recognition of Somaliland by a UN member state in decades.",
+                "sourceUrl": "https://www.horndiplomat.com/israel-officially-recognizes-somaliland-as-sovereign-state/"
+            },
+            {
+                "term": "De facto and de jure",
+                "definition": "De facto means control in practice; de jure means status in law. Somaliland declared independence in 1991, maintains its own currency and security forces, and has held democratic elections since 2003, while no foreign government recognized its sovereignty before December 2025.",
+                "sourceUrl": "https://www.cfr.org/backgrounder/somaliland-horn-africas-breakaway-state"
+            },
+            {
+                "term": "Territorial integrity",
+                "definition": "The principle that a state's territory should not be divided without its consent. IGAD says Somalia's unity, sovereignty and territorial integrity are fully recognized under international law.",
+                "sourceUrl": "https://igad.int/igad-secretariat-reiterates-its-firm-commitment-to-the-federal-republic-of-somalias-unity-sovereignty-and-territorial-integrity"
+            },
+            {
+                "term": "Inherited borders principle",
+                "definition": "A founding principle of the African Union: \"respect of borders existing on achievement of independence\". Both the AU Commission and the AU Peace and Security Council cited it alongside a 1964 Organization of African Unity decision when rejecting recognition of Somaliland.",
+                "sourceUrl": "https://au-ssom.org/communique-on-the-preservation-of-the-sovereignty-territorial-integrity-unity-and-stability-of-the-federal-republic-of-somalia/"
+            },
+            {
+                "term": "SSC-Khaatumo",
+                "definition": "An administration claimed by the Dhulbahante clan in the Sool, Sanaag and Buuhoodle areas, with Las Anod / Laascaanood as its capital. Al Jazeera reported in May 2023 that it had declared itself autonomous.",
+                "sourceUrl": "https://www.aljazeera.com/features/2023/5/10/conflict-in-disputed-las-anod-dims-somalilands-diplomatic-dreams"
+            }
+        ],
+        "debate": [
+            {
+                "claimBy": "Israel's deputy UN ambassador, Jonathan Miller (UN Security Council, reported 30 December 2025)",
+                "claim": "Recognition was \"not a hostile step toward Somalia, nor does it preclude future dialogue between the parties\". He added: \"Recognition is not an act of defiance. It is an opportunity.\"",
+                "counterBy": "African Union Peace and Security Council (communique of 6 January 2026)",
+                "counterClaim": "No actor has standing to alter the territory of an AU member state. The recognition is null and void and should be revoked immediately.",
+                "sourceUrls": [
+                    "https://www.aljazeera.com/news/2025/12/30/un-security-council-members-condemn-israels-recognition-of-somaliland",
+                    "https://au-ssom.org/communique-on-the-preservation-of-the-sovereignty-territorial-integrity-unity-and-stability-of-the-federal-republic-of-somalia/"
+                ]
+            },
+            {
+                "claimBy": "Somaliland government and supporters (as reported by CFR, updated January 2025, and Al Jazeera, May 2023)",
+                "claim": "Somaliland's government cites the African norm of keeping colonial-era borders, claiming the boundaries of the former British Somaliland protectorate before its 1960 union with Italian-ruled Somalia.",
+                "counterBy": "African Union Commission Chairperson Mahmoud Ali Youssouf (26 December 2025)",
+                "counterClaim": "Somaliland \"remains an integral part of the Federal Republic of Somalia\", and recognizing it would break the principle of borders inherited at independence and set a dangerous precedent.",
+                "sourceUrls": [
+                    "https://www.cfr.org/backgrounder/somaliland-horn-africas-breakaway-state",
+                    "https://www.aljazeera.com/features/2023/5/10/conflict-in-disputed-las-anod-dims-somalilands-diplomatic-dreams",
+                    "https://au.int/en/pressreleases/20251226/auc-chairperson-rejects-any-recognition-somaliland"
+                ]
+            },
+            {
+                "claimBy": "Somalia's President Hassan Sheikh Mohamud (as reported by Al Jazeera, January and November 2026)",
+                "claim": "Mohamud alleged in January 2026 that Somaliland accepted Gaza resettlement and military-base terms, and told Sky News in late October 2026: \"Israel wants the Red Sea, that is the only reason.\"",
+                "counterBy": "Somaliland authorities (as reported by Al Jazeera, January and November 2026)",
+                "counterClaim": "Somaliland denied agreeing to resettle Palestinians, called initial ties \"purely diplomatic\", and President Abdullahi stated that no talks on hosting an Israeli military base had been held.",
+                "sourceUrls": [
+                    "https://www.aljazeera.com/news/2026/1/6/israeli-fm-visits-somaliland-after-world-first-recognition-storm",
+                    "https://www.aljazeera.com/news/2026/11/1/israels-first-ambassador-to-somaliland-presents-credentials-in-hargeisa"
+                ]
+            }
+        ],
+        "watchFor": [
+            {
+                "date": "31 December 2026",
+                "indicator": "The UN Security Council's renewal of the African Union mission in Somalia under Resolution 2809 runs to this date. Check whether the next Council text or debate on Somalia refers to Somaliland or to Somalia's territorial integrity.",
+                "sourceUrl": "https://au-ssom.org/aussom-welcomes-the-un-security-councils-renewal-of-its-mandate/"
+            },
+            {
+                "date": "After October 2026 cornerstone ceremony (opening date unannounced)",
+                "indicator": "Following Somaliland's June 2026 embassy opening in West Jerusalem and Israeli Ambassador Michael Lotem's credentials and embassy cornerstone ceremonies in Hargeisa (announced 1 November 2026), check when a permanent Israeli embassy opens in Hargeisa and whether any other UN member state grants recognition.",
+                "sourceUrl": "https://www.aljazeera.com/news/2026/11/1/israels-first-ambassador-to-somaliland-presents-credentials-in-hargeisa"
+            },
+            {
+                "date": "No date set (requested 6 January 2026)",
+                "indicator": "The AU Peace and Security Council asked the AU Commission, with IGAD and the East African Community, to facilitate inclusive political dialogue within Somalia, and said it would remain seized of the matter. Check for a convened meeting or a follow-up communique.",
+                "sourceUrl": "https://au-ssom.org/communique-on-the-preservation-of-the-sovereignty-territorial-integrity-unity-and-stability-of-the-federal-republic-of-somalia/"
+            }
+        ],
+        "examPrompts": [
+            "To what extent does effective control of territory give a political entity a legitimate claim to sovereign statehood?",
+            "Evaluate the claim that regional organizations protect stability at the expense of self-determination."
+        ],
+        "influenceCheck": [
+            {
+                "stage": "Setting the agenda",
+                "rating": "STRONG",
+                "evidence": "Israel's 26 December 2025 declaration drew an African Union Commission statement the same day and an IGAD statement the next. The UN Security Council held an emergency meeting, and the AU Peace and Security Council met at ministerial level on 6 January 2026.",
+                "sourceUrls": [
+                    "https://au.int/en/pressreleases/20251226/auc-chairperson-rejects-any-recognition-somaliland",
+                    "https://igad.int/igad-secretariat-reiterates-its-firm-commitment-to-the-federal-republic-of-somalias-unity-sovereignty-and-territorial-integrity",
+                    "https://www.aljazeera.com/news/2025/12/30/un-security-council-members-condemn-israels-recognition-of-somaliland",
+                    "https://au-ssom.org/communique-on-the-preservation-of-the-sovereignty-territorial-integrity-unity-and-stability-of-the-federal-republic-of-somalia/"
+                ]
+            },
+            {
+                "stage": "The formal decision",
+                "rating": "WEAK",
+                "evidence": "At the Security Council, 14 of 15 members condemned the recognition, and the United States said it had no announcement to make on recognizing Somaliland (Al Jazeera, 30 December 2025). The AU Peace and Security Council called for the recognition to be revoked.",
+                "sourceUrls": [
+                    "https://www.aljazeera.com/news/2025/12/30/un-security-council-members-condemn-israels-recognition-of-somaliland",
+                    "https://au-ssom.org/communique-on-the-preservation-of-the-sovereignty-territorial-integrity-unity-and-stability-of-the-federal-republic-of-somalia/"
+                ]
+            },
+            {
+                "stage": "What changed in practice",
+                "rating": "MIXED",
+                "evidence": "Somaliland opened an embassy in West Jerusalem in June 2026, and Israel's first ambassador presented credentials in Hargeisa alongside an embassy cornerstone ceremony (Al Jazeera, 1 November 2026). Yet no other UN member state has recognized Somaliland, and its president said no military-base talks had been held.",
+                "sourceUrls": [
+                    "https://www.aljazeera.com/news/2026/1/6/israeli-fm-visits-somaliland-after-world-first-recognition-storm",
+                    "https://www.aljazeera.com/news/2026/11/1/israels-first-ambassador-to-somaliland-presents-credentials-in-hargeisa"
+                ]
+            }
+        ],
+        "conceptLens": {
+            "power": "Israel used a resource only states hold: the ability to recognize. One declaration made the AU, IGAD and the UN Security Council respond within days, but 14 of 15 Council members condemned it.",
+            "sovereignty": "Somaliland has run governing institutions in Hargeisa since 1991, though control around Las Anod / Laascaanood is contested. Somalia, backed by the AU and IGAD, asserts de jure sovereignty over the entire territory.",
+            "legitimacy": "Somaliland grounds its claim in elections since 2003 and a 2001 constitutional referendum. Somalia and the AU ground theirs in inherited borders, and Dhulbahante communities around Las Anod / Laascaanood have rejected Somaliland's authority.",
+            "interdependence": "The AU warned of a precedent for peace across the continent, and Somalia's UN ambassador warned of instability in the Horn of Africa and the Red Sea region. Neither Hargeisa nor Mogadishu can settle the question alone."
+        },
+        "essayBuilder": {
+            "prompt": "To what extent does effective control of territory give a political entity a legitimate claim to sovereign statehood?",
+            "claim": "Effective control gives an entity a strong practical case for statehood, but not a sufficient legal one.",
+            "evidence": "Somaliland declared independence in May 1991, maintains its own currency and security forces, and has held elections since 2003 (Council on Foreign Relations). Yet no foreign country recognized it until Israel signed a joint declaration on 26 December 2025 (Associated Press; Horn Diplomat), followed in 2026 by Somaliland opening an embassy in West Jerusalem and Israel's ambassador presenting credentials in Hargeisa (Al Jazeera).",
+            "counterClaim": "The AU Commission answered the same day that Somaliland \"remains an integral part of the Federal Republic of Somalia\", and the AU Peace and Security Council later called the recognition null and void. Control is also incomplete: by May 2023, fighting around Las Anod had displaced more than 200,000 people, according to hospital data cited by Al Jazeera.",
+            "judgment": "On balance, effective control earns a hearing, not a title. However, the claim is only as strong as the consent behind it, and that consent is contested in the east and withheld by Somalia and the AU.",
+            "sourceUrls": [
+                "https://www.cfr.org/backgrounder/somaliland-horn-africas-breakaway-state",
+                "https://www.pbs.org/newshour/world/african-regional-bodies-reject-somalilands-recognition-as-independent-nation-by-israel",
+                "https://www.horndiplomat.com/israel-officially-recognizes-somaliland-as-sovereign-state/",
+                "https://www.aljazeera.com/news/2026/11/1/israels-first-ambassador-to-somaliland-presents-credentials-in-hargeisa",
+                "https://au.int/en/pressreleases/20251226/auc-chairperson-rejects-any-recognition-somaliland",
+                "https://au-ssom.org/communique-on-the-preservation-of-the-sovereignty-territorial-integrity-unity-and-stability-of-the-federal-republic-of-somalia/",
+                "https://www.aljazeera.com/features/2023/5/10/conflict-in-disputed-las-anod-dims-somalilands-diplomatic-dreams"
+            ]
+        },
+        "timeline": [
+            {
+                "date": "1960",
+                "label": "The British protectorate of Somaliland ends and the territory unites with the Italian-ruled south to form Somalia.",
+                "sourceUrl": "https://www.cfr.org/backgrounder/somaliland-horn-africas-breakaway-state"
+            },
+            {
+                "date": "1991-05",
+                "label": "Somaliland declares independence, with Hargeisa as its capital.",
+                "sourceUrl": "https://www.cfr.org/backgrounder/somaliland-horn-africas-breakaway-state"
+            },
+            {
+                "date": "2023-02-06",
+                "label": "Fighting begins in Las Anod / Laascaanood between Somaliland forces and Dhulbahante clan militia.",
+                "sourceUrl": "https://www.aljazeera.com/features/2023/5/10/conflict-in-disputed-las-anod-dims-somalilands-diplomatic-dreams"
+            },
+            {
+                "date": "2025-12-26",
+                "label": "Israel and Somaliland sign a joint declaration formalizing Israel's recognition of Somaliland.",
+                "sourceUrl": "https://www.horndiplomat.com/israel-officially-recognizes-somaliland-as-sovereign-state/"
+            },
+            {
+                "date": "2026-01-06",
+                "label": "The AU Peace and Security Council declares the recognition null and void and calls for its immediate revocation, as Israel's foreign minister visits Hargeisa.",
+                "sourceUrl": "https://au-ssom.org/communique-on-the-preservation-of-the-sovereignty-territorial-integrity-unity-and-stability-of-the-federal-republic-of-somalia/"
+            },
+            {
+                "date": "2026-10",
+                "label": "After Somaliland's June embassy opening in West Jerusalem, Israel's first ambassador presents credentials in Hargeisa alongside an embassy cornerstone ceremony (announced 1 November 2026).",
+                "sourceUrl": "https://www.aljazeera.com/news/2026/11/1/israels-first-ambassador-to-somaliland-presents-credentials-in-hargeisa"
             }
         ]
     },

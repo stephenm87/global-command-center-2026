@@ -651,4 +651,30 @@ test('extracted 3D Nexus components & Three.js helpers build node meshes, escape
     }));
     assert.match(conflictBriefingHtml, /briefing-card-category/);
     assert.match(conflictBriefingHtml, /Geopolitics &amp; Conflict/);
+
+    // Verify C4 Content Depth v2 UI renders step nav, quick/full reading time, read-more toggle,
+    // editorial-assessment influence check, concept lens, and collapsed-by-default Go Deeper modules
+    for (const pilotId of ['somaliland-recognition-red-sea-order', 'western-sahara-autonomy-self-determination']) {
+        const pilotHtml = renderToStaticMarkup(React.createElement(GuidedBriefings, {
+            initialTourId: pilotId,
+            initialStep: 1,
+            onExploreNode: () => {},
+            onRouteChange: () => {},
+            activeTours: GUIDED_TOURS,
+            archivedTours: [],
+        }));
+        assert.match(pilotHtml, /class="briefing-stepnav"/, `${pilotId} must render sticky step navigation`);
+        assert.match(pilotHtml, /aria-label="Previous step"/, `${pilotId} must render Prev step button`);
+        assert.match(pilotHtml, /aria-label="Next step"/, `${pilotId} must render Next step button`);
+        assert.match(pilotHtml, /Quick \d+ min · Full \d+ min/, `${pilotId} must render quick & full reading times`);
+        assert.match(pilotHtml, /Read more: what this shows/, `${pilotId} must collapse second step paragraph behind Read more`);
+        assert.match(pilotHtml, /Influence check/, `${pilotId} must render 3-stage Influence check`);
+        assert.match(pilotHtml, /Editorial assessment/, `${pilotId} must label Influence check as editorial assessment`);
+        assert.match(pilotHtml, /Concept lens/, `${pilotId} must render Concept lens cards`);
+        assert.match(pilotHtml, /class="go-deeper-toggle"[^>]*aria-expanded="false"/, `${pilotId} Go deeper must default to collapsed`);
+        assert.match(pilotHtml, /class="go-deeper-panel"[^>]*hidden=""/, `${pilotId} Go deeper panel must be hidden when collapsed`);
+        assert.match(pilotHtml, /Worked paragraph: Claim, Evidence, Counter-claim, Judgment/, `${pilotId} must include 4-step Essay builder`);
+        assert.match(pilotHtml, /Last reviewed/, `${pilotId} timeline strip must include Last reviewed marker`);
+        assert.match(pilotHtml, /Review by/, `${pilotId} timeline strip must include Review by marker`);
+    }
 });

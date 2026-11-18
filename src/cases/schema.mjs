@@ -125,7 +125,7 @@ export function computeBriefingReadingTimes(caseStudy) {
     const quickText = [
         caseStudy.statusSummary,
         caseStudy.whyItMatters,
-        ...waypoints.map(item => String(item.narration || '').split(/\n\n+/)[0] || ''),
+        ...waypoints.map(item => String(item.narration || '').split(/\n\s*\n/)[0] || ''),
     ].join(' ');
     const quickWords = countWords(quickText);
 

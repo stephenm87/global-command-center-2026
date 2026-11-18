@@ -2,7 +2,7 @@
   "schemaVersion": 1,
   "caseStudyCount": 29,
   "staticPageCount": 1,
-  "targetCount": 140,
+  "targetCount": 155,
   "targets": [
     {
       "id": "sudan-displacement-regional-spillover:core:0",
@@ -715,6 +715,140 @@
       "url": "https://www.theeastafrican.co.ke/tea/news/east-africa/why-ssc-khaatumo-opposes-somaliland-s-bid-for-recognition-5086894"
     },
     {
+      "id": "somaliland-recognition-red-sea-order:supplemental:1",
+      "caseStudyId": "somaliland-recognition-red-sea-order",
+      "caseStudyTitle": "Somaliland Recognition and the Red Sea Order",
+      "sourceTitle": "The Chairperson of the African Union Commission rejects any recognition of Somaliland and reaffirms the African Union's unwavering commitment to the unity and sovereignty of Somalia",
+      "publisher": "African Union Commission",
+      "group": "supplemental",
+      "kind": "primary",
+      "lifecycle": "active",
+      "url": "https://au.int/en/pressreleases/20251226/auc-chairperson-rejects-any-recognition-somaliland"
+    },
+    {
+      "id": "somaliland-recognition-red-sea-order:supplemental:2",
+      "caseStudyId": "somaliland-recognition-red-sea-order",
+      "caseStudyTitle": "Somaliland Recognition and the Red Sea Order",
+      "sourceTitle": "IGAD Secretariat Reiterates Its Firm Commitment to the Federal Republic of Somalia's Unity, Sovereignty, and Territorial Integrity",
+      "publisher": "Intergovernmental Authority on Development (IGAD)",
+      "group": "supplemental",
+      "kind": "primary",
+      "lifecycle": "active",
+      "url": "https://igad.int/igad-secretariat-reiterates-its-firm-commitment-to-the-federal-republic-of-somalias-unity-sovereignty-and-territorial-integrity"
+    },
+    {
+      "id": "somaliland-recognition-red-sea-order:supplemental:3",
+      "caseStudyId": "somaliland-recognition-red-sea-order",
+      "caseStudyTitle": "Somaliland Recognition and the Red Sea Order",
+      "sourceTitle": "Communique on the preservation of the sovereignty, territorial integrity, unity, and stability of the Federal Republic of Somalia",
+      "publisher": "African Union Peace and Security Council (published by the African Union Support and Stabilization Mission in Somalia)",
+      "group": "supplemental",
+      "kind": "primary",
+      "lifecycle": "active",
+      "url": "https://au-ssom.org/communique-on-the-preservation-of-the-sovereignty-territorial-integrity-unity-and-stability-of-the-federal-republic-of-somalia/"
+    },
+    {
+      "id": "somaliland-recognition-red-sea-order:supplemental:4",
+      "caseStudyId": "somaliland-recognition-red-sea-order",
+      "caseStudyTitle": "Somaliland Recognition and the Red Sea Order",
+      "sourceTitle": "Constitutive Act of the African Union",
+      "publisher": "African Union",
+      "group": "supplemental",
+      "kind": "primary",
+      "lifecycle": "active",
+      "url": "https://au.int/en/treaties/constitutive-act-african-union"
+    },
+    {
+      "id": "somaliland-recognition-red-sea-order:supplemental:4:alternate:0",
+      "caseStudyId": "somaliland-recognition-red-sea-order",
+      "caseStudyTitle": "Somaliland Recognition and the Red Sea Order",
+      "sourceTitle": "Constitutive Act of the African Union",
+      "publisher": "African Union",
+      "group": "supplemental",
+      "kind": "alternate",
+      "lifecycle": "active",
+      "primaryUrl": "https://au.int/en/treaties/constitutive-act-african-union",
+      "label": "English treaty text (PDF)",
+      "url": "https://au.int/sites/default/files/treaties/7758-treaty-0021_-_CONSTITUTIVE_ACT_OF_THE_AFRICAN_UNION_E.pdf"
+    },
+    {
+      "id": "somaliland-recognition-red-sea-order:supplemental:5",
+      "caseStudyId": "somaliland-recognition-red-sea-order",
+      "caseStudyTitle": "Somaliland Recognition and the Red Sea Order",
+      "sourceTitle": "Somaliland: The Horn of Africa's Breakaway State",
+      "publisher": "Council on Foreign Relations",
+      "group": "supplemental",
+      "kind": "primary",
+      "lifecycle": "active",
+      "url": "https://www.cfr.org/backgrounder/somaliland-horn-africas-breakaway-state"
+    },
+    {
+      "id": "somaliland-recognition-red-sea-order:supplemental:6",
+      "caseStudyId": "somaliland-recognition-red-sea-order",
+      "caseStudyTitle": "Somaliland Recognition and the Red Sea Order",
+      "sourceTitle": "African regional bodies reject Somaliland's recognition as independent nation by Israel",
+      "publisher": "Associated Press (published by PBS News)",
+      "group": "supplemental",
+      "kind": "primary",
+      "lifecycle": "active",
+      "url": "https://www.pbs.org/newshour/world/african-regional-bodies-reject-somalilands-recognition-as-independent-nation-by-israel"
+    },
+    {
+      "id": "somaliland-recognition-red-sea-order:supplemental:7",
+      "caseStudyId": "somaliland-recognition-red-sea-order",
+      "caseStudyTitle": "Somaliland Recognition and the Red Sea Order",
+      "sourceTitle": "UN Security Council members condemn Israel's recognition of Somaliland",
+      "publisher": "Al Jazeera",
+      "group": "supplemental",
+      "kind": "primary",
+      "lifecycle": "active",
+      "url": "https://www.aljazeera.com/news/2025/12/30/un-security-council-members-condemn-israels-recognition-of-somaliland"
+    },
+    {
+      "id": "somaliland-recognition-red-sea-order:supplemental:8",
+      "caseStudyId": "somaliland-recognition-red-sea-order",
+      "caseStudyTitle": "Somaliland Recognition and the Red Sea Order",
+      "sourceTitle": "Israeli FM visits Somaliland after world-first recognition storm",
+      "publisher": "Al Jazeera",
+      "group": "supplemental",
+      "kind": "primary",
+      "lifecycle": "active",
+      "url": "https://www.aljazeera.com/news/2026/1/6/israeli-fm-visits-somaliland-after-world-first-recognition-storm"
+    },
+    {
+      "id": "somaliland-recognition-red-sea-order:supplemental:9",
+      "caseStudyId": "somaliland-recognition-red-sea-order",
+      "caseStudyTitle": "Somaliland Recognition and the Red Sea Order",
+      "sourceTitle": "Conflict in disputed Las Anod dims Somaliland's diplomatic dreams",
+      "publisher": "Al Jazeera",
+      "group": "supplemental",
+      "kind": "primary",
+      "lifecycle": "active",
+      "url": "https://www.aljazeera.com/features/2023/5/10/conflict-in-disputed-las-anod-dims-somalilands-diplomatic-dreams"
+    },
+    {
+      "id": "somaliland-recognition-red-sea-order:supplemental:10",
+      "caseStudyId": "somaliland-recognition-red-sea-order",
+      "caseStudyTitle": "Somaliland Recognition and the Red Sea Order",
+      "sourceTitle": "AUSSOM welcomes the UN Security Council's renewal of its mandate",
+      "publisher": "African Union Support and Stabilization Mission in Somalia (AUSSOM)",
+      "group": "supplemental",
+      "kind": "primary",
+      "lifecycle": "active",
+      "url": "https://au-ssom.org/aussom-welcomes-the-un-security-councils-renewal-of-its-mandate/"
+    },
+    {
+      "id": "somaliland-recognition-red-sea-order:supplemental:11",
+      "caseStudyId": "somaliland-recognition-red-sea-order",
+      "caseStudyTitle": "Somaliland Recognition and the Red Sea Order",
+      "sourceTitle": "Israel’s first ambassador to Somaliland presents credentials in Hargeisa",
+      "publisher": "Al Jazeera",
+      "group": "supplemental",
+      "kind": "primary",
+      "lifecycle": "active",
+      "url": "https://www.aljazeera.com/news/2026/11/1/israels-first-ambassador-to-somaliland-presents-credentials-in-hargeisa"
+    },
+    {
       "id": "zambia-electricity-reset-climate-access:core:0",
       "caseStudyId": "zambia-electricity-reset-climate-access",
       "caseStudyTitle": "Zambia's Electricity Reset: Copper, Climate, and Access",
@@ -812,6 +946,39 @@
       "kind": "primary",
       "lifecycle": "active",
       "url": "https://www.hrw.org/news/2026/03/25/un-western-sahara-peoples-self-determination-at-risk"
+    },
+    {
+      "id": "western-sahara-autonomy-self-determination:supplemental:3",
+      "caseStudyId": "western-sahara-autonomy-self-determination",
+      "caseStudyTitle": "Western Sahara: Self-Determination, Autonomy, and Representation",
+      "sourceTitle": "Western Sahara: Overview of the case",
+      "publisher": "International Court of Justice",
+      "group": "supplemental",
+      "kind": "primary",
+      "lifecycle": "active",
+      "url": "https://www.icj-cij.org/case/61"
+    },
+    {
+      "id": "western-sahara-autonomy-self-determination:supplemental:4",
+      "caseStudyId": "western-sahara-autonomy-self-determination",
+      "caseStudyTitle": "Western Sahara: Self-Determination, Autonomy, and Representation",
+      "sourceTitle": "Western Sahara: UN 'stands ready' to keep supporting peace efforts as MINURSO mission ends",
+      "publisher": "UN News",
+      "group": "supplemental",
+      "kind": "primary",
+      "lifecycle": "active",
+      "url": "https://news.un.org/en/story/2026/11/1168717"
+    },
+    {
+      "id": "western-sahara-autonomy-self-determination:supplemental:5",
+      "caseStudyId": "western-sahara-autonomy-self-determination",
+      "caseStudyTitle": "Western Sahara: Self-Determination, Autonomy, and Representation",
+      "sourceTitle": "What Happens Next With Western Sahara? No One Knows",
+      "publisher": "PassBlue",
+      "group": "supplemental",
+      "kind": "primary",
+      "lifecycle": "active",
+      "url": "https://passblue.com/2026/11/10/what-happens-next-with-western-sahara-no-one-knows/"
     },
     {
       "id": "libya-roadmap-elections-oil-assets:core:0",
