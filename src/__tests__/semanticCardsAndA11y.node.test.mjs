@@ -56,11 +56,24 @@ test('GuidedBriefings displays Showing X of Y cases with Show all button and UI 
     // Verify computed WCAG 2.1 AA (>= 4.5:1) contrast on accessible text accents & HUD labels
     assert.ok(contrastRatio('#ff5c99', '#0a0e1a') >= 4.5, '#ff5c99 conflict category label must achieve >=4.5:1 on #0a0e1a');
     assert.ok(contrastRatio('#ff5c99', '#1b2b28') >= 4.5, '#ff5c99 conflict category label must achieve >=4.5:1 on active Africa-tinted library card (#8fda66 @ 9% over #101a22)');
-    assert.match(fs.readFileSync(path.join(REPO_ROOT, 'src/GuidedBriefings.css'), 'utf8'), /\.briefing-tour-list button\.active\s*\{[^}]*9%,\s*var\(--briefing-raised\)/);
+    const briefingsCss = fs.readFileSync(path.join(REPO_ROOT, 'src/GuidedBriefings.css'), 'utf8');
+    assert.match(briefingsCss, /\.briefing-tour-list button\.active\s*\{[^}]*9%,\s*var\(--briefing-raised\)/);
     assert.ok(contrastRatio('#ff6b6b', '#101624') >= 4.5, '#ff6b6b Marxism theory label must achieve >=4.5:1 on #101624');
     assert.ok(contrastRatio('#9fb2bc', '#05090d') >= 4.5, '#9fb2bc 3D Nexus HUD label must achieve >=4.5:1 on #05090d');
     assert.ok(contrastRatio('#ffffff', '#7a0099') >= 4.5, 'Code of Conduct #ffffff on #7a0099 must achieve >=4.5:1');
 
     assert.ok(!/\.hud-tab\s*\{[^}]*color:\s*#555\b/.test(nexusCss), '.hud-tab must not use low-contrast #555');
     assert.ok(!/\.section-label\s*\{[^}]*color:\s*#555\b/.test(nexusCss), '.section-label must not use low-contrast #555');
+});
+
+test('GuidedBriefings C4 depth panels preserve [hidden] display:none and constrain CSS Grid tracks across desktop and mobile', () => {
+    const briefingsCss = fs.readFileSync(path.join(REPO_ROOT, 'src/GuidedBriefings.css'), 'utf8');
+    assert.match(briefingsCss, /\.guided-briefings\s+\[hidden\]\s*\{\s*display:\s*none;\s*\}/, 'GuidedBriefings CSS must preserve [hidden] display:none across display:grid panels');
+    assert.match(briefingsCss, /\.go-deeper-panel\s*\{[^}]*grid-template-columns:\s*minmax\(0,\s*1fr\)/, '.go-deeper-panel must constrain grid track to minmax(0, 1fr)');
+    assert.match(briefingsCss, /\.depth-block\s*\{[^}]*min-width:\s*0/, '.depth-block must set min-width: 0 inside .go-deeper-panel');
+    assert.match(briefingsCss, /\.timeline-strip\s*\{[^}]*max-width:\s*100%[\s\S]*?overflow-x:\s*auto/, '.timeline-strip must keep max-width:100% and overflow-x:auto');
+    assert.ok(
+        !/\.(?:influence-steps|key-figures-grid|debate-pair|go-deeper-panel)[^{]*\{[^}]*grid-template-columns:\s*1fr\b/.test(briefingsCss),
+        'C4 grid containers must use minmax(0, 1fr) rather than bare 1fr across desktop and mobile rules',
+    );
 });
