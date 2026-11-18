@@ -45,6 +45,12 @@ test('curated case studies remain balanced across 7 regions x 6 lenses, auditabl
             BROAD_CATEGORIES,
             ISSUE_LENS_TO_BROAD_CATEGORY,
             CONTENT_REVIEW_DATE,
+            UNIT1_CORE_CONCEPTS,
+            IB_THEMATIC_STUDIES,
+            INFLUENCE_CHECK_STAGES,
+            INFLUENCE_RATINGS,
+            countWords,
+            computeBriefingReadingTimes,
             addDays,
             normalizeCaseStudy,
             toForecastRecord,
@@ -444,5 +450,138 @@ test('curated case studies remain balanced across 7 regions x 6 lenses, auditabl
         for (const loc of record.map.locations) {
             assertNonEmptyString(loc.role, `${upgradedId} map location "${loc.label}" must document its role`);
         }
+    }
+
+    // Content Depth Standard v2 & C3 Tier 2 validation for upgraded cases (briefingVersion === 2)
+    const conceptSet = new Set(UNIT1_CORE_CONCEPTS);
+    const themeSet = new Set(IB_THEMATIC_STUDIES);
+    const influenceRatingSet = new Set(INFLUENCE_RATINGS);
+    const bannedFillerRegex = /\b(?:plays a crucial role|in today's complex world|it is important to note|underscores the complexity|highlights the multifaceted)\b/i;
+    const assertSourceUrlsExist = (urls, validUrls, label) => {
+        assert.ok(Array.isArray(urls) && urls.length > 0, `${label} needs at least one sourceUrl`);
+        for (const url of urls) {
+            assert.ok(validUrls.has(url), `${label} sourceUrl "${url}" must match a case source or supplementalSource`);
+        }
+    };
+    const assertNoLongDirectQuotes = (text, label) => {
+        for (const match of String(text || '').matchAll(/["“]([^"”]{12,})["”]/g)) {
+            assert.ok(countWords(match[1]) <= 25, `${label} direct quote exceeds 25 words`);
+        }
+    };
+
+    for (const item of CASE_STUDIES_2026.filter(entry => entry.briefingVersion === 2)) {
+        const validUrls = new Set([
+            ...item.sources.map(source => source.url),
+            ...item.supplementalSources.map(source => source.url),
+        ]);
+        for (const loc of item.map.locations) {
+            assertNonEmptyString(loc.role, `${item.id} v2 map location "${loc.label}" must document its role`);
+        }
+
+        assert.ok(Array.isArray(item.concepts) && item.concepts.length >= 1 && item.concepts.length <= 4, `${item.id} needs 1-4 concepts`);
+        assert.equal(new Set(item.concepts).size, item.concepts.length, `${item.id} repeats a concept`);
+        for (const concept of item.concepts) {
+            assert.ok(conceptSet.has(concept), `${item.id} has unknown Unit 1 concept "${concept}"`);
+        }
+
+        if (Array.isArray(item.ibThemes)) {
+            assert.equal(new Set(item.ibThemes).size, item.ibThemes.length, `${item.id} repeats an ibTheme`);
+            for (const theme of item.ibThemes) {
+                assert.ok(themeSet.has(theme), `${item.id} has unknown ibTheme "${theme}"`);
+            }
+        }
+
+        for (const [idx, waypoint] of item.waypoints.entries()) {
+            const paragraphs = String(waypoint.narration || '').trim().split(/\n\n+/).filter(Boolean);
+            assert.equal(paragraphs.length, 2, `${item.id} step ${idx + 1} narration must have 2 paragraphs separated by blank line`);
+            const words = countWords(waypoint.narration);
+            assert.ok(words >= 90 && words <= 160, `${item.id} step ${idx + 1} narration has ${words} words (expected 90-160)`);
+            assert.doesNotMatch(waypoint.narration, bannedFillerRegex, `${item.id} step ${idx + 1} uses banned filler phrasing`);
+            assertNoLongDirectQuotes(waypoint.narration, `${item.id} step ${idx + 1}`);
+            if (waypoint.conceptInFocus) {
+                assert.ok(conceptSet.has(waypoint.conceptInFocus), `${item.id} step ${idx + 1} invalid conceptInFocus`);
+                assert.ok(item.concepts.includes(waypoint.conceptInFocus), `${item.id} step ${idx + 1} conceptInFocus absent from case.concepts`);
+            }
+        }
+
+        const bgWords = countWords(item.background);
+        assert.ok(bgWords >= 120 && bgWords <= 200, `${item.id} background has ${bgWords} words (expected 120-200)`);
+        assert.doesNotMatch(item.background, bannedFillerRegex, `${item.id} background uses banned filler phrasing`);
+        assertNoLongDirectQuotes(item.background, `${item.id} background`);
+        assertSourceUrlsExist(item.backgroundSources, validUrls, `${item.id} backgroundSources`);
+
+        assert.ok(Array.isArray(item.keyTerms) && item.keyTerms.length >= 3 && item.keyTerms.length <= 6, `${item.id} needs 3-6 keyTerms`);
+        for (const term of item.keyTerms) {
+            assertNonEmptyString(term.term, `${item.id} keyTerm missing term`);
+            assertNonEmptyString(term.definition, `${item.id} keyTerm "${term.term}" missing definition`);
+            assert.ok(validUrls.has(term.sourceUrl), `${item.id} keyTerm "${term.term}" sourceUrl must match a case source`);
+        }
+
+        assert.ok(Array.isArray(item.debate) && item.debate.length >= 2 && item.debate.length <= 3, `${item.id} needs 2-3 debate pairs`);
+        for (const pair of item.debate) {
+            assertNonEmptyString(pair.claimBy, `${item.id} debate missing claimBy`);
+            assertNonEmptyString(pair.claim, `${item.id} debate missing claim`);
+            assertNonEmptyString(pair.counterBy, `${item.id} debate missing counterBy`);
+            assertNonEmptyString(pair.counterClaim, `${item.id} debate missing counterClaim`);
+            assertNoLongDirectQuotes(`${pair.claim} ${pair.counterClaim}`, `${item.id} debate`);
+            assertSourceUrlsExist(pair.sourceUrls, validUrls, `${item.id} debate`);
+        }
+
+        assert.ok(Array.isArray(item.watchFor) && item.watchFor.length >= 2 && item.watchFor.length <= 4, `${item.id} needs 2-4 watchFor entries`);
+        for (const entry of item.watchFor) {
+            assertNonEmptyString(entry.date, `${item.id} watchFor missing date`);
+            assertNonEmptyString(entry.indicator, `${item.id} watchFor missing indicator`);
+            assert.ok(validUrls.has(entry.sourceUrl), `${item.id} watchFor sourceUrl must match a case source`);
+        }
+
+        assert.ok(Array.isArray(item.examPrompts) && item.examPrompts.length === 2, `${item.id} needs 2 examPrompts`);
+        for (const prompt of item.examPrompts) {
+            assertNonEmptyString(prompt, `${item.id} examPrompt cannot be empty`);
+        }
+
+        assert.ok(Array.isArray(item.influenceCheck) && item.influenceCheck.length === 3, `${item.id} needs 3 influenceCheck stages`);
+        assert.deepEqual(item.influenceCheck.map(entry => entry.stage), [...INFLUENCE_CHECK_STAGES], `${item.id} influenceCheck stages must follow canonical order`);
+        for (const stage of item.influenceCheck) {
+            assert.ok(influenceRatingSet.has(stage.rating), `${item.id} influenceCheck stage "${stage.stage}" has invalid rating ${stage.rating}`);
+            assertNonEmptyString(stage.evidence, `${item.id} influenceCheck stage "${stage.stage}" needs evidence`);
+            assertSourceUrlsExist(stage.sourceUrls, validUrls, `${item.id} influenceCheck "${stage.stage}"`);
+        }
+
+        assert.ok(item.conceptLens && typeof item.conceptLens === 'object', `${item.id} needs conceptLens`);
+        const lensEntries = Object.entries(item.conceptLens);
+        assert.ok(lensEntries.length >= 1, `${item.id} conceptLens needs at least 1 concept`);
+        for (const [key, value] of lensEntries) {
+            assert.ok(['power', 'sovereignty', 'legitimacy', 'interdependence'].includes(key), `${item.id} unexpected conceptLens key "${key}"`);
+            assertNonEmptyString(value, `${item.id} conceptLens.${key} cannot be empty`);
+        }
+
+        assert.ok(item.essayBuilder && typeof item.essayBuilder === 'object', `${item.id} needs essayBuilder`);
+        assert.ok(item.examPrompts.includes(item.essayBuilder.prompt), `${item.id} essayBuilder.prompt must match an examPrompt`);
+        for (const field of ['claim', 'evidence', 'counterClaim', 'judgment']) {
+            assertNonEmptyString(item.essayBuilder[field], `${item.id} essayBuilder.${field} missing`);
+        }
+        assertSourceUrlsExist(item.essayBuilder.sourceUrls, validUrls, `${item.id} essayBuilder`);
+
+        assert.ok(Array.isArray(item.timeline) && item.timeline.length >= 3 && item.timeline.length <= 6, `${item.id} needs 3-6 timeline events`);
+        for (const event of item.timeline) {
+            assertNonEmptyString(event.date, `${item.id} timeline missing date`);
+            assertNonEmptyString(event.label, `${item.id} timeline missing label`);
+            assert.ok(validUrls.has(event.sourceUrl), `${item.id} timeline sourceUrl must match a case source`);
+        }
+
+        if (Array.isArray(item.keyFigures)) {
+            assert.ok(item.keyFigures.length <= 3, `${item.id} keyFigures capped at 3`);
+            const baseMetricsText = `${item.statusSummary} ${item.uncertainty}`;
+            for (const figure of item.keyFigures) {
+                assertNonEmptyString(figure.value, `${item.id} keyFigure missing value`);
+                assertNonEmptyString(figure.label, `${item.id} keyFigure missing label`);
+                assertNonEmptyString(figure.asOf, `${item.id} keyFigure missing asOf`);
+                assert.ok(validUrls.has(figure.sourceUrl), `${item.id} keyFigure sourceUrl must match a case source`);
+                assert.ok(baseMetricsText.includes(String(figure.value)), `${item.id} keyFigure value "${figure.value}" must appear verbatim in statusSummary/uncertainty`);
+            }
+        }
+
+        const times = computeBriefingReadingTimes(item);
+        assert.ok(times.fullMinutes >= times.quickMinutes && times.quickMinutes >= 1);
     }
 });
