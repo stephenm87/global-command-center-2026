@@ -2,6 +2,13 @@
 
 Newest entry first. Each agent adds an entry before it stops. Keep entries short.
 
+## 2026-11-18 — Antigravity — Unit 17 (PR #35 go-live, C4 restart)
+- **PR #35 merged** into `main` with merge commit `8fece4f51bf38d93384b19914c9f410cdb785741` (owner-approved).
+- **Production deploy ID:** `6afd0526bb82e26e11edd17e` (`build_id 6afd0526bb82e26e11edd17c`, `state: ready`, `context: production`, `published_at 2026-11-18T01:54:05.025Z`, `deploy_time 21s`, secret scan 216 files / 0 matches).
+- **Production smoke test** (Playwright, `scratch/smoke-prod.mjs`): 14/14 checks passed, 0 console/page errors. Globe canvas mounted with 40 intel cards; Somaliland locator map shows Hargeisa, Berbera, Las Anod / Laascaanood, Mogadishu, Israel with the basemap loaded; `?view=nexus&actor=europe` resolves to the European Union; `/context-cards/` HTTP 200 with 5/5 portraits (lu_xun and lin_qiaozhi at 1200px wide) and Playfair Display loaded; `GLOPO CO. ↗` visible in the desktop header and in the 390px Tools menu with the new aria-label; no "GPT" text on either.
+- **C4 restart:** rebased `feat/c4-depth-pilot` onto the new `main`. The parked partial Claude draft was dropped from the branch (kept only as `scratch/parked-partial-c4-draft.diff` for the record and not shown to the new drafting session). The branch now carries only the v2 schema, integrity tests, and `docs/BRIEFING_VOICE.md`.
+- **Backlog for C2:** widen the `GLOPO CO.` button in the mobile Tools menu to match the other menu buttons (owner note, 2026-11-18).
+
 ## 2026-11-18 — Antigravity — Unit 16 (Owner decisions on PR #35)
 - **Did (on `feat/visual-refresh`):**
   - Companion button renamed to `GLOPO CO. ↗` in the desktop header and the Tools menu (mobile), aria-label `Launch GloPo Co., the GloPo Companion app, in a new tab`; teacher-guide caption updated. Correction notes added to `docs/UX_ASSESSMENT_2026-11.md` and the Unit 10 entry below, rather than rewriting history.
