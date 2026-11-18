@@ -1,8 +1,11 @@
 const test = require('node:test');
 const assert = require('node:assert/strict');
+const fs = require('node:fs');
+const path = require('node:path');
 
 const {
     FIXED_QUERIES,
+    SNAPSHOT_TTL_MS,
     SOURCE_ROLE_LABELS,
     TARGET_ISSUES,
     TARGET_REGIONS,
@@ -119,7 +122,12 @@ test('public snapshot normalizes, deduplicates, and labels cached provider resul
     assert.equal(snapshot.meta.status, 'fresh');
     assert.equal(snapshot.meta.queryCount, 8);
     assert.equal(snapshot.meta.coverage.policy, 'relevance-diversity-v1');
-    assert.equal(withSnapshotAge(snapshot, new Date('2026-08-09T02:00:00Z').getTime()).meta.status, 'stale');
+    assert.equal(withSnapshotAge(snapshot, new Date('2026-08-09T02:00:00Z').getTime()).meta.status, 'fresh');
+    assert.equal(withSnapshotAge(snapshot, new Date('2026-08-09T13:00:00Z').getTime()).meta.status, 'stale');
+
+    const netlifyToml = fs.readFileSync(path.join(__dirname, '../../../netlify.toml'), 'utf8');
+    assert.match(netlifyToml, /\[functions\."refresh-public-intel"\]\s+schedule\s*=\s*"0 \*\/6 \* \* \*"/);
+    assert.equal(SNAPSHOT_TTL_MS, 6 * 60 * 60 * 1000);
 });
 
 test('duplicate URLs and duplicate headlines are each collapsed', () => {

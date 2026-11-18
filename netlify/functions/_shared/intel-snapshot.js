@@ -1,6 +1,6 @@
 const { normalizeProviderArticle } = require('./intel-normalization');
 
-const SNAPSHOT_TTL_MS = 30 * 60 * 1000;
+const SNAPSHOT_TTL_MS = 6 * 60 * 60 * 1000;
 const REQUEST_TIMEOUT_MS = 12000;
 const MAX_SNAPSHOT_ITEMS = 20;
 const MAX_PER_REGION = 4;

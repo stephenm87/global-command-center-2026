@@ -2,6 +2,13 @@
 
 Newest entry first. Each agent adds an entry before it stops. Keep entries short.
 
+## 2026-11-19 — Antigravity (Lead) — Unit 19b (PR #36 Pre-Merge 6-Hour `refresh-public-intel` Schedule & Merge)
+- **Did (on `feat/c4-depth-pilot`, pre-merge of PR #36):**
+  - Slowed `[functions."refresh-public-intel"]` in `netlify.toml` from `*/30 * * * *` (`11,520`/month noted below in Unit 19) to `0 */6 * * *` (superseding the `*/30` interval: `8` queries × `4` runs/day = `32`/day, about `960`/month).
+  - Updated `SNAPSHOT_TTL_MS` in `netlify/functions/_shared/intel-snapshot.js` to `6 * 60 * 60 * 1000` (`12h` staleness threshold = one missed run), synced `netlify/functions/__tests__/public-intel.node.test.js`, and documented the schedule, `12h` staleness threshold, and `~960`/month query volume in `docs/ENVIRONMENT.md`, `docs/DEPLOYMENT.md`, `docs/ARCHITECTURE.md`, and `docs/AI_FUNCTIONS.md`.
+- **Claude Collaboration (`Review [Quick Confirmation]`, `claude-sonnet-5-5`, read-only):** `review/claude-review-20261119-0658.md` — `0 BLOCKING, 0 SHOULD-FIX, 3 SUGGESTION` (`ACCEPT`ed noting the `6h` supersession here + the `12h` staleness note in `docs/DEPLOYMENT.md`; kept `max-age=900` CDN revalidation unchanged as optional).
+- **Tested:** `npm test` (`80/80` pass), `npm run build` (`155` targets), and production deploy + desktop/390px smoke-test pending after PR #36 merge.
+
 ## 2026-11-19 — Antigravity (Carbon) — Unit 19 (C4 Pilot Voice & Layout Polish + IB Themes + Section D1 & Supabase Diagnostics)
 - **Owner Gate Status:** Stopping on Deploy Preview #36 (`feat/c4-depth-pilot`, PR #36) with before/after desktop & `390px` mobile screenshots, rewritten Step 1 prose for Somaliland and Western Sahara, and D1 + Supabase diagnostics awaiting owner approval to merge PR #36 and draft the remaining 5 pilot cases (`Sudan`, `South China Sea`, `Greenland`, `Red Sea–Yemen`, `WHO pathogen access`).
 - **Did (on `feat/c4-depth-pilot`):**
