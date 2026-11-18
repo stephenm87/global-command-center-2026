@@ -6,6 +6,7 @@ import { categoryColors, getAccessibleTextAccent, getCaseReviewNotice, isReviewO
 import { indexSourceHealth, shouldPreferAlternate, sourceHealthLabel } from './sourceHealth.mjs';
 import CaseLocatorMap from './components/CaseLocatorMap';
 import {
+    buildSourceByNumber,
     buildSourceIndex,
     ConceptLens,
     GoDeeper,
@@ -34,16 +35,21 @@ const resolveStepIndex = (allTours, activeTours, tourId, nodeId, step) => {
     return actorIndex >= 0 ? actorIndex : 0;
 };
 
-function SourceCitation({ source, healthByUrl, supplemental = false }) {
+function SourceCitation({ source, number, healthByUrl, supplemental = false }) {
     const health = healthByUrl.get(source.url);
     const healthLabel = sourceHealthLabel(health);
     const preferAlternate = shouldPreferAlternate(health);
     const alternates = Array.isArray(source.alternateUrls) ? source.alternateUrls : [];
 
     return (
-        <li className={supplemental ? 'source-citation source-citation-supplemental' : 'source-citation'}>
-            {((!supplemental && source.perspectiveType) || healthLabel) && (
+        <li
+            id={number ? `briefing-source-${number}` : undefined}
+            tabIndex={number ? -1 : undefined}
+            className={supplemental ? 'source-citation source-citation-supplemental' : 'source-citation'}
+        >
+            {(number || (!supplemental && source.perspectiveType) || healthLabel) && (
                 <div className="source-citation-header">
+                    {number && <span className="source-number">[{number}]</span>}
                     {!supplemental && source.perspectiveType && <strong className={`source-perspective source-perspective-${source.perspectiveType}`}>{source.perspectiveType}</strong>}
                     {healthLabel && <em className={`source-health source-health-${health.status}`}>{healthLabel}{health.httpStatus ? ` · ${health.httpStatus}` : ''}</em>}
                 </div>
@@ -104,6 +110,7 @@ export default function GuidedBriefings({
     const [visibleCaseCount, setVisibleCaseCount] = useState(INITIAL_LIBRARY_COUNT);
     const stageHeadingRef = useRef(null);
     const progressRef = useRef(null);
+    const supplementalDetailsRef = useRef(null);
 
     const tour = useMemo(() => allTours.find(item => item.id === tourId) || activeTours[0], [allTours, activeTours, tourId]);
     const waypoint = tour?.waypoints[stepIndex];
@@ -151,6 +158,7 @@ export default function GuidedBriefings({
     }, [catalogTours, librarySearch, regionFilter, issueFilter]);
     const healthByUrl = useMemo(() => indexSourceHealth(sourceHealth), [sourceHealth]);
     const sourceIndex = useMemo(() => buildSourceIndex(tour), [tour]);
+    const sourceByNumber = useMemo(() => buildSourceByNumber(sourceIndex), [sourceIndex]);
     const readingTimes = useMemo(() => computeBriefingReadingTimes(tour), [tour]);
     const displayedTours = visibleTours.slice(0, visibleCaseCount);
     const remainingTourCount = Math.max(visibleTours.length - displayedTours.length, 0);
@@ -208,6 +216,21 @@ export default function GuidedBriefings({
     };
 
     const move = delta => setStepIndex(index => Math.min(Math.max(index + delta, 0), tour.waypoints.length - 1));
+
+    const handleJumpToSource = (event, number, src) => {
+        event?.preventDefault?.();
+        if (typeof document === 'undefined') return;
+        if (src?.isSupplemental && supplementalDetailsRef.current) {
+            supplementalDetailsRef.current.open = true;
+        }
+        const target = document.getElementById(`briefing-source-${number}`);
+        if (!target) return;
+        const reduceMotion = window.matchMedia?.('(prefers-reduced-motion: reduce)').matches;
+        window.requestAnimationFrame(() => {
+            target.scrollIntoView({ behavior: reduceMotion ? 'auto' : 'smooth', block: 'center' });
+            target.focus({ preventScroll: true });
+        });
+    };
 
     return (
         <section
@@ -496,7 +519,12 @@ export default function GuidedBriefings({
                                 Concept in focus · {waypoint.conceptInFocus}
                             </span>
                         )}
-                        <StepNarration key={`${tour.id}-${stepIndex}`} narration={waypoint.narration} />
+                        <StepNarration
+                            key={`${tour.id}-${stepIndex}`}
+                            narration={waypoint.narration}
+                            sourceByNumber={sourceByNumber}
+                            onJumpToSource={handleJumpToSource}
+                        />
                         {waypoint.focusQuestion && <blockquote>{waypoint.focusQuestion}</blockquote>}
                     </div>
                 </div>
@@ -504,7 +532,13 @@ export default function GuidedBriefings({
                 <KeyFigures figures={tour.keyFigures} sourceIndex={sourceIndex} />
                 <InfluenceCheck stages={tour.influenceCheck} sourceIndex={sourceIndex} />
                 <ConceptLens lens={tour.conceptLens} />
-                <GoDeeper tour={tour} activeNarration={waypoint.narration} sourceIndex={sourceIndex} />
+                <GoDeeper
+                    tour={tour}
+                    activeWaypoint={waypoint}
+                    sourceIndex={sourceIndex}
+                    sourceByNumber={sourceByNumber}
+                    onJumpToSource={handleJumpToSource}
+                />
 
                 <div className="briefing-evidence">
                     <div>
@@ -521,13 +555,28 @@ export default function GuidedBriefings({
                     {tour.sources?.length > 0 && (
                         <div className="briefing-reading-list">
                             <ul>
-                                {tour.sources.map(source => <SourceCitation key={source.url} source={source} healthByUrl={healthByUrl} />)}
+                                {tour.sources.map(source => (
+                                    <SourceCitation
+                                        key={source.url}
+                                        source={source}
+                                        number={sourceIndex.get(source.url)?.number}
+                                        healthByUrl={healthByUrl}
+                                    />
+                                ))}
                             </ul>
                             {tour.supplementalSources?.length > 0 && (
-                                <details className="briefing-supplemental">
+                                <details ref={supplementalDetailsRef} className="briefing-supplemental">
                                     <summary>{tour.supplementalSources.length} supplemental {tour.supplementalSources.length === 1 ? 'source' : 'sources'}</summary>
                                     <ul>
-                                        {tour.supplementalSources.map(source => <SourceCitation key={source.url} source={source} healthByUrl={healthByUrl} supplemental />)}
+                                        {tour.supplementalSources.map(source => (
+                                            <SourceCitation
+                                                key={source.url}
+                                                source={source}
+                                                number={sourceIndex.get(source.url)?.number}
+                                                healthByUrl={healthByUrl}
+                                                supplemental
+                                            />
+                                        ))}
                                     </ul>
                                 </details>
                             )}

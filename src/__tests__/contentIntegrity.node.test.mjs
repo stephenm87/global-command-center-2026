@@ -176,7 +176,10 @@ test('curated case studies remain balanced across 7 regions x 6 lenses, auditabl
         );
         assert.ok(caseStudy.waypoints.length >= 4 && caseStudy.waypoints.length <= 5);
 
+        const coreUrlSet = new Set();
         for (const source of caseStudy.sources) {
+            assert.ok(!coreUrlSet.has(source.url), `${caseStudy.id} repeats core source URL ${source.url}`);
+            coreUrlSet.add(source.url);
             assert.match(source.url, /^https:\/\//);
             assertNonEmptyString(source.title, `${caseStudy.id} has a source without a title`);
             assertNonEmptyString(source.publisher, `${caseStudy.id} has a source without a publisher`);
@@ -199,7 +202,11 @@ test('curated case studies remain balanced across 7 regions x 6 lenses, auditabl
             }
         }
 
+        const suppUrlSet = new Set();
         for (const source of caseStudy.supplementalSources) {
+            assert.ok(!coreUrlSet.has(source.url), `${caseStudy.id} duplicates core source URL ${source.url} in supplementalSources`);
+            assert.ok(!suppUrlSet.has(source.url), `${caseStudy.id} repeats supplemental source URL ${source.url}`);
+            suppUrlSet.add(source.url);
             assert.match(source.url, /^https:\/\//);
             assertNonEmptyString(source.title, `${caseStudy.id} has a supplemental source without a title`);
             assertNonEmptyString(source.publisher, `${caseStudy.id} has a supplemental source without a publisher`);
@@ -428,13 +435,36 @@ test('curated case studies remain balanced across 7 regions x 6 lenses, auditabl
         }
     }
 
-    // Owner rule: a state whose claimed capital is internationally contested is labelled by the state, not the city
-    const CONTESTED_CAPITAL_LABEL = /\b(?:jerusalem|al[ -]?quds)\b/;
+    // Owner rule: a state whose claimed capital is internationally contested is named by the state, not the city, on maps and in case prose
+    const CONTESTED_CAPITAL_PATTERN = /\b(?:west\s+jerusalem|east\s+jerusalem|jerusalem|al[ -]?quds)\b/i;
     for (const item of ALL_CASE_STUDIES_2026) {
         for (const loc of item.map.locations) {
             assert.ok(
-                !CONTESTED_CAPITAL_LABEL.test(normalizeLocationLabel(loc.label)),
+                !CONTESTED_CAPITAL_PATTERN.test(normalizeLocationLabel(loc.label)),
                 `${item.id} labels a contested capital ("${loc.label}"); name the state instead`,
+            );
+        }
+        const proseChunks = [
+            item.statusSummary,
+            item.whyItMatters,
+            item.uncertainty,
+            item.editorialCaution,
+            item.background,
+            ...(item.waypoints || []).map(w => w.narration),
+            ...(item.keyTerms || []).map(t => t.definition),
+            ...(item.debate || []).flatMap(d => [d.claim, d.counterClaim]),
+            ...(item.watchFor || []).map(w => w.indicator),
+            ...(item.influenceCheck || []).map(s => s.evidence),
+            ...Object.values(item.conceptLens || {}),
+            ...(item.essayBuilder ? [item.essayBuilder.claim, item.essayBuilder.evidence, item.essayBuilder.counterClaim, item.essayBuilder.judgment] : []),
+            ...(item.timeline || []).map(t => t.label),
+            ...(item.sources || []).flatMap(s => [s.perspective, s.supports]),
+            ...(item.supplementalSources || []).flatMap(s => [s.perspective, s.supports]),
+        ].filter(Boolean);
+        for (const chunk of proseChunks) {
+            assert.ok(
+                !CONTESTED_CAPITAL_PATTERN.test(chunk),
+                `${item.id} uses a contested capital name in case text ("${chunk.slice(0, 90)}…"); name the state instead`,
             );
         }
     }
@@ -484,12 +514,30 @@ test('curated case studies remain balanced across 7 regions x 6 lenses, auditabl
             assert.ok(conceptSet.has(concept), `${item.id} has unknown Unit 1 concept "${concept}"`);
         }
 
-        if (Array.isArray(item.ibThemes)) {
-            assert.equal(new Set(item.ibThemes).size, item.ibThemes.length, `${item.id} repeats an ibTheme`);
-            for (const theme of item.ibThemes) {
-                assert.ok(themeSet.has(theme), `${item.id} has unknown ibTheme "${theme}"`);
-            }
+        assert.ok(Array.isArray(item.ibThemes) && item.ibThemes.length >= 1 && item.ibThemes.length <= 3, `${item.id} v2 case needs 1-3 ibThemes`);
+        assert.equal(new Set(item.ibThemes).size, item.ibThemes.length, `${item.id} repeats an ibTheme`);
+        for (const theme of item.ibThemes) {
+            assert.ok(themeSet.has(theme), `${item.id} has unknown ibTheme "${theme}"`);
         }
+
+        const orderedUniqueUrls = [];
+        for (const src of [...item.sources, ...item.supplementalSources]) {
+            if (src?.url && !orderedUniqueUrls.includes(src.url)) orderedUniqueUrls.push(src.url);
+        }
+        const totalSourceCount = orderedUniqueUrls.length;
+        const memoClutterRegex = /\((?:Al Jazeera|CFR|Council on Foreign Relations|Human Rights Watch|HRW|Horn Diplomat|Associated Press|AP|PassBlue|UN News|Carnegie)[^)]*\)|\b(?:CFR notes|CFR adds|UN News summarizes|Horn Diplomat reported|PassBlue reports|HRW notes|HRW adds)\b/i;
+        const assertValidMarkers = (text, label, requireAtLeastOne = false) => {
+            const matches = [...String(text || '').matchAll(/\[\s*(\d+(?:\s*,\s*\d+)*)\s*\]/g)];
+            if (requireAtLeastOne) {
+                assert.ok(matches.length >= 1, `${label} must include numbered [n] source markers`);
+            }
+            for (const m of matches) {
+                for (const token of m[1].split(',')) {
+                    const num = Number.parseInt(token.trim(), 10);
+                    assert.ok(num >= 1 && num <= totalSourceCount, `${label} source marker [${num}] out of range 1..${totalSourceCount}`);
+                }
+            }
+        };
 
         for (const [idx, waypoint] of item.waypoints.entries()) {
             const paragraphs = String(waypoint.narration || '').trim().split(/\n\n+/).filter(Boolean);
@@ -497,16 +545,29 @@ test('curated case studies remain balanced across 7 regions x 6 lenses, auditabl
             const words = countWords(waypoint.narration);
             assert.ok(words >= 90 && words <= 160, `${item.id} step ${idx + 1} narration has ${words} words (expected 90-160)`);
             assert.doesNotMatch(waypoint.narration, bannedFillerRegex, `${item.id} step ${idx + 1} uses banned filler phrasing`);
+            assert.doesNotMatch(waypoint.narration, memoClutterRegex, `${item.id} step ${idx + 1} uses citation-dense memo scaffolding instead of numbered markers`);
+            assertValidMarkers(waypoint.narration, `${item.id} step ${idx + 1}`, true);
             assertNoLongDirectQuotes(waypoint.narration, `${item.id} step ${idx + 1}`);
             if (waypoint.conceptInFocus) {
                 assert.ok(conceptSet.has(waypoint.conceptInFocus), `${item.id} step ${idx + 1} invalid conceptInFocus`);
                 assert.ok(item.concepts.includes(waypoint.conceptInFocus), `${item.id} step ${idx + 1} conceptInFocus absent from case.concepts`);
             }
+            if (Array.isArray(item.timeline) && item.timeline.length > 0) {
+                assertNonEmptyString(waypoint.relatedTimelineDate, `${item.id} v2 step ${idx + 1} must set relatedTimelineDate`);
+                assert.ok(
+                    item.timeline.some(t => t.date === waypoint.relatedTimelineDate),
+                    `${item.id} step ${idx + 1} relatedTimelineDate "${waypoint.relatedTimelineDate}" must match a timeline event date`,
+                );
+            }
         }
 
+        const bgParagraphs = String(item.background || '').trim().split(/\n\n+/).filter(Boolean);
+        assert.ok(bgParagraphs.length >= 2, `${item.id} background must have at least 2 paragraphs`);
         const bgWords = countWords(item.background);
         assert.ok(bgWords >= 120 && bgWords <= 200, `${item.id} background has ${bgWords} words (expected 120-200)`);
         assert.doesNotMatch(item.background, bannedFillerRegex, `${item.id} background uses banned filler phrasing`);
+        assert.doesNotMatch(item.background, memoClutterRegex, `${item.id} background uses citation-dense memo scaffolding instead of numbered markers`);
+        assertValidMarkers(item.background, `${item.id} background`, true);
         assertNoLongDirectQuotes(item.background, `${item.id} background`);
         assertSourceUrlsExist(item.backgroundSources, validUrls, `${item.id} backgroundSources`);
 

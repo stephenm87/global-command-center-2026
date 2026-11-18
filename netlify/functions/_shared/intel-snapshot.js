@@ -214,18 +214,64 @@ async function fetchWithTimeout(fetchImpl, url, options, timeoutMs = REQUEST_TIM
     }
 }
 
-async function fetchQuery(fetchImpl, query, apiKey, results) {
-    const response = await fetchWithTimeout(fetchImpl, 'https://google.serper.dev/news', {
-        method: 'POST',
-        headers: {
-            'X-API-KEY': apiKey,
-            'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ q: query, num: results, hl: 'en', tbs: 'qdr:m' }),
-    });
-    if (!response.ok) throw new Error(`Serper returned ${response.status}`);
-    const data = await response.json();
-    return Array.isArray(data.news) ? data.news : [];
+function classifySerperFailure(status, bodyMessage = '') {
+    if (status === 400 && /credit/i.test(bodyMessage)) return 'credits-exhausted';
+    if (status === 401 || status === 403 || /unauthorized|invalid.*key/i.test(bodyMessage)) return 'invalid-api-key';
+    if (status === 429) return 'rate-limited';
+    if (status >= 400 && status < 500) return 'bad-request';
+    if (status >= 500) return 'upstream-error';
+    return 'unexpected-status';
+}
+
+async function fetchQuery(fetchImpl, query, apiKey, results, timeoutMs = REQUEST_TIMEOUT_MS) {
+    const controller = new AbortController();
+    const timeout = setTimeout(() => controller.abort(), timeoutMs);
+    try {
+        let response;
+        try {
+            response = await fetchImpl('https://google.serper.dev/news', {
+                method: 'POST',
+                headers: {
+                    'X-API-KEY': apiKey,
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ q: query, num: results, hl: 'en', tbs: 'qdr:m' }),
+                signal: controller.signal,
+            });
+        } catch (cause) {
+            const error = new Error('Serper request failed');
+            error.errorCode = cause?.name === 'AbortError' || cause?.name === 'TimeoutError'
+                ? 'timeout'
+                : 'network-error';
+            throw error;
+        }
+        if (!response.ok) {
+            let bodyMessage = '';
+            try {
+                const errData = typeof response.json === 'function' ? await response.json() : null;
+                if (typeof errData?.message === 'string') bodyMessage = errData.message.slice(0, 120);
+            } catch {
+                // Ignore non-JSON or aborted upstream error payloads
+            }
+            const error = new Error(`Serper returned ${response.status}`);
+            error.httpStatus = response.status;
+            error.errorCode = classifySerperFailure(response.status, bodyMessage);
+            throw error;
+        }
+        let data;
+        try {
+            data = await response.json();
+        } catch (cause) {
+            const error = new Error('Serper response body read failed');
+            error.errorCode = cause?.name === 'AbortError' || cause?.name === 'TimeoutError'
+                ? 'timeout'
+                : 'upstream-error';
+            throw error;
+        }
+        return Array.isArray(data.news) ? data.news : [];
+    } finally {
+        clearTimeout(timeout);
+    }
 }
 
 function countMatches(text, pattern) {
@@ -472,7 +518,11 @@ async function buildPublicSnapshot({
     const results = await Promise.allSettled(FIXED_QUERIES.map(query =>
         fetchQuery(fetchImpl, query.query, apiKey, query.results)
     ));
-    const failures = results.filter(result => result.status === 'rejected').length;
+    const rejected = results.filter(result => result.status === 'rejected').map(result => result.reason);
+    const failures = rejected.length;
+    const errorCounts = countBy(rejected, err => err?.errorCode || 'unknown-error');
+    const dominantErrorCode = Object.entries(errorCounts).sort((a, b) => b[1] - a[1])[0]?.[0] || null;
+    const firstHttpStatus = rejected.find(err => Number.isInteger(err?.httpStatus))?.httpStatus || null;
     const rawItems = results.flatMap(result => result.status === 'fulfilled' ? result.value : []);
     const assessedItems = results.flatMap((result, index) =>
         result.status === 'fulfilled'
@@ -492,11 +542,17 @@ async function buildPublicSnapshot({
         meta: {
             generatedAt: now.toISOString(),
             sourceMode: 'public-cache',
-            status: items.length > 0 ? (failures > 0 ? 'partial' : 'fresh') : 'unavailable',
+            status: items.length > 0
+                ? (failures > 0 ? 'partial' : 'fresh')
+                : (failures > 0 ? 'provider-error' : 'empty'),
             provider: 'Serper',
             queryPolicy: 'fixed-editorial',
             queryCount: FIXED_QUERIES.length,
             failedQueryCount: failures,
+            ...(failures > 0 && dominantErrorCode ? {
+                errorCode: dominantErrorCode,
+                ...(firstHttpStatus ? { providerHttpStatus: firstHttpStatus } : {}),
+            } : {}),
             cacheTtlSeconds: SNAPSHOT_TTL_MS / 1000,
             liveItemCount: items.length,
             coverage,

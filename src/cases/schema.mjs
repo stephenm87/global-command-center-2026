@@ -111,7 +111,11 @@ export const INFLUENCE_RATINGS = Object.freeze([
     'WEAK',
 ]);
 
-export const countWords = value => String(value || '')
+export const stripCitationMarkers = value => String(value || '')
+    .replace(/\[\s*\d+(?:\s*,\s*\d+)*\s*\]/g, '')
+    .replace(/\s+([,.;:!?])/g, '$1');
+
+export const countWords = value => stripCitationMarkers(value)
     .trim()
     .split(/\s+/)
     .filter(Boolean)

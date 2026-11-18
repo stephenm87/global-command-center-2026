@@ -31,7 +31,7 @@ export default function IntelSidebar({
         ? 'provider'
         : intelSummary.sourceMode === 'public-cache'
             ? (intelSummary.feedStatus === 'stale' ? 'warning' : 'cached')
-            : ['not-configured', 'unavailable', 'network-error'].includes(intelSummary.feedStatus)
+            : ['not-configured', 'provider-error', 'unavailable', 'network-error', 'store-error'].includes(intelSummary.feedStatus)
                 ? 'warning'
                 : 'reference';
 
@@ -67,9 +67,13 @@ export default function IntelSidebar({
                                     ? `${intelSummary.feedStatus === 'stale' ? '◐' : '●'} ${intelSummary.liveItemCount} ${intelSummary.feedStatus === 'stale' ? 'STALE' : 'CACHED'} CURRENT · ${intelLastUpdated.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' })}`
                                     : intelSummary.feedStatus === 'not-configured'
                                         ? `△ CURRENT FEED NOT CONFIGURED · ${caseStudyCount} CASES + ${intelSummary.linkedReferenceCount} PUBLIC SOURCES`
-                                        : ['unavailable', 'network-error'].includes(intelSummary.feedStatus)
-                                            ? `△ CURRENT FEED UNAVAILABLE · ${caseStudyCount} CASES + ${intelSummary.linkedReferenceCount} PUBLIC SOURCES`
-                                            : `○ PUBLIC REFERENCE MODE · ${caseStudyCount} CASES + ${intelSummary.linkedReferenceCount} LINKED SOURCES`}
+                                        : ['provider-error', 'unavailable'].includes(intelSummary.feedStatus)
+                                            ? `△ CURRENT FEED PROVIDER ERROR · ${caseStudyCount} CASES + ${intelSummary.linkedReferenceCount} PUBLIC SOURCES`
+                                            : ['network-error', 'store-error'].includes(intelSummary.feedStatus)
+                                                ? `△ CURRENT FEED CONNECTION FAILED · ${caseStudyCount} CASES + ${intelSummary.linkedReferenceCount} PUBLIC SOURCES`
+                                                : intelSummary.feedStatus === 'empty'
+                                                    ? `○ NO QUALIFYING CURRENT ITEMS · ${caseStudyCount} CASES + ${intelSummary.linkedReferenceCount} PUBLIC SOURCES`
+                                                    : `○ PUBLIC REFERENCE MODE · ${caseStudyCount} CASES + ${intelSummary.linkedReferenceCount} LINKED SOURCES`}
                         </span>
                         {intelSummary.liveItemCount > 0 && intelSummary.coverage && (
                             <div className="intel-coverage-summary" aria-label="Current intelligence coverage">

@@ -7,7 +7,10 @@ const SNAPSHOT_KEY = 'public-intel/current.json';
 export default async () => {
     const snapshot = await buildPublicSnapshot();
     await writeSnapshot(SNAPSHOT_KEY, snapshot);
-    console.log(`[refresh-public-intel] Stored ${snapshot.items.length} items with status ${snapshot.meta.status}.`);
+    const diag = snapshot.meta.errorCode
+        ? ` (failed=${snapshot.meta.failedQueryCount}/${snapshot.meta.queryCount}, errorCode=${snapshot.meta.errorCode}, httpStatus=${snapshot.meta.providerHttpStatus || 'n/a'})`
+        : '';
+    console.log(`[refresh-public-intel] Stored ${snapshot.items.length} items with status ${snapshot.meta.status}${diag}.`);
     return new Response(null, { status: 204 });
 };
 

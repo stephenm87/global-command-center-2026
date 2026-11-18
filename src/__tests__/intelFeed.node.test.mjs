@@ -101,6 +101,21 @@ test('public cached updates expose accurate fresh and unavailable labels', () =>
     assert.equal(summary.feedStatus, 'fresh');
     assert.equal(getCurrentFeedLabel(summary), 'CACHED CURRENT UPDATES (1)');
     assert.equal(getCurrentFeedLabel({ liveItemCount: 0, feedStatus: 'not-configured' }), 'CURRENT UPDATES — NOT CONFIGURED');
+    assert.equal(getCurrentFeedLabel({ liveItemCount: 0, feedStatus: 'provider-error' }), 'CURRENT UPDATES — PROVIDER ERROR');
+    assert.equal(getCurrentFeedLabel({ liveItemCount: 0, feedStatus: 'unavailable' }), 'CURRENT UPDATES — PROVIDER ERROR');
+    assert.equal(getCurrentFeedLabel({ liveItemCount: 0, feedStatus: 'empty' }), 'CURRENT UPDATES — NONE QUALIFIED');
+    assert.equal(getCurrentFeedLabel({ liveItemCount: 0, feedStatus: 'network-error' }), 'CURRENT UPDATES — CONNECTION FAILED');
+    assert.equal(getCurrentFeedLabel({ liveItemCount: 0, feedStatus: 'store-error' }), 'CURRENT UPDATES — CONNECTION FAILED');
+    assert.match(getFeedEmptyState({
+        feedItems: [],
+        selectedCategory: LIVE_INTEL_CATEGORY,
+        intelStatus: 'provider-error',
+    }).title, /PROVIDER ERROR/);
+    assert.match(getFeedEmptyState({
+        feedItems: [],
+        selectedCategory: LIVE_INTEL_CATEGORY,
+        intelStatus: 'empty',
+    }).title, /NO QUALIFYING CURRENT ITEMS/);
     assert.match(getFeedEmptyState({
         feedItems: [],
         selectedCategory: LIVE_INTEL_CATEGORY,

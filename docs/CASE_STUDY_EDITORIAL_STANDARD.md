@@ -88,22 +88,22 @@ Use the smallest map scope that accurately represents the case:
 
 Each `map.locations` entry requires a `label`, finite `latitude` and `longitude`, and should include a short `role`. A marker indicates relevance to the briefing; it does not assert that the entire issue occurs at that coordinate. Never force a global ocean, climate, health, digital, or treaty case into a misleading single pin.
 
-When a location stands for a state whose claimed capital is internationally contested (for example Jerusalem), label it with the state's name (e.g. `Israel`) and say in `role` which government it represents. Keep the coordinates. Places that are themselves the subject of the case (for example Laayoune, Hargeisa, or Tiraspol) keep their own names.
+When a location or case-text reference stands for a state whose claimed capital is internationally contested (for example Jerusalem or West Jerusalem), name the state (e.g. `Israel` / `in Israel`) and say in `role` which government it represents. Keep the map coordinates. Places that are themselves the subject of the case (for example Laayoune, Hargeisa, or Tiraspol) keep their own names.
 
 ## Content Depth Standard v2 & C3 Tier 2 Metadata (`briefingVersion: 2`)
 
 Deepened briefings (`briefingVersion: 2`) follow `docs/BRIEFING_VOICE.md` and pair layered study modules with strict source verification:
 
-- **Step narration (`90–160` words):** Every waypoint `narration` splits into **two short paragraphs** separated by `\n\n` (first: what this perspective holds, attributed and dated; second: analytical takeaway connected to `focusQuestion`), plus optional `conceptInFocus` from `['Power', 'Sovereignty', 'Legitimacy', 'Interdependence']`.
-- **`background` (`120–200` words):** Opens with a concrete scene, explains key mechanisms in plain English, and cites case sources via `backgroundSources`.
+- **Step narration (`90–160` words, excluding `[n]` markers):** Step 1 opens with a concrete scene. Every waypoint `narration` splits into **two short paragraphs** separated by `\n\n`, written in plain, natural classroom prose without journalist-memo clutter. Routine citations use 1-based numbered source markers (`[1]`, `[2, 5]`, ordered across `sources` followed by `supplementalSources`) linking to `#briefing-source-n`; in-sentence attribution is reserved for contested claims and one side's assertions. Optional `conceptInFocus` comes from `['Power', 'Sovereignty', 'Legitimacy', 'Interdependence']`, and optional `relatedTimelineDate` links at most one timeline event per step (`Related to this step`).
+- **`background` (`120–200` words, excluding `[n]` markers):** Split into `2–3` paragraphs (`\n\n`) explaining how the dispute developed and how key mechanisms work in plain English, backed by `[n]` markers and `backgroundSources`.
 - **`keyTerms` (`3–6` entries):** `{ term, definition, sourceUrl }`, preferring institutional sources and matching a case `source` or `supplementalSource` URL.
 - **`debate` (`2–3` entries):** `{ claim, counterClaim, claimBy, counterBy, sourceUrls }` contrasting attributed perspectives with no editorial verdict.
 - **`watchFor` (`2–4` entries):** `{ date, indicator, sourceUrl }` citing scheduled events, mandates, or formal reviews (indicators only, never predictions).
 - **`examPrompts` (`2` prompts):** Original IB Global Politics Paper 2 analytical questions using syllabus command terms.
 - **`influenceCheck` (`3` stages):** `Setting the agenda`, `The formal decision`, and `What changed in practice`, each `{ stage, rating, evidence, sourceUrls }` (`STRONG` | `MIXED` | `WEAK`, displayed as an explicit editorial assessment).
-- **`conceptLens`:** Plain-English `1–2`-sentence entries under `{ power, sovereignty, legitimacy, interdependence }`, omitting any concept that does not apply.
+- **`conceptLens`:** Plain-English `1–2`-sentence entries under `{ power, sovereignty, legitimacy, interdependence }`, omitting any concept that does not apply (rendered `2×2` on desktop).
 - **`essayBuilder`:** `{ prompt, claim, evidence, counterClaim, judgment, sourceUrls }` worked 4-step Paper 2 paragraph answering one `examPrompts` item.
-- **C3 Tier 2 fields:** `timeline` (`3–6` `{ date, label, sourceUrl }` events; never using source publish date as event date unless reporting that day's event), `keyFigures` (`0–3` `{ value, unit, label, asOf, sourceUrl }` matching figures in `statusSummary` or `uncertainty`), `concepts` (Unit 1 core four), and `ibThemes` (validated against the 2024/2026 IB Global Politics thematic studies once confirmed by owner).
+- **C3 Tier 2 fields:** `timeline` (`3–6` `{ date, label, sourceUrl }` events; never using source publish date as event date unless reporting that day's event), `keyFigures` (`0–3` `{ value, unit, label, asOf, sourceUrl }` matching figures in `statusSummary` or `uncertainty`), `concepts` (Unit 1 core four), and `ibThemes` (`peace-and-conflict`, `rights-and-justice`, `development-and-sustainability`).
 - **Direct quotes & role check:** Any direct quote must be `<= 25` words, attributed, and linked; all `briefingVersion: 2` map locations must declare non-empty `role`.
 
 ## Lifecycle & non-destructive archival (`status: 'active' | 'archived'`)

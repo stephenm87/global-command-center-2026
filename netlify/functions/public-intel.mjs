@@ -40,7 +40,11 @@ export default async request => {
     try {
         const cached = await readSnapshot(SNAPSHOT_KEY);
         const configurationBecameAvailable = cached?.meta?.status === 'not-configured' && process.env.SERPER_API_KEY;
-        if (cached?.meta && !configurationBecameAvailable) {
+        const legacyUnavailableNeedsDiag = cached?.meta?.status === 'unavailable'
+            && Number(cached?.meta?.failedQueryCount) > 0
+            && !cached?.meta?.errorCode
+            && process.env.SERPER_API_KEY;
+        if (cached?.meta && !configurationBecameAvailable && !legacyUnavailableNeedsDiag) {
             return new Response(JSON.stringify(withSnapshotAge(cached)), { status: 200, headers: responseHeaders });
         }
 
@@ -48,7 +52,8 @@ export default async request => {
         return new Response(JSON.stringify(withSnapshotAge(snapshot)), { status: 200, headers: responseHeaders });
     } catch (error) {
         console.error('[public-intel] Snapshot unavailable:', error.message);
-        const status = process.env.SERPER_API_KEY ? 'unavailable' : 'not-configured';
+        const hasKey = Boolean(process.env.SERPER_API_KEY);
+        const status = hasKey ? 'store-error' : 'not-configured';
         return new Response(JSON.stringify({
                 items: [],
                 minerals: buildMineralBaseline(),
@@ -56,6 +61,7 @@ export default async request => {
                     generatedAt: new Date().toISOString(),
                     sourceMode: 'public-cache',
                     status,
+                    ...(hasKey ? { errorCode: 'snapshot-store-error' } : {}),
                     provider: 'Serper',
                     queryPolicy: 'fixed-editorial',
                     liveItemCount: 0,

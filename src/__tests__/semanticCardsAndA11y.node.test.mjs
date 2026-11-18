@@ -71,7 +71,8 @@ test('GuidedBriefings C4 depth panels preserve [hidden] display:none and constra
     assert.match(briefingsCss, /\.guided-briefings\s+\[hidden\]\s*\{\s*display:\s*none;\s*\}/, 'GuidedBriefings CSS must preserve [hidden] display:none across display:grid panels');
     assert.match(briefingsCss, /\.go-deeper-panel\s*\{[^}]*grid-template-columns:\s*minmax\(0,\s*1fr\)/, '.go-deeper-panel must constrain grid track to minmax(0, 1fr)');
     assert.match(briefingsCss, /\.depth-block\s*\{[^}]*min-width:\s*0/, '.depth-block must set min-width: 0 inside .go-deeper-panel');
-    assert.match(briefingsCss, /\.timeline-strip\s*\{[^}]*max-width:\s*100%[\s\S]*?overflow-x:\s*auto/, '.timeline-strip must keep max-width:100% and overflow-x:auto');
+    assert.match(briefingsCss, /\.concept-cards\s*\{[^}]*grid-template-columns:\s*repeat\(2,\s*minmax\(0,\s*1fr\)\)/, '.concept-cards must render 2x2 on desktop');
+    assert.match(briefingsCss, /\.timeline-strip\s*\{[^}]*grid-template-columns:\s*repeat\(auto-fill,\s*minmax\(min\(/, '.timeline-strip must wrap cards so none are cut off');
     assert.ok(
         !/\.(?:influence-steps|key-figures-grid|debate-pair|go-deeper-panel)[^{]*\{[^}]*grid-template-columns:\s*1fr\b/.test(briefingsCss),
         'C4 grid containers must use minmax(0, 1fr) rather than bare 1fr across desktop and mobile rules',

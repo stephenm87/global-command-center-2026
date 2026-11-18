@@ -6,6 +6,7 @@ export const GO_DEEPER_STORAGE_KEY = 'gcc.briefings.goDeeperOpen';
 const RATING_LABELS = { STRONG: 'Strong', MIXED: 'Mixed', WEAK: 'Weak' };
 const CONCEPT_ORDER = ['power', 'sovereignty', 'legitimacy', 'interdependence'];
 const CONCEPT_TITLES = { power: 'Power', sovereignty: 'Sovereignty', legitimacy: 'Legitimacy', interdependence: 'Interdependence' };
+const CITE_MARKER_REGEX = /\[\s*(\d+(?:\s*,\s*\d+)*)\s*\]/g;
 
 export function splitNarration(narration) {
     return String(narration || '')
@@ -16,10 +17,77 @@ export function splitNarration(narration) {
 
 export function buildSourceIndex(tour) {
     const index = new Map();
-    for (const source of [...(tour?.sources || []), ...(tour?.supplementalSources || [])]) {
-        if (source?.url && !index.has(source.url)) index.set(source.url, source);
+    let counter = 0;
+    const allSources = [
+        ...(tour?.sources || []).map(source => ({ source, isSupplemental: false })),
+        ...(tour?.supplementalSources || []).map(source => ({ source, isSupplemental: true })),
+    ];
+    for (const { source, isSupplemental } of allSources) {
+        if (source?.url && !index.has(source.url)) {
+            counter += 1;
+            index.set(source.url, { ...source, number: counter, isSupplemental });
+        }
     }
     return index;
+}
+
+export function buildSourceByNumber(sourceIndex) {
+    const byNumber = new Map();
+    if (!sourceIndex) return byNumber;
+    for (const entry of sourceIndex.values()) {
+        if (Number.isInteger(entry.number)) byNumber.set(entry.number, entry);
+    }
+    return byNumber;
+}
+
+export function renderCitedText(text, sourceByNumber, onJumpToSource) {
+    const raw = String(text || '');
+    if (!raw.includes('[')) return raw;
+    const parts = [];
+    let lastIndex = 0;
+    for (const match of raw.matchAll(CITE_MARKER_REGEX)) {
+        const matchStart = match.index ?? 0;
+        if (matchStart > lastIndex) {
+            parts.push(raw.slice(lastIndex, matchStart));
+        }
+        const numbers = match[1]
+            .split(',')
+            .map(token => Number.parseInt(token.trim(), 10))
+            .filter(num => Number.isInteger(num) && num > 0);
+        if (numbers.length === 0) {
+            parts.push(match[0]);
+        } else {
+            parts.push(
+                <sup key={`cite-${matchStart}`} className="cite-group">
+                    {numbers.map((num, idx) => {
+                        const src = sourceByNumber?.get(num);
+                        const label = src
+                            ? `Source ${num}: ${src.publisher}${src.dateLabel ? `, ${src.dateLabel}` : ''}`
+                            : `Source ${num}`;
+                        return (
+                            <span key={num}>
+                                {idx > 0 && <span className="cite-sep">, </span>}
+                                <a
+                                    href={`#briefing-source-${num}`}
+                                    className="cite-marker"
+                                    title={label}
+                                    aria-label={label}
+                                    onClick={event => onJumpToSource?.(event, num, src)}
+                                >
+                                    [{num}]
+                                </a>
+                            </span>
+                        );
+                    })}
+                </sup>
+            );
+        }
+        lastIndex = matchStart + match[0].length;
+    }
+    if (lastIndex < raw.length) {
+        parts.push(raw.slice(lastIndex));
+    }
+    return parts;
 }
 
 export function SourceLinks({ urls, sourceIndex, label = 'Source' }) {
@@ -30,11 +98,12 @@ export function SourceLinks({ urls, sourceIndex, label = 'Source' }) {
             {label}{list.length > 1 ? 's' : ''}:{' '}
             {list.map((url, index) => {
                 const source = sourceIndex.get(url);
+                const prefix = source?.number ? `[${source.number}] ` : '';
                 return (
                     <span key={url}>
                         {index > 0 && '; '}
                         <a href={url} target="_blank" rel="noopener noreferrer">
-                            {source ? `${source.publisher}${source.dateLabel ? `, ${source.dateLabel}` : ''}` : 'Open source'}
+                            {source ? `${prefix}${source.publisher}${source.dateLabel ? `, ${source.dateLabel}` : ''}` : 'Open source'}
                             <span className="sr-only"> (opens in a new tab)</span>
                         </a>
                     </span>
@@ -44,7 +113,7 @@ export function SourceLinks({ urls, sourceIndex, label = 'Source' }) {
     );
 }
 
-export function StepNarration({ narration }) {
+export function StepNarration({ narration, sourceByNumber, onJumpToSource }) {
     const paragraphs = splitNarration(narration);
     const [expanded, setExpanded] = useState(false);
     const moreId = useId();
@@ -52,11 +121,13 @@ export function StepNarration({ narration }) {
     const [first, ...rest] = paragraphs;
     return (
         <div className="briefing-narration">
-            <p>{first}</p>
+            <p>{renderCitedText(first, sourceByNumber, onJumpToSource)}</p>
             {rest.length > 0 && (
                 <>
                     <div id={moreId} hidden={!expanded}>
-                        {rest.map((paragraph, index) => <p key={index}>{paragraph}</p>)}
+                        {rest.map((paragraph, index) => (
+                            <p key={index}>{renderCitedText(paragraph, sourceByNumber, onJumpToSource)}</p>
+                        ))}
                     </div>
                     <button
                         type="button"
@@ -142,25 +213,47 @@ export function ConceptLens({ lens }) {
     );
 }
 
-function isEventStepRelevant(eventDate, activeNarration) {
-    const yearMatch = String(eventDate || '').match(/\b(19|20)\d{2}\b/);
-    if (!yearMatch || !activeNarration) return false;
-    return String(activeNarration).includes(yearMatch[0]);
+export function findRelatedTimelineIndex(events, activeWaypoint) {
+    if (!Array.isArray(events) || events.length === 0 || !activeWaypoint) return -1;
+    if (activeWaypoint.relatedTimelineDate) {
+        const explicitIndex = events.findIndex(event => event.date === activeWaypoint.relatedTimelineDate);
+        if (explicitIndex >= 0) return explicitIndex;
+    }
+    const narration = String(activeWaypoint.narration || '');
+    if (!narration) return -1;
+    let bestIndex = -1;
+    let bestScore = 0;
+    events.forEach((event, index) => {
+        const rawDate = String(event.date || '').trim();
+        if (!rawDate) return;
+        const yearMatch = rawDate.match(/\b(19|20)\d{2}\b/);
+        if (!yearMatch) return;
+        if (rawDate.length >= 7 && narration.includes(rawDate)) {
+            if (3 > bestScore) { bestScore = 3; bestIndex = index; }
+            return;
+        }
+        if (narration.includes(yearMatch[0]) && 1 > bestScore) {
+            bestScore = 1;
+            bestIndex = index;
+        }
+    });
+    return bestIndex;
 }
 
-function TimelineStrip({ events, updatedAt, reviewBy, activeNarration, sourceIndex }) {
+function TimelineStrip({ events, updatedAt, reviewBy, activeWaypoint, sourceIndex }) {
     if (!Array.isArray(events) || events.length === 0) return null;
+    const relatedIndex = findRelatedTimelineIndex(events, activeWaypoint);
     return (
         <section className="depth-block" aria-labelledby="depth-timeline-title">
             <h4 id="depth-timeline-title">Timeline</h4>
             <ol className="timeline-strip">
-                {events.map(event => {
-                    const relevant = isEventStepRelevant(event.date, activeNarration);
+                {events.map((event, index) => {
+                    const related = index === relatedIndex;
                     return (
-                        <li key={`${event.date}-${event.label}`} className={relevant ? 'is-step-relevant' : ''}>
+                        <li key={`${event.date}-${event.label}`} className={related ? 'is-step-relevant' : ''}>
                             <time dateTime={event.date}>
                                 {event.date}
-                                {relevant ? ' · Active step' : ''}
+                                {related ? ' · Related to this step' : ''}
                             </time>
                             <p>{event.label}</p>
                             <SourceLinks urls={event.sourceUrl} sourceIndex={sourceIndex} />
@@ -174,7 +267,7 @@ function TimelineStrip({ events, updatedAt, reviewBy, activeNarration, sourceInd
                     </li>
                 )}
                 {reviewBy && (
-                    <li className="timeline-marker timeline-marker-future">
+                    <li className="timeline-marker">
                         <time dateTime={reviewBy}>{reviewBy}</time>
                         <p>Review by</p>
                     </li>
@@ -184,20 +277,30 @@ function TimelineStrip({ events, updatedAt, reviewBy, activeNarration, sourceInd
     );
 }
 
-export function GoDeeper({ tour, activeNarration, sourceIndex }) {
+export function GoDeeper({ tour, activeWaypoint, sourceIndex, sourceByNumber, onJumpToSource }) {
+    const hasContent = Boolean(
+        tour?.background
+        || tour?.timeline?.length
+        || tour?.keyTerms?.length
+        || tour?.debate?.length
+        || tour?.watchFor?.length
+        || tour?.examPrompts?.length
+        || tour?.essayBuilder
+    );
     const [open, setOpen] = useState(() => Boolean(readStoredJson(GO_DEEPER_STORAGE_KEY, false)));
     const panelId = useId();
+    if (!hasContent) return null;
+
     const toggle = () => {
         const next = !open;
         setOpen(next);
         writeStoredJson(GO_DEEPER_STORAGE_KEY, next);
     };
-    const hasContent = tour?.background || tour?.keyTerms?.length || tour?.debate?.length
-        || tour?.watchFor?.length || tour?.examPrompts?.length || tour?.timeline?.length;
-    if (!hasContent) return null;
+
+    const backgroundParagraphs = splitNarration(tour.background);
 
     return (
-        <section className="briefing-go-deeper">
+        <section className="briefing-go-deeper" aria-label="Go deeper">
             <button
                 type="button"
                 className="go-deeper-toggle"
@@ -206,13 +309,17 @@ export function GoDeeper({ tour, activeNarration, sourceIndex }) {
                 onClick={toggle}
             >
                 <span>{open ? '▾' : '▸'} Go deeper</span>
-                <small>Background · key terms · the debate · timeline · what to watch · discussion questions</small>
+                <small>Background · timeline · key terms · the debate · what to watch · discussion questions</small>
             </button>
             <div id={panelId} className="go-deeper-panel" hidden={!open}>
-                {tour.background && (
+                {backgroundParagraphs.length > 0 && (
                     <section className="depth-block" aria-labelledby="depth-background-title">
                         <h4 id="depth-background-title">Background</h4>
-                        <p className="depth-prose">{tour.background}</p>
+                        {backgroundParagraphs.map((paragraph, index) => (
+                            <p key={index} className="depth-prose">
+                                {renderCitedText(paragraph, sourceByNumber, onJumpToSource)}
+                            </p>
+                        ))}
                         <SourceLinks urls={tour.backgroundSources} sourceIndex={sourceIndex} />
                     </section>
                 )}
@@ -220,7 +327,7 @@ export function GoDeeper({ tour, activeNarration, sourceIndex }) {
                     events={tour.timeline}
                     updatedAt={tour.updatedAt}
                     reviewBy={tour.reviewBy}
-                    activeNarration={activeNarration}
+                    activeWaypoint={activeWaypoint}
                     sourceIndex={sourceIndex}
                 />
                 {tour.keyTerms?.length > 0 && (

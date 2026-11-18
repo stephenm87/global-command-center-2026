@@ -517,7 +517,7 @@ export const AFRICA_CASES_2026 = [
             "MiddleEast",
             "UN_OPEC"
         ],
-        "statusSummary": "On 26 December 2025, Somaliland President Abdirahman Mohamed Abdillahi Cirro and Israeli leaders signed a joint declaration formalizing Israel's recognition of Somaliland, accompanied by stated plans to expand cooperation in agriculture, health, technology, and economic development. A 29 December United Nations political-affairs briefing recorded Somaliland's statement that the recognition established full diplomatic relations alongside Somalia's rejection, while Associated Press reporting documented the subsequent high-level visit and wider dispute over sovereignty, precedent, and Red Sea strategy. Al Jazeera reported on 1 November 2026 that Somaliland opened an embassy in West Jerusalem in June and Israel's first ambassador presented credentials in Hargeisa alongside an embassy cornerstone ceremony, while no other UN member state had recognized Somaliland.",
+        "statusSummary": "On 26 December 2025, Somaliland President Abdirahman Mohamed Abdillahi Cirro and Israeli leaders signed a joint declaration formalizing Israel's recognition of Somaliland and announcing plans to cooperate in agriculture, health, technology, and economic development. Somalia rejected the move as unlawful, and the African Union, IGAD, and 14 of 15 UN Security Council members condemned unilateral recognition, followed on 6 January 2026 by an Israeli foreign-ministerial visit to Hargeisa. Somaliland opened an embassy in Israel in June 2026 and Israel's first ambassador presented credentials in Hargeisa alongside an embassy cornerstone ceremony in late October 2026, while no other UN member state had recognized Somaliland.",
         "whyItMatters": "The case links a long-running claim to statehood with African norms on inherited borders, Somalia's territorial-integrity claim, Middle Eastern diplomacy, and competition around Red Sea ports and security routes.",
         "updatedAt": "2026-11-16",
         "confidence": "medium",
@@ -573,7 +573,7 @@ export const AFRICA_CASES_2026 = [
                 "publishedAt": "2025-12-26",
                 "url": "https://www.horndiplomat.com/israel-officially-recognizes-somaliland-as-sovereign-state/",
                 "perspectiveType": "local",
-                "perspective": "Somaliland newsroom report (datelined Hargeisa/Jerusalem) on the 26 December 2025 joint recognition declaration quoting President Abdirahman Mohamed Abdillahi Cirro and Israeli officials",
+                "perspective": "Somaliland newsroom report on the 26 December 2025 joint recognition declaration quoting President Abdirahman Mohamed Abdillahi Cirro and Israeli officials",
                 "supports": "Supports the 26 December 2025 joint declaration signed with Somaliland President Abdirahman Mohamed Abdillahi Cirro, his welcome of recognition, and stated plans for cooperation in agriculture, health, technology, and economic development."
             },
             {
@@ -696,8 +696,8 @@ export const AFRICA_CASES_2026 = [
                 "publisher": "Al Jazeera",
                 "publishedAt": "2026-11-01",
                 "url": "https://www.aljazeera.com/news/2026/11/1/israels-first-ambassador-to-somaliland-presents-credentials-in-hargeisa",
-                "perspective": "Independent reporting on Israeli Ambassador Michael Lotem presenting credentials in Hargeisa, the Israeli embassy cornerstone ceremony, Somaliland's June 2026 embassy opening in West Jerusalem, and Somali objections",
-                "supports": "Supports the late-October 2026 credentials and Israeli embassy cornerstone ceremonies in Hargeisa (announced 1 November 2026), Somaliland's June 2026 embassy opening in West Jerusalem, President Abdullahi's statement that no base talks had been held, and that no other UN member state had recognized Somaliland."
+                "perspective": "Independent reporting on Israeli Ambassador Michael Lotem presenting credentials in Hargeisa, the Israeli embassy cornerstone ceremony, Somaliland's June 2026 embassy opening in Israel, and Somali objections",
+                "supports": "Supports the late-October 2026 credentials and Israeli embassy cornerstone ceremonies in Hargeisa (announced 1 November 2026), Somaliland's June 2026 embassy opening in Israel, Somaliland officials' signalled openness to a base alongside President Cirro's statement that no base talks had been held, and that no other UN member state had recognized Somaliland."
             }
         ],
         "waypoints": [
@@ -707,7 +707,8 @@ export const AFRICA_CASES_2026 = [
                 "perspectiveLabel": "Somaliland authorities and supporters",
                 "perspectiveType": "local",
                 "conceptInFocus": "Sovereignty",
-                "narration": "President Abdirahman Mohamed Abdillahi Cirro welcomed Israel's recognition on 26 December 2025 as a historic step, Horn Diplomat reported from Hargeisa. The Council on Foreign Relations (CFR) notes that Somaliland declared independence in May 1991, approved a constitution by referendum in 2001, has held elections since 2003, and asserts its own currency and passports. CFR adds that its government cites the African norm of keeping colonial-era borders, claiming the former British protectorate's boundaries (Al Jazeera, May 2023).\n\nThis is a claim built on de facto sovereignty: practical control of institutions and territory. Yet for more than thirty years that control produced no de jure status, meaning legal standing as a state, because recognition is a choice other governments make. The criteria question is therefore which test should count: effective government, a people's vote, or the consent of the state being left.",
+                "relatedTimelineDate": "2025-12-26",
+                "narration": "On 6 January 2026, Israeli Foreign Minister Gideon Sa'ar landed in Hargeisa, was received at the airport by Somaliland officials, and went on to the presidential palace [12]. Eleven days earlier, Israel had become the first United Nations (UN) member state to recognize Somaliland, which declared independence in May 1991 [9, 10]. Recognition is one government's formal decision to treat another political entity as a sovereign state. President Abdirahman Mohamed Abdillahi Cirro welcomed the declaration as a historic step [1].\n\nSomaliland's government argues it already functions as a state: voters approved a constitution in 2001, citizens have voted in democratic elections since 2003, and authorities assert their own currency, security forces, and passports [9]. It also claims the colonial-era borders of the former British Somaliland protectorate [9, 13]. For more than three decades, practical control on the ground (de facto sovereignty) brought no legal standing abroad (de jure sovereignty), raising a core question: what test should earn statehood?",
                 "focusQuestion": "Which legal and political criteria should determine whether a long-standing de facto state receives recognition?"
             },
             {
@@ -716,7 +717,8 @@ export const AFRICA_CASES_2026 = [
                 "perspectiveLabel": "Somalia and contested-area communities",
                 "perspectiveType": "local",
                 "conceptInFocus": "Legitimacy",
-                "narration": "Somalia's federal government rejected the recognition on 26 December 2025 as an unlawful move, the Associated Press reported. At an emergency United Nations Security Council meeting, Somalia's ambassador urged members to reject what he called Israel's \"act of aggression\" (Al Jazeera, 30 December 2025). Opposition also exists inside the territory Somaliland claims. Al Jazeera reported in May 2023 that fighting began in Las Anod / Laascaanood on 6 February 2023 between Somaliland forces and Dhulbahante clan militia, and that hospital data counted more than 200,000 people displaced. The Dhulbahante claim the city as the capital of SSC-Khaatumo, which declared itself autonomous.\n\nBoth sides invoke a people and a border. Somalia defends the borders of the recognized state. Somaliland claims the borders of the old British protectorate, yet some communities inside those borders reject its rule. Recognition policy has to settle which unit counts before asking what its people want.",
+                "relatedTimelineDate": "2023-02-06",
+                "narration": "Somalia's federal government rejected Israel's 26 December 2025 declaration as an unlawful move [10]. Its foreign ministry called Sa'ar's trip an \"unauthorized incursion\" into Somali territory [12], and Somalia's UN ambassador urged an emergency Security Council meeting to reject what he called an \"act of aggression\" [11]. Mogadishu and regional blocs invoke Somalia's territorial integrity [6]. Territorial integrity is the principle that a state's borders should not be divided without its consent.\n\nSomaliland's case for self-determination—a people's right to choose its own political status—is also contested inside the eastern territory it claims [4, 13]. On 6 February 2023, fighting broke out in Las Anod / Laascaanood between Somaliland forces and Dhulbahante clan militia, displacing more than 200,000 people by May 2023 according to local hospital data [13]. Dhulbahante leaders claim the city as the capital of SSC-Khaatumo, which declared itself autonomous and opposes Somaliland's bid for recognition [4, 13]. Recognition policy must ask whose consent counts when local communities disagree.",
                 "focusQuestion": "How should recognition policy account for both territorial integrity and non-uniform local preferences?"
             },
             {
@@ -725,7 +727,8 @@ export const AFRICA_CASES_2026 = [
                 "perspectiveLabel": "Israeli diplomatic calculus",
                 "perspectiveType": "institutional",
                 "conceptInFocus": "Power",
-                "narration": "Prime Minister Benjamin Netanyahu's office said the 26 December 2025 declaration was issued \"in the spirit of the Abraham Accords\" and planned cooperation in agriculture, health, technology and economic development, Horn Diplomat reported. Somaliland opened an embassy in West Jerusalem in June 2026, and in late October Israeli Ambassador Michael Lotem presented credentials in Hargeisa alongside an embassy cornerstone ceremony (Al Jazeera, 1 November 2026). Somalia's President Hassan Sheikh Mohamud alleged Israel sought Red Sea naval access; Somaliland's president said no base talks had been held.\n\nRecognition is a lever one government controls alone. Its weight here reflects geography: the CFR places Somaliland on the Gulf of Aden near the Bab al-Mandeb Strait. A signal reshapes regional order when diplomatic missions or security pacts follow. By November 2026, sources confirm Somaliland's embassy in West Jerusalem and Israel's ambassador in Hargeisa, not a military base or a second recognition.",
+                "relatedTimelineDate": "2026-10",
+                "narration": "Prime Minister Benjamin Netanyahu's office issued the 26 December 2025 declaration \"in the spirit of the Abraham Accords\"—US-backed normalization deals between Israel and several Arab states—and announced plans to cooperate in agriculture, health, technology, and economic development [1]. Diplomatic missions followed in 2026. Somaliland opened an embassy in Israel in June, and in late October Israeli Ambassador Michael Lotem presented credentials—formal letters accrediting an envoy—in Hargeisa alongside an embassy cornerstone ceremony [15].\n\nGeography gives that diplomacy wider strategic reach: Somaliland sits on the Gulf of Aden near the entrance to the Bab el-Mandeb strait, a major sea lane [9]. Somalia's President Hassan Sheikh Mohamud alleged Israel wanted Red Sea naval access [12, 15]. Somaliland officials signalled openness to hosting an Israeli base, though President Cirro stated no base talks had been held [15]. By November 2026, recognition had produced embassies, not a military base or a second recognizing state [15].",
                 "focusQuestion": "When does bilateral recognition alter a regional order rather than merely signal a political preference?"
             },
             {
@@ -734,7 +737,8 @@ export const AFRICA_CASES_2026 = [
                 "perspectiveLabel": "African and multilateral institutions",
                 "perspectiveType": "synthesis",
                 "conceptInFocus": "Interdependence",
-                "narration": "On 26 December 2025, African Union (AU) Commission Chairperson Mahmoud Ali Youssouf rejected any recognition, citing the 1964 Organization of African Unity decision on borders inherited at independence and warning of a \"dangerous precedent\". The Intergovernmental Authority on Development (IGAD), the Horn of Africa's regional bloc, said on 27 December that unilateral recognition runs contrary to the UN Charter. On 6 January 2026, the AU Peace and Security Council called for \"immediate revocation\". At the UN Security Council, Al Jazeera reported, 14 of 15 members condemned the move; the United States did not.\n\nThe AU Peace and Security Council cited the founding treaty principle of \"respect of borders existing on achievement of independence\" to warn that unilateral recognition threatens peace across the continent. That stance leaves little institutional space to test self-determination claims without Mogadishu's consent, so the Council urged inclusive dialogue inside Somalia.",
+                "relatedTimelineDate": "2026-01-06",
+                "narration": "Regional institutions backed Somalia within days. On 26 December 2025, African Union (AU) Commission Chairperson Mahmoud Ali Youssouf rejected any recognition of Somaliland and warned of a \"dangerous precedent\" for peace across Africa [5]. The next day, the Intergovernmental Authority on Development (IGAD), the Horn of Africa's regional bloc, said unilateral recognition ran counter to the UN Charter [6]. At the UN Security Council, 14 of 15 members condemned Israel's move, while the United States said it had no announcement to make on recognizing Somaliland [11].\n\nOn 6 January 2026, the AU Peace and Security Council—the AU's standing body for conflict prevention—declared the recognition null and void, or without legal force, and demanded its immediate revocation [7]. Citing the AU principle of respecting borders inherited at independence, it urged dialogue inside Somalia instead [7]. That response shows diplomatic interdependence: neighboring states treat one contested border on the Red Sea as a test for stability across the continent [5, 7].",
                 "focusQuestion": "What process could evaluate recognition claims without turning every disputed border into a security crisis?"
             }
         ],
@@ -744,11 +748,13 @@ export const AFRICA_CASES_2026 = [
             "Power",
             "Interdependence"
         ],
-        "background": "On 6 January 2026, Israeli Foreign Minister Gideon Sa'ar landed in Hargeisa, was received at the airport by Somaliland officials, and went on to the presidential palace. Somalia's foreign ministry called the visit an \"unauthorized incursion\" into its territory.\n\nBoth reactions grow from the same history. Somaliland was a British protectorate until 1960, when it united with the Italian-ruled south to form Somalia. After a war in which, the Council on Foreign Relations (CFR) reports, Siad Barre's forces killed tens of thousands of Somalilanders, it declared independence in May 1991. CFR notes that it maintains its own currency, security forces and passports, and has held democratic elections since 2003. Recognition means one state formally accepting another as a sovereign state, and the African Union (AU) commits members to respect borders existing at independence.\n\nControl on the ground is also contested: fighting began in Las Anod / Laascaanood on 6 February 2023. After Israel recognized Somaliland on 26 December 2025, Somaliland opened an embassy in West Jerusalem and Israel's ambassador presented credentials in Hargeisa in 2026, while no other UN member state followed.",
+        "ibThemes": [
+            "peace-and-conflict"
+        ],
+        "background": "Somaliland was a British protectorate until 1960, when it united with the formerly Italian-ruled south to form Somalia [9]. That union fractured under military ruler Siad Barre, whose forces killed tens of thousands of Somalilanders during a brutal war [9].\n\nIn May 1991, the Somali National Movement declared Somaliland's independence, with Hargeisa as its capital [9]. Over the next three decades, Somaliland issued its own currency and passports, maintained its own security forces, held democratic elections starting in 2003, and signed a 2016 port-investment agreement with Dubai-based DP World at Berbera on the Gulf of Aden [9].\n\nYet neither Somalia nor the African Union accepted the split, and Somaliland's eastern control fractured when fighting began in Las Anod / Laascaanood on 6 February 2023 [5, 13]. After Israel recognized Somaliland on 26 December 2025, Somaliland opened an embassy in Israel and Israel's ambassador presented credentials in Hargeisa in 2026, while no other UN member state followed [1, 15].",
         "backgroundSources": [
-            "https://www.aljazeera.com/news/2026/1/6/israeli-fm-visits-somaliland-after-world-first-recognition-storm",
             "https://www.cfr.org/backgrounder/somaliland-horn-africas-breakaway-state",
-            "https://au-ssom.org/communique-on-the-preservation-of-the-sovereignty-territorial-integrity-unity-and-stability-of-the-federal-republic-of-somalia/",
+            "https://au.int/en/pressreleases/20251226/auc-chairperson-rejects-any-recognition-somaliland",
             "https://www.aljazeera.com/features/2023/5/10/conflict-in-disputed-las-anod-dims-somalilands-diplomatic-dreams",
             "https://www.horndiplomat.com/israel-officially-recognizes-somaliland-as-sovereign-state/",
             "https://www.aljazeera.com/news/2026/11/1/israels-first-ambassador-to-somaliland-presents-credentials-in-hargeisa"
@@ -804,9 +810,9 @@ export const AFRICA_CASES_2026 = [
             },
             {
                 "claimBy": "Somalia's President Hassan Sheikh Mohamud (as reported by Al Jazeera, January and November 2026)",
-                "claim": "Mohamud alleged in January 2026 that Somaliland accepted Gaza resettlement and military-base terms, and told Sky News in late October 2026: \"Israel wants the Red Sea, that is the only reason.\"",
+                "claim": "Mohamud alleged in an Al Jazeera interview reported in January 2026 that Somaliland accepted Gaza resettlement and military-base terms, and told Sky News in late October 2026: \"Israel wants the Red Sea, that is the only reason.\"",
                 "counterBy": "Somaliland authorities (as reported by Al Jazeera, January and November 2026)",
-                "counterClaim": "Somaliland denied agreeing to resettle Palestinians, called initial ties \"purely diplomatic\", and President Abdullahi stated that no talks on hosting an Israeli military base had been held.",
+                "counterClaim": "Somaliland denied agreeing to resettle Palestinians, called initial ties \"purely diplomatic\", and President Cirro stated that no talks on hosting an Israeli military base had been held.",
                 "sourceUrls": [
                     "https://www.aljazeera.com/news/2026/1/6/israeli-fm-visits-somaliland-after-world-first-recognition-storm",
                     "https://www.aljazeera.com/news/2026/11/1/israels-first-ambassador-to-somaliland-presents-credentials-in-hargeisa"
@@ -821,7 +827,7 @@ export const AFRICA_CASES_2026 = [
             },
             {
                 "date": "After October 2026 cornerstone ceremony (opening date unannounced)",
-                "indicator": "Following Somaliland's June 2026 embassy opening in West Jerusalem and Israeli Ambassador Michael Lotem's credentials and embassy cornerstone ceremonies in Hargeisa (announced 1 November 2026), check when a permanent Israeli embassy opens in Hargeisa and whether any other UN member state grants recognition.",
+                "indicator": "Following Somaliland's June 2026 embassy opening in Israel and Israeli Ambassador Michael Lotem's credentials and embassy cornerstone ceremonies in Hargeisa (announced 1 November 2026), check when a permanent Israeli embassy opens in Hargeisa and whether any other UN member state grants recognition.",
                 "sourceUrl": "https://www.aljazeera.com/news/2026/11/1/israels-first-ambassador-to-somaliland-presents-credentials-in-hargeisa"
             },
             {
@@ -849,7 +855,7 @@ export const AFRICA_CASES_2026 = [
             {
                 "stage": "The formal decision",
                 "rating": "WEAK",
-                "evidence": "At the Security Council, 14 of 15 members condemned the recognition, and the United States said it had no announcement to make on recognizing Somaliland (Al Jazeera, 30 December 2025). The AU Peace and Security Council called for the recognition to be revoked.",
+                "evidence": "At the UN Security Council, 14 of 15 members condemned the recognition, and the United States said it had no announcement to make on recognizing Somaliland. The AU Peace and Security Council declared the move null and void and called for its immediate revocation.",
                 "sourceUrls": [
                     "https://www.aljazeera.com/news/2025/12/30/un-security-council-members-condemn-israels-recognition-of-somaliland",
                     "https://au-ssom.org/communique-on-the-preservation-of-the-sovereignty-territorial-integrity-unity-and-stability-of-the-federal-republic-of-somalia/"
@@ -858,7 +864,7 @@ export const AFRICA_CASES_2026 = [
             {
                 "stage": "What changed in practice",
                 "rating": "MIXED",
-                "evidence": "Somaliland opened an embassy in West Jerusalem in June 2026, and Israel's first ambassador presented credentials in Hargeisa alongside an embassy cornerstone ceremony (Al Jazeera, 1 November 2026). Yet no other UN member state has recognized Somaliland, and its president said no military-base talks had been held.",
+                "evidence": "Somaliland opened an embassy in Israel in June 2026, and Israel's first ambassador presented credentials in Hargeisa alongside an embassy cornerstone ceremony in late October 2026. Yet no other UN member state has recognized Somaliland, and its president said no military-base talks had been held.",
                 "sourceUrls": [
                     "https://www.aljazeera.com/news/2026/1/6/israeli-fm-visits-somaliland-after-world-first-recognition-storm",
                     "https://www.aljazeera.com/news/2026/11/1/israels-first-ambassador-to-somaliland-presents-credentials-in-hargeisa"
@@ -874,9 +880,9 @@ export const AFRICA_CASES_2026 = [
         "essayBuilder": {
             "prompt": "To what extent does effective control of territory give a political entity a legitimate claim to sovereign statehood?",
             "claim": "Effective control gives an entity a strong practical case for statehood, but not a sufficient legal one.",
-            "evidence": "Somaliland declared independence in May 1991, maintains its own currency and security forces, and has held elections since 2003 (Council on Foreign Relations). Yet no foreign country recognized it until Israel signed a joint declaration on 26 December 2025 (Associated Press; Horn Diplomat), followed in 2026 by Somaliland opening an embassy in West Jerusalem and Israel's ambassador presenting credentials in Hargeisa (Al Jazeera).",
-            "counterClaim": "The AU Commission answered the same day that Somaliland \"remains an integral part of the Federal Republic of Somalia\", and the AU Peace and Security Council later called the recognition null and void. Control is also incomplete: by May 2023, fighting around Las Anod had displaced more than 200,000 people, according to hospital data cited by Al Jazeera.",
-            "judgment": "On balance, effective control earns a hearing, not a title. However, the claim is only as strong as the consent behind it, and that consent is contested in the east and withheld by Somalia and the AU.",
+            "evidence": "Somaliland declared independence in May 1991, maintains its own currency and security forces, and has held democratic elections since 2003. Yet no foreign country recognized it until Israel signed a joint declaration on 26 December 2025, followed in 2026 by Somaliland opening an embassy in Israel and Israel's first ambassador presenting credentials in Hargeisa.",
+            "counterClaim": "The AU Commission answered the same day that Somaliland \"remains an integral part of the Federal Republic of Somalia\", and the AU Peace and Security Council later called the recognition null and void. Control is also contested inside the claimed borders: by May 2023, fighting in Las Anod / Laascaanood had displaced more than 200,000 people according to local hospital data.",
+            "judgment": "On balance, effective control earns a hearing, not a legal title. However, the claim is only as strong as the consent behind it, and that consent is contested in the east and withheld by Somalia and the AU.",
             "sourceUrls": [
                 "https://www.cfr.org/backgrounder/somaliland-horn-africas-breakaway-state",
                 "https://www.pbs.org/newshour/world/african-regional-bodies-reject-somalilands-recognition-as-independent-nation-by-israel",
@@ -910,12 +916,12 @@ export const AFRICA_CASES_2026 = [
             },
             {
                 "date": "2026-01-06",
-                "label": "The AU Peace and Security Council declares the recognition null and void and calls for its immediate revocation, as Israel's foreign minister visits Hargeisa.",
+                "label": "The AU Peace and Security Council declares the recognition null and void and calls for its immediate revocation.",
                 "sourceUrl": "https://au-ssom.org/communique-on-the-preservation-of-the-sovereignty-territorial-integrity-unity-and-stability-of-the-federal-republic-of-somalia/"
             },
             {
                 "date": "2026-10",
-                "label": "After Somaliland's June embassy opening in West Jerusalem, Israel's first ambassador presents credentials in Hargeisa alongside an embassy cornerstone ceremony (announced 1 November 2026).",
+                "label": "After Somaliland's June embassy opening in Israel, Israel's first ambassador presents credentials in Hargeisa alongside an embassy cornerstone ceremony (announced 1 November 2026).",
                 "sourceUrl": "https://www.aljazeera.com/news/2026/11/1/israels-first-ambassador-to-somaliland-presents-credentials-in-hargeisa"
             }
         ]

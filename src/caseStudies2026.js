@@ -17,6 +17,7 @@ export {
     IB_THEME_LABELS,
     INFLUENCE_CHECK_STAGES,
     INFLUENCE_RATINGS,
+    stripCitationMarkers,
     countWords,
     computeBriefingReadingTimes,
     CASE_STUDIES_2026,
