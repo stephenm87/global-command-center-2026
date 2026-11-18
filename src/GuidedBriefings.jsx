@@ -1,9 +1,19 @@
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { GUIDED_TOURS, ARCHIVED_GUIDED_TOURS, ALL_GUIDED_TOURS } from './nexusTours';
 import { NEXUS_ACTORS } from './nexusFocusData';
+import { computeBriefingReadingTimes, IB_THEME_LABELS } from './caseStudies2026';
 import { categoryColors, getAccessibleTextAccent, getCaseReviewNotice, isReviewOverdue } from './navigationState.mjs';
 import { indexSourceHealth, shouldPreferAlternate, sourceHealthLabel } from './sourceHealth.mjs';
 import CaseLocatorMap from './components/CaseLocatorMap';
+import {
+    buildSourceByNumber,
+    buildSourceIndex,
+    ConceptLens,
+    GoDeeper,
+    InfluenceCheck,
+    KeyFigures,
+    StepNarration,
+} from './components/BriefingDepth';
 import './GuidedBriefings.css';
 
 const INITIAL_LIBRARY_COUNT = 6;
@@ -25,16 +35,21 @@ const resolveStepIndex = (allTours, activeTours, tourId, nodeId, step) => {
     return actorIndex >= 0 ? actorIndex : 0;
 };
 
-function SourceCitation({ source, healthByUrl, supplemental = false }) {
+function SourceCitation({ source, number, healthByUrl, supplemental = false }) {
     const health = healthByUrl.get(source.url);
     const healthLabel = sourceHealthLabel(health);
     const preferAlternate = shouldPreferAlternate(health);
     const alternates = Array.isArray(source.alternateUrls) ? source.alternateUrls : [];
 
     return (
-        <li className={supplemental ? 'source-citation source-citation-supplemental' : 'source-citation'}>
-            {((!supplemental && source.perspectiveType) || healthLabel) && (
+        <li
+            id={number ? `briefing-source-${number}` : undefined}
+            tabIndex={number ? -1 : undefined}
+            className={supplemental ? 'source-citation source-citation-supplemental' : 'source-citation'}
+        >
+            {(number || (!supplemental && source.perspectiveType) || healthLabel) && (
                 <div className="source-citation-header">
+                    {number && <span className="source-number">[{number}]</span>}
                     {!supplemental && source.perspectiveType && <strong className={`source-perspective source-perspective-${source.perspectiveType}`}>{source.perspectiveType}</strong>}
                     {healthLabel && <em className={`source-health source-health-${health.status}`}>{healthLabel}{health.httpStatus ? ` · ${health.httpStatus}` : ''}</em>}
                 </div>
@@ -95,6 +110,7 @@ export default function GuidedBriefings({
     const [visibleCaseCount, setVisibleCaseCount] = useState(INITIAL_LIBRARY_COUNT);
     const stageHeadingRef = useRef(null);
     const progressRef = useRef(null);
+    const supplementalDetailsRef = useRef(null);
 
     const tour = useMemo(() => allTours.find(item => item.id === tourId) || activeTours[0], [allTours, activeTours, tourId]);
     const waypoint = tour?.waypoints[stepIndex];
@@ -141,6 +157,9 @@ export default function GuidedBriefings({
         });
     }, [catalogTours, librarySearch, regionFilter, issueFilter]);
     const healthByUrl = useMemo(() => indexSourceHealth(sourceHealth), [sourceHealth]);
+    const sourceIndex = useMemo(() => buildSourceIndex(tour), [tour]);
+    const sourceByNumber = useMemo(() => buildSourceByNumber(sourceIndex), [sourceIndex]);
+    const readingTimes = useMemo(() => computeBriefingReadingTimes(tour), [tour]);
     const displayedTours = visibleTours.slice(0, visibleCaseCount);
     const remainingTourCount = Math.max(visibleTours.length - displayedTours.length, 0);
 
@@ -197,6 +216,21 @@ export default function GuidedBriefings({
     };
 
     const move = delta => setStepIndex(index => Math.min(Math.max(index + delta, 0), tour.waypoints.length - 1));
+
+    const handleJumpToSource = (event, number, src) => {
+        event?.preventDefault?.();
+        if (typeof document === 'undefined') return;
+        if (src?.isSupplemental && supplementalDetailsRef.current) {
+            supplementalDetailsRef.current.open = true;
+        }
+        const target = document.getElementById(`briefing-source-${number}`);
+        if (!target) return;
+        const reduceMotion = window.matchMedia?.('(prefers-reduced-motion: reduce)').matches;
+        window.requestAnimationFrame(() => {
+            target.scrollIntoView({ behavior: reduceMotion ? 'auto' : 'smooth', block: 'center' });
+            target.focus({ preventScroll: true });
+        });
+    };
 
     return (
         <section
@@ -350,7 +384,13 @@ export default function GuidedBriefings({
                 <p className="briefing-library-note">Every case has three perspective-labelled readings, appears on the globe, and opens into the Focus Nexus.</p>
             </aside>
 
-            <div className="briefing-stage" style={{ '--tour-color': tour.color }}>
+            <div
+                className="briefing-stage"
+                style={{
+                    '--tour-color': tour.color,
+                    '--tour-text-color': getAccessibleTextAccent(tour.color) || tour.color,
+                }}
+            >
                 <div className="briefing-stage-toolbar">
                     <button
                         type="button"
@@ -384,6 +424,19 @@ export default function GuidedBriefings({
                         </span>
                         <h1 ref={stageHeadingRef} tabIndex="-1">{tour.title}</h1>
                         <p>{tour.subtitle}</p>
+                        <div className="briefing-case-meta">
+                            <span className="briefing-chip reading-time">
+                                {tour.briefingVersion === 2
+                                    ? `Quick ${readingTimes.quickMinutes} min · Full ${readingTimes.fullMinutes} min`
+                                    : `${readingTimes.quickMinutes} min read`}
+                            </span>
+                            {tour.concepts?.map(concept => (
+                                <span key={concept} className="briefing-chip">{concept}</span>
+                            ))}
+                            {tour.ibThemes?.map(theme => (
+                                <span key={theme} className="briefing-chip">{IB_THEME_LABELS[theme] || theme}</span>
+                            ))}
+                        </div>
                     </div>
                     <div className="briefing-progress-label">STEP {stepIndex + 1} / {tour.waypoints.length}</div>
                 </header>
@@ -412,21 +465,41 @@ export default function GuidedBriefings({
                     </div>
                 )}
 
-                <div ref={progressRef} className="briefing-progress" aria-label={`Step ${stepIndex + 1} of ${tour.waypoints.length}`}>
-                    {tour.waypoints.map((item, index) => (
-                        <button
-                            key={`${item.nodeId}-${index}`}
-                            type="button"
-                            className={index === stepIndex ? 'active' : index < stepIndex ? 'complete' : ''}
-                            onClick={() => setStepIndex(index)}
-                            aria-label={`Go to step ${index + 1}: ${item.title}`}
-                            aria-current={index === stepIndex ? 'step' : undefined}
-                        >
-                            <span>{index + 1}</span>
-                            <small>{item.perspectiveLabel || NEXUS_ACTORS[item.nodeId]?.shortName || item.nodeId}</small>
-                        </button>
-                    ))}
-                </div>
+                <nav className="briefing-stepnav" aria-label={`Step navigation (${stepIndex + 1} of ${tour.waypoints.length})`}>
+                    <button
+                        type="button"
+                        className="briefing-stepnav-arrow"
+                        onClick={() => { if (stepIndex > 0) move(-1); }}
+                        aria-disabled={stepIndex === 0}
+                        aria-label="Previous step"
+                    >
+                        ←<span className="stepnav-word"> Prev</span>
+                    </button>
+                    <div ref={progressRef} className="briefing-progress">
+                        {tour.waypoints.map((item, index) => (
+                            <button
+                                key={`${item.nodeId}-${index}`}
+                                type="button"
+                                className={index === stepIndex ? 'active' : index < stepIndex ? 'complete' : ''}
+                                onClick={() => setStepIndex(index)}
+                                aria-label={`Go to step ${index + 1}: ${item.title}`}
+                                aria-current={index === stepIndex ? 'step' : undefined}
+                            >
+                                <span>{index + 1}</span>
+                                <small>{item.perspectiveLabel || NEXUS_ACTORS[item.nodeId]?.shortName || item.nodeId}</small>
+                            </button>
+                        ))}
+                    </div>
+                    <button
+                        type="button"
+                        className="briefing-stepnav-arrow"
+                        onClick={() => { if (stepIndex < tour.waypoints.length - 1) move(1); }}
+                        aria-disabled={stepIndex === tour.waypoints.length - 1}
+                        aria-label="Next step"
+                    >
+                        <span className="stepnav-word">Next </span>→
+                    </button>
+                </nav>
 
                 <div className="briefing-focus-card">
                     <div className="briefing-visual" style={{ '--actor-color': actor?.color || tour.color }}>
@@ -441,10 +514,31 @@ export default function GuidedBriefings({
                     <div className="briefing-narrative">
                         <span className="briefing-step-label">{perspectiveLabel} · {waypoint.title}</span>
                         <h2>{waypoint.title}</h2>
-                        <p>{waypoint.narration}</p>
+                        {waypoint.conceptInFocus && (
+                            <span className="briefing-chip briefing-concept-focus">
+                                Concept in focus · {waypoint.conceptInFocus}
+                            </span>
+                        )}
+                        <StepNarration
+                            key={`${tour.id}-${stepIndex}`}
+                            narration={waypoint.narration}
+                            sourceByNumber={sourceByNumber}
+                            onJumpToSource={handleJumpToSource}
+                        />
                         {waypoint.focusQuestion && <blockquote>{waypoint.focusQuestion}</blockquote>}
                     </div>
                 </div>
+
+                <KeyFigures figures={tour.keyFigures} sourceIndex={sourceIndex} />
+                <InfluenceCheck stages={tour.influenceCheck} sourceIndex={sourceIndex} />
+                <ConceptLens lens={tour.conceptLens} />
+                <GoDeeper
+                    tour={tour}
+                    activeWaypoint={waypoint}
+                    sourceIndex={sourceIndex}
+                    sourceByNumber={sourceByNumber}
+                    onJumpToSource={handleJumpToSource}
+                />
 
                 <div className="briefing-evidence">
                     <div>
@@ -461,13 +555,28 @@ export default function GuidedBriefings({
                     {tour.sources?.length > 0 && (
                         <div className="briefing-reading-list">
                             <ul>
-                                {tour.sources.map(source => <SourceCitation key={source.url} source={source} healthByUrl={healthByUrl} />)}
+                                {tour.sources.map(source => (
+                                    <SourceCitation
+                                        key={source.url}
+                                        source={source}
+                                        number={sourceIndex.get(source.url)?.number}
+                                        healthByUrl={healthByUrl}
+                                    />
+                                ))}
                             </ul>
                             {tour.supplementalSources?.length > 0 && (
-                                <details className="briefing-supplemental">
+                                <details ref={supplementalDetailsRef} className="briefing-supplemental">
                                     <summary>{tour.supplementalSources.length} supplemental {tour.supplementalSources.length === 1 ? 'source' : 'sources'}</summary>
                                     <ul>
-                                        {tour.supplementalSources.map(source => <SourceCitation key={source.url} source={source} healthByUrl={healthByUrl} supplemental />)}
+                                        {tour.supplementalSources.map(source => (
+                                            <SourceCitation
+                                                key={source.url}
+                                                source={source}
+                                                number={sourceIndex.get(source.url)?.number}
+                                                healthByUrl={healthByUrl}
+                                                supplemental
+                                            />
+                                        ))}
                                     </ul>
                                 </details>
                             )}
@@ -476,9 +585,9 @@ export default function GuidedBriefings({
                 </div>
 
                 <footer className="briefing-controls">
-                    <button type="button" onClick={() => move(-1)} disabled={stepIndex === 0}>← Previous</button>
+                    <button type="button" onClick={() => { if (stepIndex > 0) move(-1); }} aria-disabled={stepIndex === 0}>← Previous</button>
                     <button type="button" className="briefing-explore" onClick={() => onExploreNode(waypoint.nodeId, tour.id)}>Explore this actor in Nexus</button>
-                    <button type="button" onClick={() => move(1)} disabled={stepIndex === tour.waypoints.length - 1}>Next →</button>
+                    <button type="button" onClick={() => { if (stepIndex < tour.waypoints.length - 1) move(1); }} aria-disabled={stepIndex === tour.waypoints.length - 1}>Next →</button>
                 </footer>
             </div>
         </section>

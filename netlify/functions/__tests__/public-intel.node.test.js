@@ -1,8 +1,11 @@
 const test = require('node:test');
 const assert = require('node:assert/strict');
+const fs = require('node:fs');
+const path = require('node:path');
 
 const {
     FIXED_QUERIES,
+    SNAPSHOT_TTL_MS,
     SOURCE_ROLE_LABELS,
     TARGET_ISSUES,
     TARGET_REGIONS,
@@ -31,6 +34,64 @@ test('public snapshot reports not-configured without exposing or requiring a key
     assert.deepEqual(snapshot.items, []);
     assert.equal(snapshot.meta.status, 'not-configured');
     assert.equal(snapshot.meta.sourceMode, 'public-cache');
+    assert.equal(snapshot.meta.errorCode, undefined);
+});
+
+test('public snapshot classifies Serper credit exhaustion, invalid API keys, empty results, and timeouts without leaking credentials', async () => {
+    const secretKey = 'super-secret-serper-token-do-not-leak';
+    const creditFailSnapshot = await buildPublicSnapshot({
+        apiKey: secretKey,
+        fetchImpl: async () => ({
+            ok: false,
+            status: 400,
+            json: async () => ({ message: 'Not enough credits', statusCode: 400 }),
+        }),
+        now: new Date('2026-11-18T00:00:00Z'),
+    });
+    assert.equal(creditFailSnapshot.meta.status, 'provider-error');
+    assert.equal(creditFailSnapshot.meta.failedQueryCount, 8);
+    assert.equal(creditFailSnapshot.meta.errorCode, 'credits-exhausted');
+    assert.equal(creditFailSnapshot.meta.providerHttpStatus, 400);
+    assert.ok(!JSON.stringify(creditFailSnapshot).includes(secretKey), 'Snapshot must never include SERPER_API_KEY');
+
+    const authFailSnapshot = await buildPublicSnapshot({
+        apiKey: secretKey,
+        fetchImpl: async () => ({
+            ok: false,
+            status: 403,
+            json: async () => ({ message: 'Unauthorized.', statusCode: 403 }),
+        }),
+        now: new Date('2026-11-18T00:00:00Z'),
+    });
+    assert.equal(authFailSnapshot.meta.status, 'provider-error');
+    assert.equal(authFailSnapshot.meta.errorCode, 'invalid-api-key');
+    assert.equal(authFailSnapshot.meta.providerHttpStatus, 403);
+    assert.ok(!JSON.stringify(authFailSnapshot).includes(secretKey), 'Snapshot must never include SERPER_API_KEY');
+
+    const emptyQualifyingSnapshot = await buildPublicSnapshot({
+        apiKey: secretKey,
+        fetchImpl: async () => ({
+            ok: true,
+            json: async () => ({ news: [{ title: 'Summer shoe collection', snippet: 'Fashion promo', link: 'https://example.org/shoes' }] }),
+        }),
+        now: new Date('2026-11-18T00:00:00Z'),
+    });
+    assert.equal(emptyQualifyingSnapshot.meta.status, 'empty');
+    assert.equal(emptyQualifyingSnapshot.meta.failedQueryCount, 0);
+    assert.equal(emptyQualifyingSnapshot.meta.errorCode, undefined);
+
+    const timeoutSnapshot = await buildPublicSnapshot({
+        apiKey: secretKey,
+        fetchImpl: async () => {
+            const err = new Error('aborted');
+            err.name = 'AbortError';
+            throw err;
+        },
+        now: new Date('2026-11-18T00:00:00Z'),
+    });
+    assert.equal(timeoutSnapshot.meta.status, 'provider-error');
+    assert.equal(timeoutSnapshot.meta.errorCode, 'timeout');
+    assert.ok(!JSON.stringify(timeoutSnapshot).includes(secretKey));
 });
 
 test('public snapshot normalizes, deduplicates, and labels cached provider results', async () => {
@@ -61,7 +122,12 @@ test('public snapshot normalizes, deduplicates, and labels cached provider resul
     assert.equal(snapshot.meta.status, 'fresh');
     assert.equal(snapshot.meta.queryCount, 8);
     assert.equal(snapshot.meta.coverage.policy, 'relevance-diversity-v1');
-    assert.equal(withSnapshotAge(snapshot, new Date('2026-08-09T02:00:00Z').getTime()).meta.status, 'stale');
+    assert.equal(withSnapshotAge(snapshot, new Date('2026-08-09T02:00:00Z').getTime()).meta.status, 'fresh');
+    assert.equal(withSnapshotAge(snapshot, new Date('2026-08-09T13:00:00Z').getTime()).meta.status, 'stale');
+
+    const netlifyToml = fs.readFileSync(path.join(__dirname, '../../../netlify.toml'), 'utf8');
+    assert.match(netlifyToml, /\[functions\."refresh-public-intel"\]\s+schedule\s*=\s*"0 \*\/6 \* \* \*"/);
+    assert.equal(SNAPSHOT_TTL_MS, 6 * 60 * 60 * 1000);
 });
 
 test('duplicate URLs and duplicate headlines are each collapsed', () => {

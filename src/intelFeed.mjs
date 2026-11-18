@@ -114,7 +114,9 @@ export function getCurrentFeedLabel(summary = {}) {
         return `${summary.sourceMode === 'public-cache' ? 'CACHED CURRENT UPDATES' : 'CURRENT PROVIDER UPDATES'} (${summary.liveItemCount})`;
     }
     if (summary.feedStatus === 'not-configured') return 'CURRENT UPDATES — NOT CONFIGURED';
-    if (['unavailable', 'network-error'].includes(summary.feedStatus)) return 'CURRENT UPDATES — UNAVAILABLE';
+    if (['provider-error', 'unavailable'].includes(summary.feedStatus)) return 'CURRENT UPDATES — PROVIDER ERROR';
+    if (['network-error', 'store-error'].includes(summary.feedStatus)) return 'CURRENT UPDATES — CONNECTION FAILED';
+    if (summary.feedStatus === 'empty') return 'CURRENT UPDATES — NONE QUALIFIED';
     if (summary.feedStatus === 'warming') return 'CURRENT UPDATES — WARMING';
     return 'CURRENT UPDATES — NONE AVAILABLE';
 }
@@ -134,19 +136,27 @@ export function getFeedEmptyState({
         : selectedCategory;
 
     if (effectiveCategory === LIVE_INTEL_CATEGORY) {
+        const providerErrorCopy = {
+            title: 'CURRENT FEED PROVIDER ERROR',
+            message: 'The live news provider queries failed to refresh. Curated cases and public source links remain available.',
+        };
+        const connectionFailedCopy = {
+            title: 'CURRENT FEED CONNECTION FAILED',
+            message: 'The cached update service could not be reached. Public source links remain available.',
+        };
         const statusCopy = {
             'not-configured': {
                 title: 'CURRENT FEED NOT CONFIGURED',
                 message: 'The public Serper snapshot is awaiting its server-side API key.',
             },
-            unavailable: {
-                title: 'CURRENT FEED TEMPORARILY UNAVAILABLE',
-                message: 'The cached provider snapshot could not be refreshed. Public source links remain available.',
+            'provider-error': providerErrorCopy,
+            unavailable: providerErrorCopy,
+            empty: {
+                title: 'NO QUALIFYING CURRENT ITEMS',
+                message: 'The provider responded, but no recent articles met editorial relevance thresholds. Public source links remain available.',
             },
-            'network-error': {
-                title: 'CURRENT FEED CONNECTION FAILED',
-                message: 'The cached update service could not be reached. Public source links remain available.',
-            },
+            'network-error': connectionFailedCopy,
+            'store-error': connectionFailedCopy,
             warming: {
                 title: 'CURRENT FEED IS WARMING',
                 message: 'The first fixed-query snapshot is being prepared. Public source links remain available.',

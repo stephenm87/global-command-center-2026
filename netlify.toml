@@ -4,7 +4,7 @@
   functions = "netlify/functions"
 
 [functions."refresh-public-intel"]
-  schedule = "*/30 * * * *"
+  schedule = "0 */6 * * *"
 
 [functions."refresh-source-health"]
   schedule = "17 3 * * *"

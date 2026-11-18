@@ -80,6 +80,83 @@ export const COVERAGE_REGION_ALIASES = {
     'Global Oceans': 'Global / Transnational',
 };
 
+export const UNIT1_CORE_CONCEPTS = Object.freeze([
+    'Power',
+    'Sovereignty',
+    'Legitimacy',
+    'Interdependence',
+]);
+
+export const IB_THEMATIC_STUDIES = Object.freeze([
+    'peace-and-conflict',
+    'rights-and-justice',
+    'development-and-sustainability',
+]);
+
+export const IB_THEME_LABELS = Object.freeze({
+    'peace-and-conflict': 'Peace and conflict',
+    'rights-and-justice': 'Rights and justice',
+    'development-and-sustainability': 'Development and sustainability',
+});
+
+export const INFLUENCE_CHECK_STAGES = Object.freeze([
+    'Setting the agenda',
+    'The formal decision',
+    'What changed in practice',
+]);
+
+export const INFLUENCE_RATINGS = Object.freeze([
+    'STRONG',
+    'MIXED',
+    'WEAK',
+]);
+
+export const stripCitationMarkers = value => String(value || '')
+    .replace(/\[\s*\d+(?:\s*,\s*\d+)*\s*\]/g, '')
+    .replace(/\s+([,.;:!?])/g, '$1');
+
+export const countWords = value => stripCitationMarkers(value)
+    .trim()
+    .split(/\s+/)
+    .filter(Boolean)
+    .length;
+
+export function computeBriefingReadingTimes(caseStudy) {
+    if (!caseStudy || typeof caseStudy !== 'object') {
+        return { quickMinutes: 1, fullMinutes: 1, quickWords: 0, fullWords: 0 };
+    }
+    const waypoints = Array.isArray(caseStudy.waypoints) ? caseStudy.waypoints : [];
+    const quickText = [
+        caseStudy.statusSummary,
+        caseStudy.whyItMatters,
+        ...waypoints.map(item => String(item.narration || '').split(/\n\s*\n/)[0] || ''),
+    ].join(' ');
+    const quickWords = countWords(quickText);
+
+    const deeperParts = [
+        caseStudy.statusSummary,
+        caseStudy.whyItMatters,
+        caseStudy.uncertainty,
+        caseStudy.background,
+        ...waypoints.map(item => item.narration || ''),
+        ...(caseStudy.keyTerms || []).map(item => `${item.term} ${item.definition}`),
+        ...(caseStudy.debate || []).map(item => `${item.claimBy} ${item.claim} ${item.counterBy} ${item.counterClaim}`),
+        ...(caseStudy.watchFor || []).map(item => `${item.date} ${item.indicator}`),
+        ...(caseStudy.examPrompts || []),
+        ...(caseStudy.influenceCheck || []).map(item => `${item.stage} ${item.evidence}`),
+        ...Object.values(caseStudy.conceptLens || {}),
+        caseStudy.essayBuilder
+            ? `${caseStudy.essayBuilder.prompt} ${caseStudy.essayBuilder.claim} ${caseStudy.essayBuilder.evidence} ${caseStudy.essayBuilder.counterClaim} ${caseStudy.essayBuilder.judgment}`
+            : '',
+        ...(caseStudy.timeline || []).map(item => `${item.date} ${item.label}`),
+    ];
+    const fullWords = countWords(deeperParts.join(' '));
+    const wordsPerMinute = 200;
+    const quickMinutes = Math.max(1, Math.ceil(quickWords / wordsPerMinute));
+    const fullMinutes = Math.max(quickMinutes, Math.ceil(fullWords / wordsPerMinute));
+    return { quickMinutes, fullMinutes, quickWords, fullWords };
+}
+
 export const addDays = (date, days) => {
     const [year, month, day] = date.split('-').map(Number);
     const result = new Date(Date.UTC(year, month - 1, day + days));
@@ -170,6 +247,19 @@ export function normalizeCaseStudy(caseStudy) {
             perspectiveLabel: waypoint.perspectiveLabel || waypoint.title,
             perspectiveType: waypoint.perspectiveType || (index === caseStudy.waypoints.length - 1 ? 'synthesis' : sourcePerspectiveTypes[index % sourcePerspectiveTypes.length]),
         })),
+        briefingVersion: caseStudy.briefingVersion === 2 ? 2 : 1,
+        ...(Array.isArray(caseStudy.concepts) ? { concepts: [...caseStudy.concepts] } : {}),
+        ...(Array.isArray(caseStudy.ibThemes) ? { ibThemes: [...caseStudy.ibThemes] } : {}),
+        ...(Array.isArray(caseStudy.timeline) ? { timeline: caseStudy.timeline.map(item => ({ ...item })) } : {}),
+        ...(Array.isArray(caseStudy.keyFigures) ? { keyFigures: caseStudy.keyFigures.map(item => ({ ...item })) } : {}),
+        ...(Array.isArray(caseStudy.backgroundSources) ? { backgroundSources: [...caseStudy.backgroundSources] } : {}),
+        ...(Array.isArray(caseStudy.keyTerms) ? { keyTerms: caseStudy.keyTerms.map(item => ({ ...item })) } : {}),
+        ...(Array.isArray(caseStudy.debate) ? { debate: caseStudy.debate.map(item => ({ ...item, sourceUrls: [...(item.sourceUrls || [])] })) } : {}),
+        ...(Array.isArray(caseStudy.watchFor) ? { watchFor: caseStudy.watchFor.map(item => ({ ...item })) } : {}),
+        ...(Array.isArray(caseStudy.examPrompts) ? { examPrompts: [...caseStudy.examPrompts] } : {}),
+        ...(Array.isArray(caseStudy.influenceCheck) ? { influenceCheck: caseStudy.influenceCheck.map(item => ({ ...item, sourceUrls: [...(item.sourceUrls || [])] })) } : {}),
+        ...(caseStudy.conceptLens ? { conceptLens: { ...caseStudy.conceptLens } } : {}),
+        ...(caseStudy.essayBuilder ? { essayBuilder: { ...caseStudy.essayBuilder, sourceUrls: [...(caseStudy.essayBuilder.sourceUrls || [])] } } : {}),
     };
 }
 

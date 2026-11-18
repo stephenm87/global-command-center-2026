@@ -16,7 +16,7 @@ Located in `netlify/functions`:
 - `ai-summary.js`: Uses Gemini API (`gemini-3.5-flash-lite` default) for authenticated intelligence summarization.
 - `deep-scan.js`: Uses Firecrawl for authenticated article extraction with SSRF/URL normalization guards.
 - `public-intel.mjs`: Reads the anonymous fixed-query snapshot (including canonical critical-minerals reference metadata) from Netlify Blobs and uses CDN cache headers. It creates the first snapshot on demand if the scheduled job has not run.
-- `refresh-public-intel.mjs`: Rebuilds the public snapshot every 30 minutes from fixed editorial queries.
+- `refresh-public-intel.mjs`: Rebuilds the public snapshot every 6 hours from fixed editorial queries.
 - `fetch-news.js`: Runs authenticated visitor-supplied news searches via Serper.
 - `gdelt-pulse.mjs`: Public CDN-cached proxy for allowlisted 3D Nexus GDELT topic pulse queries (`protectPublicEndpoint`).
 - `source-health.mjs` and `refresh-source-health.mjs`: Publish and refresh the daily editorial link-health snapshot generated from all case-study sources and declared alternates.

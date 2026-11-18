@@ -230,6 +230,38 @@ test('extracted App components preserve unescaped & query URLs, guard invalid th
         onOpenBriefing: () => {},
     }));
     assert.match(sidebarHtml, /CURRENT FEED NOT CONFIGURED/);
+
+    const providerErrorSidebarHtml = renderToStaticMarkup(React.createElement(IntelSidebar, {
+        visible: true,
+        sidebarCollapsed: false,
+        onToggleCollapse: () => {},
+        historicalData: null,
+        historicalLoading: false,
+        timelineYear: '2026',
+        intelLoading: false,
+        intelLastUpdated: new Date('2026-11-16T12:00:00Z'),
+        intelSummary: {
+            sourceMode: 'public-reference',
+            feedStatus: 'unavailable',
+            liveItemCount: 0,
+            linkedReferenceCount: 162,
+        },
+        caseStudyCount: 29,
+        feedSearch: '',
+        onSearchChange: () => {},
+        visibleSelectedCategory: 'All',
+        onCategoryChange: () => {},
+        currentFeedLabel: 'CURRENT UPDATES — PROVIDER ERROR',
+        feedEmptyState: null,
+        feedItems: [sampleCaseForecast],
+        feedPage: 1,
+        feedPageSize: 40,
+        onShowMore: () => {},
+        selectedForecast: null,
+        onSelectForecast: () => {},
+        onOpenBriefing: () => {},
+    }));
+    assert.match(providerErrorSidebarHtml, /CURRENT FEED PROVIDER ERROR/, 'IntelSidebar must report PROVIDER ERROR when feedStatus is unavailable');
     assert.match(sidebarHtml, /<article class="intel-card/);
     assert.match(sidebarHtml, /BRIEFING →/);
     assert.ok(!sidebarHtml.includes('javascript:alert(1)'), 'IntelSidebar must reject javascript: URLs');
@@ -651,4 +683,64 @@ test('extracted 3D Nexus components & Three.js helpers build node meshes, escape
     }));
     assert.match(conflictBriefingHtml, /briefing-card-category/);
     assert.match(conflictBriefingHtml, /Geopolitics &amp; Conflict/);
+
+    // Verify C4 Content Depth v2 UI renders step nav, quick/full reading time, read-more toggle,
+    // numbered source markers, multi-paragraph Background, and <=1 Related to this step across all steps
+    const {
+        buildSourceByNumber,
+        buildSourceIndex,
+        findRelatedTimelineIndex,
+        renderCitedText,
+    } = await vite.ssrLoadModule('/src/components/BriefingDepth.jsx');
+
+    const sampleEvents = [
+        { date: '1991-05', label: 'Independence declared' },
+        { date: '2025-12-26', label: 'Joint declaration signed' },
+    ];
+    assert.equal(findRelatedTimelineIndex(sampleEvents, { relatedTimelineDate: '2025-12-26', narration: 'In 1991...' }), 1, 'Explicit relatedTimelineDate wins over year match');
+    assert.equal(findRelatedTimelineIndex(sampleEvents, { narration: 'Signed on 2025-12-26 after 1991.' }), 1, 'Exact YYYY-MM-DD match scores higher than year-only match');
+    assert.equal(findRelatedTimelineIndex(sampleEvents, { narration: 'No matching year at all.' }), -1);
+
+    const sampleByNum = buildSourceByNumber(buildSourceIndex({
+        sources: [{ url: 'https://a.example', publisher: 'Pub A', dateLabel: '2026-01-01' }],
+        supplementalSources: [{ url: 'https://b.example', publisher: 'Pub B', dateLabel: '2026-02-01' }],
+    }));
+    const multiCiteHtml = renderToStaticMarkup(React.createElement('p', null, renderCitedText('Fact [1, 2].', sampleByNum)));
+    assert.match(multiCiteHtml, /href="#briefing-source-1"/);
+    assert.match(multiCiteHtml, /href="#briefing-source-2"/);
+    assert.match(multiCiteHtml, /Source 2: Pub B, 2026-02-01/);
+
+    for (const pilotId of ['somaliland-recognition-red-sea-order', 'western-sahara-autonomy-self-determination']) {
+        const pilotTour = GUIDED_TOURS.find(t => t.id === pilotId);
+        for (let step = 1; step <= pilotTour.waypoints.length; step += 1) {
+            const pilotHtml = renderToStaticMarkup(React.createElement(GuidedBriefings, {
+                initialTourId: pilotId,
+                initialStep: step,
+                onExploreNode: () => {},
+                onRouteChange: () => {},
+                activeTours: GUIDED_TOURS,
+                archivedTours: [],
+            }));
+            if (step === 1) {
+                assert.match(pilotHtml, /class="briefing-stepnav"/, `${pilotId} must render sticky step navigation`);
+                assert.match(pilotHtml, /aria-label="Previous step"/, `${pilotId} must render Prev step button`);
+                assert.match(pilotHtml, /aria-label="Next step"/, `${pilotId} must render Next step button`);
+                assert.match(pilotHtml, /Quick \d+ min · Full \d+ min/, `${pilotId} must render quick & full reading times`);
+                assert.match(pilotHtml, /class="cite-marker"/, `${pilotId} must render numbered source markers in step prose`);
+                assert.match(pilotHtml, /id="briefing-source-1"/, `${pilotId} must assign numbered source anchor IDs`);
+                assert.match(pilotHtml, /Read more: what this shows/, `${pilotId} must collapse second step paragraph behind Read more`);
+                assert.match(pilotHtml, /Influence check/, `${pilotId} must render 3-stage Influence check`);
+                assert.match(pilotHtml, /Editorial assessment/, `${pilotId} must label Influence check as editorial assessment`);
+                assert.match(pilotHtml, /Concept lens/, `${pilotId} must render Concept lens cards`);
+                assert.match(pilotHtml, /class="go-deeper-toggle"[^>]*aria-expanded="false"/, `${pilotId} Go deeper must default to collapsed`);
+                assert.match(pilotHtml, /class="go-deeper-panel"[^>]*hidden=""/, `${pilotId} Go deeper panel must be hidden when collapsed`);
+                assert.ok((pilotHtml.match(/class="depth-prose"/g) || []).length >= 2, `${pilotId} Background must render paragraph breaks as separate <p> elements`);
+                assert.match(pilotHtml, /Worked paragraph: Claim, Evidence, Counter-claim, Judgment/, `${pilotId} must include 4-step Essay builder`);
+                assert.match(pilotHtml, /Last reviewed/, `${pilotId} timeline strip must include Last reviewed marker`);
+                assert.match(pilotHtml, /Review by/, `${pilotId} timeline strip must include Review by marker`);
+            }
+            assert.equal((pilotHtml.match(/Related to this step/g) || []).length, 1, `${pilotId} step ${step} must mark exactly 1 timeline event as Related to this step`);
+            assert.ok(!pilotHtml.includes('Active step'), `${pilotId} step ${step} must use "Related to this step" rather than "Active step"`);
+        }
+    }
 });
