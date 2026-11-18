@@ -665,9 +665,9 @@ function App() {
                             target="_blank"
                             rel="noopener noreferrer"
                             className="companion-btn companion-btn--header"
-                            aria-label="Launch GloPo Companion in a new tab"
+                            aria-label="Launch GloPo Co., the GloPo Companion app, in a new tab"
                         >
-                            GLOPO GPT ↗
+                            GLOPO CO. ↗
                         </a>
                         <AuthBadge
                             user={user}
@@ -712,9 +712,9 @@ function App() {
                                     target="_blank"
                                     rel="noopener noreferrer"
                                     className="companion-btn companion-btn--menu"
-                                    aria-label="Launch GloPo Companion in a new tab"
+                                    aria-label="Launch GloPo Co., the GloPo Companion app, in a new tab"
                                 >
-                                    GLOPO COMPANION GPT ↗
+                                    GLOPO CO. ↗
                                 </a>
                                 <button
                                     type="button"

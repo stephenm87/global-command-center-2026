@@ -558,10 +558,10 @@ export const AFRICA_CASES_2026 = [
                     "role": "Federal Government of Somalia territorial-integrity position"
                 },
                 {
-                    "label": "Jerusalem",
+                    "label": "Israel",
                     "latitude": 31.7683,
                     "longitude": 35.2137,
-                    "role": "Israeli recognition and bilateral-diplomacy reference point"
+                    "role": "Israeli government: recognizing state (December 2025 recognition)"
                 }
             ]
         },

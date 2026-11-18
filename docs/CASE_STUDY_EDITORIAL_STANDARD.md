@@ -88,6 +88,8 @@ Use the smallest map scope that accurately represents the case:
 
 Each `map.locations` entry requires a `label`, finite `latitude` and `longitude`, and should include a short `role`. A marker indicates relevance to the briefing; it does not assert that the entire issue occurs at that coordinate. Never force a global ocean, climate, health, digital, or treaty case into a misleading single pin.
 
+When a location stands for a state whose claimed capital is internationally contested (for example Jerusalem), label it with the state's name (e.g. `Israel`) and say in `role` which government it represents. Keep the coordinates. Places that are themselves the subject of the case (for example Laayoune, Hargeisa, or Tiraspol) keep their own names.
+
 ## Lifecycle & non-destructive archival (`status: 'active' | 'archived'`)
 
 Because teachers embed `?view=briefings&tour=<case-id>&step=<n>` URLs into syllabi and LMS assignments, superseded or concluded cases must **never** be deleted:
