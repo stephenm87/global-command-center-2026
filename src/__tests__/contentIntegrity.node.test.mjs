@@ -421,6 +421,17 @@ test('curated case studies remain balanced across 7 regions x 6 lenses, auditabl
             );
         }
     }
+
+    // Owner rule: a state whose claimed capital is internationally contested is labelled by the state, not the city
+    const CONTESTED_CAPITAL_LABEL = /\b(?:jerusalem|al[ -]?quds)\b/;
+    for (const item of ALL_CASE_STUDIES_2026) {
+        for (const loc of item.map.locations) {
+            assert.ok(
+                !CONTESTED_CAPITAL_LABEL.test(normalizeLocationLabel(loc.label)),
+                `${item.id} labels a contested capital ("${loc.label}"); name the state instead`,
+            );
+        }
+    }
     for (const upgradedId of [
         'south-china-sea-arbitral-award-ten-years',
         'myanmar-fragmented-sovereignty',

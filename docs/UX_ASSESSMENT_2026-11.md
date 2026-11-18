@@ -5,6 +5,8 @@
 - **Raw Audit Evidence:** `docs/audit-evidence/playwright-audit-results.json` and `docs/audit-evidence/lighthouse-audit-results.json`
 - **Design Constraint:** **No visual redesign.** All recommendations preserve the existing command-center dark palette (`#03060a` / `#050d1a` surfaces, cyan `#00ffcc` / `#67d5f5` accents, semantic lens colors), `Orbitron` display headers, `Roboto Mono` analytical copy, and the three-workspace pedagogy (`Live Globe`, `Guided Briefings`, `Advanced Nexus`). Every recommendation below explicitly documents both **what it changes** and **what it preserves**.
 
+> **Correction (2026-11-18, owner):** The companion link opens the project's own GloPo Companion web app (`glopocompanion.netlify.app`), not a Custom GPT. The button is now labelled `GLOPO CO. ↗` everywhere. References below to a "GPT" or "Custom GPT" record the wording at audit time and are superseded.
+
 ---
 
 ## 1. Classroom Persona Walkthroughs Across Every View

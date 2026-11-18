@@ -5,6 +5,7 @@
     "dependencies": {
         "@netlify/blobs": "^9.1.5",
         "@supabase/supabase-js": "2.103.2",
+        "d3-geo": "^3.1.1",
         "globe.gl": "^2.31.1",
         "papaparse": "^5.4.1",
         "react": "^18.2.0",

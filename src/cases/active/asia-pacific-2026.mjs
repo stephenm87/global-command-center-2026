@@ -62,12 +62,6 @@ export const ASIA_PACIFIC_CASES_2026 = [
                     "latitude": 16.8053,
                     "longitude": 96.1561,
                     "role": "Primary United Nations and OCHA Myanmar coordination hub tracking nationwide humanitarian access and funding gaps"
-                },
-                {
-                    "label": "Manila",
-                    "latitude": 14.5995,
-                    "longitude": 120.9842,
-                    "role": "November 2026 ASEAN Summit host where regional leaders denounced ongoing violence in Myanmar and extended the summit ban"
                 }
             ]
         },
@@ -190,7 +184,7 @@ export const ASIA_PACIFIC_CASES_2026 = [
             "mode": "regional",
             "locations": [
                 {
-                    "label": "Itu Aba / Taiping (Spratly Islands)",
+                    "label": "Itu Aba / Taiping",
                     "latitude": 10.377,
                     "longitude": 114.366,
                     "role": "Largest naturally formed high-tide feature in the Spratly Islands, found under UNCLOS Article 121(3) to generate no 200-nautical-mile EEZ or continental shelf"

@@ -118,6 +118,11 @@ function App() {
     const [legendCollapsed, setLegendCollapsed] = useState(true);
     const [largeText, setLargeText] = useState(false);
     const [reducedEffects, setReducedEffects] = useState(false);
+    const [reducedMotion, setReducedMotion] = useState(() => (
+        typeof window !== 'undefined' && typeof window.matchMedia === 'function'
+            ? window.matchMedia('(prefers-reduced-motion: reduce)').matches
+            : false
+    ));
     const [metricsCollapsed, setMetricsCollapsed] = useState(true);
     const [intelLastUpdated, setIntelLastUpdated] = useState(null);
     const [intelMeta, setIntelMeta] = useState(null);
@@ -200,6 +205,15 @@ function App() {
         };
         window.addEventListener('popstate', handleHistory);
         return () => window.removeEventListener('popstate', handleHistory);
+    }, []);
+
+    useEffect(() => {
+        if (typeof window === 'undefined' || !window.matchMedia) return undefined;
+        const mql = window.matchMedia('(prefers-reduced-motion: reduce)');
+        const onChange = e => setReducedMotion(e.matches);
+        setReducedMotion(mql.matches);
+        mql.addEventListener?.('change', onChange);
+        return () => mql.removeEventListener?.('change', onChange);
     }, []);
 
     useSupabasePreferences({
@@ -651,9 +665,9 @@ function App() {
                             target="_blank"
                             rel="noopener noreferrer"
                             className="companion-btn companion-btn--header"
-                            aria-label="Launch GloPo Companion in a new tab"
+                            aria-label="Launch GloPo Co., the GloPo Companion app, in a new tab"
                         >
-                            GLOPO GPT ↗
+                            GLOPO CO. ↗
                         </a>
                         <AuthBadge
                             user={user}
@@ -698,9 +712,9 @@ function App() {
                                     target="_blank"
                                     rel="noopener noreferrer"
                                     className="companion-btn companion-btn--menu"
-                                    aria-label="Launch GloPo Companion in a new tab"
+                                    aria-label="Launch GloPo Co., the GloPo Companion app, in a new tab"
                                 >
-                                    GLOPO COMPANION GPT ↗
+                                    GLOPO CO. ↗
                                 </a>
                                 <button
                                     type="button"
@@ -900,7 +914,7 @@ function App() {
                             )}
 
                             {viewMode === 'globe' && mobileGlobeEnabled && (
-                                <div className="arc-legend" style={{ maxHeight: legendCollapsed ? '48px' : 'min(70vh, 540px)', overflow: 'hidden', transition: 'max-height 0.3s ease' }}>
+                                <div className={`arc-legend ${legendCollapsed ? 'is-collapsed' : 'is-expanded'}`}>
                                     <button
                                         type="button"
                                         className="arc-legend-toggle"
@@ -918,7 +932,7 @@ function App() {
 
                                     {!legendCollapsed && (
                                         <>
-                                            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1px 8px', marginBottom: '6px' }}>
+                                            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1px 8px', marginBottom: '8px' }}>
                                                 {[
                                                     ['Conflict', '#ff5c99'],
                                                     ['Gov/Rights', '#fbbf24'],
@@ -935,22 +949,18 @@ function App() {
                                                     </div>
                                                 ))}
                                             </div>
-                                            <div className="arc-legend-note">
-                                                <span aria-hidden="true">◆</span> Larger raised pin = Editorial case
-                                            </div>
 
-                                            {stressLevel > 50 && (
-                                                <>
-                                                    <div className="arc-legend-title" style={{ marginBottom: '3px' }}>ARC KEY</div>
-                                                    <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1px 6px', marginBottom: '8px' }}>
-                                                        {[['⚔️', 'Military', '#ff6b6b'], ['💰', 'Economic', '#ff9900'], ['🗺️', 'Territory', '#ffdd00'], ['🏥', 'Humanit.', '#00ff99'], ['🤝', 'Diplom.', '#cc88ff']].map(([icon, label, color]) => (
-                                                            <div key={label} className="arc-legend-item" style={{ marginBottom: '1px' }}>
-                                                                <span className="arc-legend-dot" style={{ background: color, boxShadow: `0 0 4px ${color}`, width: '6px', height: '6px' }} />
-                                                                <span className="arc-legend-label" style={{ color }}>{icon} {label}</span>
-                                                            </div>
-                                                        ))}
-                                                    </div>
-                                                </>
+                                            {showEditorialCases && (
+                                                <div className="arc-legend-case-key">
+                                                    <div className="arc-legend-title" style={{ marginBottom: '4px' }}>EDITORIAL CASES</div>
+                                                    <p>
+                                                        <span className="case-key-ring" aria-hidden="true" />{' '}
+                                                        {reducedMotion
+                                                            ? 'Static issue-colored case dots; pulsing rings paused for reduced motion (overdue status stays in cards/tooltips).'
+                                                            : 'Pulsing ring = case location, colored by issue lens. Slow, faint pulse = review overdue.'}
+                                                    </p>
+                                                    <p><span className="case-key-arc" aria-hidden="true" /> Arcs join only the places a case itself maps.</p>
+                                                </div>
                                             )}
 
                                             <div className="arc-legend-title" style={{ marginBottom: '3px' }}>THEORY LENS</div>
@@ -1182,7 +1192,7 @@ function App() {
                 <div className={`critical-connections-panel ${showConnections ? 'panel-open' : 'panel-collapsed'}`}>
                     <div className="critical-connections-header" onClick={() => setShowConnections(p => !p)}>
                         <span className="critical-blink">⚡</span>
-                        <span className="conn-header-title">ACTIVE ESCALATION LINKS</span>
+                        <span className="conn-header-title">CONFLICT CASE LINKS</span>
                         <span className="conn-count-badge">{escalationPairs.length}</span>
                         <span className="conn-toggle-icon">{showConnections ? '▼' : '▲'}</span>
                         {showConnections && (
@@ -1203,8 +1213,9 @@ function App() {
                                 <div key={i} className="connection-row">
                                     <span className="conn-index">{String(i + 1).padStart(2, '0')}</span>
                                     <span className="conn-from">{pair.fromOrg || pair.from.substring(0, 30)}</span>
-                                    <span className="conn-arrow">⇄</span>
+                                    <span className="conn-arrow">→</span>
                                     <span className="conn-to">{pair.toOrg || pair.to.substring(0, 30)}</span>
+                                    {pair.caseTitle && <span className="conn-case" style={{ color: pair.relHex }}>{pair.caseTitle}</span>}
                                 </div>
                             ))}
                         </div>
@@ -1217,22 +1228,33 @@ function App() {
                     <div className="arc-detail-card" onClick={e => e.stopPropagation()}>
                         <button type="button" className="arc-detail-close" onClick={() => setArcClickedInfo(null)}>✕</button>
                         <div className="arc-detail-type" style={{ color: arcClickedInfo.relHex, borderBottomColor: `${arcClickedInfo.relHex}55` }}>
-                            {arcClickedInfo.relIcon} {arcClickedInfo.relType} CONFLICT LINK
+                            ◆ {arcClickedInfo.relType} CASE · MAPPED LINK
                         </div>
+                        {arcClickedInfo.caseTitle && <h3 className="arc-detail-case-title">{arcClickedInfo.caseTitle}</h3>}
                         <div className="arc-detail-entities">
                             <div className="arc-entity-box" style={{ borderColor: `${arcClickedInfo.relHex}88` }}>
-                                <span className="arc-entity-label">NODE A</span>
+                                <span className="arc-entity-label">PRIMARY LOCATION</span>
                                 <strong className="arc-entity-name">{arcClickedInfo.fromName}</strong>
                                 <p className="arc-entity-impact">{arcClickedInfo.fromImpact || '—'}</p>
                             </div>
-                            <div className="arc-entity-connector" style={{ color: arcClickedInfo.relHex }}>⇄</div>
+                            <div className="arc-entity-connector" style={{ color: arcClickedInfo.relHex }}>→</div>
                             <div className="arc-entity-box" style={{ borderColor: `${arcClickedInfo.relHex}88` }}>
-                                <span className="arc-entity-label">NODE B</span>
+                                <span className="arc-entity-label">LINKED LOCATION</span>
                                 <strong className="arc-entity-name">{arcClickedInfo.toName}</strong>
                                 <p className="arc-entity-impact">{arcClickedInfo.toImpact || '—'}</p>
                             </div>
                         </div>
-                        <div className="arc-detail-hint">Click outside to dismiss · Click a globe node for full intel</div>
+                        {arcClickedInfo.fromFull && (
+                            <button
+                                type="button"
+                                className="arc-detail-open-case"
+                                style={{ borderColor: arcClickedInfo.relHex, color: arcClickedInfo.relHex }}
+                                onClick={() => { setSelectedForecast(arcClickedInfo.fromFull); setArcClickedInfo(null); }}
+                            >
+                                Open case detail
+                            </button>
+                        )}
+                        <div className="arc-detail-hint">Arcs connect only the locations this case maps. They do not assert a relationship beyond the case.</div>
                     </div>
                 </div>
             )}
