@@ -1,5 +1,5 @@
 import React from 'react';
-import { ALL_INTEL_CATEGORY, LIVE_INTEL_CATEGORY } from '../intelFeed.mjs';
+import { ALL_INTEL_CATEGORY, LIVE_INTEL_CATEGORY, isUnInstitutionalOnly } from '../intelFeed.mjs';
 import { categoryColors, getAccessibleTextAccent, getCaseReviewNotice, safeHttpUrl } from '../navigationState.mjs';
 
 export default function IntelSidebar({
@@ -64,7 +64,7 @@ export default function IntelSidebar({
                             {intelSummary.sourceMode === 'provider'
                                 ? `● ${intelSummary.liveItemCount} PROVIDER-CURRENT · ${intelLastUpdated.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' })}`
                                 : intelSummary.sourceMode === 'public-cache'
-                                    ? `${intelSummary.feedStatus === 'stale' ? '◐' : '●'} ${intelSummary.liveItemCount} ${intelSummary.feedStatus === 'stale' ? 'STALE' : 'CACHED'} CURRENT · ${intelLastUpdated.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' })}`
+                                    ? `${intelSummary.feedStatus === 'stale' ? '◐' : '●'} ${intelSummary.liveItemCount} ${intelSummary.feedStatus === 'stale' ? 'STALE ' : ''}${isUnInstitutionalOnly(intelSummary.provider) ? 'UN INSTITUTIONAL' : 'CACHED CURRENT'} · ${intelLastUpdated.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' })}`
                                     : intelSummary.feedStatus === 'not-configured'
                                         ? `△ CURRENT FEED NOT CONFIGURED · ${caseStudyCount} CASES + ${intelSummary.linkedReferenceCount} PUBLIC SOURCES`
                                         : ['provider-error', 'unavailable'].includes(intelSummary.feedStatus)

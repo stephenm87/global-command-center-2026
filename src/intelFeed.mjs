@@ -109,8 +109,15 @@ export function summarizeIntelSources(items = [], providerMeta = null) {
     };
 }
 
+export function isUnInstitutionalOnly(provider = '') {
+    return /^UN News RSS(?:\s*\+\s*ReliefWeb)?$/i.test(String(provider || '').trim());
+}
+
 export function getCurrentFeedLabel(summary = {}) {
     if (summary.liveItemCount > 0) {
+        if (summary.sourceMode === 'public-cache' && isUnInstitutionalOnly(summary.provider)) {
+            return `UN INSTITUTIONAL REPORTING (${summary.liveItemCount})`;
+        }
         return `${summary.sourceMode === 'public-cache' ? 'CACHED CURRENT UPDATES' : 'CURRENT PROVIDER UPDATES'} (${summary.liveItemCount})`;
     }
     if (summary.feedStatus === 'not-configured') return 'CURRENT UPDATES — NOT CONFIGURED';

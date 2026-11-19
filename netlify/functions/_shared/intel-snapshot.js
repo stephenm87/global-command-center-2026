@@ -557,6 +557,7 @@ async function buildPublicSnapshot({
     let totalFailedCount = 0;
     const coreRejected = [];
     const serperRejected = [];
+    const providerResults = [];
 
     if (!includeFreeFeeds && !useSerper) {
         const coverage = buildCoverageSummary([]);
@@ -578,10 +579,11 @@ async function buildPublicSnapshot({
 
     if (includeFreeFeeds) {
         const rssSettled = await Promise.allSettled(
-            INSTITUTIONAL_RSS_FEEDS.map(feed => fetchRssFeed(fetchImpl, feed))
+            INSTITUTIONAL_RSS_FEEDS.map(feed => fetchRssFeed(fetchImpl, feed, { now }))
         );
         queryCount += INSTITUTIONAL_RSS_FEEDS.length;
         let rssSuccessCount = 0;
+        let rssItemsCount = 0;
         rssSettled.forEach((result, index) => {
             if (result.status === 'fulfilled') {
                 rssSuccessCount += 1;
@@ -592,7 +594,10 @@ async function buildPublicSnapshot({
                         scraperSource: 'institutional-rss',
                         isInstitutionalHub: true,
                     });
-                    if (assessed) assessedItems.push(assessed);
+                    if (assessed) {
+                        assessedItems.push(assessed);
+                        rssItemsCount += 1;
+                    }
                 }
             } else {
                 coreFailedCount += 1;
@@ -600,12 +605,20 @@ async function buildPublicSnapshot({
                 coreRejected.push(result.reason);
             }
         });
-        if (rssSuccessCount > 0) activeProviders.push('UN News & WHO RSS');
+        if (rssSuccessCount > 0) activeProviders.push('UN News RSS');
+        providerResults.push({
+            provider: 'UN News RSS',
+            status: rssSuccessCount === INSTITUTIONAL_RSS_FEEDS.length
+                ? 'ok'
+                : (rssSuccessCount > 0 ? 'partial' : 'failed'),
+            itemCount: rssItemsCount,
+        });
 
         if (String(reliefwebAppname || '').trim()) {
             queryCount += 1;
             try {
-                const rw = await fetchReliefWebReports(fetchImpl, { appname: reliefwebAppname });
+                const rw = await fetchReliefWebReports(fetchImpl, { appname: reliefwebAppname, now });
+                let rwCount = 0;
                 if (rw.status === 'ok' && rw.items.length > 0) {
                     activeProviders.push('ReliefWeb');
                     rawItems.push(...rw.items);
@@ -614,22 +627,28 @@ async function buildPublicSnapshot({
                             scraperSource: 'reliefweb-v2',
                             isInstitutionalHub: true,
                         });
-                        if (assessed) assessedItems.push(assessed);
+                        if (assessed) {
+                            assessedItems.push(assessed);
+                            rwCount += 1;
+                        }
                     }
                 }
+                providerResults.push({ provider: 'ReliefWeb', status: 'ok', itemCount: rwCount });
             } catch (err) {
                 coreFailedCount += 1;
                 totalFailedCount += 1;
                 coreRejected.push(err);
+                providerResults.push({ provider: 'ReliefWeb', status: 'failed', itemCount: 0 });
             }
         }
 
-        // Best-effort single GDELT Doc API query; failures never degrade institutional feed status
+        // Best-effort single GDELT Doc API query; failures are reported honestly in providerResults and failedQueryCount
         const gdeltSettled = await Promise.allSettled(
-            GDELT_FEED_QUERIES.map(query => fetchGdeltQuery(fetchImpl, query))
+            GDELT_FEED_QUERIES.map(query => fetchGdeltQuery(fetchImpl, query, { now }))
         );
         queryCount += GDELT_FEED_QUERIES.length;
         let gdeltItemsAdded = 0;
+        let gdeltFailedCount = 0;
         gdeltSettled.forEach((result, index) => {
             if (result.status === 'fulfilled') {
                 const query = GDELT_FEED_QUERIES[index];
@@ -646,9 +665,15 @@ async function buildPublicSnapshot({
                 }
             } else {
                 totalFailedCount += 1;
+                gdeltFailedCount += 1;
             }
         });
         if (gdeltItemsAdded > 0) activeProviders.push('GDELT');
+        providerResults.push({
+            provider: 'GDELT',
+            status: gdeltFailedCount === 0 ? 'ok' : (gdeltFailedCount < GDELT_FEED_QUERIES.length ? 'partial' : 'failed'),
+            itemCount: gdeltItemsAdded,
+        });
     }
 
     if (useSerper) {
@@ -679,6 +704,11 @@ async function buildPublicSnapshot({
         } else if (serperRejected.length > 0 && includeFreeFeeds) {
             console.warn(`[public-intel] Optional Serper skipped (${serperRejected[0]?.errorCode || 'provider-error'}); serving free institutional feeds.`);
         }
+        providerResults.push({
+            provider: 'Serper',
+            status: serperRejected.length === 0 ? 'ok' : (serperSuccessCount > 0 ? 'partial' : 'failed'),
+            itemCount: serperResults.reduce((acc, r) => acc + (r.status === 'fulfilled' ? r.value.length : 0), 0),
+        });
     }
 
     const relevantRejected = includeFreeFeeds ? coreRejected : serperRejected;
@@ -706,9 +736,10 @@ async function buildPublicSnapshot({
                 ? (coreFailedCount > 0 ? 'partial' : 'fresh')
                 : (coreFailedCount > 0 ? 'provider-error' : 'empty'),
             provider: providerLabel,
+            providerResults,
             queryPolicy: 'fixed-editorial',
             queryCount,
-            failedQueryCount: includeFreeFeeds ? coreFailedCount : totalFailedCount,
+            failedQueryCount: totalFailedCount,
             ...(items.length === 0 && coreFailedCount > 0 && dominantErrorCode ? {
                 errorCode: dominantErrorCode,
                 ...(firstHttpStatus ? { providerHttpStatus: firstHttpStatus } : {}),

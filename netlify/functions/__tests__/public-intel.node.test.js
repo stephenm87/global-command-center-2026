@@ -29,12 +29,15 @@ test('public snapshot uses fixed balanced queries and never accepts a visitor qu
 });
 
 const {
+    INSTITUTIONAL_RSS_FEEDS,
     decodeXmlEntities,
     fetchReliefWebReports,
+    isFreshAndConsistentDate,
     parseRssItems,
 } = require('../_shared/free-feeds');
 
-test('free-feeds parses RSS CDATA, entities, ISO dates, guid fallback, and rejects non-HTTPS links', async () => {
+test('free-feeds parses RSS CDATA, entities, ISO dates, guid fallback, rejects non-HTTPS links, enforces 30-day freshness, and rejects URL/pubDate mismatches', async () => {
+    const fixedNow = new Date('2026-11-20T00:00:00Z');
     const xml = `<?xml version="1.0" encoding="utf-8"?>
         <rss version="2.0"><channel>
             <item>
@@ -47,30 +50,60 @@ test('free-feeds parses RSS CDATA, entities, ISO dates, guid fallback, and rejec
                 <title>Bad javascript link</title>
                 <link>javascript:alert(1)</link>
                 <description>Should be dropped.</description>
+                <pubDate>Thu, 19 Nov 2026 04:00:00 +0000</pubDate>
             </item>
             <item>
                 <title>Plain HTTP link</title>
                 <link>http://example.org/insecure</link>
                 <description>Should be dropped.</description>
+                <pubDate>Thu, 19 Nov 2026 04:00:00 +0000</pubDate>
+            </item>
+            <item>
+                <title>Missing pubDate item</title>
+                <link>https://news.un.org/en/story/2026/11/1200012</link>
+                <description>Should be dropped because pubDate is missing.</description>
+            </item>
+            <item>
+                <title>Stale 2020 COVID package</title>
+                <link>https://www.who.int/news/item/12-08-2020-stale</link>
+                <description>Older than 30 days.</description>
+                <pubDate>Wed, 12 Aug 2020 10:00:00 GMT</pubDate>
+            </item>
+            <item>
+                <title>URL date disagrees with pubDate</title>
+                <link>https://www.who.int/news/item/05-10-2020-mental-health</link>
+                <description>Stale URL republished with recent pubDate.</description>
+                <pubDate>Thu, 19 Nov 2026 04:00:00 +0000</pubDate>
             </item>
             <item>
                 <title>GUID fallback item</title>
-                <guid>https://www.who.int/news/item/19-11-2026-test</guid>
+                <guid>https://news.un.org/en/story/2026/11/1200099</guid>
                 <description>Valid https guid fallback.</description>
+                <pubDate>Wed, 18 Nov 2026 12:00:00 +0000</pubDate>
             </item>
             <item>
                 <title>Exceeds maxItems cap</title>
                 <link>https://news.un.org/en/story/2026/11/1200011</link>
                 <description>Should be capped.</description>
+                <pubDate>Thu, 19 Nov 2026 04:00:00 +0000</pubDate>
             </item>
         </channel></rss>`;
-    const items = parseRssItems(xml, { sourceName: 'UN News', maxItems: 2 });
+    const items = parseRssItems(xml, { sourceName: 'UN News', maxItems: 2, now: fixedNow });
     assert.equal(items.length, 2);
     assert.equal(items[0].title, 'Trade & Diplomacy: a < b and c > d — update');
     assert.equal(items[0].snippet, 'UN delegates discussed humanitarian aid &amp; treaties.');
     assert.equal(items[0].date, '2026-11-19');
-    assert.equal(items[1].link, 'https://www.who.int/news/item/19-11-2026-test');
+    assert.equal(items[1].link, 'https://news.un.org/en/story/2026/11/1200099');
     assert.equal(decodeXmlEntities('a &lt; b &gt; c &amp; d'), 'a < b > c & d');
+
+    // Direct freshness & URL/pubDate drift checks
+    assert.equal(isFreshAndConsistentDate('2026-11-10', 'https://news.un.org/en/story/2026/11/123', { now: fixedNow }), true);
+    assert.equal(isFreshAndConsistentDate('2026-10-01', 'https://news.un.org/en/story/2026/10/123', { now: fixedNow }), false, 'Items older than 30 days must be rejected');
+    assert.equal(isFreshAndConsistentDate('2026-11-19', 'https://example.org/2020/08/old-report', { now: fixedNow }), false, 'URL date disagreeing by >30 days must be rejected');
+    assert.equal(isFreshAndConsistentDate('not-a-date', 'https://news.un.org/en/story/2026/11/123', { now: fixedNow }), false, 'Unparseable date must be rejected');
+
+    // Confirm stale WHO RSS feed is removed
+    assert.equal(INSTITUTIONAL_RSS_FEEDS.some(f => f.url.includes('who.int/rss-feeds/news-english.xml')), false);
 
     const skippedRw = await fetchReliefWebReports(async () => {
         throw new Error('Should not fetch when appname is empty');
@@ -141,9 +174,13 @@ test('public snapshot builds live institutional feed with zero SERPER_API_KEY an
     assert.equal('serperStatus' in snapshot.meta, false, 'Public meta must not expose billing state');
     assert.equal(snapshot.items.length, 3);
     assert.equal(calledUrls.some(u => u.includes('google.serper.dev')), false);
-    assert.match(snapshot.meta.provider, /UN News & WHO RSS/);
+    assert.match(snapshot.meta.provider, /UN News RSS/);
     assert.match(snapshot.meta.provider, /ReliefWeb/);
     assert.match(snapshot.meta.provider, /GDELT/);
+    assert.deepEqual(
+        snapshot.meta.providerResults.map(r => [r.provider, r.status]),
+        [['UN News RSS', 'ok'], ['ReliefWeb', 'ok'], ['GDELT', 'ok']]
+    );
 });
 
 test('public snapshot keeps free institutional items and avoids error when optional Serper runs out of credits', async () => {
@@ -166,7 +203,7 @@ test('public snapshot keeps free institutional items and avoids error when optio
                 return { ok: false, status: 400, json: async () => ({ message: 'Not enough credits' }) };
             }
             if (String(url).includes('gdeltproject.org')) {
-                return { ok: true, json: async () => ({ articles: [] }) };
+                return { ok: false, status: 429 };
             }
             return { ok: true, text: async () => sampleRss };
         },
@@ -175,9 +212,11 @@ test('public snapshot keeps free institutional items and avoids error when optio
 
     assert.equal(serperCalls, 8);
     assert.equal(snapshot.meta.status, 'fresh');
-    assert.equal(snapshot.meta.failedQueryCount, 0);
+    assert.equal(snapshot.meta.failedQueryCount, 9, 'failedQueryCount must honestly count both GDELT and Serper failures');
     assert.equal(snapshot.meta.errorCode, undefined);
     assert.equal(snapshot.items.length, 1);
+    assert.equal(snapshot.meta.providerResults.find(r => r.provider === 'GDELT')?.status, 'failed');
+    assert.equal(snapshot.meta.providerResults.find(r => r.provider === 'Serper')?.status, 'failed');
 });
 
 test('public snapshot marks partial when some core RSS feeds fail and sets errorCode when all fail', async () => {

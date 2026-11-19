@@ -2,6 +2,9 @@ const GDELT_DOC_API = 'https://api.gdeltproject.org/api/v2/doc/doc';
 const RELIEFWEB_API_V2 = 'https://api.reliefweb.int/v2/reports';
 const FREE_FEED_TIMEOUT_MS = 8000;
 const GDELT_TIMEOUT_MS = 6000;
+const MAX_ITEM_AGE_DAYS = 30;
+const MAX_URL_DATE_DRIFT_DAYS = 30;
+const DAY_MS = 24 * 60 * 60 * 1000;
 
 const UN_NEWS_FEEDS = Object.freeze([
     {
@@ -87,17 +90,9 @@ const UN_NEWS_FEEDS = Object.freeze([
     },
 ]);
 
+// Note: WHO's news-english.xml RSS feed is excluded because its entries are stale (mostly 2020).
 const INSTITUTIONAL_RSS_FEEDS = Object.freeze([
     ...UN_NEWS_FEEDS,
-    {
-        id: 'who-news-english',
-        region: 'Global / Transnational',
-        issueHints: ['Health & Human Security', 'Governance & Rights'],
-        fallbackCoords: [46.23, 6.13],
-        url: 'https://www.who.int/rss-feeds/news-english.xml',
-        sourceName: 'World Health Organization',
-        maxItems: 4,
-    },
 ]);
 
 const GDELT_FEED_QUERIES = Object.freeze([
@@ -106,7 +101,7 @@ const GDELT_FEED_QUERIES = Object.freeze([
         region: 'Global / Transnational',
         issueHints: ['Security & Diplomacy', 'Governance & Rights', 'Climate & Resources', 'Technology & Information'],
         fallbackCoords: [18.0, 12.0],
-        query: '(diplomacy OR treaty OR humanitarian OR ceasefire OR sanctions OR "climate finance" OR "AI governance") sourcelang:english',
+        query: '("Security Council" OR ceasefire OR sanctions OR ASEAN OR "African Union" OR "European Union" OR "South China Sea" OR "climate treaty") sourcelang:english',
         maxrecords: 16,
     },
 ]);
@@ -152,15 +147,64 @@ function sanitizeHttpsUrl(rawUrl) {
     }
 }
 
-function normalizeFeedDate(rawDate = '') {
+function parseValidDateMs(rawDate) {
     const trimmed = String(rawDate || '').trim();
-    if (!trimmed) return 'Current';
-    const parsed = Date.parse(trimmed);
-    if (!Number.isFinite(parsed)) return trimmed;
-    return new Date(parsed).toISOString().slice(0, 10);
+    if (!trimmed) return Number.NaN;
+    const ms = Date.parse(trimmed);
+    return Number.isFinite(ms) ? ms : Number.NaN;
 }
 
-function parseRssItems(xmlText, { sourceName = 'Institutional Feed', maxItems = 5 } = {}) {
+function extractUrlDateBounds(rawUrl) {
+    const urlStr = String(rawUrl || '');
+    // Full YYYY/MM/DD or YYYY-MM-DD in path
+    const ymd = urlStr.match(/(?:^|[/\-_])(20\d{2})[/\-](0?[1-9]|1[0-2])[/\-](0?[1-9]|[12]\d|3[01])(?=$|[/\-_?#.])/);
+    if (ymd) {
+        const ms = Date.UTC(Number(ymd[1]), Number(ymd[2]) - 1, Number(ymd[3]));
+        return { startMs: ms, endMs: ms };
+    }
+    // DD-MM-YYYY in path (e.g. WHO news URLs like /19-11-2026-...)
+    const dmy = urlStr.match(/(?:^|[/\-_])(0?[1-9]|[12]\d|3[01])-(0?[1-9]|1[0-2])-(20\d{2})(?=$|[/\-_?#.])/);
+    if (dmy) {
+        const ms = Date.UTC(Number(dmy[3]), Number(dmy[2]) - 1, Number(dmy[1]));
+        return { startMs: ms, endMs: ms };
+    }
+    // Year-month /YYYY/MM/ in path (e.g. UN News /2026/11/1200001)
+    const ym = urlStr.match(/\/(20\d{2})\/(0?[1-9]|1[0-2])\//);
+    if (ym) {
+        const year = Number(ym[1]);
+        const month = Number(ym[2]) - 1;
+        const startMs = Date.UTC(year, month, 1);
+        const endMs = Date.UTC(year, month + 1, 0);
+        return { startMs, endMs };
+    }
+    return null;
+}
+
+function isFreshAndConsistentDate(rawDate, url, { now = new Date(), maxAgeDays = MAX_ITEM_AGE_DAYS, maxDriftDays = MAX_URL_DATE_DRIFT_DAYS } = {}) {
+    const pubMs = parseValidDateMs(rawDate);
+    if (!Number.isFinite(pubMs)) return false;
+    const nowMs = now instanceof Date ? now.getTime() : Number(now);
+    const ageMs = nowMs - pubMs;
+    if (ageMs > maxAgeDays * DAY_MS) return false;
+    if (ageMs < -2 * DAY_MS) return false; // reject bogus far-future timestamps
+
+    const urlBounds = extractUrlDateBounds(url);
+    if (urlBounds) {
+        let driftMs = 0;
+        if (pubMs < urlBounds.startMs) driftMs = urlBounds.startMs - pubMs;
+        else if (pubMs > urlBounds.endMs) driftMs = pubMs - urlBounds.endMs;
+        if (driftMs > maxDriftDays * DAY_MS) return false;
+    }
+    return true;
+}
+
+function normalizeFeedDate(rawDate = '') {
+    const ms = parseValidDateMs(rawDate);
+    if (!Number.isFinite(ms)) return null;
+    return new Date(ms).toISOString().slice(0, 10);
+}
+
+function parseRssItems(xmlText, { sourceName = 'Institutional Feed', maxItems = 5, now = new Date(), maxAgeDays = MAX_ITEM_AGE_DAYS } = {}) {
     if (typeof xmlText !== 'string' || !xmlText.trim()) return [];
     const blocks = xmlText.match(/<item\b[\s\S]*?<\/item>/gi) || [];
     const parsed = [];
@@ -170,14 +214,16 @@ function parseRssItems(xmlText, { sourceName = 'Institutional Feed', maxItems = 
         const rawLink = extractTag(block, 'link') || extractTag(block, 'guid');
         const link = sanitizeHttpsUrl(rawLink);
         const snippet = extractTag(block, 'description');
-        const pubDate = normalizeFeedDate(extractTag(block, 'pubDate'));
-        if (!title || !link) continue;
+        const rawPubDate = extractTag(block, 'pubDate');
+        const isoDate = normalizeFeedDate(rawPubDate);
+        if (!title || !link || !isoDate) continue;
+        if (!isFreshAndConsistentDate(rawPubDate, link, { now, maxAgeDays })) continue;
         parsed.push({
             title,
             snippet,
             link,
             source: sourceName,
-            date: pubDate,
+            date: isoDate,
         });
     }
     return parsed;
@@ -189,7 +235,7 @@ function formatGdeltSeenDate(seendate = '') {
     return `${match[1]}-${match[2]}-${match[3]}`;
 }
 
-async function fetchRssFeed(fetchImpl, feedConfig) {
+async function fetchRssFeed(fetchImpl, feedConfig, { now = new Date() } = {}) {
     const controller = new AbortController();
     const timer = setTimeout(() => controller.abort(), FREE_FEED_TIMEOUT_MS);
     try {
@@ -210,13 +256,14 @@ async function fetchRssFeed(fetchImpl, feedConfig) {
         return parseRssItems(xml, {
             sourceName: feedConfig.sourceName,
             maxItems: feedConfig.maxItems,
+            now,
         });
     } finally {
         clearTimeout(timer);
     }
 }
 
-async function fetchReliefWebReports(fetchImpl, { appname = '', limit = 15 } = {}) {
+async function fetchReliefWebReports(fetchImpl, { appname = '', limit = 15, now = new Date() } = {}) {
     const trimmedAppname = String(appname || '').trim();
     if (!trimmedAppname) {
         return { status: 'skipped-no-appname', items: [] };
@@ -248,7 +295,10 @@ async function fetchReliefWebReports(fetchImpl, { appname = '', limit = 15 } = {
             const fields = row?.fields || {};
             const link = sanitizeHttpsUrl(fields.url);
             const title = String(fields.title || '').trim();
-            if (!title || !link) return null;
+            const rawDate = fields.date?.created || '';
+            const isoDate = normalizeFeedDate(rawDate);
+            if (!title || !link || !isoDate) return null;
+            if (!isFreshAndConsistentDate(rawDate, link, { now })) return null;
             const country = fields.primary_country?.name || '';
             const source = Array.isArray(fields.source) && fields.source[0]?.name
                 ? fields.source[0].name
@@ -256,11 +306,8 @@ async function fetchReliefWebReports(fetchImpl, { appname = '', limit = 15 } = {
             const themes = Array.isArray(fields.theme)
                 ? fields.theme.map(t => t?.name).filter(Boolean).join(', ')
                 : '';
-            const date = typeof fields.date?.created === 'string'
-                ? fields.date.created.slice(0, 10)
-                : 'Current';
             const snippet = [country, themes].filter(Boolean).join(' · ') || 'Humanitarian situation report published on ReliefWeb.';
-            return { title, snippet, link, source, date };
+            return { title, snippet, link, source, date: isoDate };
         }).filter(Boolean);
         return { status: 'ok', items };
     } finally {
@@ -268,8 +315,8 @@ async function fetchReliefWebReports(fetchImpl, { appname = '', limit = 15 } = {
     }
 }
 
-async function fetchGdeltQuery(fetchImpl, queryConfig) {
-    const upstreamUrl = `${GDELT_DOC_API}?query=${encodeURIComponent(queryConfig.query)}&mode=ArtList&maxrecords=${queryConfig.maxrecords || 8}&format=json&sort=DateDesc`;
+async function fetchGdeltQuery(fetchImpl, queryConfig, { now = new Date() } = {}) {
+    const upstreamUrl = `${GDELT_DOC_API}?query=${encodeURIComponent(queryConfig.query)}&mode=ArtList&maxrecords=${queryConfig.maxrecords || 16}&format=json&sort=DateDesc`;
     const controller = new AbortController();
     const timer = setTimeout(() => controller.abort(), GDELT_TIMEOUT_MS);
     try {
@@ -288,13 +335,15 @@ async function fetchGdeltQuery(fetchImpl, queryConfig) {
         return articles.map(article => {
             const link = sanitizeHttpsUrl(article?.url);
             const title = String(article?.title || '').trim();
-            if (!title || !link) return null;
+            const isoDate = formatGdeltSeenDate(article?.seendate);
+            if (!title || !link || isoDate === 'Current') return null;
+            if (!isFreshAndConsistentDate(isoDate, link, { now })) return null;
             return {
                 title,
                 snippet: String(article?.domain ? `Reported via ${article.domain} (${queryConfig.region}).` : ''),
                 link,
                 source: String(article?.domain || 'GDELT'),
-                date: formatGdeltSeenDate(article?.seendate),
+                date: isoDate,
             };
         }).filter(Boolean);
     } finally {
@@ -306,11 +355,15 @@ module.exports = {
     GDELT_DOC_API,
     GDELT_FEED_QUERIES,
     INSTITUTIONAL_RSS_FEEDS,
+    MAX_ITEM_AGE_DAYS,
+    MAX_URL_DATE_DRIFT_DAYS,
     RELIEFWEB_API_V2,
     UN_NEWS_FEEDS,
     decodeXmlEntities,
+    extractUrlDateBounds,
     fetchGdeltQuery,
     fetchReliefWebReports,
     fetchRssFeed,
+    isFreshAndConsistentDate,
     parseRssItems,
 };

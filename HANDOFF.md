@@ -2,6 +2,13 @@
 
 Newest entry first. Each agent adds an entry before it stops. Keep entries short.
 
+## 2026-11-20 — Antigravity (Lead) — Unit 21b (PR #38 Defect Fixes: Whole-Word Geo Pinning, 30-Day Freshness Guard, Honest Provider Reporting & Sidebar Label)
+- **Did (on `feat/free-institutional-feeds`, PR #38 — unmerged, awaiting owner approval):**
+  - **Geo pinning (`netlify/functions/_shared/intel-normalization.js`, `intel-snapshot.js`):** Replaced substring `includes()` with whole-word boundary matching, title-before-snippet priority, specific country/territory-before-continent precedence (covering UN regional feeds and all 29 cases), removed `"un"` and bare `"america"`, used feed `fallbackCoords` with `locationPrecision: "regional"` when no country matches, and added deterministic spiral de-stacking so shared fallback coordinates never stack on one point. Added all 5 required headline regression tests + de-stacking test.
+  - **Freshness & WHO removal (`netlify/functions/_shared/free-feeds.js`):** Removed the stale `who.int/rss-feeds/news-english.xml` feed (entries from 2020), enforced a strict `<= 30` day recency window, dropped RSS items with missing/unparseable `pubDate`, and rejected items whose URL date disagrees with `pubDate` by `> 30` days. Added unit tests for both rules.
+  - **Honest reporting & sidebar label (`intel-snapshot.js`, `public-intel.mjs`, `src/intelFeed.mjs`, `src/components/IntelSidebar.jsx`):** Added per-provider `meta.providerResults` (`{ provider, status, itemCount }`), counted GDELT failures honestly in `failedQueryCount`, tightened the GDELT query, auto-refreshed cached snapshots lacking `providerResults`, and updated the sidebar status badge/dropdown to display `UN INSTITUTIONAL` / `UN INSTITUTIONAL REPORTING` when live items come solely from UN bodies.
+- **Tested:** `npm test` (`84/84` pass), `npm run build`, and live Deploy Preview #38 verification (`/.netlify/functions/public-intel` full item table + Globe screenshot inspected via `read_file`).
+
 ## 2026-11-19 — Antigravity (Lead) — Unit 21 (PR #37 Go-Live + Free Institutional Default Feeds + Optional Serper + Daily Supabase Keep-Alive)
 - **PR #37 Production Go-Live:**
   - Merged PR #37 (`feat/c4-five-pilot-cases` → `main`) with merge commit `849735f65affd7e713857fc7659b7463a6649a6f`.

@@ -42,7 +42,8 @@ export default async request => {
         const legacyErrorSnapshot = ['not-configured', 'provider-error', 'unavailable'].includes(cached?.meta?.status)
             && (!Array.isArray(cached?.items) || cached.items.length === 0)
             && cached?.meta?.provider === 'Serper';
-        if (cached?.meta && !legacyErrorSnapshot) {
+        const needsSchemaUpgrade = !Array.isArray(cached?.meta?.providerResults);
+        if (cached?.meta && !legacyErrorSnapshot && !needsSchemaUpgrade) {
             return new Response(JSON.stringify(withSnapshotAge(cached)), { status: 200, headers: responseHeaders });
         }
 
