@@ -8,12 +8,12 @@
       "id": "sudan-displacement-regional-spillover:core:0",
       "caseStudyId": "sudan-displacement-regional-spillover",
       "caseStudyTitle": "Sudan: War, Displacement, and Regional Spillover",
-      "sourceTitle": "Emergency Response Rooms work in Sudan – we could change aid models in other warzones",
-      "publisher": "Chatham House",
+      "sourceTitle": "Sudan: Who Speaks for Sudan's Emergency Response Rooms?",
+      "publisher": "African Arguments (distributed by allAfrica)",
       "group": "core",
       "kind": "primary",
       "lifecycle": "active",
-      "url": "https://www.chathamhouse.org/publications/the-world-today/2026-06/emergency-response-rooms-work-sudan-we-could-change-aid-models"
+      "url": "https://allafrica.com/stories/202609010010.html"
     },
     {
       "id": "sudan-displacement-regional-spillover:core:1",
@@ -190,12 +190,12 @@
       "id": "sudan-displacement-regional-spillover:supplemental:10",
       "caseStudyId": "sudan-displacement-regional-spillover",
       "caseStudyTitle": "Sudan: War, Displacement, and Regional Spillover",
-      "sourceTitle": "Sudan: Who Speaks for Sudan's Emergency Response Rooms?",
-      "publisher": "African Arguments (distributed by allAfrica)",
+      "sourceTitle": "Emergency Response Rooms work in Sudan – we could change aid models in other warzones",
+      "publisher": "Chatham House",
       "group": "supplemental",
       "kind": "primary",
       "lifecycle": "active",
-      "url": "https://allafrica.com/stories/202609010010.html"
+      "url": "https://www.chathamhouse.org/publications/the-world-today/2026-06/emergency-response-rooms-work-sudan-we-could-change-aid-models"
     },
     {
       "id": "myanmar-fragmented-sovereignty:core:0",
@@ -258,12 +258,12 @@
       "id": "south-china-sea-arbitral-award-ten-years:core:0",
       "caseStudyId": "south-china-sea-arbitral-award-ten-years",
       "caseStudyTitle": "South China Sea: Ten Years After the Arbitral Award",
-      "sourceTitle": "Delhi Roundtable Accentuates Abiding Relevance of South China Sea Arbitral Award on Decennial",
-      "publisher": "Department of Foreign Affairs of the Philippines",
+      "sourceTitle": "PH, allies affirm arbitral ruling in joint statement",
+      "publisher": "Philippine Daily Inquirer",
       "group": "core",
       "kind": "primary",
       "lifecycle": "active",
-      "url": "https://newdelhipe.dfa.gov.ph/index.php/newsroom/embassy-news/1230-delhi-roundtable-accentuates-abiding-relevance-of-south-china-sea-arbitral-award-on-decennial"
+      "url": "https://www.inquirer.net/480412/ph-allies-affirm-arbitral-ruling-in-joint-statement/"
     },
     {
       "id": "south-china-sea-arbitral-award-ten-years:core:1",
@@ -337,12 +337,12 @@
       "id": "south-china-sea-arbitral-award-ten-years:supplemental:3",
       "caseStudyId": "south-china-sea-arbitral-award-ten-years",
       "caseStudyTitle": "South China Sea: Ten Years After the Arbitral Award",
-      "sourceTitle": "PH, allies affirm arbitral ruling in joint statement",
-      "publisher": "Philippine Daily Inquirer",
+      "sourceTitle": "Delhi Roundtable Accentuates Abiding Relevance of South China Sea Arbitral Award on Decennial",
+      "publisher": "Department of Foreign Affairs of the Philippines",
       "group": "supplemental",
       "kind": "primary",
       "lifecycle": "active",
-      "url": "https://www.inquirer.net/480412/ph-allies-affirm-arbitral-ruling-in-joint-statement/"
+      "url": "https://newdelhipe.dfa.gov.ph/index.php/newsroom/embassy-news/1230-delhi-roundtable-accentuates-abiding-relevance-of-south-china-sea-arbitral-award-on-decennial"
     },
     {
       "id": "south-china-sea-arbitral-award-ten-years:supplemental:4",

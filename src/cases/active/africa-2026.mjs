@@ -76,13 +76,13 @@ export const AFRICA_CASES_2026 = [
         },
         "sources": [
             {
-                "title": "Emergency Response Rooms work in Sudan – we could change aid models in other warzones",
-                "publisher": "Chatham House",
-                "publishedAt": "2026-06-15",
-                "url": "https://www.chathamhouse.org/publications/the-world-today/2026-06/emergency-response-rooms-work-sudan-we-could-change-aid-models",
+                "title": "Sudan: Who Speaks for Sudan's Emergency Response Rooms?",
+                "publisher": "African Arguments (distributed by allAfrica)",
+                "publishedAt": "2026-08-31",
+                "url": "https://allafrica.com/stories/202609010010.html",
                 "perspectiveType": "local",
-                "perspective": "Sudanese Emergency Response Room volunteer perspective on locally led mutual aid",
-                "supports": "How community-run Emergency Response Rooms operate, the risks volunteers face, and the case for direct support to Sudanese mutual-aid structures"
+                "perspective": "Analysis by Sudanese researcher Musab Alshafie Mohamed, based on interviews with fifteen volunteers and humanitarian practitioners",
+                "supports": "Supports the attributed critique of seat allocation and representation in the Localisation Coordination Council, the statement that volunteers have sustained kitchens, health centres, water systems, and evacuation networks since April 2023, and the author's figure of 140 volunteers killed."
             },
             {
                 "title": "Sudan situation",
@@ -206,12 +206,12 @@ export const AFRICA_CASES_2026 = [
                 "supports": "Supports the description of Emergency Response Rooms as a nationwide, community-led volunteer network started mainly by young people, the estimate of 700 groups, the typical $5,000 activity budget, and the role of the Sudanese Localisation Coordination Council in approving activity plans."
             },
             {
-                "title": "Sudan: Who Speaks for Sudan's Emergency Response Rooms?",
-                "publisher": "African Arguments (distributed by allAfrica)",
-                "publishedAt": "2026-08-31",
-                "url": "https://allafrica.com/stories/202609010010.html",
-                "perspective": "Analysis by Sudanese researcher Musab Alshafie Mohamed, based on interviews with fifteen volunteers and humanitarian practitioners",
-                "supports": "Supports the attributed critique of seat allocation and representation in the Localisation Coordination Council, the statement that volunteers have sustained kitchens, health centres, water systems, and evacuation networks since April 2023, and the author's figure of 140 volunteers killed."
+                "title": "Emergency Response Rooms work in Sudan – we could change aid models in other warzones",
+                "publisher": "Chatham House",
+                "publishedAt": "2026-06-15",
+                "url": "https://www.chathamhouse.org/publications/the-world-today/2026-06/emergency-response-rooms-work-sudan-we-could-change-aid-models",
+                "perspective": "Sudanese Emergency Response Room volunteer op-ed by Alsanosi Adam (only the two-paragraph opening is open access; full text is subscriber-only)",
+                "supports": "Supports the attributed opening argument by ERR volunteer Alsanosi Adam that NGOs and international funders need to adapt to the Emergency Response Rooms model."
             }
         ],
         "waypoints": [
@@ -222,7 +222,7 @@ export const AFRICA_CASES_2026 = [
                 "perspectiveType": "independent",
                 "conceptInFocus": "Power",
                 "relatedTimelineDate": "2023-04-15",
-                "narration": "On 15 April 2023, explosions and heavy gunfire shook Khartoum, Sudan's capital [8]. Since that month, young volunteers have run communal kitchens for neighbours driven from their homes [13, 14]. They call their groups Emergency Response Rooms (ERRs): community-run teams that cook, run health centres, and evacuate civilians [12, 14]. More than three years later, fighting is concentrated in Darfur, Kordofan, and Blue Nile [3]. Drone strikes caused most of the 300-plus child casualties counted in six months, the United Nations (UN) children's agency, UNICEF, said in July 2026 [3].\n\nThe army holds the north, east, and centre, including the Red Sea ports [6]. Its rival, the Rapid Support Forces, holds Darfur and parts of Kordofan [6]. Those regions contain many of Sudan's oil fields and gold mines [6]. Sudanese researcher Shamel Elnoor argues that neither side can win a decisive victory [6]. Outside powers have failed to secure a ceasefire [6]. Power here is enough to keep fighting, but not enough to impose a settlement.",
+                "narration": "On 15 April 2023, explosions and heavy gunfire shook Khartoum, Sudan's capital [8]. Since that month, young volunteers have run communal kitchens for neighbours driven from their homes [1, 13]. They call their groups Emergency Response Rooms (ERRs): community-run teams that cook, run health centres, and evacuate civilians [1, 12]. More than three years later, fighting is concentrated in Darfur, Kordofan, and Blue Nile [3]. Drone strikes caused most of the 300-plus child casualties counted in six months, the United Nations (UN) children's agency, UNICEF, said in July 2026 [3].\n\nThe army holds the north, east, and centre, including the Red Sea ports [6]. Its rival, the Rapid Support Forces, holds Darfur and parts of Kordofan [6]. Those regions contain many of Sudan's oil fields and gold mines [6]. Sudanese researcher Shamel Elnoor argues that neither side can win a decisive victory [6]. Outside powers have failed to secure a ceasefire [6]. Power here is enough to keep fighting, but not enough to impose a settlement.",
                 "focusQuestion": "What prevents military pressure from becoming a durable political settlement?"
             },
             {
@@ -252,7 +252,7 @@ export const AFRICA_CASES_2026 = [
                 "perspectiveType": "institutional",
                 "conceptInFocus": "Legitimacy",
                 "relatedTimelineDate": "2026-07-09",
-                "narration": "A humanitarian response plan is the UN's yearly costed appeal for one crisis. For Sudan in 2026 it asked for nearly $2.9 billion [10]. By 9 July, donors had given $930 million, less than one-third [7, 10]. About 34 million people needed assistance in April 2026, almost two of every three Sudanese [6]. UN humanitarian chief Tom Fletcher said the world \"has failed to meet the test of Sudan\" [6].\n\nLocal volunteers filled part of the gap. An estimated 700 ERRs operate across Sudan [13]. A Sudanese-led council approves their small activity budgets, typically $5,000 each [13]. The network received the Chatham House Prize in London in March 2026 [12]. ERR volunteer Alsanosi Adam argues that funders should adapt to this model [1]. A Sudanese researcher questions who speaks for the movement and counts 140 volunteers killed [14]. That gap raises a legitimacy question: whose duty is it to provide, and who earns trust when donors fall short?",
+                "narration": "A humanitarian response plan is the UN's yearly costed appeal for one crisis. For Sudan in 2026 it asked for nearly $2.9 billion [10]. By 9 July, donors had given $930 million, less than one-third [7, 10]. About 34 million people needed assistance in April 2026, almost two of every three Sudanese [6]. UN humanitarian chief Tom Fletcher said the world \"has failed to meet the test of Sudan\" [6].\n\nLocal volunteers filled part of the gap. An estimated 700 ERRs operate across Sudan [13]. A Sudanese-led council approves their small activity budgets, typically $5,000 each [13]. The network received the Chatham House Prize in London in March 2026 [12]. ERR volunteer Alsanosi Adam argues that funders should adapt to this model [14]. A Sudanese researcher questions who speaks for the movement and counts 140 volunteers killed [1]. That gap raises a legitimacy question: whose duty is it to provide, and who earns trust when donors fall short?",
                 "focusQuestion": "What obligations should outside states accept when humanitarian need greatly exceeds available funding?"
             }
         ],

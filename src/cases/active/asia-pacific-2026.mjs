@@ -218,13 +218,13 @@ export const ASIA_PACIFIC_CASES_2026 = [
         },
         "sources": [
             {
-                "title": "Delhi Roundtable Accentuates Abiding Relevance of South China Sea Arbitral Award on Decennial",
-                "publisher": "Department of Foreign Affairs of the Philippines",
-                "publishedAt": "2026-07-21",
-                "url": "https://newdelhipe.dfa.gov.ph/index.php/newsroom/embassy-news/1230-delhi-roundtable-accentuates-abiding-relevance-of-south-china-sea-arbitral-award-on-decennial",
+                "title": "PH, allies affirm arbitral ruling in joint statement",
+                "publisher": "Philippine Daily Inquirer",
+                "publishedAt": "2026-07-13",
+                "url": "https://www.inquirer.net/480412/ph-allies-affirm-arbitral-ruling-in-joint-statement/",
                 "perspectiveType": "local",
-                "perspective": "Official Philippine government position supporting the award",
-                "supports": "The Philippine legal and rules-based-maritime-order position"
+                "perspective": "Philippine newspaper report on the 12 July 2026 joint statement released by the Department of Foreign Affairs",
+                "supports": "Supports the list of 14 governments that signed the joint statement, its wording that the award is final, legally binding, and definitive, the absence of the ten other ASEAN members, and China's attributed rejection of third-party dispute settlement."
             },
             {
                 "title": "The South China Sea Arbitration: Award of 12 July 2016",
@@ -276,12 +276,11 @@ export const ASIA_PACIFIC_CASES_2026 = [
                 "supports": "Supports China's attributed position that the award is illegal, null and void, and without binding force, its reliance on state consent and its 2006 declaration excluding maritime delimitation from compulsory settlement, and its stated preference for negotiation with directly concerned states."
             },
             {
-                "title": "PH, allies affirm arbitral ruling in joint statement",
-                "publisher": "Philippine Daily Inquirer",
-                "publishedAt": "2026-07-13",
-                "url": "https://www.inquirer.net/480412/ph-allies-affirm-arbitral-ruling-in-joint-statement/",
-                "perspective": "Philippine newspaper report on the 12 July 2026 joint statement released by the Department of Foreign Affairs",
-                "supports": "Supports the list of 14 governments that signed the joint statement, its wording that the award is final, legally binding, and definitive, the absence of the ten other ASEAN members, and China's attributed rejection of third-party dispute settlement."
+                "title": "Delhi Roundtable Accentuates Abiding Relevance of South China Sea Arbitral Award on Decennial",
+                "publisher": "Department of Foreign Affairs of the Philippines",
+                "publishedAt": "2026-07-21",
+                "url": "https://newdelhipe.dfa.gov.ph/index.php/newsroom/embassy-news/1230-delhi-roundtable-accentuates-abiding-relevance-of-south-china-sea-arbitral-award-on-decennial",
+                "perspective": "Earlier Philippine Embassy in New Delhi press release (link returned HTTP 404 on 19 November 2026; retained for reference only, not cited in briefing prose)"
             },
             {
                 "title": "Territorial Disputes in the South China Sea",
@@ -329,7 +328,7 @@ export const ASIA_PACIFIC_CASES_2026 = [
                 "perspectiveType": "institutional",
                 "conceptInFocus": "Interdependence",
                 "relatedTimelineDate": "2013-01-22",
-                "narration": "On 22 January 2013, the Philippines took China to arbitration under Annex VII of UNCLOS [2]. Annex VII arbitration is the treaty's compulsory fallback: a five-member tribunal can hear a dispute even if one side refuses to appear [2]. China rejected the case and stayed away [2]. The tribunal still had to satisfy itself that each claim was well founded in fact and law [2]. It held that both states are bound by the award [2].\n\nNo world police enforces such a ruling. Its influence depends on other governments treating it as the standard. On 12 July 2026, fourteen governments, including the Philippines, the United States, and Japan, called the award \"final, legally binding, and definitive\" [7]. The ten other members of the Association of Southeast Asian Nations (ASEAN) did not sign [7]. Law at sea works through interdependence: a ruling binds in practice only as far as other states uphold it.",
+                "narration": "On 22 January 2013, the Philippines took China to arbitration under Annex VII of UNCLOS [2]. Annex VII arbitration is the treaty's compulsory fallback: a five-member tribunal can hear a dispute even if one side refuses to appear [2]. China rejected the case and stayed away [2]. The tribunal still had to satisfy itself that each claim was well founded in fact and law [2]. It held that both states are bound by the award [2].\n\nNo world police enforces such a ruling. Its influence depends on other governments treating it as the standard. On 12 July 2026, fourteen governments, including the Philippines, the United States, and Japan, called the award \"final, legally binding, and definitive\" [1]. The ten other members of the Association of Southeast Asian Nations (ASEAN) did not sign [1]. Law at sea works through interdependence: a ruling binds in practice only as far as other states uphold it.",
                 "focusQuestion": "What gives an international legal decision influence when enforcement is decentralized?"
             },
             {
@@ -339,7 +338,7 @@ export const ASIA_PACIFIC_CASES_2026 = [
                 "perspectiveType": "local",
                 "conceptInFocus": "Legitimacy",
                 "relatedTimelineDate": "2026-07-12",
-                "narration": "China never appeared before the tribunal [2]. In a December 2014 position paper, it argued that the real dispute was territorial sovereignty over islands, which UNCLOS does not cover [2]. It also cited its 2006 declaration excluding sea-boundary disputes from compulsory settlement [2, 6]. On 12 July 2026, China's Foreign Ministry called the award \"a worthless piece of paper that is illegal, null and void\" [6].\n\nChina's objection rests on consent. Its ministry says China accepts no solution imposed by a third party and will settle disputes through talks with the states directly concerned [6, 7]. The tribunal noted that China ratified UNCLOS in 1996 and that compulsory dispute settlement is an integral part of the treaty [2]. It added that a party's absence does not stop a case [2]. The clash is about legitimacy: is consent given once, by ratifying a treaty, or dispute by dispute?",
+                "narration": "China never appeared before the tribunal [2]. In a December 2014 position paper, it argued that the real dispute was territorial sovereignty over islands, which UNCLOS does not cover [2]. It also cited its 2006 declaration excluding sea-boundary disputes from compulsory settlement [2, 6]. On 12 July 2026, China's Foreign Ministry called the award \"a worthless piece of paper that is illegal, null and void\" [6].\n\nChina's objection rests on consent. Its ministry says China accepts no solution imposed by a third party and will settle disputes through talks with the states directly concerned [1, 6]. The tribunal noted that China ratified UNCLOS in 1996 and that compulsory dispute settlement is an integral part of the treaty [2]. It added that a party's absence does not stop a case [2]. The clash is about legitimacy: is consent given once, by ratifying a treaty, or dispute by dispute?",
                 "focusQuestion": "How does state consent shape the legitimacy of international adjudication?"
             },
             {
@@ -349,7 +348,7 @@ export const ASIA_PACIFIC_CASES_2026 = [
                 "perspectiveType": "local",
                 "conceptInFocus": "Power",
                 "relatedTimelineDate": "2026-11-15",
-                "narration": "Philippine officials treat the award as settled law. Foreign Secretary Maria Theresa Lazaro compared it to a lighthouse for turbulent waters [3]. National Security Adviser Eduardo Oban Jr. said maritime rights and entitlements \"are determined by law, not by power or coercion\" [10]. Conditions at sea remain contested. An independent conflict tracker recorded three China–Philippines clashes in one week of July 2026, at Scarborough Shoal and Second Thomas Shoal [8].\n\nThe award gives Manila a legal yardstick that partners rally behind [3, 7]. It does not give control of the reefs. As ASEAN chair in 2026, the Philippines pressed for a Code of Conduct with China, an agreed rulebook for behavior at sea [5]. By the November summit in Manila, about 80 percent of a draft was tentatively agreed, Lazaro said [5]. Whether the code would be legally binding stayed unresolved [5]. Law raises the diplomatic cost of ignoring a ruling. It cannot, alone, change who patrols the water.",
+                "narration": "Philippine officials treat the award as settled law. Foreign Secretary Maria Theresa Lazaro compared it to a lighthouse for turbulent waters [3]. National Security Adviser Eduardo Oban Jr. said maritime rights and entitlements \"are determined by law, not by power or coercion\" [10]. Conditions at sea remain contested. An independent conflict tracker recorded three China–Philippines clashes in one week of July 2026, at Scarborough Shoal and Second Thomas Shoal [8].\n\nThe award gives Manila a legal yardstick that partners rally behind [1, 3]. It does not give control of the reefs. As ASEAN chair in 2026, the Philippines pressed for a Code of Conduct with China, an agreed rulebook for behavior at sea [5]. By the November summit in Manila, about 80 percent of a draft was tentatively agreed, Lazaro said [5]. Whether the code would be legally binding stayed unresolved [5]. Law raises the diplomatic cost of ignoring a ruling. It cannot, alone, change who patrols the water.",
                 "focusQuestion": "How can a smaller state use legal institutions to offset an asymmetry in material power?"
             }
         ],
