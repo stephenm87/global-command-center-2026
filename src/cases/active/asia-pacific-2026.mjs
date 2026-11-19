@@ -167,7 +167,7 @@ export const ASIA_PACIFIC_CASES_2026 = [
             "China",
             "UN_OPEC"
         ],
-        "statusSummary": "Ten years after the 2016 award, the Philippine government continues to present it as a final and binding guide to maritime rights under UNCLOS, while China's government continues to reject the arbitration and award as invalid. These are attributed government positions; the underlying award addressed maritime entitlements and conduct, not sovereignty over land territory or boundary delimitation. At the November 2026 ASEAN Summit in Manila, Philippine officials reported tentative ASEAN–China agreement on roughly 80 percent of a draft Code of Conduct while confirming that negotiations missed their year-end target amid unresolved disputes over legal bindingness and alignment with international law.",
+        "statusSummary": "Ten years after the 2016 award, the Philippine government continues to present it as a final and binding guide to maritime rights under UNCLOS, while China's government continues to reject the arbitration and award as invalid. These are attributed government positions; the underlying award addressed maritime entitlements and conduct, not sovereignty over land territory or boundary delimitation. At the November 2026 ASEAN Summit in Manila, Philippine officials reported tentative ASEAN–China agreement on roughly 80 percent of a draft Code of Conduct while saying there was no conclusion yet amid unresolved disputes over legal bindingness and alignment with international law.",
         "whyItMatters": "The dispute offers a direct test of the relationship between formal legal decisions, state consent, material power, and peaceful management of competing maritime claims.",
         "updatedAt": "2026-11-17",
         "confidence": "high",
@@ -280,7 +280,7 @@ export const ASIA_PACIFIC_CASES_2026 = [
                 "publisher": "Department of Foreign Affairs of the Philippines",
                 "publishedAt": "2026-07-21",
                 "url": "https://newdelhipe.dfa.gov.ph/index.php/newsroom/embassy-news/1230-delhi-roundtable-accentuates-abiding-relevance-of-south-china-sea-arbitral-award-on-decennial",
-                "perspective": "Earlier Philippine Embassy in New Delhi press release (link returned HTTP 404 on 19 November 2026; retained for reference only, not cited in briefing prose)"
+                "perspective": "Earlier Philippine Embassy in New Delhi press release (link could not be retrieved reliably on 19 November 2026; retained for reference only, not cited in briefing prose)"
             },
             {
                 "title": "Territorial Disputes in the South China Sea",
@@ -307,7 +307,7 @@ export const ASIA_PACIFIC_CASES_2026 = [
                 "publishedAt": "2026-07-12",
                 "url": "https://www.gmanetwork.com/news/topstories/nation/994578/ph-officials-lead-national-peace-walk-to-reaffirm-2016-south-china-sea-arbitral-award/story/",
                 "perspective": "Philippine broadcaster's report on the tenth-anniversary peace walk in Manila, quoting Philippine defense and security officials",
-                "supports": "Supports the quoted statement by National Security Adviser Eduardo Oban Jr. that maritime rights and entitlements are determined by law, not by power or coercion."
+                "supports": "Supports the reported statement by National Security Adviser Eduardo Oban Jr. that maritime rights and entitlements are determined by law, not by power or coercion."
             }
         ],
         "waypoints": [
@@ -318,7 +318,7 @@ export const ASIA_PACIFIC_CASES_2026 = [
                 "perspectiveType": "institutional",
                 "conceptInFocus": "Sovereignty",
                 "relatedTimelineDate": "2016-07-12",
-                "narration": "On 7 May 1999, the Philippine Navy grounded a 1944 landing ship, BRP Sierra Madre, on Second Thomas Shoal [2]. Marines have lived aboard since [2, 8]. The shoal is a coral reef in the Spratly Islands, 104 nautical miles from the Philippine island of Palawan [2]. On 12 July 2016, an international tribunal ruled on rights in these waters [2].\n\nThe case rested on the United Nations Convention on the Law of the Sea (UNCLOS), a 1982 treaty [2]. It gives each coastal state an exclusive economic zone (EEZ): up to 200 nautical miles of sea where it controls natural resources [9]. The tribunal found Second Thomas Shoal is a low-tide elevation, a reef exposed at low tide but covered at high tide [2]. Such reefs generate no zone, and this one lies inside the Philippine EEZ [2]. The tribunal did not decide who owns any island [2]. That limit matters: the award settles rights at sea, not sovereignty over land.",
+                "narration": "On 7 May 1999, the Philippine Navy grounded a 1944 landing ship, BRP Sierra Madre, on Second Thomas Shoal [2]. Marines have lived aboard since [2, 8]. The shoal is a coral reef in the Spratly Islands, 104 nautical miles from Palawan [2]. On 12 July 2016, an international tribunal ruled on rights in these waters [2].\n\nThe case rested on the United Nations Convention on the Law of the Sea (UNCLOS), a 1982 treaty [2]. It grants each coastal state an exclusive economic zone (EEZ): up to 200 nautical miles of sea for natural resources [9]. The tribunal found Second Thomas Shoal is a low-tide elevation, exposed at low tide and submerged at high tide [2]. Such reefs generate no zone, and this one lies inside the Philippine EEZ [2]. The tribunal made no ruling on island ownership [2]. The award settles maritime rights, not land sovereignty.",
                 "focusQuestion": "Why does the legal scope of a ruling matter as much as its outcome?"
             },
             {
@@ -348,7 +348,7 @@ export const ASIA_PACIFIC_CASES_2026 = [
                 "perspectiveType": "local",
                 "conceptInFocus": "Power",
                 "relatedTimelineDate": "2026-11-15",
-                "narration": "Philippine officials treat the award as settled law. Foreign Secretary Maria Theresa Lazaro compared it to a lighthouse for turbulent waters [3]. National Security Adviser Eduardo Oban Jr. said maritime rights and entitlements \"are determined by law, not by power or coercion\" [10]. Conditions at sea remain contested. An independent conflict tracker recorded three China–Philippines clashes in one week of July 2026, at Scarborough Shoal and Second Thomas Shoal [8].\n\nThe award gives Manila a legal yardstick that partners rally behind [1, 3]. It does not give control of the reefs. As ASEAN chair in 2026, the Philippines pressed for a Code of Conduct with China, an agreed rulebook for behavior at sea [5]. By the November summit in Manila, about 80 percent of a draft was tentatively agreed, Lazaro said [5]. Whether the code would be legally binding stayed unresolved [5]. Law raises the diplomatic cost of ignoring a ruling. It cannot, alone, change who patrols the water.",
+                "narration": "Philippine officials treat the award as settled law. Foreign Secretary Maria Theresa Lazaro compared it to a lighthouse for turbulent waters [3]. National Security Adviser Eduardo Oban Jr. said maritime rights and entitlements are determined by law, not by power or coercion [10]. Conditions at sea remain contested. An independent conflict tracker recorded three China–Philippines clashes in one week of July 2026, at Scarborough Shoal and Second Thomas Shoal [8].\n\nThe award gives Manila a legal yardstick that partners rally behind [1, 3]. It does not give control of the reefs. As ASEAN chair in 2026, the Philippines pressed for a Code of Conduct with China, an agreed rulebook for behavior at sea [5]. By the November summit in Manila, about 80 percent of a draft was tentatively agreed, Lazaro said [5]. Whether the code would be legally binding stayed unresolved [5]. Law raises the diplomatic cost of ignoring a ruling. It cannot, alone, change who patrols the water.",
                 "focusQuestion": "How can a smaller state use legal institutions to offset an asymmetry in material power?"
             }
         ],
@@ -483,8 +483,8 @@ export const ASIA_PACIFIC_CASES_2026 = [
         "conceptLens": {
             "power": "China built a large artificial island at Mischief Reef, the tribunal found. The Philippines holds a legal ruling and the backing of 13 other governments, but not control of the reefs.",
             "sovereignty": "The tribunal ruled on sovereign rights to resources at sea, not on who owns any island. China says the real dispute is territorial sovereignty, which it will settle only through negotiation.",
-            "legitimacy": "Fourteen governments treat the award as final and binding because UNCLOS provides for compulsory arbitration. China calls it null and void because it did not consent to this case.",
-            "interdependence": "The sea is a crucial shipping lane and fishing ground bordered by seven states. With no enforcement body, the award works only as far as other governments uphold it."
+            "legitimacy": "Fourteen governments call the award final, legally binding, and definitive. China calls it null and void because it did not consent to this case.",
+            "interdependence": "The sea is a crucial shipping lane and fishing ground bordered by seven states, including Singapore. With no enforcement body, the award works only as far as other governments uphold it."
         },
         "essayBuilder": {
             "prompt": "To what extent can international law constrain a powerful state that rejects a court's authority?",

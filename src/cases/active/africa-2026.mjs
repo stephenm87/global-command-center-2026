@@ -35,7 +35,7 @@ export const AFRICA_CASES_2026 = [
         "whyItMatters": "The case connects state fragmentation, paramilitary power, civilian protection, regional burden-sharing, and the limits of international humanitarian response.",
         "updatedAt": "2026-11-17",
         "confidence": "high",
-        "uncertainty": "UNHCR products use different caseload scopes. Separate country-level IDP totals that include people displaced before April 2023 should not be compared directly with the 6,412,058 conflict-related figure on the situation portal. Returns, repeated displacement, differing data cutoffs, access constraints, humanitarian funding, and territorial control also affect the totals.",
+        "uncertainty": "UNHCR products use different caseload scopes and data cutoffs. Separate country-level IDP totals should not be compared directly with the 6,412,058 conflict-related figure on the situation portal. Returns, repeated displacement, access constraints, humanitarian funding, and territorial control also affect the totals.",
         "sensitivity": "high",
         "editorialCaution": "Use dated, scoped displacement figures and attribute conflict, protection, and funding claims. Do not infer control, responsibility, or civilian experience from a single institutional dataset.",
         "featured": true,
@@ -222,7 +222,7 @@ export const AFRICA_CASES_2026 = [
                 "perspectiveType": "independent",
                 "conceptInFocus": "Power",
                 "relatedTimelineDate": "2023-04-15",
-                "narration": "On 15 April 2023, explosions and heavy gunfire shook Khartoum, Sudan's capital [8]. Since that month, young volunteers have run communal kitchens for neighbours driven from their homes [1, 13]. They call their groups Emergency Response Rooms (ERRs): community-run teams that cook, run health centres, and evacuate civilians [1, 12]. More than three years later, fighting is concentrated in Darfur, Kordofan, and Blue Nile [3]. Drone strikes caused most of the 300-plus child casualties counted in six months, the United Nations (UN) children's agency, UNICEF, said in July 2026 [3].\n\nThe army holds the north, east, and centre, including the Red Sea ports [6]. Its rival, the Rapid Support Forces, holds Darfur and parts of Kordofan [6]. Those regions contain many of Sudan's oil fields and gold mines [6]. Sudanese researcher Shamel Elnoor argues that neither side can win a decisive victory [6]. Outside powers have failed to secure a ceasefire [6]. Power here is enough to keep fighting, but not enough to impose a settlement.",
+                "narration": "On 15 April 2023, explosions and heavy gunfire shook Khartoum, Sudan's capital [8]. Since that month, young volunteers have run communal kitchens for displaced neighbours [1, 13]. They call their groups Emergency Response Rooms (ERRs): local teams that cook, run clinics, and evacuate civilians [1, 12]. More than three years later, fighting concentrates in Darfur, Kordofan, and Blue Nile [3]. Drone strikes caused most of the 300-plus child casualties counted in six months, UNICEF said in July 2026 [3].\n\nThe army holds the north, east, and centre, including the Red Sea ports [6]. The Rapid Support Forces hold Darfur and parts of Kordofan, where many oil fields and gold mines lie [6]. Sudanese researcher Shamel Elnoor argues that neither side can win a decisive victory [6]. Outside powers have failed to secure a ceasefire [6]. Power here sustains fighting, but cannot impose a settlement.",
                 "focusQuestion": "What prevents military pressure from becoming a durable political settlement?"
             },
             {
@@ -232,7 +232,7 @@ export const AFRICA_CASES_2026 = [
                 "perspectiveType": "synthesis",
                 "conceptInFocus": "Sovereignty",
                 "relatedTimelineDate": "2021-10",
-                "narration": "The war pits the Sudanese Armed Forces (SAF), the national army, against the Rapid Support Forces (RSF) [8]. The RSF is a paramilitary force: an armed body organized like an army but outside its regular command. It grew out of the Janjaweed, Arab militias notorious for atrocities in Darfur in the early 2000s [6, 8]. In October 2021 the two forces staged a coup against the civilian prime minister [8]. A December 2022 deal called for merging the RSF into the army but set no deadline [8].\n\nSudan now has two rival administrations. A military-backed government in Khartoum holds international recognition [6]. An RSF-run administration operates in Darfur [6]. UN experts and rights groups accuse the United Arab Emirates of arming the RSF, which the UAE rejects [6]. UN-backed experts concluded that the RSF's October 2025 assault on El Fasher bore \"the defining characteristics of genocide\" [6]. When a paramilitary holds land, guns, and gold mines, legal authority and real control no longer match.",
+                "narration": "The war pits the Sudanese Armed Forces (SAF), the national army, against the Rapid Support Forces (RSF) [8]. The RSF is a paramilitary force: an armed body organized like an army outside regular command. It grew out of the Janjaweed, Arab militias notorious for Darfur atrocities in the early 2000s [6, 8]. Both forces staged a coup in October 2021 [8]. A December 2022 deal called for merging them without a deadline [8].\n\nSudan now has two rival administrations: a recognized military government in Khartoum and an RSF authority in Darfur [6]. Outside backers differ. UN experts and rights groups accuse the United Arab Emirates of arming the RSF, which it denies, while Egypt backs the army [6]. Both sides face war-crimes accusations [12]. UN-backed experts said the RSF's October 2025 El Fasher assault bore \"the defining characteristics of genocide\" [6]. Legal authority and armed control no longer match.",
                 "focusQuestion": "How does a powerful paramilitary organization alter conventional ideas of sovereignty?"
             },
             {
@@ -252,7 +252,7 @@ export const AFRICA_CASES_2026 = [
                 "perspectiveType": "institutional",
                 "conceptInFocus": "Legitimacy",
                 "relatedTimelineDate": "2026-07-09",
-                "narration": "A humanitarian response plan is the UN's yearly costed appeal for one crisis. For Sudan in 2026 it asked for nearly $2.9 billion [10]. By 9 July, donors had given $930 million, less than one-third [7, 10]. About 34 million people needed assistance in April 2026, almost two of every three Sudanese [6]. UN humanitarian chief Tom Fletcher said the world \"has failed to meet the test of Sudan\" [6].\n\nLocal volunteers filled part of the gap. An estimated 700 ERRs operate across Sudan [13]. A Sudanese-led council approves their small activity budgets, typically $5,000 each [13]. The network received the Chatham House Prize in London in March 2026 [12]. ERR volunteer Alsanosi Adam argues that funders should adapt to this model [14]. A Sudanese researcher questions who speaks for the movement and counts 140 volunteers killed [1]. That gap raises a legitimacy question: whose duty is it to provide, and who earns trust when donors fall short?",
+                "narration": "A humanitarian response plan is the UN's yearly costed appeal for one crisis. For Sudan in 2026 it asked for nearly $2.9 billion [10]. By 9 July, donors had given $930 million, less than one-third [7, 10]. About 34 million people needed assistance in April 2026, almost two of every three Sudanese [6]. UN humanitarian chief Tom Fletcher said the world \"has failed to meet the test of Sudan\" [6].\n\nLocal volunteers filled part of the gap. An estimated 700 ERRs operate across Sudan [13]. A Sudanese-led council approves their activity plans, typically $5,000 each [13]. The network received the Chatham House Prize in London in March 2026 [12]. ERR volunteer Alsanosi Adam argues that funders should adapt to this model [14]. A Sudanese researcher questions who speaks for the movement and counts 140 volunteers killed [1]. That gap raises a legitimacy question: whose duty is it to provide, and who earns trust when donors fall short?",
                 "focusQuestion": "What obligations should outside states accept when humanitarian need greatly exceeds available funding?"
             }
         ],
@@ -316,13 +316,12 @@ export const AFRICA_CASES_2026 = [
                 ]
             },
             {
-                "claimBy": "UN experts and rights groups, and Sudan's government (as reported by the Associated Press, 15 April 2026, and the Council on Foreign Relations)",
-                "claim": "The United Arab Emirates has provided arms to the Rapid Support Forces. In March 2025 Sudan's government filed a complaint at the International Court of Justice accusing the UAE of complicity in genocide.",
+                "claimBy": "UN experts and rights groups (as reported by the Associated Press, 15 April 2026)",
+                "claim": "The United Arab Emirates has provided arms to the Rapid Support Forces.",
                 "counterBy": "United Arab Emirates (as reported by the Associated Press, 15 April 2026)",
                 "counterClaim": "The UAE has rejected the accusation that it arms the RSF.",
                 "sourceUrls": [
-                    "https://apnews.com/article/32a416bfbd680ea42edf6c0298d2617b",
-                    "https://www.cfr.org/global-conflict-tracker/conflict/power-struggle-sudan"
+                    "https://apnews.com/article/32a416bfbd680ea42edf6c0298d2617b"
                 ]
             },
             {
@@ -353,7 +352,7 @@ export const AFRICA_CASES_2026 = [
                 "sourceUrl": "https://www.ungeneva.org/en/news-media/press-briefing/2026/07/un-geneva-press-briefing-1"
             },
             {
-                "date": "Weekly (latest regional update read: 9 November 2026)",
+                "date": "Regularly (latest regional update read: 9 November 2026)",
                 "indicator": "UNHCR's Sudan situation portal posts regional displacement updates. Check whether the counts of people displaced inside Sudan and across borders change, and note each figure's data cutoff.",
                 "sourceUrl": "https://data.unhcr.org/en/situations/sudansituation"
             }
@@ -366,7 +365,7 @@ export const AFRICA_CASES_2026 = [
             {
                 "stage": "Setting the agenda",
                 "rating": "MIXED",
-                "evidence": "UN officials kept raising the alarm: in April 2026 the humanitarian chief said the world had \"failed to meet the test of Sudan\", and in July the Human Rights Council adopted, without a vote, a measure condemning escalating violence by the RSF and its allies around El Obeid. Yet the top UN official in Sudan called it an \"abandoned crisis\", overshadowed by a new Middle East conflict.",
+                "evidence": "UN officials kept raising the alarm. In April 2026 the humanitarian chief said the world had \"failed to meet the test of Sudan\". In July the Human Rights Council condemned escalating RSF violence around El Obeid without a vote. Yet the top UN official in Sudan called it an \"abandoned crisis\", and AP noted it was overshadowed by a new Middle East conflict.",
                 "sourceUrls": [
                     "https://apnews.com/article/32a416bfbd680ea42edf6c0298d2617b",
                     "https://apnews.com/article/sudan-war-children-drone-rsf-army-9ac6245afb2c0e3cfc96da5ceda14f48"
