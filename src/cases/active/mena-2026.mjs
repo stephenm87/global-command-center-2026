@@ -306,7 +306,7 @@ export const MENA_CASES_2026 = [
                 "perspectiveType": "local",
                 "conceptInFocus": "Legitimacy",
                 "relatedTimelineDate": "1991",
-                "narration": "On Sunday 1 November 2026, United Nations (UN) staff in Laayoune / El Aaiún began winding down a mission created 35 years earlier to hold a self-determination referendum [8]. Across the border near Tindouf, Algeria, at least 173,000 Sahrawi refugees still lived in desert camps administered by the Polisario Front [6]. Inside Moroccan-controlled areas, Human Rights Watch reports that authorities systematically obstruct groups advocating self-determination, while at the UN General Assembly the United States cited childhood anaemia and food insecurity in the camps and Morocco accused Algeria of obstructing refugee registration [4, 6].\n\nSelf-determination is the principle that a people has the right to freely choose its political status [7]. Yet a 1988 UN plan tied voting to a 1974 Spanish census, Morocco later claimed that establishing a voter list was impracticable, and 2025's Security Council Resolution 2797—the UN's negotiating text—never specifies who the people of Western Sahara are [6]. Any settlement faces a prior test: whose consent counts, and how will it be measured?",
+                "narration": "On 1 November 2026, United Nations (UN) staff in Laayoune / El Aaiún began winding down a mission created 35 years earlier to hold a self-determination referendum [8]. Near Tindouf, Algeria, at least 173,000 Sahrawi refugees still lived in desert camps administered by the Polisario Front [6]. Inside Moroccan-controlled areas, Human Rights Watch reports that authorities systematically obstruct groups advocating self-determination [6]. At the UN General Assembly, the United States cited childhood anaemia and food insecurity in the camps [4]. Morocco accused Algeria of obstructing refugee registration [4].\n\nSelf-determination is the principle that a people has the right to freely choose its political status [7]. A 1988 UN plan tied voting to a 1974 Spanish census, though Morocco later claimed that establishing a voter list was impracticable [6]. Security Council Resolution 2797 of October 2025 set the UN's negotiating terms, yet never specifies who the people of Western Sahara are [6]. Any settlement faces a prior test: whose consent counts, and how will it be measured?",
                 "focusQuestion": "How can a political process establish whose consent is required and how that consent will be expressed?"
             },
             {
@@ -672,6 +672,7 @@ export const MENA_CASES_2026 = [
     {
         "id": "red-sea-yemen-humanitarian-economy",
         "status": "active",
+        "briefingVersion": 2,
         "title": "Red Sea Security Through Yemen's Humanitarian Economy",
         "subtitle": "Shipping attacks, import dependence, and the costs borne by civilians",
         "coverageRegion": "Middle East & North Africa",
@@ -703,7 +704,7 @@ export const MENA_CASES_2026 = [
             "UN_OPEC",
             "Africa"
         ],
-        "statusSummary": "The Sana'a Center describes a fragmented Yemeni trade-finance system that makes essential imports more costly and uncertain. Meeting for its 138th session on 2–6 November 2026, the International Maritime Organization Council again condemned attacks on merchant shipping in the Red Sea and wider regional lanes and urged stronger protection for seafarers, building on its July 2026 warnings; Chatham House analysis cautions that overlapping military and humanitarian activity increases escalation and miscalculation risks.",
+        "statusSummary": "The Sana'a Center describes a fragmented Yemeni trade-finance system that makes essential imports more costly and uncertain. Meeting for its 138th session on 2–6 November 2026, the International Maritime Organization Council again condemned attacks on merchant shipping in the Red Sea and wider regional lanes and urged stronger protection for seafarers, building on its July 2026 warnings. Chatham House analysis cautions that overlapping military and humanitarian activity increases escalation and miscalculation risks.",
         "whyItMatters": "Treating the Red Sea only as a global shipping lane hides how maritime coercion, port access, banking fragmentation, and import costs shape food, fuel, medicine, and livelihoods for people inside Yemen and around the corridor.",
         "updatedAt": "2026-11-17",
         "confidence": "medium",
@@ -723,22 +724,26 @@ export const MENA_CASES_2026 = [
                 {
                     "label": "Sana'a",
                     "latitude": 15.3694,
-                    "longitude": 44.191
+                    "longitude": 44.191,
+                    "role": "Capital held by Ansar Allah (Houthi) authorities since late 2014; seat of the rival Sana'a branch of the central bank"
                 },
                 {
                     "label": "Hudaydah",
                     "latitude": 14.7979,
-                    "longitude": 42.9545
+                    "longitude": 42.9545,
+                    "role": "Houthi-controlled Red Sea port city; entry point for most commercial imports and aid, under a 2018 ceasefire agreement"
                 },
                 {
                     "label": "Bab el-Mandeb",
                     "latitude": 12.5833,
-                    "longitude": 43.3333
+                    "longitude": 43.3333,
+                    "role": "Strait between the Red Sea and the Arabian Sea; shipping chokepoint named in IMO condemnations of attacks on vessels"
                 },
                 {
                     "label": "Aden",
                     "latitude": 12.7855,
-                    "longitude": 45.0187
+                    "longitude": 45.0187,
+                    "role": "Interim capital of the internationally recognized government; seat of the Aden central bank and a government-controlled port"
                 }
             ]
         },
@@ -748,6 +753,12 @@ export const MENA_CASES_2026 = [
                 "publisher": "Sana'a Center for Strategic Studies",
                 "publishedAt": "2026-02-17",
                 "url": "https://sanaacenter.org/publications/policy-research/26389",
+                "alternateUrls": [
+                    {
+                        "label": "Full policy brief (PDF)",
+                        "url": "https://sanaacenter.org/files/Trade_Finance_in_Yemen_NO36_en.pdf"
+                    }
+                ],
                 "perspectiveType": "local",
                 "perspective": "Yemeni-led economic research on divided banking systems, import finance, and household exposure",
                 "supports": "Supports the claim that institutional fragmentation raises the cost and uncertainty of financing essential imports."
@@ -777,7 +788,92 @@ export const MENA_CASES_2026 = [
                 "publisher": "International Maritime Organization",
                 "publishedAt": "2026-11-06",
                 "url": "https://www.imo.org/en/mediacentre/pressbriefings/pages/imo-council-c138-urges-stronger-protection-of-seafarers-amid-threats-to-global-shipping-.aspx",
-                "perspective": "Official November 2026 IMO Council C138 summary condemning merchant-shipping attacks in the Red Sea and wider regional corridors"
+                "perspective": "Official November 2026 IMO Council C138 summary condemning merchant-shipping attacks in the Red Sea and wider regional corridors",
+                "supports": "Supports the 2–6 November 2026 session dates, the Council's condemnation of Houthi attacks on merchant vessels and crews in the Red Sea and Bab el-Mandeb strait, its request for continued monitoring, and the proposed dates of the 139th session."
+            },
+            {
+                "title": "Saudi Arabia seeks international coalition against Houthis in Red Sea",
+                "publisher": "Al Jazeera",
+                "publishedAt": "2026-07-29",
+                "url": "https://www.aljazeera.com/news/2026/7/29/saudi-arabia-seeks-international-coalition-against-houthis-in-red-sea",
+                "perspective": "Independent reporting, with Reuters, on the Houthi blockade announcement and the Saudi and Yemeni government responses",
+                "supports": "Supports the 20 July 2026 announcement of a maritime blockade on Saudi Arabia, the Houthis' quoted justification, their claimed attacks on Saudi vessels, Saudi air strikes on what Riyadh called Houthi military facilities at Hudaydah port, Saudi efforts to build a coalition, and the Yemeni information minister's attributed allegation."
+            },
+            {
+                "title": "Yemen's Houthis renew strikes on Saudi Arabia as UNSC extends sanctions",
+                "publisher": "Al Jazeera",
+                "publishedAt": "2026-11-12",
+                "url": "https://www.aljazeera.com/news/2026/11/12/yemens-houthis-renew-strikes-on-saudi-arabia-as-unsc-extends-sanctions",
+                "perspective": "Independent reporting, with news agencies, on the Security Council's November 2026 sanctions vote and continued fighting",
+                "supports": "Supports the Security Council's unanimous one-year extension of Yemen-related asset freezes and travel bans, the humanitarian exemption, and the UN humanitarian office's figure of more than 333,000 people displaced in Yemen since the beginning of August."
+            },
+            {
+                "title": "Statement by the High Representative on Houthi threats against the Kingdom of Saudi Arabia and freedom of navigation in the region",
+                "publisher": "European External Action Service",
+                "publishedAt": "2026-07-23",
+                "url": "https://www.eeas.europa.eu/eeas/statement-high-representative-houthi-threats-against-kingdom-saudi-arabia-and-freedom-navigation_en",
+                "perspective": "Official European Union foreign-policy statement",
+                "supports": "Supports the European Union's position that the blockade threat is a dangerous escalation, its call for unimpeded navigation, its references to Security Council Resolutions 2216, 2722, and 2826, and the defensive mandate of the EU naval operation Aspides."
+            },
+            {
+                "title": "The Houthi blockade: Will the Red Sea become a new front in the Iran war?",
+                "publisher": "The New Arab",
+                "publishedAt": "2026-07-28",
+                "updatedAt": "2026-09-17",
+                "url": "https://www.newarab.com/analysis/houthi-red-sea-blockade-new-front-iran-war",
+                "perspective": "Independent analysis quoting conflict researchers and maritime-security analysts",
+                "supports": "Supports the Houthis' stated position that the blockade targets Saudi ports and ships and is not a closure of the Bab el-Mandeb, the analysts' view that it was applied inconsistently, the reported change in tanker routes, and the passage of two ships carrying Saudi crude without incident."
+            },
+            {
+                "title": "UN Security Council renews monitoring of Houthi Red Sea attacks amid Yemen airspace escalation",
+                "publisher": "Arab News",
+                "publishedAt": "2026-07-14",
+                "url": "https://www.arabnews.pk/node/2650898",
+                "perspective": "Independent reporting from the United Nations on the adoption of Resolution 2826",
+                "supports": "Supports the adoption of Resolution 2826 by 13 votes with Russia and China abstaining, the extension of the Secretary-General's monthly reporting to 15 January 2027, the absence of confirmed attacks on shipping in the preceding months, and the attributed United States and Russian statements."
+            },
+            {
+                "title": "Red Sea area",
+                "publisher": "International Maritime Organization",
+                "publishedAt": null,
+                "sourceType": "living-reference",
+                "reviewedAt": "2026-11-19",
+                "url": "https://www.imo.org/en/MediaCentre/HotTopics/Pages/Red-Sea.aspx",
+                "perspective": "Maintained IMO reference page on incidents, statements, and Security Council reporting for the Red Sea area",
+                "supports": "Supports the count of confirmed incidents notified to the IMO from November 2023, the 10 January 2024 adoption of Security Council Resolution 2722, the monthly reporting requirement on Houthi attacks, and the IMO's role in preparing verified incident reports."
+            },
+            {
+                "title": "Statement on deadly ship attack in the Red Sea",
+                "publisher": "International Maritime Organization",
+                "publishedAt": "2026-08-12",
+                "url": "https://www.imo.org/en/mediacentre/pressbriefings/pages/statement-on-deadly-ship-attack-in-the-red-sea.aspx",
+                "perspective": "Official statement by the IMO Secretary-General",
+                "supports": "Supports the report that the cargo ship Tihamah was hit by a projectile off Al Mokha, Yemen, that several seafarer fatalities were confirmed, and that the statement names no responsible party."
+            },
+            {
+                "title": "Yemen: Security Council extends UN mission in crucial port city amid escalating Red Sea strife",
+                "publisher": "UN News",
+                "publishedAt": "2025-07-14",
+                "url": "https://news.un.org/en/story/2025/07/1165395",
+                "perspective": "Official UN news service report on the Hudaydah mission and the 2018 Stockholm Agreement",
+                "supports": "Supports the description of Hudaydah as a Houthi-controlled port city covered by the 2018 Stockholm Agreement ceasefire, its share of 70 percent of commercial imports and 80 percent of humanitarian deliveries as of July 2025, and the disruption of imports by air strikes on port infrastructure."
+            },
+            {
+                "title": "Yemen's Tragedy: War, Stalemate, and Suffering",
+                "publisher": "Council on Foreign Relations",
+                "publishedAt": "2015-04-29",
+                "updatedAt": "2023-05-01",
+                "url": "https://www.cfr.org/backgrounder/yemen-crisis",
+                "perspective": "Independent think-tank backgrounder last updated in May 2023, before the attacks on Red Sea shipping began",
+                "supports": "Supports the background history: the Houthi capture of much of Sana'a in late 2014, the Saudi-led military campaign from 2015, the 2018 Stockholm Agreement on Hudaydah, and the description of the Bab el-Mandeb as a chokepoint between the Arabian and Red Seas."
+            },
+            {
+                "title": "U.N. Renews Red Sea Reporting Mandate as Russia Needles U.S. on Venezuelan Seizures",
+                "publisher": "Reuters (published by gCaptain)",
+                "publishedAt": "2026-01-14",
+                "url": "https://gcaptain.com/u-n-renews-red-sea-reporting-mandate-as-russia-needles-u-s-on-venezuelan-seizures",
+                "perspective": "Independent wire reporting from the United Nations on the January 2026 renewal of monthly reporting",
+                "supports": "Supports the Houthis' stated aim of attacking ships linked to Israel in support of Hamas in Gaza, the report that many targeted ships had no links to Israel, and the two years of monthly reporting by the Secretary-General."
             }
         ],
         "waypoints": [
@@ -786,7 +882,9 @@ export const MENA_CASES_2026 = [
                 "title": "The Import Economy",
                 "perspectiveLabel": "Yemeni households, traders, and importers",
                 "perspectiveType": "local",
-                "narration": "Divided banks, currencies, and authorities make trade finance costly and unstable, transmitting maritime disruption into food, fuel, medicine, and livelihoods.",
+                "conceptInFocus": "Interdependence",
+                "relatedTimelineDate": "2025-07",
+                "narration": "In September 2025, shipping containers sat stuck on the docks in Aden [1]. A new rule barred imported goods without a permit showing how the shipment was financed, and some merchants refused to comply [1]. Yemen imports about 90 percent of its food staples, including wheat, rice, and sugar [1]. Importers rely on trade finance: bank services that guarantee payment to a foreign seller. The main tool is a letter of credit, a bank's promise to pay once the goods ship [1].\n\nWar broke that system. Oil and gas exports, Yemen's main source of foreign currency, almost stopped [1]. Foreign banks cut ties with Yemeni banks [1]. Many importers turned to hawala, informal money-transfer networks [1]. In 2024 imports were worth an estimated $15.5 billion, and 37 percent was basic food [1]. Any disruption to import financing affects food availability and prices [1]. Interdependence here is literal: a family's bread depends on foreign sellers, banks, and open sea lanes.",
                 "focusQuestion": "Which policy changes would reduce civilian import costs without financing coercive actors?"
             },
             {
@@ -794,7 +892,9 @@ export const MENA_CASES_2026 = [
                 "title": "Maritime Coercion as Armed Leverage",
                 "perspectiveLabel": "Ansar Allah/Houthi strategy",
                 "perspectiveType": "local",
-                "narration": "Ansar Allah uses threats and attacks on shipping as regional leverage, linking the Yemen conflict to wider political and military contests.",
+                "conceptInFocus": "Power",
+                "relatedTimelineDate": "2026-07-20",
+                "narration": "On 20 July 2026, Ansar Allah, the armed movement known as the Houthis, announced a maritime blockade on Saudi Arabia [5]. A blockade is an attempt to stop ships from reaching an opponent's ports. The group accused Saudi leaders of imposing \"an unjust and oppressive siege\" on Yemen for nearly 12 years [5]. It said its measure was not a closure of the Bab el-Mandeb strait [8]. Saudi Arabia then bombed what it called Houthi military sites at Hudaydah port [5].\n\nFrom November 2023 the Houthis attacked ships in the Red Sea, saying they acted in support of Hamas in Gaza [10, 14]. Reuters reported that many targeted ships had no links to Israel [14]. By 12 August 2026, a projectile had hit the cargo ship Tihamah off Al Mokha, killing several seafarers [11]. The United Nations (UN) shipping agency's statement named no attacker [11]. Power here comes from geography: control of a coast beside a chokepoint, a narrow passage that ships cannot easily avoid.",
                 "focusQuestion": "How should analysts distinguish the group's stated political aims from the effects of its actions on civilians and seafarers?"
             },
             {
@@ -802,7 +902,9 @@ export const MENA_CASES_2026 = [
                 "title": "Ports, Government, and Divided Regulation",
                 "perspectiveLabel": "Internationally recognized government and port institutions",
                 "perspectiveType": "institutional",
-                "narration": "Competing authorities govern ports, currency, and imports differently, so a single national indicator can conceal sharply different local economic conditions.",
+                "conceptInFocus": "Sovereignty",
+                "relatedTimelineDate": "2016-09",
+                "narration": "Yemen has two rival authorities and two central banks, the institutions that issue currency and hold foreign reserves. In September 2016 the president moved the central bank's headquarters from Houthi-held Sana'a to Aden [1]. The Aden branch has international recognition but limited control at home [1]. The Sana'a branch oversees the main cities and markets but is under international sanctions [1]. Houthi authorities banned banknotes printed in Aden, so two versions of the rial now circulate [1].\n\nHouthi-controlled Hudaydah handled 70 percent of commercial imports as of July 2025, while Aden's port answers to the government [1, 12]. On 22 January 2025, the United States redesignated the Houthis a Foreign Terrorist Organization [1]. To avoid penalties, nearly all banks moved their main operations to government-held areas by July [1]. When the government set up a committee to approve import financing, the Sana'a branch barred its banks from using it [1]. Legal sovereignty sits in Aden, while control of most markets sits in Sana'a.",
                 "focusQuestion": "What minimum coordination is required to keep essential trade moving across divided jurisdictions?"
             },
             {
@@ -810,8 +912,198 @@ export const MENA_CASES_2026 = [
                 "title": "Safety Without Escalation",
                 "perspectiveLabel": "Maritime and humanitarian institutions",
                 "perspectiveType": "independent",
-                "narration": "Seafarer safety, freedom of navigation, humanitarian access, and environmental protection overlap with military operations and diplomatic negotiations.",
+                "conceptInFocus": "Interdependence",
+                "relatedTimelineDate": "2026-11-06",
+                "narration": "On 6 November 2026, the Council of the International Maritime Organization (IMO), the UN shipping agency, ended a session in London [4]. It strongly condemned Houthi attacks on merchant ships and crews in the Red Sea and Bab el-Mandeb strait [4]. IMO Secretary-General Arsenio Dominguez had called earlier attacks \"indefensible\" in July [2]. The IMO's tools are statements, monitoring, and advice to ship operators [2, 4]. The UN Security Council also requires monthly reports on Houthi attacks until 15 January 2027 [9].\n\nForce is the other tool, and it carries risks. Saudi Arabia sought an international coalition to protect shipping [5]. The European Union kept its defensive naval mission, Aspides, in the area [7]. A Chatham House analysis warned that maritime security cooperation could break down [3]. Inside Yemen, fighting displaced more than 333,000 people between August and mid-November 2026 [6]. Shared sea lanes need shared protection, yet each escalation raises the danger for Yemeni civilians and seafarers alike.",
                 "focusQuestion": "Which collective-security measures can protect shipping while reducing risks to humanitarian access and regional escalation?"
+            }
+        ],
+        "concepts": [
+            "Power",
+            "Sovereignty",
+            "Interdependence"
+        ],
+        "ibThemes": [
+            "peace-and-conflict",
+            "development-and-sustainability"
+        ],
+        "background": "Yemen sits beside the Bab el-Mandeb, the chokepoint strait between the Red Sea and the Arabian Sea [13]. In late 2014 the Houthis, an armed movement formally called Ansar Allah, captured much of the capital, Sana'a [13]. In 2015 Saudi Arabia launched a military campaign against them [13]. The internationally recognized government now treats Aden as its interim capital [1].\n\nThe war split the economy. In September 2016 the central bank's headquarters moved to Aden, while a rival branch kept operating in Sana'a [1]. A 2018 agreement set a ceasefire in the Houthi-controlled port city of Hudaydah [12, 13]. Houthi drone and missile strikes on oil export facilities in late 2022 cut off the government's main source of foreign currency [1].\n\nFrom November 2023, Houthi attacks hit merchant ships in the Red Sea [10, 14]. In January 2024 the United Nations (UN) Security Council requested monthly reports on those attacks [10]. On 22 January 2025 the United States redesignated the group a Foreign Terrorist Organization [1]. After months without a confirmed attack on shipping, the Houthis announced a blockade on Saudi Arabia on 20 July 2026 [5, 9].",
+        "backgroundSources": [
+            "https://www.cfr.org/backgrounder/yemen-crisis",
+            "https://sanaacenter.org/publications/policy-research/26389",
+            "https://news.un.org/en/story/2025/07/1165395",
+            "https://www.imo.org/en/MediaCentre/HotTopics/Pages/Red-Sea.aspx",
+            "https://gcaptain.com/u-n-renews-red-sea-reporting-mandate-as-russia-needles-u-s-on-venezuelan-seizures",
+            "https://www.aljazeera.com/news/2026/7/29/saudi-arabia-seeks-international-coalition-against-houthis-in-red-sea",
+            "https://www.arabnews.pk/node/2650898"
+        ],
+        "keyTerms": [
+            {
+                "term": "Trade finance",
+                "definition": "Bank services that help importers and exporters complete international deals. One tool is the letter of credit: a bank document guaranteeing payment once the seller ships the goods and presents the paperwork.",
+                "sourceUrl": "https://sanaacenter.org/publications/policy-research/26389"
+            },
+            {
+                "term": "Correspondent bank",
+                "definition": "A foreign bank that handles international payments for a local bank. The Sana'a Center says Yemeni banks have struggled to keep these links, which has raised import costs and worsened food insecurity.",
+                "sourceUrl": "https://sanaacenter.org/publications/policy-research/26389"
+            },
+            {
+                "term": "Central bank split",
+                "definition": "Since September 2016 the Central Bank of Yemen has had rival branches in Aden and Sana'a. They issue conflicting rules, and two versions of the rial circulate.",
+                "sourceUrl": "https://sanaacenter.org/publications/policy-research/26389"
+            },
+            {
+                "term": "Maritime chokepoint",
+                "definition": "A narrow sea passage that much shipping must use. The Bab el-Mandeb strait is the chokepoint between the Red Sea and the Arabian Sea.",
+                "sourceUrl": "https://www.cfr.org/backgrounder/yemen-crisis"
+            },
+            {
+                "term": "Foreign Terrorist Organization (FTO) designation",
+                "definition": "A United States legal label for a foreign armed group, backed by financial sanctions. The United States redesignated the Houthis on 22 January 2025, and Yemeni banks moved operations to Aden to avoid violating the rules.",
+                "sourceUrl": "https://sanaacenter.org/publications/policy-research/26389"
+            },
+            {
+                "term": "Freedom of navigation",
+                "definition": "The principle that ships may pass through international sea lanes without interference. The IMO Secretary-General warned in July 2026 that continued attacks risk undermining it.",
+                "sourceUrl": "https://www.imo.org/en/mediacentre/pressbriefings/pages/statement-on-recent-attacks-in-the-red-sea.aspx"
+            }
+        ],
+        "debate": [
+            {
+                "claimBy": "Ansar Allah (Houthi) authorities (as reported by Al Jazeera, 29 July 2026, and The New Arab, 28 July 2026)",
+                "claim": "Saudi leaders have imposed \"an unjust and oppressive siege\" on Yemen for nearly 12 years. The blockade targets Saudi ports and ships and does not amount to a closure of the Bab el-Mandeb.",
+                "counterBy": "European Union High Representative (statement of 23 July 2026)",
+                "counterClaim": "Houthi threats to blockade Saudi Arabia \"constitute a dangerous escalation\". \"Navigation must be unimpeded, in the Strait of Hormuz as well as in the Red Sea.\"",
+                "sourceUrls": [
+                    "https://www.aljazeera.com/news/2026/7/29/saudi-arabia-seeks-international-coalition-against-houthis-in-red-sea",
+                    "https://www.newarab.com/analysis/houthi-red-sea-blockade-new-front-iran-war",
+                    "https://www.eeas.europa.eu/eeas/statement-high-representative-houthi-threats-against-kingdom-saudi-arabia-and-freedom-navigation_en"
+                ]
+            },
+            {
+                "claimBy": "United States Ambassador Mike Waltz (UN Security Council, 14 July 2026, as reported by Arab News)",
+                "claim": "\"The Houthis are not defending Yemen, as they claim, by threatening civilian families\". The United States co-authored the resolution that keeps monthly UN reporting on Houthi attacks on shipping.",
+                "counterBy": "Russian Federation (UN Security Council, 14 July 2026, as reported by Arab News)",
+                "counterClaim": "Russia abstained, saying the resolution added little of value because no incident involving a commercial vessel in the Red Sea had been recorded since 29 December 2025.",
+                "sourceUrls": [
+                    "https://www.arabnews.pk/node/2650898"
+                ]
+            },
+            {
+                "claimBy": "Sana'a Center authors Wadhah Al-Awlaqi and Maryam Abdulrahman (17 February 2026)",
+                "claim": "The Aden central bank and the government's Import Committee should be fully empowered to secure hard-currency inflows and use them to finance basic commodity imports.",
+                "counterBy": "Houthi-run Central Bank of Yemen in Sana'a (as described by the Sana'a Center, 17 February 2026)",
+                "counterClaim": "The Sana'a branch banned banks and importers from joining Aden's currency auctions, claiming the ban was vital to stop hard currency being smuggled out of Houthi-held areas.",
+                "sourceUrls": [
+                    "https://sanaacenter.org/publications/policy-research/26389"
+                ]
+            }
+        ],
+        "watchFor": [
+            {
+                "date": "15 January 2027",
+                "indicator": "Security Council Resolution 2826 extends the Secretary-General's monthly reports on Houthi attacks on merchant ships to this date. Check whether the Council renews the requirement and how members vote.",
+                "sourceUrl": "https://www.arabnews.pk/node/2650898"
+            },
+            {
+                "date": "19–23 July 2027 (proposed)",
+                "indicator": "The IMO Council's 139th session is proposed for these dates in London. Check what it records about attacks on shipping and seafarer casualties in the Red Sea.",
+                "sourceUrl": "https://www.imo.org/en/mediacentre/pressbriefings/pages/imo-council-c138-urges-stronger-protection-of-seafarers-amid-threats-to-global-shipping-.aspx"
+            },
+            {
+                "date": "Monthly",
+                "indicator": "The IMO prepares verified incident reports for the Secretary-General's monthly submissions. Its Red Sea page listed 61 confirmed incidents since 10 January 2024 when read on 19 November 2026; check whether that count changes.",
+                "sourceUrl": "https://www.imo.org/en/MediaCentre/HotTopics/Pages/Red-Sea.aspx"
+            },
+            {
+                "date": "November 2027 (one year after the 12 November 2026 extension)",
+                "indicator": "The Security Council extended Yemen-related asset freezes and travel bans for one more year. Check the next renewal vote and whether the exemption for humanitarian assistance is kept.",
+                "sourceUrl": "https://www.aljazeera.com/news/2026/11/12/yemens-houthis-renew-strikes-on-saudi-arabia-as-unsc-extends-sanctions"
+            }
+        ],
+        "examPrompts": [
+            "Evaluate the claim that non-state armed groups can use geography to exercise power comparable to that of states.",
+            "Discuss the view that in an interdependent world, conflicts over sovereignty are paid for mainly by civilians."
+        ],
+        "influenceCheck": [
+            {
+                "stage": "Setting the agenda",
+                "rating": "STRONG",
+                "evidence": "Within days of the 20 July 2026 blockade announcement, the IMO Secretary-General condemned renewed attacks on shipping and the European Union called the threat \"a dangerous escalation\". Saudi Arabia began seeking an international coalition to protect Red Sea shipping.",
+                "sourceUrls": [
+                    "https://www.imo.org/en/mediacentre/pressbriefings/pages/statement-on-recent-attacks-in-the-red-sea.aspx",
+                    "https://www.eeas.europa.eu/eeas/statement-high-representative-houthi-threats-against-kingdom-saudi-arabia-and-freedom-navigation_en",
+                    "https://www.aljazeera.com/news/2026/7/29/saudi-arabia-seeks-international-coalition-against-houthis-in-red-sea"
+                ]
+            },
+            {
+                "stage": "The formal decision",
+                "rating": "WEAK",
+                "evidence": "No formal body endorsed the Houthis' demands. The Security Council renewed monthly reporting on their attacks on 14 July 2026, with Russia and China abstaining, and unanimously extended Yemen sanctions for a year on 12 November. The IMO Council condemned the attacks at its 2–6 November session.",
+                "sourceUrls": [
+                    "https://www.arabnews.pk/node/2650898",
+                    "https://www.aljazeera.com/news/2026/11/12/yemens-houthis-renew-strikes-on-saudi-arabia-as-unsc-extends-sanctions",
+                    "https://www.imo.org/en/mediacentre/pressbriefings/pages/imo-council-c138-urges-stronger-protection-of-seafarers-amid-threats-to-global-shipping-.aspx"
+                ]
+            },
+            {
+                "stage": "What changed in practice",
+                "rating": "MIXED",
+                "evidence": "Analysts quoted by The New Arab said tanker routes changed, yet two ships carrying Saudi crude passed the Bab el-Mandeb without incident. An IMO statement of 12 August 2026 reported a cargo ship hit off Al Mokha with several seafarers killed, and fighting inside Yemen displaced more than 333,000 people from August to mid-November.",
+                "sourceUrls": [
+                    "https://www.newarab.com/analysis/houthi-red-sea-blockade-new-front-iran-war",
+                    "https://www.imo.org/en/mediacentre/pressbriefings/pages/statement-on-deadly-ship-attack-in-the-red-sea.aspx",
+                    "https://www.aljazeera.com/news/2026/11/12/yemens-houthis-renew-strikes-on-saudi-arabia-as-unsc-extends-sanctions"
+                ]
+            }
+        ],
+        "conceptLens": {
+            "power": "The Houthis hold a coastline beside the Bab el-Mandeb and use threats to shipping as leverage. Their opponents answer with sanctions, air strikes, and naval missions.",
+            "sovereignty": "The internationally recognized government holds Yemen's legal standing and the Aden central bank. The Houthis control Sana'a, Hudaydah, and the main markets, so de jure and de facto authority are split.",
+            "interdependence": "Yemen imports about 90 percent of its food staples, so banking rules, port damage, and sea-lane security all reach household prices. The same strait matters to ships and seafarers from far beyond Yemen."
+        },
+        "essayBuilder": {
+            "prompt": "Discuss the view that in an interdependent world, conflicts over sovereignty are paid for mainly by civilians.",
+            "claim": "In Yemen, a contest over who governs has been fought through banks, ports, and sea lanes, and civilians carry much of the cost.",
+            "evidence": "Yemen imports about 90 percent of its food staples. Rival central bank branches in Aden and Sana'a issue conflicting rules, and the Sana'a Center finds that lost links to foreign banks have raised import costs and worsened food insecurity. It also reports that restrictions and damage at Hudaydah's ports led to a 30 percent rise in prices.",
+            "counterClaim": "Civilians are not the only ones who pay. An IMO statement of 12 August 2026 records several seafarers killed when the cargo ship Tihamah was hit off Yemen. Policy can also ease the burden: after a new import committee tightened the rules in 2025, the Aden-issued rial strengthened from 2,900 to 1,626 per US dollar.",
+            "judgment": "On balance, the evidence supports the view for Yemen: divided authority raises the price of imported food. However, the costs also reach seafarers and foreign shippers, and part of the damage comes from policy choices that could be reversed.",
+            "sourceUrls": [
+                "https://sanaacenter.org/publications/policy-research/26389",
+                "https://www.imo.org/en/mediacentre/pressbriefings/pages/statement-on-deadly-ship-attack-in-the-red-sea.aspx"
+            ]
+        },
+        "timeline": [
+            {
+                "date": "2014",
+                "label": "Late in the year, Houthi forces capture much of Sana'a, Yemen's capital.",
+                "sourceUrl": "https://www.cfr.org/backgrounder/yemen-crisis"
+            },
+            {
+                "date": "2016-09",
+                "label": "President Abdo Rabbu Mansour Hadi orders the Central Bank of Yemen's headquarters moved from Sana'a to Aden.",
+                "sourceUrl": "https://sanaacenter.org/publications/policy-research/26389"
+            },
+            {
+                "date": "2023-11",
+                "label": "Confirmed incidents involving ships in the Red Sea area begin to be notified to the IMO, which counts 17 by 9 January 2024.",
+                "sourceUrl": "https://www.imo.org/en/MediaCentre/HotTopics/Pages/Red-Sea.aspx"
+            },
+            {
+                "date": "2025-07",
+                "label": "Yemen's government establishes the National Committee for Regulating and Financing Imports.",
+                "sourceUrl": "https://sanaacenter.org/publications/policy-research/26389"
+            },
+            {
+                "date": "2026-07-20",
+                "label": "The Houthis announce a maritime blockade on Saudi Arabia.",
+                "sourceUrl": "https://www.aljazeera.com/news/2026/7/29/saudi-arabia-seeks-international-coalition-against-houthis-in-red-sea"
+            },
+            {
+                "date": "2026-11-06",
+                "label": "The IMO Council ends its 138th session, condemning Houthi attacks on merchant ships and crews.",
+                "sourceUrl": "https://www.imo.org/en/mediacentre/pressbriefings/pages/imo-council-c138-urges-stronger-protection-of-seafarers-amid-threats-to-global-shipping-.aspx"
             }
         ]
     }

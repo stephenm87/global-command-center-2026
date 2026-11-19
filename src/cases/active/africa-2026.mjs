@@ -2,6 +2,7 @@ export const AFRICA_CASES_2026 = [
     {
         "id": "sudan-displacement-regional-spillover",
         "status": "active",
+        "briefingVersion": 2,
         "title": "Sudan: War, Displacement, and Regional Spillover",
         "subtitle": "How a civil war became the world's largest displacement crisis",
         "coverageRegion": "Africa",
@@ -99,6 +100,12 @@ export const AFRICA_CASES_2026 = [
                 "publisher": "Associated Press",
                 "publishedAt": "2026-07-06",
                 "url": "https://apnews.com/article/sudan-war-children-drone-rsf-army-9ac6245afb2c0e3cfc96da5ceda14f48",
+                "alternateUrls": [
+                    {
+                        "label": "Same Associated Press report as published by PBS News",
+                        "url": "https://www.pbs.org/newshour/world/more-than-300-children-killed-or-injured-in-sudan-war-in-6-months-unicef-says"
+                    }
+                ],
                 "perspectiveType": "independent",
                 "perspective": "Independent reporting on civilian harm, conflict geography, aid access, and regional effects",
                 "supports": "Continued attacks on civilians, humanitarian constraints, and the conflict's effects on children and neighboring host states"
@@ -117,14 +124,28 @@ export const AFRICA_CASES_2026 = [
                 "publisher": "UNHCR",
                 "publishedAt": "2026-04-10",
                 "url": "https://www.unhcr.org/news/briefing-notes/three-years-war-weary-sudanese-remain-move",
-                "perspective": "Dated humanitarian snapshot retained to make changes in scope and caseload visible"
+                "alternateUrls": [
+                    {
+                        "label": "Same UNHCR briefing note as distributed by allAfrica",
+                        "url": "https://allafrica.com/stories/202604170188.html"
+                    }
+                ],
+                "perspective": "Dated humanitarian snapshot retained to make changes in scope and caseload visible",
+                "supports": "Supports the April 2026 statements that Chad, Egypt, and South Sudan host most Sudanese refugees and are at breaking point, that over 58,000 children arrived alone in neighbouring countries, and that the regional refugee response had received 8 percent of the $1.6 billion required."
             },
             {
                 "title": "Sudan enters a fourth year of war as officials lament an abandoned crisis",
                 "publisher": "Associated Press",
                 "publishedAt": "2026-04-15",
                 "url": "https://apnews.com/article/32a416bfbd680ea42edf6c0298d2617b",
-                "perspective": "Earlier independent reporting on regional involvement, hunger, displacement, and failed mediation"
+                "alternateUrls": [
+                    {
+                        "label": "Same Associated Press report as published by Arab News",
+                        "url": "https://www.arabnews.com/node/2639976"
+                    }
+                ],
+                "perspective": "Earlier independent reporting on regional involvement, hunger, displacement, and failed mediation",
+                "supports": "Supports the description of territorial control by the military and the Rapid Support Forces, the rival administrations in Khartoum and Darfur, the RSF's origins in the Janjaweed, the attributed accusation and denial concerning the United Arab Emirates, Egypt's support for the military, the UN-backed experts' finding on El Fasher, the 34 million people in need, the failure to establish a ceasefire, and the quoted statements by Tom Fletcher, Denise Brown, and Shamel Elnoor."
             },
             {
                 "title": "Noon briefing of 9 July 2026",
@@ -132,6 +153,65 @@ export const AFRICA_CASES_2026 = [
                 "publishedAt": "2026-07-09",
                 "url": "https://www.un.org/sg/en/content/highlight/2026-07-09.html",
                 "perspective": "Official dated statement on the 2026 Sudan Humanitarian Response Plan funding gap"
+            },
+            {
+                "title": "Civil War in Sudan",
+                "publisher": "Council on Foreign Relations (Global Conflict Tracker)",
+                "publishedAt": "2023-06-15",
+                "updatedAt": "2026-11-06",
+                "url": "https://www.cfr.org/global-conflict-tracker/conflict/power-struggle-sudan",
+                "perspective": "Independent think-tank conflict tracker, updated 6 November 2026",
+                "supports": "Supports the background chronology: Omar al-Bashir's 1989 coup, the Darfur war from 2003, the Janjaweed's formal organization as the Rapid Support Forces in 2013, Bashir's removal in April 2019, the October 2021 coup, the December 2022 deal with no deadline for integrating the RSF, the outbreak of fighting in Khartoum on 15 April 2023, and the RSF's capture of El Fasher on 27 October after an eighteen-month siege."
+            },
+            {
+                "title": "Millions of desperate Sudanese return home amid dire conditions as war rages",
+                "publisher": "UN News",
+                "publishedAt": "2026-04-21",
+                "url": "https://news.un.org/en/story/2026/04/1167341",
+                "perspective": "Official UN news service report quoting the International Organization for Migration's Deputy Director General after a visit to Khartoum",
+                "supports": "Supports the 15 April 2023 start of the conflict, the return of nearly four million displaced people concentrated in Khartoum and Al Jazirah, and the damaged homes and services they return to."
+            },
+            {
+                "title": "UN Geneva Press Briefing, 10 July 2026",
+                "publisher": "United Nations Office at Geneva",
+                "publishedAt": "2026-07-10",
+                "url": "https://www.ungeneva.org/en/news-media/press-briefing/2026/07/un-geneva-press-briefing-1",
+                "perspective": "Official written summary of the UN Geneva press briefing, including the World Health Organization's representative to Sudan",
+                "supports": "Supports the statement that the 2026 UN humanitarian response plan for Sudan was less than one-third funded, having received $930 million of the nearly $2.9 billion needed."
+            },
+            {
+                "title": "UN extends Darfur arms embargo, blocks broader Sudan sanctions proposal",
+                "publisher": "Al Jazeera",
+                "publishedAt": "2026-10-09",
+                "url": "https://www.aljazeera.com/news/2026/10/9/un-extends-darfur-arms-embargo-blocks-broader-sudan-sanctions-proposal",
+                "perspective": "Independent reporting on the UN Security Council's October 2026 vote, quoting the United States, Russian, and Sudanese representatives",
+                "supports": "Supports the unanimous adoption of Resolution 2830, the extension of the Darfur sanctions regime to 11 December and of the Panel of Experts to 11 January 2027, the earlier one-month renewal on 11 September, the 2005 origin of the regime under Resolution 1591, and the attributed positions on widening the arms embargo."
+            },
+            {
+                "title": "Sudanese emergency responders receive Chatham House prize",
+                "publisher": "The National",
+                "publishedAt": "2026-03-26",
+                "url": "https://www.thenationalnews.com/news/uk/2026/03/26/sudanese-emergency-responders-receive-chatham-house-prize",
+                "perspective": "Independent reporting on the London prize ceremony, quoting four Emergency Response Room representatives",
+                "supports": "Supports the award of the Chatham House Prize to the Emergency Response Rooms, the description of their evacuation, food, and survivor-support work, and the quoted statements by Alsanosi Adam and Abdallah Mohammed."
+            },
+            {
+                "title": "Sudan",
+                "publisher": "Cordaid",
+                "publishedAt": null,
+                "sourceType": "living-reference",
+                "reviewedAt": "2026-11-19",
+                "url": "https://www.cordaid.org/en/countries/sudan/",
+                "perspective": "Country page of a Dutch humanitarian organization that funds Sudanese-led mutual aid through an intermediary coalition",
+                "supports": "Supports the description of Emergency Response Rooms as a nationwide, community-led volunteer network started mainly by young people, the estimate of 700 groups, the typical $5,000 activity budget, and the role of the Sudanese Localisation Coordination Council in approving activity plans."
+            },
+            {
+                "title": "Sudan: Who Speaks for Sudan's Emergency Response Rooms?",
+                "publisher": "African Arguments (distributed by allAfrica)",
+                "publishedAt": "2026-08-31",
+                "url": "https://allafrica.com/stories/202609010010.html",
+                "perspective": "Analysis by Sudanese researcher Musab Alshafie Mohamed, based on interviews with fifteen volunteers and humanitarian practitioners",
+                "supports": "Supports the attributed critique of seat allocation and representation in the Localisation Coordination Council, the statement that volunteers have sustained kitchens, health centres, water systems, and evacuation networks since April 2023, and the author's figure of 140 volunteers killed."
             }
         ],
         "waypoints": [
@@ -140,7 +220,9 @@ export const AFRICA_CASES_2026 = [
                 "title": "A War Without an Endpoint",
                 "perspectiveLabel": "Independent and United Nations reporting",
                 "perspectiveType": "independent",
-                "narration": "Independent and United Nations reporting published in July 2026 described continued fighting and civilian harm in Darfur, Kordofan, and Blue Nile.",
+                "conceptInFocus": "Power",
+                "relatedTimelineDate": "2023-04-15",
+                "narration": "On 15 April 2023, explosions and heavy gunfire shook Khartoum, Sudan's capital [8]. Since that month, young volunteers have run communal kitchens for neighbours driven from their homes [13, 14]. They call their groups Emergency Response Rooms (ERRs): community-run teams that cook, run health centres, and evacuate civilians [12, 14]. More than three years later, fighting is concentrated in Darfur, Kordofan, and Blue Nile [3]. Drone strikes caused most of the 300-plus child casualties counted in six months, the United Nations (UN) children's agency, UNICEF, said in July 2026 [3].\n\nThe army holds the north, east, and centre, including the Red Sea ports [6]. Its rival, the Rapid Support Forces, holds Darfur and parts of Kordofan [6]. Those regions contain many of Sudan's oil fields and gold mines [6]. Sudanese researcher Shamel Elnoor argues that neither side can win a decisive victory [6]. Outside powers have failed to secure a ceasefire [6]. Power here is enough to keep fighting, but not enough to impose a settlement.",
                 "focusQuestion": "What prevents military pressure from becoming a durable political settlement?"
             },
             {
@@ -148,7 +230,9 @@ export const AFRICA_CASES_2026 = [
                 "title": "State and Paramilitary Power",
                 "perspectiveLabel": "Civilian protection across competing armed authorities",
                 "perspectiveType": "synthesis",
-                "narration": "The conflict pits the Sudanese Armed Forces against the paramilitary Rapid Support Forces, while civilians absorb the central protection costs.",
+                "conceptInFocus": "Sovereignty",
+                "relatedTimelineDate": "2021-10",
+                "narration": "The war pits the Sudanese Armed Forces (SAF), the national army, against the Rapid Support Forces (RSF) [8]. The RSF is a paramilitary force: an armed body organized like an army but outside its regular command. It grew out of the Janjaweed, Arab militias notorious for atrocities in Darfur in the early 2000s [6, 8]. In October 2021 the two forces staged a coup against the civilian prime minister [8]. A December 2022 deal called for merging the RSF into the army but set no deadline [8].\n\nSudan now has two rival administrations. A military-backed government in Khartoum holds international recognition [6]. An RSF-run administration operates in Darfur [6]. UN experts and rights groups accuse the United Arab Emirates of arming the RSF, which the UAE rejects [6]. UN-backed experts concluded that the RSF's October 2025 assault on El Fasher bore \"the defining characteristics of genocide\" [6]. When a paramilitary holds land, guns, and gold mines, legal authority and real control no longer match.",
                 "focusQuestion": "How does a powerful paramilitary organization alter conventional ideas of sovereignty?"
             },
             {
@@ -156,7 +240,9 @@ export const AFRICA_CASES_2026 = [
                 "title": "Displacement Across Borders",
                 "perspectiveLabel": "UNHCR operational data",
                 "perspectiveType": "institutional",
-                "narration": "UNHCR's living portal recorded 6,412,058 conflict-related internally displaced people (19 October cutoff), 4,665,518 new cross-border arrivals and returns (9 November cutoff), and 273,817 self-relocated refugees (9 November cutoff), summing to 11,351,393 forcibly displaced people.",
+                "conceptInFocus": "Interdependence",
+                "relatedTimelineDate": "2025-10-27",
+                "narration": "An internally displaced person (IDP) has fled home but remains inside their own country. A refugee has crossed an international border to seek safety. In data cut off between 19 October and 9 November 2026, the UN counted 6,412,058 people displaced inside Sudan by this war [2]. Another 4,665,518 had crossed borders, including refugees and nationals of neighbouring states returning home [2]. Chad, Egypt, and South Sudan host most of those who left [5].\n\nNo government can contain this crisis alone. UNHCR, the UN refugee agency, said in April 2026 that host states were \"at breaking point\" [5]. The regional refugee appeal had then received 8 percent of the $1.6 billion requested [5]. More than 58,000 children had reached neighbouring countries alone [5]. Nearly four million people have returned home, mostly to Khartoum and Al Jazirah, often to wrecked houses and services [9]. A domestic war becomes a regional crisis when neighbours' services and budgets carry its costs.",
                 "focusQuestion": "When does a domestic conflict become a regional security and development crisis?"
             },
             {
@@ -164,8 +250,220 @@ export const AFRICA_CASES_2026 = [
                 "title": "A Response Under Strain",
                 "perspectiveLabel": "United Nations humanitarian response",
                 "perspectiveType": "institutional",
-                "narration": "On 9 July, the United Nations said the 2026 Sudan Humanitarian Response Plan had received $930 million of the nearly $2.9 billion required—less than one third.",
+                "conceptInFocus": "Legitimacy",
+                "relatedTimelineDate": "2026-07-09",
+                "narration": "A humanitarian response plan is the UN's yearly costed appeal for one crisis. For Sudan in 2026 it asked for nearly $2.9 billion [10]. By 9 July, donors had given $930 million, less than one-third [7, 10]. About 34 million people needed assistance in April 2026, almost two of every three Sudanese [6]. UN humanitarian chief Tom Fletcher said the world \"has failed to meet the test of Sudan\" [6].\n\nLocal volunteers filled part of the gap. An estimated 700 ERRs operate across Sudan [13]. A Sudanese-led council approves their small activity budgets, typically $5,000 each [13]. The network received the Chatham House Prize in London in March 2026 [12]. ERR volunteer Alsanosi Adam argues that funders should adapt to this model [1]. A Sudanese researcher questions who speaks for the movement and counts 140 volunteers killed [14]. That gap raises a legitimacy question: whose duty is it to provide, and who earns trust when donors fall short?",
                 "focusQuestion": "What obligations should outside states accept when humanitarian need greatly exceeds available funding?"
+            }
+        ],
+        "concepts": [
+            "Power",
+            "Sovereignty",
+            "Legitimacy",
+            "Interdependence"
+        ],
+        "ibThemes": [
+            "peace-and-conflict",
+            "rights-and-justice"
+        ],
+        "background": "Omar al-Bashir took power in a 1989 coup and ruled Sudan until 2019 [8]. War broke out in Darfur in 2003 [8]. Bashir funded the Janjaweed, an Arab-majority armed group, to fight there [8]. In 2013 that force was formally organized as the Rapid Support Forces (RSF) [8].\n\nIn April 2019, after a popular uprising, the army and the RSF jointly removed Bashir [6, 8]. Army chief Abdel Fattah al-Burhan then led a transitional council, with RSF commander Mohamed Hamdan Dagalo as his deputy [8]. In October 2021 the two forces staged a coup against the civilian prime minister, Abdalla Hamdok [8]. A December 2022 deal promised civilian rule and the RSF's merger into the army, but set no deadline for that merger [8].\n\nFighting between the two forces erupted in Khartoum on 15 April 2023 [8, 9]. The army retook the capital in early 2025 [6]. The RSF captured El Fasher, the capital of North Darfur, on 27 October 2025 after an eighteen-month siege [8]. By November 2026, United Nations (UN) data counted 11,351,393 people forcibly displaced by the war [2].",
+        "backgroundSources": [
+            "https://www.cfr.org/global-conflict-tracker/conflict/power-struggle-sudan",
+            "https://apnews.com/article/32a416bfbd680ea42edf6c0298d2617b",
+            "https://news.un.org/en/story/2026/04/1167341",
+            "https://data.unhcr.org/en/situations/sudansituation"
+        ],
+        "keyTerms": [
+            {
+                "term": "Paramilitary force",
+                "definition": "An armed organization structured like an army but separate from the regular national military. Sudan's Rapid Support Forces evolved from the Janjaweed and were formally organized under that name in 2013.",
+                "sourceUrl": "https://www.cfr.org/global-conflict-tracker/conflict/power-struggle-sudan"
+            },
+            {
+                "term": "Internally displaced person (IDP)",
+                "definition": "Someone forced to flee home who remains inside their own country. UNHCR's portal counts 6,412,058 people displaced inside Sudan since the conflict began in April 2023 (19 October 2026 cutoff).",
+                "sourceUrl": "https://data.unhcr.org/en/situations/sudansituation"
+            },
+            {
+                "term": "Refugee and asylum-seeker",
+                "definition": "A refugee has crossed an international border to escape danger. An asylum-seeker has asked for that protection and awaits a decision. UNHCR's portal counts 3,718,063 newly arrived refugees and asylum-seekers outside Sudan (9 November 2026 cutoff).",
+                "sourceUrl": "https://data.unhcr.org/en/situations/sudansituation"
+            },
+            {
+                "term": "Emergency Response Room (ERR)",
+                "definition": "A volunteer-run community group that provides food, communal kitchens, and other locally chosen support. Cordaid describes ERRs as a nationwide network set up by Sudanese citizens after the conflict began, with an estimated 700 groups.",
+                "sourceUrl": "https://www.cordaid.org/en/countries/sudan/"
+            },
+            {
+                "term": "Humanitarian response plan",
+                "definition": "The UN's annual costed appeal for aid in one crisis. Sudan's 2026 plan needed nearly $2.9 billion and was less than one-third funded in July 2026.",
+                "sourceUrl": "https://www.ungeneva.org/en/news-media/press-briefing/2026/07/un-geneva-press-briefing-1"
+            },
+            {
+                "term": "Arms embargo",
+                "definition": "A ban on supplying weapons to named actors or areas. The UN Security Council imposed one on armed actors in Darfur in 2005 under Resolution 1591, alongside a travel ban and an asset freeze.",
+                "sourceUrl": "https://www.aljazeera.com/news/2026/10/9/un-extends-darfur-arms-embargo-blocks-broader-sudan-sanctions-proposal"
+            }
+        ],
+        "debate": [
+            {
+                "claimBy": "United States Ambassador Jeff Bartos (UN Security Council, September 2026, as reported by Al Jazeera)",
+                "claim": "\"The current sanctions regime is over 20 years outdated, and is insufficient to address the realities of the war today\". The Council should extend the arms embargo from Darfur to the entire territory of Sudan.",
+                "counterBy": "Russia's deputy UN ambassador Anna Evstigneeva and Sudan's UN ambassador Al-Harith Mohamed (as reported by Al Jazeera, 9 October 2026)",
+                "counterClaim": "\"We will not allow even a hint of broadening the restrictions by the council on Sudan\", Evstigneeva said. Sudan's ambassador argued that a total embargo conflicts with the UN Charter's guarantee of self-defence.",
+                "sourceUrls": [
+                    "https://www.aljazeera.com/news/2026/10/9/un-extends-darfur-arms-embargo-blocks-broader-sudan-sanctions-proposal"
+                ]
+            },
+            {
+                "claimBy": "UN experts and rights groups, and Sudan's government (as reported by the Associated Press, 15 April 2026, and the Council on Foreign Relations)",
+                "claim": "The United Arab Emirates has provided arms to the Rapid Support Forces. In March 2025 Sudan's government filed a complaint at the International Court of Justice accusing the UAE of complicity in genocide.",
+                "counterBy": "United Arab Emirates (as reported by the Associated Press, 15 April 2026)",
+                "counterClaim": "The UAE has rejected the accusation that it arms the RSF.",
+                "sourceUrls": [
+                    "https://apnews.com/article/32a416bfbd680ea42edf6c0298d2617b",
+                    "https://www.cfr.org/global-conflict-tracker/conflict/power-struggle-sudan"
+                ]
+            },
+            {
+                "claimBy": "Emergency Response Room spokesman Alsanosi Adam (The National, 26 March 2026)",
+                "claim": "The network depends on local communities that decide their own needs. \"It's the communities that are operating.\"",
+                "counterBy": "Researcher Musab Alshafie Mohamed (African Arguments, 31 August 2026)",
+                "counterClaim": "The network's coordination council gives Khartoum seven seats and every other state one. Women's Response Rooms have no seat, and no public account explains how the movement's London representatives were chosen.",
+                "sourceUrls": [
+                    "https://www.thenationalnews.com/news/uk/2026/03/26/sudanese-emergency-responders-receive-chatham-house-prize",
+                    "https://allafrica.com/stories/202609010010.html"
+                ]
+            }
+        ],
+        "watchFor": [
+            {
+                "date": "11 December 2026",
+                "indicator": "The Darfur sanctions regime (arms embargo, travel ban, and asset freeze) runs to this date under Security Council Resolution 2830. Check whether the Council renews it and whether any text widens the embargo beyond Darfur.",
+                "sourceUrl": "https://www.aljazeera.com/news/2026/10/9/un-extends-darfur-arms-embargo-blocks-broader-sudan-sanctions-proposal"
+            },
+            {
+                "date": "11 January 2027",
+                "indicator": "The mandate of the Security Council's Panel of Experts, which monitors the Darfur sanctions, runs to this date. Check whether it is extended and for how long.",
+                "sourceUrl": "https://www.aljazeera.com/news/2026/10/9/un-extends-darfur-arms-embargo-blocks-broader-sudan-sanctions-proposal"
+            },
+            {
+                "date": "End of 2026",
+                "indicator": "Final funding for the 2026 UN humanitarian response plan. It had received $930 million of the nearly $2.9 billion needed by 9 July; compare the year-end figure.",
+                "sourceUrl": "https://www.ungeneva.org/en/news-media/press-briefing/2026/07/un-geneva-press-briefing-1"
+            },
+            {
+                "date": "Weekly (latest regional update read: 9 November 2026)",
+                "indicator": "UNHCR's Sudan situation portal posts regional displacement updates. Check whether the counts of people displaced inside Sudan and across borders change, and note each figure's data cutoff.",
+                "sourceUrl": "https://data.unhcr.org/en/situations/sudansituation"
+            }
+        ],
+        "examPrompts": [
+            "To what extent can non-state actors exercise power and legitimacy that rival those of the state?",
+            "Discuss the view that large-scale forced displacement shows state sovereignty cannot be separated from regional interdependence."
+        ],
+        "influenceCheck": [
+            {
+                "stage": "Setting the agenda",
+                "rating": "MIXED",
+                "evidence": "UN officials kept raising the alarm: in April 2026 the humanitarian chief said the world had \"failed to meet the test of Sudan\", and in July the Human Rights Council adopted, without a vote, a measure condemning escalating violence by the RSF and its allies around El Obeid. Yet the top UN official in Sudan called it an \"abandoned crisis\", overshadowed by a new Middle East conflict.",
+                "sourceUrls": [
+                    "https://apnews.com/article/32a416bfbd680ea42edf6c0298d2617b",
+                    "https://apnews.com/article/sudan-war-children-drone-rsf-army-9ac6245afb2c0e3cfc96da5ceda14f48"
+                ]
+            },
+            {
+                "stage": "The formal decision",
+                "rating": "WEAK",
+                "evidence": "The Security Council managed only short extensions of its 2005 Darfur sanctions: one month on 11 September 2026 and two months in October. A United States proposal to widen the arms embargo to all of Sudan failed after Russia and China opposed it.",
+                "sourceUrls": [
+                    "https://www.aljazeera.com/news/2026/10/9/un-extends-darfur-arms-embargo-blocks-broader-sudan-sanctions-proposal"
+                ]
+            },
+            {
+                "stage": "What changed in practice",
+                "rating": "WEAK",
+                "evidence": "No ceasefire has been established, and fighting continued in Darfur, Kordofan, and Blue Nile. The 2026 response plan was less than one-third funded in July, and UNHCR's portal counts 11,351,393 people forcibly displaced.",
+                "sourceUrls": [
+                    "https://apnews.com/article/32a416bfbd680ea42edf6c0298d2617b",
+                    "https://apnews.com/article/sudan-war-children-drone-rsf-army-9ac6245afb2c0e3cfc96da5ceda14f48",
+                    "https://www.ungeneva.org/en/news-media/press-briefing/2026/07/un-geneva-press-briefing-1",
+                    "https://data.unhcr.org/en/situations/sudansituation"
+                ]
+            }
+        ],
+        "conceptLens": {
+            "power": "The army holds the north, east, and centre with the Red Sea ports. The RSF holds Darfur and parts of Kordofan, with oil fields and gold mines, and neither has defeated the other.",
+            "sovereignty": "A military-backed government in Khartoum holds international recognition (de jure authority). The RSF runs a rival administration in Darfur, so control on the ground (de facto) is split.",
+            "legitimacy": "Two administrations each claim to govern, while volunteer Emergency Response Rooms earn local trust by feeding people. A Sudanese researcher asks who may rightfully speak for those volunteers.",
+            "interdependence": "More than 4.6 million people have crossed Sudan's borders, and Chad, Egypt, and South Sudan host most refugees. UNHCR says those hosts are \"at breaking point\", so the war's costs fall on a whole region."
+        },
+        "essayBuilder": {
+            "prompt": "To what extent can non-state actors exercise power and legitimacy that rival those of the state?",
+            "claim": "In Sudan, non-state actors hold real power and some legitimacy, but they have not replaced the state's legal standing.",
+            "evidence": "The Rapid Support Forces control Darfur and parts of Kordofan and run a rival administration there. A very different non-state actor, the volunteer Emergency Response Rooms, numbers an estimated 700 groups. During the siege of El Fasher, one responder said, the only spaces with food were those run by ERR volunteers.",
+            "counterClaim": "Recognition still follows the state. The internationally recognized government is the military-backed one in Khartoum, and UN-backed experts said the RSF's El Fasher offensive bore \"the defining characteristics of genocide\". The ERRs rely on small grants routed through intermediaries, and a Sudanese researcher questions how their representatives are chosen.",
+            "judgment": "On balance, non-state actors in Sudan rival the state in control and in service delivery, not in legal status. However, the comparison has limits: the RSF's position rests on force, while the ERRs' standing rests on the consent of the communities they feed.",
+            "sourceUrls": [
+                "https://apnews.com/article/32a416bfbd680ea42edf6c0298d2617b",
+                "https://www.cordaid.org/en/countries/sudan/",
+                "https://www.thenationalnews.com/news/uk/2026/03/26/sudanese-emergency-responders-receive-chatham-house-prize",
+                "https://allafrica.com/stories/202609010010.html"
+            ]
+        },
+        "timeline": [
+            {
+                "date": "2019-04",
+                "label": "After a popular uprising, the army and the Rapid Support Forces remove ruler Omar al-Bashir.",
+                "sourceUrl": "https://www.cfr.org/global-conflict-tracker/conflict/power-struggle-sudan"
+            },
+            {
+                "date": "2021-10",
+                "label": "The army and the RSF stage a coup against civilian prime minister Abdalla Hamdok.",
+                "sourceUrl": "https://www.cfr.org/global-conflict-tracker/conflict/power-struggle-sudan"
+            },
+            {
+                "date": "2023-04-15",
+                "label": "Fighting between the army and the RSF erupts in Khartoum.",
+                "sourceUrl": "https://news.un.org/en/story/2026/04/1167341"
+            },
+            {
+                "date": "2025-10-27",
+                "label": "The RSF captures El Fasher, capital of North Darfur, after an eighteen-month siege.",
+                "sourceUrl": "https://www.cfr.org/global-conflict-tracker/conflict/power-struggle-sudan"
+            },
+            {
+                "date": "2026-07-09",
+                "label": "UN figures show the 2026 Sudan response plan has received $930 million of the nearly $2.9 billion needed.",
+                "sourceUrl": "https://www.ungeneva.org/en/news-media/press-briefing/2026/07/un-geneva-press-briefing-1"
+            },
+            {
+                "date": "2026-10-08",
+                "label": "The Security Council adopts Resolution 2830, extending the Darfur sanctions regime for two months to 11 December.",
+                "sourceUrl": "https://www.aljazeera.com/news/2026/10/9/un-extends-darfur-arms-embargo-blocks-broader-sudan-sanctions-proposal"
+            }
+        ],
+        "keyFigures": [
+            {
+                "value": "11,351,393",
+                "unit": "people",
+                "label": "Forcibly displaced by the current crisis (sum of UNHCR portal components)",
+                "asOf": "9 November 2026 (component cutoffs from 19 October)",
+                "sourceUrl": "https://data.unhcr.org/en/situations/sudansituation"
+            },
+            {
+                "value": "6,412,058",
+                "unit": "people",
+                "label": "Conflict-related internally displaced people inside Sudan",
+                "asOf": "19 October 2026",
+                "sourceUrl": "https://data.unhcr.org/en/situations/sudansituation"
+            },
+            {
+                "value": "4,665,518",
+                "unit": "people",
+                "label": "Newly arrived refugees, asylum-seekers, and refugee returnees outside Sudan",
+                "asOf": "9 November 2026",
+                "sourceUrl": "https://data.unhcr.org/en/situations/sudansituation"
             }
         ]
     },
