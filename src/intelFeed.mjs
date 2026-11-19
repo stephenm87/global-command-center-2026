@@ -147,7 +147,7 @@ export function getFeedEmptyState({
         const statusCopy = {
             'not-configured': {
                 title: 'CURRENT FEED NOT CONFIGURED',
-                message: 'The public Serper snapshot is awaiting its server-side API key.',
+                message: 'The public institutional feed snapshot is awaiting its first refresh.',
             },
             'provider-error': providerErrorCopy,
             unavailable: providerErrorCopy,

@@ -2,6 +2,18 @@
 
 Newest entry first. Each agent adds an entry before it stops. Keep entries short.
 
+## 2026-11-19 — Antigravity (Lead) — Unit 21 (PR #37 Go-Live + Free Institutional Default Feeds + Optional Serper + Daily Supabase Keep-Alive)
+- **PR #37 Production Go-Live:**
+  - Merged PR #37 (`feat/c4-five-pilot-cases` → `main`) with merge commit `849735f65affd7e713857fc7659b7463a6649a6f`.
+  - **Production Deploy ID:** `6afe8700a9986bb2e2d4635e` (`state: ready`).
+  - **Production Smoke Test (Playwright):** All 7 v2 briefings (`somaliland`, `western-sahara`, `sudan`, `red-sea-yemen`, `south-china-sea`, `greenland`, `who-pathogen-access-benefit-sharing`) passed at desktop `1440×900` and mobile `390×844` (`0` console/page errors, `0` horizontal overflow, all 7 mobile locator maps inside first screen `734–813px < 844px`).
+- **Did (on `feat/free-institutional-feeds`, PR #38):**
+  - Added `netlify/functions/_shared/free-feeds.js` implementing zero-key free institutional & open feeds: 9 UN News regional/topic RSS feeds (`africa`, `asia-pacific`, `middle-east`, `europe`, `americas`, `climate-change`, `health`, `human-rights`, `economic-development`), WHO News RSS, optional ReliefWeb API v2 (active when `RELIEFWEB_APPNAME` is configured), and a single best-effort GDELT Doc API query.
+  - Updated `netlify/functions/_shared/intel-snapshot.js` and `netlify/functions/public-intel.mjs` so free institutional feeds are the default live globe feed with zero `SERPER_API_KEY` required, while Serper is strictly optional (`ENABLE_SERPER_PUBLIC_FEED=true` + `SERPER_API_KEY`, paused by default so failing calls stop immediately). Even when Serper is enabled and out of credits, free institutional items populate the snapshot (`status: 'fresh'`) with no sidebar error.
+  - Added `pingSupabaseKeepAlive()` in `netlify/functions/refresh-source-health.mjs` (daily read-only `GET /rest/v1/user_data?select=key&limit=1` with `apikey` header, 5s timeout, non-blocking) to keep the free Supabase project from pausing for inactivity, and documented it in `docs/SUPABASE.md`, `docs/ENVIRONMENT.md`, `docs/ARCHITECTURE.md`, and `.env.example`.
+- **Claude Collaboration (`Review`, `claude-sonnet-5-5`, read-only):** `review/claude-review-20261119-free-feeds.md` (`0 BLOCKING, 5 SHOULD-FIX, 9 NIT`) — **all 5 `SHOULD-FIX` + key `NIT`s accepted and fixed**: separated core free-feed failures from best-effort GDELT/optional Serper for `partial` and `errorCode`, fixed XML tag-strip/entity-decode order + `&#x...;` + ISO dates + strict `https:` URLs, merged 4 parallel GDELT calls into 1 query to avoid 429s, removed `serperStatus` from public meta (no billing leak), switched keep-alive to `apikey`-only header + body cancel + non-2xx warn, shared `DEFAULT_PUBLIC_PROVIDER`, added direct `free-feeds.js` & `partial`/`paused` unit tests, and updated `.env.example`, `docs/ARCHITECTURE.md`, and `HANDOFF.md`.
+- **Tested:** `npm test` (`84/84` pass), live `buildPublicSnapshot({ apiKey: '' })` (`STATUS: fresh`, `14` live items across `6/7` regions and `5/6` issues), `npm run build`.
+
 ## 2026-11-19 — Antigravity (Lead) — Unit 20 (C4 Five Remaining Pilot Cases + Core-Reading Verification + Fresh-Session Fact-Checks)
 - **Owner Gate Status:** Stopping on Deploy Preview #37 (`feat/c4-five-pilot-cases`, PR #37) with live preview links, Step 1 text for all five new briefings, desktop & `390px` mobile screenshots, and the D2 `28`-query / `12`-hour refresh plan (`0 */12 * * *`) awaiting owner approval before merging PR #37 or enabling D2.
 - **PR #36 Production Go-Live (completed before branching `feat/c4-five-pilot-cases`):**

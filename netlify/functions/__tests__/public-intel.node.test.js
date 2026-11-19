@@ -28,8 +28,193 @@ test('public snapshot uses fixed balanced queries and never accepts a visitor qu
     assert.equal(FIXED_QUERIES.some(item => 'visitorQuery' in item), false);
 });
 
-test('public snapshot reports not-configured without exposing or requiring a key', async () => {
-    const snapshot = await buildPublicSnapshot({ apiKey: '', now: new Date('2026-08-09T00:00:00Z') });
+const {
+    decodeXmlEntities,
+    fetchReliefWebReports,
+    parseRssItems,
+} = require('../_shared/free-feeds');
+
+test('free-feeds parses RSS CDATA, entities, ISO dates, guid fallback, and rejects non-HTTPS links', async () => {
+    const xml = `<?xml version="1.0" encoding="utf-8"?>
+        <rss version="2.0"><channel>
+            <item>
+                <title>Trade &amp; Diplomacy: a &lt; b and c &gt; d &#x2014; update</title>
+                <link>https://news.un.org/en/story/2026/11/1200010</link>
+                <description><![CDATA[<p>UN delegates discussed <b>humanitarian</b> aid &amp;amp; treaties.</p>]]></description>
+                <pubDate>Thu, 19 Nov 2026 04:00:00 +0000</pubDate>
+            </item>
+            <item>
+                <title>Bad javascript link</title>
+                <link>javascript:alert(1)</link>
+                <description>Should be dropped.</description>
+            </item>
+            <item>
+                <title>Plain HTTP link</title>
+                <link>http://example.org/insecure</link>
+                <description>Should be dropped.</description>
+            </item>
+            <item>
+                <title>GUID fallback item</title>
+                <guid>https://www.who.int/news/item/19-11-2026-test</guid>
+                <description>Valid https guid fallback.</description>
+            </item>
+            <item>
+                <title>Exceeds maxItems cap</title>
+                <link>https://news.un.org/en/story/2026/11/1200011</link>
+                <description>Should be capped.</description>
+            </item>
+        </channel></rss>`;
+    const items = parseRssItems(xml, { sourceName: 'UN News', maxItems: 2 });
+    assert.equal(items.length, 2);
+    assert.equal(items[0].title, 'Trade & Diplomacy: a < b and c > d — update');
+    assert.equal(items[0].snippet, 'UN delegates discussed humanitarian aid &amp; treaties.');
+    assert.equal(items[0].date, '2026-11-19');
+    assert.equal(items[1].link, 'https://www.who.int/news/item/19-11-2026-test');
+    assert.equal(decodeXmlEntities('a &lt; b &gt; c &amp; d'), 'a < b > c & d');
+
+    const skippedRw = await fetchReliefWebReports(async () => {
+        throw new Error('Should not fetch when appname is empty');
+    }, { appname: '' });
+    assert.equal(skippedRw.status, 'skipped-no-appname');
+    assert.deepEqual(skippedRw.items, []);
+});
+
+test('public snapshot builds live institutional feed with zero SERPER_API_KEY and pauses Serper when key exists but flag is off', async () => {
+    const calledUrls = [];
+    const sampleRss = `<?xml version="1.0" encoding="utf-8"?>
+        <rss version="2.0"><channel>
+            <item>
+                <title>UN Security Council addresses Sudan humanitarian access and ceasefire talks</title>
+                <link>https://news.un.org/en/story/2026/11/1200001</link>
+                <description><![CDATA[United Nations officials report worsening displacement and diplomatic efforts in Sudan.]]></description>
+                <pubDate>Thu, 19 Nov 2026 04:00:00 +0000</pubDate>
+            </item>
+        </channel></rss>`;
+    const fetchImpl = async (url) => {
+        calledUrls.push(String(url));
+        if (String(url).includes('google.serper.dev')) {
+            throw new Error('Serper must not be called when paused');
+        }
+        if (String(url).includes('reliefweb.int')) {
+            return {
+                ok: true,
+                json: async () => ({
+                    data: [{
+                        fields: {
+                            title: 'Myanmar humanitarian displacement and aid access report',
+                            url: 'https://reliefweb.int/report/myanmar/sample-2026',
+                            date: { created: '2026-11-19T02:00:00+00:00' },
+                            primary_country: { name: 'Myanmar' },
+                            source: [{ name: 'OCHA' }],
+                            theme: [{ name: 'Protection and Human Rights' }],
+                        },
+                    }],
+                }),
+            };
+        }
+        if (String(url).includes('gdeltproject.org')) {
+            return {
+                ok: true,
+                json: async () => ({
+                    articles: [{
+                        title: 'ASEAN ministers discuss South China Sea maritime diplomacy',
+                        url: 'https://www.aljazeera.com/news/2026/11/19/asean-maritime-diplomacy',
+                        domain: 'aljazeera.com',
+                        seendate: '20261119T030000Z',
+                    }],
+                }),
+            };
+        }
+        return { ok: true, text: async () => sampleRss };
+    };
+
+    const snapshot = await buildPublicSnapshot({
+        apiKey: 'existing-key-but-paused',
+        enableSerper: false,
+        reliefwebAppname: 'gcc-test-app',
+        fetchImpl,
+        now: new Date('2026-11-19T05:00:00Z'),
+    });
+
+    assert.equal(snapshot.meta.status, 'fresh');
+    assert.equal(snapshot.meta.errorCode, undefined);
+    assert.equal('serperStatus' in snapshot.meta, false, 'Public meta must not expose billing state');
+    assert.equal(snapshot.items.length, 3);
+    assert.equal(calledUrls.some(u => u.includes('google.serper.dev')), false);
+    assert.match(snapshot.meta.provider, /UN News & WHO RSS/);
+    assert.match(snapshot.meta.provider, /ReliefWeb/);
+    assert.match(snapshot.meta.provider, /GDELT/);
+});
+
+test('public snapshot keeps free institutional items and avoids error when optional Serper runs out of credits', async () => {
+    let serperCalls = 0;
+    const sampleRss = `<?xml version="1.0" encoding="utf-8"?>
+        <rss version="2.0"><channel>
+            <item>
+                <title>Climate finance treaty talks open for Pacific island states</title>
+                <link>https://news.un.org/en/story/2026/11/1200002</link>
+                <description>United Nations climate and ocean governance talks highlight Pacific resilience.</description>
+                <pubDate>Thu, 19 Nov 2026 04:00:00 +0000</pubDate>
+            </item>
+        </channel></rss>`;
+    const snapshot = await buildPublicSnapshot({
+        apiKey: 'exhausted-key',
+        enableSerper: true,
+        fetchImpl: async (url) => {
+            if (String(url).includes('google.serper.dev')) {
+                serperCalls += 1;
+                return { ok: false, status: 400, json: async () => ({ message: 'Not enough credits' }) };
+            }
+            if (String(url).includes('gdeltproject.org')) {
+                return { ok: true, json: async () => ({ articles: [] }) };
+            }
+            return { ok: true, text: async () => sampleRss };
+        },
+        now: new Date('2026-11-19T05:00:00Z'),
+    });
+
+    assert.equal(serperCalls, 8);
+    assert.equal(snapshot.meta.status, 'fresh');
+    assert.equal(snapshot.meta.failedQueryCount, 0);
+    assert.equal(snapshot.meta.errorCode, undefined);
+    assert.equal(snapshot.items.length, 1);
+});
+
+test('public snapshot marks partial when some core RSS feeds fail and sets errorCode when all fail', async () => {
+    let rssCalls = 0;
+    const sampleRss = `<?xml version="1.0" encoding="utf-8"?>
+        <rss version="2.0"><channel>
+            <item>
+                <title>UN Security Council addresses Sudan humanitarian access</title>
+                <link>https://news.un.org/en/story/2026/11/1200099</link>
+                <description>United Nations officials report worsening displacement in Sudan.</description>
+                <pubDate>Thu, 19 Nov 2026 04:00:00 +0000</pubDate>
+            </item>
+        </channel></rss>`;
+    const partial = await buildPublicSnapshot({
+        apiKey: '',
+        fetchImpl: async (url) => {
+            if (String(url).includes('gdeltproject.org')) return { ok: false, status: 429 };
+            rssCalls += 1;
+            if (rssCalls === 1) return { ok: true, text: async () => sampleRss };
+            return { ok: false, status: 503 };
+        },
+        now: new Date('2026-11-19T05:00:00Z'),
+    });
+    assert.equal(partial.meta.status, 'partial');
+    assert.equal(partial.items.length, 1);
+
+    const allFailed = await buildPublicSnapshot({
+        apiKey: '',
+        fetchImpl: async () => ({ ok: false, status: 503 }),
+        now: new Date('2026-11-19T05:00:00Z'),
+    });
+    assert.equal(allFailed.meta.status, 'provider-error');
+    assert.equal(allFailed.meta.errorCode, 'upstream-error');
+});
+
+test('public snapshot reports not-configured without exposing or requiring a key when free feeds are disabled', async () => {
+    const snapshot = await buildPublicSnapshot({ apiKey: '', includeFreeFeeds: false, now: new Date('2026-08-09T00:00:00Z') });
 
     assert.deepEqual(snapshot.items, []);
     assert.equal(snapshot.meta.status, 'not-configured');
@@ -41,6 +226,8 @@ test('public snapshot classifies Serper credit exhaustion, invalid API keys, emp
     const secretKey = 'super-secret-serper-token-do-not-leak';
     const creditFailSnapshot = await buildPublicSnapshot({
         apiKey: secretKey,
+        enableSerper: true,
+        includeFreeFeeds: false,
         fetchImpl: async () => ({
             ok: false,
             status: 400,
@@ -56,6 +243,8 @@ test('public snapshot classifies Serper credit exhaustion, invalid API keys, emp
 
     const authFailSnapshot = await buildPublicSnapshot({
         apiKey: secretKey,
+        enableSerper: true,
+        includeFreeFeeds: false,
         fetchImpl: async () => ({
             ok: false,
             status: 403,
@@ -70,6 +259,8 @@ test('public snapshot classifies Serper credit exhaustion, invalid API keys, emp
 
     const emptyQualifyingSnapshot = await buildPublicSnapshot({
         apiKey: secretKey,
+        enableSerper: true,
+        includeFreeFeeds: false,
         fetchImpl: async () => ({
             ok: true,
             json: async () => ({ news: [{ title: 'Summer shoe collection', snippet: 'Fashion promo', link: 'https://example.org/shoes' }] }),
@@ -82,6 +273,8 @@ test('public snapshot classifies Serper credit exhaustion, invalid API keys, emp
 
     const timeoutSnapshot = await buildPublicSnapshot({
         apiKey: secretKey,
+        enableSerper: true,
+        includeFreeFeeds: false,
         fetchImpl: async () => {
             const err = new Error('aborted');
             err.name = 'AbortError';
@@ -109,6 +302,8 @@ test('public snapshot normalizes, deduplicates, and labels cached provider resul
     });
     const snapshot = await buildPublicSnapshot({
         apiKey: 'server-only-key',
+        enableSerper: true,
+        includeFreeFeeds: false,
         fetchImpl,
         now: new Date('2026-08-09T00:00:00Z'),
     });
