@@ -2,7 +2,7 @@
   "schemaVersion": 1,
   "caseStudyCount": 29,
   "staticPageCount": 1,
-  "targetCount": 201,
+  "targetCount": 202,
   "targets": [
     {
       "id": "sudan-displacement-regional-spillover:core:0",
@@ -119,6 +119,19 @@
       "kind": "primary",
       "lifecycle": "active",
       "url": "https://www.un.org/sg/en/content/highlight/2026-07-09.html"
+    },
+    {
+      "id": "sudan-displacement-regional-spillover:supplemental:3:alternate:0",
+      "caseStudyId": "sudan-displacement-regional-spillover",
+      "caseStudyTitle": "Sudan: War, Displacement, and Regional Spillover",
+      "sourceTitle": "Noon briefing of 9 July 2026",
+      "publisher": "United Nations",
+      "group": "supplemental",
+      "kind": "alternate",
+      "lifecycle": "active",
+      "primaryUrl": "https://www.un.org/sg/en/content/highlight/2026-07-09.html",
+      "label": "Full UN noon briefing transcript (9 July 2026)",
+      "url": "https://transcripts.un.org/en/briefing/sg/2026-07-09"
     },
     {
       "id": "sudan-displacement-regional-spillover:supplemental:4",

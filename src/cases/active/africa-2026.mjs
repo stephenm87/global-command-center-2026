@@ -152,6 +152,12 @@ export const AFRICA_CASES_2026 = [
                 "publisher": "United Nations",
                 "publishedAt": "2026-07-09",
                 "url": "https://www.un.org/sg/en/content/highlight/2026-07-09.html",
+                "alternateUrls": [
+                    {
+                        "label": "Full UN noon briefing transcript (9 July 2026)",
+                        "url": "https://transcripts.un.org/en/briefing/sg/2026-07-09"
+                    }
+                ],
                 "perspective": "Official dated statement on the 2026 Sudan Humanitarian Response Plan funding gap"
             },
             {
@@ -434,7 +440,7 @@ export const AFRICA_CASES_2026 = [
             {
                 "date": "2026-07-09",
                 "label": "UN figures show the 2026 Sudan response plan has received $930 million of the nearly $2.9 billion needed.",
-                "sourceUrl": "https://www.ungeneva.org/en/news-media/press-briefing/2026/07/un-geneva-press-briefing-1"
+                "sourceUrl": "https://www.un.org/sg/en/content/highlight/2026-07-09.html"
             },
             {
                 "date": "2026-10-08",

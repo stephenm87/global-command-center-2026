@@ -704,7 +704,7 @@ export const MENA_CASES_2026 = [
             "UN_OPEC",
             "Africa"
         ],
-        "statusSummary": "The Sana'a Center describes a fragmented Yemeni trade-finance system that makes essential imports more costly and uncertain. Meeting for its 138th session on 2–6 November 2026, the International Maritime Organization Council condemned attacks on merchant shipping in the Red Sea and wider regional lanes and urged stronger protection for seafarers, following the IMO Secretary-General's July 2026 statement. Chatham House analysis cautions that overlapping military and humanitarian activity increases escalation and miscalculation risks.",
+        "statusSummary": "The Sana'a Center describes a fragmented Yemeni trade-finance system that makes essential imports more costly and uncertain. At its 138th session on 2–6 November 2026, the International Maritime Organization Council condemned attacks on Red Sea merchant shipping and urged stronger seafarer protection. That followed the IMO Secretary-General's July 2026 statement. Chatham House analysis cautions that overlapping military and humanitarian activity increases escalation and miscalculation risks.",
         "whyItMatters": "Treating the Red Sea only as a global shipping lane hides how maritime coercion, port access, banking fragmentation, and import costs shape food, fuel, medicine, and livelihoods for people inside Yemen and around the corridor.",
         "updatedAt": "2026-11-17",
         "confidence": "medium",
