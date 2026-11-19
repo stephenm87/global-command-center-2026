@@ -2,18 +2,18 @@
   "schemaVersion": 1,
   "caseStudyCount": 29,
   "staticPageCount": 1,
-  "targetCount": 155,
+  "targetCount": 202,
   "targets": [
     {
       "id": "sudan-displacement-regional-spillover:core:0",
       "caseStudyId": "sudan-displacement-regional-spillover",
       "caseStudyTitle": "Sudan: War, Displacement, and Regional Spillover",
-      "sourceTitle": "Emergency Response Rooms work in Sudan – we could change aid models in other warzones",
-      "publisher": "Chatham House",
+      "sourceTitle": "Sudan: Who Speaks for Sudan's Emergency Response Rooms?",
+      "publisher": "African Arguments (distributed by allAfrica)",
       "group": "core",
       "kind": "primary",
       "lifecycle": "active",
-      "url": "https://www.chathamhouse.org/publications/the-world-today/2026-06/emergency-response-rooms-work-sudan-we-could-change-aid-models"
+      "url": "https://allafrica.com/stories/202609010010.html"
     },
     {
       "id": "sudan-displacement-regional-spillover:core:1",
@@ -38,6 +38,19 @@
       "url": "https://apnews.com/article/sudan-war-children-drone-rsf-army-9ac6245afb2c0e3cfc96da5ceda14f48"
     },
     {
+      "id": "sudan-displacement-regional-spillover:core:2:alternate:0",
+      "caseStudyId": "sudan-displacement-regional-spillover",
+      "caseStudyTitle": "Sudan: War, Displacement, and Regional Spillover",
+      "sourceTitle": "More than 300 children killed or injured in Sudan war in 6 months, UNICEF says",
+      "publisher": "Associated Press",
+      "group": "core",
+      "kind": "alternate",
+      "lifecycle": "active",
+      "primaryUrl": "https://apnews.com/article/sudan-war-children-drone-rsf-army-9ac6245afb2c0e3cfc96da5ceda14f48",
+      "label": "Same Associated Press report as published by PBS News",
+      "url": "https://www.pbs.org/newshour/world/more-than-300-children-killed-or-injured-in-sudan-war-in-6-months-unicef-says"
+    },
+    {
       "id": "sudan-displacement-regional-spillover:supplemental:0",
       "caseStudyId": "sudan-displacement-regional-spillover",
       "caseStudyTitle": "Sudan: War, Displacement, and Regional Spillover",
@@ -60,6 +73,19 @@
       "url": "https://www.unhcr.org/news/briefing-notes/three-years-war-weary-sudanese-remain-move"
     },
     {
+      "id": "sudan-displacement-regional-spillover:supplemental:1:alternate:0",
+      "caseStudyId": "sudan-displacement-regional-spillover",
+      "caseStudyTitle": "Sudan: War, Displacement, and Regional Spillover",
+      "sourceTitle": "Three years on, war-weary Sudanese remain on the move",
+      "publisher": "UNHCR",
+      "group": "supplemental",
+      "kind": "alternate",
+      "lifecycle": "active",
+      "primaryUrl": "https://www.unhcr.org/news/briefing-notes/three-years-war-weary-sudanese-remain-move",
+      "label": "Same UNHCR briefing note as distributed by allAfrica",
+      "url": "https://allafrica.com/stories/202604170188.html"
+    },
+    {
       "id": "sudan-displacement-regional-spillover:supplemental:2",
       "caseStudyId": "sudan-displacement-regional-spillover",
       "caseStudyTitle": "Sudan: War, Displacement, and Regional Spillover",
@@ -71,6 +97,19 @@
       "url": "https://apnews.com/article/32a416bfbd680ea42edf6c0298d2617b"
     },
     {
+      "id": "sudan-displacement-regional-spillover:supplemental:2:alternate:0",
+      "caseStudyId": "sudan-displacement-regional-spillover",
+      "caseStudyTitle": "Sudan: War, Displacement, and Regional Spillover",
+      "sourceTitle": "Sudan enters a fourth year of war as officials lament an abandoned crisis",
+      "publisher": "Associated Press",
+      "group": "supplemental",
+      "kind": "alternate",
+      "lifecycle": "active",
+      "primaryUrl": "https://apnews.com/article/32a416bfbd680ea42edf6c0298d2617b",
+      "label": "Same Associated Press report as published by Arab News",
+      "url": "https://www.arabnews.com/node/2639976"
+    },
+    {
       "id": "sudan-displacement-regional-spillover:supplemental:3",
       "caseStudyId": "sudan-displacement-regional-spillover",
       "caseStudyTitle": "Sudan: War, Displacement, and Regional Spillover",
@@ -80,6 +119,96 @@
       "kind": "primary",
       "lifecycle": "active",
       "url": "https://www.un.org/sg/en/content/highlight/2026-07-09.html"
+    },
+    {
+      "id": "sudan-displacement-regional-spillover:supplemental:3:alternate:0",
+      "caseStudyId": "sudan-displacement-regional-spillover",
+      "caseStudyTitle": "Sudan: War, Displacement, and Regional Spillover",
+      "sourceTitle": "Noon briefing of 9 July 2026",
+      "publisher": "United Nations",
+      "group": "supplemental",
+      "kind": "alternate",
+      "lifecycle": "active",
+      "primaryUrl": "https://www.un.org/sg/en/content/highlight/2026-07-09.html",
+      "label": "Full UN noon briefing transcript (9 July 2026)",
+      "url": "https://transcripts.un.org/en/briefing/sg/2026-07-09"
+    },
+    {
+      "id": "sudan-displacement-regional-spillover:supplemental:4",
+      "caseStudyId": "sudan-displacement-regional-spillover",
+      "caseStudyTitle": "Sudan: War, Displacement, and Regional Spillover",
+      "sourceTitle": "Civil War in Sudan",
+      "publisher": "Council on Foreign Relations (Global Conflict Tracker)",
+      "group": "supplemental",
+      "kind": "primary",
+      "lifecycle": "active",
+      "url": "https://www.cfr.org/global-conflict-tracker/conflict/power-struggle-sudan"
+    },
+    {
+      "id": "sudan-displacement-regional-spillover:supplemental:5",
+      "caseStudyId": "sudan-displacement-regional-spillover",
+      "caseStudyTitle": "Sudan: War, Displacement, and Regional Spillover",
+      "sourceTitle": "Millions of desperate Sudanese return home amid dire conditions as war rages",
+      "publisher": "UN News",
+      "group": "supplemental",
+      "kind": "primary",
+      "lifecycle": "active",
+      "url": "https://news.un.org/en/story/2026/04/1167341"
+    },
+    {
+      "id": "sudan-displacement-regional-spillover:supplemental:6",
+      "caseStudyId": "sudan-displacement-regional-spillover",
+      "caseStudyTitle": "Sudan: War, Displacement, and Regional Spillover",
+      "sourceTitle": "UN Geneva Press Briefing, 10 July 2026",
+      "publisher": "United Nations Office at Geneva",
+      "group": "supplemental",
+      "kind": "primary",
+      "lifecycle": "active",
+      "url": "https://www.ungeneva.org/en/news-media/press-briefing/2026/07/un-geneva-press-briefing-1"
+    },
+    {
+      "id": "sudan-displacement-regional-spillover:supplemental:7",
+      "caseStudyId": "sudan-displacement-regional-spillover",
+      "caseStudyTitle": "Sudan: War, Displacement, and Regional Spillover",
+      "sourceTitle": "UN extends Darfur arms embargo, blocks broader Sudan sanctions proposal",
+      "publisher": "Al Jazeera",
+      "group": "supplemental",
+      "kind": "primary",
+      "lifecycle": "active",
+      "url": "https://www.aljazeera.com/news/2026/10/9/un-extends-darfur-arms-embargo-blocks-broader-sudan-sanctions-proposal"
+    },
+    {
+      "id": "sudan-displacement-regional-spillover:supplemental:8",
+      "caseStudyId": "sudan-displacement-regional-spillover",
+      "caseStudyTitle": "Sudan: War, Displacement, and Regional Spillover",
+      "sourceTitle": "Sudanese emergency responders receive Chatham House prize",
+      "publisher": "The National",
+      "group": "supplemental",
+      "kind": "primary",
+      "lifecycle": "active",
+      "url": "https://www.thenationalnews.com/news/uk/2026/03/26/sudanese-emergency-responders-receive-chatham-house-prize"
+    },
+    {
+      "id": "sudan-displacement-regional-spillover:supplemental:9",
+      "caseStudyId": "sudan-displacement-regional-spillover",
+      "caseStudyTitle": "Sudan: War, Displacement, and Regional Spillover",
+      "sourceTitle": "Sudan",
+      "publisher": "Cordaid",
+      "group": "supplemental",
+      "kind": "primary",
+      "lifecycle": "active",
+      "url": "https://www.cordaid.org/en/countries/sudan/"
+    },
+    {
+      "id": "sudan-displacement-regional-spillover:supplemental:10",
+      "caseStudyId": "sudan-displacement-regional-spillover",
+      "caseStudyTitle": "Sudan: War, Displacement, and Regional Spillover",
+      "sourceTitle": "Emergency Response Rooms work in Sudan – we could change aid models in other warzones",
+      "publisher": "Chatham House",
+      "group": "supplemental",
+      "kind": "primary",
+      "lifecycle": "active",
+      "url": "https://www.chathamhouse.org/publications/the-world-today/2026-06/emergency-response-rooms-work-sudan-we-could-change-aid-models"
     },
     {
       "id": "myanmar-fragmented-sovereignty:core:0",
@@ -142,12 +271,12 @@
       "id": "south-china-sea-arbitral-award-ten-years:core:0",
       "caseStudyId": "south-china-sea-arbitral-award-ten-years",
       "caseStudyTitle": "South China Sea: Ten Years After the Arbitral Award",
-      "sourceTitle": "Delhi Roundtable Accentuates Abiding Relevance of South China Sea Arbitral Award on Decennial",
-      "publisher": "Department of Foreign Affairs of the Philippines",
+      "sourceTitle": "PH, allies affirm arbitral ruling in joint statement",
+      "publisher": "Philippine Daily Inquirer",
       "group": "core",
       "kind": "primary",
       "lifecycle": "active",
-      "url": "https://newdelhipe.dfa.gov.ph/index.php/newsroom/embassy-news/1230-delhi-roundtable-accentuates-abiding-relevance-of-south-china-sea-arbitral-award-on-decennial"
+      "url": "https://www.inquirer.net/480412/ph-allies-affirm-arbitral-ruling-in-joint-statement/"
     },
     {
       "id": "south-china-sea-arbitral-award-ten-years:core:1",
@@ -172,6 +301,19 @@
       "url": "https://apnews.com/article/d0148a4175f80eedf70dcf2696f03ddd"
     },
     {
+      "id": "south-china-sea-arbitral-award-ten-years:core:2:alternate:0",
+      "caseStudyId": "south-china-sea-arbitral-award-ten-years",
+      "caseStudyTitle": "South China Sea: Ten Years After the Arbitral Award",
+      "sourceTitle": "Philippines commemorates 2016 South China Sea ruling rejected by Beijing",
+      "publisher": "Associated Press",
+      "group": "core",
+      "kind": "alternate",
+      "lifecycle": "active",
+      "primaryUrl": "https://apnews.com/article/d0148a4175f80eedf70dcf2696f03ddd",
+      "label": "Same Associated Press report as published by WTOP News",
+      "url": "https://wtop.com/world/2026/07/philippines-commemorates-2016-south-china-sea-ruling-rejected-by-beijing/"
+    },
+    {
       "id": "south-china-sea-arbitral-award-ten-years:supplemental:0",
       "caseStudyId": "south-china-sea-arbitral-award-ten-years",
       "caseStudyTitle": "South China Sea: Ten Years After the Arbitral Award",
@@ -192,6 +334,61 @@
       "kind": "primary",
       "lifecycle": "active",
       "url": "https://www.aljazeera.com/news/2026/11/16/asean-china-fall-short-of-agreeing-on-south-china-sea-code"
+    },
+    {
+      "id": "south-china-sea-arbitral-award-ten-years:supplemental:2",
+      "caseStudyId": "south-china-sea-arbitral-award-ten-years",
+      "caseStudyTitle": "South China Sea: Ten Years After the Arbitral Award",
+      "sourceTitle": "China issues statement over 'South China Sea arbitration award' hype",
+      "publisher": "CGTN",
+      "group": "supplemental",
+      "kind": "primary",
+      "lifecycle": "active",
+      "url": "https://news.cgtn.com/news/2026-07-12/China-issues-statement-over-South-China-Sea-arbitration-award-hype-1OINoe5qMGk/p.html"
+    },
+    {
+      "id": "south-china-sea-arbitral-award-ten-years:supplemental:3",
+      "caseStudyId": "south-china-sea-arbitral-award-ten-years",
+      "caseStudyTitle": "South China Sea: Ten Years After the Arbitral Award",
+      "sourceTitle": "Delhi Roundtable Accentuates Abiding Relevance of South China Sea Arbitral Award on Decennial",
+      "publisher": "Department of Foreign Affairs of the Philippines",
+      "group": "supplemental",
+      "kind": "primary",
+      "lifecycle": "active",
+      "url": "https://newdelhipe.dfa.gov.ph/index.php/newsroom/embassy-news/1230-delhi-roundtable-accentuates-abiding-relevance-of-south-china-sea-arbitral-award-on-decennial"
+    },
+    {
+      "id": "south-china-sea-arbitral-award-ten-years:supplemental:4",
+      "caseStudyId": "south-china-sea-arbitral-award-ten-years",
+      "caseStudyTitle": "South China Sea: Ten Years After the Arbitral Award",
+      "sourceTitle": "Territorial Disputes in the South China Sea",
+      "publisher": "Council on Foreign Relations (Global Conflict Tracker)",
+      "group": "supplemental",
+      "kind": "primary",
+      "lifecycle": "active",
+      "url": "https://www.cfr.org/global-conflict-tracker/conflict/territorial-disputes-south-china-sea"
+    },
+    {
+      "id": "south-china-sea-arbitral-award-ten-years:supplemental:5",
+      "caseStudyId": "south-china-sea-arbitral-award-ten-years",
+      "caseStudyTitle": "South China Sea: Ten Years After the Arbitral Award",
+      "sourceTitle": "Maritime Zones and Boundaries",
+      "publisher": "National Oceanic and Atmospheric Administration, Office of General Counsel",
+      "group": "supplemental",
+      "kind": "primary",
+      "lifecycle": "active",
+      "url": "https://www.noaa.gov/maritime-zones-and-boundaries"
+    },
+    {
+      "id": "south-china-sea-arbitral-award-ten-years:supplemental:6",
+      "caseStudyId": "south-china-sea-arbitral-award-ten-years",
+      "caseStudyTitle": "South China Sea: Ten Years After the Arbitral Award",
+      "sourceTitle": "PH officials lead National Peace Walk to reaffirm 2016 South China Sea arbitral award",
+      "publisher": "GMA News Online",
+      "group": "supplemental",
+      "kind": "primary",
+      "lifecycle": "active",
+      "url": "https://www.gmanetwork.com/news/topstories/nation/994578/ph-officials-lead-national-peace-walk-to-reaffirm-2016-south-china-sea-arbitral-award/story/"
     },
     {
       "id": "syria-transition-return-sanctions:core:0",
@@ -427,6 +624,32 @@
       "url": "https://govmin.gl/publications/greenland-mineral-resources-strategy-2025-2029/"
     },
     {
+      "id": "greenland-autonomy-security-minerals:core:1:alternate:0",
+      "caseStudyId": "greenland-autonomy-security-minerals",
+      "caseStudyTitle": "Greenland: Autonomy, Arctic Security, and Critical Minerals",
+      "sourceTitle": "Greenland Mineral Resources Strategy 2025–2029",
+      "publisher": "Mineral Resources Authority, Government of Greenland",
+      "group": "core",
+      "kind": "alternate",
+      "lifecycle": "active",
+      "primaryUrl": "https://govmin.gl/publications/greenland-mineral-resources-strategy-2025-2029/",
+      "label": "Open the English strategy PDF on the Government of Greenland site",
+      "url": "https://naalakkersuisut.gl/-/media/nyheder/2025/01/3101_ny_raastofstrategi/eng_greenland-mineral-resources-strategy-2025-2029.pdf"
+    },
+    {
+      "id": "greenland-autonomy-security-minerals:core:1:alternate:1",
+      "caseStudyId": "greenland-autonomy-security-minerals",
+      "caseStudyTitle": "Greenland: Autonomy, Arctic Security, and Critical Minerals",
+      "sourceTitle": "Greenland Mineral Resources Strategy 2025–2029",
+      "publisher": "Mineral Resources Authority, Government of Greenland",
+      "group": "core",
+      "kind": "alternate",
+      "lifecycle": "active",
+      "primaryUrl": "https://govmin.gl/publications/greenland-mineral-resources-strategy-2025-2029/",
+      "label": "Government of Greenland press release on the strategy (Danish and English, 31 January 2025)",
+      "url": "https://naalakkersuisut.gl/Nyheder/2025/01/3101_Ny_Raastofstrategi?sc_lang=da"
+    },
+    {
       "id": "greenland-autonomy-security-minerals:core:2",
       "caseStudyId": "greenland-autonomy-security-minerals",
       "caseStudyTitle": "Greenland: Autonomy, Arctic Security, and Critical Minerals",
@@ -447,6 +670,19 @@
       "kind": "primary",
       "lifecycle": "active",
       "url": "https://apnews.com/article/bbece2f899116788fe45525dcfe7d030"
+    },
+    {
+      "id": "greenland-autonomy-security-minerals:supplemental:0:alternate:0",
+      "caseStudyId": "greenland-autonomy-security-minerals",
+      "caseStudyTitle": "Greenland: Autonomy, Arctic Security, and Critical Minerals",
+      "sourceTitle": "Greenland’s prime minister tells Trump’s envoy self-determination cannot be negotiated",
+      "publisher": "Associated Press",
+      "group": "supplemental",
+      "kind": "alternate",
+      "lifecycle": "active",
+      "primaryUrl": "https://apnews.com/article/bbece2f899116788fe45525dcfe7d030",
+      "label": "Same Associated Press report as published by WTOP News",
+      "url": "https://wtop.com/national/2026/05/greenlands-prime-minister-tells-trumps-envoy-self-determination-cannot-be-negotiated/"
     },
     {
       "id": "greenland-autonomy-security-minerals:supplemental:1",
@@ -480,6 +716,72 @@
       "kind": "primary",
       "lifecycle": "active",
       "url": "https://news.mongabay.com/short-article/2026/10/a-decision-to-decide-greenland-moves-to-suspend-seabed-mining-until-2029/"
+    },
+    {
+      "id": "greenland-autonomy-security-minerals:supplemental:4",
+      "caseStudyId": "greenland-autonomy-security-minerals",
+      "caseStudyTitle": "Greenland: Autonomy, Arctic Security, and Critical Minerals",
+      "sourceTitle": "Act on Greenland Self-Government (Act no. 473 of 12 June 2009), English translation",
+      "publisher": "Prime Minister's Office of Denmark (Statsministeriet)",
+      "group": "supplemental",
+      "kind": "primary",
+      "lifecycle": "active",
+      "url": "https://english.stm.dk/media/4vgewyoh/gl-selvstyrelov-uk.pdf"
+    },
+    {
+      "id": "greenland-autonomy-security-minerals:supplemental:5",
+      "caseStudyId": "greenland-autonomy-security-minerals",
+      "caseStudyTitle": "Greenland: Autonomy, Arctic Security, and Critical Minerals",
+      "sourceTitle": "Greenland",
+      "publisher": "Prime Minister's Office of Denmark (Statsministeriet)",
+      "group": "supplemental",
+      "kind": "primary",
+      "lifecycle": "active",
+      "url": "https://english.stm.dk/the-prime-ministers-office/the-unity-of-the-realm/greenland/"
+    },
+    {
+      "id": "greenland-autonomy-security-minerals:supplemental:6",
+      "caseStudyId": "greenland-autonomy-security-minerals",
+      "caseStudyTitle": "Greenland: Autonomy, Arctic Security, and Critical Minerals",
+      "sourceTitle": "Thousands march in Greenland against Trump's threats to take over the Arctic island",
+      "publisher": "Associated Press (published by PBS News)",
+      "group": "supplemental",
+      "kind": "primary",
+      "lifecycle": "active",
+      "url": "https://www.pbs.org/newshour/world/thousands-march-in-greenland-against-trumps-threats-to-take-over-the-arctic-island"
+    },
+    {
+      "id": "greenland-autonomy-security-minerals:supplemental:7",
+      "caseStudyId": "greenland-autonomy-security-minerals",
+      "caseStudyTitle": "Greenland: Autonomy, Arctic Security, and Critical Minerals",
+      "sourceTitle": "Greenland's premier says US pressure for takeover ongoing",
+      "publisher": "Anadolu Agency",
+      "group": "supplemental",
+      "kind": "primary",
+      "lifecycle": "active",
+      "url": "https://aa.com.tr/en/europe/greenland-s-premier-says-us-pressure-for-takeover-ongoing/3985738"
+    },
+    {
+      "id": "greenland-autonomy-security-minerals:supplemental:8",
+      "caseStudyId": "greenland-autonomy-security-minerals",
+      "caseStudyTitle": "Greenland: Autonomy, Arctic Security, and Critical Minerals",
+      "sourceTitle": "'Deal on Greenland' key to US troops remaining in Europe, says Trump",
+      "publisher": "Press Association (published by The Irish News)",
+      "group": "supplemental",
+      "kind": "primary",
+      "lifecycle": "active",
+      "url": "https://www.irishnews.com/news/uk/deal-on-greenland-key-to-us-troops-remaining-in-europe-says-trump-D4NHLCIBCNNXVFZNOUX56O6TGY/"
+    },
+    {
+      "id": "greenland-autonomy-security-minerals:supplemental:9",
+      "caseStudyId": "greenland-autonomy-security-minerals",
+      "caseStudyTitle": "Greenland: Autonomy, Arctic Security, and Critical Minerals",
+      "sourceTitle": "Denmark says Greenland 'not for sale' after Trump renews call for US control",
+      "publisher": "MercoPress",
+      "group": "supplemental",
+      "kind": "primary",
+      "lifecycle": "active",
+      "url": "https://en.mercopress.com/2026/07/08/denmark-says-greenland-not-for-sale-after-trump-renews-call-for-us-control"
     },
     {
       "id": "eu-ai-act-transparency-implementation:core:0",
@@ -1036,6 +1338,19 @@
       "url": "https://sanaacenter.org/publications/policy-research/26389"
     },
     {
+      "id": "red-sea-yemen-humanitarian-economy:core:0:alternate:0",
+      "caseStudyId": "red-sea-yemen-humanitarian-economy",
+      "caseStudyTitle": "Red Sea Security Through Yemen's Humanitarian Economy",
+      "sourceTitle": "Supporting Trade Finance in Yemen Amid Uncertainty",
+      "publisher": "Sana'a Center for Strategic Studies",
+      "group": "core",
+      "kind": "alternate",
+      "lifecycle": "active",
+      "primaryUrl": "https://sanaacenter.org/publications/policy-research/26389",
+      "label": "Full policy brief (PDF)",
+      "url": "https://sanaacenter.org/files/Trade_Finance_in_Yemen_NO36_en.pdf"
+    },
+    {
       "id": "red-sea-yemen-humanitarian-economy:core:1",
       "caseStudyId": "red-sea-yemen-humanitarian-economy",
       "caseStudyTitle": "Red Sea Security Through Yemen's Humanitarian Economy",
@@ -1067,6 +1382,116 @@
       "kind": "primary",
       "lifecycle": "active",
       "url": "https://www.imo.org/en/mediacentre/pressbriefings/pages/imo-council-c138-urges-stronger-protection-of-seafarers-amid-threats-to-global-shipping-.aspx"
+    },
+    {
+      "id": "red-sea-yemen-humanitarian-economy:supplemental:1",
+      "caseStudyId": "red-sea-yemen-humanitarian-economy",
+      "caseStudyTitle": "Red Sea Security Through Yemen's Humanitarian Economy",
+      "sourceTitle": "Saudi Arabia seeks international coalition against Houthis in Red Sea",
+      "publisher": "Al Jazeera",
+      "group": "supplemental",
+      "kind": "primary",
+      "lifecycle": "active",
+      "url": "https://www.aljazeera.com/news/2026/7/29/saudi-arabia-seeks-international-coalition-against-houthis-in-red-sea"
+    },
+    {
+      "id": "red-sea-yemen-humanitarian-economy:supplemental:2",
+      "caseStudyId": "red-sea-yemen-humanitarian-economy",
+      "caseStudyTitle": "Red Sea Security Through Yemen's Humanitarian Economy",
+      "sourceTitle": "Yemen's Houthis renew strikes on Saudi Arabia as UNSC extends sanctions",
+      "publisher": "Al Jazeera",
+      "group": "supplemental",
+      "kind": "primary",
+      "lifecycle": "active",
+      "url": "https://www.aljazeera.com/news/2026/11/12/yemens-houthis-renew-strikes-on-saudi-arabia-as-unsc-extends-sanctions"
+    },
+    {
+      "id": "red-sea-yemen-humanitarian-economy:supplemental:3",
+      "caseStudyId": "red-sea-yemen-humanitarian-economy",
+      "caseStudyTitle": "Red Sea Security Through Yemen's Humanitarian Economy",
+      "sourceTitle": "Statement by the High Representative on Houthi threats against the Kingdom of Saudi Arabia and freedom of navigation in the region",
+      "publisher": "European External Action Service",
+      "group": "supplemental",
+      "kind": "primary",
+      "lifecycle": "active",
+      "url": "https://www.eeas.europa.eu/eeas/statement-high-representative-houthi-threats-against-kingdom-saudi-arabia-and-freedom-navigation_en"
+    },
+    {
+      "id": "red-sea-yemen-humanitarian-economy:supplemental:4",
+      "caseStudyId": "red-sea-yemen-humanitarian-economy",
+      "caseStudyTitle": "Red Sea Security Through Yemen's Humanitarian Economy",
+      "sourceTitle": "The Houthi blockade: Will the Red Sea become a new front in the Iran war?",
+      "publisher": "The New Arab",
+      "group": "supplemental",
+      "kind": "primary",
+      "lifecycle": "active",
+      "url": "https://www.newarab.com/analysis/houthi-red-sea-blockade-new-front-iran-war"
+    },
+    {
+      "id": "red-sea-yemen-humanitarian-economy:supplemental:5",
+      "caseStudyId": "red-sea-yemen-humanitarian-economy",
+      "caseStudyTitle": "Red Sea Security Through Yemen's Humanitarian Economy",
+      "sourceTitle": "UN Security Council renews monitoring of Houthi Red Sea attacks amid Yemen airspace escalation",
+      "publisher": "Arab News",
+      "group": "supplemental",
+      "kind": "primary",
+      "lifecycle": "active",
+      "url": "https://www.arabnews.pk/node/2650898"
+    },
+    {
+      "id": "red-sea-yemen-humanitarian-economy:supplemental:6",
+      "caseStudyId": "red-sea-yemen-humanitarian-economy",
+      "caseStudyTitle": "Red Sea Security Through Yemen's Humanitarian Economy",
+      "sourceTitle": "Red Sea area",
+      "publisher": "International Maritime Organization",
+      "group": "supplemental",
+      "kind": "primary",
+      "lifecycle": "active",
+      "url": "https://www.imo.org/en/MediaCentre/HotTopics/Pages/Red-Sea.aspx"
+    },
+    {
+      "id": "red-sea-yemen-humanitarian-economy:supplemental:7",
+      "caseStudyId": "red-sea-yemen-humanitarian-economy",
+      "caseStudyTitle": "Red Sea Security Through Yemen's Humanitarian Economy",
+      "sourceTitle": "Statement on deadly ship attack in the Red Sea",
+      "publisher": "International Maritime Organization",
+      "group": "supplemental",
+      "kind": "primary",
+      "lifecycle": "active",
+      "url": "https://www.imo.org/en/mediacentre/pressbriefings/pages/statement-on-deadly-ship-attack-in-the-red-sea.aspx"
+    },
+    {
+      "id": "red-sea-yemen-humanitarian-economy:supplemental:8",
+      "caseStudyId": "red-sea-yemen-humanitarian-economy",
+      "caseStudyTitle": "Red Sea Security Through Yemen's Humanitarian Economy",
+      "sourceTitle": "Yemen: Security Council extends UN mission in crucial port city amid escalating Red Sea strife",
+      "publisher": "UN News",
+      "group": "supplemental",
+      "kind": "primary",
+      "lifecycle": "active",
+      "url": "https://news.un.org/en/story/2025/07/1165395"
+    },
+    {
+      "id": "red-sea-yemen-humanitarian-economy:supplemental:9",
+      "caseStudyId": "red-sea-yemen-humanitarian-economy",
+      "caseStudyTitle": "Red Sea Security Through Yemen's Humanitarian Economy",
+      "sourceTitle": "Yemen's Tragedy: War, Stalemate, and Suffering",
+      "publisher": "Council on Foreign Relations",
+      "group": "supplemental",
+      "kind": "primary",
+      "lifecycle": "active",
+      "url": "https://www.cfr.org/backgrounder/yemen-crisis"
+    },
+    {
+      "id": "red-sea-yemen-humanitarian-economy:supplemental:10",
+      "caseStudyId": "red-sea-yemen-humanitarian-economy",
+      "caseStudyTitle": "Red Sea Security Through Yemen's Humanitarian Economy",
+      "sourceTitle": "U.N. Renews Red Sea Reporting Mandate as Russia Needles U.S. on Venezuelan Seizures",
+      "publisher": "Reuters (published by gCaptain)",
+      "group": "supplemental",
+      "kind": "primary",
+      "lifecycle": "active",
+      "url": "https://gcaptain.com/u-n-renews-red-sea-reporting-mandate-as-russia-needles-u-s-on-venezuelan-seizures"
     },
     {
       "id": "indus-water-regime-under-strain:core:0",
@@ -1665,6 +2090,116 @@
       "kind": "primary",
       "lifecycle": "active",
       "url": "https://www.who.int/news/item/20-07-2026-who-member-states-continue-negotiations-on-the-pathogen-access-and-benefit-sharing-annex"
+    },
+    {
+      "id": "who-pathogen-access-benefit-sharing:supplemental:1",
+      "caseStudyId": "who-pathogen-access-benefit-sharing",
+      "caseStudyTitle": "Global Health: Pathogen Access and Benefit Sharing",
+      "sourceTitle": "World Health Assembly adopts historic Pandemic Agreement to make the world more equitable and safer from future pandemics",
+      "publisher": "World Health Organization",
+      "group": "supplemental",
+      "kind": "primary",
+      "lifecycle": "active",
+      "url": "https://www.who.int/news/item/20-05-2025-world-health-assembly-adopts-historic-pandemic-agreement-to-make-the-world-more-equitable-and-safer-from-future-pandemics"
+    },
+    {
+      "id": "who-pathogen-access-benefit-sharing:supplemental:2",
+      "caseStudyId": "who-pathogen-access-benefit-sharing",
+      "caseStudyTitle": "Global Health: Pathogen Access and Benefit Sharing",
+      "sourceTitle": "WHO Member States agree to extend negotiations on Pathogen Access and Benefit Sharing annex",
+      "publisher": "World Health Organization",
+      "group": "supplemental",
+      "kind": "primary",
+      "lifecycle": "active",
+      "url": "https://www.who.int/news/item/01-05-2026-who-member-states-agree-to-extend-negotiations-on-pathogen-access-and-benefit-sharing-annex"
+    },
+    {
+      "id": "who-pathogen-access-benefit-sharing:supplemental:3",
+      "caseStudyId": "who-pathogen-access-benefit-sharing",
+      "caseStudyTitle": "Global Health: Pathogen Access and Benefit Sharing",
+      "sourceTitle": "Pandemic Influenza Preparedness (PIP) Framework",
+      "publisher": "World Health Organization",
+      "group": "supplemental",
+      "kind": "primary",
+      "lifecycle": "active",
+      "url": "https://www.who.int/initiatives/pandemic-influenza-preparedness-framework"
+    },
+    {
+      "id": "who-pathogen-access-benefit-sharing:supplemental:4",
+      "caseStudyId": "who-pathogen-access-benefit-sharing",
+      "caseStudyTitle": "Global Health: Pathogen Access and Benefit Sharing",
+      "sourceTitle": "Influenza Virus Samples, International Law, and Global Health Diplomacy",
+      "publisher": "Emerging Infectious Diseases (via PubMed Central)",
+      "group": "supplemental",
+      "kind": "primary",
+      "lifecycle": "active",
+      "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC2600156"
+    },
+    {
+      "id": "who-pathogen-access-benefit-sharing:supplemental:5",
+      "caseStudyId": "who-pathogen-access-benefit-sharing",
+      "caseStudyTitle": "Global Health: Pathogen Access and Benefit Sharing",
+      "sourceTitle": "WHO stands with African nations and calls for borders to remain open",
+      "publisher": "World Health Organization Regional Office for Africa",
+      "group": "supplemental",
+      "kind": "primary",
+      "lifecycle": "active",
+      "url": "https://www.afro.who.int/news/who-stands-african-nations-and-calls-borders-remain-open"
+    },
+    {
+      "id": "who-pathogen-access-benefit-sharing:supplemental:6",
+      "caseStudyId": "who-pathogen-access-benefit-sharing",
+      "caseStudyTitle": "Global Health: Pathogen Access and Benefit Sharing",
+      "sourceTitle": "COVID-19 vaccine doses shipped by the COVAX Facility head to Ghana, marking beginning of global rollout",
+      "publisher": "World Health Organization (joint news release)",
+      "group": "supplemental",
+      "kind": "primary",
+      "lifecycle": "active",
+      "url": "https://www.who.int/news/item/24-02-2021-covid-19-vaccine-doses-shipped-by-the-covax-facility-head-to-ghana-marking-beginning-of-global-rollout"
+    },
+    {
+      "id": "who-pathogen-access-benefit-sharing:supplemental:7",
+      "caseStudyId": "who-pathogen-access-benefit-sharing",
+      "caseStudyTitle": "Global Health: Pathogen Access and Benefit Sharing",
+      "sourceTitle": "Implementation of the WHO Pandemic Agreement",
+      "publisher": "Bulletin of the World Health Organization (via PubMed Central)",
+      "group": "supplemental",
+      "kind": "primary",
+      "lifecycle": "active",
+      "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC12481221/"
+    },
+    {
+      "id": "who-pathogen-access-benefit-sharing:supplemental:8",
+      "caseStudyId": "who-pathogen-access-benefit-sharing",
+      "caseStudyTitle": "Global Health: Pathogen Access and Benefit Sharing",
+      "sourceTitle": "The Pandemic Agreement: A Milestone in Global Health, but Will it Work?",
+      "publisher": "EJIL: Talk! (blog of the European Journal of International Law)",
+      "group": "supplemental",
+      "kind": "primary",
+      "lifecycle": "active",
+      "url": "https://www.ejiltalk.org/the-pandemic-agreement-a-milestone-in-global-health-but-will-it-work/"
+    },
+    {
+      "id": "who-pathogen-access-benefit-sharing:supplemental:9",
+      "caseStudyId": "who-pathogen-access-benefit-sharing",
+      "caseStudyTitle": "Global Health: Pathogen Access and Benefit Sharing",
+      "sourceTitle": "Tense Start To Final Pandemic Agreement Talks As Africa Rejects New Draft Text",
+      "publisher": "Health Policy Watch",
+      "group": "supplemental",
+      "kind": "primary",
+      "lifecycle": "active",
+      "url": "https://healthpolicy-watch.news/tense-start-to-final-pandemic-agreement-talks-as-africa-rejects-new-draft-text/"
+    },
+    {
+      "id": "who-pathogen-access-benefit-sharing:supplemental:10",
+      "caseStudyId": "who-pathogen-access-benefit-sharing",
+      "caseStudyTitle": "Global Health: Pathogen Access and Benefit Sharing",
+      "sourceTitle": "Countries Criticise 'Inadequate' Pathogen-Sharing Draft Annex at Start of Text-Based Talks",
+      "publisher": "Health Policy Watch",
+      "group": "supplemental",
+      "kind": "primary",
+      "lifecycle": "active",
+      "url": "https://healthpolicy-watch.news/countries-deem-pathogen-sharing-draft-agreement-inadequate-at-start-of-text-based-talks/"
     },
     {
       "id": "context-cards:citation:0",

@@ -139,6 +139,7 @@ export const ASIA_PACIFIC_CASES_2026 = [
     {
         "id": "south-china-sea-arbitral-award-ten-years",
         "status": "active",
+        "briefingVersion": 2,
         "title": "South China Sea: Ten Years After the Arbitral Award",
         "subtitle": "International law, competing state positions, and maritime order",
         "coverageRegion": "Asia-Pacific",
@@ -166,7 +167,7 @@ export const ASIA_PACIFIC_CASES_2026 = [
             "China",
             "UN_OPEC"
         ],
-        "statusSummary": "Ten years after the 2016 award, the Philippine government continues to present it as a final and binding guide to maritime rights under UNCLOS, while China's government continues to reject the arbitration and award as invalid. These are attributed government positions; the underlying award addressed maritime entitlements and conduct, not sovereignty over land territory or boundary delimitation. At the November 2026 ASEAN Summit in Manila, Philippine officials reported tentative ASEAN–China agreement on roughly 80 percent of a draft Code of Conduct while confirming that negotiations missed their year-end target amid unresolved disputes over legal bindingness and alignment with international law.",
+        "statusSummary": "Ten years after the 2016 award, the Philippine government continues to present it as a final and binding guide to maritime rights under UNCLOS, while China's government continues to reject the arbitration and award as invalid. These are attributed government positions; the underlying award addressed maritime entitlements and conduct, not sovereignty over land territory or boundary delimitation. At the November 2026 ASEAN Summit in Manila, Philippine officials reported tentative ASEAN–China agreement on roughly 80 percent of a draft Code of Conduct while saying there was no conclusion yet amid unresolved disputes over legal bindingness and alignment with international law.",
         "whyItMatters": "The dispute offers a direct test of the relationship between formal legal decisions, state consent, material power, and peaceful management of competing maritime claims.",
         "updatedAt": "2026-11-17",
         "confidence": "high",
@@ -187,13 +188,13 @@ export const ASIA_PACIFIC_CASES_2026 = [
                     "label": "Itu Aba / Taiping",
                     "latitude": 10.377,
                     "longitude": 114.366,
-                    "role": "Largest naturally formed high-tide feature in the Spratly Islands, found under UNCLOS Article 121(3) to generate no 200-nautical-mile EEZ or continental shelf"
+                    "role": "High-tide feature in the Spratly Islands; the 2016 tribunal found that no Spratly feature generates a 200-nautical-mile EEZ or continental shelf"
                 },
                 {
                     "label": "Mischief Reef",
                     "latitude": 9.917,
                     "longitude": 115.533,
-                    "role": "Low-tide elevation within the Philippines' EEZ and continental shelf where artificial-island construction infringed Philippine sovereign rights under UNCLOS"
+                    "role": "Low-tide elevation where the 2016 tribunal found that artificial-island construction breached the Philippines' sovereign rights in its EEZ and continental shelf"
                 },
                 {
                     "label": "Second Thomas Shoal",
@@ -217,13 +218,13 @@ export const ASIA_PACIFIC_CASES_2026 = [
         },
         "sources": [
             {
-                "title": "Delhi Roundtable Accentuates Abiding Relevance of South China Sea Arbitral Award on Decennial",
-                "publisher": "Department of Foreign Affairs of the Philippines",
-                "publishedAt": "2026-07-21",
-                "url": "https://newdelhipe.dfa.gov.ph/index.php/newsroom/embassy-news/1230-delhi-roundtable-accentuates-abiding-relevance-of-south-china-sea-arbitral-award-on-decennial",
+                "title": "PH, allies affirm arbitral ruling in joint statement",
+                "publisher": "Philippine Daily Inquirer",
+                "publishedAt": "2026-07-13",
+                "url": "https://www.inquirer.net/480412/ph-allies-affirm-arbitral-ruling-in-joint-statement/",
                 "perspectiveType": "local",
-                "perspective": "Official Philippine government position supporting the award",
-                "supports": "The Philippine legal and rules-based-maritime-order position"
+                "perspective": "Philippine newspaper report on the 12 July 2026 joint statement released by the Department of Foreign Affairs",
+                "supports": "Supports the list of 14 governments that signed the joint statement, its wording that the award is final, legally binding, and definitive, the absence of the ten other ASEAN members, and China's attributed rejection of third-party dispute settlement."
             },
             {
                 "title": "The South China Sea Arbitration: Award of 12 July 2016",
@@ -239,6 +240,12 @@ export const ASIA_PACIFIC_CASES_2026 = [
                 "publisher": "Associated Press",
                 "publishedAt": "2026-07-10",
                 "url": "https://apnews.com/article/d0148a4175f80eedf70dcf2696f03ddd",
+                "alternateUrls": [
+                    {
+                        "label": "Same Associated Press report as published by WTOP News",
+                        "url": "https://wtop.com/world/2026/07/philippines-commemorates-2016-south-china-sea-ruling-rejected-by-beijing/"
+                    }
+                ],
                 "perspectiveType": "independent",
                 "perspective": "Independent account presenting Philippine, Chinese, and wider regional positions",
                 "supports": "The gap between the award's legal authority and its political enforcement"
@@ -257,33 +264,280 @@ export const ASIA_PACIFIC_CASES_2026 = [
                 "publisher": "Al Jazeera",
                 "publishedAt": "2026-11-16",
                 "url": "https://www.aljazeera.com/news/2026/11/16/asean-china-fall-short-of-agreeing-on-south-china-sea-code",
-                "perspective": "Independent summit reporting on the unfinished ASEAN–China Code of Conduct talks in Manila"
+                "perspective": "Independent summit reporting on the unfinished ASEAN–China Code of Conduct talks in Manila",
+                "supports": "Supports the Philippine foreign minister's statements that about 80 percent of a draft Code of Conduct was tentatively agreed, that there was no conclusion yet, that legal bindingness remained unresolved, and that she hoped the code could be concluded under Singapore's ASEAN chairmanship, plus the attributed Philippine and Chinese accusations about conduct at sea."
+            },
+            {
+                "title": "China issues statement over 'South China Sea arbitration award' hype",
+                "publisher": "CGTN",
+                "publishedAt": "2026-07-12",
+                "url": "https://news.cgtn.com/news/2026-07-12/China-issues-statement-over-South-China-Sea-arbitration-award-hype-1OINoe5qMGk/p.html",
+                "perspective": "Chinese state broadcaster's report carrying the Chinese Foreign Ministry statement of 12 July 2026",
+                "supports": "Supports China's attributed position that the award is illegal, null and void, and without binding force, its reliance on state consent and its 2006 declaration excluding maritime delimitation from compulsory settlement, and its stated preference for negotiation with directly concerned states."
+            },
+            {
+                "title": "Delhi Roundtable Accentuates Abiding Relevance of South China Sea Arbitral Award on Decennial",
+                "publisher": "Department of Foreign Affairs of the Philippines",
+                "publishedAt": "2026-07-21",
+                "url": "https://newdelhipe.dfa.gov.ph/index.php/newsroom/embassy-news/1230-delhi-roundtable-accentuates-abiding-relevance-of-south-china-sea-arbitral-award-on-decennial",
+                "perspective": "Earlier Philippine Embassy in New Delhi press release (link could not be retrieved reliably on 19 November 2026; retained for reference only, not cited in briefing prose)"
+            },
+            {
+                "title": "Territorial Disputes in the South China Sea",
+                "publisher": "Council on Foreign Relations (Global Conflict Tracker)",
+                "publishedAt": "2015-12-02",
+                "updatedAt": "2026-08-27",
+                "url": "https://www.cfr.org/global-conflict-tracker/conflict/territorial-disputes-south-china-sea",
+                "perspective": "Independent think-tank conflict tracker, updated 27 August 2026 with later news items",
+                "supports": "Supports the tracker's record of three China–Philippines clashes in one week of July 2026 at Scarborough Shoal and Second Thomas Shoal, the continuing Philippine presence aboard BRP Sierra Madre, and the list of claimant governments."
+            },
+            {
+                "title": "Maritime Zones and Boundaries",
+                "publisher": "National Oceanic and Atmospheric Administration, Office of General Counsel",
+                "publishedAt": null,
+                "sourceType": "living-reference",
+                "reviewedAt": "2026-11-19",
+                "url": "https://www.noaa.gov/maritime-zones-and-boundaries",
+                "perspective": "United States government legal explainer on maritime zones as reflected in the 1982 Law of the Sea Convention",
+                "supports": "Supports the definition of the exclusive economic zone as reaching up to 200 nautical miles from a state's baselines, with sovereign rights to explore, exploit, conserve, and manage natural resources."
+            },
+            {
+                "title": "PH officials lead National Peace Walk to reaffirm 2016 South China Sea arbitral award",
+                "publisher": "GMA News Online",
+                "publishedAt": "2026-07-12",
+                "url": "https://www.gmanetwork.com/news/topstories/nation/994578/ph-officials-lead-national-peace-walk-to-reaffirm-2016-south-china-sea-arbitral-award/story/",
+                "perspective": "Philippine broadcaster's report on the tenth-anniversary peace walk in Manila, quoting Philippine defense and security officials",
+                "supports": "Supports the reported statement by National Security Adviser Eduardo Oban Jr. that maritime rights and entitlements are determined by law, not by power or coercion."
             }
         ],
         "waypoints": [
             {
                 "nodeId": "AsiaPacific",
                 "title": "What the Tribunal Decided",
-                "narration": "The tribunal addressed maritime entitlements and conduct under UNCLOS—evaluating Spratly high-tide features including Itu Aba, placing low-tide elevations Mischief Reef and Second Thomas Shoal within the Philippines' EEZ, and addressing fishing access at Scarborough Shoal—without deciding land sovereignty or delimiting a boundary.",
+                "perspectiveLabel": "Annex VII arbitral tribunal award",
+                "perspectiveType": "institutional",
+                "conceptInFocus": "Sovereignty",
+                "relatedTimelineDate": "2016-07-12",
+                "narration": "On 7 May 1999, the Philippine Navy grounded a 1944 landing ship, BRP Sierra Madre, on Second Thomas Shoal [2]. Marines have lived aboard since [2, 8]. The shoal is a coral reef in the Spratly Islands, 104 nautical miles from Palawan [2]. On 12 July 2016, an international tribunal ruled on rights in these waters [2].\n\nThe case rested on the United Nations Convention on the Law of the Sea (UNCLOS), a 1982 treaty [2]. It grants each coastal state an exclusive economic zone (EEZ): up to 200 nautical miles of sea for natural resources [9]. The tribunal found Second Thomas Shoal is a low-tide elevation, exposed at low tide and submerged at high tide [2]. Such reefs generate no zone, and this one lies inside the Philippine EEZ [2]. The tribunal made no ruling on island ownership [2]. The award settles maritime rights, not land sovereignty.",
                 "focusQuestion": "Why does the legal scope of a ruling matter as much as its outcome?"
             },
             {
                 "nodeId": "UN_OPEC",
                 "title": "Law as a Dispute Mechanism",
-                "narration": "The 2016 award supplies a formal legal record against which later state arguments and conduct can be evaluated.",
+                "perspectiveLabel": "UNCLOS dispute-settlement system",
+                "perspectiveType": "institutional",
+                "conceptInFocus": "Interdependence",
+                "relatedTimelineDate": "2013-01-22",
+                "narration": "On 22 January 2013, the Philippines took China to arbitration under Annex VII of UNCLOS [2]. Annex VII arbitration is the treaty's compulsory fallback: a five-member tribunal can hear a dispute even if one side refuses to appear [2]. China rejected the case and stayed away [2]. The tribunal still had to satisfy itself that each claim was well founded in fact and law [2]. It held that both states are bound by the award [2].\n\nNo world police enforces such a ruling. Its influence depends on other governments treating it as the standard. On 12 July 2026, fourteen governments, including the Philippines, the United States, and Japan, called the award \"final, legally binding, and definitive\" [1]. The ten other members of the Association of Southeast Asian Nations (ASEAN) did not sign [1]. Law at sea works through interdependence: a ruling binds in practice only as far as other states uphold it.",
                 "focusQuestion": "What gives an international legal decision influence when enforcement is decentralized?"
             },
             {
                 "nodeId": "China",
                 "title": "China's Rejection",
-                "narration": "China's Foreign Ministry says the tribunal lacked authority and that disputes should be handled through negotiation by the parties concerned.",
+                "perspectiveLabel": "Chinese government position",
+                "perspectiveType": "local",
+                "conceptInFocus": "Legitimacy",
+                "relatedTimelineDate": "2026-07-12",
+                "narration": "China never appeared before the tribunal [2]. In a December 2014 position paper, it argued that the real dispute was territorial sovereignty over islands, which UNCLOS does not cover [2]. It also cited its 2006 declaration excluding sea-boundary disputes from compulsory settlement [2, 6]. On 12 July 2026, China's Foreign Ministry called the award \"a worthless piece of paper that is illegal, null and void\" [6].\n\nChina's objection rests on consent. Its ministry says China accepts no solution imposed by a third party and will settle disputes through talks with the states directly concerned [1, 6]. The tribunal noted that China ratified UNCLOS in 1996 and that compulsory dispute settlement is an integral part of the treaty [2]. It added that a party's absence does not stop a case [2]. The clash is about legitimacy: is consent given once, by ratifying a treaty, or dispute by dispute?",
                 "focusQuestion": "How does state consent shape the legitimacy of international adjudication?"
             },
             {
                 "nodeId": "AsiaPacific",
                 "title": "The Philippine Position",
-                "narration": "The Philippine government treats the award as final, binding, and central to a rules-based maritime order.",
+                "perspectiveLabel": "Philippine government position",
+                "perspectiveType": "local",
+                "conceptInFocus": "Power",
+                "relatedTimelineDate": "2026-11-15",
+                "narration": "Philippine officials treat the award as settled law. Foreign Secretary Maria Theresa Lazaro compared it to a lighthouse for turbulent waters [3]. National Security Adviser Eduardo Oban Jr. said maritime rights and entitlements are determined by law, not by power or coercion [10]. Conditions at sea remain contested. An independent conflict tracker recorded three China–Philippines clashes in one week of July 2026, at Scarborough Shoal and Second Thomas Shoal [8].\n\nThe award gives Manila a legal yardstick that partners rally behind [1, 3]. It does not give control of the reefs. As ASEAN chair in 2026, the Philippines pressed for a Code of Conduct with China, an agreed rulebook for behavior at sea [5]. By the November summit in Manila, about 80 percent of a draft was tentatively agreed, Lazaro said [5]. Whether the code would be legally binding stayed unresolved [5]. Law raises the diplomatic cost of ignoring a ruling. It cannot, alone, change who patrols the water.",
                 "focusQuestion": "How can a smaller state use legal institutions to offset an asymmetry in material power?"
+            }
+        ],
+        "concepts": [
+            "Sovereignty",
+            "Legitimacy",
+            "Power",
+            "Interdependence"
+        ],
+        "ibThemes": [
+            "peace-and-conflict",
+            "development-and-sustainability"
+        ],
+        "background": "The South China Sea covers almost 3.5 million square kilometers between China, Vietnam, the Philippines, Malaysia, Brunei, and Indonesia [2]. It is a crucial shipping lane and rich fishing ground, believed to hold substantial oil and gas [2]. China has claimed most of the sea, marked on its maps by a \"nine-dash line\" [2, 5].\n\nIn April 2012, Chinese and Philippine vessels faced off at Scarborough Shoal, a traditional fishing ground [2]. Filipino fishermen later testified that Chinese patrols turned them away [2]. On 22 January 2013, the Philippines began arbitration under the United Nations Convention on the Law of the Sea (UNCLOS) [2]. China rejected the case the next month and never took part [2].\n\nOn 12 July 2016, the tribunal ruled unanimously [2]. It found that China's claims to historic rights inside the nine-dash line had no lawful effect beyond what UNCLOS allows [2]. It also found that China breached Philippine rights by building an artificial island at Mischief Reef and blocking fishermen at Scarborough Shoal [2]. China rejects the award [6]. Talks between China and the Association of Southeast Asian Nations (ASEAN) on a Code of Conduct were still unfinished in November 2026 [5].",
+        "backgroundSources": [
+            "https://docs.pca-cpa.org/2016/07/PH-CN-20160712-Award.pdf",
+            "https://www.aljazeera.com/news/2026/11/16/asean-china-fall-short-of-agreeing-on-south-china-sea-code",
+            "https://news.cgtn.com/news/2026-07-12/China-issues-statement-over-South-China-Sea-arbitration-award-hype-1OINoe5qMGk/p.html"
+        ],
+        "keyTerms": [
+            {
+                "term": "UNCLOS",
+                "definition": "The United Nations Convention on the Law of the Sea, a 1982 treaty on states' rights and duties at sea. The Philippines ratified it in 1984 and China in 1996. It includes a compulsory system for settling disputes.",
+                "sourceUrl": "https://docs.pca-cpa.org/2016/07/PH-CN-20160712-Award.pdf"
+            },
+            {
+                "term": "Exclusive economic zone (EEZ)",
+                "definition": "A belt of sea reaching up to 200 nautical miles from a state's coastal baselines. Inside it, the coastal state has sovereign rights to explore, exploit, conserve, and manage natural resources.",
+                "sourceUrl": "https://www.noaa.gov/maritime-zones-and-boundaries"
+            },
+            {
+                "term": "Low-tide elevation",
+                "definition": "A feature exposed at low tide but covered by water at high tide. The tribunal held that such features generate no territorial sea, EEZ, or continental shelf of their own and cannot be appropriated.",
+                "sourceUrl": "https://docs.pca-cpa.org/2016/07/PH-CN-20160712-Award.pdf"
+            },
+            {
+                "term": "Annex VII arbitration",
+                "definition": "The compulsory arbitration procedure set out in Annex VII of UNCLOS. A tribunal can proceed when one party is absent, but it must first satisfy itself that it has jurisdiction and that the claim is well founded in fact and law.",
+                "sourceUrl": "https://docs.pca-cpa.org/2016/07/PH-CN-20160712-Award.pdf"
+            },
+            {
+                "term": "Nine-dash line",
+                "definition": "A line marked on Chinese maps of the South China Sea. The tribunal declared that China's claims to historic rights within it are without lawful effect where they exceed the limits UNCLOS sets.",
+                "sourceUrl": "https://docs.pca-cpa.org/2016/07/PH-CN-20160712-Award.pdf"
+            },
+            {
+                "term": "Code of Conduct",
+                "definition": "A proposed rulebook for behavior in the South China Sea that ASEAN and China have worked on for more than two decades. In November 2026 it was not concluded, and negotiators had not settled whether it would be legally binding.",
+                "sourceUrl": "https://www.aljazeera.com/news/2026/11/16/asean-china-fall-short-of-agreeing-on-south-china-sea-code"
+            }
+        ],
+        "debate": [
+            {
+                "claimBy": "Joint statement by 14 governments, including the Philippines, the United States, Japan, and Germany (12 July 2026, as reported by the Philippine Daily Inquirer)",
+                "claim": "The award \"is final, legally binding, and definitive between China and the Philippines\", and there is \"no legal basis for China's expansive maritime claims in the South China Sea\".",
+                "counterBy": "China's Ministry of Foreign Affairs (statement of 12 July 2026, as carried by CGTN)",
+                "counterClaim": "The award is \"a worthless piece of paper that is illegal, null and void, and has no binding force\". The ministry says it violates the principle of state consent and that China \"does not accept or recognize\" it.",
+                "sourceUrls": [
+                    "https://www.inquirer.net/480412/ph-allies-affirm-arbitral-ruling-in-joint-statement/",
+                    "https://news.cgtn.com/news/2026-07-12/China-issues-statement-over-South-China-Sea-arbitration-award-hype-1OINoe5qMGk/p.html"
+                ]
+            },
+            {
+                "claimBy": "China's government (Position Paper of 7 December 2014, as summarized in the tribunal's award)",
+                "claim": "The tribunal lacked jurisdiction because the essence of the case was \"the territorial sovereignty over the relevant maritime features in the South China Sea\", and because China and the Philippines had agreed to settle disputes through negotiation.",
+                "counterBy": "The Annex VII arbitral tribunal (award of 12 July 2016)",
+                "counterClaim": "The tribunal said it was not asked to rule, and did not rule, on sovereignty over any land territory or on any maritime boundary. It held that the 2002 China–ASEAN Declaration on Conduct did not bar arbitration.",
+                "sourceUrls": [
+                    "https://docs.pca-cpa.org/2016/07/PH-CN-20160712-Award.pdf"
+                ]
+            },
+            {
+                "claimBy": "Philippine government (as reported by Al Jazeera, 16 November 2026)",
+                "claim": "Chinese ships have carried out repeated aggressive actions inside the Philippines' exclusive economic zone.",
+                "counterBy": "Chinese government (as reported by Al Jazeera, 16 November 2026)",
+                "counterClaim": "The Philippines is intruding on Chinese territory, and China's actions at sea have been lawful and professional.",
+                "sourceUrls": [
+                    "https://www.aljazeera.com/news/2026/11/16/asean-china-fall-short-of-agreeing-on-south-china-sea-code"
+                ]
+            }
+        ],
+        "watchFor": [
+            {
+                "date": "2027 (Singapore chairs ASEAN)",
+                "indicator": "Singapore takes over the ASEAN chair from the Philippines in 2027. The Philippine foreign minister said she hoped the Code of Conduct could be concluded under Singapore. Check whether a final text is announced and whether it is legally binding.",
+                "sourceUrl": "https://www.aljazeera.com/news/2026/11/16/asean-china-fall-short-of-agreeing-on-south-china-sea-code"
+            },
+            {
+                "date": "12 July 2027",
+                "indicator": "Eleventh anniversary of the award. Check which governments issue statements and whether any ASEAN member other than the Philippines signs a joint statement. None of the other ten did in July 2026.",
+                "sourceUrl": "https://www.inquirer.net/480412/ph-allies-affirm-arbitral-ruling-in-joint-statement/"
+            },
+            {
+                "date": "Ongoing (tracker last updated 27 August 2026)",
+                "indicator": "The Council on Foreign Relations conflict tracker logs incidents at Scarborough Shoal and Second Thomas Shoal. Check whether new clashes or drills are recorded and how each government describes them.",
+                "sourceUrl": "https://www.cfr.org/global-conflict-tracker/conflict/territorial-disputes-south-china-sea"
+            }
+        ],
+        "examPrompts": [
+            "To what extent can international law constrain a powerful state that rejects a court's authority?",
+            "Examine the claim that the legitimacy of an international legal ruling depends on the consent of the states it binds."
+        ],
+        "influenceCheck": [
+            {
+                "stage": "Setting the agenda",
+                "rating": "STRONG",
+                "evidence": "The Philippines' 2013 case recast standoffs at sea as legal questions under UNCLOS. Ten years after the award, 14 governments jointly called it final and legally binding.",
+                "sourceUrls": [
+                    "https://docs.pca-cpa.org/2016/07/PH-CN-20160712-Award.pdf",
+                    "https://www.inquirer.net/480412/ph-allies-affirm-arbitral-ruling-in-joint-statement/"
+                ]
+            },
+            {
+                "stage": "The formal decision",
+                "rating": "STRONG",
+                "evidence": "The tribunal ruled unanimously that China's historic-rights claims inside the nine-dash line had no lawful effect beyond UNCLOS limits, and that Mischief Reef and Second Thomas Shoal lie within the Philippine EEZ. It made no ruling on sovereignty over land.",
+                "sourceUrls": [
+                    "https://docs.pca-cpa.org/2016/07/PH-CN-20160712-Award.pdf"
+                ]
+            },
+            {
+                "stage": "What changed in practice",
+                "rating": "WEAK",
+                "evidence": "China's Foreign Ministry says it does not accept or recognize the award. A conflict tracker recorded three China–Philippines clashes in one week of July 2026, and the Code of Conduct was still not concluded in November 2026.",
+                "sourceUrls": [
+                    "https://news.cgtn.com/news/2026-07-12/China-issues-statement-over-South-China-Sea-arbitration-award-hype-1OINoe5qMGk/p.html",
+                    "https://www.cfr.org/global-conflict-tracker/conflict/territorial-disputes-south-china-sea",
+                    "https://www.aljazeera.com/news/2026/11/16/asean-china-fall-short-of-agreeing-on-south-china-sea-code"
+                ]
+            }
+        ],
+        "conceptLens": {
+            "power": "China built a large artificial island at Mischief Reef, the tribunal found. The Philippines holds a legal ruling and the backing of 13 other governments, but not control of the reefs.",
+            "sovereignty": "The tribunal ruled on sovereign rights to resources at sea, not on who owns any island. China says the real dispute is territorial sovereignty, which it will settle only through negotiation.",
+            "legitimacy": "Fourteen governments call the award final, legally binding, and definitive. China calls it null and void because it did not consent to this case.",
+            "interdependence": "The sea is a crucial shipping lane and fishing ground bordered by seven states, including Singapore. With no enforcement body, the award works only as far as other governments uphold it."
+        },
+        "essayBuilder": {
+            "prompt": "To what extent can international law constrain a powerful state that rejects a court's authority?",
+            "claim": "International law can constrain a powerful state's legal position and reputation, but not its conduct at sea, when that state rejects the court.",
+            "evidence": "In 2016 an UNCLOS tribunal ruled unanimously that China's historic-rights claims inside the nine-dash line had no lawful effect beyond the treaty's limits. In July 2026, 14 governments called the award \"final, legally binding, and definitive\".",
+            "counterClaim": "China's Foreign Ministry calls the award \"a worthless piece of paper that is illegal, null and void\". A conflict tracker recorded three China–Philippines clashes in one week of July 2026, and the ten other ASEAN members did not sign the joint statement.",
+            "judgment": "On balance, the award constrains what China can claim as lawful more than what it does. However, that limit is not fixed: the award's weight grows or shrinks with the number of states willing to act on it.",
+            "sourceUrls": [
+                "https://docs.pca-cpa.org/2016/07/PH-CN-20160712-Award.pdf",
+                "https://www.inquirer.net/480412/ph-allies-affirm-arbitral-ruling-in-joint-statement/",
+                "https://news.cgtn.com/news/2026-07-12/China-issues-statement-over-South-China-Sea-arbitration-award-hype-1OINoe5qMGk/p.html",
+                "https://www.cfr.org/global-conflict-tracker/conflict/territorial-disputes-south-china-sea"
+            ]
+        },
+        "timeline": [
+            {
+                "date": "1999-05-07",
+                "label": "The Philippine Navy grounds BRP Sierra Madre on Second Thomas Shoal and stations marines aboard.",
+                "sourceUrl": "https://docs.pca-cpa.org/2016/07/PH-CN-20160712-Award.pdf"
+            },
+            {
+                "date": "2012-04",
+                "label": "A series of incidents between Philippine and Chinese vessels begins at Scarborough Shoal.",
+                "sourceUrl": "https://docs.pca-cpa.org/2016/07/PH-CN-20160712-Award.pdf"
+            },
+            {
+                "date": "2013-01-22",
+                "label": "The Philippines begins arbitration against China under Annex VII of UNCLOS.",
+                "sourceUrl": "https://docs.pca-cpa.org/2016/07/PH-CN-20160712-Award.pdf"
+            },
+            {
+                "date": "2016-07-12",
+                "label": "The arbitral tribunal issues its unanimous award.",
+                "sourceUrl": "https://docs.pca-cpa.org/2016/07/PH-CN-20160712-Award.pdf"
+            },
+            {
+                "date": "2026-07-12",
+                "label": "Fourteen governments call the award final and legally binding; China's Foreign Ministry calls it null and void.",
+                "sourceUrl": "https://www.inquirer.net/480412/ph-allies-affirm-arbitral-ruling-in-joint-statement/"
+            },
+            {
+                "date": "2026-11-15",
+                "label": "At the ASEAN summit in Manila, the Philippine foreign minister says Code of Conduct talks with China have no conclusion yet.",
+                "sourceUrl": "https://www.aljazeera.com/news/2026/11/16/asean-china-fall-short-of-agreeing-on-south-china-sea-code"
+            }
+        ],
+        "keyFigures": [
+            {
+                "value": "80 percent",
+                "unit": "of a draft Code of Conduct",
+                "label": "Share tentatively agreed between ASEAN and China, according to the Philippine foreign minister",
+                "asOf": "15 November 2026 (reported 16 November 2026)",
+                "sourceUrl": "https://www.aljazeera.com/news/2026/11/16/asean-china-fall-short-of-agreeing-on-south-china-sea-code"
             }
         ]
     },
