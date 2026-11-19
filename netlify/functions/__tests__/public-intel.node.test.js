@@ -447,7 +447,7 @@ test('selection balances regions and issues while limiting publishers, clusters,
 });
 
 test('shared intel-normalization coordinate inference is deterministic and categorizeSector uses word-bounded Governance & Rights matching', () => {
-    const { getCoords, categorizeSector } = require('../_shared/intel-normalization');
+    const { getCoords, resolveCoords, categorizeSector } = require('../_shared/intel-normalization');
     assert.deepEqual(
         getCoords('Diplomatic talks involving Ukraine'),
         getCoords('Diplomatic talks involving Ukraine')
@@ -456,4 +456,63 @@ test('shared intel-normalization coordinate inference is deterministic and categ
     assert.equal(categorizeSector('Parliamentary elections scheduled after judicial ruling'), 'Governance & Rights');
     assert.notEqual(categorizeSector('Data selection methodology in quarterly commodity market report'), 'Governance & Rights', '"selection" must not match "election"');
     assert.equal(categorizeSector('Data selection methodology in quarterly commodity market report'), 'Economy & Trade');
+
+    // Required whole-word & specificity coordinate regressions
+    const sudan = resolveCoords('Sudan hunger crisis deepens as funding cuts bite', 'UN agencies warn of famine');
+    assert.equal(sudan.matchedPlace, 'sudan');
+    assert.equal(sudan.precision, 'named-place');
+    assert.deepEqual(sudan.coords, [12.9, 30.2]);
+
+    const myanmar = resolveCoords('Myanmar junta announces election', 'UN unrest warning');
+    assert.equal(myanmar.matchedPlace, 'myanmar');
+    assert.equal(myanmar.precision, 'named-place');
+    assert.deepEqual(myanmar.coords, [19.2, 96.7]);
+
+    const pakistan = resolveCoords('Thousands flee floods in Pakistan', 'Relief efforts continue');
+    assert.equal(pakistan.matchedPlace, 'pakistan');
+    assert.deepEqual(pakistan.coords, [30.4, 69.3]);
+
+    const colombia = resolveCoords('Senator backs Colombia peace deal', 'Regional talks');
+    assert.equal(colombia.matchedPlace, 'colombia');
+    assert.deepEqual(colombia.coords, [4.6, -74.1]);
+
+    const centralAmerica = resolveCoords('When the rains fail: Preparing for drought in Central America', 'UN climate resilience');
+    assert.equal(centralAmerica.matchedPlace, 'central america');
+    assert.notDeepEqual(centralAmerica.coords, [37.1, -95.6], 'Central America must never pin in Kansas/USA');
+    assert.deepEqual(centralAmerica.coords, [13.8, -86.2]);
+
+    // "un" must never pin a story to New York
+    const unOnly = resolveCoords('UN report warns of global unrest and funding gaps', 'United Nations appeal');
+    assert.equal(unOnly.precision, 'fallback');
+    assert.equal(unOnly.matchedPlace, null);
+
+    // Fallback items sharing coordinates are de-stacked deterministically
+    const stacked = selectDiverseArticles([
+        {
+            url: 'https://news.un.org/en/story/2026/11/a',
+            'Entity/Subject': 'Global treaty financing talks open',
+            Latitude: '12',
+            Longitude: '-18',
+            coverage: { region: 'Global / Transnational', issue: 'Economy & Development', sourceRole: 'institutional', relevanceScore: 80, locationPrecision: 'regional' },
+            _publisherDomain: 'news.un.org',
+            _isInstitutionalHub: true,
+            _topicCluster: 'global:a',
+        },
+        {
+            url: 'https://news.un.org/en/story/2026/11/b',
+            'Entity/Subject': 'Global climate resilience fund launched',
+            Latitude: '12',
+            Longitude: '-18',
+            coverage: { region: 'Global / Transnational', issue: 'Climate & Resources', sourceRole: 'institutional', relevanceScore: 78, locationPrecision: 'regional' },
+            _publisherDomain: 'news.un.org',
+            _isInstitutionalHub: true,
+            _topicCluster: 'global:b',
+        },
+    ]);
+    assert.equal(stacked.length, 2);
+    assert.notEqual(
+        `${stacked[0].Latitude},${stacked[0].Longitude}`,
+        `${stacked[1].Latitude},${stacked[1].Longitude}`,
+        'Items sharing fallback coordinates must not stack on one point'
+    );
 });

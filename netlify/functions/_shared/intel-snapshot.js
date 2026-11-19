@@ -354,8 +354,8 @@ function assessArticle(item, query, { scraperSource = 'serper-public-cache', isI
 
     if (relevanceScore < 16) return null;
 
-    const usesRegionalFallback = parseFloat(normalized.Latitude) === 20
-        && parseFloat(normalized.Longitude) === 0;
+    const usesRegionalFallback = normalized._coordPrecision === 'fallback';
+    const locationPrecision = normalized._coordPrecision === 'named-place' ? 'named-place' : 'regional';
     const [fallbackLat, fallbackLng] = query.fallbackCoords;
     const sourceRoleLabel = SOURCE_ROLE_LABELS[sourceRole];
     const selectionReason = `Selected to strengthen ${region} and ${issue} coverage; source role: ${sourceRoleLabel.toLowerCase()}. Automated relevance score ${relevanceScore}/100.`;
@@ -374,7 +374,8 @@ function assessArticle(item, query, { scraperSource = 'serper-public-cache', isI
             queryId: query.id,
             selectionReason,
             relevanceScore,
-            locationPrecision: usesRegionalFallback ? 'regional' : 'named-place',
+            locationPrecision,
+            ...(normalized._matchedPlace ? { matchedPlace: normalized._matchedPlace } : {}),
         },
         _publisherDomain: domain,
         _topicCluster: getTopicCluster(combined, region, issue),
@@ -463,8 +464,33 @@ function selectDiverseArticles(items, limit = MAX_SNAPSHOT_ITEMS) {
         trySelect(item);
     }
 
+    const coordCounts = new Map();
     return selected.slice(0, limit).map(item => {
-        const { _publisherDomain, _topicCluster, _isInstitutionalHub, ...publicItem } = item;
+        const {
+            _publisherDomain,
+            _topicCluster,
+            _isInstitutionalHub,
+            _coordPrecision,
+            _matchedPlace,
+            ...publicItem
+        } = item;
+        const lat = Number.parseFloat(publicItem.Latitude);
+        const lng = Number.parseFloat(publicItem.Longitude);
+        if (Number.isFinite(lat) && Number.isFinite(lng)) {
+            const coordKey = `${lat.toFixed(1)},${lng.toFixed(1)}`;
+            const seenCount = coordCounts.get(coordKey) || 0;
+            coordCounts.set(coordKey, seenCount + 1);
+            if (seenCount > 0) {
+                const angle = (seenCount * 2.399963229728653); // golden angle for even spread
+                const radius = 1.4 + Math.min(seenCount, 4) * 0.35;
+                const nextLat = Math.max(-75, Math.min(75, lat + Math.sin(angle) * radius));
+                let nextLng = lng + Math.cos(angle) * radius;
+                if (nextLng > 180) nextLng -= 360;
+                if (nextLng < -180) nextLng += 360;
+                publicItem.Latitude = nextLat.toFixed(2);
+                publicItem.Longitude = nextLng.toFixed(2);
+            }
+        }
         return publicItem;
     });
 }
