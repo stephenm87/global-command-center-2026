@@ -2,6 +2,16 @@
 
 Newest entry first. Each agent adds an entry before it stops. Keep entries short.
 
+## 2026-11-20 — Antigravity (Lead) — Unit 25 (Gate 4: Voice Refinement, Somaliland/WS Pass, 29/29 Map Roles & Batch 1 v2 Briefings)
+- **Did (on `feat/gate4-voice-batch1`, PR #43 — unmerged at Gate 4 awaiting owner review):**
+  - **Voice Guide Refinement (`docs/BRIEFING_VOICE.md`):** Updated Rules 4–5 to vary sentence rhythm, allow linking sentences up to ~30 words when carrying an argument between facts, end every step on an analytical sentence rather than a slogan, and added 3 concrete Before/After examples (`cb68bb5`).
+  - **Somaliland & Western Sahara Voice Pass (`src/cases/active/africa-2026.mjs`, `mena-2026.mjs`):** Audited sentence lengths, split remaining overloaded multi-actor / dash-heavy sentences, applied revised rhythm and natural step endings, ran a targeted fresh-session `claude-fable-5-2` fact-check (`review/claude-factcheck-20261120-somaliland-ws-pass.md`), and resolved all 10 attribution/causality/chronology flags (`5e10b0a`).
+  - **S-13 Map Location Roles (`src/cases/active/*.mjs`):** Populated missing `map.locations[].role` strings across the remaining 11 active cases (`29/29` cases and `110/110` map locations complete, `9dc792f`).
+  - **Batch 1 Source Clearance & v2 Rollout (`myanmar-fragmented-sovereignty`, `syria-transition-return-sanctions`, `eastern-drc-peace-civilian-protection`, `sahel-after-ecowas-regional-order`, `haiti-security-legitimacy-haitian-ownership`, `libya-roadmap-elections-oil-assets`):**
+    - Cleared and read all `18/18` core readings and `9` supplemental sources in full (scraping `myanmar__1`, `syria__2`, `haiti__2`, `libya__3` + OCHA Myanmar, UNHCR Syria, and ECOWAS–AES communiqué PDFs via Firecrawl), aligned `publishedAt` dates for Syria STJ (`2026-06-22`) and Libya Chatham House (`2026-07-20`) (`ab678db`), and renewed Syria (`updatedAt: "2026-11-20"`, `reviewBy: "2027-02-18"`, removing `'syria-transition-return-sanctions'` from overdue Group 2 assertions in `src/__tests__/contentIntegrity.node.test.mjs`).
+    - Drafted all 6 Batch 1 cases to `briefingVersion: 2` (`c791fc9`, `da0b73d`), ran fresh-session `claude-fable-5-2` fact-checks on both sub-batches (`review/claude-factcheck-20261120-batch1A.md`, `review/claude-factcheck-20261120-batch1B.md`), resolved every `CONTRADICTED` and `COULD-NOT-VERIFY` finding (including Libya `[1]` `DD/MM/YYYY` date correction to `2026-02-08`, Libya stale election status & invented rationale removal, Haiti RNDDH `"35 assassinated including 3 kidnapped and still missing"` precision + stale `watchFor` cleanup, and strictly sourced Batch 1 map location roles), and refreshed `netlify/functions/source-health-targets.json` (`202` targets across `29` cases, `62a9fdb`).
+- **Tested:** `npm test` (`83/83` pass), `npm run content:staleness` (`8` overdue Group 2 cases remaining; `0` Batch 1 overdue).
+
 ## 2026-11-20 — Antigravity (Lead) — Unit 24 (PR #40/#41 Merges + Open-Licensed Pacific/Global South Feeds, gdelt-pulse Removal & Live-Safe Supabase RLS Migration)
 - **PR #40 & PR #41 Production Go-Live:**
   - Merged PR #40 (`07b90c04ec47ac784dcf7c50bbc3f68de62c5275`), rebased PR #41 onto `main`, verified `83/83` tests & build, and merged PR #41 (`51171db001463522f9890572f9631b3810234646`).
