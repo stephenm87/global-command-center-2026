@@ -96,6 +96,20 @@ test('free-feeds parses RSS CDATA, entities, ISO dates, guid fallback, rejects n
     assert.equal(items[1].link, 'https://news.un.org/en/story/2026/11/1200099');
     assert.equal(decodeXmlEntities('a &lt; b &gt; c &amp; d'), 'a < b > c & d');
 
+    // Snippet truncation cap and BBC RSS query-param stripping
+    const longDescription = 'UN officials say '.repeat(25);
+    const longXml = `<?xml version="1.0" encoding="utf-8"?><rss version="2.0"><channel><item>
+        <title>Romania energy talks advance</title>
+        <link>https://www.bbc.com/news/articles/cr123456?at_medium=RSS&amp;at_campaign=rss</link>
+        <description>${longDescription}</description>
+        <pubDate>Thu, 19 Nov 2026 04:00:00 +0000</pubDate>
+    </item></channel></rss>`;
+    const [longItem] = parseRssItems(longXml, { sourceName: 'BBC News', maxItems: 5, now: fixedNow });
+    assert.equal(longItem.snippet.length <= 220, true, 'RSS snippets must stay short (<= 220 chars)');
+    assert.equal(longItem.snippet.endsWith('…'), true);
+    const { normalizeHttpsUrl } = require('../_shared/intel-normalization');
+    assert.equal(normalizeHttpsUrl(longItem.link), 'https://www.bbc.com/news/articles/cr123456');
+
     // Direct freshness & URL/pubDate drift checks
     assert.equal(isFreshAndConsistentDate('2026-11-10', 'https://news.un.org/en/story/2026/11/123', { now: fixedNow }), true);
     assert.equal(isFreshAndConsistentDate('2026-10-01', 'https://news.un.org/en/story/2026/10/123', { now: fixedNow }), false, 'Items older than 30 days must be rejected');
@@ -123,10 +137,22 @@ test('public snapshot builds live institutional feed with zero SERPER_API_KEY an
                 <pubDate>Thu, 19 Nov 2026 04:00:00 +0000</pubDate>
             </item>
         </channel></rss>`;
+    const bbcRss = `<?xml version="1.0" encoding="utf-8"?>
+        <rss version="2.0"><channel>
+            <item>
+                <title>Lesotho highland water treaty signed after security talks</title>
+                <link>https://www.bbc.com/news/articles/lesotho2026?at_medium=RSS&amp;at_campaign=rss</link>
+                <description><![CDATA[Diplomacy and treaty negotiations conclude over regional water sharing and infrastructure.]]></description>
+                <pubDate>Thu, 19 Nov 2026 04:00:00 +0000</pubDate>
+            </item>
+        </channel></rss>`;
     const fetchImpl = async (url) => {
         calledUrls.push(String(url));
         if (String(url).includes('google.serper.dev')) {
             throw new Error('Serper must not be called when paused');
+        }
+        if (String(url).includes('bbci.co.uk')) {
+            return { ok: true, text: async () => bbcRss };
         }
         if (String(url).includes('reliefweb.int')) {
             return {
@@ -172,15 +198,24 @@ test('public snapshot builds live institutional feed with zero SERPER_API_KEY an
     assert.equal(snapshot.meta.status, 'fresh');
     assert.equal(snapshot.meta.errorCode, undefined);
     assert.equal('serperStatus' in snapshot.meta, false, 'Public meta must not expose billing state');
-    assert.equal(snapshot.items.length, 3);
+    assert.equal(snapshot.items.length, 4);
     assert.equal(calledUrls.some(u => u.includes('google.serper.dev')), false);
     assert.match(snapshot.meta.provider, /UN News RSS/);
+    assert.match(snapshot.meta.provider, /BBC News RSS/);
     assert.match(snapshot.meta.provider, /ReliefWeb/);
     assert.match(snapshot.meta.provider, /GDELT/);
     assert.deepEqual(
         snapshot.meta.providerResults.map(r => [r.provider, r.status]),
-        [['UN News RSS', 'ok'], ['ReliefWeb', 'ok'], ['GDELT', 'ok']]
+        [['UN News RSS', 'ok'], ['BBC News RSS', 'ok'], ['ReliefWeb', 'ok'], ['GDELT', 'ok']]
     );
+    const bbcItem = snapshot.items.find(it => it.Source === 'BBC News');
+    assert.ok(bbcItem, 'Expected BBC News item in live snapshot');
+    assert.equal(bbcItem.coverage.fundingLabel, 'Public broadcaster, UK licence fee');
+    assert.equal(bbcItem.coverage.attributionUrl, 'https://www.bbc.com/news');
+    assert.equal(bbcItem.url, 'https://www.bbc.com/news/articles/lesotho2026');
+    const unItem = snapshot.items.find(it => it.Source === 'UN News');
+    assert.equal(unItem.coverage.fundingLabel, 'UN institutional reporting');
+    assert.equal(snapshot.items.some(it => /independent/i.test(it.coverage.fundingLabel || '')), false);
 });
 
 test('public snapshot keeps free institutional items and avoids error when optional Serper runs out of credits', async () => {
@@ -482,7 +517,58 @@ test('selection balances regions and issues while limiting publishers, clusters,
     );
     assert.equal(Math.max(...Object.values(counts('sourceRole'))) <= 8, true);
     assert.equal(selected.filter(item => item.coverage.sourceRole === 'discovery').length <= 4, true);
-    assert.equal(selected.every(item => !('_publisherDomain' in item) && !('_topicCluster' in item)), true);
+    assert.equal(selected.every(item => !('_publisherDomain' in item) && !('_topicCluster' in item) && !('_isConfiguredFeed' in item)), true);
+
+    // No single publisher may supply > 1/3 of selected items when 3+ publishers contribute
+    const publishers = [
+        { domain: 'news.un.org', role: 'institutional', hub: true },
+        { domain: 'bbc.co.uk', role: 'independent-news', hub: false },
+        { domain: 'globalvoices.org', role: 'regional', hub: false },
+    ];
+    const balancedCandidates = [];
+    for (const [pubIdx, pub] of publishers.entries()) {
+        for (let n = 0; n < 10; n += 1) {
+            const reg = TARGET_REGIONS[(n + pubIdx) % TARGET_REGIONS.length];
+            const iss = TARGET_ISSUES[(n + pubIdx) % TARGET_ISSUES.length];
+            balancedCandidates.push({
+                url: `https://${pub.domain}/story-${pubIdx}-${n}`,
+                'Entity/Subject': `Publisher ${pubIdx} story ${n}`,
+                coverage: { region: reg, issue: iss, sourceRole: pub.role, sourceRoleLabel: SOURCE_ROLE_LABELS[pub.role], relevanceScore: 95 - n },
+                _publisherDomain: pub.domain,
+                _isInstitutionalHub: pub.hub,
+                _isConfiguredFeed: true,
+                _topicCluster: `${pubIdx}:${n}`,
+            });
+        }
+    }
+    const cappedSelection = selectDiverseArticles(balancedCandidates, 18);
+    const pubCounts = cappedSelection.reduce((acc, item) => {
+        const host = new URL(item.url).hostname;
+        acc[host] = (acc[host] || 0) + 1;
+        return acc;
+    }, {});
+    assert.equal(cappedSelection.length, 18);
+    for (const [host, count] of Object.entries(pubCounts)) {
+        assert.equal(count <= Math.floor(cappedSelection.length / 3), true, `${host} supplied ${count}/${cappedSelection.length} (> 1/3)`);
+    }
+
+    // Asymmetric 3-publisher pool (e.g., 10 UN + 10 BBC + 4 Devpolicy) also respects <= 1/3
+    const asymmetricCandidates = balancedCandidates.filter(c => c._publisherDomain !== 'globalvoices.org' || /story-2-[0-3]$/.test(c.url));
+    const asymSelected = selectDiverseArticles(asymmetricCandidates, 20);
+    const asymCounts = asymSelected.reduce((acc, item) => {
+        const host = new URL(item.url).hostname;
+        acc[host] = (acc[host] || 0) + 1;
+        return acc;
+    }, {});
+    assert.equal(asymSelected.length >= 12, true);
+    for (const [host, count] of Object.entries(asymCounts)) {
+        assert.equal(count <= Math.floor(asymSelected.length / 3), true, `Asymmetric ${host} supplied ${count}/${asymSelected.length} (> 1/3)`);
+    }
+
+    // Skewed 3-publisher pool (e.g., 10 UN + 10 BBC + 2 minor items) must not collapse feed down to 6 items
+    const skewedCandidates = balancedCandidates.filter(c => c._publisherDomain !== 'globalvoices.org' || /story-2-[0-1]$/.test(c.url));
+    const skewedSelected = selectDiverseArticles(skewedCandidates, 20);
+    assert.equal(skewedSelected.length >= 12, true, `Skewed 10/10/2 pool must keep >= 12 items, got ${skewedSelected.length}`);
 });
 
 test('shared intel-normalization coordinate inference is deterministic and categorizeSector uses word-bounded Governance & Rights matching', () => {
@@ -520,10 +606,131 @@ test('shared intel-normalization coordinate inference is deterministic and categ
     assert.notDeepEqual(centralAmerica.coords, [37.1, -95.6], 'Central America must never pin in Kansas/USA');
     assert.deepEqual(centralAmerica.coords, [13.8, -86.2]);
 
-    // "un" must never pin a story to New York
+    // "un" must never pin a story to New York, and unmapped global items return null coords
     const unOnly = resolveCoords('UN report warns of global unrest and funding gaps', 'United Nations appeal');
     assert.equal(unOnly.precision, 'fallback');
     assert.equal(unOnly.matchedPlace, null);
+    assert.equal(unOnly.coords, null);
+
+    // Earliest-named place in title wins (longest match breaks exact index ties)
+    const gazaTalks = resolveCoords('Gaza ceasefire talks in Egypt', 'Regional mediation continues');
+    assert.equal(gazaTalks.matchedPlace, 'gaza');
+    assert.deepEqual(gazaTalks.coords, [31.5, 34.5]);
+
+    const omanTalks = resolveCoords('Oman mediates Iran talks', 'Diplomats meet in Muscat');
+    assert.equal(omanTalks.matchedPlace, 'oman');
+    assert.deepEqual(omanTalks.coords, [21.5, 55.9]);
+
+    const southSudan = resolveCoords('South Sudan peace deal signed in Sudan', 'UN peacekeeping update');
+    assert.equal(southSudan.matchedPlace, 'south sudan');
+    assert.deepEqual(southSudan.coords, [6.9, 31.3]);
+
+    const guineaBissau = resolveCoords('Guinea-Bissau holds parliamentary vote', 'West Africa election update');
+    assert.equal(guineaBissau.matchedPlace, 'guinea-bissau');
+    assert.deepEqual(guineaBissau.coords, [11.8, -15.2]);
+
+    const eqGuinea = resolveCoords('Equatorial Guinea signs energy deal', 'Central Africa economic update');
+    assert.equal(eqGuinea.matchedPlace, 'equatorial guinea');
+    assert.deepEqual(eqGuinea.coords, [1.65, 10.27]);
+
+    const lesotho = resolveCoords('Lesotho highland water treaty enters new phase', 'Southern Africa cooperation');
+    assert.equal(lesotho.matchedPlace, 'lesotho');
+    assert.deepEqual(lesotho.coords, [-29.6, 28.2]);
+
+    const romania = resolveCoords('Romania energy security bill passes parliament', 'Black Sea corridor update');
+    assert.equal(romania.matchedPlace, 'romania');
+    assert.deepEqual(romania.coords, [45.9, 25.0]);
+
+    // False-positive guards on ordinary English words & lowercase pronoun "us"
+    const noMischief = resolveCoords('Political mischief in parliamentary policy debate', 'Domestic politics');
+    assert.equal(noMischief.matchedPlace, null);
+    const noPronounUs = resolveCoords('Join us for global climate talks today', 'Multilateral delegates meet');
+    assert.equal(noPronounUs.matchedPlace, null);
+    const upperUs = resolveCoords('US sanctions target illicit finance networks', 'Treasury announcement');
+    assert.equal(upperUs.matchedPlace, 'united states');
+    const noGuineaPig = resolveCoords('Guinea pig biomedical study opens at university', 'Medical research');
+    assert.equal(noGuineaPig.matchedPlace, null);
+    const guineaElection = resolveCoords('Guinea holds legislative election', 'West Africa report');
+    assert.equal(guineaElection.matchedPlace, 'guinea');
+    const nfdCote = resolveCoords("Co\u0302te d'Ivoire treaty talks open", 'Regional trade cooperation');
+    assert.equal(nfdCote.matchedPlace, "côte d'ivoire");
+    assert.equal(getCoords('Global AI ethics summit opens'), null, 'getCoords returns null for unmapped stories');
+
+    const unknownPublisher = assessArticle({
+        title: 'Romania energy talks advance in parliament',
+        snippet: 'Diplomacy and security debate over regional power infrastructure.',
+        source: 'Regional Dispatch',
+        date: '2026-11-19',
+        link: 'https://unknown-blog.example.org/romania-2026',
+    }, FIXED_QUERIES[3]);
+    assert.equal(unknownPublisher.coverage.fundingLabel, 'Funding source unverified');
+
+    // All 193 UN member states + observer states & case locations resolve deterministically
+    const UN_MEMBER_STATES_193 = [
+        'Afghanistan', 'Albania', 'Algeria', 'Andorra', 'Angola', 'Antigua and Barbuda', 'Argentina',
+        'Armenia', 'Australia', 'Austria', 'Azerbaijan', 'Bahamas', 'Bahrain', 'Bangladesh', 'Barbados',
+        'Belarus', 'Belgium', 'Belize', 'Benin', 'Bhutan', 'Bolivia', 'Bosnia and Herzegovina', 'Botswana',
+        'Brazil', 'Brunei', 'Bulgaria', 'Burkina Faso', 'Burundi', 'Cabo Verde', 'Cambodia', 'Cameroon',
+        'Canada', 'Central African Republic', 'Chad', 'Chile', 'China', 'Colombia', 'Comoros',
+        'Republic of the Congo', 'Costa Rica', "Côte d'Ivoire", 'Croatia', 'Cuba', 'Cyprus', 'Czechia',
+        'Democratic Republic of the Congo', 'Denmark', 'Djibouti', 'Dominica', 'Dominican Republic',
+        'Ecuador', 'Egypt', 'El Salvador', 'Equatorial Guinea', 'Eritrea', 'Estonia', 'Eswatini',
+        'Ethiopia', 'Fiji', 'Finland', 'France', 'Gabon', 'Gambia', 'Georgia', 'Germany', 'Ghana',
+        'Greece', 'Grenada', 'Guatemala', 'Guinea', 'Guinea-Bissau', 'Guyana', 'Haiti', 'Honduras',
+        'Hungary', 'Iceland', 'India', 'Indonesia', 'Iran', 'Iraq', 'Ireland', 'Israel', 'Italy',
+        'Jamaica', 'Japan', 'Jordan', 'Kazakhstan', 'Kenya', 'Kiribati', 'Kuwait', 'Kyrgyzstan', 'Laos',
+        'Latvia', 'Lebanon', 'Lesotho', 'Liberia', 'Libya', 'Liechtenstein', 'Lithuania', 'Luxembourg',
+        'Madagascar', 'Malawi', 'Malaysia', 'Maldives', 'Mali', 'Malta', 'Marshall Islands', 'Mauritania',
+        'Mauritius', 'Mexico', 'Micronesia', 'Moldova', 'Monaco', 'Mongolia', 'Montenegro', 'Morocco',
+        'Mozambique', 'Myanmar', 'Namibia', 'Nauru', 'Nepal', 'Netherlands', 'New Zealand', 'Nicaragua',
+        'Niger', 'Nigeria', 'North Korea', 'North Macedonia', 'Norway', 'Oman', 'Pakistan', 'Palau',
+        'Panama', 'Papua New Guinea', 'Paraguay', 'Peru', 'Philippines', 'Poland', 'Portugal', 'Qatar',
+        'Romania', 'Russia', 'Rwanda', 'Saint Kitts and Nevis', 'Saint Lucia', 'Saint Vincent and the Grenadines',
+        'Samoa', 'San Marino', 'São Tomé and Príncipe', 'Saudi Arabia', 'Senegal', 'Serbia', 'Seychelles',
+        'Sierra Leone', 'Singapore', 'Slovakia', 'Slovenia', 'Solomon Islands', 'Somalia', 'South Africa',
+        'South Korea', 'South Sudan', 'Spain', 'Sri Lanka', 'Sudan', 'Suriname', 'Sweden', 'Switzerland',
+        'Syria', 'Tajikistan', 'Tanzania', 'Thailand', 'Timor-Leste', 'Togo', 'Tonga', 'Trinidad and Tobago',
+        'Tunisia', 'Türkiye', 'Turkmenistan', 'Tuvalu', 'Uganda', 'Ukraine', 'United Arab Emirates',
+        'United Kingdom', 'United States', 'Uruguay', 'Uzbekistan', 'Vanuatu', 'Venezuela', 'Vietnam',
+        'Yemen', 'Zambia', 'Zimbabwe',
+    ];
+    assert.equal(new Set(UN_MEMBER_STATES_193).size, 193);
+    for (const country of UN_MEMBER_STATES_193) {
+        const res = resolveCoords(`${country} policy briefing`, 'International report');
+        assert.equal(res.precision, 'named-place', `Expected named-place for UN member state ${country}`);
+        assert.equal(Array.isArray(res.coords) && res.coords.length === 2, true, `Expected coords for ${country}`);
+    }
+    for (const casePlace of ['Somaliland', 'Western Sahara', 'Greenland', 'Essequibo', 'Transnistria', 'Mekong', 'El Fasher', 'Hargeisa', 'Palestine', 'Vatican']) {
+        const res = resolveCoords(`${casePlace} development update`, 'Case briefing');
+        assert.equal(res.precision, 'named-place', `Expected named-place for ${casePlace}`);
+    }
+
+    // Global stories with no named place remain unpinned (Latitude: null, Longitude: null, global-unmapped)
+    const climateFeed = {
+        id: 'un-news-climate',
+        region: 'Global / Transnational',
+        issueHints: ['Climate & Resources'],
+        fallbackCoords: null,
+    };
+    const cop31 = assessArticle({
+        title: 'COP31 enters decisive week as climate talks face political test',
+        snippet: 'Global delegates negotiate climate finance targets and mitigation pathways.',
+        source: 'UN News',
+        date: '2026-11-16',
+        link: 'https://news.un.org/en/story/2026/11/1168812',
+    }, climateFeed, { scraperSource: 'institutional-rss', isInstitutionalHub: true });
+    const aiChildren = assessArticle({
+        title: 'AI hands predators new ways to target children worldwide',
+        snippet: 'United Nations report urges stronger digital safeguards on artificial intelligence platforms.',
+        source: 'UN News',
+        date: '2026-11-19',
+        link: 'https://news.un.org/en/story/2026/11/1168841',
+    }, climateFeed, { scraperSource: 'institutional-rss', isInstitutionalHub: true });
+    for (const item of [cop31, aiChildren]) {
+        assert.equal(item.Latitude, null);
+        assert.equal(item.Longitude, null);
+        assert.equal(item.coverage.locationPrecision, 'global-unmapped');
+    }
 
     // Fallback items sharing coordinates are de-stacked deterministically
     const stacked = selectDiverseArticles([
@@ -554,4 +761,89 @@ test('shared intel-normalization coordinate inference is deterministic and categ
         `${stacked[1].Latitude},${stacked[1].Longitude}`,
         'Items sharing fallback coordinates must not stack on one point'
     );
+});
+
+test('snapshot-store isolates deploy-preview and non-production Blobs from production and all Blobs functions thread runtime context', async () => {
+    const { pathToFileURL } = require('node:url');
+    const storeMod = await import(pathToFileURL(path.resolve(__dirname, '../_shared/snapshot-store.mjs')).href);
+    const {
+        STORE_NAME,
+        isProductionContext,
+        readSnapshot,
+        resolveDeployContext,
+        resolveSnapshotStore,
+        writeSnapshot,
+    } = storeMod;
+
+    assert.equal(resolveDeployContext({ context: { deploy: { context: 'production' } }, env: {} }), 'production');
+    assert.equal(resolveDeployContext({ context: { deploy: { context: 'deploy-preview' } }, env: { CONTEXT: 'production' } }), 'deploy-preview');
+    assert.equal(resolveDeployContext({ context: { deploy: { context: 'branch-deploy' } }, env: {} }), 'branch-deploy');
+    assert.equal(resolveDeployContext({ context: { deploy: { published: true } }, env: {} }), 'production');
+    assert.equal(resolveDeployContext({ context: { deploy: { context: 'production', published: false } }, env: { CONTEXT: 'production' } }), 'deploy-preview');
+    assert.equal(resolveDeployContext({ context: { deploy: { published: false } }, env: { CONTEXT: 'production' } }), 'deploy-preview');
+    assert.equal(resolveDeployContext({ context: null, env: { CONTEXT: 'production' } }), 'production');
+    assert.equal(resolveDeployContext({ context: null, env: {} }), 'non-production');
+
+    assert.equal(isProductionContext({ context: { deploy: { context: 'production' } } }), true);
+    assert.equal(isProductionContext({ context: { deploy: { context: 'production', published: false } } }), false);
+    assert.equal(isProductionContext({ context: { deploy: { context: 'deploy-preview' } } }), false);
+    assert.equal(isProductionContext({ context: null, env: {} }), false);
+
+    const storeCalls = [];
+    const prodData = new Map();
+    const previewData = new Map();
+    const makeStore = (bucket, label) => ({
+        get: async key => {
+            storeCalls.push(`get:${label}:${key}`);
+            return bucket.get(key) ?? null;
+        },
+        setJSON: async (key, value) => {
+            storeCalls.push(`set:${label}:${key}`);
+            bucket.set(key, value);
+        },
+    });
+    const fakeGetStore = name => {
+        assert.equal(name, STORE_NAME);
+        return makeStore(prodData, 'site');
+    };
+    const fakeGetDeployStore = name => {
+        assert.equal(name, STORE_NAME);
+        return makeStore(previewData, 'deploy');
+    };
+
+    const previewStore = resolveSnapshotStore({
+        context: { deploy: { context: 'deploy-preview' } },
+        env: {},
+        getStoreFn: fakeGetStore,
+        getDeployStoreFn: fakeGetDeployStore,
+    });
+    await previewStore.setJSON('public-intel/current.json', { from: 'preview' });
+    assert.equal(prodData.has('public-intel/current.json'), false, 'Preview write must never touch site-wide store');
+
+    await writeSnapshot('public-intel/current.json', { from: 'prod' }, {
+        context: { deploy: { context: 'production' } },
+        env: {},
+        getStoreFn: fakeGetStore,
+        getDeployStoreFn: fakeGetDeployStore,
+    });
+    await writeSnapshot('public-intel/current.json', { from: 'branch' }, {
+        context: { deploy: { context: 'branch-deploy' } },
+        env: {},
+        getStoreFn: fakeGetStore,
+        getDeployStoreFn: fakeGetDeployStore,
+    });
+    const prodRead = await readSnapshot('public-intel/current.json', {
+        context: { deploy: { context: 'production' } },
+        env: {},
+        getStoreFn: fakeGetStore,
+        getDeployStoreFn: fakeGetDeployStore,
+    });
+    assert.deepEqual(prodRead, { from: 'prod' });
+    assert.deepEqual(previewData.get('public-intel/current.json'), { from: 'branch' });
+    assert.equal(storeCalls.includes('set:deploy:public-intel/current.json'), true);
+
+    for (const fileName of ['public-intel.mjs', 'refresh-public-intel.mjs']) {
+        const src = fs.readFileSync(path.join(__dirname, '..', fileName), 'utf8');
+        assert.match(src, /\{\s*context\s*\}/, `${fileName} must pass runtime deploy context into snapshot-store`);
+    }
 });

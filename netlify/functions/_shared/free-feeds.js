@@ -4,7 +4,11 @@ const FREE_FEED_TIMEOUT_MS = 8000;
 const GDELT_TIMEOUT_MS = 6000;
 const MAX_ITEM_AGE_DAYS = 30;
 const MAX_URL_DATE_DRIFT_DAYS = 30;
+const MAX_SNIPPET_CHARS = 220;
 const DAY_MS = 24 * 60 * 60 * 1000;
+
+const UN_NEWS_ATTRIBUTION_URL = 'https://news.un.org/en/';
+const UN_NEWS_FUNDING_LABEL = 'UN institutional reporting';
 
 const UN_NEWS_FEEDS = Object.freeze([
     {
@@ -14,6 +18,8 @@ const UN_NEWS_FEEDS = Object.freeze([
         fallbackCoords: [4.8, 21.4],
         url: 'https://news.un.org/feed/subscribe/en/news/region/africa/feed/rss.xml',
         sourceName: 'UN News',
+        fundingLabel: UN_NEWS_FUNDING_LABEL,
+        attributionUrl: UN_NEWS_ATTRIBUTION_URL,
         maxItems: 5,
     },
     {
@@ -23,6 +29,8 @@ const UN_NEWS_FEEDS = Object.freeze([
         fallbackCoords: [24.2, 108.0],
         url: 'https://news.un.org/feed/subscribe/en/news/region/asia-pacific/feed/rss.xml',
         sourceName: 'UN News',
+        fundingLabel: UN_NEWS_FUNDING_LABEL,
+        attributionUrl: UN_NEWS_ATTRIBUTION_URL,
         maxItems: 5,
     },
     {
@@ -32,6 +40,8 @@ const UN_NEWS_FEEDS = Object.freeze([
         fallbackCoords: [27.5, 38.0],
         url: 'https://news.un.org/feed/subscribe/en/news/region/middle-east/feed/rss.xml',
         sourceName: 'UN News',
+        fundingLabel: UN_NEWS_FUNDING_LABEL,
+        attributionUrl: UN_NEWS_ATTRIBUTION_URL,
         maxItems: 5,
     },
     {
@@ -41,6 +51,8 @@ const UN_NEWS_FEEDS = Object.freeze([
         fallbackCoords: [50.8, 28.0],
         url: 'https://news.un.org/feed/subscribe/en/news/region/europe/feed/rss.xml',
         sourceName: 'UN News',
+        fundingLabel: UN_NEWS_FUNDING_LABEL,
+        attributionUrl: UN_NEWS_ATTRIBUTION_URL,
         maxItems: 5,
     },
     {
@@ -50,45 +62,153 @@ const UN_NEWS_FEEDS = Object.freeze([
         fallbackCoords: [7.8, -73.0],
         url: 'https://news.un.org/feed/subscribe/en/news/region/americas/feed/rss.xml',
         sourceName: 'UN News',
+        fundingLabel: UN_NEWS_FUNDING_LABEL,
+        attributionUrl: UN_NEWS_ATTRIBUTION_URL,
         maxItems: 5,
     },
     {
         id: 'un-news-climate',
         region: 'Global / Transnational',
         issueHints: ['Climate & Resources', 'Economy & Development'],
-        fallbackCoords: [-13.5, 172.0],
+        fallbackCoords: null,
         url: 'https://news.un.org/feed/subscribe/en/news/topic/climate-change/feed/rss.xml',
         sourceName: 'UN News',
+        fundingLabel: UN_NEWS_FUNDING_LABEL,
+        attributionUrl: UN_NEWS_ATTRIBUTION_URL,
         maxItems: 4,
     },
     {
         id: 'un-news-health',
         region: 'Global / Transnational',
         issueHints: ['Health & Human Security', 'Governance & Rights'],
-        fallbackCoords: [46.2, 6.1],
+        fallbackCoords: null,
         url: 'https://news.un.org/feed/subscribe/en/news/topic/health/feed/rss.xml',
         sourceName: 'UN News',
+        fundingLabel: UN_NEWS_FUNDING_LABEL,
+        attributionUrl: UN_NEWS_ATTRIBUTION_URL,
         maxItems: 4,
     },
     {
         id: 'un-news-human-rights',
         region: 'Global / Transnational',
         issueHints: ['Governance & Rights', 'Health & Human Security'],
-        fallbackCoords: [46.2, 6.1],
+        fallbackCoords: null,
         url: 'https://news.un.org/feed/subscribe/en/news/topic/human-rights/feed/rss.xml',
         sourceName: 'UN News',
+        fundingLabel: UN_NEWS_FUNDING_LABEL,
+        attributionUrl: UN_NEWS_ATTRIBUTION_URL,
         maxItems: 4,
     },
     {
         id: 'un-news-economic-development',
         region: 'Global / Transnational',
         issueHints: ['Economy & Development', 'Climate & Resources'],
-        fallbackCoords: [12.0, -18.0],
+        fallbackCoords: null,
         url: 'https://news.un.org/feed/subscribe/en/news/topic/economic-development/feed/rss.xml',
         sourceName: 'UN News',
+        fundingLabel: UN_NEWS_FUNDING_LABEL,
+        attributionUrl: UN_NEWS_ATTRIBUTION_URL,
         maxItems: 4,
     },
 ]);
+
+// Non-UN RSS feeds whose published Terms of Use explicitly allow non-commercial website headline/RSS display.
+// BBC News terms (bbc.co.uk/usingthebbc/terms/can-i-use-bbc-content/) permit non-commercial website RSS with credit + homepage link.
+// Held pending owner review: RNZ Pacific (terms prohibit website aggregation), Al Jazeera & France 24 (personal-use only), AllAfrica (allowed with credit, held on owner instruction).
+const PUBLIC_NEWS_RSS_FEEDS = Object.freeze([
+    {
+        id: 'bbc-world-news',
+        region: 'Global / Transnational',
+        issueHints: ['Security & Diplomacy', 'Governance & Rights', 'Economy & Development'],
+        fallbackCoords: null,
+        url: 'https://feeds.bbci.co.uk/news/world/rss.xml',
+        sourceName: 'BBC News',
+        fundingLabel: 'Public broadcaster, UK licence fee',
+        attributionUrl: 'https://www.bbc.com/news',
+        maxItems: 14,
+    },
+]);
+
+// Explicit funding & ownership transparency table (never collapse distinct funding models into "independent").
+const PUBLISHER_FUNDING_INFO = Object.freeze({
+    'news.un.org': {
+        sourceName: 'UN News',
+        fundingLabel: UN_NEWS_FUNDING_LABEL,
+        attributionUrl: UN_NEWS_ATTRIBUTION_URL,
+    },
+    'un.org': {
+        sourceName: 'United Nations',
+        fundingLabel: UN_NEWS_FUNDING_LABEL,
+        attributionUrl: 'https://www.un.org/en/',
+    },
+    'reliefweb.int': {
+        sourceName: 'ReliefWeb / OCHA',
+        fundingLabel: 'UN OCHA humanitarian aggregator',
+        attributionUrl: 'https://reliefweb.int/',
+    },
+    'bbc.com': {
+        sourceName: 'BBC News',
+        fundingLabel: 'Public broadcaster, UK licence fee',
+        attributionUrl: 'https://www.bbc.com/news',
+    },
+    'bbc.co.uk': {
+        sourceName: 'BBC News',
+        fundingLabel: 'Public broadcaster, UK licence fee',
+        attributionUrl: 'https://www.bbc.com/news',
+    },
+    'aljazeera.com': {
+        sourceName: 'Al Jazeera',
+        fundingLabel: 'State-funded, Qatar',
+    },
+    'france24.com': {
+        sourceName: 'France 24',
+        fundingLabel: 'State-funded, France',
+    },
+    'rnz.co.nz': {
+        sourceName: 'RNZ',
+        fundingLabel: 'Public broadcaster, New Zealand',
+    },
+    'dw.com': {
+        sourceName: 'Deutsche Welle',
+        fundingLabel: 'Public broadcaster, Germany',
+    },
+    'npr.org': {
+        sourceName: 'NPR',
+        fundingLabel: 'Public radio, listener & grant funded (US)',
+    },
+    'allafrica.com': {
+        sourceName: 'allAfrica',
+        fundingLabel: 'African news aggregator (commercial & syndicated)',
+        attributionUrl: 'https://allafrica.com',
+    },
+    'reuters.com': {
+        sourceName: 'Reuters',
+        fundingLabel: 'Commercial news agency',
+    },
+    'apnews.com': {
+        sourceName: 'Associated Press',
+        fundingLabel: 'Nonprofit member-cooperative wire',
+    },
+    'theguardian.com': {
+        sourceName: 'The Guardian',
+        fundingLabel: 'Scott Trust / reader & advertising funded',
+    },
+    'globalvoices.org': {
+        sourceName: 'Global Voices',
+        fundingLabel: 'Nonprofit volunteer media (CC BY 3.0)',
+        attributionUrl: 'https://globalvoices.org/',
+    },
+    'theconversation.com': {
+        sourceName: 'The Conversation',
+        fundingLabel: 'Nonprofit academic journalism (CC BY-ND 4.0)',
+        attributionUrl: 'https://theconversation.com/',
+    },
+    'devpolicy.org': {
+        sourceName: 'Devpolicy Blog',
+        fundingLabel: 'University research blog (ANU, CC BY-NC-SA 4.0)',
+        attributionUrl: 'https://devpolicy.org/',
+    },
+});
 
 // Note: WHO's news-english.xml RSS feed is excluded because its entries are stale (mostly 2020).
 const INSTITUTIONAL_RSS_FEEDS = Object.freeze([
@@ -100,11 +220,37 @@ const GDELT_FEED_QUERIES = Object.freeze([
         id: 'gdelt-global-politics',
         region: 'Global / Transnational',
         issueHints: ['Security & Diplomacy', 'Governance & Rights', 'Climate & Resources', 'Technology & Information'],
-        fallbackCoords: [18.0, 12.0],
+        fallbackCoords: null,
         query: '("Security Council" OR ceasefire OR sanctions OR ASEAN OR "African Union" OR "European Union" OR "South China Sea" OR "climate treaty") sourcelang:english',
         maxrecords: 16,
     },
 ]);
+
+function getPublisherFundingInfo(domain = '', itemOrFeed = null) {
+    if (itemOrFeed?.fundingLabel) {
+        return {
+            fundingLabel: String(itemOrFeed.fundingLabel).trim(),
+            attributionUrl: sanitizeHttpsUrl(itemOrFeed.attributionUrl || ''),
+        };
+    }
+    const cleanDomain = String(domain || '').toLowerCase().replace(/^www\./, '');
+    if (!cleanDomain) return null;
+    for (const [candidate, info] of Object.entries(PUBLISHER_FUNDING_INFO)) {
+        if (cleanDomain === candidate || cleanDomain.endsWith(`.${candidate}`)) {
+            return info;
+        }
+    }
+    return null;
+}
+
+function truncateSnippet(text = '', maxChars = MAX_SNIPPET_CHARS) {
+    const clean = String(text || '').replace(/\s+/g, ' ').trim();
+    if (!clean || clean.length <= maxChars) return clean;
+    const sliced = clean.slice(0, maxChars - 1);
+    const lastSpace = sliced.lastIndexOf(' ');
+    const cut = lastSpace > Math.floor(maxChars * 0.6) ? sliced.slice(0, lastSpace) : sliced;
+    return `${cut.replace(/[,:;.\-\s]+$/, '')}…`;
+}
 
 function decodeXmlEntities(text = '') {
     return String(text)
@@ -204,17 +350,26 @@ function normalizeFeedDate(rawDate = '') {
     return new Date(ms).toISOString().slice(0, 10);
 }
 
-function parseRssItems(xmlText, { sourceName = 'Institutional Feed', maxItems = 5, now = new Date(), maxAgeDays = MAX_ITEM_AGE_DAYS } = {}) {
+function parseRssItems(xmlText, {
+    sourceName = 'Institutional Feed',
+    fundingLabel = '',
+    attributionUrl = '',
+    maxItems = 5,
+    now = new Date(),
+    maxAgeDays = MAX_ITEM_AGE_DAYS,
+    maxSnippetChars = MAX_SNIPPET_CHARS,
+} = {}) {
     if (typeof xmlText !== 'string' || !xmlText.trim()) return [];
     const blocks = xmlText.match(/<item\b[\s\S]*?<\/item>/gi) || [];
     const parsed = [];
+    const cleanAttributionUrl = sanitizeHttpsUrl(attributionUrl);
     for (const block of blocks) {
         if (parsed.length >= maxItems) break;
         const title = extractTag(block, 'title');
         const rawLink = extractTag(block, 'link') || extractTag(block, 'guid');
         const link = sanitizeHttpsUrl(rawLink);
-        const snippet = extractTag(block, 'description');
-        const rawPubDate = extractTag(block, 'pubDate');
+        const snippet = truncateSnippet(extractTag(block, 'description'), maxSnippetChars);
+        const rawPubDate = extractTag(block, 'pubDate') || extractTag(block, 'dc:date');
         const isoDate = normalizeFeedDate(rawPubDate);
         if (!title || !link || !isoDate) continue;
         if (!isFreshAndConsistentDate(rawPubDate, link, { now, maxAgeDays })) continue;
@@ -224,6 +379,8 @@ function parseRssItems(xmlText, { sourceName = 'Institutional Feed', maxItems = 
             link,
             source: sourceName,
             date: isoDate,
+            ...(fundingLabel ? { fundingLabel } : {}),
+            ...(cleanAttributionUrl ? { attributionUrl: cleanAttributionUrl } : {}),
         });
     }
     return parsed;
@@ -255,6 +412,8 @@ async function fetchRssFeed(fetchImpl, feedConfig, { now = new Date() } = {}) {
         const xml = await response.text();
         return parseRssItems(xml, {
             sourceName: feedConfig.sourceName,
+            fundingLabel: feedConfig.fundingLabel,
+            attributionUrl: feedConfig.attributionUrl,
             maxItems: feedConfig.maxItems,
             now,
         });
@@ -306,8 +465,16 @@ async function fetchReliefWebReports(fetchImpl, { appname = '', limit = 15, now 
             const themes = Array.isArray(fields.theme)
                 ? fields.theme.map(t => t?.name).filter(Boolean).join(', ')
                 : '';
-            const snippet = [country, themes].filter(Boolean).join(' · ') || 'Humanitarian situation report published on ReliefWeb.';
-            return { title, snippet, link, source, date: isoDate };
+            const snippet = truncateSnippet([country, themes].filter(Boolean).join(' · ') || 'Humanitarian situation report published on ReliefWeb.');
+            return {
+                title,
+                snippet,
+                link,
+                source,
+                date: isoDate,
+                fundingLabel: PUBLISHER_FUNDING_INFO['reliefweb.int'].fundingLabel,
+                attributionUrl: PUBLISHER_FUNDING_INFO['reliefweb.int'].attributionUrl,
+            };
         }).filter(Boolean);
         return { status: 'ok', items };
     } finally {
@@ -338,12 +505,16 @@ async function fetchGdeltQuery(fetchImpl, queryConfig, { now = new Date() } = {}
             const isoDate = formatGdeltSeenDate(article?.seendate);
             if (!title || !link || isoDate === 'Current') return null;
             if (!isFreshAndConsistentDate(isoDate, link, { now })) return null;
+            const domain = String(article?.domain || '').toLowerCase().replace(/^www\./, '');
+            const fundingInfo = getPublisherFundingInfo(domain);
             return {
                 title,
-                snippet: String(article?.domain ? `Reported via ${article.domain} (${queryConfig.region}).` : ''),
+                snippet: truncateSnippet(article?.domain ? `Reported via ${article.domain} (${queryConfig.region}).` : ''),
                 link,
-                source: String(article?.domain || 'GDELT'),
+                source: fundingInfo?.sourceName || String(article?.domain || 'GDELT'),
                 date: isoDate,
+                fundingLabel: fundingInfo?.fundingLabel || 'Open news index (GDELT)',
+                ...(fundingInfo?.attributionUrl ? { attributionUrl: fundingInfo.attributionUrl } : {}),
             };
         }).filter(Boolean);
     } finally {
@@ -356,7 +527,10 @@ module.exports = {
     GDELT_FEED_QUERIES,
     INSTITUTIONAL_RSS_FEEDS,
     MAX_ITEM_AGE_DAYS,
+    MAX_SNIPPET_CHARS,
     MAX_URL_DATE_DRIFT_DAYS,
+    PUBLIC_NEWS_RSS_FEEDS,
+    PUBLISHER_FUNDING_INFO,
     RELIEFWEB_API_V2,
     UN_NEWS_FEEDS,
     decodeXmlEntities,
@@ -364,6 +538,8 @@ module.exports = {
     fetchGdeltQuery,
     fetchReliefWebReports,
     fetchRssFeed,
+    getPublisherFundingInfo,
     isFreshAndConsistentDate,
     parseRssItems,
+    truncateSnippet,
 };

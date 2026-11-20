@@ -100,11 +100,11 @@ export async function dispatchOrRunInline({
     return { mode: 'inline-bounded', status: 204, snapshot };
 }
 
-async function runInlineBoundedRefresh(preloadedPrevious = undefined) {
+async function runInlineBoundedRefresh(preloadedPrevious = undefined, context = null) {
     const checkedAt = new Date().toISOString();
     const previous = preloadedPrevious !== undefined
         ? preloadedPrevious
-        : await readSnapshot(SNAPSHOT_KEY).catch(() => null);
+        : await readSnapshot(SNAPSHOT_KEY, { context }).catch(() => null);
     const previousByUrl = new Map(
         Array.isArray(previous?.results)
             ? previous.results.filter(r => r?.url && r.status !== 'unknown').map(r => [r.url, r])
@@ -131,17 +131,21 @@ async function runInlineBoundedRefresh(preloadedPrevious = undefined) {
         summary: summarizeHealth(results),
         results,
     };
-    await writeSnapshot(SNAPSHOT_KEY, snapshot);
+    await writeSnapshot(SNAPSHOT_KEY, snapshot, { context });
     console.log(`[refresh-source-health] Checked ${results.length} active links (${incompleteCount} deadline-deferred): ${JSON.stringify(snapshot.summary)}.`);
     return snapshot;
 }
 
-export default async () => {
-    const previousSnapshot = await readSnapshot(SNAPSHOT_KEY).catch(() => null);
+export default async (_request, context) => {
+    const previousSnapshot = await readSnapshot(SNAPSHOT_KEY, { context }).catch(() => null);
+    const targetSiteUrl = context?.deploy?.published === false
+        ? (process.env.DEPLOY_URL || '')
+        : (process.env.URL || process.env.DEPLOY_URL || '');
     await Promise.all([
         dispatchOrRunInline({
+            siteUrl: targetSiteUrl,
             previousSnapshot,
-            runInline: runInlineBoundedRefresh,
+            runInline: prev => runInlineBoundedRefresh(prev, context),
         }),
         pingSupabaseKeepAlive(),
     ]);

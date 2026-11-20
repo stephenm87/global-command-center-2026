@@ -61,7 +61,7 @@ export async function runFullSourceHealthRefresh({
     return snapshot;
 }
 
-export default async request => {
+export default async (request, context) => {
     const guard = protectBackgroundCron(request);
     if (!guard.ok) {
         return new Response(JSON.stringify({ error: guard.message }), {
@@ -73,7 +73,10 @@ export default async request => {
         });
     }
 
-    const snapshot = await runFullSourceHealthRefresh();
+    const snapshot = await runFullSourceHealthRefresh({
+        readPrev: () => readSnapshot(SNAPSHOT_KEY, { context }).catch(() => null),
+        writeNext: nextSnapshot => writeSnapshot(SNAPSHOT_KEY, nextSnapshot, { context }),
+    });
     console.log(`[refresh-source-health-background] Checked ${snapshot.targetCount} active links (${snapshot.incompleteCount} deferred): ${JSON.stringify(snapshot.summary)}.`);
     return new Response(null, { status: 202 });
 };

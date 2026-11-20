@@ -71,12 +71,20 @@ export function generate5W1H(event, referenceDate) {
         };
     }
 
+    const hasValidCoords = event.Latitude !== null
+        && event.Latitude !== ''
+        && event.Longitude !== null
+        && event.Longitude !== ''
+        && Number.isFinite(Number.parseFloat(event.Latitude))
+        && Number.isFinite(Number.parseFloat(event.Longitude))
+        && event.coverage?.locationPrecision !== 'global-unmapped';
+
     return {
         who: `Primary actors: ${entity}. Key players: ${players}.`,
         what: `${topic}${impact ? '. ' + impact.substring(0, 200) : ''}`,
-        where: event.Latitude && event.Longitude
+        where: hasValidCoords
             ? `Geolocation: ${parseFloat(event.Latitude).toFixed(1)}°, ${parseFloat(event.Longitude).toFixed(1)}° — ${entity}`
-            : `Global/Regional — ${entity}`,
+            : `Global / Transnational (no single map pin) — ${entity}`,
         when: timeline,
         why: generateWhy(category, entity, impact),
         how: generateHow(category, players, impact)

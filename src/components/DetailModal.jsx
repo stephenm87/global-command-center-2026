@@ -45,9 +45,17 @@ export default function DetailModal({
                         {selectedForecast.Broad_Category}
                     </span>
                     <h2 id="forecast-dialog-title">
-                        {selectedForecast.isCaseStudy ? selectedForecast['Entity/Subject'] : selectedForecast['Topic/Sector']}
+                        {(selectedForecast.isCaseStudy || selectedForecast.isLive)
+                            ? (selectedForecast['Entity/Subject'] || selectedForecast['Topic/Sector'])
+                            : selectedForecast['Topic/Sector']}
                     </h2>
                     {selectedForecast.isCaseStudy && <p className="modal-case-subtitle">{selectedForecast['Topic/Sector']}</p>}
+                    {selectedForecast.isLive && selectedForecast.Source && (
+                        <p className="modal-case-subtitle">
+                            {selectedForecast.Source}
+                            {selectedForecast.publishedAt ? ` · ${selectedForecast.publishedAt}` : ''}
+                        </p>
+                    )}
                 </div>
                 <div className="modal-body">
                     {selectedForecast.isCaseStudy && (
@@ -147,10 +155,25 @@ export default function DetailModal({
                             <div className="coverage-badges coverage-badges-detail">
                                 <span>{selectedForecast.coverage.region}</span>
                                 <span>{selectedForecast.coverage.issue}</span>
-                                <span>{selectedForecast.coverage.sourceRoleLabel}</span>
+                                <span>{selectedForecast.coverage.fundingLabel || selectedForecast.coverage.sourceRoleLabel}</span>
+                                {selectedForecast.coverage.locationPrecision === 'global-unmapped' && (
+                                    <span className="coverage-badge-unmapped">Global · No single pin</span>
+                                )}
                             </div>
                             <p>{selectedForecast.coverage.selectionReason}</p>
-                            <small>Automated discovery metadata supports coverage balance. A source role describes format and standpoint—not neutrality, accuracy, or endorsement.</small>
+                            {safeHttpUrl(selectedForecast.coverage.attributionUrl) && (
+                                <p>
+                                    Source credit:{' '}
+                                    <a
+                                        href={safeHttpUrl(selectedForecast.coverage.attributionUrl)}
+                                        target="_blank"
+                                        rel="noopener noreferrer"
+                                    >
+                                        {selectedForecast.Source || 'Publisher homepage'} ↗
+                                    </a>
+                                </p>
+                            )}
+                            <small>Funding labels describe organizational support—not editorial endorsement or neutrality.</small>
                         </section>
                     )}
 

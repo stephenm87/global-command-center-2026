@@ -14,10 +14,10 @@ const publicHeaders = {
     'Netlify-Vary': 'header=Origin',
 };
 
-async function refreshSnapshot() {
+async function refreshSnapshot(context = null) {
     if (!inFlightRefresh) {
         inFlightRefresh = buildPublicSnapshot()
-            .then(snapshot => writeSnapshot(SNAPSHOT_KEY, snapshot))
+            .then(snapshot => writeSnapshot(SNAPSHOT_KEY, snapshot, { context }))
             .finally(() => { inFlightRefresh = null; });
     }
     return inFlightRefresh;
@@ -31,23 +31,24 @@ function toResponse(response) {
     return new Response(response.body || null, { status: response.statusCode, headers: response.headers });
 }
 
-export default async request => {
+export default async (request, context) => {
     const event = toLegacyEvent(request);
     const security = protectPublicEndpoint(event, { methods: ['GET'] });
     if (security.response) return toResponse(security.response);
     const responseHeaders = { ...security.headers, ...publicHeaders };
 
     try {
-        const cached = await readSnapshot(SNAPSHOT_KEY);
+        const cached = await readSnapshot(SNAPSHOT_KEY, { context });
         const legacyErrorSnapshot = ['not-configured', 'provider-error', 'unavailable'].includes(cached?.meta?.status)
             && (!Array.isArray(cached?.items) || cached.items.length === 0)
             && cached?.meta?.provider === 'Serper';
-        const needsSchemaUpgrade = !Array.isArray(cached?.meta?.providerResults);
+        const needsSchemaUpgrade = !Array.isArray(cached?.meta?.providerResults)
+            || (Array.isArray(cached?.items) && cached.items.some(item => !item?.coverage?.fundingLabel));
         if (cached?.meta && !legacyErrorSnapshot && !needsSchemaUpgrade) {
             return new Response(JSON.stringify(withSnapshotAge(cached)), { status: 200, headers: responseHeaders });
         }
 
-        const snapshot = await refreshSnapshot();
+        const snapshot = await refreshSnapshot(context);
         return new Response(JSON.stringify(withSnapshotAge(snapshot)), { status: 200, headers: responseHeaders });
     } catch (error) {
         console.error('[public-intel] Snapshot unavailable:', error.message);
