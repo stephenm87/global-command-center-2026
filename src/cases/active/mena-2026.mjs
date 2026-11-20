@@ -735,6 +735,7 @@ export const MENA_CASES_2026 = [
     {
         "id": "libya-roadmap-elections-oil-assets",
         "status": "active",
+        "briefingVersion": 2,
         "title": "Libya's 2026 Roadmap: Elections, Oil Assets, and Competing Authority",
         "subtitle": "Can structured dialogue produce unified institutions and accountable public finance?",
         "coverageRegion": "Middle East & North Africa",
@@ -766,7 +767,7 @@ export const MENA_CASES_2026 = [
             "MilitantPMC",
             "Europe"
         ],
-        "statusSummary": "Libyan reporting in August 2026 described the UN-facilitated roadmap as focused on completing the electoral framework and resolving the High National Elections Commission board impasse; on 30 October 2026, the UN Security Council adopted Resolution 2835 (13 in favor, 2 abstentions), extending UNSMIL's mandate through 31 October 2027 to support an inclusive political solution. Security Council Resolution 2819 earlier adjusted measures governing Libyan assets in April 2026, while Chatham House analysis argues that external power-sharing proposals risk reinforcing elite fragmentation rather than producing accountable national institutions.",
+        "statusSummary": "Libyan reporting in August 2026 described the UN-facilitated roadmap as focused on completing the electoral framework and resolving the High National Elections Commission board impasse. On 30 October 2026, the UN Security Council adopted Resolution 2835 by 13 votes in favor with 2 abstentions, extending UNSMIL's mandate through 31 October 2027 to support an inclusive political solution. Security Council Resolution 2819 had earlier adjusted measures governing Libyan assets in April 2026. Meanwhile, Chatham House analysis cites Libyan audit findings of a fuel import bill above $9 billion by 2024 and argues that a US-backed power-sharing deal between rival ruling families could worsen corruption rather than produce accountable governance.",
         "whyItMatters": "Libya links delayed elections to divided security authority, oil-revenue governance, sovereign assets, public services, and migration across the Mediterranean. A roadmap can succeed procedurally while leaving the political economy of division intact.",
         "updatedAt": "2026-11-17",
         "confidence": "medium",
@@ -853,7 +854,9 @@ export const MENA_CASES_2026 = [
                 "title": "A Public Demand for a Political Endpoint",
                 "perspectiveLabel": "Libyan voters and civil society",
                 "perspectiveType": "local",
-                "narration": "Many Libyans seek elections and functioning services, but their priorities can be displaced by bargaining among institutions that benefit from an extended transition.",
+                "conceptInFocus": "Power",
+                "relatedTimelineDate": "2026-10-30",
+                "narration": "At a Libyan filling station, a liter of petrol costs about two US cents [3]. The price looks like a gift from an oil-producing state to its people. Behind it, Libya's Audit Bureau and National Anti-Corruption Commission found a fuel import bill above $9 billion by 2024, close to $1,200 for every person in the country [3]. Libya produces crude oil but must import refined fuel, which the state then subsidizes [3].\n\nA subsidy is public money spent to hold a price down. Libyans are still waiting for the national elections that the United Nations (UN) Security Council called for on 30 October 2026 [4]. Chatham House analyst Tim Eaton argues that a deal dividing office between two ruling families would look like more of the same to ordinary Libyans [3]. Citizens gain leverage over that money only when they can remove those who control it, and the roadmap has yet to deliver an election.",
                 "focusQuestion": "How can the roadmap give citizens leverage over the actors negotiating its terms?"
             },
             {
@@ -861,7 +864,9 @@ export const MENA_CASES_2026 = [
                 "title": "From Rules to a Credible Vote",
                 "perspectiveLabel": "HNEC and UN-facilitated roadmap",
                 "perspectiveType": "institutional",
-                "narration": "The immediate process centers on electoral rules, a functioning election commission, and a structured dialogue intended to address barriers beyond election mechanics.",
+                "conceptInFocus": "Legitimacy",
+                "relatedTimelineDate": "2026-08-02",
+                "narration": "Two obstacles dominated five days of UN-backed talks reported on 2 August 2026. The first was a stalemate over the electoral framework, the laws that set how a vote is run [1]. The second was an incomplete board at the High National Elections Commission (HNEC), the body that would administer it [1]. Participants in the Structured Dialogue examined existing electoral laws, including those drafted by a body known as the 6+6 Committee [1].\n\nThe talks produced recommendations, not decisions. The UN mission stressed that the dialogue is meant to create conditions for elections, not to choose a new government [1]. On 30 October 2026 the Security Council renewed the mission for a year and urged Libyan institutions to negotiate \"without preconditions and without delay\" [4]. Participants focused on the concerns and safeguards behind each draft law because sequence matters [1]. A vote settles who governs only when the main contenders have accepted its rules before the count.",
                 "focusQuestion": "Which sequencing choices are necessary for a vote to be accepted rather than simply held?"
             },
             {
@@ -869,7 +874,9 @@ export const MENA_CASES_2026 = [
                 "title": "Security Authority Outside a Unified State",
                 "perspectiveLabel": "Rival political and armed institutions",
                 "perspectiveType": "local",
-                "narration": "Competing security structures and territorial power centers can veto, delay, or selectively enforce national political agreements.",
+                "conceptInFocus": "Sovereignty",
+                "relatedTimelineDate": "2020-10-23",
+                "narration": "Libya has two rival administrations. The Government of National Unity in Tripoli holds UN recognition, and Chatham House analyst Tim Eaton describes it as controlled by the Dabaiba family [3]. The Government of National Stability sits in Benghazi, aligned with Khalifa Haftar's Libyan Arab Armed Forces [3]. A ceasefire agreement dates from 23 October 2020, and a joint military commission agreed in 2021 on a plan for foreign forces and mercenaries to withdraw [4].\n\nSix years later, the Security Council was still calling for the ceasefire to be implemented in full and for all institutions to be reunified [4]. That gap separates sovereignty on paper from control on the ground. One government has recognition, yet neither commands the whole country. State-affiliated armed groups also draw on public resources: their diesel consumption rose 1,527 percent between 2021 and 2024 [3]. Where rival forces answer to rival administrations, an election law reaches only as far as each camp allows.",
                 "focusQuestion": "What security guarantees would allow institutions and candidates to participate without coercive advantage?"
             },
             {
@@ -877,8 +884,199 @@ export const MENA_CASES_2026 = [
                 "title": "Oil Wealth and Public Accountability",
                 "perspectiveLabel": "Independent political-economy analysis",
                 "perspectiveType": "independent",
-                "narration": "Oil revenue and sovereign assets can finance recovery, but divided spending authority and weak oversight also sustain political fragmentation.",
+                "conceptInFocus": "Interdependence",
+                "relatedTimelineDate": "2026-04-14",
+                "narration": "Oil money is one area where Libya's rival camps have cooperated. In 2022 the United Arab Emirates brokered a change of leadership at the National Oil Corporation between the Haftar and Dabaiba families [3]. Fuel imports then more than doubled from their 2021 level, while the number of foreign suppliers fell from 17 to six [3].\n\nPart of Libya's wealth is also governed from outside the country. The Libyan Investment Authority holds assets frozen under UN sanctions, and Security Council Resolution 2819 of 14 April 2026 adjusted the rules for reinvesting its frozen cash [2]. Chatham House analyst Tim Eaton argues that a unified government built on an elite bargain could worsen corruption by reducing existing constraints on state spending [3]. He notes that a US-mediated unified budget agreed in April 2026 had not been meaningfully implemented by July [3]. Unification gains public value only when it comes with spending rules that citizens and auditors can check.",
                 "focusQuestion": "Which transparent fiscal rules would make institutional unification materially valuable to the public?"
+            }
+        ],
+        "concepts": [
+            "Power",
+            "Legitimacy",
+            "Sovereignty",
+            "Interdependence"
+        ],
+        "ibThemes": [
+            "peace-and-conflict",
+            "development-and-sustainability"
+        ],
+        "background": "Libya's dispute is over who may govern and who may spend. The country is split between a Government of National Unity in Tripoli, recognized by the United Nations (UN), and a Government of National Stability in Benghazi [3]. The Benghazi administration is aligned with Khalifa Haftar's Libyan Arab Armed Forces [3]. A ceasefire agreement of 23 October 2020 has not been fully implemented [4].\n\nThe UN Security Council's sanctions committee on Libya dates from Resolution 1970 in 2011, and its measures include a freeze on assets of the Libyan Investment Authority [2]. A freeze blocks an owner from moving or selling assets until the Council allows it. A 2022 leadership change at the National Oil Corporation, brokered between the Haftar and Dabaiba families, was followed by a fuel import bill above $9 billion by 2024 [3].\n\nThe UN Support Mission in Libya (UNSMIL) now facilitates a roadmap toward national elections. Its Structured Dialogue gathers Libyan participants to recommend ways past a stalemate over election laws and the electoral commission's board [1]. On 30 October 2026 the Council extended UNSMIL's mandate to 31 October 2027 [4].",
+        "backgroundSources": [
+            "https://www.chathamhouse.org/2026/07/why-us-plans-power-sharing-libya-will-not-work",
+            "https://unsmil.unmissions.org/en/news/security-council-renews-mandate-of-united-nations-support-mission-in-libya-for-one-year",
+            "https://main.un.org/securitycouncil/en/content/sres28192026",
+            "https://libyaobserver.ly/news/un-led-talks-libya-seek-ways-break-electoral-deadlock"
+        ],
+        "keyTerms": [
+            {
+                "term": "Structured Dialogue",
+                "definition": "A UN-facilitated process in which Libyan participants develop recommendations on governance, economic and security challenges ahead of national elections. The UN mission says it is not intended to choose a new government.",
+                "sourceUrl": "https://libyaobserver.ly/news/un-led-talks-libya-seek-ways-break-electoral-deadlock"
+            },
+            {
+                "term": "High National Elections Commission (HNEC)",
+                "definition": "Libya's national election body. Completing its board was one of the obstacles to holding elections discussed in the Structured Dialogue talks reported on 2 August 2026.",
+                "sourceUrl": "https://libyaobserver.ly/news/un-led-talks-libya-seek-ways-break-electoral-deadlock"
+            },
+            {
+                "term": "UNSMIL",
+                "definition": "The United Nations Support Mission in Libya, which facilitates the political process. Security Council Resolution 2835 extended its mandate, its formal authorization, until 31 October 2027.",
+                "sourceUrl": "https://unsmil.unmissions.org/en/news/security-council-renews-mandate-of-united-nations-support-mission-in-libya-for-one-year"
+            },
+            {
+                "term": "Assets freeze",
+                "definition": "A sanction that blocks an owner from moving or using assets. Resolution 2819 clarified exemptions covering salaries paid by the Libyan Investment Authority, reinvestment of its frozen cash reserves and changes of custodian for its frozen assets.",
+                "sourceUrl": "https://main.un.org/securitycouncil/en/content/sres28192026"
+            },
+            {
+                "term": "Power-sharing",
+                "definition": "An arrangement that divides government posts among rival leaders. Chatham House analyst Tim Eaton describes a US plan to bring the Haftar and Dabaiba families together with other key constituencies in a unified government.",
+                "sourceUrl": "https://www.chathamhouse.org/2026/07/why-us-plans-power-sharing-libya-will-not-work"
+            },
+            {
+                "term": "5+5 Joint Military Commission",
+                "definition": "The joint military body that agreed in Geneva on 8 October 2021 on an action plan for the withdrawal of mercenaries, foreign fighters and foreign forces from Libya.",
+                "sourceUrl": "https://unsmil.unmissions.org/en/news/security-council-renews-mandate-of-united-nations-support-mission-in-libya-for-one-year"
+            }
+        ],
+        "debate": [
+            {
+                "claimBy": "United States mediation led by presidential adviser Massad Boulos (as described by Chatham House, 20 July 2026)",
+                "claim": "Bringing the Haftar and Dabaiba families together with other key constituencies in a unified government will bring stability, from which economic development can emerge, particularly in the oil sector.",
+                "counterBy": "Tim Eaton, Chatham House (20 July 2026)",
+                "counterClaim": "\"Power-sharing might simply make corruption worse by reducing existing constraints on rising state expenditure.\" Any future government needs clear conditions on how it manages the state's finances.",
+                "sourceUrls": [
+                    "https://www.chathamhouse.org/2026/07/why-us-plans-power-sharing-libya-will-not-work"
+                ]
+            },
+            {
+                "claimBy": "Mediators experienced in Libyan negotiations (as characterized by Tim Eaton, Chatham House, 20 July 2026)",
+                "claim": "Mediators question what the alternative is to an elite bargain between the Haftars and the Dabaibas.",
+                "counterBy": "Opponents of the deal (as described by Chatham House, 20 July 2026)",
+                "counterClaim": "The plan looks like a return of family rule and a way to legitimize the two rival families, while offering ordinary Libyans more of the same.",
+                "sourceUrls": [
+                    "https://www.chathamhouse.org/2026/07/why-us-plans-power-sharing-libya-will-not-work"
+                ]
+            }
+        ],
+        "watchFor": [
+            {
+                "date": "31 October 2027",
+                "indicator": "UNSMIL's mandate under Resolution 2835 runs to this date. Check whether the Security Council renews it and how the vote compares with the 13 in favor and 2 abstentions of October 2026.",
+                "sourceUrl": "https://unsmil.unmissions.org/en/news/security-council-renews-mandate-of-united-nations-support-mission-in-libya-for-one-year"
+            },
+            {
+                "date": "1 August 2027 and 15 August 2027",
+                "indicator": "Resolution 2819 extended the measures first set out in Resolution 2146 (2014) to 1 August 2027 and the Panel of Experts' mandate to 15 August 2027. Check whether the Council renews them and whether exemptions for the Libyan Investment Authority change.",
+                "sourceUrl": "https://main.un.org/securitycouncil/en/content/sres28192026"
+            },
+            {
+                "date": "No date set as of 2 August 2026",
+                "indicator": "The Structured Dialogue discussed a stalemate over the electoral framework and the incomplete board of the High National Elections Commission. Check whether the board is completed and whether an agreed electoral law is announced.",
+                "sourceUrl": "https://libyaobserver.ly/news/un-led-talks-libya-seek-ways-break-electoral-deadlock"
+            },
+            {
+                "date": "Agreed April 2026 (not meaningfully implemented as of July 2026)",
+                "indicator": "Chatham House reported that a US-mediated unified budget had not been meaningfully implemented. Check for official evidence that the budget is being applied across both administrations.",
+                "sourceUrl": "https://www.chathamhouse.org/2026/07/why-us-plans-power-sharing-libya-will-not-work"
+            }
+        ],
+        "examPrompts": [
+            "Examine the claim that control of natural-resource revenue is a more important source of power than formal political office.",
+            "Discuss the view that elections cannot produce legitimate government where state institutions remain divided."
+        ],
+        "influenceCheck": [
+            {
+                "stage": "Setting the agenda",
+                "rating": "STRONG",
+                "evidence": "The UN-facilitated Structured Dialogue made the electoral framework and the election commission's board the subject of five days of talks, and diplomats in the Berlin Process working group reaffirmed support for a UN-facilitated roadmap. The Security Council renewed the mission on 30 October 2026.",
+                "sourceUrls": [
+                    "https://libyaobserver.ly/news/un-led-talks-libya-seek-ways-break-electoral-deadlock",
+                    "https://unsmil.unmissions.org/en/news/security-council-renews-mandate-of-united-nations-support-mission-in-libya-for-one-year"
+                ]
+            },
+            {
+                "stage": "The formal decision",
+                "rating": "MIXED",
+                "evidence": "Resolution 2835 passed with 13 votes in favor and 2 abstentions and called for negotiations to deliver presidential and parliamentary elections. The dialogue itself issues recommendations, and the UN mission says it is not intended to choose a new government.",
+                "sourceUrls": [
+                    "https://unsmil.unmissions.org/en/news/security-council-renews-mandate-of-united-nations-support-mission-in-libya-for-one-year",
+                    "https://libyaobserver.ly/news/un-led-talks-libya-seek-ways-break-electoral-deadlock"
+                ]
+            },
+            {
+                "stage": "What changed in practice",
+                "rating": "WEAK",
+                "evidence": "In July 2026, Chatham House described the country as split between two rival administrations and a US-mediated unified budget as not meaningfully implemented. In October 2026 the Council was still calling for the 2020 ceasefire to be implemented in full.",
+                "sourceUrls": [
+                    "https://www.chathamhouse.org/2026/07/why-us-plans-power-sharing-libya-will-not-work",
+                    "https://unsmil.unmissions.org/en/news/security-council-renews-mandate-of-united-nations-support-mission-in-libya-for-one-year"
+                ]
+            }
+        ],
+        "conceptLens": {
+            "power": "The rival families' lever is control of spending: a 2022 deal over the National Oil Corporation's leadership preceded a fuel import bill above $9 billion. The UN can convene talks and adjust sanctions, but its dialogue produces recommendations that Libyan institutions must choose to adopt.",
+            "sovereignty": "The Government of National Unity holds UN recognition, while a rival administration sits in Benghazi aligned with its own armed forces. The Security Council still calls for foreign forces and mercenaries to withdraw and urges other states to refrain from interference.",
+            "legitimacy": "UN recognition gives one government standing abroad, but the Council continues to call for national elections. Opponents of a US-backed deal say it would amount to a return of family rule that legitimizes two rival families.",
+            "interdependence": "Libyan public wealth is managed partly beyond Libya's borders: the Security Council sets rules for the Libyan Investment Authority's frozen assets, foreign companies supply the country's imported fuel, and the United Arab Emirates and United States have brokered deals between its factions."
+        },
+        "essayBuilder": {
+            "prompt": "Examine the claim that control of natural-resource revenue is a more important source of power than formal political office.",
+            "claim": "In divided Libya, control over oil revenue and fuel spending gives rival elites a power that formal recognition alone does not.",
+            "evidence": "The Tripoli government holds UN recognition, yet in 2022 a change of leadership at the National Oil Corporation was brokered between the Haftar and Dabaiba families. Libya's audit bodies found that the fuel import bill had passed $9 billion by 2024 and that diesel use by state-affiliated armed groups rose 1,527 percent between 2021 and 2024.",
+            "counterClaim": "Formal authority still gates the money. The UN Security Council sets the rules for the Libyan Investment Authority's frozen assets, which Resolution 2819 adjusted in April 2026. The US plan described by Chatham House also treats a unified government as the route to larger oil investment, which implies that office matters to investors.",
+            "judgment": "On balance, resource control is the stronger lever while institutions stay divided, because it funds the actors able to block a settlement. However, this is a claim about a divided state: Libya's unified budget of April 2026, agreed but not meaningfully implemented by July, shows that enforceable spending rules were not yet in force.",
+            "sourceUrls": [
+                "https://www.chathamhouse.org/2026/07/why-us-plans-power-sharing-libya-will-not-work",
+                "https://main.un.org/securitycouncil/en/content/sres28192026"
+            ]
+        },
+        "timeline": [
+            {
+                "date": "2011",
+                "label": "The UN Security Council establishes its Libya sanctions committee under Resolution 1970.",
+                "sourceUrl": "https://main.un.org/securitycouncil/en/content/sres28192026"
+            },
+            {
+                "date": "2020-10-23",
+                "label": "Libyan parties conclude a ceasefire agreement.",
+                "sourceUrl": "https://unsmil.unmissions.org/en/news/security-council-renews-mandate-of-united-nations-support-mission-in-libya-for-one-year"
+            },
+            {
+                "date": "2022",
+                "label": "A change of leadership at the National Oil Corporation is brokered between the Haftar and Dabaiba families by the United Arab Emirates.",
+                "sourceUrl": "https://www.chathamhouse.org/2026/07/why-us-plans-power-sharing-libya-will-not-work"
+            },
+            {
+                "date": "2026-04-14",
+                "label": "The Security Council adopts Resolution 2819, adjusting asset-freeze exemptions for the Libyan Investment Authority.",
+                "sourceUrl": "https://main.un.org/securitycouncil/en/content/sres28192026"
+            },
+            {
+                "date": "2026-08-02",
+                "label": "The Libya Observer reports the close of five days of UN-backed Structured Dialogue talks on the electoral deadlock.",
+                "sourceUrl": "https://libyaobserver.ly/news/un-led-talks-libya-seek-ways-break-electoral-deadlock"
+            },
+            {
+                "date": "2026-10-30",
+                "label": "The Security Council adopts Resolution 2835, extending UNSMIL's mandate until 31 October 2027.",
+                "sourceUrl": "https://unsmil.unmissions.org/en/news/security-council-renews-mandate-of-united-nations-support-mission-in-libya-for-one-year"
+            }
+        ],
+        "keyFigures": [
+            {
+                "value": "$9 billion",
+                "unit": "fuel import bill",
+                "label": "Fuel import bill reached by 2024, reported as over $9 billion by Libyan audit bodies",
+                "asOf": "2024 (reported 20 July 2026)",
+                "sourceUrl": "https://www.chathamhouse.org/2026/07/why-us-plans-power-sharing-libya-will-not-work"
+            },
+            {
+                "value": "13",
+                "unit": "votes in favor",
+                "label": "Security Council vote on Resolution 2835, with 2 abstentions",
+                "asOf": "30 October 2026",
+                "sourceUrl": "https://unsmil.unmissions.org/en/news/security-council-renews-mandate-of-united-nations-support-mission-in-libya-for-one-year"
             }
         ]
     },

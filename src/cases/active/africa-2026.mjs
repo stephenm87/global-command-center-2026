@@ -841,6 +841,7 @@ export const AFRICA_CASES_2026 = [
     {
         "id": "sahel-after-ecowas-regional-order",
         "status": "active",
+        "briefingVersion": 2,
         "title": "The Sahel After ECOWAS: Competing Regional Orders",
         "subtitle": "Integration, sovereignty, and security after the AES withdrawal",
         "coverageRegion": "Africa",
@@ -870,7 +871,7 @@ export const AFRICA_CASES_2026 = [
             "UN_OPEC",
             "Jihadist"
         ],
-        "statusSummary": "After Burkina Faso, Mali, and Niger formally withdrew from ECOWAS in January 2025 under temporary movement and trade arrangements, ECOWAS and the Alliance of Sahel States held the inaugural session of their ministerial dialogue on cooperation in Dakar on 17 October 2026, agreeing in a joint communiqué to establish joint thematic working groups toward a cooperation framework agreement (referencing earlier consultations in Bamako on 22 May 2025). A July 2026 UNOWAS briefing called for sustained regional cooperation amid continuing insecurity, while Institute for Security Studies analysis warns that fragmented security initiatives can duplicate effort and weaken accountability.",
+        "statusSummary": "Burkina Faso, Mali, and Niger formally withdrew from ECOWAS in January 2025 under temporary movement and trade arrangements. On 17 October 2026 in Dakar, ECOWAS and the Alliance of Sahel States held their inaugural ministerial dialogue, agreeing to establish joint thematic working groups toward a cooperation framework agreement after earlier Bamako consultations on 22 May 2025. A July 2026 UNOWAS briefing called for sustained regional cooperation amid continuing insecurity, while Institute for Security Studies analysis of ECOWAS's planned 1,650-soldier counter-terrorism brigade warns that fragmentation continues to weaken collective security initiatives.",
         "whyItMatters": "The split forces governments and citizens to renegotiate how security cooperation, cross-border movement, trade, and political legitimacy work across a region where threats and livelihoods do not stop at institutional borders.",
         "updatedAt": "2026-11-17",
         "confidence": "medium",
@@ -957,7 +958,9 @@ export const AFRICA_CASES_2026 = [
                 "title": "Sovereignty and Regional Reordering",
                 "perspectiveLabel": "Alliance of Sahel States",
                 "perspectiveType": "local",
-                "narration": "The AES governments frame institutional separation as a sovereignty project and are building their own mechanisms for diplomacy, security, and economic coordination.",
+                "conceptInFocus": "Sovereignty",
+                "relatedTimelineDate": "2026-10-17",
+                "narration": "On 17 October 2026, two delegations met in Dakar, Senegal. Senegal's foreign minister, Cheikh Niang, led the one from the Economic Community of West African States (ECOWAS), a regional bloc working for integration since 1975 [1, 4]. Burkina Faso's foreign minister, Karamoko Jean-Marie Traoré, led the other for the Alliance of Sahel States (AES), and the two men co-chaired the session [4]. The AES unites Burkina Faso, Mali and Niger, whose military authorities left ECOWAS in January 2025, angered by sanctions imposed after their coups [3].\n\nThe format carried a message about sovereignty, a government's legal right to rule its territory and choose its alliances. The three states met ECOWAS as a separate confederation, and both sides agreed that future relations must rest on \"respect for sovereignty\" [4]. Acceptance by a neighboring bloc settles only part of the question. Military authorities who took power in coups made the choice to leave, which leaves open how far their populations consent to it [3].",
                 "focusQuestion": "What would make a new regional institution legitimate to both governments and the populations it affects?"
             },
             {
@@ -965,7 +968,9 @@ export const AFRICA_CASES_2026 = [
                 "title": "Borders as Lived Infrastructure",
                 "perspectiveLabel": "Border communities and traders",
                 "perspectiveType": "local",
-                "narration": "Temporary protections for movement and trade acknowledge that households, markets, and transport corridors remain integrated despite the political split.",
+                "conceptInFocus": "Interdependence",
+                "relatedTimelineDate": "2025-01-29",
+                "narration": "The withdrawal took legal effect on 29 January 2025, yet ECOWAS asked border officials to change very little for ordinary travelers [1]. Authorities were asked to keep recognizing passports and identity cards bearing the ECOWAS logo. Goods from the three states stayed under the ECOWAS Trade Liberalization Scheme, the bloc's rules for freer trade, and their citizens kept visa-free movement and residence rights \"until further notice\" [1].\n\nECOWAS said it acted to avoid \"confusion and disruption in the lives and businesses of our people\" [1]. That wording concedes a practical limit on political separation, since both blocs acknowledge deep economic and social ties between their populations [4]. The protections are temporary, however. They last only until ECOWAS heads of state settle the terms of future engagement, which leaves everyday rights resting on a negotiation between governments [1].",
                 "focusQuestion": "Which cross-border rights and services must be protected regardless of institutional membership?"
             },
             {
@@ -973,7 +978,9 @@ export const AFRICA_CASES_2026 = [
                 "title": "A Threat That Crosses Blocs",
                 "perspectiveLabel": "Regional security analysts",
                 "perspectiveType": "independent",
-                "narration": "Armed networks exploit weak governance and border spaces, making duplicated forces, incompatible intelligence systems, and unclear accountability consequential.",
+                "conceptInFocus": "Power",
+                "relatedTimelineDate": "2026-02",
+                "narration": "Armed groups that move fast and cross borders do not stop where one bloc ends and another begins [3]. In July 2026 the United Nations (UN) regional envoy warned the Security Council that the armed-group threat \"remains acute\" in the central Sahel and is spreading toward coastal states [2]. In February 2026, ECOWAS military chiefs endorsed a counter-terrorism brigade of 1,650 soldiers [3].\n\nThe brigade's contingents will stay in their home countries until deployed, while the three central Sahel states now field a separate AES Unified Force [3]. Institute for Security Studies researcher Hassane Koné argues that no campaign can succeed without those states, and that direct lines between the two general staffs must first be restored [3]. The brigade's concept of operations, the document that sets its rules of engagement and coordination, has not been made public [3]. Until it is, outsiders cannot judge how its use of force will be overseen.",
                 "focusQuestion": "Can competing security coalitions cooperate without erasing civilian oversight?"
             },
             {
@@ -981,8 +988,184 @@ export const AFRICA_CASES_2026 = [
                 "title": "Negotiated Coexistence",
                 "perspectiveLabel": "ECOWAS, African Union, and United Nations",
                 "perspectiveType": "institutional",
-                "narration": "On 17 October 2026 in Dakar, ECOWAS and AES ministers agreed to establish joint thematic working groups toward a cooperation framework agreement, testing negotiated coexistence outside formal bloc membership.",
+                "conceptInFocus": "Legitimacy",
+                "relatedTimelineDate": "2026-07-14",
+                "narration": "ECOWAS and AES ministers first consulted in Bamako, Mali, on 22 May 2025 [4]. On 14 July 2026 the UN's regional envoy, Leonardo Santos Simão, told the Security Council he saw \"a new impetus in terms of dialogue\" [2]. In Dakar, ministers agreed to create joint thematic working groups to draft a Cooperation Framework Agreement [4].\n\nThat outcome is a mandate to negotiate, not a concluded deal. The groups must report to ministers before the next session, whose date and venue are still to be fixed [4]. Coexistence also asks each side to accept the other as a rightful partner. ECOWAS sanctioned the three states after their coups and now negotiates with their military governments [3]. Simão told the Council that accountability and inclusive governance remain essential in several countries [2]. Both sides promised a framework that \"preserves the interests of their peoples\", a standard that can be tested only once a text exists [4].",
                 "focusQuestion": "What minimum framework could preserve cooperation while respecting the political split?"
+            }
+        ],
+        "concepts": [
+            "Sovereignty",
+            "Interdependence",
+            "Power",
+            "Legitimacy"
+        ],
+        "ibThemes": [
+            "peace-and-conflict"
+        ],
+        "background": "The Economic Community of West African States (ECOWAS) has worked for regional integration since 1975 [1]. Its rules let citizens of member states travel without visas, live and set up businesses across the region, and trade under a common liberalization scheme [1]. Its Monitoring Group also intervened in Liberia, Sierra Leone and Guinea-Bissau in the 1990s [3].\n\nThat model broke over military rule. After coups in Burkina Faso, Mali and Niger, ECOWAS imposed sanctions, penalties meant to push the new rulers to change course [3]. The three military authorities instead formed the Alliance of Sahel States (AES) and withdrew from ECOWAS, a step that took effect on 29 January 2025 [1, 3].\n\nThe split left one security problem to two organizations. Institute for Security Studies analysis describes the central Sahel as the epicenter of violence now spreading toward coastal states [3]. Earlier joint efforts, including the G5 Sahel Joint Force and the Accra Initiative, were hampered by dependence on outside partners [3]. Ministers from both blocs consulted in Bamako on 22 May 2025 and opened a formal dialogue in Dakar on 17 October 2026 [4].",
+        "backgroundSources": [
+            "https://www.ecowas.int/press-statement-2/",
+            "https://issafrica.org/iss-today/how-ecowas-can-make-its-new-counter-terrorism-force-effective",
+            "https://www.ecowas.int/wp-content/uploads/2026/10/ENG-COMMUNIQUE_1st-JOINT-ECOWAS-AES-MTG_DKR.pdf"
+        ],
+        "keyTerms": [
+            {
+                "term": "ECOWAS",
+                "definition": "The Economic Community of West African States, a regional bloc that has worked for integration, peace and shared prosperity since 1975. Its website listed 12 member states after Burkina Faso, Mali and Niger withdrew.",
+                "sourceUrl": "https://www.ecowas.int/press-statement-2/"
+            },
+            {
+                "term": "Alliance of Sahel States (AES)",
+                "definition": "An alliance formed by the military authorities of Burkina Faso, Mali and Niger, who then withdrew from ECOWAS in January 2025. It has since created its own AES Unified Force.",
+                "sourceUrl": "https://issafrica.org/iss-today/how-ecowas-can-make-its-new-counter-terrorism-force-effective"
+            },
+            {
+                "term": "ECOWAS Trade Liberalization Scheme (ETLS)",
+                "definition": "The bloc's rules for trading goods and services among members. On 29 January 2025 ECOWAS asked authorities to keep applying the scheme to goods and services from the three withdrawing states.",
+                "sourceUrl": "https://www.ecowas.int/press-statement-2/"
+            },
+            {
+                "term": "Standby force",
+                "definition": "Troops that member states pledge to a regional body and keep ready for deployment. ECOWAS's 1,650-soldier counter-terrorism brigade sits within the ECOWAS Standby Force framework, with contingents stationed in their own countries.",
+                "sourceUrl": "https://issafrica.org/iss-today/how-ecowas-can-make-its-new-counter-terrorism-force-effective"
+            },
+            {
+                "term": "Cooperation Framework Agreement",
+                "definition": "The document that joint ECOWAS–AES thematic working groups were tasked on 17 October 2026 with developing. The groups' outcomes go to ministers for consideration before their next session.",
+                "sourceUrl": "https://www.ecowas.int/wp-content/uploads/2026/10/ENG-COMMUNIQUE_1st-JOINT-ECOWAS-AES-MTG_DKR.pdf"
+            }
+        ],
+        "debate": [
+            {
+                "claimBy": "ECOWAS Commission (press statement, 29 January 2025)",
+                "claim": "ECOWAS will keep its doors open. Members should, \"in the spirit of regional solidarity\", go on honoring the three states' passports, trade treatment and free-movement rights during the transition.",
+                "counterBy": "Military authorities of Burkina Faso, Mali and Niger (as described by the Institute for Security Studies, 25 March 2026)",
+                "counterClaim": "Angered by the sanctions ECOWAS imposed after their coups, the three governments formed the Alliance of Sahel States and withdrew from the organization in January 2025.",
+                "sourceUrls": [
+                    "https://www.ecowas.int/press-statement-2/",
+                    "https://issafrica.org/iss-today/how-ecowas-can-make-its-new-counter-terrorism-force-effective"
+                ]
+            },
+            {
+                "claimBy": "ECOWAS chiefs of staff (decision of February 2026, as reported by the Institute for Security Studies)",
+                "claim": "A regional force is needed to combat terrorism and insecurity. A counter-terrorism brigade of 1,650 soldiers, with troops pledged by six member states, will form its core.",
+                "counterBy": "UN Special Representative Leonardo Santos Simão (Security Council briefing, 14 July 2026)",
+                "counterClaim": "Simão insisted that \"security responses alone will not be enough\". Addressing the root causes of instability requires investment in the social, economic and environmental foundations of peace.",
+                "sourceUrls": [
+                    "https://issafrica.org/iss-today/how-ecowas-can-make-its-new-counter-terrorism-force-effective",
+                    "https://unowas.unmissions.org/en/news/before-the-security-council-special-representative-leonardo-santos-simao-calls-for"
+                ]
+            }
+        ],
+        "watchFor": [
+            {
+                "date": "No date set (agreed 17 October 2026)",
+                "indicator": "The next session of the ECOWAS–AES ministerial dialogue, whose date and venue are to be fixed through diplomatic channels. Check for an announced date and whether the joint thematic working groups submit outcomes to ministers beforehand.",
+                "sourceUrl": "https://www.ecowas.int/wp-content/uploads/2026/10/ENG-COMMUNIQUE_1st-JOINT-ECOWAS-AES-MTG_DKR.pdf"
+            },
+            {
+                "date": "Until further notice (in place since 29 January 2025)",
+                "indicator": "ECOWAS's temporary recognition of the three states' passports, visa-free movement and trade treatment lasts until its Authority of Heads of State and Government determines the terms of future engagement. Check for any Authority decision that changes or ends these arrangements.",
+                "sourceUrl": "https://www.ecowas.int/press-statement-2/"
+            },
+            {
+                "date": "Not yet public as of 25 March 2026",
+                "indicator": "The ECOWAS counter-terrorism brigade's concept of operations, which will define rules of engagement and coordination mechanisms. Check whether it is published and whether it provides for coordination with the AES Unified Force.",
+                "sourceUrl": "https://issafrica.org/iss-today/how-ecowas-can-make-its-new-counter-terrorism-force-effective"
+            }
+        ],
+        "examPrompts": [
+            "To what extent can states manage cross-border security threats without shared regional institutions?",
+            "Evaluate the claim that membership of a regional organization limits state sovereignty more than it protects it."
+        ],
+        "influenceCheck": [
+            {
+                "stage": "Setting the agenda",
+                "rating": "STRONG",
+                "evidence": "The withdrawal of three members led ECOWAS to issue transition rules on passports, movement and trade on the day it took effect, 29 January 2025. By July 2026 the UN's regional envoy was briefing the Security Council on ECOWAS–AES consultations.",
+                "sourceUrls": [
+                    "https://www.ecowas.int/press-statement-2/",
+                    "https://unowas.unmissions.org/en/news/before-the-security-council-special-representative-leonardo-santos-simao-calls-for"
+                ]
+            },
+            {
+                "stage": "The formal decision",
+                "rating": "MIXED",
+                "evidence": "The withdrawal itself is formal and complete. The relationship that replaces it is not: the 17 October 2026 Dakar communiqué set up working groups to develop a Cooperation Framework Agreement and left the next meeting's date open.",
+                "sourceUrls": [
+                    "https://www.ecowas.int/press-statement-2/",
+                    "https://www.ecowas.int/wp-content/uploads/2026/10/ENG-COMMUNIQUE_1st-JOINT-ECOWAS-AES-MTG_DKR.pdf"
+                ]
+            },
+            {
+                "stage": "What changed in practice",
+                "rating": "MIXED",
+                "evidence": "ECOWAS asked its members to keep honoring the three states' passports, visa-free movement and trade treatment until further notice. On security, ISS analysis in March 2026 said direct lines between the two blocs' general staffs still had to be restored before intelligence sharing could resume.",
+                "sourceUrls": [
+                    "https://www.ecowas.int/press-statement-2/",
+                    "https://issafrica.org/iss-today/how-ecowas-can-make-its-new-counter-terrorism-force-effective"
+                ]
+            }
+        ],
+        "conceptLens": {
+            "power": "ECOWAS used sanctions to raise the cost of military rule, and the three governments answered by leaving the bloc. Geography gives the AES a lever of its own: ISS analysis holds that no fight against armed groups can be effective without the three central Sahel states.",
+            "sovereignty": "The three governments withdrew from a regional body, and the Dakar communiqué lists respect for sovereignty among its guiding principles. Control on the ground is a separate matter: the UN envoy says armed groups aim to consolidate territorial control and erode trust in state authority.",
+            "legitimacy": "ECOWAS answered the coups with sanctions, and the military authorities answered the sanctions by leaving. In Dakar both sides tied a future framework to the interests of their peoples, a test that reaches beyond acceptance between governments.",
+            "interdependence": "ECOWAS kept movement and trade rules in place for the three states to avoid disrupting lives and businesses, and the UN envoy reports the armed-group threat expanding toward Gulf of Guinea coastal states. Neither bloc can protect trade or territory by acting alone."
+        },
+        "essayBuilder": {
+            "prompt": "To what extent can states manage cross-border security threats without shared regional institutions?",
+            "claim": "States can leave a regional institution, but they cannot leave the shared problems it was built to manage.",
+            "evidence": "Burkina Faso, Mali and Niger completed their withdrawal from ECOWAS on 29 January 2025. Yet ISS analysis describes the central Sahel as the epicenter of violence that is spreading to coastal countries, and argues that a fight against armed groups cannot be effective without the three states. ECOWAS's own brigade numbers 1,650 soldiers stationed in their home countries.",
+            "counterClaim": "Cooperation does not require formal membership. On 17 October 2026 the two blocs agreed in Dakar to set up joint working groups toward a Cooperation Framework Agreement. The UN's regional envoy also cited the reopening of the Kamba border post between Niger and Nigeria and the decision of Mali and Algeria to normalize relations.",
+            "judgment": "On balance, the case suggests states need shared arrangements more than they need one particular institution. However, the Dakar dialogue has so far produced a mandate to negotiate, not an agreement, so it does not yet show whether a looser framework can do the work of membership.",
+            "sourceUrls": [
+                "https://www.ecowas.int/press-statement-2/",
+                "https://issafrica.org/iss-today/how-ecowas-can-make-its-new-counter-terrorism-force-effective",
+                "https://www.ecowas.int/wp-content/uploads/2026/10/ENG-COMMUNIQUE_1st-JOINT-ECOWAS-AES-MTG_DKR.pdf",
+                "https://unowas.unmissions.org/en/news/before-the-security-council-special-representative-leonardo-santos-simao-calls-for"
+            ]
+        },
+        "timeline": [
+            {
+                "date": "2025-01-29",
+                "label": "The withdrawal of Burkina Faso, Mali and Niger from ECOWAS takes effect; ECOWAS keeps passport, movement and trade arrangements in place until further notice.",
+                "sourceUrl": "https://www.ecowas.int/press-statement-2/"
+            },
+            {
+                "date": "2025-05-22",
+                "label": "ECOWAS and AES ministers hold consultations in Bamako, Mali.",
+                "sourceUrl": "https://www.ecowas.int/wp-content/uploads/2026/10/ENG-COMMUNIQUE_1st-JOINT-ECOWAS-AES-MTG_DKR.pdf"
+            },
+            {
+                "date": "2025-08",
+                "label": "ECOWAS announces a regional force initially intended to comprise 260,000 troops.",
+                "sourceUrl": "https://issafrica.org/iss-today/how-ecowas-can-make-its-new-counter-terrorism-force-effective"
+            },
+            {
+                "date": "2026-02",
+                "label": "ECOWAS chiefs of staff endorse a counter-terrorism brigade of 1,650 soldiers as the core of the regional force.",
+                "sourceUrl": "https://issafrica.org/iss-today/how-ecowas-can-make-its-new-counter-terrorism-force-effective"
+            },
+            {
+                "date": "2026-07-14",
+                "label": "The UN Special Representative for West Africa and the Sahel briefs the Security Council and welcomes ECOWAS–AES consultations.",
+                "sourceUrl": "https://unowas.unmissions.org/en/news/before-the-security-council-special-representative-leonardo-santos-simao-calls-for"
+            },
+            {
+                "date": "2026-10-17",
+                "label": "ECOWAS and the AES hold the inaugural session of their ministerial dialogue in Dakar and agree to set up joint thematic working groups.",
+                "sourceUrl": "https://www.ecowas.int/wp-content/uploads/2026/10/ENG-COMMUNIQUE_1st-JOINT-ECOWAS-AES-MTG_DKR.pdf"
+            }
+        ],
+        "keyFigures": [
+            {
+                "value": "1,650",
+                "unit": "soldiers",
+                "label": "Planned core of the ECOWAS counter-terrorism brigade endorsed in February 2026",
+                "asOf": "25 March 2026",
+                "sourceUrl": "https://issafrica.org/iss-today/how-ecowas-can-make-its-new-counter-terrorism-force-effective"
             }
         ]
     },
