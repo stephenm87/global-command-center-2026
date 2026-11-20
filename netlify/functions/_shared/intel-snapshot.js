@@ -1,10 +1,12 @@
-const { normalizeProviderArticle } = require('./intel-normalization');
+const { normalizeHttpsUrl, normalizeProviderArticle } = require('./intel-normalization');
 const {
     GDELT_FEED_QUERIES,
     INSTITUTIONAL_RSS_FEEDS,
+    PUBLIC_NEWS_RSS_FEEDS,
     fetchGdeltQuery,
     fetchReliefWebReports,
     fetchRssFeed,
+    getPublisherFundingInfo,
 } = require('./free-feeds');
 
 const SNAPSHOT_TTL_MS = 6 * 60 * 60 * 1000;
@@ -115,7 +117,7 @@ const FIXED_QUERIES = Object.freeze([
 const SOURCE_ROLE_LABELS = Object.freeze({
     institutional: 'Institutional / primary',
     regional: 'Regional / local reporting',
-    'independent-news': 'Independent news',
+    'independent-news': 'International broadcast & wire',
     research: 'Research / analysis',
     discovery: 'Additional discovery source',
 });
@@ -326,7 +328,11 @@ function getTopicCluster(text, region, issue) {
     return `${region}:${issue}:${titleTokens.join('-') || 'general'}`;
 }
 
-function assessArticle(item, query, { scraperSource = 'serper-public-cache', isInstitutionalHub = false } = {}) {
+function assessArticle(item, query, {
+    scraperSource = 'serper-public-cache',
+    isInstitutionalHub = false,
+    isConfiguredFeed = false,
+} = {}) {
     const normalized = normalizeProviderArticle(item, scraperSource);
     if (!normalized) return null;
 
@@ -366,7 +372,15 @@ function assessArticle(item, query, { scraperSource = 'serper-public-cache', isI
             ? 'global-unmapped'
             : 'regional';
     const sourceRoleLabel = SOURCE_ROLE_LABELS[sourceRole];
-    const selectionReason = `Selected to strengthen ${region} and ${issue} coverage; source role: ${sourceRoleLabel.toLowerCase()}. Automated relevance score ${relevanceScore}/100.`;
+    const fundingInfo = getPublisherFundingInfo(domain, item) || getPublisherFundingInfo(domain, query);
+    const fundingLabel = item?.fundingLabel
+        || query?.fundingLabel
+        || fundingInfo?.fundingLabel
+        || (scraperSource === 'gdelt-doc' ? 'Open news index (GDELT)' : sourceRoleLabel);
+    const attributionUrl = normalizeHttpsUrl(
+        item?.attributionUrl || query?.attributionUrl || fundingInfo?.attributionUrl || ''
+    ) || null;
+    const selectionReason = `Selected to strengthen ${region} and ${issue} coverage; source: ${fundingLabel}. Automated relevance score ${relevanceScore}/100.`;
 
     return {
         ...normalized,
@@ -382,6 +396,8 @@ function assessArticle(item, query, { scraperSource = 'serper-public-cache', isI
             issue,
             sourceRole,
             sourceRoleLabel,
+            fundingLabel,
+            ...(attributionUrl ? { attributionUrl } : {}),
             queryId: query.id,
             selectionReason,
             relevanceScore,
@@ -391,6 +407,7 @@ function assessArticle(item, query, { scraperSource = 'serper-public-cache', isI
         _publisherDomain: domain,
         _topicCluster: getTopicCluster(combined, region, issue),
         _isInstitutionalHub: Boolean(isInstitutionalHub),
+        _isConfiguredFeed: Boolean(isConfiguredFeed || isInstitutionalHub),
     };
 }
 
@@ -413,14 +430,43 @@ function increment(counter, key) {
     counter.set(key, (counter.get(key) || 0) + 1);
 }
 
+function getPublisherKey(item) {
+    const domain = String(item?._publisherDomain || getPublisherDomain(item?.url) || '').toLowerCase();
+    if (domainMatches(domain, 'bbc.co.uk') || domainMatches(domain, 'bbc.com')) return 'bbc';
+    if (domainMatches(domain, 'news.un.org') || domain === 'un.org') return 'un-news';
+    if (domain) return domain;
+    return String(item?.Source || 'unknown').toLowerCase();
+}
+
 function selectDiverseArticles(items, limit = MAX_SNAPSHOT_ITEMS) {
     const candidates = dedupeArticles(items)
         .sort((a, b) => (b.coverage?.relevanceScore || 0) - (a.coverage?.relevanceScore || 0));
+    const candidatePublisherCounts = new Map();
+    for (const candidate of candidates) {
+        increment(candidatePublisherCounts, getPublisherKey(candidate));
+    }
+    const substantivePublishers = [...candidatePublisherCounts.values()]
+        .filter(count => count >= Math.min(2, Math.max(1, Math.floor(limit / 6))))
+        .length;
+    const distinctCandidatePublishers = candidatePublisherCounts.size;
+
+    const configuredFeedCap = distinctCandidatePublishers >= 3 && (substantivePublishers >= 3 || limit <= 9)
+        ? Math.max(1, Math.floor(limit / 3))
+        : distinctCandidatePublishers === 2
+            ? Math.min(8, Math.max(1, Math.floor(limit / 2)))
+            : MAX_PER_INSTITUTIONAL_HUB;
+    const effectiveRoleMax = (sourceRole, item) => {
+        if (sourceRole === 'institutional' && item._isInstitutionalHub) {
+            return distinctCandidatePublishers >= 2 ? configuredFeedCap : MAX_PER_INSTITUTIONAL_ROLE;
+        }
+        return MAX_PER_SOURCE_ROLE;
+    };
+
     const selected = [];
     const selectedSet = new Set();
     const regionCounts = new Map();
     const issueCounts = new Map();
-    const domainCounts = new Map();
+    const publisherCounts = new Map();
     const topicCounts = new Map();
     const sourceRoleCounts = new Map();
     let discoveryCount = 0;
@@ -429,16 +475,16 @@ function selectDiverseArticles(items, limit = MAX_SNAPSHOT_ITEMS) {
         if (!item || selectedSet.has(item)) return false;
         const region = item.coverage?.region;
         const issue = item.coverage?.issue;
-        const domain = item._publisherDomain || getPublisherDomain(item.url);
+        const publisherKey = getPublisherKey(item);
         const topic = item._topicCluster || `${region}:${issue}:${item['Entity/Subject']}`;
         const sourceRole = item.coverage?.sourceRole || 'discovery';
-        const maxDomain = item._isInstitutionalHub ? MAX_PER_INSTITUTIONAL_HUB : MAX_PER_DOMAIN;
-        const maxRole = (sourceRole === 'institutional' && item._isInstitutionalHub)
-            ? MAX_PER_INSTITUTIONAL_ROLE
-            : MAX_PER_SOURCE_ROLE;
+        const maxPublisher = (item._isInstitutionalHub || item._isConfiguredFeed)
+            ? configuredFeedCap
+            : Math.min(MAX_PER_DOMAIN, configuredFeedCap);
+        const maxRole = effectiveRoleMax(sourceRole, item);
         if ((regionCounts.get(region) || 0) >= MAX_PER_REGION) return false;
         if ((issueCounts.get(issue) || 0) >= MAX_PER_ISSUE) return false;
-        if ((domainCounts.get(domain) || 0) >= maxDomain) return false;
+        if ((publisherCounts.get(publisherKey) || 0) >= maxPublisher) return false;
         if ((topicCounts.get(topic) || 0) >= MAX_PER_TOPIC_CLUSTER) return false;
         if ((sourceRoleCounts.get(sourceRole) || 0) >= maxRole) return false;
         if (sourceRole === 'discovery' && discoveryCount >= MAX_DISCOVERY_SOURCES) return false;
@@ -447,7 +493,7 @@ function selectDiverseArticles(items, limit = MAX_SNAPSHOT_ITEMS) {
         selectedSet.add(item);
         increment(regionCounts, region);
         increment(issueCounts, issue);
-        increment(domainCounts, domain);
+        increment(publisherCounts, publisherKey);
         increment(topicCounts, topic);
         increment(sourceRoleCounts, sourceRole);
         if (sourceRole === 'discovery') discoveryCount += 1;
@@ -475,12 +521,57 @@ function selectDiverseArticles(items, limit = MAX_SNAPSHOT_ITEMS) {
         trySelect(item);
     }
 
+    // Strict <= 1/3 per-publisher guarantee whenever 3+ publishers support a viable balanced list
+    let finalSelected = selected.slice(0, limit);
+    const selectedPublisherCounts = new Map();
+    for (const item of finalSelected) {
+        increment(selectedPublisherCounts, getPublisherKey(item));
+    }
+    if (selectedPublisherCounts.size >= 3) {
+        const minViable = Math.min(candidates.length, 6);
+        let feasibleCap = null;
+        for (let total = finalSelected.length; total >= minViable; total -= 1) {
+            const cap = Math.floor(total / 3);
+            if (cap < 1) break;
+            let capacity = 0;
+            for (const count of selectedPublisherCounts.values()) {
+                capacity += Math.min(count, cap);
+            }
+            if (capacity >= total) {
+                feasibleCap = cap;
+                break;
+            }
+        }
+        if (feasibleCap !== null) {
+            const keptByPublisher = new Map();
+            const trimmed = [];
+            for (const item of finalSelected) {
+                const pubKey = getPublisherKey(item);
+                const seen = keptByPublisher.get(pubKey) || 0;
+                if (seen >= feasibleCap) continue;
+                keptByPublisher.set(pubKey, seen + 1);
+                trimmed.push(item);
+            }
+            // If feasibleTotal was smaller due to exact remainder (e.g. 5+5+4 => total 12, cap 4, no drop above feasibleTotal)
+            finalSelected = trimmed;
+            while (finalSelected.length > 0 && Math.max(...keptByPublisher.values()) > Math.floor(finalSelected.length / 3)) {
+                const cap = Math.floor(finalSelected.length / 3);
+                const dropIndex = finalSelected.findLastIndex(it => (keptByPublisher.get(getPublisherKey(it)) || 0) > cap);
+                if (dropIndex === -1) break;
+                const droppedKey = getPublisherKey(finalSelected[dropIndex]);
+                finalSelected.splice(dropIndex, 1);
+                keptByPublisher.set(droppedKey, (keptByPublisher.get(droppedKey) || 1) - 1);
+            }
+        }
+    }
+
     const coordCounts = new Map();
-    return selected.slice(0, limit).map(item => {
+    return finalSelected.map(item => {
         const {
             _publisherDomain,
             _topicCluster,
             _isInstitutionalHub,
+            _isConfiguredFeed,
             _coordPrecision,
             _matchedPlace,
             ...publicItem
@@ -518,6 +609,11 @@ function buildCoverageSummary(items, { candidateCount = 0, rejectedCount = 0 } =
     const regions = countBy(items, item => item.coverage?.region);
     const issues = countBy(items, item => item.coverage?.issue);
     const sourceRoles = countBy(items, item => item.coverage?.sourceRole);
+    const publishers = countBy(items, item => item.Source || getPublisherDomain(item.url));
+    const publisherCounts = Object.values(publishers);
+    const maxPublisherShare = items.length > 0 && publisherCounts.length > 0
+        ? Number((Math.max(...publisherCounts) / items.length).toFixed(3))
+        : 0;
     const missingRegions = TARGET_REGIONS.filter(region => !regions[region]);
     const missingIssues = TARGET_ISSUES.filter(issue => !issues[issue]);
     const missingSourceRoles = TARGET_SOURCE_ROLES.filter(sourceRole => !sourceRoles[sourceRole]);
@@ -536,6 +632,8 @@ function buildCoverageSummary(items, { candidateCount = 0, rejectedCount = 0 } =
         regions,
         issues,
         sourceRoles,
+        publishers,
+        maxPublisherShare,
         missingRegions,
         missingIssues,
         missingSourceRoles,
@@ -604,6 +702,7 @@ async function buildPublicSnapshot({
                     const assessed = assessArticle(item, feed, {
                         scraperSource: 'institutional-rss',
                         isInstitutionalHub: true,
+                        isConfiguredFeed: true,
                     });
                     if (assessed) {
                         assessedItems.push(assessed);
@@ -623,6 +722,43 @@ async function buildPublicSnapshot({
                 ? 'ok'
                 : (rssSuccessCount > 0 ? 'partial' : 'failed'),
             itemCount: rssItemsCount,
+        });
+
+        const newsRssSettled = await Promise.allSettled(
+            PUBLIC_NEWS_RSS_FEEDS.map(feed => fetchRssFeed(fetchImpl, feed, { now }))
+        );
+        queryCount += PUBLIC_NEWS_RSS_FEEDS.length;
+        let newsSuccessCount = 0;
+        let newsItemsCount = 0;
+        newsRssSettled.forEach((result, index) => {
+            if (result.status === 'fulfilled') {
+                newsSuccessCount += 1;
+                const feed = PUBLIC_NEWS_RSS_FEEDS[index];
+                rawItems.push(...result.value);
+                for (const item of result.value) {
+                    const assessed = assessArticle(item, feed, {
+                        scraperSource: 'public-rss',
+                        isInstitutionalHub: false,
+                        isConfiguredFeed: true,
+                    });
+                    if (assessed) {
+                        assessedItems.push(assessed);
+                        newsItemsCount += 1;
+                    }
+                }
+            } else {
+                coreFailedCount += 1;
+                totalFailedCount += 1;
+                coreRejected.push(result.reason);
+            }
+        });
+        if (newsSuccessCount > 0) activeProviders.push('BBC News RSS');
+        providerResults.push({
+            provider: 'BBC News RSS',
+            status: newsSuccessCount === PUBLIC_NEWS_RSS_FEEDS.length
+                ? 'ok'
+                : (newsSuccessCount > 0 ? 'partial' : 'failed'),
+            itemCount: newsItemsCount,
         });
 
         if (String(reliefwebAppname || '').trim()) {

@@ -158,14 +158,17 @@ export default function IntelSidebar({
                         >
                             {forecast.isLive && (
                                 <span className="live-tag">
-                                    ● {forecast._scraperSource === 'serper-public-cache' ? 'CACHED CURRENT' : 'LIVE INTEL'}
+                                    ● {['serper-public-cache', 'institutional-rss', 'public-rss', 'reliefweb-v2', 'gdelt-doc'].includes(forecast._scraperSource) ? 'CACHED CURRENT' : 'LIVE INTEL'}
                                 </span>
                             )}
                             {forecast.isLive && forecast.coverage && (
                                 <span className="coverage-badges" aria-label="Coverage classification">
                                     <span>{forecast.coverage.region}</span>
                                     <span>{forecast.coverage.issue}</span>
-                                    <span>{forecast.coverage.sourceRoleLabel}</span>
+                                    <span>{forecast.coverage.fundingLabel || forecast.coverage.sourceRoleLabel}</span>
+                                    {forecast.coverage.locationPrecision === 'global-unmapped' && (
+                                        <span className="coverage-badge-unmapped">Global · No single pin</span>
+                                    )}
                                 </span>
                             )}
                             {forecast.isCaseStudy
@@ -198,18 +201,26 @@ export default function IntelSidebar({
                                 {forecast.Broad_Category}
                             </span>
                             <span className="card-title">
-                                {forecast.isCaseStudy ? forecast['Entity/Subject'] : forecast['Topic/Sector']}
+                                {(forecast.isCaseStudy || forecast.isLive)
+                                    ? (forecast['Entity/Subject'] || forecast['Topic/Sector'])
+                                    : forecast['Topic/Sector']}
                             </span>
                             <span className="card-timeline">
                                 ⏱ {forecast.isCaseStudy
                                     ? `${forecast.regionTags?.join(' · ')} · ${overdueNotice || forecast.Timeline}`
-                                    : forecast.Timeline}
+                                    : forecast.isLive && forecast.Source
+                                        ? `${forecast.Source} · ${forecast.publishedAt || String(forecast.Timeline || '').replace(/^CURRENT\s*—\s*/i, '')}`
+                                        : forecast.Timeline}
                             </span>
                             <span className="card-impact">
-                                {(forecast.isCaseStudy ? forecast.statusSummary : forecast['Expected Impact/Value'])?.substring(0, 120)}...
+                                {(() => {
+                                    const rawImpact = (forecast.isCaseStudy ? forecast.statusSummary : forecast['Expected Impact/Value']) || '';
+                                    if (rawImpact.length <= 140) return rawImpact;
+                                    return `${rawImpact.substring(0, 140).trimEnd()}…`;
+                                })()}
                             </span>
                         </button>
-                        {(safeHttpUrl(forecast.url) || forecast.caseStudyId) && (
+                        {(safeHttpUrl(forecast.url) || forecast.caseStudyId || (forecast.isLive && safeHttpUrl(forecast.coverage?.attributionUrl))) && (
                             <div className="card-actions">
                                 {safeHttpUrl(forecast.url) && (
                                     <a
@@ -219,6 +230,16 @@ export default function IntelSidebar({
                                         className="card-link"
                                     >
                                         OPEN SOURCE ↗
+                                    </a>
+                                )}
+                                {forecast.isLive && safeHttpUrl(forecast.coverage?.attributionUrl) && (
+                                    <a
+                                        href={safeHttpUrl(forecast.coverage.attributionUrl)}
+                                        target="_blank"
+                                        rel="noopener noreferrer"
+                                        className="card-link card-credit-link"
+                                    >
+                                        {forecast.Source || 'Publisher'} ↗
                                     </a>
                                 )}
                                 {forecast.caseStudyId && (

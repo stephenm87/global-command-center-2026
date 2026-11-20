@@ -6,6 +6,7 @@ import {
     filterIntelForecasts,
     getCurrentFeedLabel,
     getFeedEmptyState,
+    isUnInstitutionalOnly,
     mergeIntelSources,
     searchIntelForecasts,
     summarizeIntelSources,
@@ -100,6 +101,16 @@ test('public cached updates expose accurate fresh and unavailable labels', () =>
     assert.equal(summary.sourceMode, 'public-cache');
     assert.equal(summary.feedStatus, 'fresh');
     assert.equal(getCurrentFeedLabel(summary), 'CACHED CURRENT UPDATES (1)');
+    assert.equal(isUnInstitutionalOnly('UN News RSS'), true);
+    assert.equal(isUnInstitutionalOnly('UN News RSS + BBC News RSS'), false);
+    assert.equal(
+        getCurrentFeedLabel({ liveItemCount: 16, sourceMode: 'public-cache', provider: 'UN News RSS + BBC News RSS' }),
+        'CACHED CURRENT UPDATES (16)'
+    );
+    assert.equal(
+        getCurrentFeedLabel({ liveItemCount: 12, sourceMode: 'public-cache', provider: 'UN News RSS' }),
+        'UN INSTITUTIONAL REPORTING (12)'
+    );
     assert.equal(getCurrentFeedLabel({ liveItemCount: 0, feedStatus: 'not-configured' }), 'CURRENT UPDATES — NOT CONFIGURED');
     assert.equal(getCurrentFeedLabel({ liveItemCount: 0, feedStatus: 'provider-error' }), 'CURRENT UPDATES — PROVIDER ERROR');
     assert.equal(getCurrentFeedLabel({ liveItemCount: 0, feedStatus: 'unavailable' }), 'CURRENT UPDATES — PROVIDER ERROR');
@@ -130,6 +141,7 @@ test('searching supports source metadata and reports a clear no-match action', (
             region: 'Africa',
             issue: 'Governance & Rights',
             sourceRoleLabel: 'Institutional / primary',
+            fundingLabel: 'Public broadcaster, UK licence fee',
         },
     })];
 
@@ -137,6 +149,7 @@ test('searching supports source metadata and reports a clear no-match action', (
     assert.equal(searchIntelForecasts(records, 'africa').length, 1);
     assert.equal(searchIntelForecasts(records, 'governance').length, 1);
     assert.equal(searchIntelForecasts(records, 'institutional').length, 1);
+    assert.equal(searchIntelForecasts(records, 'uk licence fee').length, 1);
     assert.equal(searchIntelForecasts(records, 'antarctica').length, 0);
     assert.equal(getFeedEmptyState({
         feedItems: [],

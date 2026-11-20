@@ -42,7 +42,8 @@ export default async (request, context) => {
         const legacyErrorSnapshot = ['not-configured', 'provider-error', 'unavailable'].includes(cached?.meta?.status)
             && (!Array.isArray(cached?.items) || cached.items.length === 0)
             && cached?.meta?.provider === 'Serper';
-        const needsSchemaUpgrade = !Array.isArray(cached?.meta?.providerResults);
+        const needsSchemaUpgrade = !Array.isArray(cached?.meta?.providerResults)
+            || (Array.isArray(cached?.items) && cached.items.some(item => !item?.coverage?.fundingLabel));
         if (cached?.meta && !legacyErrorSnapshot && !needsSchemaUpgrade) {
             return new Response(JSON.stringify(withSnapshotAge(cached)), { status: 200, headers: responseHeaders });
         }

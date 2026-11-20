@@ -96,6 +96,20 @@ test('free-feeds parses RSS CDATA, entities, ISO dates, guid fallback, rejects n
     assert.equal(items[1].link, 'https://news.un.org/en/story/2026/11/1200099');
     assert.equal(decodeXmlEntities('a &lt; b &gt; c &amp; d'), 'a < b > c & d');
 
+    // Snippet truncation cap and BBC RSS query-param stripping
+    const longDescription = 'UN officials say '.repeat(25);
+    const longXml = `<?xml version="1.0" encoding="utf-8"?><rss version="2.0"><channel><item>
+        <title>Romania energy talks advance</title>
+        <link>https://www.bbc.com/news/articles/cr123456?at_medium=RSS&amp;at_campaign=rss</link>
+        <description>${longDescription}</description>
+        <pubDate>Thu, 19 Nov 2026 04:00:00 +0000</pubDate>
+    </item></channel></rss>`;
+    const [longItem] = parseRssItems(longXml, { sourceName: 'BBC News', maxItems: 5, now: fixedNow });
+    assert.equal(longItem.snippet.length <= 220, true, 'RSS snippets must stay short (<= 220 chars)');
+    assert.equal(longItem.snippet.endsWith('…'), true);
+    const { normalizeHttpsUrl } = require('../_shared/intel-normalization');
+    assert.equal(normalizeHttpsUrl(longItem.link), 'https://www.bbc.com/news/articles/cr123456');
+
     // Direct freshness & URL/pubDate drift checks
     assert.equal(isFreshAndConsistentDate('2026-11-10', 'https://news.un.org/en/story/2026/11/123', { now: fixedNow }), true);
     assert.equal(isFreshAndConsistentDate('2026-10-01', 'https://news.un.org/en/story/2026/10/123', { now: fixedNow }), false, 'Items older than 30 days must be rejected');
@@ -123,10 +137,22 @@ test('public snapshot builds live institutional feed with zero SERPER_API_KEY an
                 <pubDate>Thu, 19 Nov 2026 04:00:00 +0000</pubDate>
             </item>
         </channel></rss>`;
+    const bbcRss = `<?xml version="1.0" encoding="utf-8"?>
+        <rss version="2.0"><channel>
+            <item>
+                <title>Lesotho highland water treaty signed after security talks</title>
+                <link>https://www.bbc.com/news/articles/lesotho2026?at_medium=RSS&amp;at_campaign=rss</link>
+                <description><![CDATA[Diplomacy and treaty negotiations conclude over regional water sharing and infrastructure.]]></description>
+                <pubDate>Thu, 19 Nov 2026 04:00:00 +0000</pubDate>
+            </item>
+        </channel></rss>`;
     const fetchImpl = async (url) => {
         calledUrls.push(String(url));
         if (String(url).includes('google.serper.dev')) {
             throw new Error('Serper must not be called when paused');
+        }
+        if (String(url).includes('bbci.co.uk')) {
+            return { ok: true, text: async () => bbcRss };
         }
         if (String(url).includes('reliefweb.int')) {
             return {
@@ -172,15 +198,24 @@ test('public snapshot builds live institutional feed with zero SERPER_API_KEY an
     assert.equal(snapshot.meta.status, 'fresh');
     assert.equal(snapshot.meta.errorCode, undefined);
     assert.equal('serperStatus' in snapshot.meta, false, 'Public meta must not expose billing state');
-    assert.equal(snapshot.items.length, 3);
+    assert.equal(snapshot.items.length, 4);
     assert.equal(calledUrls.some(u => u.includes('google.serper.dev')), false);
     assert.match(snapshot.meta.provider, /UN News RSS/);
+    assert.match(snapshot.meta.provider, /BBC News RSS/);
     assert.match(snapshot.meta.provider, /ReliefWeb/);
     assert.match(snapshot.meta.provider, /GDELT/);
     assert.deepEqual(
         snapshot.meta.providerResults.map(r => [r.provider, r.status]),
-        [['UN News RSS', 'ok'], ['ReliefWeb', 'ok'], ['GDELT', 'ok']]
+        [['UN News RSS', 'ok'], ['BBC News RSS', 'ok'], ['ReliefWeb', 'ok'], ['GDELT', 'ok']]
     );
+    const bbcItem = snapshot.items.find(it => it.Source === 'BBC News');
+    assert.ok(bbcItem, 'Expected BBC News item in live snapshot');
+    assert.equal(bbcItem.coverage.fundingLabel, 'Public broadcaster, UK licence fee');
+    assert.equal(bbcItem.coverage.attributionUrl, 'https://www.bbc.com/news');
+    assert.equal(bbcItem.url, 'https://www.bbc.com/news/articles/lesotho2026');
+    const unItem = snapshot.items.find(it => it.Source === 'UN News');
+    assert.equal(unItem.coverage.fundingLabel, 'UN institutional reporting');
+    assert.equal(snapshot.items.some(it => /independent/i.test(it.coverage.fundingLabel || '')), false);
 });
 
 test('public snapshot keeps free institutional items and avoids error when optional Serper runs out of credits', async () => {
@@ -482,7 +517,53 @@ test('selection balances regions and issues while limiting publishers, clusters,
     );
     assert.equal(Math.max(...Object.values(counts('sourceRole'))) <= 8, true);
     assert.equal(selected.filter(item => item.coverage.sourceRole === 'discovery').length <= 4, true);
-    assert.equal(selected.every(item => !('_publisherDomain' in item) && !('_topicCluster' in item)), true);
+    assert.equal(selected.every(item => !('_publisherDomain' in item) && !('_topicCluster' in item) && !('_isConfiguredFeed' in item)), true);
+
+    // No single publisher may supply > 1/3 of selected items when 3+ publishers contribute
+    const publishers = [
+        { domain: 'news.un.org', role: 'institutional', hub: true },
+        { domain: 'bbc.co.uk', role: 'independent-news', hub: false },
+        { domain: 'globalvoices.org', role: 'regional', hub: false },
+    ];
+    const balancedCandidates = [];
+    for (const [pubIdx, pub] of publishers.entries()) {
+        for (let n = 0; n < 10; n += 1) {
+            const reg = TARGET_REGIONS[(n + pubIdx) % TARGET_REGIONS.length];
+            const iss = TARGET_ISSUES[(n + pubIdx) % TARGET_ISSUES.length];
+            balancedCandidates.push({
+                url: `https://${pub.domain}/story-${pubIdx}-${n}`,
+                'Entity/Subject': `Publisher ${pubIdx} story ${n}`,
+                coverage: { region: reg, issue: iss, sourceRole: pub.role, sourceRoleLabel: SOURCE_ROLE_LABELS[pub.role], relevanceScore: 95 - n },
+                _publisherDomain: pub.domain,
+                _isInstitutionalHub: pub.hub,
+                _isConfiguredFeed: true,
+                _topicCluster: `${pubIdx}:${n}`,
+            });
+        }
+    }
+    const cappedSelection = selectDiverseArticles(balancedCandidates, 18);
+    const pubCounts = cappedSelection.reduce((acc, item) => {
+        const host = new URL(item.url).hostname;
+        acc[host] = (acc[host] || 0) + 1;
+        return acc;
+    }, {});
+    assert.equal(cappedSelection.length, 18);
+    for (const [host, count] of Object.entries(pubCounts)) {
+        assert.equal(count <= Math.floor(cappedSelection.length / 3), true, `${host} supplied ${count}/${cappedSelection.length} (> 1/3)`);
+    }
+
+    // Asymmetric 3-publisher pool (e.g., 10 UN + 10 BBC + 4 Devpolicy) also respects <= 1/3
+    const asymmetricCandidates = balancedCandidates.filter(c => c._publisherDomain !== 'globalvoices.org' || /story-2-[0-3]$/.test(c.url));
+    const asymSelected = selectDiverseArticles(asymmetricCandidates, 20);
+    const asymCounts = asymSelected.reduce((acc, item) => {
+        const host = new URL(item.url).hostname;
+        acc[host] = (acc[host] || 0) + 1;
+        return acc;
+    }, {});
+    assert.equal(asymSelected.length >= 12, true);
+    for (const [host, count] of Object.entries(asymCounts)) {
+        assert.equal(count <= Math.floor(asymSelected.length / 3), true, `Asymmetric ${host} supplied ${count}/${asymSelected.length} (> 1/3)`);
+    }
 });
 
 test('shared intel-normalization coordinate inference is deterministic and categorizeSector uses word-bounded Governance & Rights matching', () => {

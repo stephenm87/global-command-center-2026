@@ -268,6 +268,113 @@ test('extracted App components preserve unescaped & query URLs, guard invalid th
     assert.ok(!sidebarHtml.includes('&amp;amp;'), 'IntelSidebar must not double-escape & query parameters in href');
     assert.ok(sidebarHtml.includes('href="https://www.un.org/ldcportal/en/content/bangladesh-graduation-status?section=1&amp;lang=en"'));
 
+    // Multi-publisher cached feed renders real headlines, funding labels, BBC credit link, global-unmapped badge, and non-UN sidebar status
+    const bbcLiveItem = {
+        isLive: true,
+        _scraperSource: 'public-rss',
+        'Topic/Sector': 'Geopolitics / Conflict',
+        'Entity/Subject': 'Romania energy security talks advance in parliament',
+        'Expected Impact/Value': 'Lawmakers debated regional grid resilience and Black Sea pipeline capacity.',
+        Broad_Category: 'Geopolitics & Conflict',
+        Timeline: 'CURRENT — 2026-11-19',
+        publishedAt: '2026-11-19',
+        Source: 'BBC News',
+        url: 'https://www.bbc.com/news/articles/romania-2026',
+        Latitude: '45.9',
+        Longitude: '25',
+        coverage: {
+            region: 'Europe & Eurasia',
+            issue: 'Security & Diplomacy',
+            sourceRole: 'independent-news',
+            sourceRoleLabel: 'International broadcast & wire',
+            fundingLabel: 'Public broadcaster, UK licence fee',
+            attributionUrl: 'https://www.bbc.com/news',
+            locationPrecision: 'named-place',
+            selectionReason: 'Selected for Europe coverage.',
+        },
+    };
+    const globalUnmappedItem = {
+        isLive: true,
+        _scraperSource: 'institutional-rss',
+        'Topic/Sector': 'Environment / Energy',
+        'Entity/Subject': 'COP31 climate talks focus on global mitigation pledge',
+        'Expected Impact/Value': 'Negotiators debated multilateral adaptation finance mechanisms.',
+        Broad_Category: 'Environment & Energy',
+        Timeline: 'CURRENT — 2026-11-18',
+        publishedAt: '2026-11-18',
+        Source: 'UN News',
+        url: 'https://news.un.org/en/story/2026/11/1200555',
+        Latitude: null,
+        Longitude: null,
+        coverage: {
+            region: 'Global / Transnational',
+            issue: 'Climate & Resources',
+            sourceRole: 'institutional',
+            sourceRoleLabel: 'Institutional / primary',
+            fundingLabel: 'UN institutional reporting',
+            attributionUrl: 'https://news.un.org/en/',
+            locationPrecision: 'global-unmapped',
+            selectionReason: 'Selected for global climate coverage.',
+        },
+    };
+    const mixedFeedSidebarHtml = renderToStaticMarkup(React.createElement(IntelSidebar, {
+        visible: true,
+        sidebarCollapsed: false,
+        onToggleCollapse: () => {},
+        historicalData: null,
+        historicalLoading: false,
+        timelineYear: '2026',
+        intelLoading: false,
+        intelLastUpdated: new Date('2026-11-20T00:15:00Z'),
+        intelSummary: {
+            sourceMode: 'public-cache',
+            feedStatus: 'fresh',
+            provider: 'UN News RSS + BBC News RSS',
+            liveItemCount: 2,
+            linkedReferenceCount: 162,
+        },
+        caseStudyCount: 29,
+        feedSearch: '',
+        onSearchChange: () => {},
+        visibleSelectedCategory: 'All',
+        onCategoryChange: () => {},
+        currentFeedLabel: 'CACHED CURRENT UPDATES (2)',
+        feedEmptyState: null,
+        feedItems: [bbcLiveItem, globalUnmappedItem],
+        feedPage: 1,
+        feedPageSize: 40,
+        onShowMore: () => {},
+        selectedForecast: null,
+        onSelectForecast: () => {},
+        onOpenBriefing: () => {},
+    }));
+    assert.ok(!mixedFeedSidebarHtml.includes('UN INSTITUTIONAL'), 'Sidebar must not say UN INSTITUTIONAL once BBC News is included');
+    assert.match(mixedFeedSidebarHtml, /2 CACHED CURRENT/);
+    assert.match(mixedFeedSidebarHtml, /Romania energy security talks advance in parliament/);
+    assert.match(mixedFeedSidebarHtml, /Public broadcaster, UK licence fee/);
+    assert.match(mixedFeedSidebarHtml, /BBC News ↗/);
+    assert.ok(mixedFeedSidebarHtml.includes('href="https://www.bbc.com/news"'));
+    assert.match(mixedFeedSidebarHtml, /Global · No single pin/);
+
+    const unmappedModalHtml = renderToStaticMarkup(React.createElement(DetailModal, {
+        selectedForecast: globalUnmappedItem,
+        modalRef: { current: null },
+        selectedTheory: 'Realism',
+        onSelectTheory: () => {},
+        onClose: () => {},
+        onOpenBriefing: () => {},
+        onOpenAuthModal: () => {},
+        onDeepScan: () => {},
+        deepScanResult: null,
+        deepScanLoading: false,
+        aiSummary: null,
+        aiSummaryLoading: false,
+    }));
+    assert.match(unmappedModalHtml, /COP31 climate talks focus on global mitigation pledge/);
+    assert.match(unmappedModalHtml, /UN institutional reporting/);
+    assert.match(unmappedModalHtml, /Global · No single pin/);
+    assert.match(unmappedModalHtml, /Global \/ Transnational \(no single map pin\)/);
+
     // Verify onDeepScan receives the exact unescaped URL (not &amp;)
     let receivedDeepScanUrl = null;
     const detailTree = DetailModal({
