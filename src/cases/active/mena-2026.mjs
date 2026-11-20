@@ -2,7 +2,7 @@ export const MENA_CASES_2026 = [
     {
         "id": "syria-transition-return-sanctions",
         "status": "active",
-        "reviewStatus": "update-in-progress",
+        "briefingVersion": 2,
         "title": "Syria: Political Transition, Return, and Sanctions Relief",
         "subtitle": "Large-scale return inside a still-fragile recovery system",
         "coverageRegion": "Middle East & North Africa",
@@ -30,16 +30,16 @@ export const MENA_CASES_2026 = [
             "Europe",
             "UN_OPEC"
         ],
-        "statusSummary": "UNHCR reported in March 2026 that 15.6 million people required assistance and that more than 1.5 million refugees and 1.8 million internally displaced people had returned since December 2024. In May 2026, the EU renewed targeted measures against former-regime networks while describing broad economic sanctions as having been lifted in 2025 to support transition and recovery.",
+        "statusSummary": "UNHCR reported that, as of March 2026, 15.6 million people in Syria required assistance and 5.5 million remained internally displaced. More than 1.5 million refugees and 1.8 million internally displaced people had returned since December 2024. On 18 May 2026, the Council of the EU renewed targeted sanctions on former-regime networks until 1 June 2027 and delisted seven entities including the Defence and Interior Ministries, noting broad economic sanctions were lifted in May 2025. In June 2026, Syrians for Truth and Justice reported that returns to Ras al-Ain and Tell Abyad remained extremely limited.",
         "whyItMatters": "Syria tests whether political transition and sanctions relief can produce voluntary, safe, and sustainable return before housing, services, livelihoods, documentation, and accountable institutions have recovered.",
-        "updatedAt": "2026-06-30",
+        "updatedAt": "2026-11-20",
         "confidence": "high",
-        "uncertainty": "Return totals change frequently and conditions vary sharply by locality. A recorded return must not be treated as proof that return was safe, voluntary, or sustainable.",
+        "uncertainty": "Return totals change frequently and conditions vary sharply by locality; the UNHCR figures cited here run to March 2026 and the local documentation to June 2026. A recorded return must not be treated as proof that return was safe, voluntary, or sustainable. Accounts from Ras al-Ain and Tell Abyad rest on seven anonymized interviews and should not be generalized to the whole country.",
         "sensitivity": "standard",
-        "editorialCaution": "Return totals change frequently and conditions vary sharply by locality. A recorded return must not be treated as proof that return was safe, voluntary, or sustainable.",
+        "editorialCaution": "Return totals change frequently and conditions vary sharply by locality. A recorded return must not be treated as proof that return was safe, voluntary, or sustainable. Attribute witness accounts of property seizure, discrimination, and outside influence to their sources, and do not generalize them to whole communities.",
         "featured": false,
         "reviewCadenceDays": 90,
-        "reviewBy": "2026-09-28",
+        "reviewBy": "2027-02-18",
         "coordinates": {
             "latitude": 33.513,
             "longitude": 36.292
@@ -115,26 +115,235 @@ export const MENA_CASES_2026 = [
             {
                 "nodeId": "MiddleEast",
                 "title": "A Changed Political Context",
-                "narration": "UNHCR describes a post-December 2024 environment in which political change and large-scale returns coexist with severe humanitarian need.",
+                "perspectiveLabel": "Syrian returnees",
+                "perspectiveType": "local",
+                "conceptInFocus": "Legitimacy",
+                "relatedTimelineDate": "2024-12-08",
+                "narration": "After the al-Assad government fell on 8 December 2024, some Syrian families returned to demolished homes and pitched tents on the rubble [3, 4]. \"I came and put up a tent on the ruins\", one returnee explained, saying living in their own country mattered most [3]. That transition ended over five decades of Assad family rule [3].\n\nInternational agencies had judged Syria unready by checklists covering housing, safety, public services, and jobs [3]. Oxford researcher Muhammed Zeyn argues those benchmarks missed freedom and dignity, since fear of detention had long kept families away [3]. A September 2025 UN Refugee Agency (UNHCR) survey recorded surging return intentions [4]. Whether popular acceptance endures now tests legitimacy in damaged neighbourhoods rather than at the border.",
                 "focusQuestion": "When does a change in government become a durable political transition?"
             },
             {
                 "nodeId": "UN_OPEC",
                 "title": "Return at Scale",
-                "narration": "By March 2026, UNHCR counted more than 1.5 million refugee returns and 1.8 million returns by internally displaced people since December 2024.",
+                "perspectiveLabel": "UNHCR and humanitarian agencies",
+                "perspectiveType": "institutional",
+                "conceptInFocus": "Interdependence",
+                "relatedTimelineDate": "2026-03",
+                "narration": "By end-March 2026, UNHCR recorded 1,563,898 refugees returning to Syria since December 2024, mostly from nearby states [4]. Another 1.8 million returns involved internally displaced people (IDPs) uprooted inside Syria, yet 5.5 million remained internally displaced and 15.6 million needed assistance [4]. In March alone, 221,912 people crossed from Lebanon fleeing Israeli airstrikes, pushing some Syrians home earlier than planned [4].\n\nUNHCR supports voluntary return—free, informed movement—and gives returning families US$600 in cash [4]. Yet donors funded only 30 per cent of its US$323.9 million appeal, closing five community centres in March [4]. Host-country pressure, regional conflict, and donor shortfalls shape returns through interdependence, showing why arrival counts do not measure lasting reintegration.",
                 "focusQuestion": "Which indicators show whether a return is sustainable rather than temporary?"
             },
             {
                 "nodeId": "Europe",
                 "title": "Sanctions Recalibrated",
-                "narration": "The EU says broad economic sanctions were lifted to support transition and recovery while targeted measures against former-regime networks remain.",
+                "perspectiveLabel": "European Union sanctions policy",
+                "perspectiveType": "institutional",
+                "conceptInFocus": "Power",
+                "relatedTimelineDate": "2026-05-18",
+                "narration": "On 18 May 2026, the Council of the European Union (EU) renewed targeted sanctions on figures linked to the former al-Assad regime until 1 June 2027 [2]. Those listed face asset freezes, EU citizens and firms may not provide them funds, and individuals face travel bans [2]. That same day, the Council delisted seven entities, including Syria's Defence and Interior Ministries [2].\n\nFirst imposed in 2011, EU economic sanctions were lifted in May 2025—except security-related measures—to support recovery and reconstruction [2]. The Council kept targeted listings because former-regime networks, it assessed, retain influence that could undermine the transition [2]. Narrowing sanctions shifts external economic pressure from an entire population onto named networks, though local recovery still depends on conditions inside Syria.",
                 "focusQuestion": "Can targeted sanctions preserve accountability without obstructing wider recovery?"
             },
             {
                 "nodeId": "MiddleEast",
                 "title": "The Reintegration Test",
-                "narration": "UNHCR identifies damaged housing, limited services and livelihoods, documentation needs, and local capacity as constraints on sustainable return.",
+                "perspectiveLabel": "Displaced residents of Ras al-Ain and Tell Abyad",
+                "perspectiveType": "local",
+                "conceptInFocus": "Sovereignty",
+                "relatedTimelineDate": "2019-10",
+                "narration": "In October 2019, a Turkish operation alongside allied Syrian factions displaced over 176,000 people from Ras al-Ain and Tell Abyad [1]. After 2024, transitional President Ahmed al-Sharaa pledged every displaced person could return unconditionally [1]. Yet Syrians for Truth and Justice (STJ) reported in June 2026 that returns stayed stalled, with seven witnesses citing closed roads, looted houses, and payments of US$500 to US$3,000 to leave [1].\n\nWitnesses told STJ that rebranded factions kept their commanders, while Raqqa's governor reportedly said the state lacked real control in Tell Abyad [1]. That divide separates legal authority (de jure sovereignty) from effective rule on the ground (de facto sovereignty). Promises of return become real only where courts and security forces can enforce property rights.",
                 "focusQuestion": "Who should bear the cost and responsibility for rebuilding the conditions needed for return?"
+            }
+        ],
+        "concepts": [
+            "Legitimacy",
+            "Interdependence",
+            "Power",
+            "Sovereignty"
+        ],
+        "ibThemes": [
+            "rights-and-justice",
+            "development-and-sustainability"
+        ],
+        "background": "The European Union (EU) first imposed sanctions on Syria in 2011, responding to the al-Assad regime's violent repression of civilians [2]. Roughly four million Syrians took refuge in neighbouring countries and about one million in Germany [3]. In October 2019, a Turkish military operation along the northern border displaced more than 176,000 people by the end of that month [1].\n\nOn 8 December 2024, more than five decades of Assad family rule ended [3, 4]. Outside pressure then eased. The EU relaxed some measures on 24 February 2025 and announced on 20 May 2025 that it would lift all economic sanctions except those based on security grounds [2]. Sanctions are penalties, such as asset freezes or trade restrictions, that governments use to pressure a target.\n\nReturn followed quickly. More than 1.5 million refugees came back within a year, and the UN Refugee Agency (UNHCR) began facilitating voluntary return [3, 4]. Its September 2025 survey found that 80 per cent of refugees still abroad hoped to return one day, while housing damage, scarce jobs, and insecurity remained key constraints [4].",
+        "backgroundSources": [
+            "https://www.consilium.europa.eu/en/press/press-releases/2026/05/18/syria-council-renews-restrictive-measures-targeting-the-former-al-assad-regime-for-one-year-and-de-lists-certain-entities/",
+            "https://www.compas.ox.ac.uk/article/beyond-safety-and-necessity-understanding-syrias-mass-return",
+            "https://stj-sy.org/en/syria-one-year-after-political-change-peace-spring-areas-block-displaced-persons-return/",
+            "https://www.unhcr.org/sites/default/files/2026-04/unhcr-syria-operational-update-march.pdf"
+        ],
+        "keyTerms": [
+            {
+                "term": "Voluntary return",
+                "definition": "A refugee's or displaced person's return home by free and well-informed choice. UNHCR says its support for return to Syria is anchored in that voluntary character.",
+                "sourceUrl": "https://www.unhcr.org/sites/default/files/2026-04/unhcr-syria-operational-update-march.pdf"
+            },
+            {
+                "term": "Internally displaced person (IDP)",
+                "definition": "Someone forced from home who stays inside their own country. UNHCR's March 2026 update lists 5.5 million internally displaced people in Syria and 1.8 million IDP returns since December 2024.",
+                "sourceUrl": "https://www.unhcr.org/sites/default/files/2026-04/unhcr-syria-operational-update-march.pdf"
+            },
+            {
+                "term": "Restrictive measures",
+                "definition": "The EU's term for sanctions. People and entities on the Syria list face an asset freeze, EU citizens and companies may not make funds available to them, and listed individuals face a travel ban.",
+                "sourceUrl": "https://www.consilium.europa.eu/en/press/press-releases/2026/05/18/syria-council-renews-restrictive-measures-targeting-the-former-al-assad-regime-for-one-year-and-de-lists-certain-entities/"
+            },
+            {
+                "term": "Housing, land and property (HLP) rights",
+                "definition": "The rights people hold over their homes, farmland and other property. Syrians for Truth and Justice documents alleged violations of these rights in Ras al-Ain and Tell Abyad, including demands for payment before occupants will leave.",
+                "sourceUrl": "https://stj-sy.org/en/syria-one-year-after-political-change-peace-spring-areas-block-displaced-persons-return/"
+            },
+            {
+                "term": "Reintegration",
+                "definition": "The process by which returnees re-establish their lives at home. UNHCR's early monitoring finds that it varies by location and depends on services, housing, local security and livelihoods.",
+                "sourceUrl": "https://www.unhcr.org/sites/default/files/2026-04/unhcr-syria-operational-update-march.pdf"
+            }
+        ],
+        "debate": [
+            {
+                "claimBy": "UNHCR (Operational Update, March 2026)",
+                "claim": "Return decisions are shaped by structural constraints inside Syria. Housing, employment, safety and stability remain key factors, and wider recovery is central to sustainable reintegration.",
+                "counterBy": "Muhammed Zeyn, University of Oxford COMPAS (22 May 2026)",
+                "counterClaim": "Material conditions mattered but were secondary. Syrians returned because the regime's fall removed the fear of detention, and because belonging and dignity could not be replaced indefinitely by welfare abroad.",
+                "sourceUrls": [
+                    "https://www.unhcr.org/sites/default/files/2026-04/unhcr-syria-operational-update-march.pdf",
+                    "https://www.compas.ox.ac.uk/article/beyond-safety-and-necessity-understanding-syrias-mass-return"
+                ]
+            },
+            {
+                "claimBy": "Syrian transitional authorities (as reported by Syrians for Truth and Justice, 22 June 2026)",
+                "claim": "Every displaced person may return home without conditions. A member of the presidential team said preparations were under way to return about 12,000 families to Ras al-Ain \"in safety and dignity\".",
+                "counterBy": "Displaced residents interviewed by Syrians for Truth and Justice (April and May 2026)",
+                "counterClaim": "Main roads remain closed, homes are occupied or looted, and occupants demand payment to leave. Witnesses said displaced Kurds were advised to wait, and that local forces take orders from Ankara rather than Damascus.",
+                "sourceUrls": [
+                    "https://stj-sy.org/en/syria-one-year-after-political-change-peace-spring-areas-block-displaced-persons-return/"
+                ]
+            }
+        ],
+        "watchFor": [
+            {
+                "date": "1 June 2027",
+                "indicator": "The EU's restrictive measures against individuals and entities linked to the former al-Assad regime run until this date and are reviewed annually. Check whether the Council renews them, narrows them, or removes further entities.",
+                "sourceUrl": "https://www.consilium.europa.eu/en/press/press-releases/2026/05/18/syria-council-renews-restrictive-measures-targeting-the-former-al-assad-regime-for-one-year-and-de-lists-certain-entities/"
+            },
+            {
+                "date": "Next UNHCR Syria operational update (no date published)",
+                "indicator": "Compare the refugee-return total with the 1,563,898 recorded to the end of March 2026, the number still internally displaced with 5.5 million, and the funding share with 30 per cent.",
+                "sourceUrl": "https://www.unhcr.org/sites/default/files/2026-04/unhcr-syria-operational-update-march.pdf"
+            },
+            {
+                "date": "End of 2026",
+                "indicator": "UNHCR planned to rehabilitate 1,500 damaged houses in 2026 and had begun repairs on 412 by March. Check how many repairs it reports completed for the year.",
+                "sourceUrl": "https://www.unhcr.org/sites/default/files/2026-04/unhcr-syria-operational-update-march.pdf"
+            },
+            {
+                "date": "No date set as of June 2026",
+                "indicator": "Syrians for Truth and Justice reported that the transitional government had not presented a clear plan for return and property restitution in Ras al-Ain and Tell Abyad. Check for a published plan with a timeline, judicial committees for property claims, or the reopening of the closed M4 highway sections.",
+                "sourceUrl": "https://stj-sy.org/en/syria-one-year-after-political-change-peace-spring-areas-block-displaced-persons-return/"
+            }
+        ],
+        "examPrompts": [
+            "Discuss the view that legitimacy after a change of government depends more on dignity and belonging than on material recovery.",
+            "Evaluate the claim that easing economic sanctions is enough to make refugee return sustainable."
+        ],
+        "influenceCheck": [
+            {
+                "stage": "Setting the agenda",
+                "rating": "STRONG",
+                "evidence": "After the December 2024 transition, international organisations moved quickly to assess whether Syria was ready for return. The EU eased some sanctions on 24 February 2025 and announced on 20 May 2025 that it would lift all economic sanctions except those on security grounds.",
+                "sourceUrls": [
+                    "https://www.compas.ox.ac.uk/article/beyond-safety-and-necessity-understanding-syrias-mass-return",
+                    "https://www.consilium.europa.eu/en/press/press-releases/2026/05/18/syria-council-renews-restrictive-measures-targeting-the-former-al-assad-regime-for-one-year-and-de-lists-certain-entities/"
+                ]
+            },
+            {
+                "stage": "The formal decision",
+                "rating": "STRONG",
+                "evidence": "The EU restored its cooperation agreement with Syria on 11 May 2026 and removed seven entities, including two ministries, from its sanctions list on 18 May 2026. It kept targeted measures on former-regime networks until 1 June 2027.",
+                "sourceUrls": [
+                    "https://www.consilium.europa.eu/en/press/press-releases/2026/05/18/syria-council-renews-restrictive-measures-targeting-the-former-al-assad-regime-for-one-year-and-de-lists-certain-entities/"
+                ]
+            },
+            {
+                "stage": "What changed in practice",
+                "rating": "MIXED",
+                "evidence": "More than 1.5 million refugees and 1.8 million internally displaced people had returned by March 2026, yet 15.6 million people still required assistance. In Ras al-Ain and Tell Abyad, Syrians for Truth and Justice reported that returns remained extremely limited.",
+                "sourceUrls": [
+                    "https://www.unhcr.org/sites/default/files/2026-04/unhcr-syria-operational-update-march.pdf",
+                    "https://stj-sy.org/en/syria-one-year-after-political-change-peace-spring-areas-block-displaced-persons-return/"
+                ]
+            }
+        ],
+        "conceptLens": {
+            "power": "The EU's lever is economic: it lifted broad sanctions in May 2025 but kept asset freezes and travel bans on former-regime networks. In Ras al-Ain and Tell Abyad, witnesses describe a local lever, where armed occupants set the price of getting a home back.",
+            "sovereignty": "Damascus holds legal authority and has appointed officials in Ras al-Ain and Tell Abyad. Witnesses told Syrians for Truth and Justice that local factions and Türkiye still shape real decisions there, a gap between de jure and de facto control.",
+            "legitimacy": "Researcher Muhammed Zeyn argues that many returnees accepted hardship because the regime's fall restored dignity and belonging. Displaced residents interviewed in the north say they cannot return while they face discrimination and cannot recover property.",
+            "interdependence": "Return depends on host-country conditions, donor funding, and regional conflict: in March 2026, hostilities in Lebanon pushed 221,912 people into Syria. No single government controls all the factors that decide whether return lasts."
+        },
+        "essayBuilder": {
+            "prompt": "Evaluate the claim that easing economic sanctions is enough to make refugee return sustainable.",
+            "claim": "Sanctions relief removes one external barrier to recovery, but it does not by itself make return sustainable.",
+            "evidence": "The EU lifted all economic sanctions, except those on security grounds, in May 2025 to support transition and reconstruction. By March 2026, UNHCR still counted 15.6 million people needing assistance and 5.5 million internally displaced, and its Syria operation was 30 per cent funded. In June 2026, Syrians for Truth and Justice reported that returns to Ras al-Ain and Tell Abyad remained extremely limited.",
+            "counterClaim": "Return happened at scale anyway: 1,563,898 refugees came back between December 2024 and March 2026. Researcher Muhammed Zeyn argues that the decisive change was the end of fear, not economic readiness, which suggests sanctions relief matters less to the decision to return than to what happens afterwards.",
+            "judgment": "On balance, sanctions relief is necessary for rebuilding but not sufficient for sustainable return. However, the limit varies by place: UNHCR finds that reintegration conditions differ across locations, so the claim fails most clearly where property and security are still contested.",
+            "sourceUrls": [
+                "https://www.consilium.europa.eu/en/press/press-releases/2026/05/18/syria-council-renews-restrictive-measures-targeting-the-former-al-assad-regime-for-one-year-and-de-lists-certain-entities/",
+                "https://www.unhcr.org/sites/default/files/2026-04/unhcr-syria-operational-update-march.pdf",
+                "https://stj-sy.org/en/syria-one-year-after-political-change-peace-spring-areas-block-displaced-persons-return/",
+                "https://www.compas.ox.ac.uk/article/beyond-safety-and-necessity-understanding-syrias-mass-return"
+            ]
+        },
+        "timeline": [
+            {
+                "date": "2011",
+                "label": "The EU first imposes sanctions on Syria in response to the al-Assad regime's violent repression of civilians.",
+                "sourceUrl": "https://www.consilium.europa.eu/en/press/press-releases/2026/05/18/syria-council-renews-restrictive-measures-targeting-the-former-al-assad-regime-for-one-year-and-de-lists-certain-entities/"
+            },
+            {
+                "date": "2019-10",
+                "label": "A Turkish military operation with allied Syrian factions displaces more than 176,000 people from border areas including Ras al-Ain and Tell Abyad.",
+                "sourceUrl": "https://stj-sy.org/en/syria-one-year-after-political-change-peace-spring-areas-block-displaced-persons-return/"
+            },
+            {
+                "date": "2024-12-08",
+                "label": "Syria's political transition begins as the al-Assad government falls.",
+                "sourceUrl": "https://www.unhcr.org/sites/default/files/2026-04/unhcr-syria-operational-update-march.pdf"
+            },
+            {
+                "date": "2025-05-20",
+                "label": "The EU announces its decision to lift all economic sanctions on Syria except those based on security grounds.",
+                "sourceUrl": "https://www.consilium.europa.eu/en/press/press-releases/2026/05/18/syria-council-renews-restrictive-measures-targeting-the-former-al-assad-regime-for-one-year-and-de-lists-certain-entities/"
+            },
+            {
+                "date": "2026-03",
+                "label": "Between 2 and 31 March, 221,912 people cross from Lebanon into Syria to escape hostilities.",
+                "sourceUrl": "https://www.unhcr.org/sites/default/files/2026-04/unhcr-syria-operational-update-march.pdf"
+            },
+            {
+                "date": "2026-05-18",
+                "label": "The EU renews targeted sanctions on former-regime networks until 1 June 2027 and removes seven entities from its list.",
+                "sourceUrl": "https://www.consilium.europa.eu/en/press/press-releases/2026/05/18/syria-council-renews-restrictive-measures-targeting-the-former-al-assad-regime-for-one-year-and-de-lists-certain-entities/"
+            }
+        ],
+        "keyFigures": [
+            {
+                "value": "15.6 million",
+                "unit": "people",
+                "label": "Required assistance in Syria",
+                "asOf": "March 2026",
+                "sourceUrl": "https://www.unhcr.org/sites/default/files/2026-04/unhcr-syria-operational-update-march.pdf"
+            },
+            {
+                "value": "1.5 million",
+                "unit": "refugees",
+                "label": "Returned to Syria since December 2024 (UNHCR reports more than this figure)",
+                "asOf": "March 2026",
+                "sourceUrl": "https://www.unhcr.org/sites/default/files/2026-04/unhcr-syria-operational-update-march.pdf"
+            },
+            {
+                "value": "5.5 million",
+                "unit": "people",
+                "label": "Still internally displaced inside Syria",
+                "asOf": "March 2026",
+                "sourceUrl": "https://www.unhcr.org/sites/default/files/2026-04/unhcr-syria-operational-update-march.pdf"
             }
         ]
     },

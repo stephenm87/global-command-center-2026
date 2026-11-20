@@ -305,9 +305,9 @@ test('curated case studies remain balanced across 7 regions x 6 lenses, auditabl
     assert.throws(() => stalenessCli.parseCliArgs(['--as-of=not-a-date']), RangeError);
     assert.throws(() => stalenessCli.parseCliArgs(['--as-of=2026-02-30']), RangeError);
     const stalenessReport = stalenessCli.analyzeCaseStaleness(CASE_STUDIES_2026, [], '2026-11-17');
-    assert.equal(stalenessReport.overdueCount, 9, '8 standard-sensitivity cases plus unre-reviewed Tuvalu remain in Group 2 update-in-progress');
+    assert.equal(stalenessReport.overdueCount, 8, '7 remaining standard-sensitivity cases plus unre-reviewed Tuvalu stay in Group 2 update-in-progress after Syria Batch 1 renewal');
     assert.equal(stalenessReport.dueWithin14DaysCount, 10);
-    assert.equal(stalenessReport.freshCount, 10);
+    assert.equal(stalenessReport.freshCount, 11);
 
     const expectedGroup2Ids = [
         'amazon-indigenous-co-governance',
@@ -316,19 +316,18 @@ test('curated case studies remain balanced across 7 regions x 6 lenses, auditabl
         'mekong-energy-food-bargain',
         'moldova-transnistria-energy-eu-accession',
         'mongolia-coal-critical-minerals-transition',
-        'syria-transition-return-sanctions',
         'tuvalu-australia-falepili-union',
         'zambia-electricity-reset-climate-access',
     ];
     assert.deepEqual(
         stalenessReport.overdue.map(item => item.id).sort(),
         expectedGroup2Ids,
-        'overdue cases at 2026-11-17 must match the exact 9 Group 2 cases',
+        'overdue cases at 2026-11-17 must match the exact 8 remaining Group 2 cases',
     );
     assert.deepEqual(
         CASE_STUDIES_2026.filter(item => item.reviewStatus === 'update-in-progress').map(item => item.id).sort(),
         expectedGroup2Ids,
-        'explicit reviewStatus: update-in-progress must be set on and only on the 9 Group 2 cases',
+        'explicit reviewStatus: update-in-progress must be set on and only on the 8 remaining Group 2 cases',
     );
 
     for (const item of CASE_STUDIES_2026) {

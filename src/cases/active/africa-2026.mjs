@@ -475,6 +475,7 @@ export const AFRICA_CASES_2026 = [
     {
         "id": "eastern-drc-peace-civilian-protection",
         "status": "active",
+        "briefingVersion": 2,
         "title": "Eastern DRC: Peace Agreements, Armed Authority, and Civilian Protection",
         "subtitle": "Testing whether parallel diplomacy can change conditions in the Great Lakes",
         "coverageRegion": "Africa",
@@ -504,13 +505,13 @@ export const AFRICA_CASES_2026 = [
             "MilitantPMC",
             "UN_OPEC"
         ],
-        "statusSummary": "The Congolese presidency describes the June 2025 DRC–Rwanda agreement as a framework for peace and regional economic integration, and an April 2026 fifth Joint Oversight Committee statement tracked continuing implementation work alongside parallel mediation. Although UN Great Lakes Special Envoy Huang Xia told the Security Council on 13 October 2026 that US- and Qatar-led tracks had achieved notable progress, AFP reporting via Al Jazeera (14 October 2026) cited his warning that eastern DRC's security and humanitarian situation continued to worsen amid fighting involving M23 and Congolese forces. The UN Security Council sanctions committee added Alliance Fleuve Congo (AFC) to its sanctions list in July 2026, MONUSCO's October summary (9 November 2026) documented continuing joint FARDC–peacekeeper patrols in North Kivu and Ituri, and The New Times via AllAfrica (10 November 2026) reported that the Kabila-led Front for the Refoundation of the Nation (regrouping AFC/M23 in October) warned Qatari mediators on 1 November and MONUSCO head James Swan in Goma on 3 November that proposed constitutional changes could collapse the Doha process. Institute for Security Studies analysis argues overlapping tracks still face coordination and deterrence gaps.",
+        "statusSummary": "The Congolese presidency reported that the DRC and Rwanda signed a peace agreement at the US State Department on 27 June 2025. A fifth Joint Oversight Committee statement (23 April 2026) tracked ongoing implementation reviews alongside Qatar-hosted talks with AFC/M23. Although UN envoy Huang Xia told the Security Council on 13 October 2026 that US- and Qatar-led tracks showed progress, AFP via Al Jazeera cited his warning that eastern DRC's security and humanitarian situation kept worsening. In July 2026 the UN listed Alliance Fleuve Congo (AFC) for sanctions, MONUSCO logged joint October patrols, and The New Times reported the Kabila-led FRN warned Doha mediators and MONUSCO over constitutional changes, while ISS argued overlapping tracks lack deterrence.",
         "whyItMatters": "The case tests whether agreements among states and armed actors can improve civilian protection when authority, security guarantees, and accountability remain fragmented across borders.",
         "updatedAt": "2026-11-17",
         "confidence": "medium",
         "uncertainty": "Territorial control, armed-group alliances, displacement, and humanitarian access can change rapidly. Government, armed-group, and international descriptions of responsibility remain contested and should always be attributed.",
         "sensitivity": "high",
-        "editorialCaution": "Attribute recognition, sovereignty, and territorial-integrity claims to their proponents; represent contested eastern-area positions as internally diverse; and do not infer unconfirmed security arrangements or future recognitions.",
+        "editorialCaution": "Attribute claims about responsibility, territorial control, and outside military support to their proponents; describe eastern Congolese communities as internally diverse; and do not infer unconfirmed troop movements, security arrangements, or negotiation outcomes.",
         "featured": true,
         "reviewCadenceDays": 14,
         "reviewBy": "2026-12-01",
@@ -618,7 +619,9 @@ export const AFRICA_CASES_2026 = [
                 "title": "Civilian Security as the Test",
                 "perspectiveLabel": "Eastern Congolese communities",
                 "perspectiveType": "local",
-                "narration": "For people living around Goma, Bukavu, and rural conflict zones, an agreement matters only if it changes safety, mobility, access to services, and the ability to return home.",
+                "conceptInFocus": "Legitimacy",
+                "relatedTimelineDate": "2026-10-13",
+                "narration": "On 19 October 2026, United Nations (UN) peacekeepers and Congolese soldiers patrolled through Sengi 1 in Ituri province so farmers could reach fields safely [5]. That month, the UN mission MONUSCO and local partners also took in four children aged 5 to 11 separated while fleeing insecurity [5]. Six days earlier, UN envoy Huang Xia told the Security Council that security and humanitarian conditions continued to worsen [6].\n\nHuang simultaneously cited notable progress in US- and Qatar-led mediation [6]. Across North Kivu, South Kivu, and Ituri, that contrast shows fighting continues despite signed texts [3, 4, 6]. He urged parties to prove commitment \"through deeds rather than through declarations\" [6]. Diplomacy gains legitimacy only when residents experience safe roads, reunited families, and protected harvests.",
                 "focusQuestion": "Which civilian indicators would show that diplomacy is changing daily life rather than only state-to-state relations?"
             },
             {
@@ -626,7 +629,9 @@ export const AFRICA_CASES_2026 = [
                 "title": "The State Peace Framework",
                 "perspectiveLabel": "Congolese government position",
                 "perspectiveType": "local",
-                "narration": "The Congolese presidency presents the DRC–Rwanda agreement as a route toward peace, sovereignty, and regional economic integration.",
+                "conceptInFocus": "Sovereignty",
+                "relatedTimelineDate": "2025-06-27",
+                "narration": "At midday on 27 June 2025, foreign ministers from the Democratic Republic of the Congo (DRC) and Rwanda signed a peace deal at the US State Department and shook hands for the first time [1]. Congolese minister Thérèse Kayikwamba said Kinshasa sought a lasting and real peace for citizens [1].\n\nKinshasa frames the conflict as external aggression, a view the Institute for Security Studies (ISS) notes won broad diplomatic backing [3]. A Joint Oversight Committee pairing both governments with the US, Qatar, Togo, and the African Union (AU) Commission held its fifth review on 23 April 2026 [7]. Because M23 captured Goma and Bukavu in early 2025, ISS notes Kinshasa still lacks oversight along parts of its Rwandan border [3]. Treaties confirm de jure sovereignty, yet only verified implementation restores de facto control.",
                 "focusQuestion": "What institutions and verification mechanisms are needed to turn a bilateral framework into security on the ground?"
             },
             {
@@ -634,7 +639,9 @@ export const AFRICA_CASES_2026 = [
                 "title": "Armed Authority and Leverage",
                 "perspectiveLabel": "AFC/M23 and armed networks",
                 "perspectiveType": "independent",
-                "narration": "Armed organizations retain territorial and political leverage even while state and international actors pursue parallel negotiation and sanctions tracks.",
+                "conceptInFocus": "Power",
+                "relatedTimelineDate": "2026-07-14",
+                "narration": "The March 23 Movement (M23) and its political ally Alliance Fleuve Congo (AFC) captured Goma and Bukavu in early 2025, fighting alongside Rwandan troops according to ISS analysis [3]. On 14 July 2026, a UN Security Council committee published its summary for sanctioning AFC—placing the group under binding UN penalties—for supporting M23 and seeking the government's overthrow [2].\n\nIn October 2026, AFC/M23 regrouped under former president Joseph Kabila as the Front for the Refoundation of the Nation (FRN) and took its seat in Qatar-hosted talks [4]. On 1 November, the FRN warned mediators that proposed constitutional changes could collapse negotiations [4]. Battlefield gains sustain armed leverage, and ISS argues that without credible deterrence armed actors have little incentive to pull back [3].",
                 "focusQuestion": "How should a peace process engage an armed actor without normalizing coercive territorial control?"
             },
             {
@@ -642,8 +649,192 @@ export const AFRICA_CASES_2026 = [
                 "title": "Coordination and Enforcement",
                 "perspectiveLabel": "Regional and multilateral mediators",
                 "perspectiveType": "institutional",
-                "narration": "Sanctions, monitoring, African mediation, and international diplomacy create several accountability channels, but their mandates and incentives do not automatically align.",
+                "conceptInFocus": "Interdependence",
+                "relatedTimelineDate": "2026-04-23",
+                "narration": "Several peace tracks run side by side. The United States brokers talks between the DRC and Rwanda, Qatar mediates between Kinshasa and the armed movement, and Togo's president serves as the AU-appointed mediator [3, 7]. On 23 April 2026, these parties met in Washington as the Joint Oversight Committee, which reviews implementation of the June 2025 agreement [7]. In the Qatar-led process, two of eight planned protocols had been signed by November 2026, covering a permanent ceasefire and prisoner exchange [4].\n\nUN envoy Huang Xia called the growing alignment of these efforts a \"window of opportunity\" [6]. ISS argued in August 2025 that mediation still treated the crisis as a two-country dispute, although Ugandan and Burundian troops also operated in eastern DRC [3]. That is interdependence in practice, because no single capital can end a war shaped by several neighbours' armies, armed movements, and outside brokers. With so many actors involved, the question of who verifies compliance remains open.",
                 "focusQuestion": "Who should verify compliance, coordinate pressure, and respond when commitments are breached?"
+            }
+        ],
+        "concepts": [
+            "Legitimacy",
+            "Sovereignty",
+            "Power",
+            "Interdependence"
+        ],
+        "ibThemes": [
+            "peace-and-conflict",
+            "rights-and-justice"
+        ],
+        "background": "Rwanda, Uganda, and Burundi have each deployed troops in eastern Democratic Republic of the Congo (DRC), according to analysis by the Institute for Security Studies (ISS) [3]. In early 2025, the March 23 Movement (M23) and its political ally, the Alliance Fleuve Congo (AFC), captured the cities of Goma and Bukavu [3]. M23 has been on the United Nations (UN) sanctions list since 31 December 2012 [2].\n\nDiplomacy then split into parallel tracks. Qatar opened talks between the Congolese government and AFC/M23 in April 2025, and the two sides signed a Declaration of Principles on 19 July 2025 [4]. The United States brokered a separate peace agreement between the DRC and Rwanda, signed in Washington on 27 June 2025 [1, 3]. The African Union (AU) appointed Togo's president as its own mediator [3].\n\nFighting continued despite the signatures [4, 6]. A UN peacekeeping mission, MONUSCO, still runs joint patrols with the Congolese army in North Kivu and Ituri [5]. In October 2026, AFC/M23 regrouped under former president Joseph Kabila as the Front for the Refoundation of the Nation, which took over its place in the Qatar-mediated talks [4].",
+        "backgroundSources": [
+            "https://issafrica.org/iss-today/diplomacy-without-deterrence-won-t-bring-peace-in-eastern-drc",
+            "https://main.un.org/securitycouncil/en/content/alliance-fleuve-congo-afc",
+            "https://allafrica.com/stories/202611100538.html",
+            "https://www.presidence.cd/actualite-detail/actualite/exclusif_la_rdc_et_le_rwanda_ont_signe_un_accord_de_paix_ce_vendredi_aux_etats_unis_damerique",
+            "https://www.aljazeera.com/news/2026/10/14/un-official-says-window-of-opportunity-for-peace-in-dr-congo",
+            "https://monusco.unmissions.org/en/news/meilleurs-contenus-du-mois-doctobre-2026"
+        ],
+        "keyTerms": [
+            {
+                "term": "Joint Oversight Committee",
+                "definition": "The body that assesses implementation of the DRC–Rwanda Peace Agreement signed on 27 June 2025. Its fifth meeting, on 23 April 2026, brought together both governments, the United States, Qatar, Togo as African Union mediator, and the AU Commission.",
+                "sourceUrl": "https://www.peaceau.org/en/article/joint-statement-on-the-fifth-joint-oversight-committee-for-the-peace-agreement-between-the-democratic-republic-of-the-congo-and-the-republic-of-rwanda"
+            },
+            {
+                "term": "Doha process",
+                "definition": "Qatar-mediated negotiations, begun in April 2025, between the Congolese government and AFC/M23, whose role the FRN has since taken over. The parties are expected to sign eight protocols before a comprehensive peace agreement; two had been signed by 10 November 2026.",
+                "sourceUrl": "https://allafrica.com/stories/202611100538.html"
+            },
+            {
+                "term": "Sanctions listing",
+                "definition": "A UN Security Council committee's decision to place a person or group on its sanctions list, with a published summary of reasons. The committee's summary for the Alliance Fleuve Congo became available on 14 July 2026.",
+                "sourceUrl": "https://main.un.org/securitycouncil/en/content/alliance-fleuve-congo-afc"
+            },
+            {
+                "term": "Deterrence",
+                "definition": "The capacity to make an opponent expect unacceptable costs from continuing to fight. The Institute for Security Studies argues that mediation in eastern DRC lacks a credible military deterrent able to compel withdrawals.",
+                "sourceUrl": "https://issafrica.org/iss-today/diplomacy-without-deterrence-won-t-bring-peace-in-eastern-drc"
+            },
+            {
+                "term": "MONUSCO",
+                "definition": "The United Nations Organization Stabilization Mission in the Democratic Republic of the Congo, a peacekeeping operation that took over from an earlier UN mission on 1 July 2010. In October 2026 it ran joint patrols with the Congolese army in North Kivu and Ituri.",
+                "sourceUrl": "https://monusco.unmissions.org/en/news/meilleurs-contenus-du-mois-doctobre-2026"
+            }
+        ],
+        "debate": [
+            {
+                "claimBy": "UN Great Lakes Special Envoy Huang Xia (Security Council, 13 October 2026)",
+                "claim": "The US- and Qatar-led processes have achieved \"notable progress\", and the growing alignment of peace efforts offers a \"window of opportunity\" that the parties should seize through verifiable actions.",
+                "counterBy": "Paul-Simon Handy, Institute for Security Studies (15 August 2025)",
+                "counterClaim": "Diplomacy without credible military deterrence will not bring peace. No mediation effort has set out the incentives needed to move the parties toward de-escalation, and peace processes remain disconnected from the battlefield.",
+                "sourceUrls": [
+                    "https://www.aljazeera.com/news/2026/10/14/un-official-says-window-of-opportunity-for-peace-in-dr-congo",
+                    "https://issafrica.org/iss-today/diplomacy-without-deterrence-won-t-bring-peace-in-eastern-drc"
+                ]
+            },
+            {
+                "claimBy": "Oscar Balinda, FRN deputy spokesperson (The New Times, 10 November 2026)",
+                "claim": "The movement began in response to discrimination and killings targeting one ethnic community. It now unites Congolese opposing what he calls a dictatorial regime, acting under Article 64 of the Constitution.",
+                "counterBy": "UN Security Council DRC sanctions committee (narrative summary, 14 July 2026)",
+                "counterClaim": "The AFC gives political, logistical and operational support to M23, which has been responsible for attacks against civilians, killings and forced displacement. Its actions undermine the peace, stability and security of the DRC.",
+                "sourceUrls": [
+                    "https://allafrica.com/stories/202611100538.html",
+                    "https://main.un.org/securitycouncil/en/content/alliance-fleuve-congo-afc"
+                ]
+            },
+            {
+                "claimBy": "Paul-Simon Handy, Institute for Security Studies (15 August 2025)",
+                "claim": "The Washington agreement imposes obligations on Kinshasa, such as dismantling coalitions with local armed groups, without equivalent or verifiable commitments from Kigali on its support for M23.",
+                "counterBy": "The New Times, Kigali (10 November 2026)",
+                "counterClaim": "The newspaper describes the deal as reciprocal: Kinshasa committed to neutralising the FDLR, an armed group it calls Kinshasa-backed, while Rwanda agreed to lift its defensive measures against that threat.",
+                "sourceUrls": [
+                    "https://issafrica.org/iss-today/diplomacy-without-deterrence-won-t-bring-peace-in-eastern-drc",
+                    "https://allafrica.com/stories/202611100538.html"
+                ]
+            }
+        ],
+        "watchFor": [
+            {
+                "date": "Next Doha consultation (no date published as of 10 November 2026)",
+                "indicator": "The FRN asked Qatar's mediators to seek official clarification from Kinshasa on the proposed constitutional change and said it was awaiting a reply. Check whether a consultation convenes and whether the humanitarian access protocol, agreed in principle, is signed.",
+                "sourceUrl": "https://allafrica.com/stories/202611100538.html"
+            },
+            {
+                "date": "Next Joint Oversight Committee meeting (no date published)",
+                "indicator": "The committee held its fifth meeting on 23 April 2026. Check for a sixth joint statement and whether it reports verified steps on the ground.",
+                "sourceUrl": "https://www.peaceau.org/en/article/joint-statement-on-the-fifth-joint-oversight-committee-for-the-peace-agreement-between-the-democratic-republic-of-the-congo-and-the-republic-of-rwanda"
+            },
+            {
+                "date": "After 18 October 2026 (outcome not yet confirmed in these sources)",
+                "indicator": "Huang Xia said the UN would facilitate a meeting in Lusaka of the defence ministers of Burundi, the DRC, Uganda, Rwanda and Tanzania. Check for a published communique or a follow-up meeting.",
+                "sourceUrl": "https://www.aljazeera.com/news/2026/10/14/un-official-says-window-of-opportunity-for-peace-in-dr-congo"
+            }
+        ],
+        "examPrompts": [
+            "Evaluate the claim that peace agreements between states cannot succeed unless non-state armed groups are also bound by them.",
+            "To what extent is credible military force necessary for diplomacy to resolve armed conflict?"
+        ],
+        "influenceCheck": [
+            {
+                "stage": "Setting the agenda",
+                "rating": "STRONG",
+                "evidence": "After Goma and Bukavu fell in early 2025, US and Qatari mediation produced a Washington peace accord on 27 June 2025 and a Doha Declaration of Principles on 19 July 2025. In October 2026, the UN envoy described an increased alignment of peace efforts.",
+                "sourceUrls": [
+                    "https://issafrica.org/iss-today/diplomacy-without-deterrence-won-t-bring-peace-in-eastern-drc",
+                    "https://allafrica.com/stories/202611100538.html",
+                    "https://www.aljazeera.com/news/2026/10/14/un-official-says-window-of-opportunity-for-peace-in-dr-congo"
+                ]
+            },
+            {
+                "stage": "The formal decision",
+                "rating": "MIXED",
+                "evidence": "The DRC and Rwanda signed their agreement, and its Joint Oversight Committee had met five times by April 2026. In Doha, two of eight planned protocols were signed, while the humanitarian access protocol was agreed in principle but not signed.",
+                "sourceUrls": [
+                    "https://www.presidence.cd/actualite-detail/actualite/exclusif_la_rdc_et_le_rwanda_ont_signe_un_accord_de_paix_ce_vendredi_aux_etats_unis_damerique",
+                    "https://www.peaceau.org/en/article/joint-statement-on-the-fifth-joint-oversight-committee-for-the-peace-agreement-between-the-democratic-republic-of-the-congo-and-the-republic-of-rwanda",
+                    "https://allafrica.com/stories/202611100538.html"
+                ]
+            },
+            {
+                "stage": "What changed in practice",
+                "rating": "WEAK",
+                "evidence": "The UN envoy told the Security Council in October 2026 that the security and humanitarian situation had continued to worsen despite sustained diplomacy. The New Times reported in November that implementation of the Doha commitments remained limited, with fighting continuing in North and South Kivu.",
+                "sourceUrls": [
+                    "https://www.aljazeera.com/news/2026/10/14/un-official-says-window-of-opportunity-for-peace-in-dr-congo",
+                    "https://allafrica.com/stories/202611100538.html"
+                ]
+            }
+        ],
+        "conceptLens": {
+            "power": "M23 and its allies took Goma and Bukavu in early 2025, which the Institute for Security Studies says gives them leverage that diplomacy has not offset. Kinshasa's lever is diplomatic support, and the UN has placed both M23 and the AFC under sanctions.",
+            "sovereignty": "The DRC holds legal sovereignty over the east. The Institute for Security Studies reports that since losing Goma and Bukavu, the government has not overseen key sections of its border with Rwanda.",
+            "legitimacy": "The FRN claims a constitutional basis for resistance under Article 64, while a UN sanctions committee says the AFC supports a group responsible for attacks on civilians. The UN envoy's test for the peace process is whether commitments become verifiable actions.",
+            "interdependence": "Peace efforts involve the United States, Qatar, Togo, the African Union and the UN, and the UN planned a meeting of defence ministers from five countries. The conflict's regional reach means no single government can settle it alone."
+        },
+        "essayBuilder": {
+            "prompt": "To what extent is credible military force necessary for diplomacy to resolve armed conflict?",
+            "claim": "Diplomacy in eastern DRC has produced agreements, but without enforcement those agreements have not yet changed conditions on the ground.",
+            "evidence": "The DRC and Rwanda signed a peace agreement in Washington on 27 June 2025, and Kinshasa and AFC/M23 signed a Declaration of Principles on 19 July 2025. Yet on 13 October 2026, the UN's Great Lakes envoy told the Security Council that the security and humanitarian situation had continued to worsen. Analyst Paul-Simon Handy argues that no mechanism exists to compel withdrawals.",
+            "counterClaim": "Force has its own record of failure here: Handy notes that Congolese forces, southern African and Burundian troops, and UN peacekeepers were all defeated, and that few actors want to fight again. Diplomacy has also delivered concrete steps, including signed ceasefire and prisoner-exchange protocols and an oversight committee that keeps meeting.",
+            "judgment": "On balance, the evidence suggests that diplomacy needs some means of enforcement to be credible. However, this case involves neighbouring armies fighting directly; where outside backers are absent, mediation alone may face fewer limits.",
+            "sourceUrls": [
+                "https://www.presidence.cd/actualite-detail/actualite/exclusif_la_rdc_et_le_rwanda_ont_signe_un_accord_de_paix_ce_vendredi_aux_etats_unis_damerique",
+                "https://allafrica.com/stories/202611100538.html",
+                "https://www.aljazeera.com/news/2026/10/14/un-official-says-window-of-opportunity-for-peace-in-dr-congo",
+                "https://issafrica.org/iss-today/diplomacy-without-deterrence-won-t-bring-peace-in-eastern-drc",
+                "https://www.peaceau.org/en/article/joint-statement-on-the-fifth-joint-oversight-committee-for-the-peace-agreement-between-the-democratic-republic-of-the-congo-and-the-republic-of-rwanda"
+            ]
+        },
+        "timeline": [
+            {
+                "date": "2025-06-27",
+                "label": "The DRC and Rwanda sign a peace agreement at the US State Department in Washington.",
+                "sourceUrl": "https://www.presidence.cd/actualite-detail/actualite/exclusif_la_rdc_et_le_rwanda_ont_signe_un_accord_de_paix_ce_vendredi_aux_etats_unis_damerique"
+            },
+            {
+                "date": "2025-07-19",
+                "label": "The Congolese government and AFC/M23 sign a Declaration of Principles in the Qatar-mediated Doha process.",
+                "sourceUrl": "https://allafrica.com/stories/202611100538.html"
+            },
+            {
+                "date": "2026-04-23",
+                "label": "The fifth Joint Oversight Committee meets in Washington to assess implementation of the DRC–Rwanda agreement.",
+                "sourceUrl": "https://www.peaceau.org/en/article/joint-statement-on-the-fifth-joint-oversight-committee-for-the-peace-agreement-between-the-democratic-republic-of-the-congo-and-the-republic-of-rwanda"
+            },
+            {
+                "date": "2026-07-14",
+                "label": "A UN Security Council sanctions committee publishes its reasons for listing the Alliance Fleuve Congo (AFC).",
+                "sourceUrl": "https://main.un.org/securitycouncil/en/content/alliance-fleuve-congo-afc"
+            },
+            {
+                "date": "2026-10-12",
+                "label": "The Front for the Refoundation of the Nation (FRN) is launched in Goma under Joseph Kabila, regrouping AFC/M23.",
+                "sourceUrl": "https://allafrica.com/stories/202611100538.html"
+            },
+            {
+                "date": "2026-10-13",
+                "label": "UN envoy Huang Xia tells the Security Council that diplomacy has progressed while security and humanitarian conditions have worsened.",
+                "sourceUrl": "https://www.aljazeera.com/news/2026/10/14/un-official-says-window-of-opportunity-for-peace-in-dr-congo"
             }
         ]
     },
