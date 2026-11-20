@@ -107,7 +107,13 @@ test('App.jsx uses maybeSingle() + debounced upsert, createDebouncedRunner coale
     assert.ok(sqlFiles.length >= 1, 'Expected at least one versioned RLS SQL migration');
 
     const combinedSql = sqlFiles.map(f => fs.readFileSync(path.join(migrationsDir, f), 'utf8')).join('\n');
+    assert.match(combinedSql, /^\s*begin\s*;/im, 'Migration must run inside a transaction');
+    assert.match(combinedSql, /commit\s*;/i, 'Migration must commit transaction cleanly');
     assert.match(combinedSql, /enable row level security/i);
+    assert.match(combinedSql, /force row level security/i);
     assert.match(combinedSql, /pg_constraint/i, 'Migration should idempotently backfill constraints on pre-existing user_data');
+    assert.match(combinedSql, /contype\s+in\s*\(\s*'p'\s*,\s*'u'\s*\)/i, 'Migration must respect existing (id) PK + UNIQUE (user_id, key) without dropping existing PK');
+    assert.match(combinedSql, /pg_policies/i, 'Migration must atomically clear legacy public-role policies');
+    assert.match(combinedSql, /set search_path\s*=\s*''/i, 'Trigger function must lock search_path');
     assert.match(combinedSql, /\(?\s*(?:select\s+)?auth\.uid\(\)\s*\)?\s*=\s*user_id/i);
 });
