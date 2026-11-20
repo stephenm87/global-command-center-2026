@@ -16,7 +16,7 @@
 - Apply and verify the versioned RLS migration in [`supabase/migrations/20261116000000_user_data_rls.sql`](../supabase/migrations/20261116000000_user_data_rls.sql) via the Supabase SQL Editor or `supabase db push`:
   - Applies safely inside a single transaction to both fresh schemas and the live `(id)` primary-key schema with `UNIQUE (user_id, key)`.
   - Validates key length (`1..128` chars) and `64 KB` JSONB size ceiling (`octet_length(value::text) <= 65536`), attaches `trg_user_data_updated_at`, enables and forces Row Level Security (`enable row level security` + `force row level security`), atomically replaces legacy `public`-role policies with `authenticated`-role `SELECT`, `INSERT`, `UPDATE`, and `DELETE` policies restricted to `(select auth.uid()) = user_id`, and revokes anonymous writes while preserving `anon` `SELECT` (returning `0` rows under RLS for the daily keep-alive).
-- Note: Any unrelated tables in the same Supabase project (such as `rooms` or `submissions`) are not queried or written by this site (`user_data` only).
+- Note: Only `public.user_data` is queried or written by this site; any other tables in the same Supabase project are unrelated and left untouched.
 
 ## Daily Keep-Alive (Preventing Free-Tier Inactivity Pauses)
 - Free Supabase projects pause automatically after 7 days without database activity.

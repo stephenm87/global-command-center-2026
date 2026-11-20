@@ -172,7 +172,7 @@ export default function IntelSidebar({
                                     <span>{forecast.coverage.issue}</span>
                                     <span>{forecast.coverage.fundingLabel || forecast.coverage.sourceRoleLabel}</span>
                                     {isAnalysisItem && (
-                                        <span className="coverage-badge-analysis">Analysis</span>
+                                        <span className="coverage-badge-analysis">Analysis · Not news</span>
                                     )}
                                     {forecast.coverage.locationPrecision === 'global-unmapped' && (
                                         <span className="coverage-badge-unmapped">Global · No single pin</span>

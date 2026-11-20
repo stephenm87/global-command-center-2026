@@ -55,8 +55,16 @@ export default async (request, context) => {
             return new Response(JSON.stringify(withSnapshotAge(cached)), { status: 200, headers: responseHeaders });
         }
 
-        const snapshot = await refreshSnapshot(context);
-        return new Response(JSON.stringify(withSnapshotAge(snapshot)), { status: 200, headers: responseHeaders });
+        try {
+            const snapshot = await refreshSnapshot(context);
+            return new Response(JSON.stringify(withSnapshotAge(snapshot)), { status: 200, headers: responseHeaders });
+        } catch (refreshError) {
+            if (cached?.meta && Array.isArray(cached?.items) && cached.items.length > 0) {
+                console.warn('[public-intel] Schema upgrade refresh failed; serving prior cached snapshot:', refreshError.message);
+                return new Response(JSON.stringify(withSnapshotAge(cached)), { status: 200, headers: responseHeaders });
+            }
+            throw refreshError;
+        }
     } catch (error) {
         console.error('[public-intel] Snapshot unavailable:', error.message);
         return new Response(JSON.stringify({

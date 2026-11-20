@@ -377,14 +377,18 @@ function extractTag(block, tagName) {
 }
 
 function cleanFeedDescription(rawDescription = '') {
-    const unwrapped = String(rawDescription || '').replace(/<!\[CDATA\[([\s\S]*?)\]\]>/g, '$1');
-    // Strip trailing WordPress Disclosure / About-the-author boilerplate blocks before flattening HTML.
-    const withoutBoilerplate = unwrapped.replace(/<h([1-6])\b[^>]*>(?:(?!<\/h\1>)[\s\S])*?\b(?:Disclosure|About\s+the\s+author(?:\/s|s)?)\b[\s\S]*$/i, '');
+    const bounded = String(rawDescription || '').slice(0, 20000);
+    const unwrapped = bounded.replace(/<!\[CDATA\[([\s\S]*?)\]\]>/g, '$1');
+    // Strip trailing standalone WordPress Disclosure / About-the-author boilerplate blocks before flattening HTML.
+    const withoutBoilerplate = unwrapped.replace(
+        /<(h[1-6]|p)\b[^>]{0,120}>\s*(?:<(?:b|strong|em|i)\b[^>]{0,80}>\s*)*(?:Disclosure|About\s+the\s+author(?:\/s|s)?)\s*:?\s*(?:<\/(?:b|strong|em|i)>\s*)*<\/\1>[\s\S]*$/i,
+        ''
+    );
     return decodeXmlEntities(withoutBoilerplate);
 }
 
 function normalizeAuthorCandidate(rawAuthor = '', sourceName = '') {
-    let candidate = String(rawAuthor || '').trim();
+    let candidate = String(rawAuthor || '').replace(/\s+/g, ' ').trim();
     if (!candidate) return '';
     // Handle RFC 2822 RSS <author>user@example.org (Real Name)</author>
     const parenName = candidate.match(/^[^\s@]+@[^\s@]+\s*\(([^)]+)\)$/);
@@ -397,6 +401,7 @@ function normalizeAuthorCandidate(rawAuthor = '', sourceName = '') {
     const lower = candidate.toLowerCase();
     if (!candidate || lower === cleanSource || lower === `${cleanSource}.com`) return '';
     if (/\bannouncements\b/i.test(candidate) || /^(?:staff|admin|editorial|redaction|desk)$/i.test(lower)) return '';
+    if (candidate.length > 120) candidate = `${candidate.slice(0, 119).trimEnd()}…`;
     return candidate;
 }
 

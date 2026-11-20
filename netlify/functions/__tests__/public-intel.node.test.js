@@ -192,6 +192,27 @@ test('free-feeds parses RSS CDATA, entities, ISO dates, guid fallback, rejects n
     assert.equal(devItem.snippet, "As drought withers New Ireland's land gardens, pollution and deep-sea mining threaten local ocean waters.");
     assert.ok(!devItem.snippet.includes('Disclosure'), 'WordPress Disclosure boilerplate must be stripped');
 
+    // Heading containing "Disclosure" as part of the article subject must be preserved, while <p><strong>Disclosure</strong></p> strips cleanly, and long author names cap at 120 chars
+    const disclosureEdgeXml = `<?xml version="1.0" encoding="utf-8"?>
+        <rss version="2.0" xmlns:dc="http://purl.org/dc/elements/1.1/"><channel>
+            <item>
+                <title>Mining transparency rules debated in Papua New Guinea</title>
+                <link>https://devpolicy.org/mining-disclosure-png-20261120/</link>
+                <dc:creator><![CDATA[${'Dr. Researcher '.repeat(12)}]]></dc:creator>
+                <description><![CDATA[<h2>Disclosure rules in PNG mining</h2><p>Lawmakers reviewed royalty reporting rules across provinces.</p><p><strong>Disclosure</strong></p><p>Supported by university grant.</p>]]></description>
+                <pubDate>Thu, 19 Nov 2026 19:00:44 +0000</pubDate>
+            </item>
+        </channel></rss>`;
+    const [discEdgeItem] = parseRssItems(disclosureEdgeXml, {
+        sourceName: 'Devpolicy Blog',
+        contentType: 'analysis',
+        requireAuthor: true,
+        now: fixedNow,
+    });
+    assert.match(discEdgeItem.snippet, /^Disclosure rules in PNG mining Lawmakers reviewed royalty reporting rules across provinces\.$/);
+    assert.ok(!discEdgeItem.snippet.includes('university grant'), 'Standalone <p><strong>Disclosure</strong></p> boilerplate must strip');
+    assert.equal(discEdgeItem.author.length <= 120, true, 'Over-long author strings must cap cleanly at 120 chars');
+
     const mongabayXml = `<?xml version="1.0" encoding="utf-8"?>
         <rss version="2.0" xmlns:dc="http://purl.org/dc/elements/1.1/"><channel>
             <item>
@@ -1084,6 +1105,39 @@ test('shared intel-normalization coordinate inference is deterministic and categ
     }, { scraperSource: 'public-rss', isConfiguredFeed: true });
     assert.equal(devpolicyUsAid.coverage.region, 'Americas & Caribbean', 'Uppercase US aid story must classify as Americas & Caribbean matching its US pin');
     assert.equal(devpolicyUsAid.coverage.contentType, 'analysis');
+
+    // Papua New Guinea must classify as Pacific Islands (never tie Africa via "guinea"),
+    // and Pacific Northwest / .png filename tokens must never false-trigger Pacific Islands.
+    const pngMongabay = assessArticle({
+        title: 'Papua New Guinea communities challenge seabed mining conservation rules',
+        snippet: 'Forestry and ocean conservation policy groups met officials in Port Moresby.',
+        source: 'Mongabay',
+        author: 'Jane Reporter',
+        date: '2026-11-19',
+        link: 'https://news.mongabay.com/2026/11/png-seabed-2026/',
+    }, {
+        id: 'mongabay-news',
+        region: 'Global / Transnational',
+        issueHints: ['Climate & Resources'],
+        fallbackCoords: null,
+    }, { scraperSource: 'public-rss', isConfiguredFeed: true });
+    assert.equal(pngMongabay.coverage.region, 'Pacific Islands', 'Papua New Guinea must never tie Africa via "guinea"');
+    assert.equal(pngMongabay.coverage.matchedPlace, 'papua new guinea');
+
+    const pacificNorthwestUs = assessArticle({
+        title: 'United States forestry policy shifts in Pacific Northwest watershed',
+        snippet: 'Officials published map.png summarizing timber regulation updates.',
+        source: 'BBC News',
+        date: '2026-11-19',
+        link: 'https://www.bbc.com/news/articles/pnw2026',
+    }, {
+        id: 'bbc-world-news',
+        region: 'Global / Transnational',
+        issueHints: ['Climate & Resources'],
+        fallbackCoords: null,
+    }, { scraperSource: 'public-rss', isConfiguredFeed: true });
+    assert.equal(pacificNorthwestUs.coverage.region, 'Americas & Caribbean', 'Bare "Pacific" and ".png" must not pull US story into Pacific Islands');
+    assert.equal(pacificNorthwestUs.coverage.matchedPlace, 'united states');
 
     // All 193 UN member states + observer states & case locations resolve deterministically
     const UN_MEMBER_STATES_193 = [

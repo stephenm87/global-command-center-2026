@@ -412,7 +412,6 @@ const SPECIFIC_PLACE_COORDS = Object.freeze({
     fiji: [-17.7, 178.1],
     guam: [13.4, 144.8],
     suva: [-18.1, 178.4],
-    png: [-6.3, 143.9],
 });
 
 const CONTINENT_COORDS = Object.freeze({
@@ -451,11 +450,16 @@ function compileMatchers(table) {
 
 const SPECIFIC_MATCHERS = [
     ...compileMatchers(SPECIFIC_PLACE_COORDS),
-    // Exact uppercase US acronym avoids matching lowercase pronoun "us"
+    // Exact uppercase acronyms avoid matching lowercase "us" or ".png" image extensions
     {
         key: 'united states',
         coords: SPECIFIC_PLACE_COORDS['united states'],
         pattern: /(?<![\p{L}\p{N}])US(?![\p{L}\p{N}])/u,
+    },
+    {
+        key: 'papua new guinea',
+        coords: SPECIFIC_PLACE_COORDS['papua new guinea'],
+        pattern: /(?<![\p{L}\p{N}.])PNG(?![\p{L}\p{N}.])/u,
     },
 ];
 const CONTINENT_MATCHERS = compileMatchers(CONTINENT_COORDS);

@@ -383,7 +383,7 @@ test('extracted App components preserve unescaped & query URLs, guard invalid th
     assert.ok(mixedFeedSidebarHtml.includes('href="https://www.bbc.com/news"'));
     assert.match(mixedFeedSidebarHtml, /Global · No single pin/);
     assert.match(mixedFeedSidebarHtml, /live-tag--analysis[^>]*>● ANALYSIS</);
-    assert.match(mixedFeedSidebarHtml, /coverage-badge-analysis[^>]*>Analysis</);
+    assert.match(mixedFeedSidebarHtml, /coverage-badge-analysis[^>]*>Analysis · Not news</);
     assert.match(mixedFeedSidebarHtml, /By Philippa Louey and Godfrey Jordan Abage · Devpolicy Blog · 2026-11-19/);
     assert.ok(mixedFeedSidebarHtml.includes('href="https://devpolicy.org/gardens-in-distress-20261119/"'));
 

@@ -118,9 +118,9 @@ create policy "Users can delete own user_data"
     to authenticated
     using ((select auth.uid()) = user_id);
 
--- Prevent anonymous writes while preserving anon SELECT privilege (returns 0 rows under RLS
--- so the daily keep-alive GET /rest/v1/user_data?select=key&limit=1 continues returning HTTP 200 []).
-revoke insert, update, delete, truncate on table public.user_data from anon;
+-- Least-privilege table grants: revoke unneeded privileges while keeping anon SELECT
+-- (returns 0 rows under RLS so daily keep-alive GET /rest/v1/user_data?select=key&limit=1 returns HTTP 200 []).
+revoke all on table public.user_data from anon, authenticated;
 grant select on table public.user_data to anon;
 grant select, insert, update, delete on table public.user_data to authenticated;
 

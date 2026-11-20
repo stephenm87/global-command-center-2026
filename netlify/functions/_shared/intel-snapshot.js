@@ -200,12 +200,12 @@ const ISSUE_PATTERNS = Object.freeze({
 });
 
 const REGION_PATTERNS = Object.freeze({
-    'Africa': /(?<![\p{L}\p{N}])(africa|sudan|south sudan|ethiopia|eritrea|djibouti|somalia|somaliland|kenya|uganda|tanzania|rwanda|burundi|congo|drc|nigeria|ghana|senegal|mali|niger|burkina faso|chad|cameroon|angola|mozambique|zimbabwe|zambia|south africa|lesotho|eswatini|swaziland|botswana|namibia|malawi|madagascar|mauritius|seychelles|comoros|guinea-bissau|equatorial guinea|guinea|côte d'ivoire|cote d'ivoire|ivory coast|benin|togo|liberia|sierra leone|gambia|mauritania|cabo verde|cape verde|gabon|são tomé|sao tome|central african republic|sahel)(?![\p{L}\p{N}])/giu,
+    'Africa': /(?<![\p{L}\p{N}])(africa|sudan|south sudan|ethiopia|eritrea|djibouti|somalia|somaliland|kenya|uganda|tanzania|rwanda|burundi|congo|drc|nigeria|ghana|senegal|mali|niger|burkina faso|chad|cameroon|angola|mozambique|zimbabwe|zambia|south africa|lesotho|eswatini|swaziland|botswana|namibia|malawi|madagascar|mauritius|seychelles|comoros|guinea-bissau|equatorial guinea|(?<!papua\s+new\s+)guinea|côte d'ivoire|cote d'ivoire|ivory coast|benin|togo|liberia|sierra leone|gambia|mauritania|cabo verde|cape verde|gabon|são tomé|sao tome|central african republic|sahel)(?![\p{L}\p{N}])/giu,
     'Asia-Pacific': /(?<![\p{L}\p{N}])(asian?|asia-pacific|china|taiwan|japan|korea|india|pakistan|bangladesh|sri lanka|nepal|bhutan|maldives|myanmar|burma|thailand|vietnam|viet nam|cambodia|laos|lao pdr|malaysia|singapore|indonesia|timor-leste|east timor|philippines|brunei|mongolia|afghanistan|kazakhstan|kyrgyzstan|tajikistan|turkmenistan|uzbekistan)(?![\p{L}\p{N}])/giu,
     'Middle East & North Africa': /(?<![\p{L}\p{N}])(middle east|north africa|mena|iran|iraq|israel|palestin\w*|gaza|west bank|lebanon|syria|jordan|yemen|saudi arabia|qatar|emirates|uae|oman|bahrain|kuwait|egypt|libya|tunisia|algeria|morocco|western sahara)(?![\p{L}\p{N}])/giu,
     'Europe & Eurasia': /(?<![\p{L}\p{N}])(europe|eurasia|ukraine|russia|moldova|transnistria|georgia|armenia|azerbaijan|belarus|balkans|kosovo|serbia|bosnia|croatia|slovenia|montenegro|north macedonia|albania|romania|bulgaria|hungary|slovakia|czechia|czech republic|poland|germany|france|britain|united kingdom|uk|(?<!new\s+)ireland|spain|portugal|italy|greece|cyprus|malta|austria|switzerland|belgium|netherlands|luxembourg|denmark|norway|sweden|finland|iceland|estonia|latvia|lithuania|türkiye|turkiye|turkey|eu|european union|nato|andorra|monaco|san marino|liechtenstein|vatican|holy see)(?![\p{L}\p{N}])/giu,
     'Americas & Caribbean': /(?<![\p{L}\p{N}])(latin america|caribbean|south america|central america|united states|u\.s\.|usa|canada|mexico|brazil|argentina|chile|peru|colombia|venezuela|ecuador|bolivia|paraguay|uruguay|guyana|suriname|haiti|cuba|dominican republic|jamaica|trinidad|barbados|bahamas|belize|guatemala|honduras|el salvador|nicaragua|costa rica|panama|antigua|dominica|grenada|saint kitts|saint lucia|saint vincent)(?![\p{L}\p{N}])/giu,
-    'Pacific Islands': /(?<![\p{L}\p{N}])(pacific islands?|oceania|australia|new zealand|tuvalu|fiji|samoa|tonga|vanuatu|kiribati|nauru|palau|micronesia|marshall islands|solomon islands|papua new guinea|png|new ireland|bougainville|port moresby|honiara|weather coast|apia|port vila|nuku['’]?alofa|tarawa|majuro|palikir|yaren|cook islands|french polynesia|guam|new caledonia|(?<!asia[- ])pacific)(?![\p{L}\p{N}])/giu,
+    'Pacific Islands': /(?<![\p{L}\p{N}])(pacific islands?|pacific island|south pacific|oceania|australia|new zealand|tuvalu|fiji|samoa|tonga|vanuatu|kiribati|nauru|palau|micronesia|marshall islands|solomon islands|papua new guinea|new ireland|bougainville|port moresby|honiara|weather coast|apia|port vila|nuku['’]?alofa|tarawa|majuro|palikir|yaren|cook islands|french polynesia|guam|new caledonia)(?![\p{L}\p{N}])/giu,
     'Global / Transnational': /(?<![\p{L}\p{N}])(global|worldwide|multilateral|united nations|world bank|international monetary fund|world trade organization|cross-border|transnational)(?![\p{L}\p{N}])/giu,
 });
 
@@ -322,6 +322,9 @@ function inferRegionCoverage(text, fallback) {
             if (label === 'Americas & Caribbean') {
                 score += countMatches(cleanText, /(?<![\p{L}\p{N}])US(?![\p{L}\p{N}])/gu);
             }
+            if (label === 'Pacific Islands') {
+                score += countMatches(cleanText, /(?<![\p{L}\p{N}.])PNG(?![\p{L}\p{N}.])/gu);
+            }
             return { label, score };
         })
         .sort((a, b) => (b.score - a.score)
@@ -377,7 +380,8 @@ function assessArticle(item, query, {
     const region = inferRegionCoverage(combined, query.region);
     const issue = inferCoverageLabel(combined, ISSUE_PATTERNS, query.issueHints[0]);
     const regionIsExplicit = countMatches(combined, REGION_PATTERNS[region]) > 0
-        || (region === 'Americas & Caribbean' && /(?<![\p{L}\p{N}])US(?![\p{L}\p{N}])/u.test(combined));
+        || (region === 'Americas & Caribbean' && /(?<![\p{L}\p{N}])US(?![\p{L}\p{N}])/u.test(combined))
+        || (region === 'Pacific Islands' && /(?<![\p{L}\p{N}.])PNG(?![\p{L}\p{N}.])/u.test(combined));
     const relevanceScore = Math.min(100,
         (titleSignals * 12)
         + (Math.min(descriptionSignals, 8) * 3)
