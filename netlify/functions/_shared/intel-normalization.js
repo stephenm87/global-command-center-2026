@@ -379,24 +379,40 @@ const SPECIFIC_PLACE_COORDS = Object.freeze({
     'clarion–clipperton zone': [14.0, -130.0],
     'clarion-clipperton zone': [14.0, -130.0],
     'papua new guinea': [-6.3, 143.9],
+    'french polynesia': [-17.6, -149.4],
     'marshall islands': [7.1, 171.2],
     'solomon islands': [-9.6, 160.2],
     'new caledonia': [-20.9, 165.6],
+    'weather coast': [-9.7, 160.1],
     'new zealand': [-40.9, 174.9],
-    micronesia: [7.4, 150.6],
+    'cook islands': [-21.2, -159.8],
+    'new ireland': [-3.0, 151.6],
+    'port moresby': [-9.4, 147.2],
+    'bougainville': [-6.2, 155.4],
+    "nuku'alofa": [-21.1, -175.2],
+    'port vila': [-17.7, 168.3],
+    'micronesia': [7.4, 150.6],
     australia: [-25.3, 133.8],
     canberra: [-35.3, 149.1],
     funafuti: [-8.5, 179.2],
     kiribati: [1.9, -157.4],
     vanuatu: [-15.4, 166.9],
+    honiara: [-9.4, 159.95],
+    palikir: [6.9, 158.2],
     tuvalu: [-7.1, 177.6],
+    majuro: [7.1, 171.4],
+    tarawa: [1.3, 173.0],
     nauru: [-0.5, 166.9],
     palau: [7.5, 134.6],
     samoa: [-13.8, -172.1],
     tonga: [-21.2, -175.2],
+    yaren: [-0.5, 166.9],
     koror: [7.3, 134.5],
+    apia: [-13.8, -171.8],
     fiji: [-17.7, 178.1],
+    guam: [13.4, 144.8],
     suva: [-18.1, 178.4],
+    png: [-6.3, 143.9],
 });
 
 const CONTINENT_COORDS = Object.freeze({
@@ -544,6 +560,7 @@ function normalizeProviderArticle(item, scraperSource = 'serper') {
     const [lat, lng] = Array.isArray(resolved.coords) ? resolved.coords : [null, null];
     const publishedAt = item.date || item.publishedAt || null;
     const publisherName = item.source?.name || item.source || 'Global News';
+    const authorName = typeof item.author === 'string' ? item.author.trim() : '';
     const headlineFallback = scraperSource === 'public-rss' && item.source
         ? `Headline via ${publisherName} — open link to read full report at source.`
         : title;
@@ -555,6 +572,7 @@ function normalizeProviderArticle(item, scraperSource = 'serper') {
         'Timeline': publishedAt ? `CURRENT — ${publishedAt}` : 'CURRENT — date unavailable',
         'Expected Impact/Value': snippet || headlineFallback,
         'Source': publisherName,
+        ...(authorName ? { author: authorName } : {}),
         url,
         'Latitude': lat === null ? null : String(lat),
         'Longitude': lng === null ? null : String(lng),

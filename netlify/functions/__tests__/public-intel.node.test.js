@@ -31,6 +31,7 @@ test('public snapshot uses fixed balanced queries and never accepts a visitor qu
 const {
     ALLAFRICA_RSS_FEEDS,
     INSTITUTIONAL_RSS_FEEDS,
+    OPEN_LICENSED_RSS_FEEDS,
     decodeXmlEntities,
     fetchReliefWebReports,
     isFreshAndConsistentDate,
@@ -165,6 +166,80 @@ test('free-feeds parses RSS CDATA, entities, ISO dates, guid fallback, rejects n
     assert.equal(rdfItem.date, '2026-11-19');
     assert.equal(rdfItem.attributionUrl, 'https://allafrica.com/');
 
+    // Open-licensed RSS feeds (Devpolicy Blog, Global Voices, Mongabay)
+    assert.deepEqual(OPEN_LICENSED_RSS_FEEDS.map(f => f.id), ['devpolicy-blog', 'global-voices', 'mongabay-news']);
+
+    const devpolicyXml = `<?xml version="1.0" encoding="utf-8"?>
+        <rss version="2.0" xmlns:dc="http://purl.org/dc/elements/1.1/"><channel>
+            <item>
+                <title>Gardens in distress: drought, pollution and deep-sea mining in New Ireland</title>
+                <link>https://devpolicy.org/gardens-in-distress-20261120/</link>
+                <dc:creator><![CDATA[Philippa Louey and Godfrey Jordan Abage]]></dc:creator>
+                <description><![CDATA[As drought withers New Ireland's land gardens, pollution and deep-sea mining threaten local ocean waters.<h4><b>Disclosure</b></h4><p>This research was supported by the Pacific Research Program.</p><h4><b>About the author/s</b></h4><p>Philippa Louey is a researcher.</p>]]></description>
+                <pubDate>Thu, 19 Nov 2026 19:00:44 +0000</pubDate>
+            </item>
+        </channel></rss>`;
+    const [devItem] = parseRssItems(devpolicyXml, {
+        sourceName: 'Devpolicy Blog',
+        fundingLabel: 'University research blog (ANU Crawford School, CC BY-NC-SA 4.0)',
+        attributionUrl: 'https://devpolicy.org/',
+        contentType: 'analysis',
+        requireAuthor: true,
+        now: fixedNow,
+    });
+    assert.equal(devItem.author, 'Philippa Louey and Godfrey Jordan Abage');
+    assert.equal(devItem.contentType, 'analysis');
+    assert.equal(devItem.snippet, "As drought withers New Ireland's land gardens, pollution and deep-sea mining threaten local ocean waters.");
+    assert.ok(!devItem.snippet.includes('Disclosure'), 'WordPress Disclosure boilerplate must be stripped');
+
+    const mongabayXml = `<?xml version="1.0" encoding="utf-8"?>
+        <rss version="2.0" xmlns:dc="http://purl.org/dc/elements/1.1/"><channel>
+            <item>
+                <title>Peruvian officials increase seizure tally in wildlife trafficking probe</title>
+                <link>https://news.mongabay.com/2026/11/peru-trafficking-probe/</link>
+                <dc:creator><![CDATA[Mongabay.com]]></dc:creator>
+                <author><![CDATA[Naina Rao]]></author>
+                <description><![CDATA[Authorities expanded enforcement against cross-border wildlife trafficking networks in Peru.]]></description>
+                <pubDate>Thu, 19 Nov 2026 19:11:03 +0000</pubDate>
+            </item>
+        </channel></rss>`;
+    const [mongoItem] = parseRssItems(mongabayXml, {
+        sourceName: 'Mongabay',
+        fundingLabel: 'Nonprofit conservation journalism (CC BY-ND 4.0)',
+        attributionUrl: 'https://news.mongabay.com/',
+        requireAuthor: true,
+        now: fixedNow,
+    });
+    assert.equal(mongoItem.author, 'Naina Rao', 'Mongabay generic dc:creator must fall back to human <author>');
+    assert.equal(mongoItem.contentType, 'news');
+
+    const gvXml = `<?xml version="1.0" encoding="utf-8"?>
+        <rss version="2.0" xmlns:dc="http://purl.org/dc/elements/1.1/"><channel>
+            <item>
+                <title>Support Global Voices' December Spotlight: Digital Communities</title>
+                <link>https://globalvoices.org/2026/11/19/support-global-voices/</link>
+                <dc:creator><![CDATA[Global Voices Announcements]]></dc:creator>
+                <description><![CDATA[Support our digital campaign this month.]]></description>
+                <pubDate>Thu, 19 Nov 2026 00:00:00 +0000</pubDate>
+            </item>
+            <item>
+                <title>Why Japan's anti-hate legislation falls short of human rights commitments</title>
+                <link>https://globalvoices.org/2026/11/20/why-japans-anti-hate-measures-fall-short/</link>
+                <dc:creator><![CDATA[Jo Carter]]></dc:creator>
+                <description><![CDATA[Legal experts cite gaps in domestic legislation and human rights enforcement.]]></description>
+                <pubDate>Fri, 20 Nov 2026 00:00:00 +0000</pubDate>
+            </item>
+        </channel></rss>`;
+    const gvItems = parseRssItems(gvXml, {
+        sourceName: 'Global Voices',
+        fundingLabel: 'Nonprofit volunteer & citizen media (CC BY 3.0)',
+        attributionUrl: 'https://globalvoices.org/',
+        requireAuthor: true,
+        now: new Date('2026-11-20T06:00:00Z'),
+    });
+    assert.equal(gvItems.length, 1, 'Announcement item with generic Global Voices Announcements creator must be dropped');
+    assert.equal(gvItems[0].author, 'Jo Carter');
+
     const skippedRw = await fetchReliefWebReports(async () => {
         throw new Error('Should not fetch when appname is empty');
     }, { appname: '' });
@@ -201,6 +276,37 @@ test('public snapshot builds live institutional feed with zero SERPER_API_KEY an
                 <dc:date>2026-11-19T06:00:00Z</dc:date>
             </item>
         </rdf:RDF>`;
+    const devpolicyRss = `<?xml version="1.0" encoding="utf-8"?>
+        <rss version="2.0" xmlns:dc="http://purl.org/dc/elements/1.1/"><channel>
+            <item>
+                <title>Gardens in distress: drought, pollution and deep-sea mining in New Ireland</title>
+                <link>https://devpolicy.org/gardens-in-distress-20261119/</link>
+                <dc:creator><![CDATA[Philippa Louey and Godfrey Jordan Abage]]></dc:creator>
+                <description><![CDATA[As drought withers New Ireland gardens in Papua New Guinea, pollution and deep-sea mining threaten local ocean waters.<h4><b>Disclosure</b></h4><p>Research note.</p>]]></description>
+                <pubDate>Thu, 19 Nov 2026 04:00:00 +0000</pubDate>
+            </item>
+        </channel></rss>`;
+    const globalVoicesRss = `<?xml version="1.0" encoding="utf-8"?>
+        <rss version="2.0" xmlns:dc="http://purl.org/dc/elements/1.1/"><channel>
+            <item>
+                <title>Family stories keep alive Georgia's democratic past and human rights memory</title>
+                <link>https://globalvoices.org/2026/11/19/georgia-democratic-memory/</link>
+                <dc:creator><![CDATA[Daria Dergacheva]]></dc:creator>
+                <description><![CDATA[Oral history archives examine human rights, repression, and democratic accountability in Georgia.]]></description>
+                <pubDate>Thu, 19 Nov 2026 04:00:00 +0000</pubDate>
+            </item>
+        </channel></rss>`;
+    const mongabayRss = `<?xml version="1.0" encoding="utf-8"?>
+        <rss version="2.0" xmlns:dc="http://purl.org/dc/elements/1.1/"><channel>
+            <item>
+                <title>Indigenous communities challenge Brazil deforestation and biodiversity policy</title>
+                <link>https://news.mongabay.com/2026/11/brazil-deforestation-policy/</link>
+                <dc:creator><![CDATA[Mongabay.com]]></dc:creator>
+                <author><![CDATA[Karla Mendes]]></author>
+                <description><![CDATA[Indigenous leaders urged federal ministries to enforce conservation boundaries in the Amazon basin.]]></description>
+                <pubDate>Thu, 19 Nov 2026 04:00:00 +0000</pubDate>
+            </item>
+        </channel></rss>`;
     const fetchImpl = async (url) => {
         calledUrls.push(String(url));
         if (String(url).includes('google.serper.dev')) {
@@ -211,6 +317,15 @@ test('public snapshot builds live institutional feed with zero SERPER_API_KEY an
         }
         if (String(url).includes('allafrica.com')) {
             return { ok: true, text: async () => allafricaRdf };
+        }
+        if (String(url).includes('devpolicy.org')) {
+            return { ok: true, text: async () => devpolicyRss };
+        }
+        if (String(url).includes('globalvoices.org')) {
+            return { ok: true, text: async () => globalVoicesRss };
+        }
+        if (String(url).includes('mongabay.com')) {
+            return { ok: true, text: async () => mongabayRss };
         }
         if (String(url).includes('reliefweb.int')) {
             return {
@@ -254,18 +369,31 @@ test('public snapshot builds live institutional feed with zero SERPER_API_KEY an
     });
 
     assert.equal(snapshot.meta.status, 'fresh');
+    assert.equal(snapshot.meta.snapshotSchemaVersion, 2);
     assert.equal(snapshot.meta.errorCode, undefined);
     assert.equal('serperStatus' in snapshot.meta, false, 'Public meta must not expose billing state');
-    assert.equal(snapshot.items.length, 5);
+    assert.equal(snapshot.items.length, 8);
     assert.equal(calledUrls.some(u => u.includes('google.serper.dev')), false);
     assert.match(snapshot.meta.provider, /UN News RSS/);
     assert.match(snapshot.meta.provider, /BBC News RSS/);
     assert.match(snapshot.meta.provider, /allAfrica RSS/);
+    assert.match(snapshot.meta.provider, /Devpolicy Blog RSS/);
+    assert.match(snapshot.meta.provider, /Global Voices RSS/);
+    assert.match(snapshot.meta.provider, /Mongabay RSS/);
     assert.match(snapshot.meta.provider, /ReliefWeb/);
     assert.match(snapshot.meta.provider, /GDELT/);
     assert.deepEqual(
         snapshot.meta.providerResults.map(r => [r.provider, r.status]),
-        [['UN News RSS', 'ok'], ['BBC News RSS', 'ok'], ['allAfrica RSS', 'ok'], ['ReliefWeb', 'ok'], ['GDELT', 'ok']]
+        [
+            ['UN News RSS', 'ok'],
+            ['BBC News RSS', 'ok'],
+            ['allAfrica RSS', 'ok'],
+            ['Devpolicy Blog RSS', 'ok'],
+            ['Global Voices RSS', 'ok'],
+            ['Mongabay RSS', 'ok'],
+            ['ReliefWeb', 'ok'],
+            ['GDELT', 'ok'],
+        ]
     );
     const bbcItem = snapshot.items.find(it => it.Source === 'BBC News');
     assert.ok(bbcItem, 'Expected BBC News item in live snapshot');
@@ -277,6 +405,23 @@ test('public snapshot builds live institutional feed with zero SERPER_API_KEY an
     assert.equal(allafricaItem.coverage.fundingLabel, 'Pan-African news aggregator (commercial & syndicated)');
     assert.equal(allafricaItem.coverage.attributionUrl, 'https://allafrica.com/');
     assert.equal(allafricaItem.coverage.sourceRole, 'regional');
+    const devItemSnap = snapshot.items.find(it => it.Source === 'Devpolicy Blog');
+    assert.ok(devItemSnap, 'Expected Devpolicy Blog item in live snapshot');
+    assert.equal(devItemSnap.coverage.region, 'Pacific Islands');
+    assert.equal(devItemSnap.coverage.contentType, 'analysis');
+    assert.equal(devItemSnap.coverage.sourceRole, 'research');
+    assert.equal(devItemSnap.coverage.matchedPlace, 'new ireland', 'New Ireland must pin in Pacific Islands, never Ireland in Europe');
+    assert.equal(devItemSnap.author, 'Philippa Louey and Godfrey Jordan Abage');
+    assert.equal(devItemSnap.coverage.fundingLabel, 'University research blog (ANU Crawford School, CC BY-NC-SA 4.0)');
+    const gvSnap = snapshot.items.find(it => it.Source === 'Global Voices');
+    assert.ok(gvSnap);
+    assert.equal(gvSnap.author, 'Daria Dergacheva');
+    assert.equal(gvSnap.coverage.fundingLabel, 'Nonprofit volunteer & citizen media (CC BY 3.0)');
+    const mongoSnap = snapshot.items.find(it => it.Source === 'Mongabay');
+    assert.ok(mongoSnap);
+    assert.equal(mongoSnap.author, 'Karla Mendes');
+    assert.equal(mongoSnap.coverage.fundingLabel, 'Nonprofit conservation journalism (CC BY-ND 4.0)');
+    assert.ok(snapshot.meta.coverage.regions['Pacific Islands'] >= 1, 'Pacific Islands region must be covered');
     const unItem = snapshot.items.find(it => it.Source === 'UN News');
     assert.equal(unItem.coverage.fundingLabel, 'UN institutional reporting');
     assert.equal(snapshot.items.some(it => /independent/i.test(it.coverage.fundingLabel || '')), false);
@@ -923,6 +1068,23 @@ test('shared intel-normalization coordinate inference is deterministic and categ
     }, FIXED_QUERIES[3]);
     assert.equal(unknownPublisher.coverage.fundingLabel, 'Funding source unverified');
 
+    const devpolicyUsAid = assessArticle({
+        title: 'One battle after another: US foreign aid after the mid-terms',
+        snippet: 'Devpolicy analysis of congressional foreign aid appropriations after election shifts.',
+        source: 'Devpolicy Blog',
+        author: 'Terence Wood and Cameron Hill',
+        contentType: 'analysis',
+        date: '2026-11-19',
+        link: 'https://devpolicy.org/us-foreign-aid-mid-terms-20261119/',
+    }, {
+        id: 'devpolicy-blog',
+        region: 'Pacific Islands',
+        issueHints: ['Economy & Development'],
+        fallbackCoords: [-13.5, 172.0],
+    }, { scraperSource: 'public-rss', isConfiguredFeed: true });
+    assert.equal(devpolicyUsAid.coverage.region, 'Americas & Caribbean', 'Uppercase US aid story must classify as Americas & Caribbean matching its US pin');
+    assert.equal(devpolicyUsAid.coverage.contentType, 'analysis');
+
     // All 193 UN member states + observer states & case locations resolve deterministically
     const UN_MEMBER_STATES_193 = [
         'Afghanistan', 'Albania', 'Algeria', 'Andorra', 'Angola', 'Antigua and Barbuda', 'Argentina',
@@ -1104,4 +1266,6 @@ test('snapshot-store isolates deploy-preview and non-production Blobs from produ
         const src = fs.readFileSync(path.join(__dirname, '..', fileName), 'utf8');
         assert.match(src, /\{\s*context\s*\}/, `${fileName} must pass runtime deploy context into snapshot-store`);
     }
+    const publicIntelSrc = fs.readFileSync(path.join(__dirname, '..', 'public-intel.mjs'), 'utf8');
+    assert.match(publicIntelSrc, /snapshotSchemaVersion\s*!==\s*SNAPSHOT_SCHEMA_VERSION/, 'public-intel.mjs must auto-upgrade stale schema snapshots when feeds change');
 });

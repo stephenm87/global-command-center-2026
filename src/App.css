@@ -716,6 +716,13 @@
     color: #b7dcf6;
 }
 
+.coverage-badges span.coverage-badge-analysis,
+.live-tag--analysis {
+    border-color: rgba(244, 196, 101, 0.5);
+    background: rgba(244, 196, 101, 0.12);
+    color: #f4c465;
+}
+
 .current-source-context {
     margin-bottom: 1rem;
     padding: 0.9rem;
