@@ -466,146 +466,27 @@ test('extracted App components preserve unescaped & query URLs, guard invalid th
     assert.match(footerHtml, /width="114" height="50"/);
 });
 
-test('extracted 3D Nexus components & Three.js helpers build node meshes, escape tooltips, render edge/lock views, and dispose scenes', async t => {
+test('NexusWorkspace renders 2D Focus view only with Nexus labels and actor deep-linking', async t => {
     const vite = await createSsrViteServer(t);
-    const THREE = await import('three');
-    const { default: NexusHudControls } = await vite.ssrLoadModule('/src/nexus/NexusHudControls.jsx');
-    const { default: NexusInspectorPanel } = await vite.ssrLoadModule('/src/nexus/NexusInspectorPanel.jsx');
-    const {
-        disposeThreeHierarchy,
-        createNexusNodeObject,
-        formatNexusNodeTooltip,
-        formatNexusLinkTooltip,
-    } = await vite.ssrLoadModule('/src/nexus/threeSpriteHelpers.js');
-    const { theories } = await vite.ssrLoadModule('/src/theories.js');
+    const { default: NexusWorkspace } = await vite.ssrLoadModule('/src/NexusWorkspace.jsx');
 
-    // Verify tooltip HTML escaping + preserved Double-click to lock hint
-    const nodeTip = formatNexusNodeTooltip({ id: 'USA', name: '<img src=x onerror=alert(1)>', color: '#00ff88', isAnchor: true, type: 'state' }, []);
-    assert.ok(!nodeTip.includes('<img'), 'formatNexusNodeTooltip must escape raw HTML tags');
-    assert.match(nodeTip, /&lt;img src=x onerror=alert\(1\)&gt;/);
-    assert.match(nodeTip, /Double-click to lock/);
-
-    const linkTip = formatNexusLinkTooltip({ source: '<script>1</script>', target: 'China', type: 'trade', width: 2 });
-    assert.ok(!linkTip.includes('<script>'), 'formatNexusLinkTooltip must escape raw HTML tags');
-
-    // Verify createNexusNodeObject builds distinct anchor vs satellite groups and dims outside highlightSet
-    const mockMakeSprite = () => new THREE.Object3D();
-    const dimmedAnchorGroup = createNexusNodeObject(
-        { id: 'UN_OPEC', name: 'UN / Multilateral', isAnchor: true, type: 'igo', val: 16, color: '#00ff88' },
-        { highlightSet: new Set(['USA']), makeSprite: mockMakeSprite },
-    );
-    assert.equal(dimmedAnchorGroup.userData.anchorType, 'igo');
-    assert.ok(Math.abs(dimmedAnchorGroup.children[0].material.opacity - 0.30) < 1e-6, 'Anchor outside highlightSet should dim to 0.30 opacity');
-
-    const focusedSatelliteGroup = createNexusNodeObject(
-        { id: 'forecast-1', name: 'Chip Controls', isAnchor: false, val: 4, color: '#00ccff' },
-        { highlightSet: new Set(['forecast-1']), makeSprite: mockMakeSprite },
-    );
-    assert.ok(Math.abs(focusedSatelliteGroup.children[0].material.opacity - 0.90) < 1e-6);
-
-    const disposedCounts = disposeThreeHierarchy(dimmedAnchorGroup);
-    assert.ok(disposedCounts.geometries >= 2 && disposedCounts.materials >= 2);
-
-    const hudHtml = renderToStaticMarkup(React.createElement(NexusHudControls, {
-        nodeCount: 16,
-        edgeCount: 74,
-        onResetCamera: () => {},
-        lockedNode: null,
-        onUnlock: () => {},
-        selectedNode: null,
-        hudTab: 'filters',
-        onSelectHudTab: () => {},
-        dimensions: { trade: true, conflict: true, diplomacy: true, tech: true },
-        onToggleDimension: () => {},
-        selectedGPC: 'security',
-        onSelectGPC: () => {},
-        pulseSignals: ['USA'],
-        gdeltArticles: [
-            { title: 'Valid HTTPS Pulse', url: 'https://example.org/news', tone: -3 },
-            { title: 'Unsafe JS Link', url: 'javascript:alert(1)', tone: 0 },
-        ],
-        showSatellites: false,
-        onToggleSatellites: () => {},
-        intensityThreshold: 0,
-        onIntensityChange: () => {},
-        physicsPreset: 'balance',
-        onSelectPhysicsPreset: () => {},
-        is2D: false,
-        onSetIs2D: () => {},
-        ambientOn: false,
-        onSetAmbientOn: () => {},
-        audioMuted: false,
-        onSetAudioMuted: () => {},
-        audioVolume: 0.3,
-        onSetAudioVolume: () => {},
-        expandedAnchors: {},
-        anchorSatCounts: { USA: 5 },
-        onToggleAnchorExpand: () => {},
-        onExpandAll: () => {},
-        onCollapseAll: () => {},
-        onSelectQuickActor: () => {},
+    const html = renderToStaticMarkup(React.createElement(NexusWorkspace, {
+        forecasts: [],
+        initialNodeId: 'europe',
+        onActorChange: () => {},
+        onOpenBriefing: () => {},
     }));
-    assert.match(hudHtml, /NODES: 16 · EDGES: 74/);
-    assert.match(hudHtml, /VIEWING: SECURITY CHALLENGE/);
-    assert.match(hudHtml, /https:\/\/example\.org\/news/);
-    assert.ok(!hudHtml.includes('javascript:alert(1)'), 'NexusHudControls must filter non-http(s) GDELT links');
 
-    // Edge inspector branch (selectedEdge without selectedNode)
-    const edgeHtml = renderToStaticMarkup(React.createElement(NexusInspectorPanel, {
-        selectedEdge: {
-            source: { id: 'USA', name: 'United States', color: '#3399ff' },
-            target: { id: 'China', name: 'China', color: '#ff3366' },
-            type: 'conflict',
-            width: 2.5,
-        },
-        selectedNode: null,
-        lockedNode: null,
-        selectedGPC: null,
-        onCloseEdge: () => {},
-        onJumpToNodeById: () => {},
-    }));
-    assert.match(edgeHtml, /edge-inspector/);
-    assert.match(edgeHtml, /United States/);
-    assert.match(edgeHtml, /China/);
-    assert.match(edgeHtml, /TIMELINE/);
+    assert.match(html, /aria-label="Nexus workspace"/);
+    assert.match(html, /aria-label="Nexus"/);
+    assert.match(html, /Europe/);
+    assert.ok(!html.includes('3D spatial'), 'NexusWorkspace must not render 3D spatial toggle');
+    assert.ok(!html.includes('Open 3D spatial'), 'NexusFocusView must not render Open 3D spatial button');
+    assert.ok(!html.includes('Advanced Nexus'), 'NexusWorkspace must not use Advanced Nexus label');
+});
 
-    // Node inspector with lock breadcrumb + theory tab
-    const inspectorHtml = renderToStaticMarkup(React.createElement(NexusInspectorPanel, {
-        selectedEdge: null,
-        selectedNode: {
-            id: 'USA',
-            name: 'United States',
-            type: 'state',
-            color: '#3399ff',
-            isAnchor: true,
-            desc: 'Anchor power projection.',
-        },
-        lockedNode: {
-            id: 'China',
-            name: 'China',
-            color: '#ff3366',
-        },
-        selectedGPC: 'security',
-        inspectTab: 'theory',
-        onSelectInspectTab: () => {},
-        onCloseEdge: () => {},
-        onCloseNode: () => {},
-        onToggleLock: () => {},
-        onReturnToLockedNode: () => {},
-        onJumpToNodeById: () => {},
-        onNavigateToNode: () => {},
-        nodeBadges: [{ label: 'HIGH CONFLICT', color: '#ff0066', icon: '🔴' }],
-        connectionSummary: [],
-        radarMetrics: null,
-        theories,
-        selectedTheory: 'Marxism',
-    }));
-    assert.match(inspectorHtml, /lock-breadcrumb/);
-    assert.match(inspectorHtml, /🔒 China/);
-    assert.match(inspectorHtml, /United States/);
-    assert.match(inspectorHtml, /SECURITY CHALLENGE ANALYSIS/);
-    assert.match(inspectorHtml, /MARXISM INTERPRETATION/);
-
+test('GuidedBriefings and decomposed UI components preserve archived banners and deep links', async t => {
+    const vite = await createSsrViteServer(t);
     // Verify GuidedBriefings SSR-renders archived deep-link snapshot banner, successor button,
     // archive toggle, and omits the red overdue alert on archived snapshots
     const { default: GuidedBriefings } = await vite.ssrLoadModule('/src/GuidedBriefings.jsx');
@@ -740,7 +621,6 @@ test('extracted 3D Nexus components & Three.js helpers build node meshes, escape
         forecasts: [syntheticForecast],
         initialNodeId: 'USA',
         onSelectActor: () => {},
-        onOpenSpatial: () => {},
         onOpenBriefing: () => {},
     }));
     assert.match(focusNexusHtml, /Current cases \(1\)/);

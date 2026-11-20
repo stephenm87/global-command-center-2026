@@ -381,7 +381,7 @@ export default function GuidedBriefings({
                         )}
                     </div>
                 )}
-                <p className="briefing-library-note">Every case has three perspective-labelled readings, appears on the globe, and opens into the Focus Nexus.</p>
+                <p className="briefing-library-note">Every case has three perspective-labelled readings, appears on the globe, and opens into the Nexus.</p>
             </aside>
 
             <div

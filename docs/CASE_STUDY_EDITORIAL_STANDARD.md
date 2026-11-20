@@ -111,7 +111,7 @@ Deepened briefings (`briefingVersion: 2`) follow `docs/BRIEFING_VOICE.md` and pa
 Because teachers embed `?view=briefings&tour=<case-id>&step=<n>` URLs into syllabi and LMS assignments, superseded or concluded cases must **never** be deleted:
 
 1. Move the record from `src/cases/active/<region>.mjs` to `src/cases/archive/archived-2026.mjs` with `status: 'archived'`, ISO `archivedAt`, `archivedReason`, and optional `supersededById`.
-2. Active browse surfaces (Globe Editorial Cases, Intel Feed curated cards, Focus Nexus active counts, and the default Guided Briefings catalog) consume `CASE_STUDIES_2026` (`status === 'active'`), while Guided Briefings deep links and the opt-in archive toggle resolve against `ALL_CASE_STUDIES_2026` (`active + archived`) and display an **Archived Historical Snapshot** banner instead of an overdue alert.
+2. Active browse surfaces (Globe Editorial Cases, Intel Feed curated cards, Nexus active counts, and the default Guided Briefings catalog) consume `CASE_STUDIES_2026` (`status === 'active'`), while Guided Briefings deep links and the opt-in archive toggle resolve against `ALL_CASE_STUDIES_2026` (`active + archived`) and display an **Archived Historical Snapshot** banner instead of an overdue alert.
 
 ## Review workflow
 
