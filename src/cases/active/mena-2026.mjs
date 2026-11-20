@@ -577,22 +577,26 @@ export const MENA_CASES_2026 = [
                 {
                     "label": "Tripoli",
                     "latitude": 32.8872,
-                    "longitude": 13.1913
+                    "longitude": 13.1913,
+                    "role": "Western political center hosting UNSMIL dialogue and High National Elections Commission deadlock negotiations"
                 },
                 {
                     "label": "Benghazi",
                     "latitude": 32.1194,
-                    "longitude": 20.0868
+                    "longitude": 20.0868,
+                    "role": "Eastern power center with rival governing and security institutions shaping election conditions"
                 },
                 {
                     "label": "Sabha",
                     "latitude": 27.0377,
-                    "longitude": 14.4283
+                    "longitude": 14.4283,
+                    "role": "Southern administrative center illustrating service gaps, security fragmentation, and peripheral representation demands"
                 },
                 {
                     "label": "Sirte",
                     "latitude": 31.2089,
-                    "longitude": 16.5887
+                    "longitude": 16.5887,
+                    "role": "Central coastal city between rival security zones near major oil-export infrastructure"
                 }
             ]
         },

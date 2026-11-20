@@ -524,22 +524,26 @@ export const AFRICA_CASES_2026 = [
                 {
                     "label": "Kinshasa",
                     "latitude": -4.4419,
-                    "longitude": 15.2663
+                    "longitude": 15.2663,
+                    "role": "Congolese government framing the June 2025 Washington agreement alongside domestic and regional diplomacy"
                 },
                 {
                     "label": "Goma",
                     "latitude": -1.6585,
-                    "longitude": 29.2205
+                    "longitude": 29.2205,
+                    "role": "North Kivu provincial capital and MONUSCO presence amid fighting and displacement around AFC/M23 frontlines"
                 },
                 {
                     "label": "Bukavu",
                     "latitude": -2.5036,
-                    "longitude": 28.8608
+                    "longitude": 28.8608,
+                    "role": "South Kivu regional center where civilians face insecurity, displacement, and disrupted public services"
                 },
                 {
                     "label": "Kigali",
                     "latitude": -1.9441,
-                    "longitude": 30.0619
+                    "longitude": 30.0619,
+                    "role": "Rwandan capital central to the bilateral DRC–Rwanda peace framework and joint oversight track"
                 }
             ]
         },
@@ -695,22 +699,26 @@ export const AFRICA_CASES_2026 = [
                 {
                     "label": "Bamako",
                     "latitude": 12.6392,
-                    "longitude": -8.0029
+                    "longitude": -8.0029,
+                    "role": "Malian capital anchoring the Alliance of Sahel States and hosting May 2025 cooperation consultations"
                 },
                 {
                     "label": "Ouagadougou",
                     "latitude": 12.3714,
-                    "longitude": -1.5197
+                    "longitude": -1.5197,
+                    "role": "Burkinabe capital building parallel AES diplomatic, economic, and security mechanisms after ECOWAS exit"
                 },
                 {
                     "label": "Niamey",
                     "latitude": 13.5116,
-                    "longitude": 2.1254
+                    "longitude": 2.1254,
+                    "role": "Nigerien capital coordinating AES trade, border movement, and counterterrorism restructuring outside ECOWAS"
                 },
                 {
                     "label": "Abuja",
                     "latitude": 9.0765,
-                    "longitude": 7.3986
+                    "longitude": 7.3986,
+                    "role": "ECOWAS headquarters managing temporary cross-border transition rules and thematic working-group talks"
                 }
             ]
         },
@@ -1282,22 +1290,26 @@ export const AFRICA_CASES_2026 = [
                 {
                     "label": "Lusaka",
                     "latitude": -15.3875,
-                    "longitude": 28.3228
+                    "longitude": 28.3228,
+                    "role": "Zambian capital overseeing post-load-shedding recovery, solar expansion, and national access policy"
                 },
                 {
                     "label": "Kariba North Bank",
                     "latitude": -16.5217,
-                    "longitude": 28.761
+                    "longitude": 28.761,
+                    "role": "Jointly managed Zambezi hydropower station exposed to multi-year drought and reservoir-level swings"
                 },
                 {
                     "label": "Kitwe and the Copperbelt",
                     "latitude": -12.8024,
-                    "longitude": 28.2132
+                    "longitude": 28.2132,
+                    "role": "Mining and industrial demand center competing for reliable grid capacity with households"
                 },
                 {
                     "label": "Harare and the regional power pool",
                     "latitude": -17.8252,
-                    "longitude": 31.0335
+                    "longitude": 31.0335,
+                    "role": "Southern African Power Pool coordination hub and Kariba co-management counterpart"
                 }
             ]
         },

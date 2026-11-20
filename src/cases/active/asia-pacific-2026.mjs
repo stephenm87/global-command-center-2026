@@ -590,22 +590,26 @@ export const ASIA_PACIFIC_CASES_2026 = [
                 {
                     "label": "New Delhi",
                     "latitude": 28.6139,
-                    "longitude": 77.209
+                    "longitude": 77.209,
+                    "role": "Indian federal government asserting unilateral abeyance of the 1960 treaty and rejecting arbitration"
                 },
                 {
                     "label": "Srinagar",
                     "latitude": 34.0837,
-                    "longitude": 74.7973
+                    "longitude": 74.7973,
+                    "role": "Upstream Indus basin region tied to disputed run-of-the-river hydroelectric projects"
                 },
                 {
                     "label": "Tarbela",
                     "latitude": 34.0894,
-                    "longitude": 72.6987
+                    "longitude": 72.6987,
+                    "role": "Major downstream Pakistani storage and hydropower reservoir dependent on western Indus inflows"
                 },
                 {
                     "label": "Islamabad",
                     "latitude": 33.6844,
-                    "longitude": 73.0479
+                    "longitude": 73.0479,
+                    "role": "Pakistani government arguing the 1960 Indus Waters Treaty remains binding and invoking arbitration"
                 }
             ]
         },
@@ -750,22 +754,26 @@ export const ASIA_PACIFIC_CASES_2026 = [
                 {
                     "label": "Dhaka",
                     "latitude": 23.8103,
-                    "longitude": 90.4125
+                    "longitude": 90.4125,
+                    "role": "National government pursuing domestic reforms and negotiating extension of LDC graduation to 2029"
                 },
                 {
                     "label": "Chattogram",
                     "latitude": 22.3569,
-                    "longitude": 91.7832
+                    "longitude": 91.7832,
+                    "role": "Principal maritime export gateway tied to garment trade competitiveness and adjustment pressures"
                 },
                 {
                     "label": "Geneva",
                     "latitude": 46.2044,
-                    "longitude": 6.1432
+                    "longitude": 6.1432,
+                    "role": "UN trade and intellectual-property bodies shaping LDC transition rules and medicine flexibilities"
                 },
                 {
                     "label": "Brussels",
                     "latitude": 50.8503,
-                    "longitude": 4.3517
+                    "longitude": 4.3517,
+                    "role": "European Union trade capital reviewing post-LDC market-access preferences and compliance standards"
                 }
             ]
         },
@@ -888,22 +896,26 @@ export const ASIA_PACIFIC_CASES_2026 = [
                 {
                     "label": "Bishkek",
                     "latitude": 42.8746,
-                    "longitude": 74.5698
+                    "longitude": 74.5698,
+                    "role": "Kyrgyz capital concluding the March 2025 bilateral border treaty and joint demarcation oversight"
                 },
                 {
                     "label": "Batken",
                     "latitude": 40.0626,
-                    "longitude": 70.8194
+                    "longitude": 70.8194,
+                    "role": "Border province experiencing crossing reopenings, fencing, patrol-road construction, and land compensation questions"
                 },
                 {
                     "label": "Khujand",
                     "latitude": 40.2833,
-                    "longitude": 69.6222
+                    "longitude": 69.6222,
+                    "role": "Northern Tajik regional center bordering the Fergana Valley crossing and water-access corridors"
                 },
                 {
                     "label": "Dushanbe",
                     "latitude": 38.5598,
-                    "longitude": 68.787
+                    "longitude": 68.787,
+                    "role": "Tajik capital concluding the bilateral border settlement and managing joint demarcation implementation"
                 }
             ]
         },
@@ -1047,22 +1059,26 @@ export const ASIA_PACIFIC_CASES_2026 = [
                 {
                     "label": "Ulaanbaatar",
                     "latitude": 47.8864,
-                    "longitude": 106.9057
+                    "longitude": 106.9057,
+                    "role": "Capital setting strategic-deposit benefit reforms and the 2025 Just Energy Transition Framework"
                 },
                 {
                     "label": "Oyu Tolgoi",
                     "latitude": 43.008,
-                    "longitude": 106.843
+                    "longitude": 106.843,
+                    "role": "Major strategic copper-gold deposit illustrating national resource-benefit and investment debates"
                 },
                 {
                     "label": "Sainshand",
                     "latitude": 44.89,
-                    "longitude": 110.136
+                    "longitude": 110.136,
+                    "role": "Southeastern Gobi energy and transport corridor along coal and renewables transition routes"
                 },
                 {
                     "label": "Zamyn-Uud",
                     "latitude": 43.715,
-                    "longitude": 111.904
+                    "longitude": 111.904,
+                    "role": "Primary rail and road border crossing carrying mineral exports toward Chinese markets"
                 }
             ]
         },
@@ -1182,22 +1198,26 @@ export const ASIA_PACIFIC_CASES_2026 = [
                 {
                     "label": "Jakarta",
                     "latitude": -6.2088,
-                    "longitude": 106.8456
+                    "longitude": 106.8456,
+                    "role": "Federal capital enforcing mineral-processing mandates, RKAB nickel quotas, and the WTO DS592 appeal"
                 },
                 {
                     "label": "Morowali",
                     "latitude": -2.996,
-                    "longitude": 121.948
+                    "longitude": 121.948,
+                    "role": "Sulawesi nickel processing hub testing downstream industrialization, labor protections, and environmental standards"
                 },
                 {
                     "label": "Weda Bay",
                     "latitude": 0.474,
-                    "longitude": 127.955
+                    "longitude": 127.955,
+                    "role": "North Maluku industrial nickel complex balancing smelter investment against local community and environmental impacts"
                 },
                 {
                     "label": "Raja Ampat",
                     "latitude": -0.234,
-                    "longitude": 130.516
+                    "longitude": 130.516,
+                    "role": "Biodiverse marine archipelago highlighted in environmental scrutiny of mining expansion"
                 }
             ]
         },
@@ -1334,22 +1354,26 @@ export const ASIA_PACIFIC_CASES_2026 = [
                 {
                     "label": "Vientiane",
                     "latitude": 17.9757,
-                    "longitude": 102.6331
+                    "longitude": 102.6331,
+                    "role": "Mekong River Commission Secretariat headquarters coordinating joint mainstream dam monitoring and data sharing"
                 },
                 {
                     "label": "Xayaburi",
                     "latitude": 19.25,
-                    "longitude": 101.75
+                    "longitude": 101.75,
+                    "role": "Mainstream Mekong hydropower dam covered by the MRC's September 2025 joint environmental monitoring plan"
                 },
                 {
                     "label": "Tonle Sap",
                     "latitude": 12.876,
-                    "longitude": 104.067
+                    "longitude": 104.067,
+                    "role": "Cambodian flood-pulse lake system sensitive to upstream hydropower flows and sediment traps"
                 },
                 {
                     "label": "Can Tho and the Mekong Delta",
                     "latitude": 10.0452,
-                    "longitude": 105.7469
+                    "longitude": 105.7469,
+                    "role": "Downstream Vietnamese agricultural and fisheries delta affected by sediment, flow, and salinity shifts"
                 }
             ]
         },

@@ -201,22 +201,26 @@ export const PACIFIC_ISLANDS_CASES_2026 = [
                 {
                     "label": "Kingston — International Seabed Authority",
                     "latitude": 17.9712,
-                    "longitude": -76.7936
+                    "longitude": -76.7936,
+                    "role": "Headquarters of the International Seabed Authority, where states negotiate draft exploitation regulations"
                 },
                 {
                     "label": "Nauru",
                     "latitude": -0.5228,
-                    "longitude": 166.9315
+                    "longitude": 166.9315,
+                    "role": "Sponsoring Pacific island state framing deep-sea minerals as an energy-transition development opportunity"
                 },
                 {
                     "label": "Suva — regional Pacific diplomacy",
                     "latitude": -18.1248,
-                    "longitude": 178.4501
+                    "longitude": 178.4501,
+                    "role": "Pacific regional diplomatic hub where ocean-dependent communities and states debate precautionary safeguards"
                 },
                 {
                     "label": "Clarion–Clipperton Zone",
                     "latitude": 12,
-                    "longitude": -135
+                    "longitude": -135,
+                    "role": "Abyssal Pacific polymetallic-nodule region regulated by the ISA and studied for long-term disturbance"
                 }
             ]
         },
