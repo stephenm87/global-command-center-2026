@@ -18,7 +18,6 @@ Located in `netlify/functions`:
 - `public-intel.mjs`: Reads the anonymous fixed-query snapshot (including canonical critical-minerals reference metadata) from Netlify Blobs and uses CDN cache headers. It creates the first snapshot on demand if the scheduled job has not run.
 - `refresh-public-intel.mjs`: Rebuilds the public snapshot every 6 hours from fixed editorial queries.
 - `fetch-news.js`: Runs authenticated visitor-supplied news searches via Serper.
-- `gdelt-pulse.mjs`: Public CDN-cached proxy for allowlisted GDELT topic pulse queries (`protectPublicEndpoint`); currently has no frontend caller after removing the 3D Nexus client (`nexusGDELT.js`).
 - `source-health.mjs` and `refresh-source-health.mjs`: Publish and refresh the daily editorial link-health snapshot generated from all case-study sources and declared alternates.
 - `gemini-retry.js`: Bounded wall-clock retry helper for Gemini API requests.
 - `security.js`: Validates Supabase bearer tokens, origin allowlists, and classroom-safe per-user/IP rate limits before provider calls.

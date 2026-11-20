@@ -37,12 +37,6 @@ function localNetlifyFunctionStubs() {
                     res.end(JSON.stringify({ status: 'pending', results: [], summary: null }));
                     return;
                 }
-                if (urlPath === '/.netlify/functions/gdelt-pulse') {
-                    res.statusCode = 200;
-                    res.setHeader('Content-Type', 'application/json');
-                    res.end(JSON.stringify({ articles: [], status: 'local-dev' }));
-                    return;
-                }
                 next();
             });
         },
