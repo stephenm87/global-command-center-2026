@@ -564,6 +564,11 @@ test('selection balances regions and issues while limiting publishers, clusters,
     for (const [host, count] of Object.entries(asymCounts)) {
         assert.equal(count <= Math.floor(asymSelected.length / 3), true, `Asymmetric ${host} supplied ${count}/${asymSelected.length} (> 1/3)`);
     }
+
+    // Skewed 3-publisher pool (e.g., 10 UN + 10 BBC + 2 minor items) must not collapse feed down to 6 items
+    const skewedCandidates = balancedCandidates.filter(c => c._publisherDomain !== 'globalvoices.org' || /story-2-[0-1]$/.test(c.url));
+    const skewedSelected = selectDiverseArticles(skewedCandidates, 20);
+    assert.equal(skewedSelected.length >= 12, true, `Skewed 10/10/2 pool must keep >= 12 items, got ${skewedSelected.length}`);
 });
 
 test('shared intel-normalization coordinate inference is deterministic and categorizeSector uses word-bounded Governance & Rights matching', () => {
@@ -643,6 +648,22 @@ test('shared intel-normalization coordinate inference is deterministic and categ
     assert.equal(noPronounUs.matchedPlace, null);
     const upperUs = resolveCoords('US sanctions target illicit finance networks', 'Treasury announcement');
     assert.equal(upperUs.matchedPlace, 'united states');
+    const noGuineaPig = resolveCoords('Guinea pig biomedical study opens at university', 'Medical research');
+    assert.equal(noGuineaPig.matchedPlace, null);
+    const guineaElection = resolveCoords('Guinea holds legislative election', 'West Africa report');
+    assert.equal(guineaElection.matchedPlace, 'guinea');
+    const nfdCote = resolveCoords("Co\u0302te d'Ivoire treaty talks open", 'Regional trade cooperation');
+    assert.equal(nfdCote.matchedPlace, "côte d'ivoire");
+    assert.equal(getCoords('Global AI ethics summit opens'), null, 'getCoords returns null for unmapped stories');
+
+    const unknownPublisher = assessArticle({
+        title: 'Romania energy talks advance in parliament',
+        snippet: 'Diplomacy and security debate over regional power infrastructure.',
+        source: 'Regional Dispatch',
+        date: '2026-11-19',
+        link: 'https://unknown-blog.example.org/romania-2026',
+    }, FIXED_QUERIES[3]);
+    assert.equal(unknownPublisher.coverage.fundingLabel, 'Funding source unverified');
 
     // All 193 UN member states + observer states & case locations resolve deterministically
     const UN_MEMBER_STATES_193 = [
@@ -758,11 +779,13 @@ test('snapshot-store isolates deploy-preview and non-production Blobs from produ
     assert.equal(resolveDeployContext({ context: { deploy: { context: 'deploy-preview' } }, env: { CONTEXT: 'production' } }), 'deploy-preview');
     assert.equal(resolveDeployContext({ context: { deploy: { context: 'branch-deploy' } }, env: {} }), 'branch-deploy');
     assert.equal(resolveDeployContext({ context: { deploy: { published: true } }, env: {} }), 'production');
+    assert.equal(resolveDeployContext({ context: { deploy: { context: 'production', published: false } }, env: { CONTEXT: 'production' } }), 'deploy-preview');
     assert.equal(resolveDeployContext({ context: { deploy: { published: false } }, env: { CONTEXT: 'production' } }), 'deploy-preview');
     assert.equal(resolveDeployContext({ context: null, env: { CONTEXT: 'production' } }), 'production');
     assert.equal(resolveDeployContext({ context: null, env: {} }), 'non-production');
 
     assert.equal(isProductionContext({ context: { deploy: { context: 'production' } } }), true);
+    assert.equal(isProductionContext({ context: { deploy: { context: 'production', published: false } } }), false);
     assert.equal(isProductionContext({ context: { deploy: { context: 'deploy-preview' } } }), false);
     assert.equal(isProductionContext({ context: null, env: {} }), false);
 

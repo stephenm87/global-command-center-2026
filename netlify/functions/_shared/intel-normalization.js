@@ -423,11 +423,14 @@ function escapeRegex(value) {
 function compileMatchers(table) {
     return Object.entries(table)
         .sort((a, b) => b[0].length - a[0].length)
-        .map(([key, coords]) => ({
-            key,
-            coords,
-            pattern: new RegExp(`(?<![\\p{L}\\p{N}])${escapeRegex(key)}(?![\\p{L}\\p{N}])`, 'iu'),
-        }));
+        .map(([key, coords]) => {
+            const extraLookahead = key === 'guinea' ? '(?!\\s+pigs?(?![\\p{L}\\p{N}]))' : '';
+            return {
+                key,
+                coords,
+                pattern: new RegExp(`(?<![\\p{L}\\p{N}])${escapeRegex(key)}${extraLookahead}(?![\\p{L}\\p{N}])`, 'iu'),
+            };
+        });
 }
 
 const SPECIFIC_MATCHERS = [
@@ -451,7 +454,7 @@ const SECTOR_LABELS = {
 };
 
 function normalizeTextForMatching(text = '') {
-    return String(text || '').replace(/[\u2018\u2019]/g, "'");
+    return String(text || '').normalize('NFC').replace(/[\u2018\u2019]/g, "'");
 }
 
 function findFirstMatch(text, matchers) {
@@ -496,7 +499,7 @@ function resolveCoords(title, snippet = '') {
 }
 
 function getCoords(title, snippet = '') {
-    return resolveCoords(title, snippet).coords || [20.0, 0.0];
+    return resolveCoords(title, snippet).coords;
 }
 
 function categorizeSector(text) {

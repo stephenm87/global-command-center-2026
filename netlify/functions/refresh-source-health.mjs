@@ -138,8 +138,12 @@ async function runInlineBoundedRefresh(preloadedPrevious = undefined, context = 
 
 export default async (_request, context) => {
     const previousSnapshot = await readSnapshot(SNAPSHOT_KEY, { context }).catch(() => null);
+    const targetSiteUrl = context?.deploy?.published === false
+        ? (process.env.DEPLOY_URL || '')
+        : (process.env.URL || process.env.DEPLOY_URL || '');
     await Promise.all([
         dispatchOrRunInline({
+            siteUrl: targetSiteUrl,
             previousSnapshot,
             runInline: prev => runInlineBoundedRefresh(prev, context),
         }),

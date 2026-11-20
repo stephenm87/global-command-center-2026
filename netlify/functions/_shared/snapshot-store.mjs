@@ -3,6 +3,9 @@ import { getDeployStore, getStore } from '@netlify/blobs';
 export const STORE_NAME = 'global-command-center-snapshots';
 
 export function resolveDeployContext({ context = null, env = process.env } = {}) {
+    if (context?.deploy?.published === false) {
+        return 'deploy-preview';
+    }
     if (typeof context?.deploy?.context === 'string' && context.deploy.context.trim()) {
         return context.deploy.context.trim().toLowerCase();
     }

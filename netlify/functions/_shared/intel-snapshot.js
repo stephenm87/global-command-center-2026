@@ -376,7 +376,7 @@ function assessArticle(item, query, {
     const fundingLabel = item?.fundingLabel
         || query?.fundingLabel
         || fundingInfo?.fundingLabel
-        || (scraperSource === 'gdelt-doc' ? 'Open news index (GDELT)' : sourceRoleLabel);
+        || (scraperSource === 'gdelt-doc' ? 'Open news index (GDELT)' : 'Funding source unverified');
     const attributionUrl = normalizeHttpsUrl(
         item?.attributionUrl || query?.attributionUrl || fundingInfo?.attributionUrl || ''
     ) || null;
@@ -445,14 +445,15 @@ function selectDiverseArticles(items, limit = MAX_SNAPSHOT_ITEMS) {
     for (const candidate of candidates) {
         increment(candidatePublisherCounts, getPublisherKey(candidate));
     }
+    const substantiveThreshold = candidates.length <= 9 ? 1 : 4;
     const substantivePublishers = [...candidatePublisherCounts.values()]
-        .filter(count => count >= Math.min(2, Math.max(1, Math.floor(limit / 6))))
+        .filter(count => count >= substantiveThreshold)
         .length;
     const distinctCandidatePublishers = candidatePublisherCounts.size;
 
     const configuredFeedCap = distinctCandidatePublishers >= 3 && (substantivePublishers >= 3 || limit <= 9)
         ? Math.max(1, Math.floor(limit / 3))
-        : distinctCandidatePublishers === 2
+        : distinctCandidatePublishers === 2 || (distinctCandidatePublishers >= 3 && substantivePublishers === 2)
             ? Math.min(8, Math.max(1, Math.floor(limit / 2)))
             : MAX_PER_INSTITUTIONAL_HUB;
     const effectiveRoleMax = (sourceRole, item) => {
@@ -471,16 +472,19 @@ function selectDiverseArticles(items, limit = MAX_SNAPSHOT_ITEMS) {
     const sourceRoleCounts = new Map();
     let discoveryCount = 0;
 
-    const trySelect = item => {
+    const trySelect = (item, overrideMaxPublisher = null) => {
         if (!item || selectedSet.has(item)) return false;
         const region = item.coverage?.region;
         const issue = item.coverage?.issue;
         const publisherKey = getPublisherKey(item);
         const topic = item._topicCluster || `${region}:${issue}:${item['Entity/Subject']}`;
         const sourceRole = item.coverage?.sourceRole || 'discovery';
-        const maxPublisher = (item._isInstitutionalHub || item._isConfiguredFeed)
+        const baseMaxPublisher = (item._isInstitutionalHub || item._isConfiguredFeed)
             ? configuredFeedCap
             : Math.min(MAX_PER_DOMAIN, configuredFeedCap);
+        const maxPublisher = overrideMaxPublisher === null
+            ? baseMaxPublisher
+            : Math.min(baseMaxPublisher, overrideMaxPublisher);
         const maxRole = effectiveRoleMax(sourceRole, item);
         if ((regionCounts.get(region) || 0) >= MAX_PER_REGION) return false;
         if ((issueCounts.get(issue) || 0) >= MAX_PER_ISSUE) return false;
@@ -528,11 +532,13 @@ function selectDiverseArticles(items, limit = MAX_SNAPSHOT_ITEMS) {
         increment(selectedPublisherCounts, getPublisherKey(item));
     }
     if (selectedPublisherCounts.size >= 3) {
-        const minViable = Math.min(candidates.length, 6);
+        const isSmallPool = candidates.length <= 9 || finalSelected.length <= 9;
+        const minViable = isSmallPool ? finalSelected.length : Math.min(finalSelected.length, 9);
+        const minCap = isSmallPool ? 1 : 3;
         let feasibleCap = null;
         for (let total = finalSelected.length; total >= minViable; total -= 1) {
             const cap = Math.floor(total / 3);
-            if (cap < 1) break;
+            if (cap < minCap) break;
             let capacity = 0;
             for (const count of selectedPublisherCounts.values()) {
                 capacity += Math.min(count, cap);
@@ -552,16 +558,31 @@ function selectDiverseArticles(items, limit = MAX_SNAPSHOT_ITEMS) {
                 keptByPublisher.set(pubKey, seen + 1);
                 trimmed.push(item);
             }
-            // If feasibleTotal was smaller due to exact remainder (e.g. 5+5+4 => total 12, cap 4, no drop above feasibleTotal)
-            finalSelected = trimmed;
-            while (finalSelected.length > 0 && Math.max(...keptByPublisher.values()) > Math.floor(finalSelected.length / 3)) {
-                const cap = Math.floor(finalSelected.length / 3);
-                const dropIndex = finalSelected.findLastIndex(it => (keptByPublisher.get(getPublisherKey(it)) || 0) > cap);
-                if (dropIndex === -1) break;
-                const droppedKey = getPublisherKey(finalSelected[dropIndex]);
-                finalSelected.splice(dropIndex, 1);
-                keptByPublisher.set(droppedKey, (keptByPublisher.get(droppedKey) || 1) - 1);
+            // Rebuild counters around trimmed items, then backfill unselected candidates under feasibleCap
+            selected.length = 0;
+            selectedSet.clear();
+            regionCounts.clear();
+            issueCounts.clear();
+            publisherCounts.clear();
+            topicCounts.clear();
+            sourceRoleCounts.clear();
+            discoveryCount = 0;
+            for (const kept of trimmed) {
+                trySelect(kept, feasibleCap);
             }
+            for (const item of candidates) {
+                if (selected.length >= limit) break;
+                trySelect(item, feasibleCap);
+            }
+            while (selected.length > 0 && Math.max(...publisherCounts.values()) > Math.floor(selected.length / 3)) {
+                const cap = Math.floor(selected.length / 3);
+                const dropIndex = selected.findLastIndex(it => (publisherCounts.get(getPublisherKey(it)) || 0) > cap);
+                if (dropIndex === -1) break;
+                const droppedKey = getPublisherKey(selected[dropIndex]);
+                selected.splice(dropIndex, 1);
+                publisherCounts.set(droppedKey, (publisherCounts.get(droppedKey) || 1) - 1);
+            }
+            finalSelected = selected.slice(0, limit);
         }
     }
 
