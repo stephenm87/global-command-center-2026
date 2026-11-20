@@ -98,7 +98,7 @@ const FIXED_QUERIES = Object.freeze([
         id: 'global-institutions-human-security',
         region: 'Global / Transnational',
         issueHints: ['Health & Human Security', 'Governance & Rights', 'Economy & Development'],
-        fallbackCoords: [12.0, -18.0],
+        fallbackCoords: null,
         query: 'latest global institutions treaty humanitarian public health migration human rights trade Global South perspectives -sports -entertainment',
         results: 7,
     },
@@ -106,7 +106,7 @@ const FIXED_QUERIES = Object.freeze([
         id: 'global-technology-information-governance',
         region: 'Global / Transnational',
         issueHints: ['Technology & Information', 'Governance & Rights', 'Security & Diplomacy'],
-        fallbackCoords: [18.0, 12.0],
+        fallbackCoords: null,
         query: 'latest global AI cyber information governance digital rights technology security Global South perspectives -products -sports -entertainment',
         results: 7,
     },
@@ -192,13 +192,13 @@ const ISSUE_PATTERNS = Object.freeze({
 });
 
 const REGION_PATTERNS = Object.freeze({
-    'Africa': /\b(africa|sudan|south sudan|ethiopia|eritrea|somalia|kenya|uganda|tanzania|rwanda|burundi|congo|drc|nigeria|ghana|senegal|mali|niger|burkina faso|chad|cameroon|angola|mozambique|zimbabwe|zambia|south africa|sahel)\b/gi,
-    'Asia-Pacific': /\b(asian?|asia-pacific|china|taiwan|japan|korea|india|pakistan|bangladesh|sri lanka|nepal|bhutan|myanmar|thailand|vietnam|cambodia|laos|malaysia|singapore|indonesia|philippines|mongolia|afghanistan)\b/gi,
-    'Middle East & North Africa': /\b(middle east|north africa|mena|iran|iraq|israel|palestin\w*|gaza|lebanon|syria|jordan|yemen|saudi arabia|qatar|emirates|uae|oman|bahrain|kuwait|egypt|libya|tunisia|algeria|morocco)\b/gi,
-    'Europe & Eurasia': /\b(europe|eurasia|ukraine|russia|moldova|georgia|armenia|azerbaijan|belarus|balkans|kosovo|serbia|bosnia|poland|germany|france|britain|united kingdom|eu\b|european union|nato)\b/gi,
-    'Americas & Caribbean': /\b(latin america|caribbean|south america|central america|united states|u\.s\.|canada|mexico|brazil|argentina|chile|peru|colombia|venezuela|ecuador|bolivia|guyana|suriname|haiti|cuba|jamaica|trinidad|guatemala|honduras|el salvador|panama)\b/gi,
-    'Pacific Islands': /\b(pacific islands?|oceania|tuvalu|fiji|samoa|tonga|vanuatu|kiribati|nauru|palau|micronesia|marshall islands|solomon islands|papua new guinea|new caledonia)\b/gi,
-    'Global / Transnational': /\b(global|worldwide|multilateral|united nations|world bank|international monetary fund|world trade organization|cross-border|transnational)\b/gi,
+    'Africa': /(?<![\p{L}\p{N}])(africa|sudan|south sudan|ethiopia|eritrea|djibouti|somalia|somaliland|kenya|uganda|tanzania|rwanda|burundi|congo|drc|nigeria|ghana|senegal|mali|niger|burkina faso|chad|cameroon|angola|mozambique|zimbabwe|zambia|south africa|lesotho|eswatini|swaziland|botswana|namibia|malawi|madagascar|mauritius|seychelles|comoros|guinea-bissau|equatorial guinea|guinea|côte d'ivoire|cote d'ivoire|ivory coast|benin|togo|liberia|sierra leone|gambia|mauritania|cabo verde|cape verde|gabon|são tomé|sao tome|central african republic|sahel)(?![\p{L}\p{N}])/giu,
+    'Asia-Pacific': /(?<![\p{L}\p{N}])(asian?|asia-pacific|china|taiwan|japan|korea|india|pakistan|bangladesh|sri lanka|nepal|bhutan|maldives|myanmar|burma|thailand|vietnam|viet nam|cambodia|laos|lao pdr|malaysia|singapore|indonesia|timor-leste|east timor|philippines|brunei|mongolia|afghanistan|kazakhstan|kyrgyzstan|tajikistan|turkmenistan|uzbekistan)(?![\p{L}\p{N}])/giu,
+    'Middle East & North Africa': /(?<![\p{L}\p{N}])(middle east|north africa|mena|iran|iraq|israel|palestin\w*|gaza|west bank|lebanon|syria|jordan|yemen|saudi arabia|qatar|emirates|uae|oman|bahrain|kuwait|egypt|libya|tunisia|algeria|morocco|western sahara)(?![\p{L}\p{N}])/giu,
+    'Europe & Eurasia': /(?<![\p{L}\p{N}])(europe|eurasia|ukraine|russia|moldova|transnistria|georgia|armenia|azerbaijan|belarus|balkans|kosovo|serbia|bosnia|croatia|slovenia|montenegro|north macedonia|albania|romania|bulgaria|hungary|slovakia|czechia|czech republic|poland|germany|france|britain|united kingdom|uk|ireland|spain|portugal|italy|greece|cyprus|malta|austria|switzerland|belgium|netherlands|luxembourg|denmark|norway|sweden|finland|iceland|estonia|latvia|lithuania|türkiye|turkiye|turkey|eu|european union|nato|andorra|monaco|san marino|liechtenstein|vatican|holy see)(?![\p{L}\p{N}])/giu,
+    'Americas & Caribbean': /(?<![\p{L}\p{N}])(latin america|caribbean|south america|central america|united states|u\.s\.|usa|canada|mexico|brazil|argentina|chile|peru|colombia|venezuela|ecuador|bolivia|paraguay|uruguay|guyana|suriname|haiti|cuba|dominican republic|jamaica|trinidad|barbados|bahamas|belize|guatemala|honduras|el salvador|nicaragua|costa rica|panama|antigua|dominica|grenada|saint kitts|saint lucia|saint vincent)(?![\p{L}\p{N}])/giu,
+    'Pacific Islands': /(?<![\p{L}\p{N}])(pacific islands?|oceania|australia|new zealand|tuvalu|fiji|samoa|tonga|vanuatu|kiribati|nauru|palau|micronesia|marshall islands|solomon islands|papua new guinea|new caledonia)(?![\p{L}\p{N}])/giu,
+    'Global / Transnational': /(?<![\p{L}\p{N}])(global|worldwide|multilateral|united nations|world bank|international monetary fund|world trade organization|cross-border|transnational)(?![\p{L}\p{N}])/giu,
 });
 
 const TOPIC_PATTERNS = Object.freeze([
@@ -354,17 +354,28 @@ function assessArticle(item, query, { scraperSource = 'serper-public-cache', isI
 
     if (relevanceScore < 16) return null;
 
-    const usesRegionalFallback = normalized._coordPrecision === 'fallback';
-    const locationPrecision = normalized._coordPrecision === 'named-place' ? 'named-place' : 'regional';
-    const [fallbackLat, fallbackLng] = query.fallbackCoords;
+    const usesFallback = normalized._coordPrecision === 'fallback';
+    const hasRegionalFallback = usesFallback
+        && region !== 'Global / Transnational'
+        && Array.isArray(query?.fallbackCoords)
+        && query.fallbackCoords.length === 2;
+    const isGlobalUnmapped = usesFallback && !hasRegionalFallback;
+    const locationPrecision = normalized._coordPrecision === 'named-place'
+        ? 'named-place'
+        : isGlobalUnmapped
+            ? 'global-unmapped'
+            : 'regional';
     const sourceRoleLabel = SOURCE_ROLE_LABELS[sourceRole];
     const selectionReason = `Selected to strengthen ${region} and ${issue} coverage; source role: ${sourceRoleLabel.toLowerCase()}. Automated relevance score ${relevanceScore}/100.`;
 
     return {
         ...normalized,
-        ...(usesRegionalFallback ? {
-            Latitude: String(fallbackLat),
-            Longitude: String(fallbackLng),
+        ...(hasRegionalFallback ? {
+            Latitude: String(query.fallbackCoords[0]),
+            Longitude: String(query.fallbackCoords[1]),
+        } : isGlobalUnmapped ? {
+            Latitude: null,
+            Longitude: null,
         } : {}),
         coverage: {
             region,
@@ -537,7 +548,7 @@ const RELIEFWEB_DEFAULT_QUERY = Object.freeze({
     id: 'reliefweb-latest',
     region: 'Global / Transnational',
     issueHints: ['Health & Human Security', 'Security & Diplomacy', 'Climate & Resources'],
-    fallbackCoords: [12.0, 20.0],
+    fallbackCoords: null,
 });
 
 async function buildPublicSnapshot({

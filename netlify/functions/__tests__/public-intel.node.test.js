@@ -520,10 +520,115 @@ test('shared intel-normalization coordinate inference is deterministic and categ
     assert.notDeepEqual(centralAmerica.coords, [37.1, -95.6], 'Central America must never pin in Kansas/USA');
     assert.deepEqual(centralAmerica.coords, [13.8, -86.2]);
 
-    // "un" must never pin a story to New York
+    // "un" must never pin a story to New York, and unmapped global items return null coords
     const unOnly = resolveCoords('UN report warns of global unrest and funding gaps', 'United Nations appeal');
     assert.equal(unOnly.precision, 'fallback');
     assert.equal(unOnly.matchedPlace, null);
+    assert.equal(unOnly.coords, null);
+
+    // Earliest-named place in title wins (longest match breaks exact index ties)
+    const gazaTalks = resolveCoords('Gaza ceasefire talks in Egypt', 'Regional mediation continues');
+    assert.equal(gazaTalks.matchedPlace, 'gaza');
+    assert.deepEqual(gazaTalks.coords, [31.5, 34.5]);
+
+    const omanTalks = resolveCoords('Oman mediates Iran talks', 'Diplomats meet in Muscat');
+    assert.equal(omanTalks.matchedPlace, 'oman');
+    assert.deepEqual(omanTalks.coords, [21.5, 55.9]);
+
+    const southSudan = resolveCoords('South Sudan peace deal signed in Sudan', 'UN peacekeeping update');
+    assert.equal(southSudan.matchedPlace, 'south sudan');
+    assert.deepEqual(southSudan.coords, [6.9, 31.3]);
+
+    const guineaBissau = resolveCoords('Guinea-Bissau holds parliamentary vote', 'West Africa election update');
+    assert.equal(guineaBissau.matchedPlace, 'guinea-bissau');
+    assert.deepEqual(guineaBissau.coords, [11.8, -15.2]);
+
+    const eqGuinea = resolveCoords('Equatorial Guinea signs energy deal', 'Central Africa economic update');
+    assert.equal(eqGuinea.matchedPlace, 'equatorial guinea');
+    assert.deepEqual(eqGuinea.coords, [1.65, 10.27]);
+
+    const lesotho = resolveCoords('Lesotho highland water treaty enters new phase', 'Southern Africa cooperation');
+    assert.equal(lesotho.matchedPlace, 'lesotho');
+    assert.deepEqual(lesotho.coords, [-29.6, 28.2]);
+
+    const romania = resolveCoords('Romania energy security bill passes parliament', 'Black Sea corridor update');
+    assert.equal(romania.matchedPlace, 'romania');
+    assert.deepEqual(romania.coords, [45.9, 25.0]);
+
+    // False-positive guards on ordinary English words & lowercase pronoun "us"
+    const noMischief = resolveCoords('Political mischief in parliamentary policy debate', 'Domestic politics');
+    assert.equal(noMischief.matchedPlace, null);
+    const noPronounUs = resolveCoords('Join us for global climate talks today', 'Multilateral delegates meet');
+    assert.equal(noPronounUs.matchedPlace, null);
+    const upperUs = resolveCoords('US sanctions target illicit finance networks', 'Treasury announcement');
+    assert.equal(upperUs.matchedPlace, 'united states');
+
+    // All 193 UN member states + observer states & case locations resolve deterministically
+    const UN_MEMBER_STATES_193 = [
+        'Afghanistan', 'Albania', 'Algeria', 'Andorra', 'Angola', 'Antigua and Barbuda', 'Argentina',
+        'Armenia', 'Australia', 'Austria', 'Azerbaijan', 'Bahamas', 'Bahrain', 'Bangladesh', 'Barbados',
+        'Belarus', 'Belgium', 'Belize', 'Benin', 'Bhutan', 'Bolivia', 'Bosnia and Herzegovina', 'Botswana',
+        'Brazil', 'Brunei', 'Bulgaria', 'Burkina Faso', 'Burundi', 'Cabo Verde', 'Cambodia', 'Cameroon',
+        'Canada', 'Central African Republic', 'Chad', 'Chile', 'China', 'Colombia', 'Comoros',
+        'Republic of the Congo', 'Costa Rica', "Côte d'Ivoire", 'Croatia', 'Cuba', 'Cyprus', 'Czechia',
+        'Democratic Republic of the Congo', 'Denmark', 'Djibouti', 'Dominica', 'Dominican Republic',
+        'Ecuador', 'Egypt', 'El Salvador', 'Equatorial Guinea', 'Eritrea', 'Estonia', 'Eswatini',
+        'Ethiopia', 'Fiji', 'Finland', 'France', 'Gabon', 'Gambia', 'Georgia', 'Germany', 'Ghana',
+        'Greece', 'Grenada', 'Guatemala', 'Guinea', 'Guinea-Bissau', 'Guyana', 'Haiti', 'Honduras',
+        'Hungary', 'Iceland', 'India', 'Indonesia', 'Iran', 'Iraq', 'Ireland', 'Israel', 'Italy',
+        'Jamaica', 'Japan', 'Jordan', 'Kazakhstan', 'Kenya', 'Kiribati', 'Kuwait', 'Kyrgyzstan', 'Laos',
+        'Latvia', 'Lebanon', 'Lesotho', 'Liberia', 'Libya', 'Liechtenstein', 'Lithuania', 'Luxembourg',
+        'Madagascar', 'Malawi', 'Malaysia', 'Maldives', 'Mali', 'Malta', 'Marshall Islands', 'Mauritania',
+        'Mauritius', 'Mexico', 'Micronesia', 'Moldova', 'Monaco', 'Mongolia', 'Montenegro', 'Morocco',
+        'Mozambique', 'Myanmar', 'Namibia', 'Nauru', 'Nepal', 'Netherlands', 'New Zealand', 'Nicaragua',
+        'Niger', 'Nigeria', 'North Korea', 'North Macedonia', 'Norway', 'Oman', 'Pakistan', 'Palau',
+        'Panama', 'Papua New Guinea', 'Paraguay', 'Peru', 'Philippines', 'Poland', 'Portugal', 'Qatar',
+        'Romania', 'Russia', 'Rwanda', 'Saint Kitts and Nevis', 'Saint Lucia', 'Saint Vincent and the Grenadines',
+        'Samoa', 'San Marino', 'São Tomé and Príncipe', 'Saudi Arabia', 'Senegal', 'Serbia', 'Seychelles',
+        'Sierra Leone', 'Singapore', 'Slovakia', 'Slovenia', 'Solomon Islands', 'Somalia', 'South Africa',
+        'South Korea', 'South Sudan', 'Spain', 'Sri Lanka', 'Sudan', 'Suriname', 'Sweden', 'Switzerland',
+        'Syria', 'Tajikistan', 'Tanzania', 'Thailand', 'Timor-Leste', 'Togo', 'Tonga', 'Trinidad and Tobago',
+        'Tunisia', 'Türkiye', 'Turkmenistan', 'Tuvalu', 'Uganda', 'Ukraine', 'United Arab Emirates',
+        'United Kingdom', 'United States', 'Uruguay', 'Uzbekistan', 'Vanuatu', 'Venezuela', 'Vietnam',
+        'Yemen', 'Zambia', 'Zimbabwe',
+    ];
+    assert.equal(new Set(UN_MEMBER_STATES_193).size, 193);
+    for (const country of UN_MEMBER_STATES_193) {
+        const res = resolveCoords(`${country} policy briefing`, 'International report');
+        assert.equal(res.precision, 'named-place', `Expected named-place for UN member state ${country}`);
+        assert.equal(Array.isArray(res.coords) && res.coords.length === 2, true, `Expected coords for ${country}`);
+    }
+    for (const casePlace of ['Somaliland', 'Western Sahara', 'Greenland', 'Essequibo', 'Transnistria', 'Mekong', 'El Fasher', 'Hargeisa', 'Palestine', 'Vatican']) {
+        const res = resolveCoords(`${casePlace} development update`, 'Case briefing');
+        assert.equal(res.precision, 'named-place', `Expected named-place for ${casePlace}`);
+    }
+
+    // Global stories with no named place remain unpinned (Latitude: null, Longitude: null, global-unmapped)
+    const climateFeed = {
+        id: 'un-news-climate',
+        region: 'Global / Transnational',
+        issueHints: ['Climate & Resources'],
+        fallbackCoords: null,
+    };
+    const cop31 = assessArticle({
+        title: 'COP31 enters decisive week as climate talks face political test',
+        snippet: 'Global delegates negotiate climate finance targets and mitigation pathways.',
+        source: 'UN News',
+        date: '2026-11-16',
+        link: 'https://news.un.org/en/story/2026/11/1168812',
+    }, climateFeed, { scraperSource: 'institutional-rss', isInstitutionalHub: true });
+    const aiChildren = assessArticle({
+        title: 'AI hands predators new ways to target children worldwide',
+        snippet: 'United Nations report urges stronger digital safeguards on artificial intelligence platforms.',
+        source: 'UN News',
+        date: '2026-11-19',
+        link: 'https://news.un.org/en/story/2026/11/1168841',
+    }, climateFeed, { scraperSource: 'institutional-rss', isInstitutionalHub: true });
+    for (const item of [cop31, aiChildren]) {
+        assert.equal(item.Latitude, null);
+        assert.equal(item.Longitude, null);
+        assert.equal(item.coverage.locationPrecision, 'global-unmapped');
+    }
 
     // Fallback items sharing coordinates are de-stacked deterministically
     const stacked = selectDiverseArticles([

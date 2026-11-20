@@ -183,17 +183,28 @@ export function useGlobeLayerSync({
                 : item.isLive ? '#00ffff' : (categoryColors[item.Broad_Category] || '#ffffff');
             const color = getPointColor(item, baseColor);
             const opacity = getPointOpacity(item);
+            const hasValidItemCoords = item.Latitude !== null
+                && item.Latitude !== undefined
+                && item.Latitude !== ''
+                && item.Longitude !== null
+                && item.Longitude !== undefined
+                && item.Longitude !== '';
             const fallbackLocation = {
                 label: item.regionTags?.[0] || item['Entity/Subject'] || 'Mapped location',
-                latitude: Number.parseFloat(item.Latitude),
-                longitude: Number.parseFloat(item.Longitude),
+                latitude: hasValidItemCoords ? Number.parseFloat(item.Latitude) : Number.NaN,
+                longitude: hasValidItemCoords ? Number.parseFloat(item.Longitude) : Number.NaN,
             };
             const locations = item.isCaseStudy && item.map?.locations?.length
                 ? item.map.locations
                 : [fallbackLocation];
 
             return locations
-                .filter(location => Number.isFinite(Number(location.latitude)) && Number.isFinite(Number(location.longitude)))
+                .filter(location => location.latitude != null
+                    && location.latitude !== ''
+                    && location.longitude != null
+                    && location.longitude !== ''
+                    && Number.isFinite(Number(location.latitude))
+                    && Number.isFinite(Number(location.longitude)))
                 .map(location => ({
                     lat: Number(location.latitude),
                     lng: Number(location.longitude),
