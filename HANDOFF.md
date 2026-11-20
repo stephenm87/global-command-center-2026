@@ -2,6 +2,16 @@
 
 Newest entry first. Each agent adds an entry before it stops. Keep entries short.
 
+## 2026-11-20 — Antigravity (Lead) — Unit 23a (PR #39 Merge + AllAfrica RSS & Stricter News-Outlet Relevance Bar)
+- **PR #39 Production Go-Live:**
+  - Merged PR #39 (`feat/feed-followup-isolation-geo` → `main`) via merge commit `46f28f14334ecb8d3b65cc61017fb5e0a6a5960e`.
+  - **Production Deploy ID:** `6aff9b4acbcd5c22a9a62b1c` (`state: ready`), verified `13` live items (`UN News` `8`, `BBC News` `5`) with explicit funding labels and `0` UI errors.
+- **Did (on `feat/feed-allafrica-and-relevance`, PR #40 — unmerged pending owner review):**
+  - **AllAfrica RSS (`netlify/functions/_shared/free-feeds.js`, `intel-snapshot.js`):** Added `ALLAFRICA_RSS_FEEDS` (`governance`, `conflict`, `externalrelations` RDF feeds, `maxItems: 8` each, `attributionUrl: 'https://allafrica.com/'`, `fundingLabel: 'Pan-African news aggregator (commercial & syndicated)'`, `sourceRole: 'regional'`), increased `BBC News` `maxItems` to `20`, wired `allAfrica RSS` in `buildPublicSnapshot()` via shared `collectRssFeedGroup` helper, mapped `allafrica.com` -> `'allafrica'` in `getPublisherKey()`, and added balanced configured-publisher selection (`pickBalancedCandidate`) in `selectDiverseArticles()` so 3 substantive publishers (`UN News`, `BBC News`, `allAfrica.com`) enforce the strict `<= 1/3` per-publisher share cap cleanly (`4 / 4 / 4 = 12`).
+  - **Stricter News-Outlet Relevance Bar (`netlify/functions/_shared/intel-snapshot.js`):** Added `POLITICAL_POLICY_PATTERN` and `CORPORATE_MARKET_PATTERN` plus `minRelevance = 26` for non-institutional news-outlet feeds (`scraperSource === 'public-rss'` or non-institutional source role), dropping pure corporate/IPO/stock-market stories with no political actor or policy angle (`"Anthropic becomes one of world's most valuable public companies"`) while preserving geopolitical/tech-policy stories (e.g., Ukraine strikes, AI antitrust/chip export controls).
+  - **Tests & Docs (`netlify/functions/__tests__/public-intel.node.test.js`, `docs/ENVIRONMENT.md`, `docs/ARCHITECTURE.md`):** Added unit tests covering AllAfrica RDF/attribution parsing, 3-publisher `<= 1/3` end-to-end balance (`85/85` pass), Anthropic IPO + corporate earnings rejection, EU AI regulation retention, and Ukraine Crimean Bridge strike acceptance.
+- **Claude Collaboration (`Review`, `claude-sonnet-5-5`, read-only):** Pending next check before opening PR #40.
+
 ## 2026-11-20 — Antigravity (Lead) — Unit 22 (PR #38 Merge + Gate 2 Blobs Context Isolation, Place Matching, BBC World News RSS & RSS Terms Audit)
 - **PR #38 Production Go-Live (Gate 1):**
   - Merged PR #38 (`feat/free-institutional-feeds` → `main`) via merge commit `392aa5431e2ea7920c3c700b4afbfd1414106831`.
