@@ -505,7 +505,7 @@ export const AFRICA_CASES_2026 = [
             "MilitantPMC",
             "UN_OPEC"
         ],
-        "statusSummary": "The Congolese presidency reported that the DRC and Rwanda signed a peace agreement at the US State Department on 27 June 2025. A fifth Joint Oversight Committee statement (23 April 2026) tracked ongoing implementation reviews alongside Qatar-hosted talks with AFC/M23. Although UN envoy Huang Xia told the Security Council on 13 October 2026 that US- and Qatar-led tracks showed progress, AFP via Al Jazeera cited his warning that eastern DRC's security and humanitarian situation kept worsening. In July 2026 the UN listed Alliance Fleuve Congo (AFC) for sanctions, MONUSCO logged joint October patrols, and The New Times reported the Kabila-led FRN warned Doha mediators and MONUSCO over constitutional changes, while ISS argued overlapping tracks lack deterrence.",
+        "statusSummary": "The Congolese presidency reported that the DRC and Rwanda signed a peace agreement at the US State Department on 27 June 2025. A fifth Joint Oversight Committee statement (23 April 2026) recorded ongoing implementation reviews alongside Qatar-mediated talks with AFC/M23. Although UN envoy Huang Xia told the Security Council on 13 October 2026 that US- and Qatar-led tracks showed progress, AFP via Al Jazeera (14 October 2026) cited his warning that eastern DRC's security and humanitarian situation kept worsening. On 14 July 2026 the UN published its reasons for listing Alliance Fleuve Congo (AFC), MONUSCO logged joint October patrols, and The New Times reported the Kabila-led FRN warned Doha mediators and MONUSCO over constitutional changes, while ISS (August 2025) argued overlapping tracks lacked deterrence.",
         "whyItMatters": "The case tests whether agreements among states and armed actors can improve civilian protection when authority, security guarantees, and accountability remain fragmented across borders.",
         "updatedAt": "2026-11-17",
         "confidence": "medium",
@@ -532,13 +532,13 @@ export const AFRICA_CASES_2026 = [
                     "label": "Goma",
                     "latitude": -1.6585,
                     "longitude": 29.2205,
-                    "role": "North Kivu provincial capital and MONUSCO presence amid fighting and displacement around AFC/M23 frontlines"
+                    "role": "North Kivu city that ISS says fell to M23/AFC in early 2025; site of FRN launch on 12 October 2026"
                 },
                 {
                     "label": "Bukavu",
                     "latitude": -2.5036,
                     "longitude": 28.8608,
-                    "role": "South Kivu regional center where civilians face insecurity, displacement, and disrupted public services"
+                    "role": "South Kivu city that ISS says fell to M23/AFC in early 2025"
                 },
                 {
                     "label": "Kigali",
@@ -621,7 +621,7 @@ export const AFRICA_CASES_2026 = [
                 "perspectiveType": "local",
                 "conceptInFocus": "Legitimacy",
                 "relatedTimelineDate": "2026-10-13",
-                "narration": "On 19 October 2026, United Nations (UN) peacekeepers and Congolese soldiers patrolled through Sengi 1 in Ituri province so farmers could reach fields safely [5]. That month, the UN mission MONUSCO and local partners also took in four children aged 5 to 11 separated while fleeing insecurity [5]. Six days earlier, UN envoy Huang Xia told the Security Council that security and humanitarian conditions continued to worsen [6].\n\nHuang simultaneously cited notable progress in US- and Qatar-led mediation [6]. Across North Kivu, South Kivu, and Ituri, that contrast shows fighting continues despite signed texts [3, 4, 6]. He urged parties to prove commitment \"through deeds rather than through declarations\" [6]. Diplomacy gains legitimacy only when residents experience safe roads, reunited families, and protected harvests.",
+                "narration": "On 19 October 2026, United Nations (UN) peacekeepers and Congolese soldiers patrolled through Sengi 1 in Ituri province so farmers could reach fields safely [5]. That month, the UN mission MONUSCO and local partners also took in four children aged 5 to 11 separated while fleeing insecurity [5]. Six days before that patrol, UN envoy Huang Xia told the Security Council that security and humanitarian conditions continued to worsen [6].\n\nHuang simultaneously cited notable progress in US- and Qatar-led mediation [6]. Yet agreements have not ended insecurity across eastern provinces: ISS reported fighting in North Kivu, South Kivu, and Ituri in August 2025, and regional reporting noted fighting continuing in North and South Kivu in November 2026 [3, 4]. Huang urged parties to prove commitment \"through deeds rather than through declarations\" [6]. Diplomacy gains legitimacy when residents see safe roads, reunited families, and protected harvests.",
                 "focusQuestion": "Which civilian indicators would show that diplomacy is changing daily life rather than only state-to-state relations?"
             },
             {
@@ -631,7 +631,7 @@ export const AFRICA_CASES_2026 = [
                 "perspectiveType": "local",
                 "conceptInFocus": "Sovereignty",
                 "relatedTimelineDate": "2025-06-27",
-                "narration": "At midday on 27 June 2025, foreign ministers from the Democratic Republic of the Congo (DRC) and Rwanda signed a peace deal at the US State Department and shook hands for the first time [1]. Congolese minister Thérèse Kayikwamba said Kinshasa sought a lasting and real peace for citizens [1].\n\nKinshasa frames the conflict as external aggression, a view the Institute for Security Studies (ISS) notes won broad diplomatic backing [3]. A Joint Oversight Committee pairing both governments with the US, Qatar, Togo, and the African Union (AU) Commission held its fifth review on 23 April 2026 [7]. Because M23 captured Goma and Bukavu in early 2025, ISS notes Kinshasa still lacks oversight along parts of its Rwandan border [3]. Treaties confirm de jure sovereignty, yet only verified implementation restores de facto control.",
+                "narration": "At midday on 27 June 2025, foreign ministers from the Democratic Republic of the Congo (DRC) and Rwanda signed a peace deal at the US State Department and shook hands for the first time [1]. Congolese minister Thérèse Kayikwamba said Kinshasa sought a lasting and real peace for citizens [1].\n\nKinshasa frames the conflict as external aggression, a view the Institute for Security Studies (ISS) notes won broad diplomatic backing [3]. A Joint Oversight Committee pairing both governments with the US, Qatar, Togo, and the African Union (AU) Commission held its fifth review on 23 April 2026 [7]. ISS wrote in August 2025 that after losing Goma and Bukavu in early 2025, Kinshasa had no oversight over key sections of its border with Rwanda [3]. Treaties affirm de jure sovereignty, whereas verified implementation is required to restore de facto control.",
                 "focusQuestion": "What institutions and verification mechanisms are needed to turn a bilateral framework into security on the ground?"
             },
             {
@@ -641,7 +641,7 @@ export const AFRICA_CASES_2026 = [
                 "perspectiveType": "independent",
                 "conceptInFocus": "Power",
                 "relatedTimelineDate": "2026-07-14",
-                "narration": "The March 23 Movement (M23) and its political ally Alliance Fleuve Congo (AFC) captured Goma and Bukavu in early 2025, fighting alongside Rwandan troops according to ISS analysis [3]. On 14 July 2026, a UN Security Council committee published its summary for sanctioning AFC—placing the group under binding UN penalties—for supporting M23 and seeking the government's overthrow [2].\n\nIn October 2026, AFC/M23 regrouped under former president Joseph Kabila as the Front for the Refoundation of the Nation (FRN) and took its seat in Qatar-hosted talks [4]. On 1 November, the FRN warned mediators that proposed constitutional changes could collapse negotiations [4]. Battlefield gains sustain armed leverage, and ISS argues that without credible deterrence armed actors have little incentive to pull back [3].",
+                "narration": "The March 23 Movement (M23) and its political ally Alliance Fleuve Congo (AFC) captured Goma and Bukavu in early 2025, fighting alongside Rwandan troops according to ISS analysis [3]. On 14 July 2026, a UN Security Council committee published its narrative summary for listing AFC on the DRC sanctions list, stating AFC backs M23 and seeks the government's overthrow [2].\n\nIn October 2026, AFC/M23 regrouped under former president Joseph Kabila as the Front for the Refoundation of the Nation (FRN) and took its seat in Qatar-mediated talks [4]. On 1 November, the FRN warned mediators that proposed constitutional changes could collapse negotiations [4]. Battlefield gains sustain armed leverage, and ISS argues that without credible deterrence armed actors have little incentive to pull back [3].",
                 "focusQuestion": "How should a peace process engage an armed actor without normalizing coercive territorial control?"
             },
             {
@@ -726,7 +726,7 @@ export const AFRICA_CASES_2026 = [
                 "claimBy": "Paul-Simon Handy, Institute for Security Studies (15 August 2025)",
                 "claim": "The Washington agreement imposes obligations on Kinshasa, such as dismantling coalitions with local armed groups, without equivalent or verifiable commitments from Kigali on its support for M23.",
                 "counterBy": "The New Times, Kigali (10 November 2026)",
-                "counterClaim": "The newspaper describes the deal as reciprocal: Kinshasa committed to neutralising the FDLR, an armed group it calls Kinshasa-backed, while Rwanda agreed to lift its defensive measures against that threat.",
+                "counterClaim": "The newspaper reports commitments on both sides: Kinshasa committed to neutralising the FDLR, an armed group it calls Kinshasa-backed, while Rwanda agreed to lift its defensive measures against that threat.",
                 "sourceUrls": [
                     "https://issafrica.org/iss-today/diplomacy-without-deterrence-won-t-bring-peace-in-eastern-drc",
                     "https://allafrica.com/stories/202611100538.html"
@@ -787,7 +787,7 @@ export const AFRICA_CASES_2026 = [
         ],
         "conceptLens": {
             "power": "M23 and its allies took Goma and Bukavu in early 2025, which the Institute for Security Studies says gives them leverage that diplomacy has not offset. Kinshasa's lever is diplomatic support, and the UN has placed both M23 and the AFC under sanctions.",
-            "sovereignty": "The DRC holds legal sovereignty over the east. The Institute for Security Studies reports that since losing Goma and Bukavu, the government has not overseen key sections of its border with Rwanda.",
+            "sovereignty": "The DRC holds legal sovereignty over the east. However, the Institute for Security Studies wrote in August 2025 that since losing Goma and Bukavu, the government had no oversight over key sections of its border with Rwanda.",
             "legitimacy": "The FRN claims a constitutional basis for resistance under Article 64, while a UN sanctions committee says the AFC supports a group responsible for attacks on civilians. The UN envoy's test for the peace process is whether commitments become verifiable actions.",
             "interdependence": "Peace efforts involve the United States, Qatar, Togo, the African Union and the UN, and the UN planned a meeting of defence ministers from five countries. The conflict's regional reach means no single government can settle it alone."
         },
@@ -795,8 +795,8 @@ export const AFRICA_CASES_2026 = [
             "prompt": "To what extent is credible military force necessary for diplomacy to resolve armed conflict?",
             "claim": "Diplomacy in eastern DRC has produced agreements, but without enforcement those agreements have not yet changed conditions on the ground.",
             "evidence": "The DRC and Rwanda signed a peace agreement in Washington on 27 June 2025, and Kinshasa and AFC/M23 signed a Declaration of Principles on 19 July 2025. Yet on 13 October 2026, the UN's Great Lakes envoy told the Security Council that the security and humanitarian situation had continued to worsen. Analyst Paul-Simon Handy argues that no mechanism exists to compel withdrawals.",
-            "counterClaim": "Force has its own record of failure here: Handy notes that Congolese forces, southern African and Burundian troops, and UN peacekeepers were all defeated, and that few actors want to fight again. Diplomacy has also delivered concrete steps, including signed ceasefire and prisoner-exchange protocols and an oversight committee that keeps meeting.",
-            "judgment": "On balance, the evidence suggests that diplomacy needs some means of enforcement to be credible. However, this case involves neighbouring armies fighting directly; where outside backers are absent, mediation alone may face fewer limits.",
+            "counterClaim": "Force has its own record of failure here: Handy notes that Congolese forces, southern African and Burundian troops, and UN peacekeepers were all defeated, and that few actors want to fight again. Diplomacy has also delivered concrete steps, including signed ceasefire and prisoner-exchange protocols and an oversight committee that had met five times by April 2026.",
+            "judgment": "On balance, the evidence suggests that diplomacy needs some means of enforcement to be credible. However, this case involves what ISS describes as neighbouring armies operating in eastern DRC; where outside backers are absent, mediation alone may face fewer limits.",
             "sourceUrls": [
                 "https://www.presidence.cd/actualite-detail/actualite/exclusif_la_rdc_et_le_rwanda_ont_signe_un_accord_de_paix_ce_vendredi_aux_etats_unis_damerique",
                 "https://allafrica.com/stories/202611100538.html",
@@ -875,7 +875,7 @@ export const AFRICA_CASES_2026 = [
         "whyItMatters": "The split forces governments and citizens to renegotiate how security cooperation, cross-border movement, trade, and political legitimacy work across a region where threats and livelihoods do not stop at institutional borders.",
         "updatedAt": "2026-11-17",
         "confidence": "medium",
-        "uncertainty": "Joint ECOWAS–AES working groups launched in October 2026 have yet to conclude a final cooperation framework. Security reporting remains uneven, and official claims about counterterrorism effectiveness require independent corroboration.",
+        "uncertainty": "Joint ECOWAS–AES working groups agreed in October 2026 have yet to conclude a final cooperation framework. Security reporting remains uneven, and official claims about counterterrorism effectiveness require independent corroboration.",
         "sensitivity": "high",
         "editorialCaution": "Attribute ECOWAS and AES sovereignty and legal positions to their proponents, distinguish ministerial working-group mandates from concluded agreements, and do not present official counterterrorism claims as independently verified.",
         "featured": false,
@@ -892,25 +892,25 @@ export const AFRICA_CASES_2026 = [
                     "label": "Bamako",
                     "latitude": 12.6392,
                     "longitude": -8.0029,
-                    "role": "Malian capital anchoring the Alliance of Sahel States and hosting May 2025 cooperation consultations"
+                    "role": "Malian capital where ECOWAS and the AES held consultations on 22 May 2025"
                 },
                 {
                     "label": "Ouagadougou",
                     "latitude": 12.3714,
                     "longitude": -1.5197,
-                    "role": "Burkinabe capital building parallel AES diplomatic, economic, and security mechanisms after ECOWAS exit"
+                    "role": "Capital of Burkina Faso, an Alliance of Sahel States member that withdrew from ECOWAS in January 2025"
                 },
                 {
                     "label": "Niamey",
                     "latitude": 13.5116,
                     "longitude": 2.1254,
-                    "role": "Nigerien capital coordinating AES trade, border movement, and counterterrorism restructuring outside ECOWAS"
+                    "role": "Capital of Niger, an Alliance of Sahel States member retaining temporary ECOWAS movement and trade links"
                 },
                 {
                     "label": "Abuja",
                     "latitude": 9.0765,
                     "longitude": 7.3986,
-                    "role": "ECOWAS headquarters managing temporary cross-border transition rules and thematic working-group talks"
+                    "role": "ECOWAS Commission headquarters issuing the 29 January 2025 transition rules"
                 }
             ]
         },
@@ -925,7 +925,7 @@ export const AFRICA_CASES_2026 = [
                 "supports": "Supports the effective withdrawal date and ECOWAS's stated approach to movement, residence, and trade during negotiations."
             },
             {
-                "title": "Before the Security Council, Special Representative Leonardo Santos Simão Calls for Renewed Regional Cooperation",
+                "title": "Before the Security Council, Special Representative Leonardo Santos Simão calls for strengthening regional dialogue to address persistent challenges in West Africa and the Sahel",
                 "publisher": "United Nations Office for West Africa and the Sahel",
                 "publishedAt": "2026-07-14",
                 "url": "https://unowas.unmissions.org/en/news/before-the-security-council-special-representative-leonardo-santos-simao-calls-for",
@@ -960,7 +960,7 @@ export const AFRICA_CASES_2026 = [
                 "perspectiveType": "local",
                 "conceptInFocus": "Sovereignty",
                 "relatedTimelineDate": "2026-10-17",
-                "narration": "On 17 October 2026, two delegations met in Dakar, Senegal. Senegal's foreign minister, Cheikh Niang, led the one from the Economic Community of West African States (ECOWAS), a regional bloc working for integration since 1975 [1, 4]. Burkina Faso's foreign minister, Karamoko Jean-Marie Traoré, led the other for the Alliance of Sahel States (AES), and the two men co-chaired the session [4]. The AES unites Burkina Faso, Mali and Niger, whose military authorities left ECOWAS in January 2025, angered by sanctions imposed after their coups [3].\n\nThe format carried a message about sovereignty, a government's legal right to rule its territory and choose its alliances. The three states met ECOWAS as a separate confederation, and both sides agreed that future relations must rest on \"respect for sovereignty\" [4]. Acceptance by a neighboring bloc settles only part of the question. Military authorities who took power in coups made the choice to leave, which leaves open how far their populations consent to it [3].",
+                "narration": "On 17 October 2026, two delegations met in Dakar, Senegal [4]. Senegal's foreign minister, Cheikh Niang, led the delegation from the Economic Community of West African States (ECOWAS), a bloc working for regional integration since 1975 [1, 4]. Burkina Faso's foreign minister, Karamoko Jean-Marie Traoré, led the Alliance of Sahel States (AES) delegation, and both co-chaired the session [4]. The AES unites Burkina Faso, Mali, and Niger, whose military authorities left ECOWAS in January 2025—whom ISS describes as angered by sanctions imposed after their coups [3].\n\nThe format signaled sovereignty, a government's legal authority over its territory and alliances. The three states met ECOWAS as a separate confederation, agreeing future ties must rest on \"respect for sovereignty\" [4]. Yet recognition by neighbours settles only part of legitimacy: because coup authorities chose withdrawal, citizens' consent remains untested here [3].",
                 "focusQuestion": "What would make a new regional institution legitimate to both governments and the populations it affects?"
             },
             {
@@ -970,7 +970,7 @@ export const AFRICA_CASES_2026 = [
                 "perspectiveType": "local",
                 "conceptInFocus": "Interdependence",
                 "relatedTimelineDate": "2025-01-29",
-                "narration": "The withdrawal took legal effect on 29 January 2025, yet ECOWAS asked border officials to change very little for ordinary travelers [1]. Authorities were asked to keep recognizing passports and identity cards bearing the ECOWAS logo. Goods from the three states stayed under the ECOWAS Trade Liberalization Scheme, the bloc's rules for freer trade, and their citizens kept visa-free movement and residence rights \"until further notice\" [1].\n\nECOWAS said it acted to avoid \"confusion and disruption in the lives and businesses of our people\" [1]. That wording concedes a practical limit on political separation, since both blocs acknowledge deep economic and social ties between their populations [4]. The protections are temporary, however. They last only until ECOWAS heads of state settle the terms of future engagement, which leaves everyday rights resting on a negotiation between governments [1].",
+                "narration": "The withdrawal took legal effect on 29 January 2025, yet ECOWAS requested and required member authorities to change little for ordinary travelers [1]. Officials were directed to keep recognizing passports and identity cards bearing the ECOWAS logo [1]. ECOWAS also directed that goods from the three states remain under the ECOWAS Trade Liberalization Scheme—its freer-trade rules—and citizens retain visa-free movement and residence rights \"until further notice\" [1].\n\nECOWAS said it acted to avoid \"confusion and disruption in the lives and businesses of our people\" [1]. That wording concedes a practical limit on political separation, since both blocs acknowledge deep economic and social ties across their populations [4]. Because those protections last only until ECOWAS heads of state settle future terms, everyday border rights depend on talks between governments [1].",
                 "focusQuestion": "Which cross-border rights and services must be protected regardless of institutional membership?"
             },
             {
@@ -980,7 +980,7 @@ export const AFRICA_CASES_2026 = [
                 "perspectiveType": "independent",
                 "conceptInFocus": "Power",
                 "relatedTimelineDate": "2026-02",
-                "narration": "Armed groups that move fast and cross borders do not stop where one bloc ends and another begins [3]. In July 2026 the United Nations (UN) regional envoy warned the Security Council that the armed-group threat \"remains acute\" in the central Sahel and is spreading toward coastal states [2]. In February 2026, ECOWAS military chiefs endorsed a counter-terrorism brigade of 1,650 soldiers [3].\n\nThe brigade's contingents will stay in their home countries until deployed, while the three central Sahel states now field a separate AES Unified Force [3]. Institute for Security Studies researcher Hassane Koné argues that no campaign can succeed without those states, and that direct lines between the two general staffs must first be restored [3]. The brigade's concept of operations, the document that sets its rules of engagement and coordination, has not been made public [3]. Until it is, outsiders cannot judge how its use of force will be overseen.",
+                "narration": "Armed groups that move fast and cross borders do not stop where one bloc ends and another begins [3]. In July 2026 the United Nations (UN) regional envoy warned the Security Council that the armed-group threat \"remains acute\" in the central Sahel and is spreading toward coastal states [2]. In February 2026, ECOWAS military chiefs endorsed a counter-terrorism brigade of 1,650 soldiers [3].\n\nThe brigade's contingents will stay in their home countries until deployed, while the three central Sahel states field a separate AES Unified Force [3]. Institute for Security Studies researcher Hassane Koné argues no campaign can succeed without those three states, urging direct links between both general staffs [3]. As of March 2026, the brigade's concept of operations—setting rules of engagement—had not been made public, limiting outside scrutiny of how force will be overseen [3].",
                 "focusQuestion": "Can competing security coalitions cooperate without erasing civilian oversight?"
             },
             {
@@ -990,7 +990,7 @@ export const AFRICA_CASES_2026 = [
                 "perspectiveType": "institutional",
                 "conceptInFocus": "Legitimacy",
                 "relatedTimelineDate": "2026-07-14",
-                "narration": "ECOWAS and AES ministers first consulted in Bamako, Mali, on 22 May 2025 [4]. On 14 July 2026 the UN's regional envoy, Leonardo Santos Simão, told the Security Council he saw \"a new impetus in terms of dialogue\" [2]. In Dakar, ministers agreed to create joint thematic working groups to draft a Cooperation Framework Agreement [4].\n\nThat outcome is a mandate to negotiate, not a concluded deal. The groups must report to ministers before the next session, whose date and venue are still to be fixed [4]. Coexistence also asks each side to accept the other as a rightful partner. ECOWAS sanctioned the three states after their coups and now negotiates with their military governments [3]. Simão told the Council that accountability and inclusive governance remain essential in several countries [2]. Both sides promised a framework that \"preserves the interests of their peoples\", a standard that can be tested only once a text exists [4].",
+                "narration": "ECOWAS and the AES previously held consultations in Bamako, Mali, on 22 May 2025 [4]. On 14 July 2026, UN regional envoy Leonardo Santos Simão told the Security Council he saw \"a new impetus in terms of dialogue\" [2]. In Dakar, ministers agreed to establish joint thematic working groups to draft a Cooperation Framework Agreement [4].\n\nThat outcome is a mandate to negotiate, not a concluded deal, with outcomes due before an unscheduled next session [4]. Coexistence also tests mutual recognition: ECOWAS sanctioned those states after coups and now negotiates with their military governments [3, 4]. Simão told the Council that accountability and inclusive governance remain essential in several countries, without naming them [2]. Both sides promised a framework that \"preserves the interests of their peoples\", a standard testable only once a text exists [4].",
                 "focusQuestion": "What minimum framework could preserve cooperation while respecting the political split?"
             }
         ],
@@ -1003,7 +1003,7 @@ export const AFRICA_CASES_2026 = [
         "ibThemes": [
             "peace-and-conflict"
         ],
-        "background": "The Economic Community of West African States (ECOWAS) has worked for regional integration since 1975 [1]. Its rules let citizens of member states travel without visas, live and set up businesses across the region, and trade under a common liberalization scheme [1]. Its Monitoring Group also intervened in Liberia, Sierra Leone and Guinea-Bissau in the 1990s [3].\n\nThat model broke over military rule. After coups in Burkina Faso, Mali and Niger, ECOWAS imposed sanctions, penalties meant to push the new rulers to change course [3]. The three military authorities instead formed the Alliance of Sahel States (AES) and withdrew from ECOWAS, a step that took effect on 29 January 2025 [1, 3].\n\nThe split left one security problem to two organizations. Institute for Security Studies analysis describes the central Sahel as the epicenter of violence now spreading toward coastal states [3]. Earlier joint efforts, including the G5 Sahel Joint Force and the Accra Initiative, were hampered by dependence on outside partners [3]. Ministers from both blocs consulted in Bamako on 22 May 2025 and opened a formal dialogue in Dakar on 17 October 2026 [4].",
+        "background": "The Economic Community of West African States (ECOWAS) has worked for regional integration since 1975 [1]. Its rules let citizens travel without visas, reside and establish businesses across member states, and trade under a shared liberalization scheme [1]. Its Monitoring Group also intervened in Liberia, Sierra Leone, and Guinea-Bissau in the 1990s [3].\n\nThat model fractured over military rule. After coups in Burkina Faso, Mali, and Niger, ECOWAS imposed sanctions—penalties meant to push new rulers to change course [3]. Whom ISS describes as angered by those sanctions, the three military authorities formed the Alliance of Sahel States (AES) and withdrew from ECOWAS, effective 29 January 2025 [1, 3].\n\nTwo organizations now confront one regional crisis. ISS analysis describes the central Sahel as an epicenter of violence spreading toward coastal states, while earlier joint forces depended heavily on outside partners [3]. ECOWAS and the AES consulted in Bamako on 22 May 2025 and opened ministerial dialogue in Dakar on 17 October 2026 [4].",
         "backgroundSources": [
             "https://www.ecowas.int/press-statement-2/",
             "https://issafrica.org/iss-today/how-ecowas-can-make-its-new-counter-terrorism-force-effective",
@@ -1040,18 +1040,18 @@ export const AFRICA_CASES_2026 = [
             {
                 "claimBy": "ECOWAS Commission (press statement, 29 January 2025)",
                 "claim": "ECOWAS will keep its doors open. Members should, \"in the spirit of regional solidarity\", go on honoring the three states' passports, trade treatment and free-movement rights during the transition.",
-                "counterBy": "Military authorities of Burkina Faso, Mali and Niger (as described by the Institute for Security Studies, 25 March 2026)",
-                "counterClaim": "Angered by the sanctions ECOWAS imposed after their coups, the three governments formed the Alliance of Sahel States and withdrew from the organization in January 2025.",
+                "counterBy": "ISS account of AES withdrawal (25 March 2026)",
+                "counterClaim": "ISS reports that the three military authorities, angered by ECOWAS sanctions imposed after their coups, formed the Alliance of Sahel States and withdrew from the organization in January 2025.",
                 "sourceUrls": [
                     "https://www.ecowas.int/press-statement-2/",
                     "https://issafrica.org/iss-today/how-ecowas-can-make-its-new-counter-terrorism-force-effective"
                 ]
             },
             {
-                "claimBy": "ECOWAS chiefs of staff (decision of February 2026, as reported by the Institute for Security Studies)",
+                "claimBy": "ECOWAS chiefs of staff (decision of February 2026, as reported by ISS)",
                 "claim": "A regional force is needed to combat terrorism and insecurity. A counter-terrorism brigade of 1,650 soldiers, with troops pledged by six member states, will form its core.",
-                "counterBy": "UN Special Representative Leonardo Santos Simão (Security Council briefing, 14 July 2026)",
-                "counterClaim": "Simão insisted that \"security responses alone will not be enough\". Addressing the root causes of instability requires investment in the social, economic and environmental foundations of peace.",
+                "counterBy": "UN Special Representative Leonardo Santos Simão (broader Sahel security briefing, 14 July 2026)",
+                "counterClaim": "Addressing the wider regional security crisis rather than the brigade specifically, Simão insisted that \"security responses alone will not be enough\", calling for investment in the social, economic, and environmental foundations of peace.",
                 "sourceUrls": [
                     "https://issafrica.org/iss-today/how-ecowas-can-make-its-new-counter-terrorism-force-effective",
                     "https://unowas.unmissions.org/en/news/before-the-security-council-special-representative-leonardo-santos-simao-calls-for"
@@ -1111,13 +1111,13 @@ export const AFRICA_CASES_2026 = [
         "conceptLens": {
             "power": "ECOWAS used sanctions to raise the cost of military rule, and the three governments answered by leaving the bloc. Geography gives the AES a lever of its own: ISS analysis holds that no fight against armed groups can be effective without the three central Sahel states.",
             "sovereignty": "The three governments withdrew from a regional body, and the Dakar communiqué lists respect for sovereignty among its guiding principles. Control on the ground is a separate matter: the UN envoy says armed groups aim to consolidate territorial control and erode trust in state authority.",
-            "legitimacy": "ECOWAS answered the coups with sanctions, and the military authorities answered the sanctions by leaving. In Dakar both sides tied a future framework to the interests of their peoples, a test that reaches beyond acceptance between governments.",
+            "legitimacy": "ECOWAS answered the coups with sanctions, and the military authorities—which ISS says were angered by those sanctions—left the bloc. In Dakar both sides tied a future framework to the interests of their peoples, a test that reaches beyond acceptance between governments.",
             "interdependence": "ECOWAS kept movement and trade rules in place for the three states to avoid disrupting lives and businesses, and the UN envoy reports the armed-group threat expanding toward Gulf of Guinea coastal states. Neither bloc can protect trade or territory by acting alone."
         },
         "essayBuilder": {
             "prompt": "To what extent can states manage cross-border security threats without shared regional institutions?",
             "claim": "States can leave a regional institution, but they cannot leave the shared problems it was built to manage.",
-            "evidence": "Burkina Faso, Mali and Niger completed their withdrawal from ECOWAS on 29 January 2025. Yet ISS analysis describes the central Sahel as the epicenter of violence that is spreading to coastal countries, and argues that a fight against armed groups cannot be effective without the three states. ECOWAS's own brigade numbers 1,650 soldiers stationed in their home countries.",
+            "evidence": "Burkina Faso, Mali and Niger completed their withdrawal from ECOWAS on 29 January 2025. Yet ISS analysis describes the central Sahel as the epicenter of violence spreading to coastal countries, and argues that a fight against armed groups cannot be effective without the three states. ECOWAS's planned counter-terrorism brigade is sized at 1,650 soldiers, to be stationed in their home countries until deployed.",
             "counterClaim": "Cooperation does not require formal membership. On 17 October 2026 the two blocs agreed in Dakar to set up joint working groups toward a Cooperation Framework Agreement. The UN's regional envoy also cited the reopening of the Kamba border post between Niger and Nigeria and the decision of Mali and Algeria to normalize relations.",
             "judgment": "On balance, the case suggests states need shared arrangements more than they need one particular institution. However, the Dakar dialogue has so far produced a mandate to negotiate, not an agreement, so it does not yet show whether a looser framework can do the work of membership.",
             "sourceUrls": [
@@ -1135,7 +1135,7 @@ export const AFRICA_CASES_2026 = [
             },
             {
                 "date": "2025-05-22",
-                "label": "ECOWAS and AES ministers hold consultations in Bamako, Mali.",
+                "label": "ECOWAS and the AES hold consultations in Bamako, Mali.",
                 "sourceUrl": "https://www.ecowas.int/wp-content/uploads/2026/10/ENG-COMMUNIQUE_1st-JOINT-ECOWAS-AES-MTG_DKR.pdf"
             },
             {

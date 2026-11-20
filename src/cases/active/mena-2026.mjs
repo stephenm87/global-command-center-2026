@@ -34,7 +34,7 @@ export const MENA_CASES_2026 = [
         "whyItMatters": "Syria tests whether political transition and sanctions relief can produce voluntary, safe, and sustainable return before housing, services, livelihoods, documentation, and accountable institutions have recovered.",
         "updatedAt": "2026-11-20",
         "confidence": "high",
-        "uncertainty": "Return totals change frequently and conditions vary sharply by locality; the UNHCR figures cited here run to March 2026 and the local documentation to June 2026. A recorded return must not be treated as proof that return was safe, voluntary, or sustainable. Accounts from Ras al-Ain and Tell Abyad rest on seven anonymized interviews and should not be generalized to the whole country.",
+        "uncertainty": "Return totals change frequently and conditions vary sharply by locality; the UNHCR figures cited here run to March 2026 (carrying an August 2025 OCHA figure for internal displacement), and local documentation runs to June 2026. A recorded return must not be treated as proof that return was safe, voluntary, or sustainable. Accounts from Ras al-Ain and Tell Abyad rest on seven anonymized interviews and should not be generalized to the whole country.",
         "sensitivity": "standard",
         "editorialCaution": "Return totals change frequently and conditions vary sharply by locality. A recorded return must not be treated as proof that return was safe, voluntary, or sustainable. Attribute witness accounts of property seizure, discrimination, and outside influence to their sources, and do not generalize them to whole communities.",
         "featured": false,
@@ -57,13 +57,13 @@ export const MENA_CASES_2026 = [
                     "label": "Tell Abyad",
                     "latitude": 36.6975,
                     "longitude": 38.9567,
-                    "role": "Northern Peace Spring locality where STJ documented blocked displaced-person returns"
+                    "role": "Northern locality taken in Türkiye's 2019 'Peace Spring' operation where STJ documented blocked displaced-person returns"
                 },
                 {
                     "label": "Ras al-Ain",
                     "latitude": 36.8504,
                     "longitude": 40.0696,
-                    "role": "Northeastern Peace Spring border locality documented alongside Tell Abyad for blocked returns"
+                    "role": "Northeastern border locality taken in Türkiye's 2019 'Peace Spring' operation documented alongside Tell Abyad for blocked returns"
                 },
                 {
                     "label": "Aleppo",
@@ -80,7 +80,7 @@ export const MENA_CASES_2026 = [
                 "publishedAt": "2026-06-22",
                 "url": "https://stj-sy.org/en/syria-one-year-after-political-change-peace-spring-areas-block-displaced-persons-return/",
                 "perspectiveType": "local",
-                "perspective": "Syrian documentation of property, security, and return barriers in contested localities",
+                "perspective": "European Union– and Ceasefire Centre–funded Syrian documentation of property, security, and return barriers in contested localities",
                 "supports": "Why a recorded return or political transition does not establish safe, equitable reintegration"
             },
             {
@@ -108,7 +108,7 @@ export const MENA_CASES_2026 = [
                 "publisher": "UNHCR",
                 "publishedAt": "2026-04-21",
                 "url": "https://www.unhcr.org/sites/default/files/2026-04/unhcr-syria-operational-update-march.pdf",
-                "perspective": "United Nations protection, return, and humanitarian reporting"
+                "perspective": "United Nations protection, return, and humanitarian reporting (PDF dated March 2026; UNHCR Document Repository upload April 2026)"
             }
         ],
         "waypoints": [
@@ -119,7 +119,7 @@ export const MENA_CASES_2026 = [
                 "perspectiveType": "local",
                 "conceptInFocus": "Legitimacy",
                 "relatedTimelineDate": "2024-12-08",
-                "narration": "After the al-Assad government fell on 8 December 2024, some Syrian families returned to demolished homes and pitched tents on the rubble [3, 4]. \"I came and put up a tent on the ruins\", one returnee explained, saying living in their own country mattered most [3]. That transition ended over five decades of Assad family rule [3].\n\nInternational agencies had judged Syria unready by checklists covering housing, safety, public services, and jobs [3]. Oxford researcher Muhammed Zeyn argues those benchmarks missed freedom and dignity, since fear of detention had long kept families away [3]. A September 2025 UN Refugee Agency (UNHCR) survey recorded surging return intentions [4]. Whether popular acceptance endures now tests legitimacy in damaged neighbourhoods rather than at the border.",
+                "narration": "After the al-Assad government fell on 8 December 2024, some Syrian families returned to demolished homes and pitched tents on the rubble [3, 4]. \"I came and put up a tent on the ruins\", one returnee explained, saying living in their own country mattered most [3]. That transition ended over five decades of Assad family rule [3].\n\nOxford researcher Muhammed Zeyn argues that international assessments had judged Syria unready by checklists covering housing, safety, public services, and jobs [3]. In his analysis, those benchmarks missed freedom and dignity, since fear of detention had long kept families away [3]. A September 2025 UN Refugee Agency (UNHCR) survey recorded surging return intentions [4]. Whether popular acceptance endures now tests legitimacy in damaged neighbourhoods rather than at the border.",
                 "focusQuestion": "When does a change in government become a durable political transition?"
             },
             {
@@ -129,7 +129,7 @@ export const MENA_CASES_2026 = [
                 "perspectiveType": "institutional",
                 "conceptInFocus": "Interdependence",
                 "relatedTimelineDate": "2026-03",
-                "narration": "By end-March 2026, UNHCR recorded 1,563,898 refugees returning to Syria since December 2024, mostly from nearby states [4]. Another 1.8 million returns involved internally displaced people (IDPs) uprooted inside Syria, yet 5.5 million remained internally displaced and 15.6 million needed assistance [4]. In March alone, 221,912 people crossed from Lebanon fleeing Israeli airstrikes, pushing some Syrians home earlier than planned [4].\n\nUNHCR supports voluntary return—free, informed movement—and gives returning families US$600 in cash [4]. Yet donors funded only 30 per cent of its US$323.9 million appeal, closing five community centres in March [4]. Host-country pressure, regional conflict, and donor shortfalls shape returns through interdependence, showing why arrival counts do not measure lasting reintegration.",
+                "narration": "By end-March 2026, UNHCR recorded 1,563,898 refugees returning to Syria since December 2024, mostly from nearby states [4]. Another 1.8 million returns involved internally displaced people (IDPs) uprooted inside Syria, yet 5.5 million remained displaced and 15.6 million needed assistance [4]. In March alone, 221,912 people crossed from Lebanon fleeing Israeli airstrikes, pushing some Syrians home earlier than planned [4].\n\nUNHCR supports voluntary return—free, informed movement—and gave 5,877 returning families US$600 each in March [4]. Yet donors funded only 30 per cent of its US$323.9 million appeal, closing five community centres in March [4]. Host-country conditions, regional conflict, and donor shortfalls shape returns through interdependence, showing why arrival counts do not measure lasting reintegration.",
                 "focusQuestion": "Which indicators show whether a return is sustainable rather than temporary?"
             },
             {
@@ -149,7 +149,7 @@ export const MENA_CASES_2026 = [
                 "perspectiveType": "local",
                 "conceptInFocus": "Sovereignty",
                 "relatedTimelineDate": "2019-10",
-                "narration": "In October 2019, a Turkish operation alongside allied Syrian factions displaced over 176,000 people from Ras al-Ain and Tell Abyad [1]. After 2024, transitional President Ahmed al-Sharaa pledged every displaced person could return unconditionally [1]. Yet Syrians for Truth and Justice (STJ) reported in June 2026 that returns stayed stalled, with seven witnesses citing closed roads, looted houses, and payments of US$500 to US$3,000 to leave [1].\n\nWitnesses told STJ that rebranded factions kept their commanders, while Raqqa's governor reportedly said the state lacked real control in Tell Abyad [1]. That divide separates legal authority (de jure sovereignty) from effective rule on the ground (de facto sovereignty). Promises of return become real only where courts and security forces can enforce property rights.",
+                "narration": "In October 2019, a Turkish operation with allied Syrian factions displaced over 176,000 people from border areas including Ras al-Ain and Tell Abyad, by OCHA's estimate [1]. After 2024, transitional President Ahmed al-Sharaa pledged unconditional return [1]. Yet Syrians for Truth and Justice (STJ) reported in June 2026 that returns stayed limited, with witnesses among seven interviewees citing closed roads, looted homes, and US$500 to US$3,000 demands to vacate [1].\n\nWitnesses told STJ that rebranded factions kept their commanders, while Raqqa's governor reportedly said the state lacked real control in Tell Abyad [1]. That divide separates legal authority (de jure sovereignty) from effective rule on the ground (de facto sovereignty). Promises of return become real only where courts and security forces can enforce property rights.",
                 "focusQuestion": "Who should bear the cost and responsibility for rebuilding the conditions needed for return?"
             }
         ],
@@ -163,7 +163,7 @@ export const MENA_CASES_2026 = [
             "rights-and-justice",
             "development-and-sustainability"
         ],
-        "background": "The European Union (EU) first imposed sanctions on Syria in 2011, responding to the al-Assad regime's violent repression of civilians [2]. Roughly four million Syrians took refuge in neighbouring countries and about one million in Germany [3]. In October 2019, a Turkish military operation along the northern border displaced more than 176,000 people by the end of that month [1].\n\nOn 8 December 2024, more than five decades of Assad family rule ended [3, 4]. Outside pressure then eased. The EU relaxed some measures on 24 February 2025 and announced on 20 May 2025 that it would lift all economic sanctions except those based on security grounds [2]. Sanctions are penalties, such as asset freezes or trade restrictions, that governments use to pressure a target.\n\nReturn followed quickly. More than 1.5 million refugees came back within a year, and the UN Refugee Agency (UNHCR) began facilitating voluntary return [3, 4]. Its September 2025 survey found that 80 per cent of refugees still abroad hoped to return one day, while housing damage, scarce jobs, and insecurity remained key constraints [4].",
+        "background": "The European Union (EU) first imposed sanctions on Syria in 2011, responding to the al-Assad regime's violent repression of civilians [2]. Roughly four million Syrians took refuge in neighbouring countries and about one million in Germany [3]. In October 2019, a Turkish military operation along the northern border displaced more than 176,000 people by month's end, according to OCHA [1].\n\nOn 8 December 2024, over five decades of Assad family rule ended [3, 4]. Outside pressure later eased: the EU relaxed measures on 24 February 2025 and announced on 20 May 2025 it would lift economic sanctions except security-related ones [2]. Sanctions are penalties, such as asset freezes or trade curbs, used to pressure a target.\n\nReturn began after the regime fell [3]. Over 1.5 million refugees came back within a year, and the UN Refugee Agency (UNHCR) began facilitating voluntary return [3, 4]. Its September 2025 survey found 80 per cent of surveyed refugees in four neighbouring host countries hoped to return, though housing, jobs, and security remained constraints [4].",
         "backgroundSources": [
             "https://www.consilium.europa.eu/en/press/press-releases/2026/05/18/syria-council-renews-restrictive-measures-targeting-the-former-al-assad-regime-for-one-year-and-de-lists-certain-entities/",
             "https://www.compas.ox.ac.uk/article/beyond-safety-and-necessity-understanding-syrias-mass-return",
@@ -257,7 +257,7 @@ export const MENA_CASES_2026 = [
             {
                 "stage": "The formal decision",
                 "rating": "STRONG",
-                "evidence": "The EU restored its cooperation agreement with Syria on 11 May 2026 and removed seven entities, including two ministries, from its sanctions list on 18 May 2026. It kept targeted measures on former-regime networks until 1 June 2027.",
+                "evidence": "The EU restored full application of its partially suspended cooperation agreement with Syria on 11 May 2026 and removed seven entities, including two ministries, from its sanctions list on 18 May 2026. It kept targeted measures on former-regime networks until 1 June 2027.",
                 "sourceUrls": [
                     "https://www.consilium.europa.eu/en/press/press-releases/2026/05/18/syria-council-renews-restrictive-measures-targeting-the-former-al-assad-regime-for-one-year-and-de-lists-certain-entities/"
                 ]
@@ -273,7 +273,7 @@ export const MENA_CASES_2026 = [
             }
         ],
         "conceptLens": {
-            "power": "The EU's lever is economic: it lifted broad sanctions in May 2025 but kept asset freezes and travel bans on former-regime networks. In Ras al-Ain and Tell Abyad, witnesses describe a local lever, where armed occupants set the price of getting a home back.",
+            "power": "The EU's lever is economic: it lifted broad sanctions in May 2025 but kept asset freezes and travel bans on former-regime networks. In Ras al-Ain and Tell Abyad, witnesses describe a local lever, where military or civilian occupants set the price of getting a home back.",
             "sovereignty": "Damascus holds legal authority and has appointed officials in Ras al-Ain and Tell Abyad. Witnesses told Syrians for Truth and Justice that local factions and Türkiye still shape real decisions there, a gap between de jure and de facto control.",
             "legitimacy": "Researcher Muhammed Zeyn argues that many returnees accepted hardship because the regime's fall restored dignity and belonging. Displaced residents interviewed in the north say they cannot return while they face discrimination and cannot recover property.",
             "interdependence": "Return depends on host-country conditions, donor funding, and regional conflict: in March 2026, hostilities in Lebanon pushed 221,912 people into Syria. No single government controls all the factors that decide whether return lasts."
@@ -342,7 +342,7 @@ export const MENA_CASES_2026 = [
                 "value": "5.5 million",
                 "unit": "people",
                 "label": "Still internally displaced inside Syria",
-                "asOf": "March 2026",
+                "asOf": "August 2025 (OCHA figure carried in UNHCR's March 2026 update)",
                 "sourceUrl": "https://www.unhcr.org/sites/default/files/2026-04/unhcr-syria-operational-update-march.pdf"
             }
         ]
@@ -767,13 +767,13 @@ export const MENA_CASES_2026 = [
             "MilitantPMC",
             "Europe"
         ],
-        "statusSummary": "Libyan reporting in August 2026 described the UN-facilitated roadmap as focused on completing the electoral framework and resolving the High National Elections Commission board impasse. On 30 October 2026, the UN Security Council adopted Resolution 2835 by 13 votes in favor with 2 abstentions, extending UNSMIL's mandate through 31 October 2027 to support an inclusive political solution. Security Council Resolution 2819 had earlier adjusted measures governing Libyan assets in April 2026. Meanwhile, Chatham House analysis cites Libyan audit findings of a fuel import bill above $9 billion by 2024 and argues that a US-backed power-sharing deal between rival ruling families could worsen corruption rather than produce accountable governance.",
+        "statusSummary": "Libyan reporting in February 2026 described five days of UN-facilitated Structured Dialogue talks focused on election obstacles, including the electoral framework and completing the High National Elections Commission board. On 30 October 2026, the UN Security Council adopted Resolution 2835 by 13 votes in favor with 2 abstentions, extending UNSMIL's mandate through 31 October 2027 to support an inclusive political solution. Security Council Resolution 2819 had earlier adjusted measures governing Libyan assets in April 2026. Meanwhile, Chatham House analysis cites Libyan audit findings of a fuel import bill above $9 billion by 2024 and argues that a US-backed power-sharing deal between rival ruling families could worsen corruption rather than produce accountable governance.",
         "whyItMatters": "Libya links delayed elections to divided security authority, oil-revenue governance, sovereign assets, public services, and migration across the Mediterranean. A roadmap can succeed procedurally while leaving the political economy of division intact.",
         "updatedAt": "2026-11-17",
         "confidence": "medium",
         "uncertainty": "Timelines, elite bargains, security alignments, and oil flows can shift quickly. Rival institutions issue incompatible claims over electoral implementation, and national-level reporting can obscure municipal and civil-society perspectives.",
         "sensitivity": "high",
-        "editorialCaution": "Timelines, elite bargains, security alignments, and oil flows can shift quickly. Rival institutions issue incompatible claims, and national-level reporting can obscure important municipal and civil-society perspectives.",
+        "editorialCaution": "Treat accounts of rival ruling families, UAE mediation, and power-sharing proposals as attributed analysis rather than settled consensus. National and elite-level reporting can obscure municipal, eastern, southern, and civil-society perspectives across Libya.",
         "featured": false,
         "reviewCadenceDays": 14,
         "reviewBy": "2026-12-01",
@@ -788,25 +788,25 @@ export const MENA_CASES_2026 = [
                     "label": "Tripoli",
                     "latitude": 32.8872,
                     "longitude": 13.1913,
-                    "role": "Western political center hosting UNSMIL dialogue and High National Elections Commission deadlock negotiations"
+                    "role": "Seat of the UN-recognized Government of National Unity and site of UNSMIL Structured Dialogue plenaries"
                 },
                 {
                     "label": "Benghazi",
                     "latitude": 32.1194,
                     "longitude": 20.0868,
-                    "role": "Eastern power center with rival governing and security institutions shaping election conditions"
+                    "role": "Seat of the rival Government of National Stability (Chatham House); target for expanded UNSMIL presence under Resolution 2835"
                 },
                 {
                     "label": "Sabha",
                     "latitude": 27.0377,
                     "longitude": 14.4283,
-                    "role": "Southern administrative center illustrating service gaps, security fragmentation, and peripheral representation demands"
+                    "role": "Southern Libyan city targeted for expanded UNSMIL presence under Security Council Resolution 2835"
                 },
                 {
                     "label": "Sirte",
                     "latitude": 31.2089,
                     "longitude": 16.5887,
-                    "role": "Central coastal city between rival security zones near major oil-export infrastructure"
+                    "role": "Central coastal city targeted for expanded UNSMIL presence under Security Council Resolution 2835"
                 }
             ]
         },
@@ -814,7 +814,7 @@ export const MENA_CASES_2026 = [
             {
                 "title": "UN-led talks in Libya seek ways to break electoral deadlock",
                 "publisher": "The Libya Observer",
-                "publishedAt": "2026-08-02",
+                "publishedAt": "2026-02-08",
                 "url": "https://libyaobserver.ly/news/un-led-talks-libya-seek-ways-break-electoral-deadlock",
                 "perspectiveType": "local",
                 "perspective": "Libyan news reporting on the structured dialogue, election obstacles, and domestic political response",
@@ -852,11 +852,11 @@ export const MENA_CASES_2026 = [
             {
                 "nodeId": "Africa",
                 "title": "A Public Demand for a Political Endpoint",
-                "perspectiveLabel": "Libyan voters and civil society",
-                "perspectiveType": "local",
+                "perspectiveLabel": "Public spending and electoral accountability",
+                "perspectiveType": "independent",
                 "conceptInFocus": "Power",
                 "relatedTimelineDate": "2026-10-30",
-                "narration": "At a Libyan filling station, a liter of petrol costs about two US cents [3]. The price looks like a gift from an oil-producing state to its people. Behind it, Libya's Audit Bureau and National Anti-Corruption Commission found a fuel import bill above $9 billion by 2024, close to $1,200 for every person in the country [3]. Libya produces crude oil but must import refined fuel, which the state then subsidizes [3].\n\nA subsidy is public money spent to hold a price down. Libyans are still waiting for the national elections that the United Nations (UN) Security Council called for on 30 October 2026 [4]. Chatham House analyst Tim Eaton argues that a deal dividing office between two ruling families would look like more of the same to ordinary Libyans [3]. Citizens gain leverage over that money only when they can remove those who control it, and the roadmap has yet to deliver an election.",
+                "narration": "At a Libyan filling station, a liter of petrol costs about two US cents [3]. The price looks like a gift from an oil-producing state to its people. Behind it, Libya's Audit Bureau and National Anti-Corruption Commission found a fuel import bill above $9 billion by 2024, close to $1,200 for every person in the country [3]. Libya produces crude oil but must import refined fuel, which the state then subsidizes [3].\n\nA subsidy is public money spent to hold a price down. National elections have still not taken place, and the United Nations (UN) Security Council called on 30 October 2026 for talks to deliver them [4]. Chatham House analyst Tim Eaton argues that a deal dividing office between two ruling families would appear to be more of the same for ordinary Libyans [3]. Citizens gain leverage over state spending only when elections let them remove those who control it.",
                 "focusQuestion": "How can the roadmap give citizens leverage over the actors negotiating its terms?"
             },
             {
@@ -865,18 +865,18 @@ export const MENA_CASES_2026 = [
                 "perspectiveLabel": "HNEC and UN-facilitated roadmap",
                 "perspectiveType": "institutional",
                 "conceptInFocus": "Legitimacy",
-                "relatedTimelineDate": "2026-08-02",
-                "narration": "Two obstacles dominated five days of UN-backed talks reported on 2 August 2026. The first was a stalemate over the electoral framework, the laws that set how a vote is run [1]. The second was an incomplete board at the High National Elections Commission (HNEC), the body that would administer it [1]. Participants in the Structured Dialogue examined existing electoral laws, including those drafted by a body known as the 6+6 Committee [1].\n\nThe talks produced recommendations, not decisions. The UN mission stressed that the dialogue is meant to create conditions for elections, not to choose a new government [1]. On 30 October 2026 the Security Council renewed the mission for a year and urged Libyan institutions to negotiate \"without preconditions and without delay\" [4]. Participants focused on the concerns and safeguards behind each draft law because sequence matters [1]. A vote settles who governs only when the main contenders have accepted its rules before the count.",
+                "relatedTimelineDate": "2026-02-08",
+                "narration": "UN-backed Structured Dialogue talks reported on 8 February 2026 ran for five days [1]. Participants focused on obstacles to elections, including a stalemate over the electoral framework—the laws setting how a vote runs—and completing the High National Elections Commission (HNEC) board [1]. They reviewed existing draft election laws, including texts from the 6+6 Committee [1].\n\nThe talks issued recommendations rather than decisions. UNSMIL stressed the dialogue aims to build election conditions, not pick a new government, examining safeguards behind draft laws \"to help bridge political divisions\" [1]. On 30 October 2026, the Security Council renewed UNSMIL for a year and urged Libyan institutions to negotiate \"without preconditions and without delay\" [4]. A vote settles who governs only when major contenders accept the rules before ballots are cast.",
                 "focusQuestion": "Which sequencing choices are necessary for a vote to be accepted rather than simply held?"
             },
             {
                 "nodeId": "MilitantPMC",
                 "title": "Security Authority Outside a Unified State",
                 "perspectiveLabel": "Rival political and armed institutions",
-                "perspectiveType": "local",
+                "perspectiveType": "institutional",
                 "conceptInFocus": "Sovereignty",
                 "relatedTimelineDate": "2020-10-23",
-                "narration": "Libya has two rival administrations. The Government of National Unity in Tripoli holds UN recognition, and Chatham House analyst Tim Eaton describes it as controlled by the Dabaiba family [3]. The Government of National Stability sits in Benghazi, aligned with Khalifa Haftar's Libyan Arab Armed Forces [3]. A ceasefire agreement dates from 23 October 2020, and a joint military commission agreed in 2021 on a plan for foreign forces and mercenaries to withdraw [4].\n\nSix years later, the Security Council was still calling for the ceasefire to be implemented in full and for all institutions to be reunified [4]. That gap separates sovereignty on paper from control on the ground. One government has recognition, yet neither commands the whole country. State-affiliated armed groups also draw on public resources: their diesel consumption rose 1,527 percent between 2021 and 2024 [3]. Where rival forces answer to rival administrations, an election law reaches only as far as each camp allows.",
+                "narration": "Libya remains split between two rival administrations [3]. The Government of National Unity in Tripoli holds UN recognition, while Chatham House analyst Tim Eaton describes it as controlled by the Dabaiba family and says Benghazi's rival Government of National Stability is aligned with Khalifa Haftar's Libyan Arab Armed Forces [3]. A ceasefire dates from 23 October 2020, and a joint military commission agreed in 2021 on a plan for foreign forces and mercenaries to withdraw [4].\n\nSix years later, the Security Council was still calling for full ceasefire implementation and institutional reunification [4]. Recognition sits with one government, yet neither commands the country. Meanwhile, Chatham House cites audit findings that diesel consumption by state-affiliated armed groups jumped 1,527 percent from 2021 to 2024 [3]. Where armed institutions answer to rival camps, an election law reaches only as far as each side permits.",
                 "focusQuestion": "What security guarantees would allow institutions and candidates to participate without coercive advantage?"
             },
             {
@@ -886,7 +886,7 @@ export const MENA_CASES_2026 = [
                 "perspectiveType": "independent",
                 "conceptInFocus": "Interdependence",
                 "relatedTimelineDate": "2026-04-14",
-                "narration": "Oil money is one area where Libya's rival camps have cooperated. In 2022 the United Arab Emirates brokered a change of leadership at the National Oil Corporation between the Haftar and Dabaiba families [3]. Fuel imports then more than doubled from their 2021 level, while the number of foreign suppliers fell from 17 to six [3].\n\nPart of Libya's wealth is also governed from outside the country. The Libyan Investment Authority holds assets frozen under UN sanctions, and Security Council Resolution 2819 of 14 April 2026 adjusted the rules for reinvesting its frozen cash [2]. Chatham House analyst Tim Eaton argues that a unified government built on an elite bargain could worsen corruption by reducing existing constraints on state spending [3]. He notes that a US-mediated unified budget agreed in April 2026 had not been meaningfully implemented by July [3]. Unification gains public value only when it comes with spending rules that citizens and auditors can check.",
+                "narration": "Oil spending is one area where Chatham House reports Libya's rival camps cooperated [3]. According to Chatham House, a 2022 leadership change at the National Oil Corporation brokered between the Haftar and Dabaiba families by the United Arab Emirates preceded fuel imports more than doubling from 2021 while foreign suppliers fell from 17 to six [3].\n\nPart of Libya's wealth also sits under international oversight. The Libyan Investment Authority holds assets frozen under UN sanctions, and Security Council Resolution 2819 of 14 April 2026 adjusted exemptions governing those frozen reserves [2]. Chatham House analyst Tim Eaton argues that elite power-sharing could worsen corruption by removing spending restraints, noting a US-mediated April 2026 unified budget was not meaningfully implemented by July [3]. Unification helps citizens only when enforceable fiscal audits match political office.",
                 "focusQuestion": "Which transparent fiscal rules would make institutional unification materially valuable to the public?"
             }
         ],
@@ -900,7 +900,7 @@ export const MENA_CASES_2026 = [
             "peace-and-conflict",
             "development-and-sustainability"
         ],
-        "background": "Libya's dispute is over who may govern and who may spend. The country is split between a Government of National Unity in Tripoli, recognized by the United Nations (UN), and a Government of National Stability in Benghazi [3]. The Benghazi administration is aligned with Khalifa Haftar's Libyan Arab Armed Forces [3]. A ceasefire agreement of 23 October 2020 has not been fully implemented [4].\n\nThe UN Security Council's sanctions committee on Libya dates from Resolution 1970 in 2011, and its measures include a freeze on assets of the Libyan Investment Authority [2]. A freeze blocks an owner from moving or selling assets until the Council allows it. A 2022 leadership change at the National Oil Corporation, brokered between the Haftar and Dabaiba families, was followed by a fuel import bill above $9 billion by 2024 [3].\n\nThe UN Support Mission in Libya (UNSMIL) now facilitates a roadmap toward national elections. Its Structured Dialogue gathers Libyan participants to recommend ways past a stalemate over election laws and the electoral commission's board [1]. On 30 October 2026 the Council extended UNSMIL's mandate to 31 October 2027 [4].",
+        "background": "Libya's dispute centers on who may govern and control state spending. According to Chatham House, the country is split between a UN-recognized Government of National Unity in Tripoli and a rival Government of National Stability in Benghazi aligned with Khalifa Haftar's Libyan Arab Armed Forces [3]. A ceasefire agreement signed on 23 October 2020 has not been fully implemented [4].\n\nUN Security Council sanctions on Libya date from Resolution 1970 in 2011 and include an assets freeze—blocking movement or sale without authorization—covering the Libyan Investment Authority [2]. Chatham House reports that a 2022 leadership change at the National Oil Corporation brokered between the Haftar and Dabaiba families was followed by a fuel import bill exceeding $9 billion by 2024 [3].\n\nThe UN Support Mission in Libya (UNSMIL) facilitates a roadmap toward national elections [1, 4]. February 2026 Structured Dialogue talks offered recommendations on electoral laws and the election commission board, and on 30 October 2026 the Security Council extended UNSMIL's mandate to 31 October 2027 [1, 4].",
         "backgroundSources": [
             "https://www.chathamhouse.org/2026/07/why-us-plans-power-sharing-libya-will-not-work",
             "https://unsmil.unmissions.org/en/news/security-council-renews-mandate-of-united-nations-support-mission-in-libya-for-one-year",
@@ -915,7 +915,7 @@ export const MENA_CASES_2026 = [
             },
             {
                 "term": "High National Elections Commission (HNEC)",
-                "definition": "Libya's national election body. Completing its board was one of the obstacles to holding elections discussed in the Structured Dialogue talks reported on 2 August 2026.",
+                "definition": "Libya's national election body. Completing its board was one of the obstacles to holding elections discussed in five days of Structured Dialogue talks reported on 8 February 2026.",
                 "sourceUrl": "https://libyaobserver.ly/news/un-led-talks-libya-seek-ways-break-electoral-deadlock"
             },
             {
@@ -925,7 +925,7 @@ export const MENA_CASES_2026 = [
             },
             {
                 "term": "Assets freeze",
-                "definition": "A sanction that blocks an owner from moving or using assets. Resolution 2819 clarified exemptions covering salaries paid by the Libyan Investment Authority, reinvestment of its frozen cash reserves and changes of custodian for its frozen assets.",
+                "definition": "A sanction that blocks an owner from moving or using assets. Resolution 2819 clarifies exemptions covering salaries paid by the Libyan Investment Authority, further elaborates rules on reinvesting its frozen cash reserves, and introduces a new exemption allowing changes of custodian.",
                 "sourceUrl": "https://main.un.org/securitycouncil/en/content/sres28192026"
             },
             {
@@ -952,8 +952,8 @@ export const MENA_CASES_2026 = [
             {
                 "claimBy": "Mediators experienced in Libyan negotiations (as characterized by Tim Eaton, Chatham House, 20 July 2026)",
                 "claim": "Mediators question what the alternative is to an elite bargain between the Haftars and the Dabaibas.",
-                "counterBy": "Opponents of the deal (as described by Chatham House, 20 July 2026)",
-                "counterClaim": "The plan looks like a return of family rule and a way to legitimize the two rival families, while offering ordinary Libyans more of the same.",
+                "counterBy": "Tim Eaton, summarizing deal opponents and ordinary-Libyan sentiment (Chatham House, 20 July 2026)",
+                "counterClaim": "For its opponents, the deal looks like a return of family rule and a way to legitimize the two rival families; Eaton adds it also appears to be more of the same for ordinary Libyans without governance reform.",
                 "sourceUrls": [
                     "https://www.chathamhouse.org/2026/07/why-us-plans-power-sharing-libya-will-not-work"
                 ]
@@ -971,9 +971,9 @@ export const MENA_CASES_2026 = [
                 "sourceUrl": "https://main.un.org/securitycouncil/en/content/sres28192026"
             },
             {
-                "date": "No date set as of 2 August 2026",
-                "indicator": "The Structured Dialogue discussed a stalemate over the electoral framework and the incomplete board of the High National Elections Commission. Check whether the board is completed and whether an agreed electoral law is announced.",
-                "sourceUrl": "https://libyaobserver.ly/news/un-led-talks-libya-seek-ways-break-electoral-deadlock"
+                "date": "Next UNSMIL / Security Council reporting (following Resolution 2835 of 30 October 2026)",
+                "indicator": "Resolution 2835 called on Libyan institutions to negotiate without preconditions or delay toward national presidential and parliamentary elections and a unified government, while expanding UNSMIL engagement in Benghazi, Sabha, and Sirte. Check subsequent UNSMIL briefings on whether electoral laws and HNEC board appointments are finalized.",
+                "sourceUrl": "https://unsmil.unmissions.org/en/news/security-council-renews-mandate-of-united-nations-support-mission-in-libya-for-one-year"
             },
             {
                 "date": "Agreed April 2026 (not meaningfully implemented as of July 2026)",
@@ -1015,10 +1015,10 @@ export const MENA_CASES_2026 = [
             }
         ],
         "conceptLens": {
-            "power": "The rival families' lever is control of spending: a 2022 deal over the National Oil Corporation's leadership preceded a fuel import bill above $9 billion. The UN can convene talks and adjust sanctions, but its dialogue produces recommendations that Libyan institutions must choose to adopt.",
+            "power": "Chatham House notes that rival families leverage spending control: a 2022 deal over the National Oil Corporation's leadership preceded a fuel import bill above $9 billion. The UN can convene talks and adjust sanctions, but its dialogue produces recommendations that Libyan institutions must choose to adopt.",
             "sovereignty": "The Government of National Unity holds UN recognition, while a rival administration sits in Benghazi aligned with its own armed forces. The Security Council still calls for foreign forces and mercenaries to withdraw and urges other states to refrain from interference.",
             "legitimacy": "UN recognition gives one government standing abroad, but the Council continues to call for national elections. Opponents of a US-backed deal say it would amount to a return of family rule that legitimizes two rival families.",
-            "interdependence": "Libyan public wealth is managed partly beyond Libya's borders: the Security Council sets rules for the Libyan Investment Authority's frozen assets, foreign companies supply the country's imported fuel, and the United Arab Emirates and United States have brokered deals between its factions."
+            "interdependence": "Libyan public wealth is managed partly beyond Libya's borders: the Security Council sets rules for the Libyan Investment Authority's frozen assets, foreign companies supply imported fuel, and Chatham House reports external brokerage by the United Arab Emirates and United States."
         },
         "essayBuilder": {
             "prompt": "Examine the claim that control of natural-resource revenue is a more important source of power than formal political office.",
@@ -1044,18 +1044,18 @@ export const MENA_CASES_2026 = [
             },
             {
                 "date": "2022",
-                "label": "A change of leadership at the National Oil Corporation is brokered between the Haftar and Dabaiba families by the United Arab Emirates.",
+                "label": "Chatham House reports a leadership change at the National Oil Corporation brokered between the Haftar and Dabaiba families by the United Arab Emirates.",
                 "sourceUrl": "https://www.chathamhouse.org/2026/07/why-us-plans-power-sharing-libya-will-not-work"
+            },
+            {
+                "date": "2026-02-08",
+                "label": "The Libya Observer reports five days of UN-backed Structured Dialogue talks on electoral laws and the HNEC board impasse.",
+                "sourceUrl": "https://libyaobserver.ly/news/un-led-talks-libya-seek-ways-break-electoral-deadlock"
             },
             {
                 "date": "2026-04-14",
                 "label": "The Security Council adopts Resolution 2819, adjusting asset-freeze exemptions for the Libyan Investment Authority.",
                 "sourceUrl": "https://main.un.org/securitycouncil/en/content/sres28192026"
-            },
-            {
-                "date": "2026-08-02",
-                "label": "The Libya Observer reports the close of five days of UN-backed Structured Dialogue talks on the electoral deadlock.",
-                "sourceUrl": "https://libyaobserver.ly/news/un-led-talks-libya-seek-ways-break-electoral-deadlock"
             },
             {
                 "date": "2026-10-30",

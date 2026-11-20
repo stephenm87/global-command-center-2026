@@ -29,7 +29,7 @@ export const ASIA_PACIFIC_CASES_2026 = [
             "AsiaPacific",
             "UN_OPEC"
         ],
-        "statusSummary": "OCHA reported on 13 July 2026 that more than 16 million people needed humanitarian assistance across Myanmar and nearly 3.8 million were displaced. Armed hostilities, movement restrictions, and administrative requirements continued to block aid, while donors had supplied 43 per cent of the US$890 million needed. At the November 2026 ASEAN Summit in Manila, Southeast Asian leaders again denounced ongoing violence and extended the bloc's summit ban on Myanmar's leader.",
+        "statusSummary": "OCHA reported on 13 July 2026 that more than 16 million people needed humanitarian assistance across Myanmar and nearly 3.8 million were displaced. Armed hostilities, movement restrictions, and administrative requirements continued to block aid, while donors had supplied 43 per cent of the US$890 million needed. At the November 2026 ASEAN Summit in Manila, Southeast Asian leaders denounced ongoing violence and extended the bloc's summit ban on Myanmar's leader.",
         "whyItMatters": "Myanmar shows how competing claims to authority, territorial fragmentation, and restricted humanitarian access can weaken both domestic governance and regional diplomacy.",
         "updatedAt": "2026-11-17",
         "confidence": "high",
@@ -50,25 +50,25 @@ export const ASIA_PACIFIC_CASES_2026 = [
                     "label": "Naypyidaw",
                     "latitude": 19.745,
                     "longitude": 96.1297,
-                    "role": "Seat of Myanmar's government and target of ASEAN's extended summit representation ban"
+                    "role": "Seat of Myanmar's military-led administration, whose leader ASEAN bars from its summits"
                 },
                 {
                     "label": "Pakokku",
                     "latitude": 21.3349,
                     "longitude": 95.0844,
-                    "role": "Magway Region town where local reporting documented 150,000 displaced people in urgent need of food, water, medicine, and shelter"
+                    "role": "Magway Region district where local aid workers estimated 150,000 displaced villagers in urgent need of food, medicine, and shelter"
                 },
                 {
                     "label": "Yangon",
                     "latitude": 16.8053,
                     "longitude": 96.1561,
-                    "role": "Primary United Nations and OCHA Myanmar coordination hub tracking nationwide humanitarian access and funding gaps"
+                    "role": "Location of the UN country team office that publishes OCHA's humanitarian updates"
                 }
             ]
         },
         "sources": [
             {
-                "title": "150,000 People Displaced by Fighting in Pakokku in Urgent Need",
+                "title": "150,000 People Displaced by Fighting in Pakokku in ‘Urgent Need’",
                 "publisher": "The Irrawaddy",
                 "publishedAt": "2026-07-02",
                 "url": "https://www.irrawaddy.com/news/burma/150000-people-displaced-by-fighting-in-pakokku-in-urgent-need.html",
@@ -97,8 +97,8 @@ export const ASIA_PACIFIC_CASES_2026 = [
                 "publishedAt": "2026-06-22",
                 "url": "https://bangkok.ohchr.org/myanmar",
                 "perspectiveType": "independent",
-                "perspective": "Independent human-rights monitoring of all major conflict actors",
-                "supports": "Civilian protection, accountability, inclusive governance, and limits on humanitarian access"
+                "perspective": "UN Human Rights Office reporting and Myanmar updates (including the 26 February 2026 annual update and June 2026 report abstract)",
+                "supports": "2021 coup context, 2025 record year for child deaths from airstrikes (February 2026 update), civil-society and pro-democracy support, inclusive governance, and transitional justice"
             }
         ],
         "supplementalSources": [
@@ -128,7 +128,7 @@ export const ASIA_PACIFIC_CASES_2026 = [
                 "perspectiveType": "local",
                 "conceptInFocus": "Power",
                 "relatedTimelineDate": "2026-05",
-                "narration": "Nearly 3.8 million people are displaced across Myanmar, many of them more than once [2]. In Magway Region alone, recent hostilities uprooted over 100,000 people across four townships, including more than 80,000 in Pakokku since mid-May 2026 [2]. Counts remain approximate as families keep fleeing, and a local observer noted villages that once hosted displaced people were later forced to run [1].\n\nEach move narrows surviving options. In early June, about 900 people from Sagaing crossed into India, which imposed movement curbs on 9 June [2]. In Kayah and Shan states, OCHA noted mounting pressure on families to leave collective shelters, risking unsafe returns [2]. Because repeated flight strips away host support and cross-border refuge, each displacement leaves civilians with less leverage over where they live.",
+                "narration": "Nearly 3.8 million people are displaced across Myanmar, many of them more than once [2]. In Magway Region alone, recent hostilities uprooted over 100,000 people across four townships, including more than 80,000 in Pakokku since mid-May 2026 [2]. Counts remain approximate as families keep fleeing, and a local observer noted villages that once hosted displaced people were later forced to run [1].\n\nEach move narrows surviving options. In early June, about 900 people from Sagaing crossed into India, which imposed movement curbs on 9 June [2]. In Kayah and Shan states, OCHA noted mounting pressure on families to leave collective shelters, risking unsafe returns [2]. When host communities empty and neighbouring borders tighten, repeated flight leaves civilians with fewer safe places to turn.",
                 "focusQuestion": "How does repeated displacement change communities' political and economic choices?"
             },
             {
@@ -138,7 +138,7 @@ export const ASIA_PACIFIC_CASES_2026 = [
                 "perspectiveType": "institutional",
                 "conceptInFocus": "Sovereignty",
                 "relatedTimelineDate": "2021-02-01",
-                "narration": "Since the military seized power on 1 February 2021, armed resistance has grown into a nationwide civil war [3, 4]. Aid agencies report that hostilities, movement restrictions, and administrative requirements—the official approvals authorities demand before supplies can move—block relief [2]. Fuel rationing and high transport costs worsen delays in remote areas [2].\n\nThe shortfall shows in delivery. By end-March 2026, partners reached 1.6 million people, about one-third of the 4.9 million targeted [2]. Shelter aid hit only 3 per cent of its annual goal, and donors supplied 43 per cent of the US$890 million needed [2]. Where legal standing (de jure sovereignty) and territorial control (de facto sovereignty) sit with rival forces, every delivery depends on more than one gatekeeper.",
+                "narration": "Since the military seized power on 1 February 2021, armed resistance has grown into a civil war across much of the country [3, 4]. Aid agencies report that hostilities, movement restrictions, and administrative requirements—the official approvals authorities demand before supplies can move—block relief [2]. Fuel rationing and high transport costs worsen delays in remote areas [2].\n\nThe shortfall shows in delivery. By end-March 2026, partners reached 1.6 million people, about one-third of the 4.9 million targeted [2]. Shelter aid hit only 3 per cent of its annual goal, and donors supplied 43 per cent of the US$890 million needed [2]. Where legal standing (de jure sovereignty) and territorial control (de facto sovereignty) sit with rival forces, every delivery depends on more than one gatekeeper.",
                 "focusQuestion": "How can humanitarian actors remain neutral while negotiating access with competing authorities?"
             },
             {
@@ -162,7 +162,7 @@ export const ASIA_PACIFIC_CASES_2026 = [
             "peace-and-conflict",
             "rights-and-justice"
         ],
-        "background": "Myanmar's military seized power on 1 February 2021 from the elected government led by Aung San Suu Kyi [3, 4]. Security forces crushed the pro-democracy protests that followed, and armed resistance grew into a civil war across much of the country [4]. In April 2021, the Association of Southeast Asian Nations (ASEAN) approved the Five-Point Consensus, a peace plan meant to ease the violence [4].\n\nAuthority has since fragmented. The military organized elections in December 2025 and January 2026, which were widely seen as rigged, and former army chief Min Aung Hlaing assumed the presidency [3, 4]. Anti-regime organizations have meanwhile set up regional interim administrations, including the Magwe Federal Unit Government in March 2026, as part of efforts to build a federal democratic system [1].\n\nCivilians carry the cost. The UN human rights office called 2025 a record year for child deaths, particularly from airstrikes [3]. By July 2026, more than 16 million people needed humanitarian assistance, meaning life-saving aid such as food, shelter, and health care, and nearly 3.8 million were displaced [2].",
+        "background": "Myanmar's military seized power on 1 February 2021 from the elected government led by Aung San Suu Kyi [3, 4]. Widespread pro-democracy protests were brutally quashed, and armed resistance grew into a civil war across much of the country [4]. In April 2021, the Association of Southeast Asian Nations (ASEAN) approved the Five-Point Consensus, a peace plan meant to ease the violence [4].\n\nAuthority has since fragmented. The military organized elections in December 2025 and January 2026—which Al Jazeera says were widely seen as rigged—and former army chief Min Aung Hlaing assumed the presidency [4]. Anti-regime organizations set up regional interim administrations, including the Magwe Federal Unit Government in March 2026, toward a federal democratic system [1].\n\nCivilians carry the cost. In a February 2026 update, the UN Human Rights Office called 2025 a record year for child deaths from airstrikes [3]. By July 2026, OCHA counted over 16 million people needing humanitarian aid—life-saving food, shelter, and health care—and nearly 3.8 million displaced [2].",
         "backgroundSources": [
             "https://bangkok.ohchr.org/myanmar",
             "https://www.aljazeera.com/news/2026/11/16/asean-china-fall-short-of-agreeing-on-south-china-sea-code",
@@ -200,18 +200,18 @@ export const ASIA_PACIFIC_CASES_2026 = [
             {
                 "claimBy": "ASEAN leaders (Manila summit, as reported on 16 November 2026)",
                 "claim": "Myanmar has failed to comply with the 2021 peace plan, so its leader stays barred from summits. The plan remains \"the main reference for addressing the political crisis in Myanmar\".",
-                "counterBy": "UN Human Rights Office (report launched 22 June 2026)",
-                "counterClaim": "The office launched its June 2026 report under the headline that foreign indifference compounds the suffering of civilians. The report also outlines actions the international community can take to support pro-democracy and civil-society efforts.",
+                "counterBy": "UN Human Rights Office (different emphasis, report launched 22 June 2026)",
+                "counterClaim": "Rather than focusing on summit diplomacy, the office titled its June 2026 report around how foreign indifference compounds civilian suffering and outlined steps to back pro-democracy and civil-society actors.",
                 "sourceUrls": [
                     "https://www.aljazeera.com/news/2026/11/16/asean-china-fall-short-of-agreeing-on-south-china-sea-code",
                     "https://bangkok.ohchr.org/myanmar"
                 ]
             },
             {
-                "claimBy": "Local aid workers (as reported by The Irrawaddy, 2 July 2026)",
-                "claim": "An estimated 150,000 villagers displaced by fighting in Pakokku District urgently need food, medicine and shelter. The exact number is hard to establish because people keep moving.",
-                "counterBy": "OCHA (Humanitarian Update No. 52, 13 July 2026)",
-                "counterClaim": "Recent hostilities in Magway displaced more than 100,000 people across Myaing, Pakokku, Pauk and Saw townships, including more than 80,000 in Pakokku since mid-May.",
+                "claimBy": "Local aid workers and The Irrawaddy (Pakokku District, five townships, 2 July 2026)",
+                "claim": "Local aid workers estimated 150,000 villagers displaced by fighting in Pakokku District urgently need food, medicine and shelter. The Irrawaddy adds the exact district figure is hard to establish because families keep moving.",
+                "counterBy": "OCHA (Humanitarian Update No. 52, township-level window, 13 July 2026)",
+                "counterClaim": "Measuring a narrower timeframe across four Magway townships, OCHA reported over 100,000 displaced recently—including more than 80,000 in Pakokku Township since mid-May 2026.",
                 "sourceUrls": [
                     "https://www.irrawaddy.com/news/burma/150000-people-displaced-by-fighting-in-pakokku-in-urgent-need.html",
                     "https://myanmar.un.org/en/319232-myanmar-humanitarian-update-no-52"
@@ -260,7 +260,7 @@ export const ASIA_PACIFIC_CASES_2026 = [
             {
                 "stage": "The formal decision",
                 "rating": "MIXED",
-                "evidence": "ASEAN leaders extended the ban on Myanmar's leader attending summits, and Myanmar's turn as chair passed to the Philippines. The bloc did not discourage Min Aung Hlaing's official visits to individual member states.",
+                "evidence": "ASEAN leaders extended the ban on Myanmar's leader attending summits. Earlier, Myanmar had also lost its 2026 turn as chair, which passed to the Philippines. Meanwhile, the bloc did not discourage Min Aung Hlaing's official visits to individual member states.",
                 "sourceUrls": [
                     "https://www.aljazeera.com/news/2026/11/16/asean-china-fall-short-of-agreeing-on-south-china-sea-code"
                 ]
@@ -277,14 +277,14 @@ export const ASIA_PACIFIC_CASES_2026 = [
         ],
         "conceptLens": {
             "power": "Whoever controls roads and approvals decides where aid can go: OCHA says hostilities, movement restrictions and administrative requirements block access. Donors hold a second lever, having supplied 43 per cent of the US$890 million required.",
-            "sovereignty": "Authority on paper and control on the ground have separated. The military launched offensives in late 2025 to regain lost territory in Magway, where anti-regime groups set up an interim administration in March 2026.",
-            "legitimacy": "Min Aung Hlaing took the presidency after elections widely seen as rigged, and ASEAN still bars him from its summits. The interim Magwe administration claims a federal democratic future but reports great difficulty delivering aid.",
-            "interdependence": "People fleeing the fighting cross into India and gather along the Thai border, and ASEAN treats the crisis as a regional matter. The aid response depends on foreign donors and is slowed by fuel shortages linked to global market pressures."
+            "sovereignty": "Authority on paper and control on the ground have separated. The military intensified offensives in late 2025 to regain lost territory in Magway, where anti-regime groups set up an interim administration in March 2026.",
+            "legitimacy": "Min Aung Hlaing took the presidency after elections that Al Jazeera says were widely seen as rigged, and ASEAN still bars him from its summits. The interim Magwe administration claims a federal democratic future but reports great difficulty delivering aid.",
+            "interdependence": "People fleeing the fighting cross into India and gather along the Thai border, and ASEAN treats the crisis as a regional matter. The aid response depends on donor support and is slowed by fuel rationing linked to global market pressures alongside domestic supply and distribution constraints."
         },
         "essayBuilder": {
             "prompt": "Evaluate the effectiveness of regional organizations in responding to armed conflict inside a member state.",
             "claim": "ASEAN has limited the regional standing of Myanmar's rulers, but it has not changed conditions for civilians.",
-            "evidence": "ASEAN approved the Five-Point Consensus in April 2021. In November 2026, its leaders extended the ban on Myanmar's leader attending summits, saying the country had failed to comply, and Myanmar's turn as chair passed to the Philippines. Meanwhile, OCHA counted more than 16 million people in need and nearly 3.8 million displaced in July 2026.",
+            "evidence": "ASEAN approved the Five-Point Consensus in April 2021. In November 2026, its leaders extended the ban on Myanmar's leader attending summits, saying the country had failed to comply; Myanmar had also lost its 2026 turn as chair, which passed to the Philippines. Meanwhile, OCHA counted more than 16 million people in need and nearly 3.8 million displaced in July 2026.",
             "counterClaim": "The ban still carries a diplomatic cost, because only lower-level career diplomats may represent Myanmar at summits. Its effect is reduced, however, because ASEAN has not discouraged Min Aung Hlaing's official visits to individual member states.",
             "judgment": "On balance, ASEAN has shaped who is treated as a rightful representative more than it has shaped conduct on the ground. However, the evidence covers one bloc and one conflict, so it shows the limits of diplomatic exclusion used alone rather than a rule about all regional organizations.",
             "sourceUrls": [
@@ -305,7 +305,7 @@ export const ASIA_PACIFIC_CASES_2026 = [
             },
             {
                 "date": "2025-12",
-                "label": "Elections under military control begin and run into January 2026; Min Aung Hlaing later assumes the presidency.",
+                "label": "Elections begin in December 2025 and conclude in January 2026; former military chief Min Aung Hlaing later assumes the presidency.",
                 "sourceUrl": "https://www.aljazeera.com/news/2026/11/16/asean-china-fall-short-of-agreeing-on-south-china-sea-code"
             },
             {
