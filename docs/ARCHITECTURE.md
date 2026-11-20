@@ -25,7 +25,7 @@ Located in `netlify/functions`:
 
 The frontend reads `public-intel` without authentication. It uses `src/api.js` to attach the current Supabase access token only to custom search, Firecrawl, and AI-summary requests. Static forecast, linked-reference, verified-case, and historical assets also remain public. If cached current items are unavailable, the interface identifies the precise state and exposes a direct public-source recovery action instead of rendering an unexplained zero.
 
-Provider calls have explicit deadlines. Netlify Blobs provides cross-instance persistence for public snapshots, and Netlify CDN caching prevents visitor volume from mapping directly to Serper usage. Authenticated custom-search, Firecrawl, and AI responses remain private and are not placed in the shared CDN cache. Durable cross-instance rate limiting for those authenticated endpoints remains separate work.
+Provider calls have explicit deadlines. Netlify Blobs provides cross-instance persistence for public snapshots, and Netlify CDN caching shields free institutional feeds (UN News RSS, optional ReliefWeb API v2, and best-effort GDELT) and optional Serper queries from visitor traffic. Authenticated custom-search, Firecrawl, and AI responses remain private and are not placed in the shared CDN cache. Durable cross-instance rate limiting for those authenticated endpoints remains separate work.
 
 ## Data Layer
 - **Supabase**: Handles passwordless OTP authentication and stores user cloud preferences.

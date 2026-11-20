@@ -1,4 +1,11 @@
 const { normalizeProviderArticle } = require('./intel-normalization');
+const {
+    GDELT_FEED_QUERIES,
+    INSTITUTIONAL_RSS_FEEDS,
+    fetchGdeltQuery,
+    fetchReliefWebReports,
+    fetchRssFeed,
+} = require('./free-feeds');
 
 const SNAPSHOT_TTL_MS = 6 * 60 * 60 * 1000;
 const REQUEST_TIMEOUT_MS = 12000;
@@ -6,8 +13,10 @@ const MAX_SNAPSHOT_ITEMS = 20;
 const MAX_PER_REGION = 4;
 const MAX_PER_ISSUE = 4;
 const MAX_PER_DOMAIN = 2;
+const MAX_PER_INSTITUTIONAL_HUB = 12;
 const MAX_PER_TOPIC_CLUSTER = 2;
 const MAX_PER_SOURCE_ROLE = 8;
+const MAX_PER_INSTITUTIONAL_ROLE = 14;
 const MAX_DISCOVERY_SOURCES = 4;
 
 const TARGET_REGIONS = Object.freeze([
@@ -317,8 +326,8 @@ function getTopicCluster(text, region, issue) {
     return `${region}:${issue}:${titleTokens.join('-') || 'general'}`;
 }
 
-function assessArticle(item, query) {
-    const normalized = normalizeProviderArticle(item, 'serper-public-cache');
+function assessArticle(item, query, { scraperSource = 'serper-public-cache', isInstitutionalHub = false } = {}) {
+    const normalized = normalizeProviderArticle(item, scraperSource);
     if (!normalized) return null;
 
     const title = normalized['Entity/Subject'];
@@ -345,8 +354,8 @@ function assessArticle(item, query) {
 
     if (relevanceScore < 16) return null;
 
-    const usesRegionalFallback = parseFloat(normalized.Latitude) === 20
-        && parseFloat(normalized.Longitude) === 0;
+    const usesRegionalFallback = normalized._coordPrecision === 'fallback';
+    const locationPrecision = normalized._coordPrecision === 'named-place' ? 'named-place' : 'regional';
     const [fallbackLat, fallbackLng] = query.fallbackCoords;
     const sourceRoleLabel = SOURCE_ROLE_LABELS[sourceRole];
     const selectionReason = `Selected to strengthen ${region} and ${issue} coverage; source role: ${sourceRoleLabel.toLowerCase()}. Automated relevance score ${relevanceScore}/100.`;
@@ -365,10 +374,12 @@ function assessArticle(item, query) {
             queryId: query.id,
             selectionReason,
             relevanceScore,
-            locationPrecision: usesRegionalFallback ? 'regional' : 'named-place',
+            locationPrecision,
+            ...(normalized._matchedPlace ? { matchedPlace: normalized._matchedPlace } : {}),
         },
         _publisherDomain: domain,
         _topicCluster: getTopicCluster(combined, region, issue),
+        _isInstitutionalHub: Boolean(isInstitutionalHub),
     };
 }
 
@@ -410,11 +421,15 @@ function selectDiverseArticles(items, limit = MAX_SNAPSHOT_ITEMS) {
         const domain = item._publisherDomain || getPublisherDomain(item.url);
         const topic = item._topicCluster || `${region}:${issue}:${item['Entity/Subject']}`;
         const sourceRole = item.coverage?.sourceRole || 'discovery';
+        const maxDomain = item._isInstitutionalHub ? MAX_PER_INSTITUTIONAL_HUB : MAX_PER_DOMAIN;
+        const maxRole = (sourceRole === 'institutional' && item._isInstitutionalHub)
+            ? MAX_PER_INSTITUTIONAL_ROLE
+            : MAX_PER_SOURCE_ROLE;
         if ((regionCounts.get(region) || 0) >= MAX_PER_REGION) return false;
         if ((issueCounts.get(issue) || 0) >= MAX_PER_ISSUE) return false;
-        if ((domainCounts.get(domain) || 0) >= MAX_PER_DOMAIN) return false;
+        if ((domainCounts.get(domain) || 0) >= maxDomain) return false;
         if ((topicCounts.get(topic) || 0) >= MAX_PER_TOPIC_CLUSTER) return false;
-        if ((sourceRoleCounts.get(sourceRole) || 0) >= MAX_PER_SOURCE_ROLE) return false;
+        if ((sourceRoleCounts.get(sourceRole) || 0) >= maxRole) return false;
         if (sourceRole === 'discovery' && discoveryCount >= MAX_DISCOVERY_SOURCES) return false;
 
         selected.push(item);
@@ -449,8 +464,33 @@ function selectDiverseArticles(items, limit = MAX_SNAPSHOT_ITEMS) {
         trySelect(item);
     }
 
+    const coordCounts = new Map();
     return selected.slice(0, limit).map(item => {
-        const { _publisherDomain, _topicCluster, ...publicItem } = item;
+        const {
+            _publisherDomain,
+            _topicCluster,
+            _isInstitutionalHub,
+            _coordPrecision,
+            _matchedPlace,
+            ...publicItem
+        } = item;
+        const lat = Number.parseFloat(publicItem.Latitude);
+        const lng = Number.parseFloat(publicItem.Longitude);
+        if (Number.isFinite(lat) && Number.isFinite(lng)) {
+            const coordKey = `${lat.toFixed(1)},${lng.toFixed(1)}`;
+            const seenCount = coordCounts.get(coordKey) || 0;
+            coordCounts.set(coordKey, seenCount + 1);
+            if (seenCount > 0) {
+                const angle = (seenCount * 2.399963229728653); // golden angle for even spread
+                const radius = 1.4 + Math.min(seenCount, 4) * 0.35;
+                const nextLat = Math.max(-75, Math.min(75, lat + Math.sin(angle) * radius));
+                let nextLng = lng + Math.cos(angle) * radius;
+                if (nextLng > 180) nextLng -= 360;
+                if (nextLng < -180) nextLng += 360;
+                publicItem.Latitude = nextLat.toFixed(2);
+                publicItem.Longitude = nextLng.toFixed(2);
+            }
+        }
         return publicItem;
     });
 }
@@ -492,12 +532,34 @@ function buildCoverageSummary(items, { candidateCount = 0, rejectedCount = 0 } =
     };
 }
 
+const DEFAULT_PUBLIC_PROVIDER = 'Institutional & Open Feeds';
+const RELIEFWEB_DEFAULT_QUERY = Object.freeze({
+    id: 'reliefweb-latest',
+    region: 'Global / Transnational',
+    issueHints: ['Health & Human Security', 'Security & Diplomacy', 'Climate & Resources'],
+    fallbackCoords: [12.0, 20.0],
+});
+
 async function buildPublicSnapshot({
     apiKey = process.env.SERPER_API_KEY,
+    enableSerper = process.env.ENABLE_SERPER_PUBLIC_FEED === 'true',
+    reliefwebAppname = process.env.RELIEFWEB_APPNAME || '',
+    includeFreeFeeds = true,
     fetchImpl = fetch,
     now = new Date(),
 } = {}) {
-    if (!apiKey) {
+    const useSerper = Boolean(enableSerper && apiKey);
+    const activeProviders = [];
+    const rawItems = [];
+    const assessedItems = [];
+    let queryCount = 0;
+    let coreFailedCount = 0;
+    let totalFailedCount = 0;
+    const coreRejected = [];
+    const serperRejected = [];
+    const providerResults = [];
+
+    if (!includeFreeFeeds && !useSerper) {
         const coverage = buildCoverageSummary([]);
         return {
             items: [],
@@ -515,26 +577,154 @@ async function buildPublicSnapshot({
         };
     }
 
-    const results = await Promise.allSettled(FIXED_QUERIES.map(query =>
-        fetchQuery(fetchImpl, query.query, apiKey, query.results)
-    ));
-    const rejected = results.filter(result => result.status === 'rejected').map(result => result.reason);
-    const failures = rejected.length;
-    const errorCounts = countBy(rejected, err => err?.errorCode || 'unknown-error');
+    if (includeFreeFeeds) {
+        const rssSettled = await Promise.allSettled(
+            INSTITUTIONAL_RSS_FEEDS.map(feed => fetchRssFeed(fetchImpl, feed, { now }))
+        );
+        queryCount += INSTITUTIONAL_RSS_FEEDS.length;
+        let rssSuccessCount = 0;
+        let rssItemsCount = 0;
+        rssSettled.forEach((result, index) => {
+            if (result.status === 'fulfilled') {
+                rssSuccessCount += 1;
+                const feed = INSTITUTIONAL_RSS_FEEDS[index];
+                rawItems.push(...result.value);
+                for (const item of result.value) {
+                    const assessed = assessArticle(item, feed, {
+                        scraperSource: 'institutional-rss',
+                        isInstitutionalHub: true,
+                    });
+                    if (assessed) {
+                        assessedItems.push(assessed);
+                        rssItemsCount += 1;
+                    }
+                }
+            } else {
+                coreFailedCount += 1;
+                totalFailedCount += 1;
+                coreRejected.push(result.reason);
+            }
+        });
+        if (rssSuccessCount > 0) activeProviders.push('UN News RSS');
+        providerResults.push({
+            provider: 'UN News RSS',
+            status: rssSuccessCount === INSTITUTIONAL_RSS_FEEDS.length
+                ? 'ok'
+                : (rssSuccessCount > 0 ? 'partial' : 'failed'),
+            itemCount: rssItemsCount,
+        });
+
+        if (String(reliefwebAppname || '').trim()) {
+            queryCount += 1;
+            try {
+                const rw = await fetchReliefWebReports(fetchImpl, { appname: reliefwebAppname, now });
+                let rwCount = 0;
+                if (rw.status === 'ok' && rw.items.length > 0) {
+                    activeProviders.push('ReliefWeb');
+                    rawItems.push(...rw.items);
+                    for (const item of rw.items) {
+                        const assessed = assessArticle(item, RELIEFWEB_DEFAULT_QUERY, {
+                            scraperSource: 'reliefweb-v2',
+                            isInstitutionalHub: true,
+                        });
+                        if (assessed) {
+                            assessedItems.push(assessed);
+                            rwCount += 1;
+                        }
+                    }
+                }
+                providerResults.push({ provider: 'ReliefWeb', status: 'ok', itemCount: rwCount });
+            } catch (err) {
+                coreFailedCount += 1;
+                totalFailedCount += 1;
+                coreRejected.push(err);
+                providerResults.push({ provider: 'ReliefWeb', status: 'failed', itemCount: 0 });
+            }
+        }
+
+        // Best-effort single GDELT Doc API query; failures are reported honestly in providerResults and failedQueryCount
+        const gdeltSettled = await Promise.allSettled(
+            GDELT_FEED_QUERIES.map(query => fetchGdeltQuery(fetchImpl, query, { now }))
+        );
+        queryCount += GDELT_FEED_QUERIES.length;
+        let gdeltItemsAdded = 0;
+        let gdeltFailedCount = 0;
+        gdeltSettled.forEach((result, index) => {
+            if (result.status === 'fulfilled') {
+                const query = GDELT_FEED_QUERIES[index];
+                rawItems.push(...result.value);
+                for (const item of result.value) {
+                    const assessed = assessArticle(item, query, {
+                        scraperSource: 'gdelt-doc',
+                        isInstitutionalHub: false,
+                    });
+                    if (assessed) {
+                        assessedItems.push(assessed);
+                        gdeltItemsAdded += 1;
+                    }
+                }
+            } else {
+                totalFailedCount += 1;
+                gdeltFailedCount += 1;
+            }
+        });
+        if (gdeltItemsAdded > 0) activeProviders.push('GDELT');
+        providerResults.push({
+            provider: 'GDELT',
+            status: gdeltFailedCount === 0 ? 'ok' : (gdeltFailedCount < GDELT_FEED_QUERIES.length ? 'partial' : 'failed'),
+            itemCount: gdeltItemsAdded,
+        });
+    }
+
+    if (useSerper) {
+        const serperResults = await Promise.allSettled(FIXED_QUERIES.map(query =>
+            fetchQuery(fetchImpl, query.query, apiKey, query.results)
+        ));
+        queryCount += FIXED_QUERIES.length;
+        let serperSuccessCount = 0;
+        serperResults.forEach((result, index) => {
+            if (result.status === 'fulfilled') {
+                serperSuccessCount += 1;
+                rawItems.push(...result.value);
+                for (const item of result.value) {
+                    const assessed = assessArticle(item, FIXED_QUERIES[index], {
+                        scraperSource: 'serper-public-cache',
+                        isInstitutionalHub: false,
+                    });
+                    if (assessed) assessedItems.push(assessed);
+                }
+            } else {
+                totalFailedCount += 1;
+                if (!includeFreeFeeds) coreFailedCount += 1;
+                serperRejected.push(result.reason);
+            }
+        });
+        if (serperSuccessCount > 0) {
+            activeProviders.push('Serper');
+        } else if (serperRejected.length > 0 && includeFreeFeeds) {
+            console.warn(`[public-intel] Optional Serper skipped (${serperRejected[0]?.errorCode || 'provider-error'}); serving free institutional feeds.`);
+        }
+        providerResults.push({
+            provider: 'Serper',
+            status: serperRejected.length === 0 ? 'ok' : (serperSuccessCount > 0 ? 'partial' : 'failed'),
+            itemCount: serperResults.reduce((acc, r) => acc + (r.status === 'fulfilled' ? r.value.length : 0), 0),
+        });
+    }
+
+    const relevantRejected = includeFreeFeeds ? coreRejected : serperRejected;
+    const errorCounts = countBy(relevantRejected, err => err?.errorCode || (err?.name === 'AbortError' ? 'timeout' : 'upstream-error'));
     const dominantErrorCode = Object.entries(errorCounts).sort((a, b) => b[1] - a[1])[0]?.[0] || null;
-    const firstHttpStatus = rejected.find(err => Number.isInteger(err?.httpStatus))?.httpStatus || null;
-    const rawItems = results.flatMap(result => result.status === 'fulfilled' ? result.value : []);
-    const assessedItems = results.flatMap((result, index) =>
-        result.status === 'fulfilled'
-            ? result.value.map(item => assessArticle(item, FIXED_QUERIES[index])).filter(Boolean)
-            : []
-    );
+    const firstHttpStatus = relevantRejected.find(err => Number.isInteger(err?.httpStatus))?.httpStatus || null;
     const dedupedCandidates = dedupeArticles(assessedItems);
     const items = selectDiverseArticles(dedupedCandidates);
     const coverage = buildCoverageSummary(items, {
         candidateCount: dedupedCandidates.length,
         rejectedCount: Math.max(0, rawItems.length - dedupedCandidates.length),
     });
+
+    const providerLabel = activeProviders.length > 0
+        ? activeProviders.join(' + ')
+        : (includeFreeFeeds ? DEFAULT_PUBLIC_PROVIDER : 'Serper');
 
     return {
         items,
@@ -543,13 +733,14 @@ async function buildPublicSnapshot({
             generatedAt: now.toISOString(),
             sourceMode: 'public-cache',
             status: items.length > 0
-                ? (failures > 0 ? 'partial' : 'fresh')
-                : (failures > 0 ? 'provider-error' : 'empty'),
-            provider: 'Serper',
+                ? (coreFailedCount > 0 ? 'partial' : 'fresh')
+                : (coreFailedCount > 0 ? 'provider-error' : 'empty'),
+            provider: providerLabel,
+            providerResults,
             queryPolicy: 'fixed-editorial',
-            queryCount: FIXED_QUERIES.length,
-            failedQueryCount: failures,
-            ...(failures > 0 && dominantErrorCode ? {
+            queryCount,
+            failedQueryCount: totalFailedCount,
+            ...(items.length === 0 && coreFailedCount > 0 && dominantErrorCode ? {
                 errorCode: dominantErrorCode,
                 ...(firstHttpStatus ? { providerHttpStatus: firstHttpStatus } : {}),
             } : {}),
@@ -577,6 +768,7 @@ function withSnapshotAge(snapshot, now = Date.now()) {
 }
 
 module.exports = {
+    DEFAULT_PUBLIC_PROVIDER,
     FIXED_QUERIES,
     MAX_SNAPSHOT_ITEMS,
     MINERAL_REFERENCE,

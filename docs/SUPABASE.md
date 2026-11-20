@@ -16,3 +16,10 @@
 - Apply and verify the versioned RLS migration in [`supabase/migrations/20261116000000_user_data_rls.sql`](../supabase/migrations/20261116000000_user_data_rls.sql) via the Supabase SQL Editor or `supabase db push`:
   - Enforces primary key `(user_id, key)` and a `64 KB` JSONB size ceiling (`octet_length(value::text) <= 65536`).
   - Enables and forces Row Level Security (`enable row level security` + `force row level security`) with `SELECT`, `INSERT`, `UPDATE`, and `DELETE` policies restricted to `(select auth.uid()) = user_id`.
+
+## Daily Keep-Alive (Preventing Free-Tier Inactivity Pauses)
+- Free Supabase projects pause automatically after 7 days without database activity.
+- The daily scheduled Netlify function `netlify/functions/refresh-source-health.mjs` (`17 3 * * *` UTC in `netlify.toml`) runs `pingSupabaseKeepAlive()` alongside the link-health check.
+- It sends one lightweight, read-only `GET /rest/v1/user_data?select=key&limit=1` request authenticated only with `SUPABASE_PUBLISHABLE_KEY` (falling back to `VITE_SUPABASE_PUBLISHABLE_KEY` / `SUPABASE_ANON_KEY`).
+- With Row Level Security enabled on `public.user_data`, the anonymous ping returns `200 OK` with an empty array (`[]`), exposes zero user rows, never logs credentials, and counts as daily database activity so the free project stays active.
+- If Supabase is unconfigured or temporarily unreachable, the keep-alive times out after `5s` and logs a sanitized warning without affecting the source-health refresh.

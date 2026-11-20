@@ -7,7 +7,45 @@ const manifest = require('./source-health-targets.json');
 const { DEFAULT_DEADLINE_MS, checkTargets, summarizeHealth } = sourceHealthModule;
 const SNAPSHOT_KEY = 'source-health/current.json';
 const DISPATCH_TIMEOUT_MS = 4000;
+const SUPABASE_KEEPALIVE_TIMEOUT_MS = 5000;
 export const STALE_SNAPSHOT_THRESHOLD_MS = 36 * 60 * 60 * 1000;
+
+export async function pingSupabaseKeepAlive({
+    supabaseUrl = process.env.SUPABASE_URL || process.env.VITE_SUPABASE_URL || '',
+    supabaseKey = process.env.SUPABASE_PUBLISHABLE_KEY || process.env.VITE_SUPABASE_PUBLISHABLE_KEY || process.env.SUPABASE_ANON_KEY || process.env.VITE_SUPABASE_ANON_KEY || '',
+    fetchImpl = fetch,
+} = {}) {
+    const trimmedUrl = String(supabaseUrl || '').trim().replace(/\/+$/, '');
+    const trimmedKey = String(supabaseKey || '').trim();
+    if (!/^https:\/\/[^/\s]+/i.test(trimmedUrl) || !trimmedKey || /your[-_]?(supabase|project)|placeholder/i.test(trimmedUrl + trimmedKey)) {
+        return { ok: false, skipped: true, reason: 'not-configured' };
+    }
+
+    const controller = new AbortController();
+    const timer = setTimeout(() => controller.abort(), SUPABASE_KEEPALIVE_TIMEOUT_MS);
+    try {
+        const response = await fetchImpl(`${trimmedUrl}/rest/v1/user_data?select=key&limit=1`, {
+            method: 'GET',
+            signal: controller.signal,
+            headers: {
+                apikey: trimmedKey,
+                Accept: 'application/json',
+            },
+        });
+        if (response?.body?.cancel) response.body.cancel().catch(() => {});
+        if (response.ok) {
+            console.log(`[refresh-source-health] Supabase daily keep-alive HTTP ${response.status}.`);
+        } else {
+            console.warn(`[refresh-source-health] Supabase daily keep-alive returned HTTP ${response.status}.`);
+        }
+        return { ok: response.ok, status: response.status };
+    } catch (error) {
+        console.warn(`[refresh-source-health] Supabase daily keep-alive skipped (${error?.name === 'AbortError' ? 'timeout' : 'network-error'}).`);
+        return { ok: false, reason: error?.name === 'AbortError' ? 'timeout' : 'network-error' };
+    } finally {
+        clearTimeout(timer);
+    }
+}
 
 export function isSnapshotMissingOrStale(snapshot, nowMs = Date.now()) {
     const parsed = snapshot?.checkedAt ? Date.parse(snapshot.checkedAt) : Number.NaN;
@@ -100,10 +138,13 @@ async function runInlineBoundedRefresh(preloadedPrevious = undefined) {
 
 export default async () => {
     const previousSnapshot = await readSnapshot(SNAPSHOT_KEY).catch(() => null);
-    await dispatchOrRunInline({
-        previousSnapshot,
-        runInline: runInlineBoundedRefresh,
-    });
+    await Promise.all([
+        dispatchOrRunInline({
+            previousSnapshot,
+            runInline: runInlineBoundedRefresh,
+        }),
+        pingSupabaseKeepAlive(),
+    ]);
     return new Response(null, { status: 204 });
 };
 

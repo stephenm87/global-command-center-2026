@@ -109,8 +109,15 @@ export function summarizeIntelSources(items = [], providerMeta = null) {
     };
 }
 
+export function isUnInstitutionalOnly(provider = '') {
+    return /^UN News RSS(?:\s*\+\s*ReliefWeb)?$/i.test(String(provider || '').trim());
+}
+
 export function getCurrentFeedLabel(summary = {}) {
     if (summary.liveItemCount > 0) {
+        if (summary.sourceMode === 'public-cache' && isUnInstitutionalOnly(summary.provider)) {
+            return `UN INSTITUTIONAL REPORTING (${summary.liveItemCount})`;
+        }
         return `${summary.sourceMode === 'public-cache' ? 'CACHED CURRENT UPDATES' : 'CURRENT PROVIDER UPDATES'} (${summary.liveItemCount})`;
     }
     if (summary.feedStatus === 'not-configured') return 'CURRENT UPDATES — NOT CONFIGURED';
@@ -147,7 +154,7 @@ export function getFeedEmptyState({
         const statusCopy = {
             'not-configured': {
                 title: 'CURRENT FEED NOT CONFIGURED',
-                message: 'The public Serper snapshot is awaiting its server-side API key.',
+                message: 'The public institutional feed snapshot is awaiting its first refresh.',
             },
             'provider-error': providerErrorCopy,
             unavailable: providerErrorCopy,

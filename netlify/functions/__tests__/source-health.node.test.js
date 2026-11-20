@@ -236,4 +236,30 @@ test('protectBackgroundCron, runFullSourceHealthRefresh, and dispatchOrRunInline
     });
     assert.equal(abortResult.mode, 'inline-bounded');
     assert.equal(abortInline, 1);
+
+    // 5. Daily Supabase keep-alive skips cleanly when unconfigured and hits read-only REST endpoint when configured
+    const skippedKeepAlive = await refreshMod.pingSupabaseKeepAlive({ supabaseUrl: '', supabaseKey: '' });
+    assert.equal(skippedKeepAlive.skipped, true);
+
+    let keepAliveReq = null;
+    const okKeepAlive = await refreshMod.pingSupabaseKeepAlive({
+        supabaseUrl: 'https://demo.supabase.co/',
+        supabaseKey: 'sb_publishable_demo_key_12345',
+        fetchImpl: async (url, init) => {
+            keepAliveReq = { url, init };
+            return { ok: true, status: 200 };
+        },
+    });
+    assert.equal(okKeepAlive.ok, true);
+    assert.equal(keepAliveReq.url, 'https://demo.supabase.co/rest/v1/user_data?select=key&limit=1');
+    assert.equal(keepAliveReq.init.method, 'GET');
+    assert.equal(keepAliveReq.init.headers.apikey, 'sb_publishable_demo_key_12345');
+
+    const failKeepAlive = await refreshMod.pingSupabaseKeepAlive({
+        supabaseUrl: 'https://demo.supabase.co',
+        supabaseKey: 'sb_publishable_demo_key_12345',
+        fetchImpl: async () => { throw new Error('ENOTFOUND'); },
+    });
+    assert.equal(failKeepAlive.ok, false);
+    assert.equal(failKeepAlive.reason, 'network-error');
 });

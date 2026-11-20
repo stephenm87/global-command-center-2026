@@ -28,8 +28,232 @@ test('public snapshot uses fixed balanced queries and never accepts a visitor qu
     assert.equal(FIXED_QUERIES.some(item => 'visitorQuery' in item), false);
 });
 
-test('public snapshot reports not-configured without exposing or requiring a key', async () => {
-    const snapshot = await buildPublicSnapshot({ apiKey: '', now: new Date('2026-08-09T00:00:00Z') });
+const {
+    INSTITUTIONAL_RSS_FEEDS,
+    decodeXmlEntities,
+    fetchReliefWebReports,
+    isFreshAndConsistentDate,
+    parseRssItems,
+} = require('../_shared/free-feeds');
+
+test('free-feeds parses RSS CDATA, entities, ISO dates, guid fallback, rejects non-HTTPS links, enforces 30-day freshness, and rejects URL/pubDate mismatches', async () => {
+    const fixedNow = new Date('2026-11-20T00:00:00Z');
+    const xml = `<?xml version="1.0" encoding="utf-8"?>
+        <rss version="2.0"><channel>
+            <item>
+                <title>Trade &amp; Diplomacy: a &lt; b and c &gt; d &#x2014; update</title>
+                <link>https://news.un.org/en/story/2026/11/1200010</link>
+                <description><![CDATA[<p>UN delegates discussed <b>humanitarian</b> aid &amp;amp; treaties.</p>]]></description>
+                <pubDate>Thu, 19 Nov 2026 04:00:00 +0000</pubDate>
+            </item>
+            <item>
+                <title>Bad javascript link</title>
+                <link>javascript:alert(1)</link>
+                <description>Should be dropped.</description>
+                <pubDate>Thu, 19 Nov 2026 04:00:00 +0000</pubDate>
+            </item>
+            <item>
+                <title>Plain HTTP link</title>
+                <link>http://example.org/insecure</link>
+                <description>Should be dropped.</description>
+                <pubDate>Thu, 19 Nov 2026 04:00:00 +0000</pubDate>
+            </item>
+            <item>
+                <title>Missing pubDate item</title>
+                <link>https://news.un.org/en/story/2026/11/1200012</link>
+                <description>Should be dropped because pubDate is missing.</description>
+            </item>
+            <item>
+                <title>Stale 2020 COVID package</title>
+                <link>https://www.who.int/news/item/12-08-2020-stale</link>
+                <description>Older than 30 days.</description>
+                <pubDate>Wed, 12 Aug 2020 10:00:00 GMT</pubDate>
+            </item>
+            <item>
+                <title>URL date disagrees with pubDate</title>
+                <link>https://www.who.int/news/item/05-10-2020-mental-health</link>
+                <description>Stale URL republished with recent pubDate.</description>
+                <pubDate>Thu, 19 Nov 2026 04:00:00 +0000</pubDate>
+            </item>
+            <item>
+                <title>GUID fallback item</title>
+                <guid>https://news.un.org/en/story/2026/11/1200099</guid>
+                <description>Valid https guid fallback.</description>
+                <pubDate>Wed, 18 Nov 2026 12:00:00 +0000</pubDate>
+            </item>
+            <item>
+                <title>Exceeds maxItems cap</title>
+                <link>https://news.un.org/en/story/2026/11/1200011</link>
+                <description>Should be capped.</description>
+                <pubDate>Thu, 19 Nov 2026 04:00:00 +0000</pubDate>
+            </item>
+        </channel></rss>`;
+    const items = parseRssItems(xml, { sourceName: 'UN News', maxItems: 2, now: fixedNow });
+    assert.equal(items.length, 2);
+    assert.equal(items[0].title, 'Trade & Diplomacy: a < b and c > d — update');
+    assert.equal(items[0].snippet, 'UN delegates discussed humanitarian aid &amp; treaties.');
+    assert.equal(items[0].date, '2026-11-19');
+    assert.equal(items[1].link, 'https://news.un.org/en/story/2026/11/1200099');
+    assert.equal(decodeXmlEntities('a &lt; b &gt; c &amp; d'), 'a < b > c & d');
+
+    // Direct freshness & URL/pubDate drift checks
+    assert.equal(isFreshAndConsistentDate('2026-11-10', 'https://news.un.org/en/story/2026/11/123', { now: fixedNow }), true);
+    assert.equal(isFreshAndConsistentDate('2026-10-01', 'https://news.un.org/en/story/2026/10/123', { now: fixedNow }), false, 'Items older than 30 days must be rejected');
+    assert.equal(isFreshAndConsistentDate('2026-11-19', 'https://example.org/2020/08/old-report', { now: fixedNow }), false, 'URL date disagreeing by >30 days must be rejected');
+    assert.equal(isFreshAndConsistentDate('not-a-date', 'https://news.un.org/en/story/2026/11/123', { now: fixedNow }), false, 'Unparseable date must be rejected');
+
+    // Confirm stale WHO RSS feed is removed
+    assert.equal(INSTITUTIONAL_RSS_FEEDS.some(f => f.url.includes('who.int/rss-feeds/news-english.xml')), false);
+
+    const skippedRw = await fetchReliefWebReports(async () => {
+        throw new Error('Should not fetch when appname is empty');
+    }, { appname: '' });
+    assert.equal(skippedRw.status, 'skipped-no-appname');
+    assert.deepEqual(skippedRw.items, []);
+});
+
+test('public snapshot builds live institutional feed with zero SERPER_API_KEY and pauses Serper when key exists but flag is off', async () => {
+    const calledUrls = [];
+    const sampleRss = `<?xml version="1.0" encoding="utf-8"?>
+        <rss version="2.0"><channel>
+            <item>
+                <title>UN Security Council addresses Sudan humanitarian access and ceasefire talks</title>
+                <link>https://news.un.org/en/story/2026/11/1200001</link>
+                <description><![CDATA[United Nations officials report worsening displacement and diplomatic efforts in Sudan.]]></description>
+                <pubDate>Thu, 19 Nov 2026 04:00:00 +0000</pubDate>
+            </item>
+        </channel></rss>`;
+    const fetchImpl = async (url) => {
+        calledUrls.push(String(url));
+        if (String(url).includes('google.serper.dev')) {
+            throw new Error('Serper must not be called when paused');
+        }
+        if (String(url).includes('reliefweb.int')) {
+            return {
+                ok: true,
+                json: async () => ({
+                    data: [{
+                        fields: {
+                            title: 'Myanmar humanitarian displacement and aid access report',
+                            url: 'https://reliefweb.int/report/myanmar/sample-2026',
+                            date: { created: '2026-11-19T02:00:00+00:00' },
+                            primary_country: { name: 'Myanmar' },
+                            source: [{ name: 'OCHA' }],
+                            theme: [{ name: 'Protection and Human Rights' }],
+                        },
+                    }],
+                }),
+            };
+        }
+        if (String(url).includes('gdeltproject.org')) {
+            return {
+                ok: true,
+                json: async () => ({
+                    articles: [{
+                        title: 'ASEAN ministers discuss South China Sea maritime diplomacy',
+                        url: 'https://www.aljazeera.com/news/2026/11/19/asean-maritime-diplomacy',
+                        domain: 'aljazeera.com',
+                        seendate: '20261119T030000Z',
+                    }],
+                }),
+            };
+        }
+        return { ok: true, text: async () => sampleRss };
+    };
+
+    const snapshot = await buildPublicSnapshot({
+        apiKey: 'existing-key-but-paused',
+        enableSerper: false,
+        reliefwebAppname: 'gcc-test-app',
+        fetchImpl,
+        now: new Date('2026-11-19T05:00:00Z'),
+    });
+
+    assert.equal(snapshot.meta.status, 'fresh');
+    assert.equal(snapshot.meta.errorCode, undefined);
+    assert.equal('serperStatus' in snapshot.meta, false, 'Public meta must not expose billing state');
+    assert.equal(snapshot.items.length, 3);
+    assert.equal(calledUrls.some(u => u.includes('google.serper.dev')), false);
+    assert.match(snapshot.meta.provider, /UN News RSS/);
+    assert.match(snapshot.meta.provider, /ReliefWeb/);
+    assert.match(snapshot.meta.provider, /GDELT/);
+    assert.deepEqual(
+        snapshot.meta.providerResults.map(r => [r.provider, r.status]),
+        [['UN News RSS', 'ok'], ['ReliefWeb', 'ok'], ['GDELT', 'ok']]
+    );
+});
+
+test('public snapshot keeps free institutional items and avoids error when optional Serper runs out of credits', async () => {
+    let serperCalls = 0;
+    const sampleRss = `<?xml version="1.0" encoding="utf-8"?>
+        <rss version="2.0"><channel>
+            <item>
+                <title>Climate finance treaty talks open for Pacific island states</title>
+                <link>https://news.un.org/en/story/2026/11/1200002</link>
+                <description>United Nations climate and ocean governance talks highlight Pacific resilience.</description>
+                <pubDate>Thu, 19 Nov 2026 04:00:00 +0000</pubDate>
+            </item>
+        </channel></rss>`;
+    const snapshot = await buildPublicSnapshot({
+        apiKey: 'exhausted-key',
+        enableSerper: true,
+        fetchImpl: async (url) => {
+            if (String(url).includes('google.serper.dev')) {
+                serperCalls += 1;
+                return { ok: false, status: 400, json: async () => ({ message: 'Not enough credits' }) };
+            }
+            if (String(url).includes('gdeltproject.org')) {
+                return { ok: false, status: 429 };
+            }
+            return { ok: true, text: async () => sampleRss };
+        },
+        now: new Date('2026-11-19T05:00:00Z'),
+    });
+
+    assert.equal(serperCalls, 8);
+    assert.equal(snapshot.meta.status, 'fresh');
+    assert.equal(snapshot.meta.failedQueryCount, 9, 'failedQueryCount must honestly count both GDELT and Serper failures');
+    assert.equal(snapshot.meta.errorCode, undefined);
+    assert.equal(snapshot.items.length, 1);
+    assert.equal(snapshot.meta.providerResults.find(r => r.provider === 'GDELT')?.status, 'failed');
+    assert.equal(snapshot.meta.providerResults.find(r => r.provider === 'Serper')?.status, 'failed');
+});
+
+test('public snapshot marks partial when some core RSS feeds fail and sets errorCode when all fail', async () => {
+    let rssCalls = 0;
+    const sampleRss = `<?xml version="1.0" encoding="utf-8"?>
+        <rss version="2.0"><channel>
+            <item>
+                <title>UN Security Council addresses Sudan humanitarian access</title>
+                <link>https://news.un.org/en/story/2026/11/1200099</link>
+                <description>United Nations officials report worsening displacement in Sudan.</description>
+                <pubDate>Thu, 19 Nov 2026 04:00:00 +0000</pubDate>
+            </item>
+        </channel></rss>`;
+    const partial = await buildPublicSnapshot({
+        apiKey: '',
+        fetchImpl: async (url) => {
+            if (String(url).includes('gdeltproject.org')) return { ok: false, status: 429 };
+            rssCalls += 1;
+            if (rssCalls === 1) return { ok: true, text: async () => sampleRss };
+            return { ok: false, status: 503 };
+        },
+        now: new Date('2026-11-19T05:00:00Z'),
+    });
+    assert.equal(partial.meta.status, 'partial');
+    assert.equal(partial.items.length, 1);
+
+    const allFailed = await buildPublicSnapshot({
+        apiKey: '',
+        fetchImpl: async () => ({ ok: false, status: 503 }),
+        now: new Date('2026-11-19T05:00:00Z'),
+    });
+    assert.equal(allFailed.meta.status, 'provider-error');
+    assert.equal(allFailed.meta.errorCode, 'upstream-error');
+});
+
+test('public snapshot reports not-configured without exposing or requiring a key when free feeds are disabled', async () => {
+    const snapshot = await buildPublicSnapshot({ apiKey: '', includeFreeFeeds: false, now: new Date('2026-08-09T00:00:00Z') });
 
     assert.deepEqual(snapshot.items, []);
     assert.equal(snapshot.meta.status, 'not-configured');
@@ -41,6 +265,8 @@ test('public snapshot classifies Serper credit exhaustion, invalid API keys, emp
     const secretKey = 'super-secret-serper-token-do-not-leak';
     const creditFailSnapshot = await buildPublicSnapshot({
         apiKey: secretKey,
+        enableSerper: true,
+        includeFreeFeeds: false,
         fetchImpl: async () => ({
             ok: false,
             status: 400,
@@ -56,6 +282,8 @@ test('public snapshot classifies Serper credit exhaustion, invalid API keys, emp
 
     const authFailSnapshot = await buildPublicSnapshot({
         apiKey: secretKey,
+        enableSerper: true,
+        includeFreeFeeds: false,
         fetchImpl: async () => ({
             ok: false,
             status: 403,
@@ -70,6 +298,8 @@ test('public snapshot classifies Serper credit exhaustion, invalid API keys, emp
 
     const emptyQualifyingSnapshot = await buildPublicSnapshot({
         apiKey: secretKey,
+        enableSerper: true,
+        includeFreeFeeds: false,
         fetchImpl: async () => ({
             ok: true,
             json: async () => ({ news: [{ title: 'Summer shoe collection', snippet: 'Fashion promo', link: 'https://example.org/shoes' }] }),
@@ -82,6 +312,8 @@ test('public snapshot classifies Serper credit exhaustion, invalid API keys, emp
 
     const timeoutSnapshot = await buildPublicSnapshot({
         apiKey: secretKey,
+        enableSerper: true,
+        includeFreeFeeds: false,
         fetchImpl: async () => {
             const err = new Error('aborted');
             err.name = 'AbortError';
@@ -109,6 +341,8 @@ test('public snapshot normalizes, deduplicates, and labels cached provider resul
     });
     const snapshot = await buildPublicSnapshot({
         apiKey: 'server-only-key',
+        enableSerper: true,
+        includeFreeFeeds: false,
         fetchImpl,
         now: new Date('2026-08-09T00:00:00Z'),
     });
@@ -252,7 +486,7 @@ test('selection balances regions and issues while limiting publishers, clusters,
 });
 
 test('shared intel-normalization coordinate inference is deterministic and categorizeSector uses word-bounded Governance & Rights matching', () => {
-    const { getCoords, categorizeSector } = require('../_shared/intel-normalization');
+    const { getCoords, resolveCoords, categorizeSector } = require('../_shared/intel-normalization');
     assert.deepEqual(
         getCoords('Diplomatic talks involving Ukraine'),
         getCoords('Diplomatic talks involving Ukraine')
@@ -261,4 +495,63 @@ test('shared intel-normalization coordinate inference is deterministic and categ
     assert.equal(categorizeSector('Parliamentary elections scheduled after judicial ruling'), 'Governance & Rights');
     assert.notEqual(categorizeSector('Data selection methodology in quarterly commodity market report'), 'Governance & Rights', '"selection" must not match "election"');
     assert.equal(categorizeSector('Data selection methodology in quarterly commodity market report'), 'Economy & Trade');
+
+    // Required whole-word & specificity coordinate regressions
+    const sudan = resolveCoords('Sudan hunger crisis deepens as funding cuts bite', 'UN agencies warn of famine');
+    assert.equal(sudan.matchedPlace, 'sudan');
+    assert.equal(sudan.precision, 'named-place');
+    assert.deepEqual(sudan.coords, [12.9, 30.2]);
+
+    const myanmar = resolveCoords('Myanmar junta announces election', 'UN unrest warning');
+    assert.equal(myanmar.matchedPlace, 'myanmar');
+    assert.equal(myanmar.precision, 'named-place');
+    assert.deepEqual(myanmar.coords, [19.2, 96.7]);
+
+    const pakistan = resolveCoords('Thousands flee floods in Pakistan', 'Relief efforts continue');
+    assert.equal(pakistan.matchedPlace, 'pakistan');
+    assert.deepEqual(pakistan.coords, [30.4, 69.3]);
+
+    const colombia = resolveCoords('Senator backs Colombia peace deal', 'Regional talks');
+    assert.equal(colombia.matchedPlace, 'colombia');
+    assert.deepEqual(colombia.coords, [4.6, -74.1]);
+
+    const centralAmerica = resolveCoords('When the rains fail: Preparing for drought in Central America', 'UN climate resilience');
+    assert.equal(centralAmerica.matchedPlace, 'central america');
+    assert.notDeepEqual(centralAmerica.coords, [37.1, -95.6], 'Central America must never pin in Kansas/USA');
+    assert.deepEqual(centralAmerica.coords, [13.8, -86.2]);
+
+    // "un" must never pin a story to New York
+    const unOnly = resolveCoords('UN report warns of global unrest and funding gaps', 'United Nations appeal');
+    assert.equal(unOnly.precision, 'fallback');
+    assert.equal(unOnly.matchedPlace, null);
+
+    // Fallback items sharing coordinates are de-stacked deterministically
+    const stacked = selectDiverseArticles([
+        {
+            url: 'https://news.un.org/en/story/2026/11/a',
+            'Entity/Subject': 'Global treaty financing talks open',
+            Latitude: '12',
+            Longitude: '-18',
+            coverage: { region: 'Global / Transnational', issue: 'Economy & Development', sourceRole: 'institutional', relevanceScore: 80, locationPrecision: 'regional' },
+            _publisherDomain: 'news.un.org',
+            _isInstitutionalHub: true,
+            _topicCluster: 'global:a',
+        },
+        {
+            url: 'https://news.un.org/en/story/2026/11/b',
+            'Entity/Subject': 'Global climate resilience fund launched',
+            Latitude: '12',
+            Longitude: '-18',
+            coverage: { region: 'Global / Transnational', issue: 'Climate & Resources', sourceRole: 'institutional', relevanceScore: 78, locationPrecision: 'regional' },
+            _publisherDomain: 'news.un.org',
+            _isInstitutionalHub: true,
+            _topicCluster: 'global:b',
+        },
+    ]);
+    assert.equal(stacked.length, 2);
+    assert.notEqual(
+        `${stacked[0].Latitude},${stacked[0].Longitude}`,
+        `${stacked[1].Latitude},${stacked[1].Longitude}`,
+        'Items sharing fallback coordinates must not stack on one point'
+    );
 });

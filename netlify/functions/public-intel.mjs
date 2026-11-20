@@ -3,7 +3,7 @@ import snapshotModule from './_shared/intel-snapshot.js';
 import { readSnapshot, writeSnapshot } from './_shared/snapshot-store.mjs';
 
 const { protectPublicEndpoint } = securityModule;
-const { buildMineralBaseline, buildPublicSnapshot, withSnapshotAge } = snapshotModule;
+const { DEFAULT_PUBLIC_PROVIDER, buildMineralBaseline, buildPublicSnapshot, withSnapshotAge } = snapshotModule;
 const SNAPSHOT_KEY = 'public-intel/current.json';
 let inFlightRefresh = null;
 
@@ -39,12 +39,11 @@ export default async request => {
 
     try {
         const cached = await readSnapshot(SNAPSHOT_KEY);
-        const configurationBecameAvailable = cached?.meta?.status === 'not-configured' && process.env.SERPER_API_KEY;
-        const legacyUnavailableNeedsDiag = cached?.meta?.status === 'unavailable'
-            && Number(cached?.meta?.failedQueryCount) > 0
-            && !cached?.meta?.errorCode
-            && process.env.SERPER_API_KEY;
-        if (cached?.meta && !configurationBecameAvailable && !legacyUnavailableNeedsDiag) {
+        const legacyErrorSnapshot = ['not-configured', 'provider-error', 'unavailable'].includes(cached?.meta?.status)
+            && (!Array.isArray(cached?.items) || cached.items.length === 0)
+            && cached?.meta?.provider === 'Serper';
+        const needsSchemaUpgrade = !Array.isArray(cached?.meta?.providerResults);
+        if (cached?.meta && !legacyErrorSnapshot && !needsSchemaUpgrade) {
             return new Response(JSON.stringify(withSnapshotAge(cached)), { status: 200, headers: responseHeaders });
         }
 
@@ -52,17 +51,15 @@ export default async request => {
         return new Response(JSON.stringify(withSnapshotAge(snapshot)), { status: 200, headers: responseHeaders });
     } catch (error) {
         console.error('[public-intel] Snapshot unavailable:', error.message);
-        const hasKey = Boolean(process.env.SERPER_API_KEY);
-        const status = hasKey ? 'store-error' : 'not-configured';
         return new Response(JSON.stringify({
                 items: [],
                 minerals: buildMineralBaseline(),
                 meta: {
                     generatedAt: new Date().toISOString(),
                     sourceMode: 'public-cache',
-                    status,
-                    ...(hasKey ? { errorCode: 'snapshot-store-error' } : {}),
-                    provider: 'Serper',
+                    status: 'store-error',
+                    errorCode: 'snapshot-store-error',
+                    provider: DEFAULT_PUBLIC_PROVIDER,
                     queryPolicy: 'fixed-editorial',
                     liveItemCount: 0,
                 },
