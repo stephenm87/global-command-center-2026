@@ -750,6 +750,18 @@
     font: 0.74rem/1.55 'Roboto Mono', monospace;
 }
 
+.current-source-context a {
+    color: #7ce8ff;
+    font-weight: 700;
+    text-decoration: underline;
+    text-underline-offset: 2px;
+}
+
+.current-source-context a:hover,
+.current-source-context a:focus-visible {
+    color: #b8f5ff;
+}
+
 .current-source-context small {
     display: block;
     color: #93a8bb;
