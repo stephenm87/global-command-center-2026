@@ -117,10 +117,33 @@ test('free-feeds parses RSS CDATA, entities, ISO dates, guid fallback, rejects n
     assert.equal(isFreshAndConsistentDate('2026-11-19', 'https://example.org/2020/08/old-report', { now: fixedNow }), false, 'URL date disagreeing by >30 days must be rejected');
     assert.equal(isFreshAndConsistentDate('not-a-date', 'https://news.un.org/en/story/2026/11/123', { now: fixedNow }), false, 'Unparseable date must be rejected');
 
-    // Confirm stale WHO RSS feed is removed and AllAfrica RDF feeds are configured with attribution
+    // Confirm stale WHO RSS feed is removed and AllAfrica feeds are configured as headline-only with attribution
     assert.equal(INSTITUTIONAL_RSS_FEEDS.some(f => f.url.includes('who.int/rss-feeds/news-english.xml')), false);
     assert.equal(ALLAFRICA_RSS_FEEDS.length, 3);
-    assert.equal(ALLAFRICA_RSS_FEEDS.every(f => f.attributionUrl === 'https://allafrica.com/' && f.sourceName === 'allAfrica.com'), true);
+    assert.equal(ALLAFRICA_RSS_FEEDS.every(f => f.attributionUrl === 'https://allafrica.com/' && f.sourceName === 'allAfrica.com' && f.maxSnippetChars === 0), true);
+
+    // Trimmed live RSS 2.0 shape served by allAfrica's .rdf endpoints (CDATA title, category, pubDate, empty snippet)
+    const allafricaLiveXml = `<?xml version="1.0" encoding="utf-8"?>
+        <rss version="2.0"><channel>
+            <item>
+                <title><![CDATA[Sudan: Britain Expresses Readiness to Support Efforts of Sudanese Dialogue Preparatory Committee]]></title>
+                <link>https://allafrica.com/stories/202611190226.html</link>
+                <description><![CDATA[[SNA] - Britain has expressed interest in supporting the efforts of the Sudanese Dialogue Preparatory Committee.]]></description>
+                <category>Conflict</category>
+                <pubDate>Thu, 19 Nov 2026 08:30:00 GMT</pubDate>
+            </item>
+        </channel></rss>`;
+    const [aaLiveItem] = parseRssItems(allafricaLiveXml, {
+        sourceName: 'allAfrica.com',
+        attributionUrl: 'https://allafrica.com/',
+        maxSnippetChars: 0,
+        maxItems: 8,
+        now: fixedNow,
+    });
+    assert.equal(aaLiveItem.title, 'Sudan: Britain Expresses Readiness to Support Efforts of Sudanese Dialogue Preparatory Committee');
+    assert.equal(aaLiveItem.snippet, '', 'AllAfrica terms permit headlines only; syndicated body excerpt must be omitted');
+    assert.equal(aaLiveItem.date, '2026-11-19');
+    assert.equal(aaLiveItem.attributionUrl, 'https://allafrica.com/');
 
     const rdfXml = `<?xml version="1.0" encoding="utf-8"?>
         <rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:dc="http://purl.org/dc/elements/1.1/">
@@ -504,13 +527,80 @@ test('promotional and weakly relevant discovery results are rejected', () => {
         date: '2026-11-19',
         link: 'https://www.bbc.com/news/articles/crimean-bridge-2026',
     }, bbcFeed, { scraperSource: 'public-rss', isInstitutionalHub: false, isConfiguredFeed: true });
+    const appleValuation = assessArticle({
+        title: 'Apple valued at $5tn as hardware sales climb',
+        snippet: 'Analysts expect government contracts and enterprise purchases to boost annual revenue.',
+        source: 'BBC News',
+        date: '2026-11-19',
+        link: 'https://www.bbc.com/news/articles/apple-5tn-2026',
+    }, bbcFeed, { scraperSource: 'public-rss', isInstitutionalHub: false, isConfiguredFeed: true });
+    const laborStrike = assessArticle({
+        title: 'Tesla workers strike at German plant',
+        snippet: 'Union members walked out overnight over factory shift pay demands.',
+        source: 'BBC News',
+        date: '2026-11-19',
+        link: 'https://www.bbc.com/news/articles/tesla-strike-2026',
+    }, bbcFeed, { scraperSource: 'public-rss', isInstitutionalHub: false, isConfiguredFeed: true });
+
+    const allafricaFeed = {
+        id: 'allafrica-conflict',
+        region: 'Africa',
+        issueHints: ['Security & Diplomacy', 'Health & Human Security', 'Governance & Rights'],
+        fallbackCoords: [4.8, 21.4],
+        sourceName: 'allAfrica.com',
+        fundingLabel: 'Pan-African news aggregator (commercial & syndicated)',
+        attributionUrl: 'https://allafrica.com/',
+    };
+    const headlineOnlyAssess = (title, slug) => assessArticle({
+        title,
+        snippet: '',
+        source: 'allAfrica.com',
+        date: '2026-11-19',
+        link: `https://allafrica.com/stories/${slug}.html`,
+    }, allafricaFeed, { scraperSource: 'public-rss', isInstitutionalHub: false, isConfiguredFeed: true });
+
+    const sudanDialogue = headlineOnlyAssess(
+        'Sudan: Britain Expresses Readiness to Support Efforts of Sudanese Dialogue Preparatory Committee',
+        '202611190226'
+    );
+    const nigeriaViolence = headlineOnlyAssess(
+        'Nigeria: Rising Wave of Political Violence',
+        '202611190227'
+    );
+    const whoEbolaShares = headlineOnlyAssess(
+        'WHO shares Ebola outbreak data as cases rise in Uganda',
+        '202611190228'
+    );
+    const afcftaIntegration = headlineOnlyAssess(
+        "AfCFTA: Afreximbank and AfDB Must Drive Africa's Economic Integration",
+        '202611190229'
+    );
+    const ghanaMercury = headlineOnlyAssess(
+        'Ghana, US Deepen Cooperation to Tackle Mercury Pollution',
+        '202611190230'
+    );
+    const gdeltDiscovery = assessArticle({
+        title: 'ASEAN ministers discuss South China Sea maritime diplomacy',
+        snippet: 'Reported via example-paper.org (Asia-Pacific).',
+        source: 'example-paper.org',
+        date: '2026-11-19',
+        link: 'https://example-paper.org/asean-2026',
+    }, FIXED_QUERIES[1], { scraperSource: 'gdelt-doc', isInstitutionalHub: false });
 
     assert.equal(promotional, null);
     assert.equal(unrelated, null);
     assert.equal(anthropicIpo, null, 'Pure IPO / stock-market story with no political actor or policy angle must be dropped');
     assert.equal(corporateEarnings, null, 'Pure corporate earnings story must be dropped');
+    assert.equal(appleValuation, null, 'Corporate valuation headline without political title angle must be dropped');
+    assert.equal(laborStrike, null, 'Labor wage strike without state/policy angle must not match military strike rule');
     assert.ok(aiPolicyStory, 'AI story with explicit regulators / policy governance angle must remain eligible');
     assert.ok(crimeanStrikesStory, 'Geopolitical war/occupation headline must remain eligible');
+    assert.ok(sudanDialogue, 'Headline-only AllAfrica dialogue story must be retained');
+    assert.ok(nigeriaViolence, 'Headline-only AllAfrica political violence story must be retained');
+    assert.ok(whoEbolaShares, '"WHO shares Ebola outbreak data" must not trigger corporate share-price filter');
+    assert.ok(afcftaIntegration, 'AfCFTA continental economic integration story must be retained');
+    assert.ok(ghanaMercury, 'Bilateral environmental cooperation headline must be retained');
+    assert.ok(gdeltDiscovery, 'GDELT discovery items without body snippet must remain eligible under discovery threshold');
 });
 
 test('query region breaks ambiguous geographic ties without overriding stronger named-place evidence', () => {
@@ -704,6 +794,39 @@ test('selection balances regions and issues while limiting publishers, clusters,
     for (const [pub, cnt] of Object.entries(livePubCounts)) {
         assert.equal(cnt <= Math.floor(balancedSnapshot.items.length / 3), true, `${pub} exceeded 1/3 cap (${cnt}/${balancedSnapshot.items.length})`);
     }
+
+    // Specialized regional publisher (span=1 region) beats global publisher (span=2 regions) on equal count in its region
+    const spanPool = [
+        {
+            url: 'https://news.un.org/en/story/2026/11/span-africa',
+            'Entity/Subject': 'Global hub story in Africa',
+            coverage: { region: 'Africa', issue: 'Security & Diplomacy', sourceRole: 'institutional', relevanceScore: 95 },
+            _publisherDomain: 'news.un.org',
+            _isInstitutionalHub: true,
+            _isConfiguredFeed: true,
+            _topicCluster: 'Africa:hub',
+        },
+        {
+            url: 'https://news.un.org/en/story/2026/11/span-asia',
+            'Entity/Subject': 'Global hub story in Asia',
+            coverage: { region: 'Asia-Pacific', issue: 'Economy & Development', sourceRole: 'institutional', relevanceScore: 70 },
+            _publisherDomain: 'news.un.org',
+            _isInstitutionalHub: true,
+            _isConfiguredFeed: true,
+            _topicCluster: 'Asia:hub',
+        },
+        {
+            url: 'https://allafrica.com/stories/span-africa-only',
+            'Entity/Subject': 'Specialized Africa story',
+            coverage: { region: 'Africa', issue: 'Governance & Rights', sourceRole: 'regional', relevanceScore: 60 },
+            _publisherDomain: 'allafrica.com',
+            _isInstitutionalHub: false,
+            _isConfiguredFeed: true,
+            _topicCluster: 'Africa:aa',
+        },
+    ];
+    const spanSelected = selectDiverseArticles(spanPool, 3);
+    assert.equal(spanSelected[0].url, 'https://allafrica.com/stories/span-africa-only');
 });
 
 test('shared intel-normalization coordinate inference is deterministic and categorizeSector uses word-bounded Governance & Rights matching', () => {

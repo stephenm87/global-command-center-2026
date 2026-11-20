@@ -543,14 +543,18 @@ function normalizeProviderArticle(item, scraperSource = 'serper') {
     const resolved = resolveCoords(title, snippet);
     const [lat, lng] = Array.isArray(resolved.coords) ? resolved.coords : [null, null];
     const publishedAt = item.date || item.publishedAt || null;
+    const publisherName = item.source?.name || item.source || 'Global News';
+    const headlineFallback = scraperSource === 'public-rss' && item.source
+        ? `Headline via ${publisherName} — open link to read full report at source.`
+        : title;
 
     return {
         'Topic/Sector': SECTOR_LABELS[category],
         'Entity/Subject': title,
-        'Key Player/Organization': item.source?.name || item.source || 'Global News',
+        'Key Player/Organization': publisherName,
         'Timeline': publishedAt ? `CURRENT — ${publishedAt}` : 'CURRENT — date unavailable',
-        'Expected Impact/Value': snippet || title,
-        'Source': item.source?.name || item.source || 'Global News',
+        'Expected Impact/Value': snippet || headlineFallback,
+        'Source': publisherName,
         url,
         'Latitude': lat === null ? null : String(lat),
         'Longitude': lng === null ? null : String(lng),

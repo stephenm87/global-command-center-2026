@@ -141,6 +141,7 @@ const ALLAFRICA_RSS_FEEDS = Object.freeze([
         fundingLabel: 'Pan-African news aggregator (commercial & syndicated)',
         attributionUrl: 'https://allafrica.com/',
         upgradeHttpHost: 'allafrica.com',
+        maxSnippetChars: 0,
         maxItems: 8,
     },
     {
@@ -153,6 +154,7 @@ const ALLAFRICA_RSS_FEEDS = Object.freeze([
         fundingLabel: 'Pan-African news aggregator (commercial & syndicated)',
         attributionUrl: 'https://allafrica.com/',
         upgradeHttpHost: 'allafrica.com',
+        maxSnippetChars: 0,
         maxItems: 8,
     },
     {
@@ -165,6 +167,7 @@ const ALLAFRICA_RSS_FEEDS = Object.freeze([
         fundingLabel: 'Pan-African news aggregator (commercial & syndicated)',
         attributionUrl: 'https://allafrica.com/',
         upgradeHttpHost: 'allafrica.com',
+        maxSnippetChars: 0,
         maxItems: 8,
     },
 ]);
@@ -284,6 +287,7 @@ function getPublisherFundingInfo(domain = '', itemOrFeed = null) {
 }
 
 function truncateSnippet(text = '', maxChars = MAX_SNIPPET_CHARS) {
+    if (maxChars <= 0) return '';
     const clean = String(text || '').replace(/\s+/g, ' ').trim();
     if (!clean || clean.length <= maxChars) return clean;
     const sliced = clean.slice(0, maxChars - 1);
@@ -463,6 +467,7 @@ async function fetchRssFeed(fetchImpl, feedConfig, { now = new Date() } = {}) {
             fundingLabel: feedConfig.fundingLabel,
             attributionUrl: feedConfig.attributionUrl,
             upgradeHttpHost: feedConfig.upgradeHttpHost || '',
+            ...(Number.isInteger(feedConfig.maxSnippetChars) ? { maxSnippetChars: feedConfig.maxSnippetChars } : {}),
             maxItems: feedConfig.maxItems,
             now,
         });

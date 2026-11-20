@@ -183,9 +183,9 @@ const BLOCKED_DISCOVERY_DOMAINS = Object.freeze([
 ]);
 
 const PROMOTIONAL_TITLE_PATTERN = /\b(funding opportunities?|job openings?|apply now|register now|webinar|newsletter|weekly roundup|event calendar|sponsored content)\b/i;
-const GLOBAL_POLITICS_PATTERN = /\b(diplomac\w*|security|conflict|war|peace|ceasefire|treaty|sanction\w*|election\w*|governance|democrac\w*|authoritarian\w*|human rights?|refugee\w*|migration|migrant\w*|displacement|humanitarian|sovereignty|court|law|trade|tariff\w*|debt|development|labor|food security|climate|energy|water|mineral\w*|biodiversity|health|disease|outbreak|technology|artificial intelligence|\bai\b|cyber\w*|information|surveillance|multilateral\w*|aid|government\w*|parliament\w*|minister\w*|president\w*|united nations|secretary-general|mandate|peacekeep\w*|besieged|siege|occupation|invasi\w*|annex\w*|strikes?|airstrike\w*|drone\w*|artillery|genocide|embargo|export control\w*|semiconductor\w*|houthi\w*|opposition|dialogue|chip probe|protest\w*|coup|junta|military|border\w*|summit\w*|constitution\w*|legislat\w*|referendum|regulat\w*|antitrust|polic(y|ies))\b/gi;
-const POLITICAL_POLICY_PATTERN = /\b(government\w*|parliament\w*|congress\w*|senate|senator\w*|president\w*|prime minister\w*|minister\w*|ministry|ministries|diplomac\w*|diplomat\w*|diplomatic|embassy|ambassador\w*|summit\w*|treaty|treaties|ceasefire|peace talks?|peacekeep\w*|national dialogue|united nations|u\.n\.|secretary-general|mandate|nato|european union|\beu\b|african union|ecowas|asean|world health organization|world bank|international monetary fund|security council|sanction\w*|embargo|tariff\w*|trade war|export control\w*|chip probe|antitrust|regulat\w*|legislat\w*|lawmaker\w*|supreme court|high court|constitutional court|criminal court|international court|tribunal|\bicj\b|\bicc\b|constitution\w*|referendum|election\w*|voter\w*|voting|governance|democrac\w*|authoritarian\w*|coup|junta|protest\w*|opposition|dissident\w*|human rights?|civil rights?|genocide|refugee\w*|asylum|displace\w*|migration|migrant\w*|humanitarian|foreign aid|food aid|military aid|economic aid|aid access|aid agenc\w*|aid cuts?|conflict\w*|war\b|wars\b|warfare|military|troop\w*|airstrike\w*|strikes?|drone\w*|artillery|besieged|siege|occupation|invasi\w*|annex\w*|houthi\w*|nuclear|sovereignty|border\w*|territor\w*|climate pact|climate accord|cop\d+|public health|pandemic|polic(y|ies))\b/i;
-const CORPORATE_MARKET_PATTERN = /\b(ipo|stock market|market debut|shares?\b|shareholder\w*|valued at|valuable public compan\w*|valuation|market cap|quarterly earnings|earnings report|profit\w*|revenue|merger\w*|acquisition\w*|wall street|nasdaq|nyse|s&p\s*500|ftse|dow jones|investor\w*|hedge fund\w*|venture capital|startup\w*|ceo\b|billionaire\w*|stock price|public compan\w*)\b/i;
+const GLOBAL_POLITICS_PATTERN = /\b(diplomac\w*|diplomat\w*|security|conflict\w*|war\b|wars\b|warfare|peace|ceasefire|treaty|treaties|sanction\w*|election\w*|governance|democrac\w*|authoritarian\w*|human rights?|refugee\w*|migration|migrant\w*|displacement|humanitarian|sovereignty|court|law|trade|tariff\w*|debt|development|labor|food security|climate|energy|water|mineral\w*|biodiversity|pollution|health\w*|disease|outbreak\w*|epidemic\w*|technology|artificial intelligence|\bai\b|cyber\w*|information|surveillance|multilateral\w*|aid|government\w*|parliament\w*|minister\w*|ministry|president\w*|united nations|secretary-general|mandate|peacekeep\w*|besieged|siege|occupation|invasi\w*|annex\w*|airstrike\w*|missile strikes?|drone strikes?|artillery|strikes? on|genocide|embargo|export control\w*|semiconductor\w*|houthi\w*|opposition|dialogue|political|violence|cooperation|economic integration|trade bloc|afcfta|afdb|afreximbank|envoy\w*|chip probe|protest\w*|coup|junta|military|borders?\b|cross-border|summit\w*|constitution\w*|legislat\w*|referendum|regulat\w*|antitrust|polic(y|ies))\b/gi;
+const POLITICAL_POLICY_PATTERN = /\b(government\w*|parliament\w*|congress\w*|senate|senator\w*|president\w*|prime minister\w*|minister\w*|ministry|ministries|diplomac\w*|diplomat\w*|diplomatic|embassy|ambassador\w*|envoy\w*|summit\w*|treaty|treaties|ceasefire|peace talks?|peacekeep\w*|national dialogue|dialogue|political|cooperation|economic integration|trade bloc|afcfta|afdb|afreximbank|united nations|u\.n\.|secretary-general|mandate|nato|european union|\beu\b|african union|ecowas|asean|world health organization|world bank|international monetary fund|security council|sanction\w*|embargo|tariff\w*|trade war|export control\w*|chip probe|antitrust|regulat\w*|legislat\w*|lawmaker\w*|supreme court|high court|constitutional court|criminal court|international court|tribunal|\bicj\b|\bicc\b|constitution\w*|referendum|election\w*|voter\w*|voting|governance|democrac\w*|authoritarian\w*|coup|junta|protest\w*|opposition|dissident\w*|human rights?|civil rights?|genocide|violence|refugee\w*|asylum|displace\w*|migration|migrant\w*|humanitarian|foreign aid|food aid|military aid|economic aid|aid access|aid agenc\w*|aid cuts?|conflict\w*|war\b|wars\b|warfare|military|troop\w*|airstrike\w*|missile strikes?|drone strikes?|artillery|strikes? on|drone\w*|besieged|siege|occupation|invasi\w*|annex\w*|houthi\w*|nuclear|sovereignty|borders?\b|cross-border|territor\w*|climate pact|climate accord|cop\d+|pollution|public health|health\w*|outbreak\w*|epidemic\w*|pandemic|polic(y|ies))\b/i;
+const CORPORATE_MARKET_PATTERN = /\b(ipo|stock market|market debut|company shares?\b|stock shares?\b|shares? (?:surge\w*|soar\w*|plunge\w*|fall\w*|fell|drop\w*|jump\w*|rall\w*|tumble\w*|rose|slump\w*)|shareholder\w*|valued at|valuable public compan\w*|valuation|market cap|quarterly earnings|earnings report|quarterly profits?|net profits?|corporate revenue\w*|merger\w*|acquisition\w*|wall street|nasdaq|nyse|s&p\s*500|ftse|dow jones|investor\w*|hedge fund\b|venture capital|startup\w*|stock price|public compan\w*|\$\d+(?:\.\d+)?\s*(?:bn|tn|billion|trillion))\b/i;
 
 const ISSUE_PATTERNS = Object.freeze({
     'Security & Diplomacy': /\b(diplomac\w*|security|conflict|war|peace|ceasefire|military|defen[cs]e|sanction\w*|nuclear|treaty|border|maritime|geopolitic\w*)\b/gi,
@@ -340,8 +340,9 @@ function assessArticle(item, query, {
     if (!normalized) return null;
 
     const title = normalized['Entity/Subject'];
-    const description = normalized['Expected Impact/Value'];
-    const combined = `${title} ${description}`;
+    const hasBodySnippet = Boolean(String(item?.snippet || item?.description || '').trim());
+    const description = hasBodySnippet ? normalized['Expected Impact/Value'] : '';
+    const combined = `${title} ${description}`.trim();
     const domain = getPublisherDomain(normalized.url);
     if (BLOCKED_DISCOVERY_DOMAINS.some(candidate => domainMatches(domain, candidate))) return null;
     if (PROMOTIONAL_TITLE_PATTERN.test(title)) return null;
@@ -349,8 +350,8 @@ function assessArticle(item, query, {
     const titleSignals = countMatches(title, GLOBAL_POLITICS_PATTERN);
     const descriptionSignals = countMatches(description, GLOBAL_POLITICS_PATTERN);
     const sourceRole = getSourceRole(domain);
-    const isNewsOutlet = scraperSource === 'public-rss' || (!isInstitutionalHub && sourceRole !== 'institutional');
-    if (isNewsOutlet) {
+    const isNewsOutletFeed = scraperSource === 'public-rss';
+    if (isNewsOutletFeed) {
         if (CORPORATE_MARKET_PATTERN.test(title) && !POLITICAL_POLICY_PATTERN.test(title)) return null;
         if (!POLITICAL_POLICY_PATTERN.test(combined)) return null;
     }
@@ -364,10 +365,10 @@ function assessArticle(item, query, {
         + (sourceRole === 'discovery' ? 0 : 8)
         + (normalized.publishedAt ? 4 : 0)
         + (regionIsExplicit ? 5 : 0)
-        + (String(description || '').length >= 80 ? 3 : 0)
+        + (description.length >= 80 ? 3 : 0)
     );
 
-    const minRelevance = isNewsOutlet ? 26 : 16;
+    const minRelevance = isNewsOutletFeed ? 26 : 16;
     if (relevanceScore < minRelevance) return null;
 
     const usesFallback = normalized._coordPrecision === 'fallback';
@@ -529,6 +530,9 @@ function selectDiverseArticles(items, limit = MAX_SNAPSHOT_ITEMS) {
         return true;
     };
 
+    // Balance across configured publishers by selecting from the least-represented configured
+    // publisher first (preserving region diversity ahead of global feeds, then relevance score)
+    // before falling back to discovery items.
     const pickBalancedCandidate = (predicate = null, overrideMaxPublisher = null) => {
         const eligible = candidates.filter(
             item => (!predicate || predicate(item)) && canSelect(item, overrideMaxPublisher)
@@ -545,8 +549,8 @@ function selectDiverseArticles(items, limit = MAX_SNAPSHOT_ITEMS) {
                     if (countDiff !== 0) return countDiff;
                     // On equal publisher counts, prioritize specialized regional publishers before global feeds
                     // so global feeds fill other regions rather than consuming limited regional slots (MAX_PER_REGION).
-                    const spanA = candidatePublisherRegions.get(keyA)?.size || 99;
-                    const spanB = candidatePublisherRegions.get(keyB)?.size || 99;
+                    const spanA = candidatePublisherRegions.get(keyA)?.size || 0;
+                    const spanB = candidatePublisherRegions.get(keyB)?.size || 0;
                     if (spanA !== spanB) return spanA - spanB;
                     return (b.coverage?.relevanceScore || 0) - (a.coverage?.relevanceScore || 0);
                 });
