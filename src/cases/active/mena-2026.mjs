@@ -77,7 +77,7 @@ export const MENA_CASES_2026 = [
             {
                 "title": "Syria: One Year After Political Change, Peace Spring Areas Block Displaced Persons’ Return",
                 "publisher": "Syrians for Truth and Justice",
-                "publishedAt": "2026-06-30",
+                "publishedAt": "2026-06-22",
                 "url": "https://stj-sy.org/en/syria-one-year-after-political-change-peace-spring-areas-block-displaced-persons-return/",
                 "perspectiveType": "local",
                 "perspective": "Syrian documentation of property, security, and return barriers in contested localities",
@@ -622,7 +622,7 @@ export const MENA_CASES_2026 = [
             {
                 "title": "Why US plans for power-sharing in Libya will not work",
                 "publisher": "Chatham House",
-                "publishedAt": "2026-07-24",
+                "publishedAt": "2026-07-20",
                 "url": "https://www.chathamhouse.org/2026/07/why-us-plans-power-sharing-libya-will-not-work",
                 "perspectiveType": "independent",
                 "perspective": "Independent analysis of elite bargaining, divided institutions, and risks in externally sponsored power-sharing",
