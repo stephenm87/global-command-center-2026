@@ -18,13 +18,13 @@ function toResponse(response) {
     return new Response(response.body || null, { status: response.statusCode, headers: response.headers });
 }
 
-export default async request => {
+export default async (request, context) => {
     const event = toLegacyEvent(request);
     const security = protectPublicEndpoint(event, { methods: ['GET'] });
     if (security.response) return toResponse(security.response);
     const responseHeaders = { ...security.headers, ...headers };
     try {
-        const snapshot = await readSnapshot(SNAPSHOT_KEY);
+        const snapshot = await readSnapshot(SNAPSHOT_KEY, { context });
         if (!snapshot) {
             return new Response(
                 JSON.stringify({ status: 'pending', stale: true, results: [], summary: null }),

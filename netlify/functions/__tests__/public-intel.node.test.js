@@ -555,3 +555,86 @@ test('shared intel-normalization coordinate inference is deterministic and categ
         'Items sharing fallback coordinates must not stack on one point'
     );
 });
+
+test('snapshot-store isolates deploy-preview and non-production Blobs from production and all Blobs functions thread runtime context', async () => {
+    const { pathToFileURL } = require('node:url');
+    const storeMod = await import(pathToFileURL(path.resolve(__dirname, '../_shared/snapshot-store.mjs')).href);
+    const {
+        STORE_NAME,
+        isProductionContext,
+        readSnapshot,
+        resolveDeployContext,
+        resolveSnapshotStore,
+        writeSnapshot,
+    } = storeMod;
+
+    assert.equal(resolveDeployContext({ context: { deploy: { context: 'production' } }, env: {} }), 'production');
+    assert.equal(resolveDeployContext({ context: { deploy: { context: 'deploy-preview' } }, env: { CONTEXT: 'production' } }), 'deploy-preview');
+    assert.equal(resolveDeployContext({ context: { deploy: { context: 'branch-deploy' } }, env: {} }), 'branch-deploy');
+    assert.equal(resolveDeployContext({ context: { deploy: { published: true } }, env: {} }), 'production');
+    assert.equal(resolveDeployContext({ context: { deploy: { published: false } }, env: { CONTEXT: 'production' } }), 'deploy-preview');
+    assert.equal(resolveDeployContext({ context: null, env: { CONTEXT: 'production' } }), 'production');
+    assert.equal(resolveDeployContext({ context: null, env: {} }), 'non-production');
+
+    assert.equal(isProductionContext({ context: { deploy: { context: 'production' } } }), true);
+    assert.equal(isProductionContext({ context: { deploy: { context: 'deploy-preview' } } }), false);
+    assert.equal(isProductionContext({ context: null, env: {} }), false);
+
+    const storeCalls = [];
+    const prodData = new Map();
+    const previewData = new Map();
+    const makeStore = (bucket, label) => ({
+        get: async key => {
+            storeCalls.push(`get:${label}:${key}`);
+            return bucket.get(key) ?? null;
+        },
+        setJSON: async (key, value) => {
+            storeCalls.push(`set:${label}:${key}`);
+            bucket.set(key, value);
+        },
+    });
+    const fakeGetStore = name => {
+        assert.equal(name, STORE_NAME);
+        return makeStore(prodData, 'site');
+    };
+    const fakeGetDeployStore = name => {
+        assert.equal(name, STORE_NAME);
+        return makeStore(previewData, 'deploy');
+    };
+
+    const previewStore = resolveSnapshotStore({
+        context: { deploy: { context: 'deploy-preview' } },
+        env: {},
+        getStoreFn: fakeGetStore,
+        getDeployStoreFn: fakeGetDeployStore,
+    });
+    await previewStore.setJSON('public-intel/current.json', { from: 'preview' });
+    assert.equal(prodData.has('public-intel/current.json'), false, 'Preview write must never touch site-wide store');
+
+    await writeSnapshot('public-intel/current.json', { from: 'prod' }, {
+        context: { deploy: { context: 'production' } },
+        env: {},
+        getStoreFn: fakeGetStore,
+        getDeployStoreFn: fakeGetDeployStore,
+    });
+    await writeSnapshot('public-intel/current.json', { from: 'branch' }, {
+        context: { deploy: { context: 'branch-deploy' } },
+        env: {},
+        getStoreFn: fakeGetStore,
+        getDeployStoreFn: fakeGetDeployStore,
+    });
+    const prodRead = await readSnapshot('public-intel/current.json', {
+        context: { deploy: { context: 'production' } },
+        env: {},
+        getStoreFn: fakeGetStore,
+        getDeployStoreFn: fakeGetDeployStore,
+    });
+    assert.deepEqual(prodRead, { from: 'prod' });
+    assert.deepEqual(previewData.get('public-intel/current.json'), { from: 'branch' });
+    assert.equal(storeCalls.includes('set:deploy:public-intel/current.json'), true);
+
+    for (const fileName of ['public-intel.mjs', 'refresh-public-intel.mjs']) {
+        const src = fs.readFileSync(path.join(__dirname, '..', fileName), 'utf8');
+        assert.match(src, /\{\s*context\s*\}/, `${fileName} must pass runtime deploy context into snapshot-store`);
+    }
+});

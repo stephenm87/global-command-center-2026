@@ -262,4 +262,30 @@ test('protectBackgroundCron, runFullSourceHealthRefresh, and dispatchOrRunInline
     });
     assert.equal(failKeepAlive.ok, false);
     assert.equal(failKeepAlive.reason, 'network-error');
+
+    const fs = require('node:fs');
+    const storeMod = await import(pathToFileURL(path.resolve(__dirname, '../_shared/snapshot-store.mjs')).href);
+    const prodBucket = new Map();
+    const deployBucket = new Map();
+    const storeOpts = context => ({
+        context,
+        env: {},
+        getStoreFn: () => ({
+            get: async k => prodBucket.get(k) ?? null,
+            setJSON: async (k, v) => { prodBucket.set(k, v); },
+        }),
+        getDeployStoreFn: () => ({
+            get: async k => deployBucket.get(k) ?? null,
+            setJSON: async (k, v) => { deployBucket.set(k, v); },
+        }),
+    });
+    await storeMod.writeSnapshot('source-health/current.json', { checkedAt: 'prod-only' }, storeOpts({ deploy: { context: 'production' } }));
+    await storeMod.writeSnapshot('source-health/current.json', { checkedAt: 'preview-only' }, storeOpts({ deploy: { context: 'deploy-preview' } }));
+    assert.deepEqual(await storeMod.readSnapshot('source-health/current.json', storeOpts({ deploy: { context: 'production' } })), { checkedAt: 'prod-only' });
+    assert.deepEqual(await storeMod.readSnapshot('source-health/current.json', storeOpts({ deploy: { context: 'deploy-preview' } })), { checkedAt: 'preview-only' });
+
+    for (const fileName of ['source-health.mjs', 'refresh-source-health.mjs', 'refresh-source-health-background.mjs']) {
+        const src = fs.readFileSync(path.join(__dirname, '..', fileName), 'utf8');
+        assert.match(src, /\{\s*context\s*\}/, `${fileName} must pass runtime deploy context into snapshot-store`);
+    }
 });
