@@ -114,7 +114,8 @@ const UN_NEWS_FEEDS = Object.freeze([
 
 // Non-UN RSS feeds whose published Terms of Use explicitly allow non-commercial website headline/RSS display.
 // BBC News terms (bbc.co.uk/usingthebbc/terms/can-i-use-bbc-content/) permit non-commercial website RSS with credit + homepage link.
-// Held pending owner review: RNZ Pacific (terms prohibit website aggregation), Al Jazeera & France 24 (personal-use only), AllAfrica (allowed with credit, held on owner instruction).
+// AllAfrica RSS terms (allafrica.com/misc/tools/rss.html) permit website headline display with allAfrica.com credit and link to allafrica.com or the feed page.
+// Held pending owner review: RNZ Pacific (terms prohibit website aggregation), Al Jazeera & France 24 (personal-use only).
 const PUBLIC_NEWS_RSS_FEEDS = Object.freeze([
     {
         id: 'bbc-world-news',
@@ -125,7 +126,49 @@ const PUBLIC_NEWS_RSS_FEEDS = Object.freeze([
         sourceName: 'BBC News',
         fundingLabel: 'Public broadcaster, UK licence fee',
         attributionUrl: 'https://www.bbc.com/news',
-        maxItems: 14,
+        maxItems: 20,
+    },
+]);
+
+const ALLAFRICA_RSS_FEEDS = Object.freeze([
+    {
+        id: 'allafrica-governance',
+        region: 'Africa',
+        issueHints: ['Governance & Rights', 'Security & Diplomacy', 'Economy & Development'],
+        fallbackCoords: [4.8, 21.4],
+        url: 'https://allafrica.com/tools/headlines/rdf/governance/headlines.rdf',
+        sourceName: 'allAfrica.com',
+        fundingLabel: 'Pan-African news aggregator (commercial & syndicated)',
+        attributionUrl: 'https://allafrica.com/',
+        upgradeHttpHost: 'allafrica.com',
+        maxSnippetChars: 0,
+        maxItems: 8,
+    },
+    {
+        id: 'allafrica-conflict',
+        region: 'Africa',
+        issueHints: ['Security & Diplomacy', 'Health & Human Security', 'Governance & Rights'],
+        fallbackCoords: [4.8, 21.4],
+        url: 'https://allafrica.com/tools/headlines/rdf/conflict/headlines.rdf',
+        sourceName: 'allAfrica.com',
+        fundingLabel: 'Pan-African news aggregator (commercial & syndicated)',
+        attributionUrl: 'https://allafrica.com/',
+        upgradeHttpHost: 'allafrica.com',
+        maxSnippetChars: 0,
+        maxItems: 8,
+    },
+    {
+        id: 'allafrica-externalrelations',
+        region: 'Africa',
+        issueHints: ['Security & Diplomacy', 'Economy & Development', 'Governance & Rights'],
+        fallbackCoords: [4.8, 21.4],
+        url: 'https://allafrica.com/tools/headlines/rdf/externalrelations/headlines.rdf',
+        sourceName: 'allAfrica.com',
+        fundingLabel: 'Pan-African news aggregator (commercial & syndicated)',
+        attributionUrl: 'https://allafrica.com/',
+        upgradeHttpHost: 'allafrica.com',
+        maxSnippetChars: 0,
+        maxItems: 8,
     },
 ]);
 
@@ -177,9 +220,9 @@ const PUBLISHER_FUNDING_INFO = Object.freeze({
         fundingLabel: 'Public radio, listener & grant funded (US)',
     },
     'allafrica.com': {
-        sourceName: 'allAfrica',
-        fundingLabel: 'African news aggregator (commercial & syndicated)',
-        attributionUrl: 'https://allafrica.com',
+        sourceName: 'allAfrica.com',
+        fundingLabel: 'Pan-African news aggregator (commercial & syndicated)',
+        attributionUrl: 'https://allafrica.com/',
     },
     'reuters.com': {
         sourceName: 'Reuters',
@@ -244,6 +287,7 @@ function getPublisherFundingInfo(domain = '', itemOrFeed = null) {
 }
 
 function truncateSnippet(text = '', maxChars = MAX_SNIPPET_CHARS) {
+    if (maxChars <= 0) return '';
     const clean = String(text || '').replace(/\s+/g, ' ').trim();
     if (!clean || clean.length <= maxChars) return clean;
     const sliced = clean.slice(0, maxChars - 1);
@@ -280,10 +324,17 @@ function extractTag(block, tagName) {
     return match ? decodeXmlEntities(match[1]) : '';
 }
 
-function sanitizeHttpsUrl(rawUrl) {
+function sanitizeHttpsUrl(rawUrl, upgradeHttpHost = '') {
     if (typeof rawUrl !== 'string' || !rawUrl.trim()) return null;
     try {
         const parsed = new URL(rawUrl.trim());
+        if (parsed.protocol === 'http:' && upgradeHttpHost) {
+            const cleanHost = parsed.hostname.toLowerCase();
+            const allowedHost = String(upgradeHttpHost).toLowerCase();
+            if (cleanHost === allowedHost || cleanHost === `www.${allowedHost}`) {
+                parsed.protocol = 'https:';
+            }
+        }
         if (parsed.protocol !== 'https:') return null;
         parsed.username = '';
         parsed.password = '';
@@ -354,6 +405,7 @@ function parseRssItems(xmlText, {
     sourceName = 'Institutional Feed',
     fundingLabel = '',
     attributionUrl = '',
+    upgradeHttpHost = '',
     maxItems = 5,
     now = new Date(),
     maxAgeDays = MAX_ITEM_AGE_DAYS,
@@ -362,12 +414,12 @@ function parseRssItems(xmlText, {
     if (typeof xmlText !== 'string' || !xmlText.trim()) return [];
     const blocks = xmlText.match(/<item\b[\s\S]*?<\/item>/gi) || [];
     const parsed = [];
-    const cleanAttributionUrl = sanitizeHttpsUrl(attributionUrl);
+    const cleanAttributionUrl = sanitizeHttpsUrl(attributionUrl, upgradeHttpHost);
     for (const block of blocks) {
         if (parsed.length >= maxItems) break;
         const title = extractTag(block, 'title');
         const rawLink = extractTag(block, 'link') || extractTag(block, 'guid');
-        const link = sanitizeHttpsUrl(rawLink);
+        const link = sanitizeHttpsUrl(rawLink, upgradeHttpHost);
         const snippet = truncateSnippet(extractTag(block, 'description'), maxSnippetChars);
         const rawPubDate = extractTag(block, 'pubDate') || extractTag(block, 'dc:date');
         const isoDate = normalizeFeedDate(rawPubDate);
@@ -414,6 +466,8 @@ async function fetchRssFeed(fetchImpl, feedConfig, { now = new Date() } = {}) {
             sourceName: feedConfig.sourceName,
             fundingLabel: feedConfig.fundingLabel,
             attributionUrl: feedConfig.attributionUrl,
+            upgradeHttpHost: feedConfig.upgradeHttpHost || '',
+            ...(Number.isInteger(feedConfig.maxSnippetChars) ? { maxSnippetChars: feedConfig.maxSnippetChars } : {}),
             maxItems: feedConfig.maxItems,
             now,
         });
@@ -523,6 +577,7 @@ async function fetchGdeltQuery(fetchImpl, queryConfig, { now = new Date() } = {}
 }
 
 module.exports = {
+    ALLAFRICA_RSS_FEEDS,
     GDELT_DOC_API,
     GDELT_FEED_QUERIES,
     INSTITUTIONAL_RSS_FEEDS,

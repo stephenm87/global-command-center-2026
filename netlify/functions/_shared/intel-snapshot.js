@@ -1,5 +1,6 @@
 const { normalizeHttpsUrl, normalizeProviderArticle } = require('./intel-normalization');
 const {
+    ALLAFRICA_RSS_FEEDS,
     GDELT_FEED_QUERIES,
     INSTITUTIONAL_RSS_FEEDS,
     PUBLIC_NEWS_RSS_FEEDS,
@@ -182,7 +183,9 @@ const BLOCKED_DISCOVERY_DOMAINS = Object.freeze([
 ]);
 
 const PROMOTIONAL_TITLE_PATTERN = /\b(funding opportunities?|job openings?|apply now|register now|webinar|newsletter|weekly roundup|event calendar|sponsored content)\b/i;
-const GLOBAL_POLITICS_PATTERN = /\b(diplomac\w*|security|conflict|war|peace|ceasefire|treaty|sanction\w*|election\w*|governance|democrac\w*|authoritarian\w*|human rights?|refugee\w*|migration|displacement|humanitarian|sovereignty|court|law|trade|tariff\w*|debt|development|labor|food security|climate|energy|water|mineral\w*|biodiversity|health|disease|outbreak|technology|artificial intelligence|\bai\b|cyber\w*|information|surveillance|multilateral\w*|aid)\b/gi;
+const GLOBAL_POLITICS_PATTERN = /\b(diplomac\w*|diplomat\w*|security|conflict\w*|war\b|wars\b|warfare|peace|ceasefire|treaty|treaties|sanction\w*|election\w*|governance|democrac\w*|authoritarian\w*|human rights?|refugee\w*|migration|migrant\w*|displacement|humanitarian|sovereignty|court|law|trade|tariff\w*|debt|development|labor|food security|climate|energy|water|mineral\w*|biodiversity|pollution|health\w*|disease|outbreak\w*|epidemic\w*|technology|artificial intelligence|\bai\b|cyber\w*|information|surveillance|multilateral\w*|aid|government\w*|parliament\w*|minister\w*|ministry|president\w*|united nations|secretary-general|mandate|peacekeep\w*|besieged|siege|occupation|invasi\w*|annex\w*|airstrike\w*|missile strikes?|drone strikes?|artillery|strikes? on|genocide|embargo|export control\w*|semiconductor\w*|houthi\w*|opposition|dialogue|political|violence|cooperation|economic integration|trade bloc|afcfta|afdb|afreximbank|envoy\w*|chip probe|protest\w*|coup|junta|military|borders?\b|cross-border|summit\w*|constitution\w*|legislat\w*|referendum|regulat\w*|antitrust|polic(y|ies))\b/gi;
+const POLITICAL_POLICY_PATTERN = /\b(government\w*|parliament\w*|congress\w*|senate|senator\w*|president\w*|prime minister\w*|minister\w*|ministry|ministries|diplomac\w*|diplomat\w*|diplomatic|embassy|ambassador\w*|envoy\w*|summit\w*|treaty|treaties|ceasefire|peace talks?|peacekeep\w*|national dialogue|dialogue|political|cooperation|economic integration|trade bloc|afcfta|afdb|afreximbank|united nations|u\.n\.|secretary-general|mandate|nato|european union|\beu\b|african union|ecowas|asean|world health organization|world bank|international monetary fund|security council|sanction\w*|embargo|tariff\w*|trade war|export control\w*|chip probe|antitrust|regulat\w*|legislat\w*|lawmaker\w*|supreme court|high court|constitutional court|criminal court|international court|tribunal|\bicj\b|\bicc\b|constitution\w*|referendum|election\w*|voter\w*|voting|governance|democrac\w*|authoritarian\w*|coup|junta|protest\w*|opposition|dissident\w*|human rights?|civil rights?|genocide|violence|refugee\w*|asylum|displace\w*|migration|migrant\w*|humanitarian|foreign aid|food aid|military aid|economic aid|aid access|aid agenc\w*|aid cuts?|conflict\w*|war\b|wars\b|warfare|military|troop\w*|airstrike\w*|missile strikes?|drone strikes?|artillery|strikes? on|drone\w*|besieged|siege|occupation|invasi\w*|annex\w*|houthi\w*|nuclear|sovereignty|borders?\b|cross-border|territor\w*|climate pact|climate accord|cop\d+|pollution|public health|health\w*|outbreak\w*|epidemic\w*|pandemic|polic(y|ies))\b/i;
+const CORPORATE_MARKET_PATTERN = /\b(ipo|stock market|market debut|company shares?\b|stock shares?\b|shares? (?:surge\w*|soar\w*|plunge\w*|fall\w*|fell|drop\w*|jump\w*|rall\w*|tumble\w*|rose|slump\w*)|shareholder\w*|valued at|valuable public compan\w*|valuation|market cap|quarterly earnings|earnings report|quarterly profits?|net profits?|corporate revenue\w*|merger\w*|acquisition\w*|wall street|nasdaq|nyse|s&p\s*500|ftse|dow jones|investor\w*|hedge fund\b|venture capital|startup\w*|stock price|public compan\w*|\$\d+(?:\.\d+)?\s*(?:bn|tn|billion|trillion))\b/i;
 
 const ISSUE_PATTERNS = Object.freeze({
     'Security & Diplomacy': /\b(diplomac\w*|security|conflict|war|peace|ceasefire|military|defen[cs]e|sanction\w*|nuclear|treaty|border|maritime|geopolitic\w*)\b/gi,
@@ -337,8 +340,9 @@ function assessArticle(item, query, {
     if (!normalized) return null;
 
     const title = normalized['Entity/Subject'];
-    const description = normalized['Expected Impact/Value'];
-    const combined = `${title} ${description}`;
+    const hasBodySnippet = Boolean(String(item?.snippet || item?.description || '').trim());
+    const description = hasBodySnippet ? normalized['Expected Impact/Value'] : '';
+    const combined = `${title} ${description}`.trim();
     const domain = getPublisherDomain(normalized.url);
     if (BLOCKED_DISCOVERY_DOMAINS.some(candidate => domainMatches(domain, candidate))) return null;
     if (PROMOTIONAL_TITLE_PATTERN.test(title)) return null;
@@ -346,6 +350,12 @@ function assessArticle(item, query, {
     const titleSignals = countMatches(title, GLOBAL_POLITICS_PATTERN);
     const descriptionSignals = countMatches(description, GLOBAL_POLITICS_PATTERN);
     const sourceRole = getSourceRole(domain);
+    const isNewsOutletFeed = scraperSource === 'public-rss';
+    if (isNewsOutletFeed) {
+        if (CORPORATE_MARKET_PATTERN.test(title) && !POLITICAL_POLICY_PATTERN.test(title)) return null;
+        if (!POLITICAL_POLICY_PATTERN.test(combined)) return null;
+    }
+
     const region = inferCoverageLabel(combined, REGION_PATTERNS, query.region);
     const issue = inferCoverageLabel(combined, ISSUE_PATTERNS, query.issueHints[0]);
     const regionIsExplicit = countMatches(combined, REGION_PATTERNS[region]) > 0;
@@ -355,10 +365,11 @@ function assessArticle(item, query, {
         + (sourceRole === 'discovery' ? 0 : 8)
         + (normalized.publishedAt ? 4 : 0)
         + (regionIsExplicit ? 5 : 0)
-        + (String(description || '').length >= 80 ? 3 : 0)
+        + (description.length >= 80 ? 3 : 0)
     );
 
-    if (relevanceScore < 16) return null;
+    const minRelevance = isNewsOutletFeed ? 26 : 16;
+    if (relevanceScore < minRelevance) return null;
 
     const usesFallback = normalized._coordPrecision === 'fallback';
     const hasRegionalFallback = usesFallback
@@ -434,6 +445,7 @@ function getPublisherKey(item) {
     const domain = String(item?._publisherDomain || getPublisherDomain(item?.url) || '').toLowerCase();
     if (domainMatches(domain, 'bbc.co.uk') || domainMatches(domain, 'bbc.com')) return 'bbc';
     if (domainMatches(domain, 'news.un.org') || domain === 'un.org') return 'un-news';
+    if (domainMatches(domain, 'allafrica.com')) return 'allafrica';
     if (domain) return domain;
     return String(item?.Source || 'unknown').toLowerCase();
 }
@@ -442,8 +454,12 @@ function selectDiverseArticles(items, limit = MAX_SNAPSHOT_ITEMS) {
     const candidates = dedupeArticles(items)
         .sort((a, b) => (b.coverage?.relevanceScore || 0) - (a.coverage?.relevanceScore || 0));
     const candidatePublisherCounts = new Map();
+    const candidatePublisherRegions = new Map();
     for (const candidate of candidates) {
-        increment(candidatePublisherCounts, getPublisherKey(candidate));
+        const pubKey = getPublisherKey(candidate);
+        increment(candidatePublisherCounts, pubKey);
+        if (!candidatePublisherRegions.has(pubKey)) candidatePublisherRegions.set(pubKey, new Set());
+        if (candidate.coverage?.region) candidatePublisherRegions.get(pubKey).add(candidate.coverage.region);
     }
     const substantiveThreshold = candidates.length <= 9 ? 1 : 4;
     const substantivePublishers = [...candidatePublisherCounts.values()]
@@ -472,7 +488,7 @@ function selectDiverseArticles(items, limit = MAX_SNAPSHOT_ITEMS) {
     const sourceRoleCounts = new Map();
     let discoveryCount = 0;
 
-    const trySelect = (item, overrideMaxPublisher = null) => {
+    const canSelect = (item, overrideMaxPublisher = null) => {
         if (!item || selectedSet.has(item)) return false;
         const region = item.coverage?.region;
         const issue = item.coverage?.issue;
@@ -492,6 +508,16 @@ function selectDiverseArticles(items, limit = MAX_SNAPSHOT_ITEMS) {
         if ((topicCounts.get(topic) || 0) >= MAX_PER_TOPIC_CLUSTER) return false;
         if ((sourceRoleCounts.get(sourceRole) || 0) >= maxRole) return false;
         if (sourceRole === 'discovery' && discoveryCount >= MAX_DISCOVERY_SOURCES) return false;
+        return true;
+    };
+
+    const trySelect = (item, overrideMaxPublisher = null) => {
+        if (!canSelect(item, overrideMaxPublisher)) return false;
+        const region = item.coverage?.region;
+        const issue = item.coverage?.issue;
+        const publisherKey = getPublisherKey(item);
+        const topic = item._topicCluster || `${region}:${issue}:${item['Entity/Subject']}`;
+        const sourceRole = item.coverage?.sourceRole || 'discovery';
 
         selected.push(item);
         selectedSet.add(item);
@@ -504,11 +530,39 @@ function selectDiverseArticles(items, limit = MAX_SNAPSHOT_ITEMS) {
         return true;
     };
 
-    const selectFirst = predicate => {
-        for (const item of candidates) {
-            if (!selectedSet.has(item) && predicate(item) && trySelect(item)) return true;
+    // Balance across configured publishers by selecting from the least-represented configured
+    // publisher first (preserving region diversity ahead of global feeds, then relevance score)
+    // before falling back to discovery items.
+    const pickBalancedCandidate = (predicate = null, overrideMaxPublisher = null) => {
+        const eligible = candidates.filter(
+            item => (!predicate || predicate(item)) && canSelect(item, overrideMaxPublisher)
+        );
+        if (eligible.length === 0) return null;
+        if (distinctCandidatePublishers >= 2) {
+            const configured = eligible.filter(item => item._isConfiguredFeed || item._isInstitutionalHub);
+            if (configured.length > 0) {
+                configured.sort((a, b) => {
+                    const keyA = getPublisherKey(a);
+                    const keyB = getPublisherKey(b);
+                    const countDiff = (publisherCounts.get(keyA) || 0)
+                        - (publisherCounts.get(keyB) || 0);
+                    if (countDiff !== 0) return countDiff;
+                    // On equal publisher counts, prioritize specialized regional publishers before global feeds
+                    // so global feeds fill other regions rather than consuming limited regional slots (MAX_PER_REGION).
+                    const spanA = candidatePublisherRegions.get(keyA)?.size || 0;
+                    const spanB = candidatePublisherRegions.get(keyB)?.size || 0;
+                    if (spanA !== spanB) return spanA - spanB;
+                    return (b.coverage?.relevanceScore || 0) - (a.coverage?.relevanceScore || 0);
+                });
+                return configured[0];
+            }
         }
-        return false;
+        return eligible[0];
+    };
+
+    const selectFirst = predicate => {
+        const pick = pickBalancedCandidate(predicate);
+        return pick ? trySelect(pick) : false;
     };
 
     for (const region of TARGET_REGIONS) {
@@ -520,9 +574,9 @@ function selectDiverseArticles(items, limit = MAX_SNAPSHOT_ITEMS) {
     for (const sourceRole of TARGET_SOURCE_ROLES) {
         selectFirst(item => item.coverage?.sourceRole === sourceRole);
     }
-    for (const item of candidates) {
-        if (selected.length >= limit) break;
-        trySelect(item);
+    while (selected.length < limit) {
+        const nextItem = pickBalancedCandidate();
+        if (!nextItem || !trySelect(nextItem)) break;
     }
 
     // Strict <= 1/3 per-publisher guarantee whenever 3+ publishers support a viable balanced list
@@ -570,9 +624,9 @@ function selectDiverseArticles(items, limit = MAX_SNAPSHOT_ITEMS) {
             for (const kept of trimmed) {
                 trySelect(kept, feasibleCap);
             }
-            for (const item of candidates) {
-                if (selected.length >= limit) break;
-                trySelect(item, feasibleCap);
+            while (selected.length < limit) {
+                const nextItem = pickBalancedCandidate(null, feasibleCap);
+                if (!nextItem || !trySelect(nextItem, feasibleCap)) break;
             }
             while (selected.length > 0 && Math.max(...publisherCounts.values()) > Math.floor(selected.length / 3)) {
                 const cap = Math.floor(selected.length / 3);
@@ -707,27 +761,27 @@ async function buildPublicSnapshot({
         };
     }
 
-    if (includeFreeFeeds) {
-        const rssSettled = await Promise.allSettled(
-            INSTITUTIONAL_RSS_FEEDS.map(feed => fetchRssFeed(fetchImpl, feed, { now }))
+    const collectRssFeedGroup = async (feeds, { providerName, scraperSource, isInstitutionalHub, isConfiguredFeed }) => {
+        const settled = await Promise.allSettled(
+            feeds.map(feed => fetchRssFeed(fetchImpl, feed, { now }))
         );
-        queryCount += INSTITUTIONAL_RSS_FEEDS.length;
-        let rssSuccessCount = 0;
-        let rssItemsCount = 0;
-        rssSettled.forEach((result, index) => {
+        queryCount += feeds.length;
+        let successCount = 0;
+        let addedCount = 0;
+        settled.forEach((result, index) => {
             if (result.status === 'fulfilled') {
-                rssSuccessCount += 1;
-                const feed = INSTITUTIONAL_RSS_FEEDS[index];
+                successCount += 1;
+                const feed = feeds[index];
                 rawItems.push(...result.value);
                 for (const item of result.value) {
                     const assessed = assessArticle(item, feed, {
-                        scraperSource: 'institutional-rss',
-                        isInstitutionalHub: true,
-                        isConfiguredFeed: true,
+                        scraperSource,
+                        isInstitutionalHub,
+                        isConfiguredFeed,
                     });
                     if (assessed) {
                         assessedItems.push(assessed);
-                        rssItemsCount += 1;
+                        addedCount += 1;
                     }
                 }
             } else {
@@ -736,50 +790,34 @@ async function buildPublicSnapshot({
                 coreRejected.push(result.reason);
             }
         });
-        if (rssSuccessCount > 0) activeProviders.push('UN News RSS');
+        if (successCount > 0) activeProviders.push(providerName);
         providerResults.push({
-            provider: 'UN News RSS',
-            status: rssSuccessCount === INSTITUTIONAL_RSS_FEEDS.length
+            provider: providerName,
+            status: successCount === feeds.length
                 ? 'ok'
-                : (rssSuccessCount > 0 ? 'partial' : 'failed'),
-            itemCount: rssItemsCount,
+                : (successCount > 0 ? 'partial' : 'failed'),
+            itemCount: addedCount,
         });
+    };
 
-        const newsRssSettled = await Promise.allSettled(
-            PUBLIC_NEWS_RSS_FEEDS.map(feed => fetchRssFeed(fetchImpl, feed, { now }))
-        );
-        queryCount += PUBLIC_NEWS_RSS_FEEDS.length;
-        let newsSuccessCount = 0;
-        let newsItemsCount = 0;
-        newsRssSettled.forEach((result, index) => {
-            if (result.status === 'fulfilled') {
-                newsSuccessCount += 1;
-                const feed = PUBLIC_NEWS_RSS_FEEDS[index];
-                rawItems.push(...result.value);
-                for (const item of result.value) {
-                    const assessed = assessArticle(item, feed, {
-                        scraperSource: 'public-rss',
-                        isInstitutionalHub: false,
-                        isConfiguredFeed: true,
-                    });
-                    if (assessed) {
-                        assessedItems.push(assessed);
-                        newsItemsCount += 1;
-                    }
-                }
-            } else {
-                coreFailedCount += 1;
-                totalFailedCount += 1;
-                coreRejected.push(result.reason);
-            }
+    if (includeFreeFeeds) {
+        await collectRssFeedGroup(INSTITUTIONAL_RSS_FEEDS, {
+            providerName: 'UN News RSS',
+            scraperSource: 'institutional-rss',
+            isInstitutionalHub: true,
+            isConfiguredFeed: true,
         });
-        if (newsSuccessCount > 0) activeProviders.push('BBC News RSS');
-        providerResults.push({
-            provider: 'BBC News RSS',
-            status: newsSuccessCount === PUBLIC_NEWS_RSS_FEEDS.length
-                ? 'ok'
-                : (newsSuccessCount > 0 ? 'partial' : 'failed'),
-            itemCount: newsItemsCount,
+        await collectRssFeedGroup(PUBLIC_NEWS_RSS_FEEDS, {
+            providerName: 'BBC News RSS',
+            scraperSource: 'public-rss',
+            isInstitutionalHub: false,
+            isConfiguredFeed: true,
+        });
+        await collectRssFeedGroup(ALLAFRICA_RSS_FEEDS, {
+            providerName: 'allAfrica RSS',
+            scraperSource: 'public-rss',
+            isInstitutionalHub: false,
+            isConfiguredFeed: true,
         });
 
         if (String(reliefwebAppname || '').trim()) {
