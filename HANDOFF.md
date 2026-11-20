@@ -2,6 +2,13 @@
 
 Newest entry first. Each agent adds an entry before it stops. Keep entries short.
 
+## 2026-11-20 — Antigravity (Lead) — Unit 23b (Gate 3: Nexus Rename, 2D Focus Only & 3D Bundle Removal)
+- **Did (on `feat/gate3-nexus-tidy`, PR #41 — unmerged at Gate 3 awaiting owner review):**
+  - **UI Simplify & Rename (`src/App.jsx`, `src/NexusWorkspace.jsx`, `src/NexusWorkspace.css`, `src/NexusFocusView.jsx`, `src/GuidedBriefings.jsx`):** Renamed `"Advanced Nexus"` → `"NEXUS"`, updated loading status (`"LOADING NEXUS…"`), `aria-label`s (`"Nexus workspace"`, `"Nexus"`), and Guided Briefings copy (`"Nexus."`), removed the 3D toggle/bar and `"Open 3D spatial"` button, and opened `NexusFocusView` directly inside `NexusWorkspace`.
+  - **3D Nexus Removal (`package.json`, `package-lock.json`, `src/GlobalRelationsNexus.*`, `src/nexus/*`):** Deleted 3D Nexus components (`GlobalRelationsNexus.jsx`, `GlobalRelationsNexus.css`, `NexusHudControls.jsx`, `NexusInspectorPanel.jsx`, `threeSpriteHelpers.js`, `nexusData.js`, `graphReadiness.mjs`, `nexusGDELT.js`, `nexusAudio.js`, `graphReadiness.node.test.js`) and uninstalled `react-force-graph-3d` while retaining `globe.gl`, `three`, `src/nexus/actorIds.js`, `src/nexusFocusData.js`, `src/nexusEdgeData.js`, and `netlify/functions/gdelt-pulse.mjs`.
+  - **Tests & Docs (`src/__tests__/`, `docs/ARCHITECTURE.md`):** Updated test helpers and specs (`buildAndAssets`, `semanticCardsAndA11y`, `nexusReferentialIntegrity`, `actorDeepLinks`, `decomposedComponents`), adding a `<NexusWorkspace />` SSR test confirming 2D Focus rendering and absence of `"3D spatial"` / `"Advanced Nexus"` labels.
+- **Claude Collaboration (`Review`, `claude-sonnet-5-5`, read-only):** Pending review prior to opening PR #41.
+
 ## 2026-11-20 — Antigravity (Lead) — Unit 23a (PR #39 Merge + AllAfrica RSS & Stricter News-Outlet Relevance Bar)
 - **PR #39 Production Go-Live:**
   - Merged PR #39 (`feat/feed-followup-isolation-geo` → `main`) via merge commit `46f28f14334ecb8d3b65cc61017fb5e0a6a5960e`.

@@ -635,7 +635,7 @@ function App() {
                         {[
                             ['globe', '🌎', 'LIVE GLOBE'],
                             ['briefings', '▤', 'GUIDED BRIEFINGS'],
-                            ['nexus', '⚯', 'ADVANCED NEXUS'],
+                            ['nexus', '⚯', 'NEXUS'],
                         ].map(([id, icon, label]) => (
                             <button
                                 key={id}
@@ -1035,12 +1035,9 @@ function App() {
 
                     {viewMode === 'nexus' && (
                         <NexusErrorBoundary>
-                            <React.Suspense fallback={<div className="nexus-route-loading" role="status">LOADING FOCUS NEXUS…</div>}>
+                            <React.Suspense fallback={<div className="nexus-route-loading" role="status">LOADING NEXUS…</div>}>
                                 <NexusWorkspace
                                     forecasts={filteredForecasts}
-                                    selectedTheory={selectedTheory}
-                                    theories={theories}
-                                    onTheorySelect={setSelectedTheory}
                                     initialNodeId={nexusEntry.nodeId}
                                     onActorChange={rememberNexusActor}
                                     onOpenBriefing={openBriefing}

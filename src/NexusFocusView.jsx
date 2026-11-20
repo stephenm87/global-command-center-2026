@@ -23,7 +23,7 @@ const RING_POSITIONS = [
 
 const strengthLabel = salience => salience >= 0.8 ? 'High salience' : salience >= 0.5 ? 'Significant' : 'Established';
 
-export default function NexusFocusView({ forecasts = [], initialNodeId, onSelectActor, onOpenSpatial, onOpenBriefing }) {
+export default function NexusFocusView({ forecasts = [], initialNodeId, onSelectActor, onOpenBriefing }) {
     const relationships = useMemo(() => getNexusRelationships(), []);
     const [selectedId, setSelectedId] = useState(() => resolveActorId(initialNodeId, 'USA'));
     const [dimension, setDimension] = useState('all');
@@ -72,7 +72,7 @@ export default function NexusFocusView({ forecasts = [], initialNodeId, onSelect
     };
 
     return (
-        <section className="focus-nexus" aria-label="Focused relations nexus">
+        <section className="focus-nexus" aria-label="Nexus">
             <div className="focus-toolbar">
                 <div className="focus-search-wrap">
                     <label htmlFor="focus-nexus-search">Find an actor, region, or institution</label>
@@ -102,7 +102,6 @@ export default function NexusFocusView({ forecasts = [], initialNodeId, onSelect
                 <button className="focus-secondary-btn" type="button" onClick={() => setExpanded(value => !value)} aria-pressed={expanded}>
                     {expanded ? 'Focus only' : 'Show more'}
                 </button>
-                <button className="focus-secondary-btn" type="button" onClick={onOpenSpatial}>Open 3D spatial</button>
             </div>
 
             <div className="focus-layout">

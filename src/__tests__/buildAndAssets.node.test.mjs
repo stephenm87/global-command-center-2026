@@ -4,10 +4,10 @@ import fs from 'node:fs';
 import path from 'node:path';
 import { REPO_ROOT, readAppWorkspaceSource } from './_helpers/readAppSources.mjs';
 
-test('index.html, App workspace modules, and nexusGDELT.js use self-hosted assets, favicon, and server GDELT proxy instead of third-party CDNs', () => {
+test('index.html and App workspace modules use self-hosted assets and favicon, and remove the 3D Nexus bundle', () => {
     const indexHtml = fs.readFileSync(path.join(REPO_ROOT, 'index.html'), 'utf8');
     const appJsx = readAppWorkspaceSource();
-    const gdeltJs = fs.readFileSync(path.join(REPO_ROOT, 'src/nexusGDELT.js'), 'utf8');
+    const pkgJson = JSON.parse(fs.readFileSync(path.join(REPO_ROOT, 'package.json'), 'utf8'));
 
     assert.ok(fs.existsSync(path.join(REPO_ROOT, 'public/favicon.svg')), 'public/favicon.svg must exist');
     assert.ok(fs.existsSync(path.join(REPO_ROOT, 'public/assets/globe/countries-110m.json')), 'countries-110m.json must be self-hosted');
@@ -15,6 +15,8 @@ test('index.html, App workspace modules, and nexusGDELT.js use self-hosted asset
     assert.ok(fs.existsSync(path.join(REPO_ROOT, 'public/assets/globe/night-sky.jpg')), 'night-sky.jpg must be self-hosted');
     assert.ok(fs.existsSync(path.join(REPO_ROOT, 'public/assets/fonts/fonts.css')), 'local fonts.css must exist');
     assert.ok(fs.existsSync(path.join(REPO_ROOT, 'public/assets/netlify-badge-color-accent.svg')), 'local Netlify SVG badge must exist');
+    assert.equal(fs.existsSync(path.join(REPO_ROOT, 'src/GlobalRelationsNexus.jsx')), false, '3D GlobalRelationsNexus bundle must be removed');
+    assert.equal(Boolean(pkgJson.dependencies?.['react-force-graph-3d']), false, 'package.json must omit react-force-graph-3d');
 
     assert.match(indexHtml, /href="\/favicon\.svg"/, 'index.html must link /favicon.svg');
     assert.match(indexHtml, /href="\/assets\/fonts\/fonts\.css"/, 'index.html must load self-hosted fonts.css');
@@ -25,9 +27,6 @@ test('index.html, App workspace modules, and nexusGDELT.js use self-hosted asset
     assert.ok(!appJsx.includes('www.netlify.com/img/global/badges'), 'App.jsx must not fetch redirected badge from netlify.com');
     assert.match(appJsx, /width="114"\s+height="50"/, 'Netlify badge img must carry explicit width and height');
     assert.match(appJsx, /mobileGlobeEnabled/, 'App.jsx must support 1-tap mobile Globe opt-in (<768px)');
-
-    assert.ok(!gdeltJs.includes('https://api.gdeltproject.org'), 'Browser nexusGDELT.js must route through cached Netlify function');
-    assert.match(gdeltJs, /\/\.netlify\/functions\/gdelt-pulse/);
 });
 
 test('vite.config.mjs wires teacher-guide.html multi-page input, manualChunks case split, and JSON dev function middleware', () => {

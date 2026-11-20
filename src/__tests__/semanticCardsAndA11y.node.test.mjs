@@ -48,22 +48,24 @@ test('intel-card uses valid phrasing content inside <button>, calls openBriefing
 
 test('GuidedBriefings displays Showing X of Y cases with Show all button and UI accent text colors pass >=4.5:1 WCAG AA contrast', () => {
     const briefingsSource = fs.readFileSync(path.join(REPO_ROOT, 'src/GuidedBriefings.jsx'), 'utf8');
-    const nexusCss = fs.readFileSync(path.join(REPO_ROOT, 'src/GlobalRelationsNexus.css'), 'utf8');
+    const appRootJsx = fs.readFileSync(path.join(REPO_ROOT, 'src/App.jsx'), 'utf8');
+    const focusCss = fs.readFileSync(path.join(REPO_ROOT, 'src/NexusFocusView.css'), 'utf8');
 
     assert.match(briefingsSource, /Showing\s+\{displayedTours\.length\}\s+of\s+\{visibleTours\.length\}/, 'GuidedBriefings must report Showing X of Y cases');
     assert.match(briefingsSource, /Show all \{visibleTours\.length\}/, 'GuidedBriefings must offer Show all button');
+    assert.match(appRootJsx, /\['nexus',\s*'⚯',\s*'NEXUS'\]/, 'Top nav must label the Nexus view NEXUS');
+    assert.ok(!appRootJsx.includes('ADVANCED NEXUS'), 'Top nav must not label the tab ADVANCED NEXUS');
 
-    // Verify computed WCAG 2.1 AA (>= 4.5:1) contrast on accessible text accents & HUD labels
+    // Verify computed WCAG 2.1 AA (>= 4.5:1) contrast on accessible text accents & Nexus muted labels
     assert.ok(contrastRatio('#ff5c99', '#0a0e1a') >= 4.5, '#ff5c99 conflict category label must achieve >=4.5:1 on #0a0e1a');
     assert.ok(contrastRatio('#ff5c99', '#1b2b28') >= 4.5, '#ff5c99 conflict category label must achieve >=4.5:1 on active Africa-tinted library card (#8fda66 @ 9% over #101a22)');
     const briefingsCss = fs.readFileSync(path.join(REPO_ROOT, 'src/GuidedBriefings.css'), 'utf8');
     assert.match(briefingsCss, /\.briefing-tour-list button\.active\s*\{[^}]*9%,\s*var\(--briefing-raised\)/);
     assert.ok(contrastRatio('#ff6b6b', '#101624') >= 4.5, '#ff6b6b Marxism theory label must achieve >=4.5:1 on #101624');
-    assert.ok(contrastRatio('#9fb2bc', '#05090d') >= 4.5, '#9fb2bc 3D Nexus HUD label must achieve >=4.5:1 on #05090d');
+    assert.ok(contrastRatio('#89a0aa', '#05090d') >= 4.5, '#89a0aa Nexus muted label must achieve >=4.5:1 on #05090d');
+    assert.ok(contrastRatio('#89a0aa', '#101a22') >= 4.5, '#89a0aa Nexus muted label must achieve >=4.5:1 on #101a22');
+    assert.match(focusCss, /--focus-muted:\s*#89a0aa/);
     assert.ok(contrastRatio('#ffffff', '#7a0099') >= 4.5, 'Code of Conduct #ffffff on #7a0099 must achieve >=4.5:1');
-
-    assert.ok(!/\.hud-tab\s*\{[^}]*color:\s*#555\b/.test(nexusCss), '.hud-tab must not use low-contrast #555');
-    assert.ok(!/\.section-label\s*\{[^}]*color:\s*#555\b/.test(nexusCss), '.section-label must not use low-contrast #555');
 });
 
 test('GuidedBriefings C4 depth panels preserve [hidden] display:none and constrain CSS Grid tracks across desktop and mobile', () => {

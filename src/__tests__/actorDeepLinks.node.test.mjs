@@ -7,7 +7,7 @@ import { createServer } from 'vite';
 
 const REPO_ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '../..');
 
-test('resolveActorId normalizes case-insensitive ?actor= deep links across Focus and 3D Nexus', async t => {
+test('resolveActorId normalizes case-insensitive ?actor= deep links in Nexus', async t => {
     const vite = await createServer({
         configFile: false,
         root: REPO_ROOT,
@@ -36,11 +36,9 @@ test('resolveActorId normalizes case-insensitive ?actor= deep links across Focus
 
     const appSource = fs.readFileSync(path.join(REPO_ROOT, 'src/App.jsx'), 'utf8');
     const focusSource = fs.readFileSync(path.join(REPO_ROOT, 'src/NexusFocusView.jsx'), 'utf8');
-    const spatialSource = fs.readFileSync(path.join(REPO_ROOT, 'src/GlobalRelationsNexus.jsx'), 'utf8');
 
     assert.ok(appSource.includes('resolveActorId('), 'App.jsx must normalize ?actor= via resolveActorId');
     assert.ok(focusSource.includes('resolveActorId('), 'NexusFocusView.jsx must normalize initialNodeId via resolveActorId');
-    assert.ok(spatialSource.includes('resolveActorId('), 'GlobalRelationsNexus.jsx must normalize initialNodeId via resolveActorId');
 
     // Verify all 4 previously 404 URLs remain absent across modular src/cases/active/*.mjs
     const activeCasesDir = path.join(REPO_ROOT, 'src/cases/active');

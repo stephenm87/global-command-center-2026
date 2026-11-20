@@ -17,11 +17,11 @@ export const APP_WORKSPACE_FILES = [
 ];
 
 export const NEXUS_WORKSPACE_FILES = [
-    'src/GlobalRelationsNexus.jsx',
-    'src/nexus/nexusData.js',
-    'src/nexus/threeSpriteHelpers.js',
-    'src/nexus/NexusHudControls.jsx',
-    'src/nexus/NexusInspectorPanel.jsx',
+    'src/NexusWorkspace.jsx',
+    'src/NexusFocusView.jsx',
+    'src/nexusFocusData.js',
+    'src/nexusEdgeData.js',
+    'src/nexus/actorIds.js',
 ];
 
 export function readAppWorkspaceSource() {
