@@ -1323,3 +1323,246 @@ test('snapshot-store isolates deploy-preview and non-production Blobs from produ
     const publicIntelSrc = fs.readFileSync(path.join(__dirname, '..', 'public-intel.mjs'), 'utf8');
     assert.match(publicIntelSrc, /snapshotSchemaVersion\s*!==\s*SNAPSHOT_SCHEMA_VERSION/, 'public-intel.mjs must auto-upgrade stale schema snapshots when feeds change');
 });
+
+test('Mongabay filters wire-agency items and off-topic video shorts while carrying an accurate source role label', () => {
+    const {
+        isWireAgencyAuthor,
+    } = require('../_shared/free-feeds');
+    assert.equal(isWireAgencyAuthor('Associated Press'), true);
+    assert.equal(isWireAgencyAuthor('AP'), true);
+    assert.equal(isWireAgencyAuthor('AFP'), true);
+    assert.equal(isWireAgencyAuthor('Agence France-Presse'), true);
+    assert.equal(isWireAgencyAuthor('Reuters'), true);
+    assert.equal(isWireAgencyAuthor('Naina Rao'), false);
+
+    const fixedNow = new Date('2026-11-21T02:00:00Z');
+    const mongabayMixedXml = `<?xml version="1.0" encoding="utf-8"?>
+        <rss version="2.0" xmlns:dc="http://purl.org/dc/elements/1.1/"><channel>
+            <item>
+                <title>There is no going back 'to the way it was before' the Iran war's energy shock, IEA says</title>
+                <link>https://news.mongabay.com/short-article/2026/11/iran-energy-shock/</link>
+                <dc:creator><![CDATA[Associated Press]]></dc:creator>
+                <description><![CDATA[The International Energy Agency reported global energy security shifts.]]></description>
+                <pubDate>Thu, 19 Nov 2026 12:00:00 +0000</pubDate>
+            </item>
+            <item>
+                <title>Global climate summit talks stall over adaptation finance</title>
+                <link>https://news.mongabay.com/short-article/2026/11/climate-finance/</link>
+                <dc:creator><![CDATA[AFP]]></dc:creator>
+                <description><![CDATA[PARIS (AFP) — Negotiators clashed over adaptation funding targets.]]></description>
+                <pubDate>Thu, 19 Nov 2026 11:00:00 +0000</pubDate>
+            </item>
+            <item>
+                <title>Maritime talks end with new emissions rules</title>
+                <link>https://news.mongabay.com/short-article/2026/11/maritime-emissions/</link>
+                <dc:creator><![CDATA[Reuters]]></dc:creator>
+                <description><![CDATA[LONDON (Reuters) — Governments adopted shipping emissions targets.]]></description>
+                <pubDate>Thu, 19 Nov 2026 10:00:00 +0000</pubDate>
+            </item>
+            <item>
+                <title>Grand Canyon South Rim water restrictions ease after repairs</title>
+                <link>https://news.mongabay.com/short-article/2026/11/grand-canyon-ap/</link>
+                <dc:creator><![CDATA[Jane Reporter]]></dc:creator>
+                <description><![CDATA[GRAND CANYON NATIONAL PARK, Ariz. (AP) — Officials eased restrictions.]]></description>
+                <pubDate>Thu, 19 Nov 2026 09:00:00 +0000</pubDate>
+            </item>
+            <item>
+                <title>Coastal states debate maritime treaty enforcement</title>
+                <link>https://news.mongabay.com/short-article/2026/11/coastal-treaty-ap/</link>
+                <dc:creator><![CDATA[Jane Doe / Associated Press]]></dc:creator>
+                <description><![CDATA[Governments reviewed maritime enforcement rules.]]></description>
+                <pubDate>Thu, 19 Nov 2026 08:45:00 +0000</pubDate>
+            </item>
+            <item>
+                <title>Amazon watershed funding shifts after ministerial talks</title>
+                <link>https://news.mongabay.com/short-article/2026/11/amazon-afp-compound/</link>
+                <dc:creator><![CDATA[Jane Doe (AFP)]]></dc:creator>
+                <description><![CDATA[Ministers met to review forest conservation finance.]]></description>
+                <pubDate>Thu, 19 Nov 2026 08:30:00 +0000</pubDate>
+            </item>
+            <item>
+                <title>Mining permits face judicial review in northern provinces</title>
+                <link>https://news.mongabay.com/short-article/2026/11/mining-thomson-reuters/</link>
+                <dc:creator><![CDATA[Thomson Reuters Foundation]]></dc:creator>
+                <description><![CDATA[Judges scheduled hearings on mining oversight.]]></description>
+                <pubDate>Thu, 19 Nov 2026 08:15:00 +0000</pubDate>
+            </item>
+            <item>
+                <title>India parliament reviews forest rights compensation rules</title>
+                <link>https://news.mongabay.com/short-article/2026/11/india-forest-rights-ap-singh/</link>
+                <dc:creator><![CDATA[A.P. Singh]]></dc:creator>
+                <description><![CDATA[Lawmakers examined community forest rights legislation.]]></description>
+                <pubDate>Thu, 19 Nov 2026 08:05:00 +0000</pubDate>
+            </item>
+            <item>
+                <title>Nickel linked to deforestation in Indonesia traded on London Metal Exchange, says report</title>
+                <link>https://news.mongabay.com/short-article/2026/11/nickel-deforestation-indonesia/</link>
+                <dc:creator><![CDATA[Naina Rao]]></dc:creator>
+                <description><![CDATA[Indonesian regulators and trade monitors face scrutiny over rainforest deforestation linked to industrial supply chains.]]></description>
+                <pubDate>Thu, 19 Nov 2026 08:00:00 +0000</pubDate>
+            </item>
+        </channel></rss>`;
+
+    const kept = parseRssItems(mongabayMixedXml, {
+        sourceName: 'Mongabay',
+        fundingLabel: 'Nonprofit conservation journalism (CC BY-ND 4.0)',
+        attributionUrl: 'https://news.mongabay.com/',
+        requireAuthor: true,
+        excludeWireAuthors: true,
+        maxItems: 12,
+        now: fixedNow,
+    });
+    assert.equal(kept.length, 2, 'Mongabay must drop wire agencies and compound AP/AFP/Reuters bylines while keeping ordinary initials like A.P. Singh');
+    assert.deepEqual(kept.map(item => item.author), ['A.P. Singh', 'Naina Rao']);
+
+    const globalQuery = {
+        id: 'global-climate-resources',
+        region: 'Global / Transnational',
+        issueHints: ['Climate & Resources'],
+        fallbackCoords: null,
+    };
+
+    const videoShort = assessArticle({
+        title: 'How one tiny island made conservation work',
+        description: "Out in the Bristol Channel, nestled between Wales and England, the rugged island of Lundy is one of the UK's most pioneering conservation stories. Watch the full story.",
+        link: 'https://news.mongabay.com/short-article/2026/11/how-one-tiny-island-made-conservation-work/',
+        date: '2026-11-19',
+        source: 'Mongabay',
+        author: 'Sandy Watt',
+        fundingLabel: 'Nonprofit conservation journalism (CC BY-ND 4.0)',
+        attributionUrl: 'https://news.mongabay.com/',
+    }, globalQuery, { scraperSource: 'public-rss', isConfiguredFeed: true });
+    assert.equal(videoShort, null, 'Off-topic video short with Watch the full story must be dropped');
+
+    const conservationOnly = assessArticle({
+        title: 'How one tiny island made conservation work',
+        description: 'Conservation volunteers counted seabird populations on a small UK island this summer.',
+        link: 'https://news.mongabay.com/short-article/2026/11/how-one-tiny-island-made-conservation-work/',
+        date: '2026-11-19',
+        source: 'Mongabay',
+        author: 'Sandy Watt',
+    }, globalQuery, { scraperSource: 'public-rss', isConfiguredFeed: true });
+    assert.equal(conservationOnly, null, 'Pure conservation piece with no political or policy actor must be dropped');
+
+    const policyConservation = assessArticle({
+        title: 'Nickel linked to deforestation in Indonesia traded on London Metal Exchange, says report',
+        description: 'Government regulators and Indigenous leaders challenged mining deforestation permits.',
+        link: 'https://news.mongabay.com/short-article/2026/11/nickel-deforestation-indonesia/',
+        date: '2026-11-19',
+        source: 'Mongabay',
+        author: 'Naina Rao',
+        fundingLabel: 'Nonprofit conservation journalism (CC BY-ND 4.0)',
+        attributionUrl: 'https://news.mongabay.com/',
+    }, globalQuery, { scraperSource: 'public-rss', isConfiguredFeed: true });
+    assert.ok(policyConservation, 'Original policy/deforestation reporting by Mongabay must be kept');
+    assert.equal(policyConservation.coverage.sourceRole, 'environmental-news');
+    assert.equal(policyConservation.coverage.sourceRoleLabel, 'Environmental & conservation journalism');
+});
+
+test('Demonym matching pins Indonesian and Yemeni headlines, covers all 193 UN member states, and avoids ordinary-word collisions', () => {
+    const {
+        SPECIFIC_PLACE_COORDS,
+        UN_MEMBER_DEMONYMS,
+        UN_MEMBER_STATE_DEMONYMS,
+        resolveCoords,
+    } = require('../_shared/intel-normalization');
+
+    const globalQuery = {
+        id: 'global-governance',
+        region: 'Global / Transnational',
+        issueHints: ['Governance & Rights'],
+        fallbackCoords: null,
+    };
+
+    const indonesianArticle = assessArticle({
+        title: 'In win against impunity, Indonesian court orders the reform of Military Justice Law',
+        description: 'Judges ordered parliament to revise jurisdiction over military abuses.',
+        link: 'https://globalvoices.org/2026/11/17/in-win-against-impunity-indonesian-court-orders-the-reform-of-military-justice-law/',
+        date: '2026-11-17',
+        source: 'Global Voices',
+        author: 'Mong Palatino',
+    }, globalQuery, { scraperSource: 'public-rss', isConfiguredFeed: true });
+    assert.ok(indonesianArticle, 'Indonesian court headline must pass relevance');
+    assert.equal(indonesianArticle.coverage.matchedPlace, 'indonesia');
+    assert.equal(indonesianArticle.coverage.locationPrecision, 'named-place');
+    assert.equal(indonesianArticle.Latitude, '-0.8');
+    assert.equal(indonesianArticle.Longitude, '113.9');
+    assert.equal(indonesianArticle.coverage.region, 'Asia-Pacific');
+
+    const yemeniArticle = assessArticle({
+        title: "'I tell my son it's just fireworks': Life inside Yemeni city besieged by Houthis",
+        description: 'Civilians endure artillery strikes and blockade inside the besieged city.',
+        link: 'https://www.bbc.co.uk/news/articles/cx7v2d8q879eo',
+        date: '2026-11-20',
+        source: 'BBC News',
+    }, globalQuery, { scraperSource: 'public-rss', isConfiguredFeed: true });
+    assert.ok(yemeniArticle, 'Yemeni siege headline must pass relevance');
+    assert.equal(yemeniArticle.coverage.matchedPlace, 'yemen');
+    assert.equal(yemeniArticle.coverage.locationPrecision, 'named-place');
+    assert.equal(yemeniArticle.Latitude, '15.6');
+    assert.equal(yemeniArticle.Longitude, '48.5');
+    assert.equal(yemeniArticle.coverage.region, 'Middle East & North Africa');
+
+    // Demonym-only headline must resolve its own region even when snippet names another region
+    const demonymOverSnippetRegion = assessArticle({
+        title: 'Yemeni city besieged by Houthis amid humanitarian talks',
+        description: 'UK officials monitor humanitarian aid delivery.',
+        link: 'https://www.bbc.co.uk/news/articles/yemen-uk-aid-test',
+        date: '2026-11-20',
+        source: 'BBC News',
+    }, globalQuery, { scraperSource: 'public-rss', isConfiguredFeed: true });
+    assert.ok(demonymOverSnippetRegion);
+    assert.equal(demonymOverSnippetRegion.coverage.matchedPlace, 'yemen');
+    assert.equal(demonymOverSnippetRegion.coverage.region, 'Middle East & North Africa');
+
+    // Unmapped Global / Transnational stories must stay unpinned and not receive a bogus explicit-region bonus
+    const unmappedGlobal = assessArticle({
+        title: 'Diplomats negotiate treaty enforcement and sanctions rules',
+        description: 'Oversight talks examined compliance.',
+        link: 'https://www.bbc.co.uk/news/articles/unmapped-global-oversight',
+        date: '2026-11-20',
+        source: 'BBC News',
+    }, globalQuery, { scraperSource: 'public-rss', isConfiguredFeed: true });
+    const explicitGlobal = assessArticle({
+        title: 'Diplomats negotiate treaty enforcement and sanctions rules',
+        description: 'Global talks examined compliance.',
+        link: 'https://www.bbc.co.uk/news/articles/explicit-global-oversight',
+        date: '2026-11-20',
+        source: 'BBC News',
+    }, globalQuery, { scraperSource: 'public-rss', isConfiguredFeed: true });
+    assert.ok(unmappedGlobal && explicitGlobal);
+    assert.equal(unmappedGlobal.coverage.locationPrecision, 'global-unmapped');
+    assert.equal(unmappedGlobal.Latitude, null);
+    assert.equal(explicitGlobal.coverage.relevanceScore - unmappedGlobal.coverage.relevanceScore, 5);
+
+    // First-in-title ordering with demonyms and multi-word specificity
+    assert.equal(resolveCoords('Ukrainian envoys meet French officials', '').matchedPlace, 'ukraine');
+    assert.equal(resolveCoords('American Samoan leaders challenge seabed lease auction', '').matchedPlace, 'american samoa');
+    assert.equal(resolveCoords('US leases American Samoan seabed for mining in auction', '').matchedPlace, 'united states');
+    assert.equal(resolveCoords('South Korean lawmakers debate North Korean sanctions', '').matchedPlace, 'south korea');
+    assert.equal(resolveCoords('Equatorial Guinean delegation arrives at AU summit', '').matchedPlace, 'equatorial guinea');
+
+    // Ordinary-word and geographic collision guards
+    assert.equal(resolveCoords('Factories regulate chemicals in nail polish and shoes', '').matchedPlace, null);
+    assert.equal(resolveCoords('Groups agree to go dutch on climate fund costs', '').matchedPlace, null);
+    assert.equal(resolveCoords('Latin American trade bloc reviews tariffs', '').matchedPlace, 'latin america');
+    assert.equal(resolveCoords('Vessels cross Indian Ocean shipping lanes', '').matchedPlace, null);
+    assert.equal(resolveCoords('Trade dispute hits French fries and agricultural imports', '').matchedPlace, null);
+    assert.equal(resolveCoords('Polish lawmakers pass judicial reform bill', '').matchedPlace, 'poland');
+    assert.equal(resolveCoords('Dutch court rules on offshore climate emissions', '').matchedPlace, 'netherlands');
+
+    // Verify all 193 UN member states exist and resolve via UN_MEMBER_DEMONYMS
+    const memberKeys = Object.keys(UN_MEMBER_STATE_DEMONYMS);
+    assert.equal(memberKeys.length, 193, 'Must map all 193 UN member states');
+    for (const countryKey of memberKeys) {
+        assert.ok(countryKey in SPECIFIC_PLACE_COORDS, `Missing coordinates for UN member ${countryKey}`);
+        for (const demonym of UN_MEMBER_STATE_DEMONYMS[countryKey]) {
+            assert.ok(UN_MEMBER_DEMONYMS[demonym.toLowerCase()], `Exported UN_MEMBER_DEMONYMS missing ${demonym}`);
+            const resolved = resolveCoords(`${demonym} government signs agreement`, '');
+            const validMatch = resolved.matchedPlace === countryKey
+                || (countryKey === 'republic of the congo' && resolved.matchedPlace === 'democratic republic of the congo')
+                || (countryKey === 'dominica' && resolved.matchedPlace === 'dominican republic');
+            assert.equal(validMatch, true, `Demonym "${demonym}" resolved to ${resolved.matchedPlace} instead of ${countryKey}`);
+        }
+    }
+});

@@ -407,11 +407,19 @@ function normalizeAuthorCandidate(rawAuthor = '', sourceName = '') {
 }
 
 const WIRE_AGENCY_AUTHOR_PATTERN = /^(?:(?:the\s+)?associated\s+press(?:\s+news)?|ap(?:\s+news)?|agence\s+france[- ]presse|afp|(?:thomson\s+)?reuters)(?:\s*\([^)]*\))?$/i;
+const WIRE_AGENCY_EMBEDDED_PATTERN = /(?<![\p{L}\p{N}])(?:associated\s+press|agence\s+france[- ]presse|(?:thomson\s+)?reuters)(?![\p{L}\p{N}])/iu;
+const WIRE_AGENCY_ACRONYM_PATTERN = /(?<![\p{L}\p{N}.])(?:AP|AFP)(?![\p{L}\p{N}.])/u;
 const WIRE_DATELINE_PATTERN = /^.{0,80}\((?:AP|AFP|Reuters)\)\s*[—–-]/;
 
 function isWireAgencyAuthor(author = '') {
     const trimmed = String(author || '').replace(/\s+/g, ' ').trim();
-    return Boolean(trimmed && WIRE_AGENCY_AUTHOR_PATTERN.test(trimmed));
+    return Boolean(
+        trimmed && (
+            WIRE_AGENCY_AUTHOR_PATTERN.test(trimmed)
+            || WIRE_AGENCY_EMBEDDED_PATTERN.test(trimmed)
+            || WIRE_AGENCY_ACRONYM_PATTERN.test(trimmed)
+        )
+    );
 }
 
 function extractItemAuthor(block, sourceName = '') {

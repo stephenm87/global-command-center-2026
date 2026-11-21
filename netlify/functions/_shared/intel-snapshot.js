@@ -209,7 +209,7 @@ const REGION_PATTERNS = Object.freeze({
     'Middle East & North Africa': /(?<![\p{L}\p{N}])(middle east|north africa|mena|iran|iraq|israel|palestin\w*|gaza|west bank|lebanon|syria|jordan|yemen|saudi arabia|qatar|emirates|uae|oman|bahrain|kuwait|egypt|libya|tunisia|algeria|morocco|western sahara)(?![\p{L}\p{N}])/giu,
     'Europe & Eurasia': /(?<![\p{L}\p{N}])(europe|eurasia|ukraine|russia|moldova|transnistria|georgia|armenia|azerbaijan|belarus|balkans|kosovo|serbia|bosnia|croatia|slovenia|montenegro|north macedonia|albania|romania|bulgaria|hungary|slovakia|czechia|czech republic|poland|germany|france|britain|united kingdom|uk|(?<!new\s+)ireland|spain|portugal|italy|greece|cyprus|malta|austria|switzerland|belgium|netherlands|luxembourg|denmark|norway|sweden|finland|iceland|estonia|latvia|lithuania|türkiye|turkiye|turkey|eu|european union|nato|andorra|monaco|san marino|liechtenstein|vatican|holy see)(?![\p{L}\p{N}])/giu,
     'Americas & Caribbean': /(?<![\p{L}\p{N}])(latin america|caribbean|south america|central america|united states|u\.s\.|usa|canada|mexico|brazil|argentina|chile|peru|colombia|venezuela|ecuador|bolivia|paraguay|uruguay|guyana|suriname|haiti|cuba|dominican republic|jamaica|trinidad|barbados|bahamas|belize|guatemala|honduras|el salvador|nicaragua|costa rica|panama|antigua|dominica|grenada|saint kitts|saint lucia|saint vincent)(?![\p{L}\p{N}])/giu,
-    'Pacific Islands': /(?<![\p{L}\p{N}])(pacific islands?|pacific island|south pacific|oceania|australia|new zealand|tuvalu|fiji|samoa|tonga|vanuatu|kiribati|nauru|palau|micronesia|marshall islands|solomon islands|papua new guinea|new ireland|bougainville|port moresby|honiara|weather coast|apia|port vila|nuku['’]?alofa|tarawa|majuro|palikir|yaren|cook islands|french polynesia|guam|new caledonia)(?![\p{L}\p{N}])/giu,
+    'Pacific Islands': /(?<![\p{L}\p{N}])(pacific islands?|pacific island|south pacific|oceania|australia|new zealand|tuvalu|fiji|samoa|american samoa|tonga|vanuatu|kiribati|nauru|palau|micronesia|marshall islands|solomon islands|papua new guinea|new ireland|bougainville|port moresby|honiara|weather coast|apia|port vila|nuku['’]?alofa|tarawa|majuro|palikir|yaren|cook islands|french polynesia|guam|new caledonia)(?![\p{L}\p{N}])/giu,
     'Global / Transnational': /(?<![\p{L}\p{N}])(global|worldwide|multilateral|united nations|world bank|international monetary fund|world trade organization|cross-border|transnational)(?![\p{L}\p{N}])/giu,
 });
 
@@ -382,9 +382,21 @@ function assessArticle(item, query, {
         if (!POLITICAL_POLICY_PATTERN.test(combined)) return null;
     }
 
-    const region = inferRegionCoverage(combined, query.region);
+    const matchedPlaceRegion = normalized._matchedPlace
+        ? inferRegionCoverage(normalized._matchedPlace, 'Global / Transnational')
+        : 'Global / Transnational';
+    const regionInput = (normalized._matchedPlace
+        && matchedPlaceRegion !== 'Global / Transnational'
+        && countMatches(combined, REGION_PATTERNS[matchedPlaceRegion]) === 0)
+        ? `${combined} ${normalized._matchedPlace}`
+        : combined;
+    let region = inferRegionCoverage(regionInput, query.region);
+    if (region === 'Global / Transnational' && matchedPlaceRegion !== 'Global / Transnational') {
+        region = matchedPlaceRegion;
+    }
     const issue = inferCoverageLabel(combined, ISSUE_PATTERNS, query.issueHints[0]);
     const regionIsExplicit = countMatches(combined, REGION_PATTERNS[region]) > 0
+        || (matchedPlaceRegion !== 'Global / Transnational' && matchedPlaceRegion === region)
         || (region === 'Americas & Caribbean' && /(?<![\p{L}\p{N}])US(?![\p{L}\p{N}])/u.test(combined))
         || (region === 'Pacific Islands' && /(?<![\p{L}\p{N}.])PNG(?![\p{L}\p{N}.])/u.test(combined));
     const relevanceScore = Math.min(100,
