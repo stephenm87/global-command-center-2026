@@ -30,16 +30,16 @@ export const MENA_CASES_2026 = [
             "Europe",
             "UN_OPEC"
         ],
-        "statusSummary": "UNHCR reported that, as of March 2026, 15.6 million people in Syria required assistance and 5.5 million remained internally displaced. More than 1.5 million refugees and 1.8 million internally displaced people had returned since December 2024. On 18 May 2026, the Council of the EU renewed targeted sanctions on former-regime networks until 1 June 2027 and delisted seven entities including the Defence and Interior Ministries, noting broad economic sanctions were lifted in May 2025. In June 2026, Syrians for Truth and Justice reported that returns to Ras al-Ain and Tell Abyad remained extremely limited.",
+        "statusSummary": "UNHCR reported that, as of March 2026, 15.6 million people in Syria required assistance, while an OCHA estimate carried in the same update placed internal displacement at 5.5 million (August 2025). By 16 November 2026, OCHA told the Security Council nearly 4 million Syrians had voluntarily returned since December 2024—expanding on the more than 1.5 million refugees and 1.8 million internally displaced people recorded by March—yet over 730,000 remained in camps and Syria's appeal was one-third funded. On 18 May 2026, the Council of the EU renewed targeted sanctions on former-regime networks until 1 June 2027 and delisted seven entities including the Defence and Interior Ministries, while Syrians for Truth and Justice reported in June 2026 that returns to Ras al-Ain and Tell Abyad stayed extremely limited.",
         "whyItMatters": "Syria tests whether political transition and sanctions relief can produce voluntary, safe, and sustainable return before housing, services, livelihoods, documentation, and accountable institutions have recovered.",
         "updatedAt": "2026-11-20",
         "confidence": "high",
-        "uncertainty": "Return totals change frequently and conditions vary sharply by locality; the UNHCR figures cited here run to March 2026 (carrying an August 2025 OCHA figure for internal displacement), and local documentation runs to June 2026. A recorded return must not be treated as proof that return was safe, voluntary, or sustainable. Accounts from Ras al-Ain and Tell Abyad rest on seven anonymized interviews and should not be generalized to the whole country.",
-        "sensitivity": "standard",
+        "uncertainty": "Return totals change frequently and conditions vary sharply by locality; the November 2026 OCHA briefing tracks cumulative returns to mid-November while detailed UNHCR disaggregation runs to March 2026 (carrying an August 2025 OCHA figure for internal displacement) and local documentation runs to June 2026. A recorded return must not be treated as proof that return was safe, voluntary, or sustainable. Accounts from Ras al-Ain and Tell Abyad rest on seven anonymized interviews and should not be generalized to the whole country.",
+        "sensitivity": "high",
         "editorialCaution": "Return totals change frequently and conditions vary sharply by locality. A recorded return must not be treated as proof that return was safe, voluntary, or sustainable. Attribute witness accounts of property seizure, discrimination, and outside influence to their sources, and do not generalize them to whole communities.",
         "featured": false,
-        "reviewCadenceDays": 90,
-        "reviewBy": "2027-02-18",
+        "reviewCadenceDays": 30,
+        "reviewBy": "2026-12-20",
         "coordinates": {
             "latitude": 33.513,
             "longitude": 36.292
@@ -51,25 +51,25 @@ export const MENA_CASES_2026 = [
                     "label": "Damascus",
                     "latitude": 33.513,
                     "longitude": 36.292,
-                    "role": "Syrian capital referenced in transitional-authority pledges regarding displaced-person return"
+                    "role": "Seat of Syria's transitional government, whose President Ahmed al-Sharaa pledged unconditional return"
                 },
                 {
                     "label": "Tell Abyad",
                     "latitude": 36.6975,
                     "longitude": 38.9567,
-                    "role": "Northern locality taken in Türkiye's 2019 'Peace Spring' operation where STJ documented blocked displaced-person returns"
+                    "role": "Northern locality taken in Türkiye's 2019 'Peace Spring' operation where STJ documented blocked returns"
                 },
                 {
                     "label": "Ras al-Ain",
                     "latitude": 36.8504,
                     "longitude": 40.0696,
-                    "role": "Northeastern border locality taken in Türkiye's 2019 'Peace Spring' operation documented alongside Tell Abyad for blocked returns"
+                    "role": "Northeastern border locality taken in Türkiye's 2019 'Peace Spring' operation where STJ documented occupied homes"
                 },
                 {
-                    "label": "Aleppo",
-                    "latitude": 36.2012,
-                    "longitude": 37.1612,
-                    "role": "Northern Syrian governorate referenced in local return-corridor and aid reporting"
+                    "label": "Homs (Joussieh crossing)",
+                    "latitude": 34.4265,
+                    "longitude": 36.5067,
+                    "role": "Syria–Lebanon border crossing where UNHCR assisted families fleeing hostilities in March 2026"
                 }
             ]
         },
@@ -109,6 +109,13 @@ export const MENA_CASES_2026 = [
                 "publishedAt": "2026-04-21",
                 "url": "https://www.unhcr.org/sites/default/files/2026-04/unhcr-syria-operational-update-march.pdf",
                 "perspective": "United Nations protection, return, and humanitarian reporting (PDF dated March 2026; UNHCR Document Repository upload April 2026)"
+            },
+            {
+                "title": "Syrians “cannot afford more instability,” UN deputy relief chief tells Security Council",
+                "publisher": "United Nations Office for the Coordination of Humanitarian Affairs",
+                "publishedAt": "2026-11-16",
+                "url": "https://www.unocha.org/news/syrians-cannot-afford-more-instability-un-deputy-relief-chief-tells-security-council",
+                "perspective": "UN humanitarian briefing to the Security Council reporting nearly 4 million returns, camp populations, and appeal funding gaps as of November 2026"
             }
         ],
         "waypoints": [
@@ -129,7 +136,7 @@ export const MENA_CASES_2026 = [
                 "perspectiveType": "institutional",
                 "conceptInFocus": "Interdependence",
                 "relatedTimelineDate": "2026-03",
-                "narration": "By end-March 2026, UNHCR recorded 1,563,898 refugees returning to Syria since December 2024, mostly from nearby states [4]. Another 1.8 million returns involved internally displaced people (IDPs) uprooted inside Syria, yet 5.5 million remained displaced and 15.6 million needed assistance [4]. In March alone, 221,912 people crossed from Lebanon fleeing Israeli airstrikes, pushing some Syrians home earlier than planned [4].\n\nUNHCR supports voluntary return—free, informed movement—and gave 5,877 returning families US$600 each in March [4]. Yet donors funded only 30 per cent of its US$323.9 million appeal, closing five community centres in March [4]. Host-country conditions, regional conflict, and donor shortfalls shape returns through interdependence, showing why arrival counts do not measure lasting reintegration.",
+                "narration": "By end-March 2026, UNHCR recorded 1,563,898 refugees returning to Syria since December 2024, plus 1.8 million returns by internally displaced people (IDPs) [4]. Yet 15.6 million people still needed aid, against an August 2025 UN Office for the Coordination of Humanitarian Affairs (OCHA) count of 5.5 million displaced inside Syria [4]. In March alone, 221,912 people crossed from Lebanon fleeing Israeli airstrikes, pushing some Syrians home earlier than planned [4].\n\nBy 16 November 2026, OCHA told the Security Council cumulative voluntary returns approached four million, yet Syria's appeal stood one-third funded [5]. Shortfalls forced the World Food Programme to halve food aid [5]. Host conditions, conflict, and donor gaps shape returns through interdependence, showing arrivals alone do not secure reintegration.",
                 "focusQuestion": "Which indicators show whether a return is sustainable rather than temporary?"
             },
             {
@@ -149,7 +156,7 @@ export const MENA_CASES_2026 = [
                 "perspectiveType": "local",
                 "conceptInFocus": "Sovereignty",
                 "relatedTimelineDate": "2019-10",
-                "narration": "In October 2019, a Turkish operation with allied Syrian factions displaced over 176,000 people from border areas including Ras al-Ain and Tell Abyad, by OCHA's estimate [1]. After 2024, transitional President Ahmed al-Sharaa pledged unconditional return [1]. Yet Syrians for Truth and Justice (STJ) reported in June 2026 that returns stayed limited, with witnesses among seven interviewees citing closed roads, looted homes, and US$500 to US$3,000 demands to vacate [1].\n\nWitnesses told STJ that rebranded factions kept their commanders, while Raqqa's governor reportedly said the state lacked real control in Tell Abyad [1]. That divide separates legal authority (de jure sovereignty) from effective rule on the ground (de facto sovereignty). Promises of return become real only where courts and security forces can enforce property rights.",
+                "narration": "In October 2019, a Turkish-backed operation displaced over 176,000 people from Ras al-Ain and Tell Abyad, according to the UN Office for the Coordination of Humanitarian Affairs (OCHA) [1]. After 2024, transitional President Ahmed al-Sharaa pledged unconditional return [1]. Yet Syrians for Truth and Justice (STJ) found returns remained limited in June 2026 [1]. Seven witnesses cited closed roads, looted homes, and US$500 to US$3,000 demands to vacate [1].\n\nWitnesses told STJ that rebranded factions kept their commanders, while Raqqa's governor reportedly said the state lacked real control in Tell Abyad [1]. That divide separates legal authority (de jure sovereignty) from effective rule on the ground (de facto sovereignty). Promises of return become real only where courts and security forces can enforce property rights.",
                 "focusQuestion": "Who should bear the cost and responsibility for rebuilding the conditions needed for return?"
             }
         ],
@@ -293,11 +300,6 @@ export const MENA_CASES_2026 = [
         },
         "timeline": [
             {
-                "date": "2011",
-                "label": "The EU first imposes sanctions on Syria in response to the al-Assad regime's violent repression of civilians.",
-                "sourceUrl": "https://www.consilium.europa.eu/en/press/press-releases/2026/05/18/syria-council-renews-restrictive-measures-targeting-the-former-al-assad-regime-for-one-year-and-de-lists-certain-entities/"
-            },
-            {
                 "date": "2019-10",
                 "label": "A Turkish military operation with allied Syrian factions displaces more than 176,000 people from border areas including Ras al-Ain and Tell Abyad.",
                 "sourceUrl": "https://stj-sy.org/en/syria-one-year-after-political-change-peace-spring-areas-block-displaced-persons-return/"
@@ -321,6 +323,11 @@ export const MENA_CASES_2026 = [
                 "date": "2026-05-18",
                 "label": "The EU renews targeted sanctions on former-regime networks until 1 June 2027 and removes seven entities from its list.",
                 "sourceUrl": "https://www.consilium.europa.eu/en/press/press-releases/2026/05/18/syria-council-renews-restrictive-measures-targeting-the-former-al-assad-regime-for-one-year-and-de-lists-certain-entities/"
+            },
+            {
+                "date": "2026-11-16",
+                "label": "OCHA tells the Security Council nearly 4 million Syrians have voluntarily returned since December 2024 while over 730,000 remain in camps.",
+                "sourceUrl": "https://www.unocha.org/news/syrians-cannot-afford-more-instability-un-deputy-relief-chief-tells-security-council"
             }
         ],
         "keyFigures": [
@@ -515,7 +522,7 @@ export const MENA_CASES_2026 = [
                 "perspectiveType": "local",
                 "conceptInFocus": "Legitimacy",
                 "relatedTimelineDate": "1991",
-                "narration": "On 1 November 2026, United Nations (UN) staff in Laayoune / El Aaiún began winding down MINURSO, the peacekeeping mission created 35 years earlier to hold a self-determination referendum [8]. Across the border near Tindouf, Algeria, at least 173,000 Sahrawi refugees remained in remote camps administered by the Polisario Front [6]. Human Rights Watch reports that authorities inside Moroccan-controlled areas systematically obstruct self-determination groups [6]. At the UN General Assembly on 10 November, the United States cited childhood anaemia and food insecurity in the camps, and Morocco accused Algeria of obstructing refugee registration [4].\n\nSelf-determination is a people's right to freely choose its political status [7]. Although a 1988 UN–OAU plan tied voting to a 1974 Spanish census, Morocco later called a voter list impracticable [6]. Human Rights Watch notes that October 2025's Resolution 2797 set negotiating terms yet did not specify who the people are [6]. Any settlement still faces a prior test: establishing whose consent counts.",
+                "narration": "On 1 November 2026, United Nations (UN) staff in Laayoune / El Aaiún began winding down the UN Mission for the Referendum in Western Sahara (MINURSO), created 35 years earlier [8]. Near Tindouf, Algeria, at least 173,000 Sahrawi refugees stayed in camps run by the Polisario Front [6]. Inside Moroccan-controlled areas, Human Rights Watch reports systematic obstruction of self-determination groups [6]. At the General Assembly on 10 November, the United States cited camp food insecurity while Morocco accused Algeria of blocking refugee registration [4].\n\nSelf-determination is a people's right to freely choose its political status [7]. Although a 1988 UN and Organization of African Unity (OAU) plan linked voting to a 1974 Spanish census, Morocco later called a voter list impracticable [6]. Resolution 2797 of October 2025 also left undefined who constitutes that people [6]. Any settlement still faces a prior test: establishing whose consent counts.",
                 "focusQuestion": "How can a political process establish whose consent is required and how that consent will be expressed?"
             },
             {
@@ -525,7 +532,7 @@ export const MENA_CASES_2026 = [
                 "perspectiveType": "local",
                 "conceptInFocus": "Sovereignty",
                 "relatedTimelineDate": "2007",
-                "narration": "Morocco controls about 80 percent of Western Sahara [9]. Under its 2007 Autonomy Proposal, the territory would become self-governing under Moroccan sovereignty [8]. In Human Rights Watch's reading of the plan, Rabat would keep defence, national security, external relations, and the judiciary while ruling out independence [6]. At the General Assembly on 10 November 2026, Morocco's delegate stated: \"The Sahara was Moroccan before the 30th of October\" [4].\n\nThat position pairs de facto control on the ground with growing diplomatic support: the United States recognized Moroccan sovereignty in December 2020, and Spain, France, and the United Kingdom now back the autonomy plan [3]. Detailed rules remain scarce, however. Carnegie analyst Sarah Yerkes finds little explanation of how Rabat would govern day to day [3]. Separately, UN Personal Envoy Staffan de Mistura asked Morocco for an expanded and updated autonomy plan [6]. Autonomy becomes testable only once concrete powers and safeguards are named.",
+                "narration": "Morocco controls about 80 percent of Western Sahara [9]. Under its 2007 Autonomy Proposal, the territory would become self-governing under Moroccan sovereignty [8]. In Human Rights Watch's reading of the plan, Rabat would keep defence, national security, external relations, and the judiciary while ruling out independence [6]. At the General Assembly on 10 November 2026, Morocco's delegate stated: \"The Sahara was Moroccan before the 30th of October\" [4].\n\nThat position pairs de facto control on the ground with growing diplomatic backing. The United States recognized Moroccan sovereignty in December 2020, while Spain, France, and the United Kingdom back Rabat's autonomy plan [3]. Detailed rules remain scarce, however. Carnegie analyst Sarah Yerkes finds little explanation of how Rabat would govern day to day [3]. Separately, UN Personal Envoy Staffan de Mistura asked Morocco for an expanded and updated autonomy plan [6]. Autonomy becomes testable only once concrete powers and safeguards are named.",
                 "focusQuestion": "What powers, guarantees, and accountability mechanisms would make an autonomy proposal meaningful in practice?"
             },
             {
@@ -545,7 +552,7 @@ export const MENA_CASES_2026 = [
                 "perspectiveType": "institutional",
                 "conceptInFocus": "Power",
                 "relatedTimelineDate": "2026-10-30",
-                "narration": "On Friday 30 October 2026, two rival renewal drafts failed in the UN Security Council [8, 9]. Eleven of 15 members backed a US text extending the mission's mandate, its formal authorization, with Morocco's autonomy plan as the basis for talks [4, 9]. Russia used its veto—a permanent member's power to block a resolution—and Russia's competing rollover draft also fell short [4, 8, 9]. At midnight on 31 October, the 35-year mission expired [8, 9].\n\nMINURSO had stationed about 160 military observers across nine team sites without a human rights mandate, and military personnel began withdrawing [3, 8, 9]. On 1 November, the UN Secretary-General's spokesperson stressed that departure \"does not abrogate\" the right to self-determination [8]. The European Union later warned the General Assembly that ending the mission removed the only dedicated UN monitoring mechanism for the 1991 ceasefire [4]. A deadlock between veto-holding powers ended the mission; it did not settle who rules the territory [3].",
+                "narration": "On Friday 30 October 2026, two rival renewal drafts failed in the UN Security Council [8, 9]. Eleven of 15 members backed a US text extending the mission's mandate, its formal authorization, with Morocco's autonomy plan as the basis for talks [4, 9]. Russia used its veto—a permanent member's power to block a resolution—while Moscow's competing rollover draft also fell short [4, 8, 9]. At midnight on 31 October, the 35-year mission expired [8, 9].\n\nMINURSO had stationed about 160 military observers across nine team sites without a human rights mandate, and military personnel began withdrawing [3, 8, 9]. On 1 November, the UN Secretary-General's spokesperson stressed that departure \"does not abrogate\" the right to self-determination [8]. The European Union later warned the General Assembly that ending the mission removed the only dedicated UN monitoring mechanism for the 1991 ceasefire [4]. A deadlock between veto-holding powers ended the mission; it did not settle who rules the territory [3].",
                 "focusQuestion": "How should mediators measure whether a settlement is both politically feasible and rights-consistent?"
             }
         ],
@@ -788,13 +795,13 @@ export const MENA_CASES_2026 = [
                     "label": "Tripoli",
                     "latitude": 32.8872,
                     "longitude": 13.1913,
-                    "role": "Seat of the UN-recognized Government of National Unity and site of UNSMIL Structured Dialogue plenaries"
+                    "role": "Seat of the UN-recognized Government of National Unity and UNSMIL premises"
                 },
                 {
                     "label": "Benghazi",
                     "latitude": 32.1194,
                     "longitude": 20.0868,
-                    "role": "Seat of the rival Government of National Stability (Chatham House); target for expanded UNSMIL presence under Resolution 2835"
+                    "role": "Seat of the rival Government of National Stability and target for expanded UNSMIL presence under Resolution 2835"
                 },
                 {
                     "label": "Sabha",
@@ -866,7 +873,7 @@ export const MENA_CASES_2026 = [
                 "perspectiveType": "institutional",
                 "conceptInFocus": "Legitimacy",
                 "relatedTimelineDate": "2026-02-08",
-                "narration": "UN-backed Structured Dialogue talks reported on 8 February 2026 ran for five days [1]. Participants focused on obstacles to elections, including a stalemate over the electoral framework—the laws setting how a vote runs—and completing the High National Elections Commission (HNEC) board [1]. They reviewed existing draft election laws, including texts from the 6+6 Committee [1].\n\nThe talks issued recommendations rather than decisions. UNSMIL stressed the dialogue aims to build election conditions, not pick a new government, examining safeguards behind draft laws \"to help bridge political divisions\" [1]. On 30 October 2026, the Security Council renewed UNSMIL for a year and urged Libyan institutions to negotiate \"without preconditions and without delay\" [4]. A vote settles who governs only when major contenders accept the rules before ballots are cast.",
+                "narration": "In early February 2026, five days of UN-backed Structured Dialogue talks reviewed Libya's electoral deadlock [1]. Participants examined obstacles over the electoral framework—the laws setting how a vote runs—and completing the High National Elections Commission (HNEC) board [1]. Discussions also weighed existing draft laws from the 6+6 Committee, a joint parliamentary panel, and an advisory committee [1].\n\nThe talks issued recommendations rather than binding decisions. The United Nations Support Mission in Libya (UNSMIL) stressed the dialogue aims to build election conditions, not pick a new government, exploring legal safeguards \"to help bridge political divisions\" [1]. On 30 October 2026, the Security Council renewed UNSMIL and urged Libyan institutions to negotiate \"without preconditions and without delay\" [4]. A vote settles who governs only when major contenders accept the rules before ballots are cast.",
                 "focusQuestion": "Which sequencing choices are necessary for a vote to be accepted rather than simply held?"
             },
             {
@@ -876,7 +883,7 @@ export const MENA_CASES_2026 = [
                 "perspectiveType": "institutional",
                 "conceptInFocus": "Sovereignty",
                 "relatedTimelineDate": "2020-10-23",
-                "narration": "Libya remains split between two rival administrations [3]. The Government of National Unity in Tripoli holds UN recognition, while Chatham House analyst Tim Eaton describes it as controlled by the Dabaiba family and says Benghazi's rival Government of National Stability is aligned with Khalifa Haftar's Libyan Arab Armed Forces [3]. A ceasefire dates from 23 October 2020, and a joint military commission agreed in 2021 on a plan for foreign forces and mercenaries to withdraw [4].\n\nSix years later, the Security Council was still calling for full ceasefire implementation and institutional reunification [4]. Recognition sits with one government, yet neither commands the country. Meanwhile, Chatham House cites audit findings that diesel consumption by state-affiliated armed groups jumped 1,527 percent from 2021 to 2024 [3]. Where armed institutions answer to rival camps, an election law reaches only as far as each side permits.",
+                "narration": "Libya remains split between two rival administrations [3]. In Tripoli, the Government of National Unity holds UN recognition, though Chatham House analyst Tim Eaton describes it as controlled by the Dabaiba family [3]. In Benghazi, the rival Government of National Stability aligns with Khalifa Haftar's Libyan Arab Armed Forces [3]. A ceasefire dates from 23 October 2020, alongside a 2021 plan for foreign forces and mercenaries to leave [4].\n\nSix years later, the Security Council was still calling for full ceasefire implementation and institutional reunification [4]. Recognition sits with one government, yet neither commands the country. Meanwhile, Chatham House cites audit findings that diesel consumption by state-affiliated armed groups jumped 1,527 percent from 2021 to 2024 [3]. Where armed institutions answer to rival camps, an election law reaches only as far as each side permits.",
                 "focusQuestion": "What security guarantees would allow institutions and candidates to participate without coercive advantage?"
             },
             {
@@ -886,7 +893,7 @@ export const MENA_CASES_2026 = [
                 "perspectiveType": "independent",
                 "conceptInFocus": "Interdependence",
                 "relatedTimelineDate": "2026-04-14",
-                "narration": "Oil spending is one area where Chatham House reports Libya's rival camps cooperated [3]. According to Chatham House, a 2022 leadership change at the National Oil Corporation brokered between the Haftar and Dabaiba families by the United Arab Emirates preceded fuel imports more than doubling from 2021 while foreign suppliers fell from 17 to six [3].\n\nPart of Libya's wealth also sits under international oversight. The Libyan Investment Authority holds assets frozen under UN sanctions, and Security Council Resolution 2819 of 14 April 2026 adjusted exemptions governing those frozen reserves [2]. Chatham House analyst Tim Eaton argues that elite power-sharing could worsen corruption by removing spending restraints, noting a US-mediated April 2026 unified budget was not meaningfully implemented by July [3]. Unification helps citizens only when enforceable fiscal audits match political office.",
+                "narration": "Oil spending is one area where Libya's rival camps cooperated, according to Chatham House [3]. In 2022, the United Arab Emirates brokered a leadership change at the National Oil Corporation between the Haftar and Dabaiba families [3]. Afterward, fuel import volumes more than doubled compared with 2021 while foreign suppliers fell from 17 to six [3].\n\nPart of Libya's wealth also sits under international oversight. The Libyan Investment Authority holds assets frozen under UN sanctions, and Security Council Resolution 2819 of 14 April 2026 adjusted exemptions governing those frozen reserves [2]. Chatham House analyst Tim Eaton argues that elite power-sharing could worsen corruption by removing spending restraints, noting a US-mediated April 2026 unified budget was not meaningfully implemented by July [3]. Unification helps citizens only when enforceable fiscal audits match political office.",
                 "focusQuestion": "Which transparent fiscal rules would make institutional unification materially valuable to the public?"
             }
         ],
@@ -942,18 +949,20 @@ export const MENA_CASES_2026 = [
         "debate": [
             {
                 "claimBy": "United States mediation led by presidential adviser Massad Boulos (as described by Chatham House, 20 July 2026)",
-                "claim": "Bringing the Haftar and Dabaiba families together with other key constituencies in a unified government will bring stability, from which economic development can emerge, particularly in the oil sector.",
-                "counterBy": "Tim Eaton, Chatham House (20 July 2026)",
-                "counterClaim": "\"Power-sharing might simply make corruption worse by reducing existing constraints on rising state expenditure.\" Any future government needs clear conditions on how it manages the state's finances.",
+                "claim": "Bringing the Haftar and Dabaiba families together with other constituencies in a unified government will bring stability, from which economic development and oil-sector investment can emerge.",
+                "counterBy": "UNSMIL and UN Security Council Resolution 2835 (February and October 2026)",
+                "counterClaim": "The UN-facilitated Structured Dialogue is meant to create conditions for inclusive presidential and parliamentary elections and reunify institutions rather than pick a new government behind closed doors.",
                 "sourceUrls": [
-                    "https://www.chathamhouse.org/2026/07/why-us-plans-power-sharing-libya-will-not-work"
+                    "https://www.chathamhouse.org/2026/07/why-us-plans-power-sharing-libya-will-not-work",
+                    "https://libyaobserver.ly/news/un-led-talks-libya-seek-ways-break-electoral-deadlock",
+                    "https://unsmil.unmissions.org/en/news/security-council-renews-mandate-of-united-nations-support-mission-in-libya-for-one-year"
                 ]
             },
             {
-                "claimBy": "Mediators experienced in Libyan negotiations (as characterized by Tim Eaton, Chatham House, 20 July 2026)",
-                "claim": "Mediators question what the alternative is to an elite bargain between the Haftars and the Dabaibas.",
-                "counterBy": "Tim Eaton, summarizing deal opponents and ordinary-Libyan sentiment (Chatham House, 20 July 2026)",
-                "counterClaim": "For its opponents, the deal looks like a return of family rule and a way to legitimize the two rival families; Eaton adds it also appears to be more of the same for ordinary Libyans without governance reform.",
+                "claimBy": "Supporters of a negotiated elite unity settlement (as described in Libyan diplomacy)",
+                "claim": "Experienced mediators question what realistic alternative exists to bringing the Haftars and Dabaibas into a joint power-sharing arrangement.",
+                "counterBy": "Tim Eaton and Libyan anti-corruption investigations (Chatham House, 20 July 2026)",
+                "counterClaim": "With fuel imports topping $9 billion in 2024 and an April unified budget unimplemented, an unconditional elite bargain risks worsening corruption and looking to Libyans like restored family rule.",
                 "sourceUrls": [
                     "https://www.chathamhouse.org/2026/07/why-us-plans-power-sharing-libya-will-not-work"
                 ]

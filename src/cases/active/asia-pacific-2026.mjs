@@ -128,7 +128,7 @@ export const ASIA_PACIFIC_CASES_2026 = [
                 "perspectiveType": "local",
                 "conceptInFocus": "Power",
                 "relatedTimelineDate": "2026-05",
-                "narration": "Nearly 3.8 million people are displaced across Myanmar, many of them more than once [2]. In Magway Region alone, recent hostilities uprooted over 100,000 people across four townships, including more than 80,000 in Pakokku since mid-May 2026 [2]. Counts remain approximate as families keep fleeing, and a local observer noted villages that once hosted displaced people were later forced to run [1].\n\nEach move narrows surviving options. In early June, about 900 people from Sagaing crossed into India, which imposed movement curbs on 9 June [2]. In Kayah and Shan states, OCHA noted mounting pressure on families to leave collective shelters, risking unsafe returns [2]. When host communities empty and neighbouring borders tighten, repeated flight leaves civilians with fewer safe places to turn.",
+                "narration": "Nearly 3.8 million people are displaced across Myanmar, many of them more than once [2]. In Magway Region alone, recent hostilities uprooted over 100,000 people across four townships, including more than 80,000 in Pakokku since mid-May 2026 [2]. Counts remain approximate as families keep fleeing, and a local observer noted villages that once hosted displaced people were later forced to run [1].\n\nRepeated uprooting leaves civilians with shrinking refuge as local aid capacity wears thin. In early June, about 900 people from Sagaing crossed into India, which imposed movement curbs on 9 June [2]. In Kayah and Shan states, OCHA noted mounting pressure on families to leave collective shelters, risking unsafe returns [2]. When host communities empty and neighbouring borders tighten, repeated flight leaves civilians with fewer safe places to turn.",
                 "focusQuestion": "How does repeated displacement change communities' political and economic choices?"
             },
             {
@@ -200,8 +200,8 @@ export const ASIA_PACIFIC_CASES_2026 = [
             {
                 "claimBy": "ASEAN leaders (Manila summit, as reported on 16 November 2026)",
                 "claim": "Myanmar has failed to comply with the 2021 peace plan, so its leader stays barred from summits. The plan remains \"the main reference for addressing the political crisis in Myanmar\".",
-                "counterBy": "UN Human Rights Office (different emphasis, report launched 22 June 2026)",
-                "counterClaim": "Rather than focusing on summit diplomacy, the office titled its June 2026 report around how foreign indifference compounds civilian suffering and outlined steps to back pro-democracy and civil-society actors.",
+                "counterBy": "UN Human Rights Office (report launched 22 June 2026)",
+                "counterClaim": "Instead of treating summit exclusions as the central lever, the UN office argued foreign indifference compounds civilian suffering and urged direct support for pro-democracy and civil-society institutions.",
                 "sourceUrls": [
                     "https://www.aljazeera.com/news/2026/11/16/asean-china-fall-short-of-agreeing-on-south-china-sea-code",
                     "https://bangkok.ohchr.org/myanmar"
@@ -809,13 +809,13 @@ export const ASIA_PACIFIC_CASES_2026 = [
                     "label": "Srinagar",
                     "latitude": 34.0837,
                     "longitude": 74.7973,
-                    "role": "Upstream Indus basin region tied to disputed run-of-the-river hydroelectric projects"
+                    "role": "Upstream basin location tied to disputes over hydroelectric design and shared Indus waters"
                 },
                 {
                     "label": "Tarbela",
                     "latitude": 34.0894,
                     "longitude": 72.6987,
-                    "role": "Major downstream Pakistani storage and hydropower reservoir dependent on western Indus inflows"
+                    "role": "Downstream Pakistani basin site representing irrigation, hydropower, and river-flow reliance"
                 },
                 {
                     "label": "Islamabad",
@@ -973,19 +973,19 @@ export const ASIA_PACIFIC_CASES_2026 = [
                     "label": "Chattogram",
                     "latitude": 22.3569,
                     "longitude": 91.7832,
-                    "role": "Principal maritime export gateway tied to garment trade competitiveness and adjustment pressures"
+                    "role": "Port hub linked in case analysis to export competitiveness and adjustment pressures on workers"
                 },
                 {
                     "label": "Geneva",
                     "latitude": 46.2044,
                     "longitude": 6.1432,
-                    "role": "UN trade and intellectual-property bodies shaping LDC transition rules and medicine flexibilities"
+                    "role": "Multilateral trade setting linked to LDC rules, medicine-policy flexibilities, and transition terms"
                 },
                 {
                     "label": "Brussels",
                     "latitude": 50.8503,
                     "longitude": 4.3517,
-                    "role": "European Union trade capital reviewing post-LDC market-access preferences and compliance standards"
+                    "role": "European institutional hub associated with shifting market-access preferences and exporter compliance expectations"
                 }
             ]
         },
@@ -1278,19 +1278,19 @@ export const ASIA_PACIFIC_CASES_2026 = [
                     "label": "Oyu Tolgoi",
                     "latitude": 43.008,
                     "longitude": 106.843,
-                    "role": "Major strategic copper-gold deposit illustrating national resource-benefit and investment debates"
+                    "role": "Strategic mineral-sector site tied to domestic ownership, governance, and investor-confidence debates"
                 },
                 {
                     "label": "Sainshand",
                     "latitude": 44.89,
                     "longitude": 110.136,
-                    "role": "Southeastern Gobi energy and transport corridor along coal and renewables transition routes"
+                    "role": "Regional hub tied to coal-to-clean-energy transition and grid-reliability planning"
                 },
                 {
                     "label": "Zamyn-Uud",
                     "latitude": 43.715,
                     "longitude": 111.904,
-                    "role": "Primary rail and road border crossing carrying mineral exports toward Chinese markets"
+                    "role": "Southern border crossing connecting Mongolia's mineral economy to Chinese market access"
                 }
             ]
         },
@@ -1411,25 +1411,25 @@ export const ASIA_PACIFIC_CASES_2026 = [
                     "label": "Jakarta",
                     "latitude": -6.2088,
                     "longitude": 106.8456,
-                    "role": "Federal capital enforcing mineral-processing mandates, RKAB nickel quotas, and the WTO DS592 appeal"
+                    "role": "National capital enforcing mineral-processing mandates, annual RKAB nickel quotas, and the WTO DS592 appeal"
                 },
                 {
                     "label": "Morowali",
                     "latitude": -2.996,
                     "longitude": 121.948,
-                    "role": "Sulawesi nickel processing hub testing downstream industrialization, labor protections, and environmental standards"
+                    "role": "Nickel-processing region linked to tests over skills transfer, worker safety, and environmental standards"
                 },
                 {
                     "label": "Weda Bay",
                     "latitude": 0.474,
                     "longitude": 127.955,
-                    "role": "North Maluku industrial nickel complex balancing smelter investment against local community and environmental impacts"
+                    "role": "Industrial processing hub balancing foreign capital and capacity against community benefit"
                 },
                 {
                     "label": "Raja Ampat",
                     "latitude": -0.234,
                     "longitude": 130.516,
-                    "role": "Biodiverse marine archipelago highlighted in environmental scrutiny of mining expansion"
+                    "role": "Coastal area cited in scrutiny of environmental performance and local livelihoods around mining expansion"
                 }
             ]
         },
@@ -1579,13 +1579,13 @@ export const ASIA_PACIFIC_CASES_2026 = [
                     "label": "Tonle Sap",
                     "latitude": 12.876,
                     "longitude": 104.067,
-                    "role": "Cambodian flood-pulse lake system sensitive to upstream hydropower flows and sediment traps"
+                    "role": "Downstream basin water system affected by upstream hydropower flows, sediment changes, and fisheries pressures"
                 },
                 {
                     "label": "Can Tho and the Mekong Delta",
                     "latitude": 10.0452,
                     "longitude": 105.7469,
-                    "role": "Downstream Vietnamese agricultural and fisheries delta affected by sediment, flow, and salinity shifts"
+                    "role": "Downstream Vietnamese farming and fisheries region dependent on basin sediment, flow, and flood resilience"
                 }
             ]
         },

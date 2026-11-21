@@ -320,7 +320,7 @@ export const AMERICAS_CARIBBEAN_CASES_2026 = [
             "Cartels",
             "UN_OPEC"
         ],
-        "statusSummary": "On 29 September 2026, the UN Security Council adopted Resolution 2829 extending the Gang Suppression Force mandate through 31 March 2027 and continuing logistical and operational support through the UN Support Office in Haiti (backing over 1,500 deployed personnel), while emphasizing Haitian authorities' primary responsibility for civilian protection. A June 2026 RNDDH assessment across 50 police posts reported persistent personnel, equipment, infrastructure, and safety constraints within the Haitian National Police, and Human Rights Watch separately describes, in its review of 2025, continuing criminal-group violence, weak accountability, displacement, and contested transitional legitimacy.",
+        "statusSummary": "On 29 September 2026, the UN Security Council adopted Resolution 2829 extending the Gang Suppression Force mandate through 31 March 2027 and continuing logistical and operational support through the UN Support Office in Haiti (backing over 1,500 deployed personnel), while emphasizing Haitian authorities' primary responsibility for civilian protection. A June 2026 RNDDH assessment across 50 police posts reported persistent personnel, equipment, infrastructure, and safety constraints within the Haitian National Police. Meanwhile, the UN Secretary-General's July 2026 report noted Prime Minister Alix Didier Fils-Aimé's May indication that security conditions might prevent August 2026 polls, followed by a 3 July agreement on a $120 million electoral budget with the calendar under review, while Human Rights Watch's review of 2025 detailed gang violence and weak accountability.",
         "whyItMatters": "Haiti tests whether outside security assistance can protect civilians while strengthening accountable Haitian institutions, public trust, and a Haitian-owned political process.",
         "updatedAt": "2026-11-17",
         "confidence": "high",
@@ -341,25 +341,25 @@ export const AMERICAS_CARIBBEAN_CASES_2026 = [
                     "label": "Port-au-Prince",
                     "latitude": 18.5944,
                     "longitude": -72.3074,
-                    "role": "National institutions and acute urban security pressures"
+                    "role": "Capital where criminal groups controlled around 90 percent of the area in 2025 and UNSOH runs Camp Vertières"
                 },
                 {
-                    "label": "Gonaïves / Artibonite",
+                    "label": "Artibonite",
                     "latitude": 19.45,
                     "longitude": -72.6833,
-                    "role": "Regional police capacity and civilian-protection pressures"
+                    "role": "Department north of Port-au-Prince where the Gang Suppression Force first deployed outside the capital in August 2026"
                 },
                 {
-                    "label": "Cap-Haïtien",
-                    "latitude": 19.7594,
-                    "longitude": -72.1982,
-                    "role": "Northern civic, economic, and institutional perspective"
+                    "label": "Jérémie",
+                    "latitude": 18.65,
+                    "longitude": -74.1167,
+                    "role": "Grand'Anse town whose central police post RNDDH monitored in its June 2026 report"
                 },
                 {
                     "label": "Santo Domingo",
                     "latitude": 18.4861,
                     "longitude": -69.9312,
-                    "role": "UNSOH back-office and cross-border support context"
+                    "role": "Dominican capital hosting a UNSOH back-office and helicopter links supporting Haiti operations"
                 }
             ]
         },
@@ -408,6 +408,13 @@ export const AMERICAS_CARIBBEAN_CASES_2026 = [
                 "publishedAt": "2026-09-29",
                 "url": "https://www.unmissions.org/en/unsoh/news/security-council-extends-gang-suppression-force-and-unsoh-mandates",
                 "perspective": "Official UNSOH account of Resolution 2829 (2026) extending the GSF mandate through 31 March 2027 and scaling logistical support"
+            },
+            {
+                "title": "United Nations Integrated Office in Haiti: Report of the Secretary-General (S/2026/574)",
+                "publisher": "United Nations Security Council / BINUH",
+                "publishedAt": "2026-07-14",
+                "url": "https://binuh.unmissions.org/sites/default/files/2026-07/SG%20Report%20on%20the%20situation%20in%20Haiti%20%2814%20July%202026%29.pdf",
+                "perspective": "Official UN Secretary-General reporting on 2026 electoral preparations, June–July decree revisions, and gang violence"
             }
         ],
         "waypoints": [
@@ -418,7 +425,7 @@ export const AMERICAS_CARIBBEAN_CASES_2026 = [
                 "perspectiveType": "local",
                 "conceptInFocus": "Sovereignty",
                 "relatedTimelineDate": "2026-06-12",
-                "narration": "In Jérémie, Haitian police officers work out of an old house cracked in places since Hurricane Matthew, with no dormitory, electricity, or vehicle [1]. Monitors from the National Human Rights Defense Network (RNDDH) recorded those conditions during 107 visits to 50 police posts [1]. Between June 2025 and June 2026, RNDDH counted 35 officers assassinated—including three kidnapped and remaining missing—with 21 killed in clashes with armed groups [1].\n\nThe Haitian National Police graduated two new classes totalling 2,069 officers under the P4000 project, while international partners including the United States, Canada, and South Korea supplied armored vehicles and facilities [1]. RNDDH still judged gains insufficient because a promised 2025–2026 wartime budget never materialized and officer pay trails basic living costs [1]. Assistance strengthens sovereignty only when Haitian institutions can sustain their own posts once donated gear arrives.",
+                "narration": "In Jérémie, Haitian police officers work out of an old house cracked in places since Hurricane Matthew, with no dormitory, electricity, or vehicle [1]. Monitors from the National Human Rights Defense Network (RNDDH) recorded those conditions during 107 visits to 50 police posts [1]. Between June 2025 and June 2026, RNDDH counted 35 officers assassinated, including three kidnapped and missing [1]. Twenty-one died in clashes [1].\n\nUnder the P4000 police recruitment program, two classes totalling 2,069 new officers graduated [1]. Meanwhile, international partners including the United States, Canada, and South Korea supplied armored vehicles and facilities [1]. RNDDH still judged gains insufficient because a promised wartime budget never materialized and officer pay trails living costs [1]. Assistance strengthens sovereignty only when Haitian institutions can sustain their own posts once donated gear arrives.",
                 "focusQuestion": "Which Haitian-defined capacity and accountability indicators should determine whether security assistance is working?"
             },
             {
@@ -428,7 +435,7 @@ export const AMERICAS_CARIBBEAN_CASES_2026 = [
                 "perspectiveType": "institutional",
                 "conceptInFocus": "Interdependence",
                 "relatedTimelineDate": "2026-09-29",
-                "narration": "The United Nations Support Office in Haiti (UNSOH) does not fight armed groups itself. The UN Security Council created it in September 2025 to supply the Gang Suppression Force (GSF), a multinational force authorized to operate with or without the Haitian National Police [3, 4]. On 1 April 2026, UNSOH said it had met its timeline to provide housing, medical care, and helicopter links to Santo Domingo [2]. When Resolution 2829 extended the force on 29 September 2026 to 31 March 2027, UNSOH supported over 1,500 personnel [4].\n\nEach milestone tracks logistics rather than safer neighborhoods. UNSOH's head said its role is to give the GSF \"what they need to undertake operations\" and, with Haitian forces, \"stabilize the security situation in the country\" [4]. Resolution 2829 also stressed Haitian authorities hold primary civilian-protection responsibility, showing how support missions can meet deadlines while public safety remains unresolved [4].",
+                "narration": "The United Nations Support Office in Haiti (UNSOH) does not fight armed groups itself. The UN Security Council created it in September 2025 to supply the Gang Suppression Force (GSF), a multinational force authorized to operate with or without the Haitian National Police [3, 4]. On 1 April 2026, UNSOH said it had met its timeline to provide housing, medical care, and helicopter links to Santo Domingo [2]. When Resolution 2829 extended the force on 29 September 2026 to 31 March 2027, UNSOH supported over 1,500 personnel [4].\n\nEach milestone tracks logistics rather than safer neighborhoods. UNSOH's head said its role is to give the GSF \"what they need to undertake operations\" and help Haitian forces \"stabilize the security situation in the country\" [4]. Resolution 2829 underscored that Haiti's own authorities hold primary responsibility for protecting civilians [4]. External logistics support can meet operational deadlines cleanly, yet neighborhood safety still turns on domestic policing capacity.",
                 "focusQuestion": "How can international support be measured without confusing operational readiness with political success?"
             },
             {
@@ -438,7 +445,7 @@ export const AMERICAS_CARIBBEAN_CASES_2026 = [
                 "perspectiveType": "independent",
                 "conceptInFocus": "Power",
                 "relatedTimelineDate": "2025-09",
-                "narration": "During 2025, criminal groups allied in the Viv Ansanm coalition controlled around 90 percent of Port-au-Prince and its metropolitan area, along with major roads [3]. The UN human rights office reported that they killed at least 4,384 people between January and September, and 1.4 million Haitians were displaced by that September [3]. Their power rests on territory, because whoever holds a road decides what reaches a clinic or a market.\n\nForce used against the groups has produced its own victims. Citing UN figures, Human Rights Watch reports at least 3,199 people allegedly killed during police operations between January and August 2025, 17 percent of them uninvolved [3]. The police internal affairs office had opened 90 investigations into possible excessive force by September, and none had been completed [3]. Operations that retake territory build trust only when residents can tell the state's force from the groups', which is why accountability belongs inside a security plan from the start.",
+                "narration": "During 2025, criminal groups allied in the Viv Ansanm coalition controlled around 90 percent of Port-au-Prince and its metropolitan area, plus major roads [3]. By September, violence had displaced 1.4 million Haitians [3]. Human Rights Watch cites UN monitoring showing at least 4,384 people killed between January and September, while noting over half of all killings occurred during security operations [3]. Territorial power decides what reaches a clinic or market.\n\nState force has produced its own victims. Citing UN figures, Human Rights Watch reports at least 3,199 people allegedly killed during police operations through August 2025, 17 percent uninvolved [3]. By September, police internal affairs had opened 90 excessive-force investigations without completing one [3]. Retaking territory builds trust only when residents can distinguish state policing from armed groups, making accountability essential.",
                 "focusQuestion": "What safeguards can reduce armed-group power without normalizing abuses by state or externally supported forces?"
             },
             {
@@ -447,8 +454,8 @@ export const AMERICAS_CARIBBEAN_CASES_2026 = [
                 "perspectiveLabel": "Haitian ownership lens",
                 "perspectiveType": "local",
                 "conceptInFocus": "Legitimacy",
-                "relatedTimelineDate": "2025-12",
-                "narration": "In its World Report 2026 reviewing 2025, Human Rights Watch recorded that Haiti had held no election since 2016, its parliament had been inactive since 2019, and no nationally elected official had held office since January 2023 [3]. It noted the Transitional Presidential Council's mandate ran to 6 February 2026 after the council approved a conditional August 2026 electoral calendar in December 2025 [3]. By 1 April 2026, UN operational officials were meeting Prime Minister Alix Didier Fils-Aimé on support operations [2].\n\nResolution 2829 leaves Haitian authorities with primary responsibility for civilian protection, while RNDDH insists the Haitian state must assess and supply its own police [1, 4]. Haitian ownership requires more than executive agreements with international partners. It depends on whether displaced families, residents of gang-controlled neighborhoods, and local monitors can shape and check decisions made in their name.",
+                "relatedTimelineDate": "2026-07-03",
+                "narration": "Haiti has held no election since 2016, its parliament has been inactive since 2019, and no elected official has served nationally since January 2023 [3]. After the Transitional Presidential Council's mandate ended in February 2026, Prime Minister Alix Didier Fils-Aimé said in May that insecurity might prevent August polls [3, 5]. On 3 July, officials agreed on a $120 million electoral budget, leaving the timetable under review toward a February 2027 inauguration target [5].\n\nJune 2026 electoral decree changes also divided executive officials, electoral councillors, and political groups over election oversight [5]. Meanwhile, Resolution 2829 stresses Haitian primary responsibility while RNDDH insists Haiti must supply its own police [1, 4]. Haitian ownership ultimately rests on whether displaced families and local monitors can check decisions made in their name.",
                 "focusQuestion": "Who in Haiti defines legitimate progress, and how should excluded communities participate in that decision?"
             }
         ],
@@ -508,16 +515,21 @@ export const AMERICAS_CARIBBEAN_CASES_2026 = [
                 ]
             },
             {
-                "claimBy": "UN Security Council (September 2025 authorization, as described by Human Rights Watch)",
-                "claim": "The Gang Suppression Force is authorized to conduct operations to neutralize criminal groups, protect critical infrastructure, build the capacity of Haitian security forces, and facilitate conditions for elections and humanitarian access.",
-                "counterBy": "Human Rights Watch (World Report 2026 reviewing 2025)",
-                "counterClaim": "Police have been responsible for excessive use of force during operations against criminal groups, and across Haiti's justice system accountability for past and ongoing human rights violations \"remains nearly nonexistent\". At the time of writing, the UN had reported no human rights violations by MSS personnel.",
+                "claimBy": "Council of Ministers and Prime Minister Alix Didier Fils-Aimé (UN Secretary-General report, 14 July 2026)",
+                "claim": "The amended June 2026 electoral decree aligned rules with the National Pact, tightened party thresholds to curb fragmentation, assigned disputes to judicial bodies, and paired with a $120 million budget on 3 July.",
+                "counterBy": "Provisional Electoral Council and over 20 Haitian political groups (June 2026 statements cited by the UN)",
+                "counterClaim": "Allowing a government-appointed Director General to run electoral operations threatens the Council's independence, deprives it of authority, and risks triggering a pre-electoral crisis.",
                 "sourceUrls": [
-                    "https://www.hrw.org/world-report/2026/country-chapters/haiti"
+                    "https://binuh.unmissions.org/sites/default/files/2026-07/SG%20Report%20on%20the%20situation%20in%20Haiti%20%2814%20July%202026%29.pdf"
                 ]
             }
         ],
         "watchFor": [
+            {
+                "date": "31 January 2027",
+                "indicator": "BINUH's mandate under Security Council Resolution 2814 runs to this date, and Haiti's Prime Minister pledged an elected president would take office by 7 February 2027. Check whether the revised electoral calendar sets first-round polling before year-end.",
+                "sourceUrl": "https://binuh.unmissions.org/sites/default/files/2026-07/SG%20Report%20on%20the%20situation%20in%20Haiti%20%2814%20July%202026%29.pdf"
+            },
             {
                 "date": "31 March 2027",
                 "indicator": "The Gang Suppression Force mandate under Resolution 2829 runs to this date. Check whether the Security Council renews it, for how long, and how the vote compares with the 12 in favor and 3 abstentions of September 2026.",
@@ -582,13 +594,8 @@ export const AMERICAS_CARIBBEAN_CASES_2026 = [
         },
         "timeline": [
             {
-                "date": "2016",
-                "label": "Haiti holds elections; Human Rights Watch's World Report 2026 (reviewing 2025) notes none have been held since.",
-                "sourceUrl": "https://www.hrw.org/world-report/2026/country-chapters/haiti"
-            },
-            {
                 "date": "2025-09",
-                "label": "Internal displacement in Haiti totals 1.4 million people.",
+                "label": "Internal displacement in Haiti totals 1.4 million people; no elections have been held since 2016.",
                 "sourceUrl": "https://www.hrw.org/world-report/2026/country-chapters/haiti"
             },
             {
@@ -597,9 +604,14 @@ export const AMERICAS_CARIBBEAN_CASES_2026 = [
                 "sourceUrl": "https://www.unmissions.org/en/unsoh/news/security-council-extends-gang-suppression-force-and-unsoh-mandates"
             },
             {
-                "date": "2025-12",
-                "label": "The Transitional Presidential Council approves an electoral decree and calendar, contingent on improved security.",
-                "sourceUrl": "https://www.hrw.org/world-report/2026/country-chapters/haiti"
+                "date": "2026-06-02",
+                "label": "Haiti's Council of Ministers adopts an amended electoral decree separating Provisional Electoral Council oversight from a government-appointed operations director.",
+                "sourceUrl": "https://binuh.unmissions.org/sites/default/files/2026-07/SG%20Report%20on%20the%20situation%20in%20Haiti%20%2814%20July%202026%29.pdf"
+            },
+            {
+                "date": "2026-07-03",
+                "label": "The Government and Provisional Electoral Council agree on a $120 million electoral budget with the revised calendar under review.",
+                "sourceUrl": "https://binuh.unmissions.org/sites/default/files/2026-07/SG%20Report%20on%20the%20situation%20in%20Haiti%20%2814%20July%202026%29.pdf"
             },
             {
                 "date": "2026-06-12",
