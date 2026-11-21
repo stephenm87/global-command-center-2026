@@ -284,7 +284,7 @@ export const ASIA_PACIFIC_CASES_2026 = [
         "essayBuilder": {
             "prompt": "Evaluate the effectiveness of regional organizations in responding to armed conflict inside a member state.",
             "claim": "ASEAN has limited the regional standing of Myanmar's rulers, but it has not changed conditions for civilians.",
-            "evidence": "ASEAN approved the Five-Point Consensus in April 2021. In November 2026, its leaders extended the ban on Myanmar's leader attending summits, saying the country had failed to comply; Myanmar had also lost its 2026 turn as chair, which passed to the Philippines. Meanwhile, OCHA counted more than 16 million people in need and nearly 3.8 million displaced in July 2026.",
+            "evidence": "ASEAN approved the Five-Point Consensus in April 2021. In November 2026, its leaders extended the ban on Myanmar's leader attending summits, saying the country had failed to comply. Myanmar had also lost its 2026 turn as chair, which passed to the Philippines. Meanwhile, OCHA counted more than 16 million people in need and nearly 3.8 million displaced in July 2026.",
             "counterClaim": "The ban still carries a diplomatic cost, because only lower-level career diplomats may represent Myanmar at summits. Its effect is reduced, however, because ASEAN has not discouraged Min Aung Hlaing's official visits to individual member states.",
             "judgment": "On balance, ASEAN has shaped who is treated as a rightful representative more than it has shaped conduct on the ground. However, the evidence covers one bloc and one conflict, so it shows the limits of diplomatic exclusion used alone rather than a rule about all regional organizations.",
             "sourceUrls": [
