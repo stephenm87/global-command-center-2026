@@ -732,10 +732,11 @@ const DEMONYM_GUARDS = Object.freeze({
         lookbehind: '(?<!northern[\\s-])',
     },
     Dane: {
-        lookbehind: '(?<!great\\s+)',
+        lookbehind: '(?<![Gg]reat\\s+)',
+        lookahead: '(?!\\s+[Cc]ounty(?![\\p{L}\\p{N}]))',
     },
     Danes: {
-        lookbehind: '(?<!great\\s+)',
+        lookbehind: '(?<![Gg]reat\\s+)',
     },
     Dutch: {
         lookahead: '(?!\\s+ovens?(?![\\p{L}\\p{N}]))',

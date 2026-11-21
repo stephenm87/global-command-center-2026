@@ -1395,6 +1395,13 @@ test('Mongabay filters wire-agency items and off-topic video shorts while carryi
                 <pubDate>Thu, 19 Nov 2026 08:05:00 +0000</pubDate>
             </item>
             <item>
+                <title>Punjab agricultural coalition petitions water tribunal</title>
+                <link>https://news.mongabay.com/short-article/2026/11/punjab-water-ap-dhillon/</link>
+                <dc:creator><![CDATA[AP Dhillon]]></dc:creator>
+                <description><![CDATA[Lawmakers examined river basin compensation rules.]]></description>
+                <pubDate>Thu, 19 Nov 2026 08:03:00 +0000</pubDate>
+            </item>
+            <item>
                 <title>Nickel linked to deforestation in Indonesia traded on London Metal Exchange, says report</title>
                 <link>https://news.mongabay.com/short-article/2026/11/nickel-deforestation-indonesia/</link>
                 <dc:creator><![CDATA[Naina Rao]]></dc:creator>
@@ -1412,8 +1419,8 @@ test('Mongabay filters wire-agency items and off-topic video shorts while carryi
         maxItems: 12,
         now: fixedNow,
     });
-    assert.equal(kept.length, 2, 'Mongabay must drop wire agencies and compound AP/AFP/Reuters bylines while keeping ordinary initials like A.P. Singh');
-    assert.deepEqual(kept.map(item => item.author), ['A.P. Singh', 'Naina Rao']);
+    assert.equal(kept.length, 3, 'Mongabay must drop wire agencies and compound AP/AFP/Reuters bylines while keeping human authors like A.P. Singh and AP Dhillon');
+    assert.deepEqual(kept.map(item => item.author), ['A.P. Singh', 'AP Dhillon', 'Naina Rao']);
 
     const globalQuery = {
         id: 'global-climate-resources',
@@ -1550,6 +1557,9 @@ test('Demonym matching pins Indonesian and Yemeni headlines, covers all 193 UN m
     assert.equal(resolveCoords('Trade dispute hits French fries and agricultural imports', '').matchedPlace, null);
     assert.equal(resolveCoords('Polish lawmakers pass judicial reform bill', '').matchedPlace, 'poland');
     assert.equal(resolveCoords('Dutch court rules on offshore climate emissions', '').matchedPlace, 'netherlands');
+    assert.equal(resolveCoords('Great Danes breeding rules spark debate', '').matchedPlace, null);
+    assert.equal(resolveCoords('Dane County election certification audit begins', '').matchedPlace, null);
+    assert.equal(resolveCoords('Danes vote on defense spending increase', '').matchedPlace, 'denmark');
 
     // Verify all 193 UN member states exist and resolve via UN_MEMBER_DEMONYMS
     const memberKeys = Object.keys(UN_MEMBER_STATE_DEMONYMS);
