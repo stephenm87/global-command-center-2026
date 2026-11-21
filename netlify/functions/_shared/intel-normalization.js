@@ -379,23 +379,39 @@ const SPECIFIC_PLACE_COORDS = Object.freeze({
     'clarion–clipperton zone': [14.0, -130.0],
     'clarion-clipperton zone': [14.0, -130.0],
     'papua new guinea': [-6.3, 143.9],
+    'french polynesia': [-17.6, -149.4],
     'marshall islands': [7.1, 171.2],
     'solomon islands': [-9.6, 160.2],
+    'american samoa': [-14.3, -170.7],
     'new caledonia': [-20.9, 165.6],
+    'weather coast': [-9.7, 160.1],
     'new zealand': [-40.9, 174.9],
-    micronesia: [7.4, 150.6],
+    'cook islands': [-21.2, -159.8],
+    'new ireland': [-3.0, 151.6],
+    'port moresby': [-9.4, 147.2],
+    'bougainville': [-6.2, 155.4],
+    "nuku'alofa": [-21.1, -175.2],
+    'port vila': [-17.7, 168.3],
+    'micronesia': [7.4, 150.6],
     australia: [-25.3, 133.8],
     canberra: [-35.3, 149.1],
     funafuti: [-8.5, 179.2],
     kiribati: [1.9, -157.4],
     vanuatu: [-15.4, 166.9],
+    honiara: [-9.4, 159.95],
+    palikir: [6.9, 158.2],
     tuvalu: [-7.1, 177.6],
+    majuro: [7.1, 171.4],
+    tarawa: [1.3, 173.0],
     nauru: [-0.5, 166.9],
     palau: [7.5, 134.6],
     samoa: [-13.8, -172.1],
     tonga: [-21.2, -175.2],
+    yaren: [-0.5, 166.9],
     koror: [7.3, 134.5],
+    apia: [-13.8, -171.8],
     fiji: [-17.7, 178.1],
+    guam: [13.4, 144.8],
     suva: [-18.1, 178.4],
 });
 
@@ -433,16 +449,345 @@ function compileMatchers(table) {
         });
 }
 
+const UN_MEMBER_STATE_DEMONYMS = Object.freeze({
+    // Africa (54 UN member states)
+    algeria: ['algerian', 'algerians'],
+    angola: ['angolan', 'angolans'],
+    benin: ['beninese', 'beninois'],
+    botswana: ['botswanan', 'botswanans', 'motswana', 'batswana'],
+    'burkina faso': ['burkinabe', 'burkinabé', 'burkinabes', 'burkinabés'],
+    burundi: ['burundian', 'burundians'],
+    'cabo verde': ['cabo verdean', 'cabo verdeans', 'cape verdean', 'cape verdeans'],
+    cameroon: ['cameroonian', 'cameroonians'],
+    'central african republic': ['central african', 'central africans'],
+    chad: ['chadian', 'chadians'],
+    comoros: ['comoran', 'comorans', 'comorian', 'comorians'],
+    'democratic republic of the congo': ['congolese'],
+    'republic of the congo': ['congolese'],
+    "côte d'ivoire": ['ivorian', 'ivorians', 'ivoirian', 'ivoirians'],
+    djibouti: ['djiboutian', 'djiboutians'],
+    egypt: ['egyptian', 'egyptians'],
+    'equatorial guinea': ['equatoguinean', 'equatoguineans', 'equatorial guinean', 'equatorial guineans'],
+    eritrea: ['eritrean', 'eritreans'],
+    eswatini: ['swazi', 'swazis', 'emaswati'],
+    ethiopia: ['ethiopian', 'ethiopians'],
+    gabon: ['gabonese'],
+    gambia: ['gambian', 'gambians'],
+    ghana: ['ghanaian', 'ghanaians'],
+    guinea: ['guinean', 'guineans'],
+    'guinea-bissau': ['bissau-guinean', 'bissau-guineans', 'guinea-bissauan', 'guinea-bissauans'],
+    kenya: ['kenyan', 'kenyans'],
+    lesotho: ['mosotho', 'basotho', 'lesothan', 'lesothans'],
+    liberia: ['liberian', 'liberians'],
+    libya: ['libyan', 'libyans'],
+    madagascar: ['malagasy', 'madagascan', 'madagascans'],
+    malawi: ['malawian', 'malawians'],
+    mali: ['malian', 'malians'],
+    mauritania: ['mauritanian', 'mauritanians'],
+    mauritius: ['mauritian', 'mauritians'],
+    morocco: ['moroccan', 'moroccans'],
+    mozambique: ['mozambican', 'mozambicans'],
+    namibia: ['namibian', 'namibians'],
+    niger: ['nigerien', 'nigeriens', 'nigérien', 'nigériens'],
+    nigeria: ['nigerian', 'nigerians'],
+    rwanda: ['rwandan', 'rwandans', 'rwandese'],
+    'são tomé and príncipe': ['são toméan', 'são toméans', 'sao tomean', 'sao tomeans', 'santomean', 'santomeans'],
+    senegal: ['senegalese'],
+    seychelles: ['seychellois', 'seychelloise', 'seychelloises'],
+    'sierra leone': ['sierra leonean', 'sierra leoneans'],
+    somalia: ['somali', 'somalis', 'somalian', 'somalians'],
+    'south africa': ['south african', 'south africans'],
+    'south sudan': ['south sudanese'],
+    sudan: ['sudanese'],
+    tanzania: ['tanzanian', 'tanzanians'],
+    togo: ['togolese'],
+    tunisia: ['tunisian', 'tunisians'],
+    uganda: ['ugandan', 'ugandans'],
+    zambia: ['zambian', 'zambians'],
+    zimbabwe: ['zimbabwean', 'zimbabweans'],
+
+    // Asia-Pacific & Middle East (46 UN member states)
+    afghanistan: ['afghan', 'afghans'],
+    armenia: ['armenian', 'armenians'],
+    azerbaijan: ['azerbaijani', 'azerbaijanis', 'azeri', 'azeris'],
+    bahrain: ['bahraini', 'bahrainis'],
+    bangladesh: ['bangladeshi', 'bangladeshis'],
+    bhutan: ['bhutanese'],
+    brunei: ['bruneian', 'bruneians'],
+    cambodia: ['cambodian', 'cambodians'],
+    china: ['chinese'],
+    cyprus: ['cypriot', 'cypriots'],
+    'north korea': ['north korean', 'north koreans'],
+    india: ['indian', 'indians'],
+    indonesia: ['indonesian', 'indonesians'],
+    iran: ['iranian', 'iranians'],
+    iraq: ['iraqi', 'iraqis'],
+    israel: ['israeli', 'israelis'],
+    japan: ['japanese'],
+    jordan: ['jordanian', 'jordanians'],
+    kazakhstan: ['kazakh', 'kazakhs', 'kazakhstani', 'kazakhstanis'],
+    kuwait: ['kuwaiti', 'kuwaitis'],
+    kyrgyzstan: ['kyrgyz', 'kyrgyzstani', 'kyrgyzstanis'],
+    laos: ['laotian', 'laotians', 'Lao'],
+    lebanon: ['lebanese'],
+    malaysia: ['malaysian', 'malaysians'],
+    maldives: ['maldivian', 'maldivians'],
+    mongolia: ['mongolian', 'mongolians'],
+    myanmar: ['myanmarese', 'burmese'],
+    nepal: ['nepali', 'nepalis', 'nepalese'],
+    oman: ['omani', 'omanis'],
+    pakistan: ['pakistani', 'pakistanis'],
+    philippines: ['philippine', 'filipino', 'filipinos', 'filipina', 'filipinas'],
+    qatar: ['qatari', 'qataris'],
+    'south korea': ['south korean', 'south koreans', 'korean', 'koreans'],
+    'saudi arabia': ['saudi', 'saudis', 'saudi arabian', 'saudi arabians'],
+    singapore: ['singaporean', 'singaporeans'],
+    'sri lanka': ['sri lankan', 'sri lankans'],
+    syria: ['syrian', 'syrians'],
+    tajikistan: ['tajik', 'tajiks', 'tajikistani', 'tajikistanis'],
+    thailand: ['thai'],
+    'timor-leste': ['timorese', 'east timorese'],
+    'türkiye': ['turkish'],
+    turkmenistan: ['turkmen', 'turkmens', 'turkmenistani'],
+    'united arab emirates': ['emirati', 'emiratis'],
+    uzbekistan: ['uzbek', 'uzbeks', 'uzbekistani', 'uzbekistanis'],
+    vietnam: ['vietnamese'],
+    yemen: ['yemeni', 'yemenis', 'yemenite', 'yemenites'],
+
+    // Europe & Eurasia (44 UN member states)
+    albania: ['albanian', 'albanians'],
+    andorra: ['andorran', 'andorrans'],
+    austria: ['austrian', 'austrians'],
+    belarus: ['belarusian', 'belarusians'],
+    belgium: ['belgian', 'belgians'],
+    'bosnia and herzegovina': ['bosnian', 'bosnians', 'herzegovinian', 'herzegovinians'],
+    bulgaria: ['bulgarian', 'bulgarians'],
+    croatia: ['croatian', 'croatians', 'croat', 'croats'],
+    czechia: ['czech', 'czechs'],
+    denmark: ['danish', 'Dane', 'Danes'],
+    estonia: ['estonian', 'estonians'],
+    finland: ['finnish', 'Finn', 'Finns'],
+    france: ['french'],
+    georgia: ['georgian', 'georgians'],
+    germany: ['german', 'germans'],
+    greece: ['greek', 'greeks'],
+    hungary: ['hungarian', 'hungarians'],
+    iceland: ['icelandic', 'icelander', 'icelanders'],
+    ireland: ['irish'],
+    italy: ['italian', 'italians'],
+    latvia: ['latvian', 'latvians'],
+    liechtenstein: ['liechtensteiner', 'liechtensteiners'],
+    lithuania: ['lithuanian', 'lithuanians'],
+    luxembourg: ['luxembourgish', 'luxembourger', 'luxembourgers'],
+    malta: ['maltese'],
+    moldova: ['moldovan', 'moldovans'],
+    monaco: ['monegasque', 'monégasque', 'monegasques', 'monacan', 'monacans'],
+    montenegro: ['montenegrin', 'montenegrins'],
+    netherlands: ['Dutch', 'netherlandic'],
+    'north macedonia': ['north macedonian', 'north macedonians', 'macedonian', 'macedonians'],
+    norway: ['norwegian', 'norwegians'],
+    poland: ['Polish'],
+    portugal: ['portuguese'],
+    romania: ['romanian', 'romanians'],
+    russia: ['russian', 'russians'],
+    'san marino': ['sammarinese'],
+    serbia: ['serbian', 'serbians', 'serb', 'serbs'],
+    slovakia: ['slovak', 'slovaks', 'slovakian', 'slovakians'],
+    slovenia: ['slovenian', 'slovenians', 'slovene', 'slovenes'],
+    spain: ['spanish', 'spaniard', 'spaniards'],
+    sweden: ['swedish', 'swede', 'swedes'],
+    switzerland: ['swiss'],
+    ukraine: ['ukrainian', 'ukrainians'],
+    'united kingdom': ['british'],
+
+    // Americas & Caribbean (35 UN member states)
+    'antigua and barbuda': ['antiguan', 'antiguans', 'barbudan', 'barbudans'],
+    argentina: ['argentine', 'argentines', 'argentinian', 'argentinians'],
+    bahamas: ['bahamian', 'bahamians'],
+    barbados: ['barbadian', 'barbadians', 'bajan', 'bajans'],
+    belize: ['belizean', 'belizeans'],
+    bolivia: ['bolivian', 'bolivians'],
+    brazil: ['brazilian', 'brazilians'],
+    canada: ['canadian', 'canadians'],
+    chile: ['chilean', 'chileans'],
+    colombia: ['colombian', 'colombians'],
+    'costa rica': ['costa rican', 'costa ricans'],
+    cuba: ['cuban', 'cubans'],
+    dominica: ['dominican commonwealth'],
+    'dominican republic': ['dominican', 'dominicans'],
+    ecuador: ['ecuadorian', 'ecuadorians', 'ecuadorean'],
+    'el salvador': ['salvadoran', 'salvadorans'],
+    grenada: ['grenadian', 'grenadians'],
+    guatemala: ['guatemalan', 'guatemalans'],
+    guyana: ['guyanese'],
+    haiti: ['haitian', 'haitians'],
+    honduras: ['honduran', 'hondurans'],
+    jamaica: ['jamaican', 'jamaicans'],
+    mexico: ['mexican', 'mexicans'],
+    nicaragua: ['nicaraguan', 'nicaraguans'],
+    panama: ['panamanian', 'panamanians'],
+    paraguay: ['paraguayan', 'paraguayans'],
+    peru: ['peruvian', 'peruvians'],
+    'saint kitts and nevis': ['kittitian', 'kittitians', 'nevisian', 'nevisians'],
+    'saint lucia': ['saint lucian', 'saint lucians', 'st. lucian', 'st. lucians', 'st lucian'],
+    'saint vincent and the grenadines': ['vincentian', 'vincentians'],
+    suriname: ['surinamese'],
+    'trinidad and tobago': ['trinidadian', 'trinidadians', 'tobagonian', 'tobagonians', 'trinbagonian'],
+    'united states': ['american', 'americans'],
+    uruguay: ['uruguayan', 'uruguayans'],
+    venezuela: ['venezuelan', 'venezuelans'],
+
+    // Oceania (14 UN member states)
+    australia: ['australian', 'australians'],
+    fiji: ['fijian', 'fijians'],
+    kiribati: ['i-kiribati'],
+    'marshall islands': ['marshallese'],
+    micronesia: ['micronesian', 'micronesians'],
+    nauru: ['nauruan', 'nauruans'],
+    'new zealand': ['new zealander', 'new zealanders'],
+    palau: ['palauan', 'palauans'],
+    'papua new guinea': ['papua new guinean', 'papua new guineans'],
+    samoa: ['samoan', 'samoans'],
+    'solomon islands': ['solomon islander', 'solomon islanders'],
+    tonga: ['tongan', 'tongans'],
+    tuvalu: ['tuvaluan', 'tuvaluans'],
+    vanuatu: ['ni-vanuatu', 'vanuatuan', 'vanuatuans'],
+});
+
+const OBSERVER_AND_TERRITORY_DEMONYMS = Object.freeze({
+    palestine: ['palestinian', 'palestinians'],
+    taiwan: ['taiwanese'],
+    kosovo: ['kosovar', 'kosovars'],
+    greenland: ['greenlandic'],
+    'western sahara': ['sahrawi', 'sahrawis'],
+    somaliland: ['somalilander', 'somalilanders'],
+    'american samoa': ['american samoan', 'american samoans'],
+});
+
+const UN_MEMBER_DEMONYMS = Object.freeze(
+    Object.entries({ ...UN_MEMBER_STATE_DEMONYMS, ...OBSERVER_AND_TERRITORY_DEMONYMS })
+        .reduce((map, [countryKey, demonyms]) => {
+            for (const demonym of demonyms) {
+                const normalizedKey = demonym.toLowerCase();
+                if (!map[normalizedKey]) map[normalizedKey] = countryKey;
+            }
+            return map;
+        }, {})
+);
+
+const CASE_SENSITIVE_DEMONYMS = new Set(['Polish', 'Dutch', 'Lao', 'Dane', 'Danes', 'Finn', 'Finns']);
+
+const DEMONYM_GUARDS = Object.freeze({
+    american: {
+        lookbehind: '(?<!(?:latin|south|central|north|pan|inter|meso|anglo|african|native|asian|arab)[\\s-])',
+        lookahead: '(?!\\s+(?:samoan?s?|football|idol|eagle|robin|badger)(?![\\p{L}\\p{N}]))',
+    },
+    americans: {
+        lookbehind: '(?<!(?:latin|south|central|north|pan|inter|meso|anglo|african|native|asian|arab)[\\s-])',
+    },
+    indian: {
+        lookahead: '(?!\\s+(?:ocean|summer|corn)(?![\\p{L}\\p{N}]))',
+    },
+    french: {
+        lookahead: '(?!\\s+(?:fries|toast|press|horn|bulldog|braid|doors?|kiss|manicure|polynesia|guiana|southern)(?![\\p{L}\\p{N}]))',
+    },
+    british: {
+        lookahead: '(?!\\s+(?:columbia|virgin\\s+islands|indian\\s+ocean)(?![\\p{L}\\p{N}]))',
+    },
+    spanish: {
+        lookahead: '(?!\\s+(?:fly|flu|moss)(?![\\p{L}\\p{N}]))',
+    },
+    georgian: {
+        lookahead: '(?!\\s+(?:era|architecture|buildings?|townhouse|period)(?![\\p{L}\\p{N}]))',
+    },
+    guinean: {
+        lookbehind: '(?<!(?:papua\\s+new|equatorial|bissau-)[\\s-])',
+        lookahead: '(?!\\s+pigs?(?![\\p{L}\\p{N}]))',
+    },
+    guineans: {
+        lookbehind: '(?<!(?:papua\\s+new|equatorial|bissau-)[\\s-])',
+    },
+    dominican: {
+        lookahead: '(?!\\s+(?:order|friars?|monks?|priests?|nuns?|convents?)(?![\\p{L}\\p{N}]))',
+    },
+    'central african': {
+        lookahead: '(?!\\s+(?:countries|nations|states|regions?|summits?|markets?|economies|leaders)(?![\\p{L}\\p{N}]))',
+    },
+    korean: {
+        lookbehind: '(?<!north[\\s-])',
+    },
+    koreans: {
+        lookbehind: '(?<!north[\\s-])',
+    },
+    sudanese: {
+        lookbehind: '(?<!south[\\s-])',
+    },
+    samoan: {
+        lookbehind: '(?<!american[\\s-])',
+    },
+    samoans: {
+        lookbehind: '(?<!american[\\s-])',
+    },
+    irish: {
+        lookbehind: '(?<!northern[\\s-])',
+    },
+    Dane: {
+        lookbehind: '(?<![Gg]reat\\s+)',
+        lookahead: '(?!\\s+[Cc]ounty(?![\\p{L}\\p{N}]))',
+    },
+    Danes: {
+        lookbehind: '(?<![Gg]reat\\s+)',
+    },
+    Dutch: {
+        lookahead: '(?!\\s+ovens?(?![\\p{L}\\p{N}]))',
+    },
+});
+
+const DEMONYM_MATCHERS = Object.entries({ ...UN_MEMBER_STATE_DEMONYMS, ...OBSERVER_AND_TERRITORY_DEMONYMS })
+    .flatMap(([countryKey, demonyms]) => demonyms.map(demonym => ({ demonym, countryKey })))
+    .filter((entry, idx, arr) => arr.findIndex(x => x.demonym === entry.demonym) === idx)
+    .sort((a, b) => b.demonym.length - a.demonym.length)
+    .map(({ demonym, countryKey }) => {
+        const guard = DEMONYM_GUARDS[demonym] || DEMONYM_GUARDS[demonym.toLowerCase()] || {};
+        const flags = CASE_SENSITIVE_DEMONYMS.has(demonym) ? 'u' : 'iu';
+        return {
+            key: countryKey,
+            coords: SPECIFIC_PLACE_COORDS[countryKey],
+            pattern: new RegExp(
+                `(?<![\\p{L}\\p{N}])${guard.lookbehind || ''}${escapeRegex(demonym)}${guard.lookahead || ''}(?![\\p{L}\\p{N}])`,
+                flags
+            ),
+        };
+    });
+
 const SPECIFIC_MATCHERS = [
     ...compileMatchers(SPECIFIC_PLACE_COORDS),
-    // Exact uppercase US acronym avoids matching lowercase pronoun "us"
+    ...DEMONYM_MATCHERS,
+    // Exact uppercase acronyms avoid matching lowercase "us" or ".png" image extensions
     {
         key: 'united states',
         coords: SPECIFIC_PLACE_COORDS['united states'],
         pattern: /(?<![\p{L}\p{N}])US(?![\p{L}\p{N}])/u,
     },
+    {
+        key: 'papua new guinea',
+        coords: SPECIFIC_PLACE_COORDS['papua new guinea'],
+        pattern: /(?<![\p{L}\p{N}.])PNG(?![\p{L}\p{N}.])/u,
+    },
 ];
-const CONTINENT_MATCHERS = compileMatchers(CONTINENT_COORDS);
+const CONTINENT_MATCHERS = [
+    ...compileMatchers(CONTINENT_COORDS),
+    {
+        key: 'latin america',
+        coords: CONTINENT_COORDS['latin america'],
+        pattern: /(?<![\p{L}\p{N}])latin[\s-]+americans?(?![\p{L}\p{N}])/iu,
+    },
+    {
+        key: 'south america',
+        coords: CONTINENT_COORDS['south america'],
+        pattern: /(?<![\p{L}\p{N}])south[\s-]+americans?(?![\p{L}\p{N}])/iu,
+    },
+];
 
 const SECTOR_LABELS = {
     'Geopolitics & Conflict': 'Geopolitics / Conflict',
@@ -544,6 +889,7 @@ function normalizeProviderArticle(item, scraperSource = 'serper') {
     const [lat, lng] = Array.isArray(resolved.coords) ? resolved.coords : [null, null];
     const publishedAt = item.date || item.publishedAt || null;
     const publisherName = item.source?.name || item.source || 'Global News';
+    const authorName = typeof item.author === 'string' ? item.author.trim() : '';
     const headlineFallback = scraperSource === 'public-rss' && item.source
         ? `Headline via ${publisherName} — open link to read full report at source.`
         : title;
@@ -555,6 +901,7 @@ function normalizeProviderArticle(item, scraperSource = 'serper') {
         'Timeline': publishedAt ? `CURRENT — ${publishedAt}` : 'CURRENT — date unavailable',
         'Expected Impact/Value': snippet || headlineFallback,
         'Source': publisherName,
+        ...(authorName ? { author: authorName } : {}),
         url,
         'Latitude': lat === null ? null : String(lat),
         'Longitude': lng === null ? null : String(lng),
@@ -574,6 +921,8 @@ module.exports = {
     REGION_COORDS,
     SECTOR_LABELS,
     SPECIFIC_PLACE_COORDS,
+    UN_MEMBER_DEMONYMS,
+    UN_MEMBER_STATE_DEMONYMS,
     categorizeSector,
     getCoords,
     normalizeHttpsUrl,

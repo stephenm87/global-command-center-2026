@@ -139,6 +139,9 @@ export default function IntelSidebar({
                     </div>
                 ) : feedItems.slice(0, feedPage * feedPageSize).map((forecast, idx) => {
                     const overdueNotice = forecast.isCaseStudy ? getCaseReviewNotice(forecast) : null;
+                    const itemAuthor = forecast.author || forecast.coverage?.author || '';
+                    const isAnalysisItem = forecast.isLive && forecast.coverage?.contentType === 'analysis';
+                    const liveDateLabel = forecast.publishedAt || String(forecast.Timeline || '').replace(/^CURRENT\s*—\s*/i, '');
                     return (
                     <article
                         key={`${forecast.caseStudyId || forecast.url || forecast['Entity/Subject'] || forecast['Topic/Sector'] || 'forecast'}-${idx}`}
@@ -147,7 +150,7 @@ export default function IntelSidebar({
                             borderLeftColor: forecast.isHistorical
                                 ? '#ffcc00'
                                 : forecast.isLive
-                                    ? '#00ffff'
+                                    ? (isAnalysisItem ? '#f4c465' : '#00ffff')
                                     : (categoryColors[forecast.Broad_Category] || (forecast.isEditorial ? '#b69cff' : undefined)),
                         }}
                     >
@@ -157,8 +160,10 @@ export default function IntelSidebar({
                             onClick={() => onSelectForecast(forecast)}
                         >
                             {forecast.isLive && (
-                                <span className="live-tag">
-                                    ● {['serper-public-cache', 'institutional-rss', 'public-rss', 'reliefweb-v2', 'gdelt-doc'].includes(forecast._scraperSource) ? 'CACHED CURRENT' : 'LIVE INTEL'}
+                                <span className={`live-tag ${isAnalysisItem ? 'live-tag--analysis' : ''}`.trim()}>
+                                    ● {isAnalysisItem
+                                        ? 'ANALYSIS'
+                                        : (['serper-public-cache', 'institutional-rss', 'public-rss', 'reliefweb-v2', 'gdelt-doc'].includes(forecast._scraperSource) ? 'CACHED CURRENT' : 'LIVE INTEL')}
                                 </span>
                             )}
                             {forecast.isLive && forecast.coverage && (
@@ -166,6 +171,9 @@ export default function IntelSidebar({
                                     <span>{forecast.coverage.region}</span>
                                     <span>{forecast.coverage.issue}</span>
                                     <span>{forecast.coverage.fundingLabel || forecast.coverage.sourceRoleLabel}</span>
+                                    {isAnalysisItem && (
+                                        <span className="coverage-badge-analysis">Analysis · Not news</span>
+                                    )}
                                     {forecast.coverage.locationPrecision === 'global-unmapped' && (
                                         <span className="coverage-badge-unmapped">Global · No single pin</span>
                                     )}
@@ -208,8 +216,8 @@ export default function IntelSidebar({
                             <span className="card-timeline">
                                 ⏱ {forecast.isCaseStudy
                                     ? `${forecast.regionTags?.join(' · ')} · ${overdueNotice || forecast.Timeline}`
-                                    : forecast.isLive && forecast.Source
-                                        ? `${forecast.Source} · ${forecast.publishedAt || String(forecast.Timeline || '').replace(/^CURRENT\s*—\s*/i, '')}`
+                                    : forecast.isLive && (forecast.Source || itemAuthor)
+                                        ? [itemAuthor ? `By ${itemAuthor}` : '', forecast.Source, liveDateLabel].filter(Boolean).join(' · ')
                                         : forecast.Timeline}
                             </span>
                             <span className="card-impact">

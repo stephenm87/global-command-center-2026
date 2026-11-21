@@ -317,6 +317,33 @@ test('extracted App components preserve unescaped & query URLs, guard invalid th
             selectionReason: 'Selected for global climate coverage.',
         },
     };
+    const devpolicyAnalysisItem = {
+        isLive: true,
+        _scraperSource: 'public-rss',
+        'Topic/Sector': 'Environment / Energy',
+        'Entity/Subject': 'Gardens in distress: drought, pollution and deep-sea mining in New Ireland',
+        'Expected Impact/Value': 'Communities warn deep-sea mining threatens local marine livelihoods.',
+        Broad_Category: 'Environment & Energy',
+        Timeline: 'CURRENT — 2026-11-19',
+        publishedAt: '2026-11-19',
+        Source: 'Devpolicy Blog',
+        author: 'Philippa Louey and Godfrey Jordan Abage',
+        url: 'https://devpolicy.org/gardens-in-distress-20261119/',
+        Latitude: '-3.0',
+        Longitude: '151.6',
+        coverage: {
+            region: 'Pacific Islands',
+            issue: 'Climate & Resources',
+            sourceRole: 'research',
+            sourceRoleLabel: 'Research & analysis',
+            contentType: 'analysis',
+            author: 'Philippa Louey and Godfrey Jordan Abage',
+            fundingLabel: 'University research blog (ANU Crawford School, CC BY-NC-SA 4.0)',
+            attributionUrl: 'https://devpolicy.org/',
+            locationPrecision: 'named-place',
+            selectionReason: 'Selected for Pacific Islands coverage.',
+        },
+    };
     const mixedFeedSidebarHtml = renderToStaticMarkup(React.createElement(IntelSidebar, {
         visible: true,
         sidebarCollapsed: false,
@@ -329,8 +356,8 @@ test('extracted App components preserve unescaped & query URLs, guard invalid th
         intelSummary: {
             sourceMode: 'public-cache',
             feedStatus: 'fresh',
-            provider: 'UN News RSS + BBC News RSS',
-            liveItemCount: 2,
+            provider: 'UN News RSS + BBC News RSS + Devpolicy Blog RSS',
+            liveItemCount: 3,
             linkedReferenceCount: 162,
         },
         caseStudyCount: 29,
@@ -338,9 +365,9 @@ test('extracted App components preserve unescaped & query URLs, guard invalid th
         onSearchChange: () => {},
         visibleSelectedCategory: 'All',
         onCategoryChange: () => {},
-        currentFeedLabel: 'CACHED CURRENT UPDATES (2)',
+        currentFeedLabel: 'CACHED CURRENT UPDATES (3)',
         feedEmptyState: null,
-        feedItems: [bbcLiveItem, globalUnmappedItem],
+        feedItems: [bbcLiveItem, globalUnmappedItem, devpolicyAnalysisItem],
         feedPage: 1,
         feedPageSize: 40,
         onShowMore: () => {},
@@ -349,12 +376,35 @@ test('extracted App components preserve unescaped & query URLs, guard invalid th
         onOpenBriefing: () => {},
     }));
     assert.ok(!mixedFeedSidebarHtml.includes('UN INSTITUTIONAL'), 'Sidebar must not say UN INSTITUTIONAL once BBC News is included');
-    assert.match(mixedFeedSidebarHtml, /2 CACHED CURRENT/);
+    assert.match(mixedFeedSidebarHtml, /3 CACHED CURRENT/);
     assert.match(mixedFeedSidebarHtml, /Romania energy security talks advance in parliament/);
     assert.match(mixedFeedSidebarHtml, /Public broadcaster, UK licence fee/);
     assert.match(mixedFeedSidebarHtml, /BBC News ↗/);
     assert.ok(mixedFeedSidebarHtml.includes('href="https://www.bbc.com/news"'));
     assert.match(mixedFeedSidebarHtml, /Global · No single pin/);
+    assert.match(mixedFeedSidebarHtml, /live-tag--analysis[^>]*>● ANALYSIS</);
+    assert.match(mixedFeedSidebarHtml, /coverage-badge-analysis[^>]*>Analysis · Not news</);
+    assert.match(mixedFeedSidebarHtml, /By Philippa Louey and Godfrey Jordan Abage · Devpolicy Blog · 2026-11-19/);
+    assert.ok(mixedFeedSidebarHtml.includes('href="https://devpolicy.org/gardens-in-distress-20261119/"'));
+
+    const analysisModalHtml = renderToStaticMarkup(React.createElement(DetailModal, {
+        selectedForecast: devpolicyAnalysisItem,
+        modalRef: { current: null },
+        selectedTheory: 'Realism',
+        onSelectTheory: () => {},
+        onClose: () => {},
+        onOpenBriefing: () => {},
+        onOpenAuthModal: () => {},
+        onDeepScan: () => {},
+        deepScanResult: null,
+        deepScanLoading: false,
+        aiSummary: null,
+        aiSummaryLoading: false,
+    }));
+    assert.match(analysisModalHtml, /By Philippa Louey and Godfrey Jordan Abage · Devpolicy Blog · 2026-11-19/);
+    assert.match(analysisModalHtml, /Analysis \(not news\)/);
+    assert.ok(analysisModalHtml.includes('href="https://devpolicy.org/"'));
+    assert.ok(analysisModalHtml.includes('href="https://devpolicy.org/gardens-in-distress-20261119/"'));
 
     const unmappedModalHtml = renderToStaticMarkup(React.createElement(DetailModal, {
         selectedForecast: globalUnmappedItem,

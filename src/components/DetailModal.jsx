@@ -26,6 +26,8 @@ export default function DetailModal({
     const activeTheory = theories[activeTheoryKey];
     const validReportUrl = safeHttpUrl(selectedForecast.url);
     const overdueNotice = selectedForecast.isCaseStudy ? getCaseReviewNotice(selectedForecast) : null;
+    const itemAuthor = selectedForecast.author || selectedForecast.coverage?.author || '';
+    const isAnalysisItem = selectedForecast.isLive && selectedForecast.coverage?.contentType === 'analysis';
 
     return (
         <div className="detail-modal" onClick={onClose}>
@@ -50,10 +52,13 @@ export default function DetailModal({
                             : selectedForecast['Topic/Sector']}
                     </h2>
                     {selectedForecast.isCaseStudy && <p className="modal-case-subtitle">{selectedForecast['Topic/Sector']}</p>}
-                    {selectedForecast.isLive && selectedForecast.Source && (
+                    {selectedForecast.isLive && (selectedForecast.Source || itemAuthor) && (
                         <p className="modal-case-subtitle">
-                            {selectedForecast.Source}
-                            {selectedForecast.publishedAt ? ` · ${selectedForecast.publishedAt}` : ''}
+                            {[
+                                itemAuthor ? `By ${itemAuthor}` : '',
+                                selectedForecast.Source,
+                                selectedForecast.publishedAt || '',
+                            ].filter(Boolean).join(' · ')}
                         </p>
                     )}
                 </div>
@@ -156,21 +161,29 @@ export default function DetailModal({
                                 <span>{selectedForecast.coverage.region}</span>
                                 <span>{selectedForecast.coverage.issue}</span>
                                 <span>{selectedForecast.coverage.fundingLabel || selectedForecast.coverage.sourceRoleLabel}</span>
+                                {isAnalysisItem && (
+                                    <span className="coverage-badge-analysis">Analysis (not news)</span>
+                                )}
                                 {selectedForecast.coverage.locationPrecision === 'global-unmapped' && (
                                     <span className="coverage-badge-unmapped">Global · No single pin</span>
                                 )}
                             </div>
                             <p>{selectedForecast.coverage.selectionReason}</p>
-                            {safeHttpUrl(selectedForecast.coverage.attributionUrl) && (
+                            {(itemAuthor || safeHttpUrl(selectedForecast.coverage.attributionUrl)) && (
                                 <p>
                                     Source credit:{' '}
-                                    <a
-                                        href={safeHttpUrl(selectedForecast.coverage.attributionUrl)}
-                                        target="_blank"
-                                        rel="noopener noreferrer"
-                                    >
-                                        {selectedForecast.Source || 'Publisher homepage'} ↗
-                                    </a>
+                                    {itemAuthor ? `By ${itemAuthor} · ` : ''}
+                                    {safeHttpUrl(selectedForecast.coverage.attributionUrl) ? (
+                                        <a
+                                            href={safeHttpUrl(selectedForecast.coverage.attributionUrl)}
+                                            target="_blank"
+                                            rel="noopener noreferrer"
+                                        >
+                                            {selectedForecast.Source || 'Publisher homepage'} ↗
+                                        </a>
+                                    ) : (
+                                        <span>{selectedForecast.Source}</span>
+                                    )}
                                 </p>
                             )}
                             <small>Funding labels describe organizational support—not editorial endorsement or neutrality.</small>

@@ -31,6 +31,7 @@ test('public snapshot uses fixed balanced queries and never accepts a visitor qu
 const {
     ALLAFRICA_RSS_FEEDS,
     INSTITUTIONAL_RSS_FEEDS,
+    OPEN_LICENSED_RSS_FEEDS,
     decodeXmlEntities,
     fetchReliefWebReports,
     isFreshAndConsistentDate,
@@ -165,6 +166,101 @@ test('free-feeds parses RSS CDATA, entities, ISO dates, guid fallback, rejects n
     assert.equal(rdfItem.date, '2026-11-19');
     assert.equal(rdfItem.attributionUrl, 'https://allafrica.com/');
 
+    // Open-licensed RSS feeds (Devpolicy Blog, Global Voices, Mongabay)
+    assert.deepEqual(OPEN_LICENSED_RSS_FEEDS.map(f => f.id), ['devpolicy-blog', 'global-voices', 'mongabay-news']);
+
+    const devpolicyXml = `<?xml version="1.0" encoding="utf-8"?>
+        <rss version="2.0" xmlns:dc="http://purl.org/dc/elements/1.1/"><channel>
+            <item>
+                <title>Gardens in distress: drought, pollution and deep-sea mining in New Ireland</title>
+                <link>https://devpolicy.org/gardens-in-distress-20261120/</link>
+                <dc:creator><![CDATA[Philippa Louey and Godfrey Jordan Abage]]></dc:creator>
+                <description><![CDATA[As drought withers New Ireland's land gardens, pollution and deep-sea mining threaten local ocean waters.<h4><b>Disclosure</b></h4><p>This research was supported by the Pacific Research Program.</p><h4><b>About the author/s</b></h4><p>Philippa Louey is a researcher.</p>]]></description>
+                <pubDate>Thu, 19 Nov 2026 19:00:44 +0000</pubDate>
+            </item>
+        </channel></rss>`;
+    const [devItem] = parseRssItems(devpolicyXml, {
+        sourceName: 'Devpolicy Blog',
+        fundingLabel: 'University research blog (ANU Crawford School, CC BY-NC-SA 4.0)',
+        attributionUrl: 'https://devpolicy.org/',
+        contentType: 'analysis',
+        requireAuthor: true,
+        now: fixedNow,
+    });
+    assert.equal(devItem.author, 'Philippa Louey and Godfrey Jordan Abage');
+    assert.equal(devItem.contentType, 'analysis');
+    assert.equal(devItem.snippet, "As drought withers New Ireland's land gardens, pollution and deep-sea mining threaten local ocean waters.");
+    assert.ok(!devItem.snippet.includes('Disclosure'), 'WordPress Disclosure boilerplate must be stripped');
+
+    // Heading containing "Disclosure" as part of the article subject must be preserved, while <p><strong>Disclosure</strong></p> strips cleanly, and long author names cap at 120 chars
+    const disclosureEdgeXml = `<?xml version="1.0" encoding="utf-8"?>
+        <rss version="2.0" xmlns:dc="http://purl.org/dc/elements/1.1/"><channel>
+            <item>
+                <title>Mining transparency rules debated in Papua New Guinea</title>
+                <link>https://devpolicy.org/mining-disclosure-png-20261120/</link>
+                <dc:creator><![CDATA[${'Dr. Researcher '.repeat(12)}]]></dc:creator>
+                <description><![CDATA[<h2>Disclosure rules in PNG mining</h2><p>Lawmakers reviewed royalty reporting rules across provinces.</p><p><strong>Disclosure</strong></p><p>Supported by university grant.</p>]]></description>
+                <pubDate>Thu, 19 Nov 2026 19:00:44 +0000</pubDate>
+            </item>
+        </channel></rss>`;
+    const [discEdgeItem] = parseRssItems(disclosureEdgeXml, {
+        sourceName: 'Devpolicy Blog',
+        contentType: 'analysis',
+        requireAuthor: true,
+        now: fixedNow,
+    });
+    assert.match(discEdgeItem.snippet, /^Disclosure rules in PNG mining Lawmakers reviewed royalty reporting rules across provinces\.$/);
+    assert.ok(!discEdgeItem.snippet.includes('university grant'), 'Standalone <p><strong>Disclosure</strong></p> boilerplate must strip');
+    assert.equal(discEdgeItem.author.length <= 120, true, 'Over-long author strings must cap cleanly at 120 chars');
+
+    const mongabayXml = `<?xml version="1.0" encoding="utf-8"?>
+        <rss version="2.0" xmlns:dc="http://purl.org/dc/elements/1.1/"><channel>
+            <item>
+                <title>Peruvian officials increase seizure tally in wildlife trafficking probe</title>
+                <link>https://news.mongabay.com/2026/11/peru-trafficking-probe/</link>
+                <dc:creator><![CDATA[Mongabay.com]]></dc:creator>
+                <author><![CDATA[Naina Rao]]></author>
+                <description><![CDATA[Authorities expanded enforcement against cross-border wildlife trafficking networks in Peru.]]></description>
+                <pubDate>Thu, 19 Nov 2026 19:11:03 +0000</pubDate>
+            </item>
+        </channel></rss>`;
+    const [mongoItem] = parseRssItems(mongabayXml, {
+        sourceName: 'Mongabay',
+        fundingLabel: 'Nonprofit conservation journalism (CC BY-ND 4.0)',
+        attributionUrl: 'https://news.mongabay.com/',
+        requireAuthor: true,
+        now: fixedNow,
+    });
+    assert.equal(mongoItem.author, 'Naina Rao', 'Mongabay generic dc:creator must fall back to human <author>');
+    assert.equal(mongoItem.contentType, 'news');
+
+    const gvXml = `<?xml version="1.0" encoding="utf-8"?>
+        <rss version="2.0" xmlns:dc="http://purl.org/dc/elements/1.1/"><channel>
+            <item>
+                <title>Support Global Voices' December Spotlight: Digital Communities</title>
+                <link>https://globalvoices.org/2026/11/19/support-global-voices/</link>
+                <dc:creator><![CDATA[Global Voices Announcements]]></dc:creator>
+                <description><![CDATA[Support our digital campaign this month.]]></description>
+                <pubDate>Thu, 19 Nov 2026 00:00:00 +0000</pubDate>
+            </item>
+            <item>
+                <title>Why Japan's anti-hate legislation falls short of human rights commitments</title>
+                <link>https://globalvoices.org/2026/11/20/why-japans-anti-hate-measures-fall-short/</link>
+                <dc:creator><![CDATA[Jo Carter]]></dc:creator>
+                <description><![CDATA[Legal experts cite gaps in domestic legislation and human rights enforcement.]]></description>
+                <pubDate>Fri, 20 Nov 2026 00:00:00 +0000</pubDate>
+            </item>
+        </channel></rss>`;
+    const gvItems = parseRssItems(gvXml, {
+        sourceName: 'Global Voices',
+        fundingLabel: 'Nonprofit volunteer & citizen media (CC BY 3.0)',
+        attributionUrl: 'https://globalvoices.org/',
+        requireAuthor: true,
+        now: new Date('2026-11-20T06:00:00Z'),
+    });
+    assert.equal(gvItems.length, 1, 'Announcement item with generic Global Voices Announcements creator must be dropped');
+    assert.equal(gvItems[0].author, 'Jo Carter');
+
     const skippedRw = await fetchReliefWebReports(async () => {
         throw new Error('Should not fetch when appname is empty');
     }, { appname: '' });
@@ -201,6 +297,37 @@ test('public snapshot builds live institutional feed with zero SERPER_API_KEY an
                 <dc:date>2026-11-19T06:00:00Z</dc:date>
             </item>
         </rdf:RDF>`;
+    const devpolicyRss = `<?xml version="1.0" encoding="utf-8"?>
+        <rss version="2.0" xmlns:dc="http://purl.org/dc/elements/1.1/"><channel>
+            <item>
+                <title>Gardens in distress: drought, pollution and deep-sea mining in New Ireland</title>
+                <link>https://devpolicy.org/gardens-in-distress-20261119/</link>
+                <dc:creator><![CDATA[Philippa Louey and Godfrey Jordan Abage]]></dc:creator>
+                <description><![CDATA[As drought withers New Ireland gardens in Papua New Guinea, pollution and deep-sea mining threaten local ocean waters.<h4><b>Disclosure</b></h4><p>Research note.</p>]]></description>
+                <pubDate>Thu, 19 Nov 2026 04:00:00 +0000</pubDate>
+            </item>
+        </channel></rss>`;
+    const globalVoicesRss = `<?xml version="1.0" encoding="utf-8"?>
+        <rss version="2.0" xmlns:dc="http://purl.org/dc/elements/1.1/"><channel>
+            <item>
+                <title>Family stories keep alive Georgia's democratic past and human rights memory</title>
+                <link>https://globalvoices.org/2026/11/19/georgia-democratic-memory/</link>
+                <dc:creator><![CDATA[Daria Dergacheva]]></dc:creator>
+                <description><![CDATA[Oral history archives examine human rights, repression, and democratic accountability in Georgia.]]></description>
+                <pubDate>Thu, 19 Nov 2026 04:00:00 +0000</pubDate>
+            </item>
+        </channel></rss>`;
+    const mongabayRss = `<?xml version="1.0" encoding="utf-8"?>
+        <rss version="2.0" xmlns:dc="http://purl.org/dc/elements/1.1/"><channel>
+            <item>
+                <title>Indigenous communities challenge Brazil deforestation and biodiversity policy</title>
+                <link>https://news.mongabay.com/2026/11/brazil-deforestation-policy/</link>
+                <dc:creator><![CDATA[Mongabay.com]]></dc:creator>
+                <author><![CDATA[Karla Mendes]]></author>
+                <description><![CDATA[Indigenous leaders urged federal ministries to enforce conservation boundaries in the Amazon basin.]]></description>
+                <pubDate>Thu, 19 Nov 2026 04:00:00 +0000</pubDate>
+            </item>
+        </channel></rss>`;
     const fetchImpl = async (url) => {
         calledUrls.push(String(url));
         if (String(url).includes('google.serper.dev')) {
@@ -211,6 +338,15 @@ test('public snapshot builds live institutional feed with zero SERPER_API_KEY an
         }
         if (String(url).includes('allafrica.com')) {
             return { ok: true, text: async () => allafricaRdf };
+        }
+        if (String(url).includes('devpolicy.org')) {
+            return { ok: true, text: async () => devpolicyRss };
+        }
+        if (String(url).includes('globalvoices.org')) {
+            return { ok: true, text: async () => globalVoicesRss };
+        }
+        if (String(url).includes('mongabay.com')) {
+            return { ok: true, text: async () => mongabayRss };
         }
         if (String(url).includes('reliefweb.int')) {
             return {
@@ -254,18 +390,31 @@ test('public snapshot builds live institutional feed with zero SERPER_API_KEY an
     });
 
     assert.equal(snapshot.meta.status, 'fresh');
+    assert.equal(snapshot.meta.snapshotSchemaVersion, 3);
     assert.equal(snapshot.meta.errorCode, undefined);
     assert.equal('serperStatus' in snapshot.meta, false, 'Public meta must not expose billing state');
-    assert.equal(snapshot.items.length, 5);
+    assert.equal(snapshot.items.length, 8);
     assert.equal(calledUrls.some(u => u.includes('google.serper.dev')), false);
     assert.match(snapshot.meta.provider, /UN News RSS/);
     assert.match(snapshot.meta.provider, /BBC News RSS/);
     assert.match(snapshot.meta.provider, /allAfrica RSS/);
+    assert.match(snapshot.meta.provider, /Devpolicy Blog RSS/);
+    assert.match(snapshot.meta.provider, /Global Voices RSS/);
+    assert.match(snapshot.meta.provider, /Mongabay RSS/);
     assert.match(snapshot.meta.provider, /ReliefWeb/);
     assert.match(snapshot.meta.provider, /GDELT/);
     assert.deepEqual(
         snapshot.meta.providerResults.map(r => [r.provider, r.status]),
-        [['UN News RSS', 'ok'], ['BBC News RSS', 'ok'], ['allAfrica RSS', 'ok'], ['ReliefWeb', 'ok'], ['GDELT', 'ok']]
+        [
+            ['UN News RSS', 'ok'],
+            ['BBC News RSS', 'ok'],
+            ['allAfrica RSS', 'ok'],
+            ['Devpolicy Blog RSS', 'ok'],
+            ['Global Voices RSS', 'ok'],
+            ['Mongabay RSS', 'ok'],
+            ['ReliefWeb', 'ok'],
+            ['GDELT', 'ok'],
+        ]
     );
     const bbcItem = snapshot.items.find(it => it.Source === 'BBC News');
     assert.ok(bbcItem, 'Expected BBC News item in live snapshot');
@@ -277,6 +426,23 @@ test('public snapshot builds live institutional feed with zero SERPER_API_KEY an
     assert.equal(allafricaItem.coverage.fundingLabel, 'Pan-African news aggregator (commercial & syndicated)');
     assert.equal(allafricaItem.coverage.attributionUrl, 'https://allafrica.com/');
     assert.equal(allafricaItem.coverage.sourceRole, 'regional');
+    const devItemSnap = snapshot.items.find(it => it.Source === 'Devpolicy Blog');
+    assert.ok(devItemSnap, 'Expected Devpolicy Blog item in live snapshot');
+    assert.equal(devItemSnap.coverage.region, 'Pacific Islands');
+    assert.equal(devItemSnap.coverage.contentType, 'analysis');
+    assert.equal(devItemSnap.coverage.sourceRole, 'research');
+    assert.equal(devItemSnap.coverage.matchedPlace, 'new ireland', 'New Ireland must pin in Pacific Islands, never Ireland in Europe');
+    assert.equal(devItemSnap.author, 'Philippa Louey and Godfrey Jordan Abage');
+    assert.equal(devItemSnap.coverage.fundingLabel, 'University research blog (ANU Crawford School, CC BY-NC-SA 4.0)');
+    const gvSnap = snapshot.items.find(it => it.Source === 'Global Voices');
+    assert.ok(gvSnap);
+    assert.equal(gvSnap.author, 'Daria Dergacheva');
+    assert.equal(gvSnap.coverage.fundingLabel, 'Nonprofit volunteer & citizen media (CC BY 3.0)');
+    const mongoSnap = snapshot.items.find(it => it.Source === 'Mongabay');
+    assert.ok(mongoSnap);
+    assert.equal(mongoSnap.author, 'Karla Mendes');
+    assert.equal(mongoSnap.coverage.fundingLabel, 'Nonprofit conservation journalism (CC BY-ND 4.0)');
+    assert.ok(snapshot.meta.coverage.regions['Pacific Islands'] >= 1, 'Pacific Islands region must be covered');
     const unItem = snapshot.items.find(it => it.Source === 'UN News');
     assert.equal(unItem.coverage.fundingLabel, 'UN institutional reporting');
     assert.equal(snapshot.items.some(it => /independent/i.test(it.coverage.fundingLabel || '')), false);
@@ -923,6 +1089,56 @@ test('shared intel-normalization coordinate inference is deterministic and categ
     }, FIXED_QUERIES[3]);
     assert.equal(unknownPublisher.coverage.fundingLabel, 'Funding source unverified');
 
+    const devpolicyUsAid = assessArticle({
+        title: 'One battle after another: US foreign aid after the mid-terms',
+        snippet: 'Devpolicy analysis of congressional foreign aid appropriations after election shifts.',
+        source: 'Devpolicy Blog',
+        author: 'Terence Wood and Cameron Hill',
+        contentType: 'analysis',
+        date: '2026-11-19',
+        link: 'https://devpolicy.org/us-foreign-aid-mid-terms-20261119/',
+    }, {
+        id: 'devpolicy-blog',
+        region: 'Pacific Islands',
+        issueHints: ['Economy & Development'],
+        fallbackCoords: [-13.5, 172.0],
+    }, { scraperSource: 'public-rss', isConfiguredFeed: true });
+    assert.equal(devpolicyUsAid.coverage.region, 'Americas & Caribbean', 'Uppercase US aid story must classify as Americas & Caribbean matching its US pin');
+    assert.equal(devpolicyUsAid.coverage.contentType, 'analysis');
+
+    // Papua New Guinea must classify as Pacific Islands (never tie Africa via "guinea"),
+    // and Pacific Northwest / .png filename tokens must never false-trigger Pacific Islands.
+    const pngMongabay = assessArticle({
+        title: 'Papua New Guinea communities challenge seabed mining conservation rules',
+        snippet: 'Forestry and ocean conservation policy groups met officials in Port Moresby.',
+        source: 'Mongabay',
+        author: 'Jane Reporter',
+        date: '2026-11-19',
+        link: 'https://news.mongabay.com/2026/11/png-seabed-2026/',
+    }, {
+        id: 'mongabay-news',
+        region: 'Global / Transnational',
+        issueHints: ['Climate & Resources'],
+        fallbackCoords: null,
+    }, { scraperSource: 'public-rss', isConfiguredFeed: true });
+    assert.equal(pngMongabay.coverage.region, 'Pacific Islands', 'Papua New Guinea must never tie Africa via "guinea"');
+    assert.equal(pngMongabay.coverage.matchedPlace, 'papua new guinea');
+
+    const pacificNorthwestUs = assessArticle({
+        title: 'United States forestry policy shifts in Pacific Northwest watershed',
+        snippet: 'Officials published map.png summarizing timber regulation updates.',
+        source: 'BBC News',
+        date: '2026-11-19',
+        link: 'https://www.bbc.com/news/articles/pnw2026',
+    }, {
+        id: 'bbc-world-news',
+        region: 'Global / Transnational',
+        issueHints: ['Climate & Resources'],
+        fallbackCoords: null,
+    }, { scraperSource: 'public-rss', isConfiguredFeed: true });
+    assert.equal(pacificNorthwestUs.coverage.region, 'Americas & Caribbean', 'Bare "Pacific" and ".png" must not pull US story into Pacific Islands');
+    assert.equal(pacificNorthwestUs.coverage.matchedPlace, 'united states');
+
     // All 193 UN member states + observer states & case locations resolve deterministically
     const UN_MEMBER_STATES_193 = [
         'Afghanistan', 'Albania', 'Algeria', 'Andorra', 'Angola', 'Antigua and Barbuda', 'Argentina',
@@ -1103,5 +1319,260 @@ test('snapshot-store isolates deploy-preview and non-production Blobs from produ
     for (const fileName of ['public-intel.mjs', 'refresh-public-intel.mjs']) {
         const src = fs.readFileSync(path.join(__dirname, '..', fileName), 'utf8');
         assert.match(src, /\{\s*context\s*\}/, `${fileName} must pass runtime deploy context into snapshot-store`);
+    }
+    const publicIntelSrc = fs.readFileSync(path.join(__dirname, '..', 'public-intel.mjs'), 'utf8');
+    assert.match(publicIntelSrc, /snapshotSchemaVersion\s*!==\s*SNAPSHOT_SCHEMA_VERSION/, 'public-intel.mjs must auto-upgrade stale schema snapshots when feeds change');
+});
+
+test('Mongabay filters wire-agency items and off-topic video shorts while carrying an accurate source role label', () => {
+    const {
+        isWireAgencyAuthor,
+    } = require('../_shared/free-feeds');
+    assert.equal(isWireAgencyAuthor('Associated Press'), true);
+    assert.equal(isWireAgencyAuthor('AP'), true);
+    assert.equal(isWireAgencyAuthor('AFP'), true);
+    assert.equal(isWireAgencyAuthor('Agence France-Presse'), true);
+    assert.equal(isWireAgencyAuthor('Reuters'), true);
+    assert.equal(isWireAgencyAuthor('Naina Rao'), false);
+
+    const fixedNow = new Date('2026-11-21T02:00:00Z');
+    const mongabayMixedXml = `<?xml version="1.0" encoding="utf-8"?>
+        <rss version="2.0" xmlns:dc="http://purl.org/dc/elements/1.1/"><channel>
+            <item>
+                <title>There is no going back 'to the way it was before' the Iran war's energy shock, IEA says</title>
+                <link>https://news.mongabay.com/short-article/2026/11/iran-energy-shock/</link>
+                <dc:creator><![CDATA[Associated Press]]></dc:creator>
+                <description><![CDATA[The International Energy Agency reported global energy security shifts.]]></description>
+                <pubDate>Thu, 19 Nov 2026 12:00:00 +0000</pubDate>
+            </item>
+            <item>
+                <title>Global climate summit talks stall over adaptation finance</title>
+                <link>https://news.mongabay.com/short-article/2026/11/climate-finance/</link>
+                <dc:creator><![CDATA[AFP]]></dc:creator>
+                <description><![CDATA[PARIS (AFP) — Negotiators clashed over adaptation funding targets.]]></description>
+                <pubDate>Thu, 19 Nov 2026 11:00:00 +0000</pubDate>
+            </item>
+            <item>
+                <title>Maritime talks end with new emissions rules</title>
+                <link>https://news.mongabay.com/short-article/2026/11/maritime-emissions/</link>
+                <dc:creator><![CDATA[Reuters]]></dc:creator>
+                <description><![CDATA[LONDON (Reuters) — Governments adopted shipping emissions targets.]]></description>
+                <pubDate>Thu, 19 Nov 2026 10:00:00 +0000</pubDate>
+            </item>
+            <item>
+                <title>Grand Canyon South Rim water restrictions ease after repairs</title>
+                <link>https://news.mongabay.com/short-article/2026/11/grand-canyon-ap/</link>
+                <dc:creator><![CDATA[Jane Reporter]]></dc:creator>
+                <description><![CDATA[GRAND CANYON NATIONAL PARK, Ariz. (AP) — Officials eased restrictions.]]></description>
+                <pubDate>Thu, 19 Nov 2026 09:00:00 +0000</pubDate>
+            </item>
+            <item>
+                <title>Coastal states debate maritime treaty enforcement</title>
+                <link>https://news.mongabay.com/short-article/2026/11/coastal-treaty-ap/</link>
+                <dc:creator><![CDATA[Jane Doe / Associated Press]]></dc:creator>
+                <description><![CDATA[Governments reviewed maritime enforcement rules.]]></description>
+                <pubDate>Thu, 19 Nov 2026 08:45:00 +0000</pubDate>
+            </item>
+            <item>
+                <title>Amazon watershed funding shifts after ministerial talks</title>
+                <link>https://news.mongabay.com/short-article/2026/11/amazon-afp-compound/</link>
+                <dc:creator><![CDATA[Jane Doe (AFP)]]></dc:creator>
+                <description><![CDATA[Ministers met to review forest conservation finance.]]></description>
+                <pubDate>Thu, 19 Nov 2026 08:30:00 +0000</pubDate>
+            </item>
+            <item>
+                <title>Mining permits face judicial review in northern provinces</title>
+                <link>https://news.mongabay.com/short-article/2026/11/mining-thomson-reuters/</link>
+                <dc:creator><![CDATA[Thomson Reuters Foundation]]></dc:creator>
+                <description><![CDATA[Judges scheduled hearings on mining oversight.]]></description>
+                <pubDate>Thu, 19 Nov 2026 08:15:00 +0000</pubDate>
+            </item>
+            <item>
+                <title>India parliament reviews forest rights compensation rules</title>
+                <link>https://news.mongabay.com/short-article/2026/11/india-forest-rights-ap-singh/</link>
+                <dc:creator><![CDATA[A.P. Singh]]></dc:creator>
+                <description><![CDATA[Lawmakers examined community forest rights legislation.]]></description>
+                <pubDate>Thu, 19 Nov 2026 08:05:00 +0000</pubDate>
+            </item>
+            <item>
+                <title>Punjab agricultural coalition petitions water tribunal</title>
+                <link>https://news.mongabay.com/short-article/2026/11/punjab-water-ap-dhillon/</link>
+                <dc:creator><![CDATA[AP Dhillon]]></dc:creator>
+                <description><![CDATA[Lawmakers examined river basin compensation rules.]]></description>
+                <pubDate>Thu, 19 Nov 2026 08:03:00 +0000</pubDate>
+            </item>
+            <item>
+                <title>Nickel linked to deforestation in Indonesia traded on London Metal Exchange, says report</title>
+                <link>https://news.mongabay.com/short-article/2026/11/nickel-deforestation-indonesia/</link>
+                <dc:creator><![CDATA[Naina Rao]]></dc:creator>
+                <description><![CDATA[Indonesian regulators and trade monitors face scrutiny over rainforest deforestation linked to industrial supply chains.]]></description>
+                <pubDate>Thu, 19 Nov 2026 08:00:00 +0000</pubDate>
+            </item>
+        </channel></rss>`;
+
+    const kept = parseRssItems(mongabayMixedXml, {
+        sourceName: 'Mongabay',
+        fundingLabel: 'Nonprofit conservation journalism (CC BY-ND 4.0)',
+        attributionUrl: 'https://news.mongabay.com/',
+        requireAuthor: true,
+        excludeWireAuthors: true,
+        maxItems: 12,
+        now: fixedNow,
+    });
+    assert.equal(kept.length, 3, 'Mongabay must drop wire agencies and compound AP/AFP/Reuters bylines while keeping human authors like A.P. Singh and AP Dhillon');
+    assert.deepEqual(kept.map(item => item.author), ['A.P. Singh', 'AP Dhillon', 'Naina Rao']);
+
+    const globalQuery = {
+        id: 'global-climate-resources',
+        region: 'Global / Transnational',
+        issueHints: ['Climate & Resources'],
+        fallbackCoords: null,
+    };
+
+    const videoShort = assessArticle({
+        title: 'How one tiny island made conservation work',
+        description: "Out in the Bristol Channel, nestled between Wales and England, the rugged island of Lundy is one of the UK's most pioneering conservation stories. Watch the full story.",
+        link: 'https://news.mongabay.com/short-article/2026/11/how-one-tiny-island-made-conservation-work/',
+        date: '2026-11-19',
+        source: 'Mongabay',
+        author: 'Sandy Watt',
+        fundingLabel: 'Nonprofit conservation journalism (CC BY-ND 4.0)',
+        attributionUrl: 'https://news.mongabay.com/',
+    }, globalQuery, { scraperSource: 'public-rss', isConfiguredFeed: true });
+    assert.equal(videoShort, null, 'Off-topic video short with Watch the full story must be dropped');
+
+    const conservationOnly = assessArticle({
+        title: 'How one tiny island made conservation work',
+        description: 'Conservation volunteers counted seabird populations on a small UK island this summer.',
+        link: 'https://news.mongabay.com/short-article/2026/11/how-one-tiny-island-made-conservation-work/',
+        date: '2026-11-19',
+        source: 'Mongabay',
+        author: 'Sandy Watt',
+    }, globalQuery, { scraperSource: 'public-rss', isConfiguredFeed: true });
+    assert.equal(conservationOnly, null, 'Pure conservation piece with no political or policy actor must be dropped');
+
+    const policyConservation = assessArticle({
+        title: 'Nickel linked to deforestation in Indonesia traded on London Metal Exchange, says report',
+        description: 'Government regulators and Indigenous leaders challenged mining deforestation permits.',
+        link: 'https://news.mongabay.com/short-article/2026/11/nickel-deforestation-indonesia/',
+        date: '2026-11-19',
+        source: 'Mongabay',
+        author: 'Naina Rao',
+        fundingLabel: 'Nonprofit conservation journalism (CC BY-ND 4.0)',
+        attributionUrl: 'https://news.mongabay.com/',
+    }, globalQuery, { scraperSource: 'public-rss', isConfiguredFeed: true });
+    assert.ok(policyConservation, 'Original policy/deforestation reporting by Mongabay must be kept');
+    assert.equal(policyConservation.coverage.sourceRole, 'environmental-news');
+    assert.equal(policyConservation.coverage.sourceRoleLabel, 'Environmental & conservation journalism');
+});
+
+test('Demonym matching pins Indonesian and Yemeni headlines, covers all 193 UN member states, and avoids ordinary-word collisions', () => {
+    const {
+        SPECIFIC_PLACE_COORDS,
+        UN_MEMBER_DEMONYMS,
+        UN_MEMBER_STATE_DEMONYMS,
+        resolveCoords,
+    } = require('../_shared/intel-normalization');
+
+    const globalQuery = {
+        id: 'global-governance',
+        region: 'Global / Transnational',
+        issueHints: ['Governance & Rights'],
+        fallbackCoords: null,
+    };
+
+    const indonesianArticle = assessArticle({
+        title: 'In win against impunity, Indonesian court orders the reform of Military Justice Law',
+        description: 'Judges ordered parliament to revise jurisdiction over military abuses.',
+        link: 'https://globalvoices.org/2026/11/17/in-win-against-impunity-indonesian-court-orders-the-reform-of-military-justice-law/',
+        date: '2026-11-17',
+        source: 'Global Voices',
+        author: 'Mong Palatino',
+    }, globalQuery, { scraperSource: 'public-rss', isConfiguredFeed: true });
+    assert.ok(indonesianArticle, 'Indonesian court headline must pass relevance');
+    assert.equal(indonesianArticle.coverage.matchedPlace, 'indonesia');
+    assert.equal(indonesianArticle.coverage.locationPrecision, 'named-place');
+    assert.equal(indonesianArticle.Latitude, '-0.8');
+    assert.equal(indonesianArticle.Longitude, '113.9');
+    assert.equal(indonesianArticle.coverage.region, 'Asia-Pacific');
+
+    const yemeniArticle = assessArticle({
+        title: "'I tell my son it's just fireworks': Life inside Yemeni city besieged by Houthis",
+        description: 'Civilians endure artillery strikes and blockade inside the besieged city.',
+        link: 'https://www.bbc.co.uk/news/articles/cx7v2d8q879eo',
+        date: '2026-11-20',
+        source: 'BBC News',
+    }, globalQuery, { scraperSource: 'public-rss', isConfiguredFeed: true });
+    assert.ok(yemeniArticle, 'Yemeni siege headline must pass relevance');
+    assert.equal(yemeniArticle.coverage.matchedPlace, 'yemen');
+    assert.equal(yemeniArticle.coverage.locationPrecision, 'named-place');
+    assert.equal(yemeniArticle.Latitude, '15.6');
+    assert.equal(yemeniArticle.Longitude, '48.5');
+    assert.equal(yemeniArticle.coverage.region, 'Middle East & North Africa');
+
+    // Demonym-only headline must resolve its own region even when snippet names another region
+    const demonymOverSnippetRegion = assessArticle({
+        title: 'Yemeni city besieged by Houthis amid humanitarian talks',
+        description: 'UK officials monitor humanitarian aid delivery.',
+        link: 'https://www.bbc.co.uk/news/articles/yemen-uk-aid-test',
+        date: '2026-11-20',
+        source: 'BBC News',
+    }, globalQuery, { scraperSource: 'public-rss', isConfiguredFeed: true });
+    assert.ok(demonymOverSnippetRegion);
+    assert.equal(demonymOverSnippetRegion.coverage.matchedPlace, 'yemen');
+    assert.equal(demonymOverSnippetRegion.coverage.region, 'Middle East & North Africa');
+
+    // Unmapped Global / Transnational stories must stay unpinned and not receive a bogus explicit-region bonus
+    const unmappedGlobal = assessArticle({
+        title: 'Diplomats negotiate treaty enforcement and sanctions rules',
+        description: 'Oversight talks examined compliance.',
+        link: 'https://www.bbc.co.uk/news/articles/unmapped-global-oversight',
+        date: '2026-11-20',
+        source: 'BBC News',
+    }, globalQuery, { scraperSource: 'public-rss', isConfiguredFeed: true });
+    const explicitGlobal = assessArticle({
+        title: 'Diplomats negotiate treaty enforcement and sanctions rules',
+        description: 'Global talks examined compliance.',
+        link: 'https://www.bbc.co.uk/news/articles/explicit-global-oversight',
+        date: '2026-11-20',
+        source: 'BBC News',
+    }, globalQuery, { scraperSource: 'public-rss', isConfiguredFeed: true });
+    assert.ok(unmappedGlobal && explicitGlobal);
+    assert.equal(unmappedGlobal.coverage.locationPrecision, 'global-unmapped');
+    assert.equal(unmappedGlobal.Latitude, null);
+    assert.equal(explicitGlobal.coverage.relevanceScore - unmappedGlobal.coverage.relevanceScore, 5);
+
+    // First-in-title ordering with demonyms and multi-word specificity
+    assert.equal(resolveCoords('Ukrainian envoys meet French officials', '').matchedPlace, 'ukraine');
+    assert.equal(resolveCoords('American Samoan leaders challenge seabed lease auction', '').matchedPlace, 'american samoa');
+    assert.equal(resolveCoords('US leases American Samoan seabed for mining in auction', '').matchedPlace, 'united states');
+    assert.equal(resolveCoords('South Korean lawmakers debate North Korean sanctions', '').matchedPlace, 'south korea');
+    assert.equal(resolveCoords('Equatorial Guinean delegation arrives at AU summit', '').matchedPlace, 'equatorial guinea');
+
+    // Ordinary-word and geographic collision guards
+    assert.equal(resolveCoords('Factories regulate chemicals in nail polish and shoes', '').matchedPlace, null);
+    assert.equal(resolveCoords('Groups agree to go dutch on climate fund costs', '').matchedPlace, null);
+    assert.equal(resolveCoords('Latin American trade bloc reviews tariffs', '').matchedPlace, 'latin america');
+    assert.equal(resolveCoords('Vessels cross Indian Ocean shipping lanes', '').matchedPlace, null);
+    assert.equal(resolveCoords('Trade dispute hits French fries and agricultural imports', '').matchedPlace, null);
+    assert.equal(resolveCoords('Polish lawmakers pass judicial reform bill', '').matchedPlace, 'poland');
+    assert.equal(resolveCoords('Dutch court rules on offshore climate emissions', '').matchedPlace, 'netherlands');
+    assert.equal(resolveCoords('Great Danes breeding rules spark debate', '').matchedPlace, null);
+    assert.equal(resolveCoords('Dane County election certification audit begins', '').matchedPlace, null);
+    assert.equal(resolveCoords('Danes vote on defense spending increase', '').matchedPlace, 'denmark');
+
+    // Verify all 193 UN member states exist and resolve via UN_MEMBER_DEMONYMS
+    const memberKeys = Object.keys(UN_MEMBER_STATE_DEMONYMS);
+    assert.equal(memberKeys.length, 193, 'Must map all 193 UN member states');
+    for (const countryKey of memberKeys) {
+        assert.ok(countryKey in SPECIFIC_PLACE_COORDS, `Missing coordinates for UN member ${countryKey}`);
+        for (const demonym of UN_MEMBER_STATE_DEMONYMS[countryKey]) {
+            assert.ok(UN_MEMBER_DEMONYMS[demonym.toLowerCase()], `Exported UN_MEMBER_DEMONYMS missing ${demonym}`);
+            const resolved = resolveCoords(`${demonym} government signs agreement`, '');
+            const validMatch = resolved.matchedPlace === countryKey
+                || (countryKey === 'republic of the congo' && resolved.matchedPlace === 'democratic republic of the congo')
+                || (countryKey === 'dominica' && resolved.matchedPlace === 'dominican republic');
+            assert.equal(validMatch, true, `Demonym "${demonym}" resolved to ${resolved.matchedPlace} instead of ${countryKey}`);
+        }
     }
 });

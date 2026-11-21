@@ -3,6 +3,7 @@ const {
     ALLAFRICA_RSS_FEEDS,
     GDELT_FEED_QUERIES,
     INSTITUTIONAL_RSS_FEEDS,
+    OPEN_LICENSED_RSS_FEEDS,
     PUBLIC_NEWS_RSS_FEEDS,
     fetchGdeltQuery,
     fetchReliefWebReports,
@@ -10,6 +11,7 @@ const {
     getPublisherFundingInfo,
 } = require('./free-feeds');
 
+const SNAPSHOT_SCHEMA_VERSION = 3;
 const SNAPSHOT_TTL_MS = 6 * 60 * 60 * 1000;
 const REQUEST_TIMEOUT_MS = 12000;
 const MAX_SNAPSHOT_ITEMS = 20;
@@ -119,6 +121,7 @@ const SOURCE_ROLE_LABELS = Object.freeze({
     institutional: 'Institutional / primary',
     regional: 'Regional / local reporting',
     'independent-news': 'International broadcast & wire',
+    'environmental-news': 'Environmental & conservation journalism',
     research: 'Research / analysis',
     discovery: 'Additional discovery source',
 });
@@ -163,17 +166,20 @@ const SOURCE_ROLE_DOMAINS = Object.freeze({
         'arabnews.com', 'middleeasteye.net', 'newarab.com', 'iranintl.com',
         'balkaninsight.com', 'kyivindependent.com', 'euractiv.com', 'mercopress.com',
         'jamaica-gleaner.com', 'stabroeknews.com', 'americasquarterly.org',
-        'rnz.co.nz', 'fijitimes.com', 'islandsbusiness.com', 'devpolicy.org',
+        'rnz.co.nz', 'fijitimes.com', 'islandsbusiness.com', 'globalvoices.org',
     ],
     'independent-news': [
         'reuters.com', 'apnews.com', 'bbc.com', 'bbc.co.uk', 'france24.com',
         'dw.com', 'theguardian.com', 'ft.com', 'economist.com', 'cbsnews.com', 'npr.org',
     ],
+    'environmental-news': [
+        'mongabay.com',
+    ],
     research: [
         'cfr.org', 'crisisgroup.org', 'chathamhouse.org', 'brookings.edu',
         'carnegieendowment.org', 'csis.org', 'sipri.org', 'odi.org', 'rand.org',
         'lowyinstitute.org', 'iiss.org', 'bruegel.org', 'atlanticcouncil.org',
-        'wilsoncenter.org', 'theconversation.com', 'thenewhumanitarian.org',
+        'wilsoncenter.org', 'theconversation.com', 'thenewhumanitarian.org', 'devpolicy.org',
     ],
 });
 
@@ -182,9 +188,10 @@ const BLOCKED_DISCOVERY_DOMAINS = Object.freeze([
     'x.com', 'twitter.com', 'linkedin.com',
 ]);
 
-const PROMOTIONAL_TITLE_PATTERN = /\b(funding opportunities?|job openings?|apply now|register now|webinar|newsletter|weekly roundup|event calendar|sponsored content)\b/i;
-const GLOBAL_POLITICS_PATTERN = /\b(diplomac\w*|diplomat\w*|security|conflict\w*|war\b|wars\b|warfare|peace|ceasefire|treaty|treaties|sanction\w*|election\w*|governance|democrac\w*|authoritarian\w*|human rights?|refugee\w*|migration|migrant\w*|displacement|humanitarian|sovereignty|court|law|trade|tariff\w*|debt|development|labor|food security|climate|energy|water|mineral\w*|biodiversity|pollution|health\w*|disease|outbreak\w*|epidemic\w*|technology|artificial intelligence|\bai\b|cyber\w*|information|surveillance|multilateral\w*|aid|government\w*|parliament\w*|minister\w*|ministry|president\w*|united nations|secretary-general|mandate|peacekeep\w*|besieged|siege|occupation|invasi\w*|annex\w*|airstrike\w*|missile strikes?|drone strikes?|artillery|strikes? on|genocide|embargo|export control\w*|semiconductor\w*|houthi\w*|opposition|dialogue|political|violence|cooperation|economic integration|trade bloc|afcfta|afdb|afreximbank|envoy\w*|chip probe|protest\w*|coup|junta|military|borders?\b|cross-border|summit\w*|constitution\w*|legislat\w*|referendum|regulat\w*|antitrust|polic(y|ies))\b/gi;
-const POLITICAL_POLICY_PATTERN = /\b(government\w*|parliament\w*|congress\w*|senate|senator\w*|president\w*|prime minister\w*|minister\w*|ministry|ministries|diplomac\w*|diplomat\w*|diplomatic|embassy|ambassador\w*|envoy\w*|summit\w*|treaty|treaties|ceasefire|peace talks?|peacekeep\w*|national dialogue|dialogue|political|cooperation|economic integration|trade bloc|afcfta|afdb|afreximbank|united nations|u\.n\.|secretary-general|mandate|nato|european union|\beu\b|african union|ecowas|asean|world health organization|world bank|international monetary fund|security council|sanction\w*|embargo|tariff\w*|trade war|export control\w*|chip probe|antitrust|regulat\w*|legislat\w*|lawmaker\w*|supreme court|high court|constitutional court|criminal court|international court|tribunal|\bicj\b|\bicc\b|constitution\w*|referendum|election\w*|voter\w*|voting|governance|democrac\w*|authoritarian\w*|coup|junta|protest\w*|opposition|dissident\w*|human rights?|civil rights?|genocide|violence|refugee\w*|asylum|displace\w*|migration|migrant\w*|humanitarian|foreign aid|food aid|military aid|economic aid|aid access|aid agenc\w*|aid cuts?|conflict\w*|war\b|wars\b|warfare|military|troop\w*|airstrike\w*|missile strikes?|drone strikes?|artillery|strikes? on|drone\w*|besieged|siege|occupation|invasi\w*|annex\w*|houthi\w*|nuclear|sovereignty|borders?\b|cross-border|territor\w*|climate pact|climate accord|cop\d+|pollution|public health|health\w*|outbreak\w*|epidemic\w*|pandemic|polic(y|ies))\b/i;
+const PROMOTIONAL_TITLE_PATTERN = /\b(funding opportunities?|job openings?|apply now|register now|webinar|newsletter|weekly roundup|event calendar|sponsored content|support\s+global\s+voices|spotlight:\s*digital|donate\s+now|fundrais\w*)\b/i;
+const VIDEO_SHORT_PATTERN = /\bwatch\s+(?:the\s+)?(?:full\s+)?(?:story|video|now|here|clip|episode)\b|^watch:|\/videos?\//i;
+const GLOBAL_POLITICS_PATTERN = /\b(diplomac\w*|diplomat\w*|security|conflict\w*|war\b|wars\b|warfare|peace|ceasefire|treaty|treaties|sanction\w*|election\w*|governance|democrac\w*|democratic|repression|authoritarian\w*|human rights?|hate speech|refugee\w*|migration|migrant\w*|displacement|humanitarian|sovereignty|court|law|legislation|trade|tariff\w*|debt|development|labor|food security|climate|energy|water|mineral\w*|deep-sea mining|seabed|biodiversity|conservation|deforestation|wildlife trafficking|endangered|pollution|fisher\w*|drought|indigenous|health\w*|disease|outbreak\w*|epidemic\w*|technology|artificial intelligence|\bai\b|cyber\w*|information|surveillance|multilateral\w*|aid|government\w*|parliament\w*|minister\w*|ministry|officials?|president\w*|united nations|secretary-general|mandate|peacekeep\w*|besieged|siege|occupation|invasi\w*|annex\w*|airstrike\w*|missile strikes?|drone strikes?|artillery|strikes? on|genocide|embargo|export control\w*|semiconductor\w*|houthi\w*|opposition|dialogue|political|violence|cooperation|economic integration|trade bloc|afcfta|afdb|afreximbank|envoy\w*|chip probe|protest\w*|coup|junta|military|borders?\b|cross-border|summit\w*|constitution\w*|legislat\w*|referendum|regulat\w*|antitrust|polic(y|ies))\b/gi;
+const POLITICAL_POLICY_PATTERN = /\b(government\w*|parliament\w*|congress\w*|senate|senator\w*|president\w*|prime minister\w*|minister\w*|ministry|ministries|officials?|diplomac\w*|diplomat\w*|diplomatic|embassy|ambassador\w*|envoy\w*|summit\w*|treaty|treaties|ceasefire|peace talks?|peacekeep\w*|national dialogue|dialogue|political|cooperation|economic integration|trade bloc|afcfta|afdb|afreximbank|united nations|u\.n\.|secretary-general|mandate|nato|european union|\beu\b|african union|ecowas|asean|world health organization|world bank|international monetary fund|security council|sanction\w*|embargo|tariff\w*|trade war|export control\w*|chip probe|antitrust|regulat\w*|legislat\w*|lawmaker\w*|domestic legislation|supreme court|high court|constitutional court|criminal court|international court|tribunal|\bicj\b|\bicc\b|constitution\w*|referendum|election\w*|voter\w*|voting|governance|democrac\w*|democratic|repression|authoritarian\w*|coup|junta|protest\w*|opposition|dissident\w*|human rights?|civil rights?|hate speech|genocide|violence|refugee\w*|asylum|displace\w*|migration|migrant\w*|humanitarian|foreign aid|food aid|military aid|economic aid|aid access|aid agenc\w*|aid cuts?|aid effectiveness|development aid|development policy|australian aid|conflict\w*|war\b|wars\b|warfare|military|troop\w*|airstrike\w*|missile strikes?|drone strikes?|artillery|strikes? on|drone\w*|besieged|siege|occupation|invasi\w*|annex\w*|houthi\w*|nuclear|sovereignty|indigenous|borders?\b|cross-border|territor\w*|climate finance|climate change|climate adaptation|climate pact|climate accord|cop\d+|deep-sea mining|seabed|deforestation|wildlife trafficking|plastic\w*|pollution|fisher\w*|drought|public health|health\w*|outbreak\w*|epidemic\w*|pandemic|polic(y|ies))\b/i;
 const CORPORATE_MARKET_PATTERN = /\b(ipo|stock market|market debut|company shares?\b|stock shares?\b|shares? (?:surge\w*|soar\w*|plunge\w*|fall\w*|fell|drop\w*|jump\w*|rall\w*|tumble\w*|rose|slump\w*)|shareholder\w*|valued at|valuable public compan\w*|valuation|market cap|quarterly earnings|earnings report|quarterly profits?|net profits?|corporate revenue\w*|merger\w*|acquisition\w*|wall street|nasdaq|nyse|s&p\s*500|ftse|dow jones|investor\w*|hedge fund\b|venture capital|startup\w*|stock price|public compan\w*|\$\d+(?:\.\d+)?\s*(?:bn|tn|billion|trillion))\b/i;
 
 const ISSUE_PATTERNS = Object.freeze({
@@ -197,12 +204,12 @@ const ISSUE_PATTERNS = Object.freeze({
 });
 
 const REGION_PATTERNS = Object.freeze({
-    'Africa': /(?<![\p{L}\p{N}])(africa|sudan|south sudan|ethiopia|eritrea|djibouti|somalia|somaliland|kenya|uganda|tanzania|rwanda|burundi|congo|drc|nigeria|ghana|senegal|mali|niger|burkina faso|chad|cameroon|angola|mozambique|zimbabwe|zambia|south africa|lesotho|eswatini|swaziland|botswana|namibia|malawi|madagascar|mauritius|seychelles|comoros|guinea-bissau|equatorial guinea|guinea|côte d'ivoire|cote d'ivoire|ivory coast|benin|togo|liberia|sierra leone|gambia|mauritania|cabo verde|cape verde|gabon|são tomé|sao tome|central african republic|sahel)(?![\p{L}\p{N}])/giu,
+    'Africa': /(?<![\p{L}\p{N}])(africa|sudan|south sudan|ethiopia|eritrea|djibouti|somalia|somaliland|kenya|uganda|tanzania|rwanda|burundi|congo|drc|nigeria|ghana|senegal|mali|niger|burkina faso|chad|cameroon|angola|mozambique|zimbabwe|zambia|south africa|lesotho|eswatini|swaziland|botswana|namibia|malawi|madagascar|mauritius|seychelles|comoros|guinea-bissau|equatorial guinea|(?<!papua\s+new\s+)guinea|côte d'ivoire|cote d'ivoire|ivory coast|benin|togo|liberia|sierra leone|gambia|mauritania|cabo verde|cape verde|gabon|são tomé|sao tome|central african republic|sahel)(?![\p{L}\p{N}])/giu,
     'Asia-Pacific': /(?<![\p{L}\p{N}])(asian?|asia-pacific|china|taiwan|japan|korea|india|pakistan|bangladesh|sri lanka|nepal|bhutan|maldives|myanmar|burma|thailand|vietnam|viet nam|cambodia|laos|lao pdr|malaysia|singapore|indonesia|timor-leste|east timor|philippines|brunei|mongolia|afghanistan|kazakhstan|kyrgyzstan|tajikistan|turkmenistan|uzbekistan)(?![\p{L}\p{N}])/giu,
     'Middle East & North Africa': /(?<![\p{L}\p{N}])(middle east|north africa|mena|iran|iraq|israel|palestin\w*|gaza|west bank|lebanon|syria|jordan|yemen|saudi arabia|qatar|emirates|uae|oman|bahrain|kuwait|egypt|libya|tunisia|algeria|morocco|western sahara)(?![\p{L}\p{N}])/giu,
-    'Europe & Eurasia': /(?<![\p{L}\p{N}])(europe|eurasia|ukraine|russia|moldova|transnistria|georgia|armenia|azerbaijan|belarus|balkans|kosovo|serbia|bosnia|croatia|slovenia|montenegro|north macedonia|albania|romania|bulgaria|hungary|slovakia|czechia|czech republic|poland|germany|france|britain|united kingdom|uk|ireland|spain|portugal|italy|greece|cyprus|malta|austria|switzerland|belgium|netherlands|luxembourg|denmark|norway|sweden|finland|iceland|estonia|latvia|lithuania|türkiye|turkiye|turkey|eu|european union|nato|andorra|monaco|san marino|liechtenstein|vatican|holy see)(?![\p{L}\p{N}])/giu,
+    'Europe & Eurasia': /(?<![\p{L}\p{N}])(europe|eurasia|ukraine|russia|moldova|transnistria|georgia|armenia|azerbaijan|belarus|balkans|kosovo|serbia|bosnia|croatia|slovenia|montenegro|north macedonia|albania|romania|bulgaria|hungary|slovakia|czechia|czech republic|poland|germany|france|britain|united kingdom|uk|(?<!new\s+)ireland|spain|portugal|italy|greece|cyprus|malta|austria|switzerland|belgium|netherlands|luxembourg|denmark|norway|sweden|finland|iceland|estonia|latvia|lithuania|türkiye|turkiye|turkey|eu|european union|nato|andorra|monaco|san marino|liechtenstein|vatican|holy see)(?![\p{L}\p{N}])/giu,
     'Americas & Caribbean': /(?<![\p{L}\p{N}])(latin america|caribbean|south america|central america|united states|u\.s\.|usa|canada|mexico|brazil|argentina|chile|peru|colombia|venezuela|ecuador|bolivia|paraguay|uruguay|guyana|suriname|haiti|cuba|dominican republic|jamaica|trinidad|barbados|bahamas|belize|guatemala|honduras|el salvador|nicaragua|costa rica|panama|antigua|dominica|grenada|saint kitts|saint lucia|saint vincent)(?![\p{L}\p{N}])/giu,
-    'Pacific Islands': /(?<![\p{L}\p{N}])(pacific islands?|oceania|australia|new zealand|tuvalu|fiji|samoa|tonga|vanuatu|kiribati|nauru|palau|micronesia|marshall islands|solomon islands|papua new guinea|new caledonia)(?![\p{L}\p{N}])/giu,
+    'Pacific Islands': /(?<![\p{L}\p{N}])(pacific islands?|pacific island|south pacific|oceania|australia|new zealand|tuvalu|fiji|samoa|american samoa|tonga|vanuatu|kiribati|nauru|palau|micronesia|marshall islands|solomon islands|papua new guinea|new ireland|bougainville|port moresby|honiara|weather coast|apia|port vila|nuku['’]?alofa|tarawa|majuro|palikir|yaren|cook islands|french polynesia|guam|new caledonia)(?![\p{L}\p{N}])/giu,
     'Global / Transnational': /(?<![\p{L}\p{N}])(global|worldwide|multilateral|united nations|world bank|international monetary fund|world trade organization|cross-border|transnational)(?![\p{L}\p{N}])/giu,
 });
 
@@ -311,6 +318,24 @@ function getSourceRole(domain) {
     return 'discovery';
 }
 
+function inferRegionCoverage(text, fallback) {
+    const cleanText = String(text || '');
+    const scored = Object.entries(REGION_PATTERNS)
+        .map(([label, pattern]) => {
+            let score = countMatches(cleanText, pattern);
+            if (label === 'Americas & Caribbean') {
+                score += countMatches(cleanText, /(?<![\p{L}\p{N}])US(?![\p{L}\p{N}])/gu);
+            }
+            if (label === 'Pacific Islands') {
+                score += countMatches(cleanText, /(?<![\p{L}\p{N}.])PNG(?![\p{L}\p{N}.])/gu);
+            }
+            return { label, score };
+        })
+        .sort((a, b) => (b.score - a.score)
+            || (a.label === fallback ? -1 : b.label === fallback ? 1 : 0));
+    return scored[0]?.score > 0 ? scored[0].label : fallback;
+}
+
 function inferCoverageLabel(text, patterns, fallback) {
     const scored = Object.entries(patterns)
         .map(([label, pattern]) => ({ label, score: countMatches(text, pattern) }))
@@ -352,13 +377,28 @@ function assessArticle(item, query, {
     const sourceRole = getSourceRole(domain);
     const isNewsOutletFeed = scraperSource === 'public-rss';
     if (isNewsOutletFeed) {
+        if (VIDEO_SHORT_PATTERN.test(`${title} ${description} ${normalized.url}`) && !POLITICAL_POLICY_PATTERN.test(title)) return null;
         if (CORPORATE_MARKET_PATTERN.test(title) && !POLITICAL_POLICY_PATTERN.test(title)) return null;
         if (!POLITICAL_POLICY_PATTERN.test(combined)) return null;
     }
 
-    const region = inferCoverageLabel(combined, REGION_PATTERNS, query.region);
+    const matchedPlaceRegion = normalized._matchedPlace
+        ? inferRegionCoverage(normalized._matchedPlace, 'Global / Transnational')
+        : 'Global / Transnational';
+    const regionInput = (normalized._matchedPlace
+        && matchedPlaceRegion !== 'Global / Transnational'
+        && countMatches(combined, REGION_PATTERNS[matchedPlaceRegion]) === 0)
+        ? `${combined} ${normalized._matchedPlace}`
+        : combined;
+    let region = inferRegionCoverage(regionInput, query.region);
+    if (region === 'Global / Transnational' && matchedPlaceRegion !== 'Global / Transnational') {
+        region = matchedPlaceRegion;
+    }
     const issue = inferCoverageLabel(combined, ISSUE_PATTERNS, query.issueHints[0]);
-    const regionIsExplicit = countMatches(combined, REGION_PATTERNS[region]) > 0;
+    const regionIsExplicit = countMatches(combined, REGION_PATTERNS[region]) > 0
+        || (matchedPlaceRegion !== 'Global / Transnational' && matchedPlaceRegion === region)
+        || (region === 'Americas & Caribbean' && /(?<![\p{L}\p{N}])US(?![\p{L}\p{N}])/u.test(combined))
+        || (region === 'Pacific Islands' && /(?<![\p{L}\p{N}.])PNG(?![\p{L}\p{N}.])/u.test(combined));
     const relevanceScore = Math.min(100,
         (titleSignals * 12)
         + (Math.min(descriptionSignals, 8) * 3)
@@ -383,6 +423,7 @@ function assessArticle(item, query, {
             ? 'global-unmapped'
             : 'regional';
     const sourceRoleLabel = SOURCE_ROLE_LABELS[sourceRole];
+    const contentType = item?.contentType || query?.contentType || (sourceRole === 'research' ? 'analysis' : 'news');
     const fundingInfo = getPublisherFundingInfo(domain, item) || getPublisherFundingInfo(domain, query);
     const fundingLabel = item?.fundingLabel
         || query?.fundingLabel
@@ -391,10 +432,12 @@ function assessArticle(item, query, {
     const attributionUrl = normalizeHttpsUrl(
         item?.attributionUrl || query?.attributionUrl || fundingInfo?.attributionUrl || ''
     ) || null;
+    const authorName = normalized.author || (typeof item?.author === 'string' ? item.author.trim() : '');
     const selectionReason = `Selected to strengthen ${region} and ${issue} coverage; source: ${fundingLabel}. Automated relevance score ${relevanceScore}/100.`;
 
     return {
         ...normalized,
+        ...(authorName ? { author: authorName } : {}),
         ...(hasRegionalFallback ? {
             Latitude: String(query.fallbackCoords[0]),
             Longitude: String(query.fallbackCoords[1]),
@@ -407,6 +450,8 @@ function assessArticle(item, query, {
             issue,
             sourceRole,
             sourceRoleLabel,
+            contentType,
+            ...(authorName ? { author: authorName } : {}),
             fundingLabel,
             ...(attributionUrl ? { attributionUrl } : {}),
             queryId: query.id,
@@ -446,6 +491,9 @@ function getPublisherKey(item) {
     if (domainMatches(domain, 'bbc.co.uk') || domainMatches(domain, 'bbc.com')) return 'bbc';
     if (domainMatches(domain, 'news.un.org') || domain === 'un.org') return 'un-news';
     if (domainMatches(domain, 'allafrica.com')) return 'allafrica';
+    if (domainMatches(domain, 'devpolicy.org')) return 'devpolicy';
+    if (domainMatches(domain, 'globalvoices.org')) return 'globalvoices';
+    if (domainMatches(domain, 'mongabay.com')) return 'mongabay';
     if (domain) return domain;
     return String(item?.Source || 'unknown').toLowerCase();
 }
@@ -765,60 +813,75 @@ async function buildPublicSnapshot({
         const settled = await Promise.allSettled(
             feeds.map(feed => fetchRssFeed(fetchImpl, feed, { now }))
         );
-        queryCount += feeds.length;
-        let successCount = 0;
-        let addedCount = 0;
-        settled.forEach((result, index) => {
-            if (result.status === 'fulfilled') {
-                successCount += 1;
-                const feed = feeds[index];
-                rawItems.push(...result.value);
-                for (const item of result.value) {
-                    const assessed = assessArticle(item, feed, {
-                        scraperSource,
-                        isInstitutionalHub,
-                        isConfiguredFeed,
-                    });
-                    if (assessed) {
-                        assessedItems.push(assessed);
-                        addedCount += 1;
-                    }
-                }
-            } else {
-                coreFailedCount += 1;
-                totalFailedCount += 1;
-                coreRejected.push(result.reason);
-            }
-        });
-        if (successCount > 0) activeProviders.push(providerName);
-        providerResults.push({
-            provider: providerName,
-            status: successCount === feeds.length
-                ? 'ok'
-                : (successCount > 0 ? 'partial' : 'failed'),
-            itemCount: addedCount,
-        });
+        return { feeds, providerName, scraperSource, isInstitutionalHub, isConfiguredFeed, settled };
     };
 
     if (includeFreeFeeds) {
-        await collectRssFeedGroup(INSTITUTIONAL_RSS_FEEDS, {
-            providerName: 'UN News RSS',
-            scraperSource: 'institutional-rss',
-            isInstitutionalHub: true,
-            isConfiguredFeed: true,
-        });
-        await collectRssFeedGroup(PUBLIC_NEWS_RSS_FEEDS, {
-            providerName: 'BBC News RSS',
-            scraperSource: 'public-rss',
-            isInstitutionalHub: false,
-            isConfiguredFeed: true,
-        });
-        await collectRssFeedGroup(ALLAFRICA_RSS_FEEDS, {
-            providerName: 'allAfrica RSS',
-            scraperSource: 'public-rss',
-            isInstitutionalHub: false,
-            isConfiguredFeed: true,
-        });
+        const rssGroupSpecs = [
+            [INSTITUTIONAL_RSS_FEEDS, {
+                providerName: 'UN News RSS',
+                scraperSource: 'institutional-rss',
+                isInstitutionalHub: true,
+                isConfiguredFeed: true,
+            }],
+            [PUBLIC_NEWS_RSS_FEEDS, {
+                providerName: 'BBC News RSS',
+                scraperSource: 'public-rss',
+                isInstitutionalHub: false,
+                isConfiguredFeed: true,
+            }],
+            [ALLAFRICA_RSS_FEEDS, {
+                providerName: 'allAfrica RSS',
+                scraperSource: 'public-rss',
+                isInstitutionalHub: false,
+                isConfiguredFeed: true,
+            }],
+            ...OPEN_LICENSED_RSS_FEEDS.map(openFeed => [[openFeed], {
+                providerName: `${openFeed.sourceName} RSS`,
+                scraperSource: 'public-rss',
+                isInstitutionalHub: false,
+                isConfiguredFeed: true,
+            }]),
+        ];
+        const rssGroupOutcomes = await Promise.all(
+            rssGroupSpecs.map(([feeds, options]) => collectRssFeedGroup(feeds, options))
+        );
+        for (const outcome of rssGroupOutcomes) {
+            const { feeds, providerName, scraperSource, isInstitutionalHub, isConfiguredFeed, settled } = outcome;
+            queryCount += feeds.length;
+            let successCount = 0;
+            let addedCount = 0;
+            settled.forEach((result, index) => {
+                if (result.status === 'fulfilled') {
+                    successCount += 1;
+                    const feed = feeds[index];
+                    rawItems.push(...result.value);
+                    for (const item of result.value) {
+                        const assessed = assessArticle(item, feed, {
+                            scraperSource,
+                            isInstitutionalHub,
+                            isConfiguredFeed,
+                        });
+                        if (assessed) {
+                            assessedItems.push(assessed);
+                            addedCount += 1;
+                        }
+                    }
+                } else {
+                    coreFailedCount += 1;
+                    totalFailedCount += 1;
+                    coreRejected.push(result.reason);
+                }
+            });
+            if (successCount > 0) activeProviders.push(providerName);
+            providerResults.push({
+                provider: providerName,
+                status: successCount === feeds.length
+                    ? 'ok'
+                    : (successCount > 0 ? 'partial' : 'failed'),
+                itemCount: addedCount,
+            });
+        }
 
         if (String(reliefwebAppname || '').trim()) {
             queryCount += 1;
@@ -936,6 +999,7 @@ async function buildPublicSnapshot({
         items,
         minerals: buildMineralBaseline(),
         meta: {
+            snapshotSchemaVersion: SNAPSHOT_SCHEMA_VERSION,
             generatedAt: now.toISOString(),
             sourceMode: 'public-cache',
             status: items.length > 0
@@ -979,6 +1043,7 @@ module.exports = {
     MAX_SNAPSHOT_ITEMS,
     MINERAL_REFERENCE,
     REQUEST_TIMEOUT_MS,
+    SNAPSHOT_SCHEMA_VERSION,
     SNAPSHOT_TTL_MS,
     SOURCE_ROLE_LABELS,
     TARGET_ISSUES,

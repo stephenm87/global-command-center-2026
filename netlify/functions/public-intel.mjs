@@ -3,7 +3,13 @@ import snapshotModule from './_shared/intel-snapshot.js';
 import { readSnapshot, writeSnapshot } from './_shared/snapshot-store.mjs';
 
 const { protectPublicEndpoint } = securityModule;
-const { DEFAULT_PUBLIC_PROVIDER, buildMineralBaseline, buildPublicSnapshot, withSnapshotAge } = snapshotModule;
+const {
+    DEFAULT_PUBLIC_PROVIDER,
+    SNAPSHOT_SCHEMA_VERSION,
+    buildMineralBaseline,
+    buildPublicSnapshot,
+    withSnapshotAge,
+} = snapshotModule;
 const SNAPSHOT_KEY = 'public-intel/current.json';
 let inFlightRefresh = null;
 
@@ -43,13 +49,22 @@ export default async (request, context) => {
             && (!Array.isArray(cached?.items) || cached.items.length === 0)
             && cached?.meta?.provider === 'Serper';
         const needsSchemaUpgrade = !Array.isArray(cached?.meta?.providerResults)
+            || cached?.meta?.snapshotSchemaVersion !== SNAPSHOT_SCHEMA_VERSION
             || (Array.isArray(cached?.items) && cached.items.some(item => !item?.coverage?.fundingLabel));
         if (cached?.meta && !legacyErrorSnapshot && !needsSchemaUpgrade) {
             return new Response(JSON.stringify(withSnapshotAge(cached)), { status: 200, headers: responseHeaders });
         }
 
-        const snapshot = await refreshSnapshot(context);
-        return new Response(JSON.stringify(withSnapshotAge(snapshot)), { status: 200, headers: responseHeaders });
+        try {
+            const snapshot = await refreshSnapshot(context);
+            return new Response(JSON.stringify(withSnapshotAge(snapshot)), { status: 200, headers: responseHeaders });
+        } catch (refreshError) {
+            if (cached?.meta && Array.isArray(cached?.items) && cached.items.length > 0) {
+                console.warn('[public-intel] Schema upgrade refresh failed; serving prior cached snapshot:', refreshError.message);
+                return new Response(JSON.stringify(withSnapshotAge(cached)), { status: 200, headers: responseHeaders });
+            }
+            throw refreshError;
+        }
     } catch (error) {
         console.error('[public-intel] Snapshot unavailable:', error.message);
         return new Response(JSON.stringify({

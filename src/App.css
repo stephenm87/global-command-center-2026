@@ -716,6 +716,13 @@
     color: #b7dcf6;
 }
 
+.coverage-badges span.coverage-badge-analysis,
+.live-tag--analysis {
+    border-color: rgba(244, 196, 101, 0.5);
+    background: rgba(244, 196, 101, 0.12);
+    color: #f4c465;
+}
+
 .current-source-context {
     margin-bottom: 1rem;
     padding: 0.9rem;
@@ -741,6 +748,18 @@
     margin: 0 0 0.55rem;
     color: #d7e4ef;
     font: 0.74rem/1.55 'Roboto Mono', monospace;
+}
+
+.current-source-context a {
+    color: #7ce8ff;
+    font-weight: 700;
+    text-decoration: underline;
+    text-underline-offset: 2px;
+}
+
+.current-source-context a:hover,
+.current-source-context a:focus-visible {
+    color: #b8f5ff;
 }
 
 .current-source-context small {

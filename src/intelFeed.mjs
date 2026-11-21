@@ -86,6 +86,7 @@ export function searchIntelForecasts(items = [], search = '') {
     return items.filter(item => [
         item['Entity/Subject'], item['Topic/Sector'], item['Expected Impact/Value'],
         item['Key Player/Organization'], item.Broad_Category, item.Source,
+        item.author, item.coverage?.author, item.coverage?.contentType,
         item.coverage?.region, item.coverage?.issue, item.coverage?.sourceRoleLabel,
         item.coverage?.fundingLabel, item.coverage?.matchedPlace,
     ].some(value => String(value || '').toLowerCase().includes(query)));

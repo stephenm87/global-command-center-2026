@@ -115,7 +115,8 @@ const UN_NEWS_FEEDS = Object.freeze([
 // Non-UN RSS feeds whose published Terms of Use explicitly allow non-commercial website headline/RSS display.
 // BBC News terms (bbc.co.uk/usingthebbc/terms/can-i-use-bbc-content/) permit non-commercial website RSS with credit + homepage link.
 // AllAfrica RSS terms (allafrica.com/misc/tools/rss.html) permit website headline display with allAfrica.com credit and link to allafrica.com or the feed page.
-// Held pending owner review: RNZ Pacific (terms prohibit website aggregation), Al Jazeera & France 24 (personal-use only).
+// Open-licensed feeds: Devpolicy Blog (CC BY-NC-SA 4.0), Global Voices (CC BY 3.0), Mongabay (CC BY-ND 4.0).
+// Skipped: Asia Pacific Report (cross-posts RNZ, which prohibits website aggregation). Held for later: The Conversation, Al Jazeera, France 24, RNZ Pacific.
 const PUBLIC_NEWS_RSS_FEEDS = Object.freeze([
     {
         id: 'bbc-world-news',
@@ -127,6 +128,49 @@ const PUBLIC_NEWS_RSS_FEEDS = Object.freeze([
         fundingLabel: 'Public broadcaster, UK licence fee',
         attributionUrl: 'https://www.bbc.com/news',
         maxItems: 20,
+    },
+]);
+
+const OPEN_LICENSED_RSS_FEEDS = Object.freeze([
+    {
+        id: 'devpolicy-blog',
+        region: 'Pacific Islands',
+        issueHints: ['Economy & Development', 'Climate & Resources', 'Governance & Rights'],
+        fallbackCoords: [-13.5, 172.0],
+        url: 'https://devpolicy.org/feed/',
+        sourceName: 'Devpolicy Blog',
+        fundingLabel: 'University research blog (ANU Crawford School, CC BY-NC-SA 4.0)',
+        attributionUrl: 'https://devpolicy.org/',
+        contentType: 'analysis',
+        requireAuthor: true,
+        maxItems: 10,
+    },
+    {
+        id: 'global-voices',
+        region: 'Global / Transnational',
+        issueHints: ['Governance & Rights', 'Technology & Information', 'Health & Human Security'],
+        fallbackCoords: null,
+        url: 'https://globalvoices.org/feed/',
+        sourceName: 'Global Voices',
+        fundingLabel: 'Nonprofit volunteer & citizen media (CC BY 3.0)',
+        attributionUrl: 'https://globalvoices.org/',
+        contentType: 'news',
+        requireAuthor: true,
+        maxItems: 12,
+    },
+    {
+        id: 'mongabay-news',
+        region: 'Global / Transnational',
+        issueHints: ['Climate & Resources', 'Economy & Development', 'Governance & Rights'],
+        fallbackCoords: null,
+        url: 'https://news.mongabay.com/feed/',
+        sourceName: 'Mongabay',
+        fundingLabel: 'Nonprofit conservation journalism (CC BY-ND 4.0)',
+        attributionUrl: 'https://news.mongabay.com/',
+        contentType: 'news',
+        requireAuthor: true,
+        excludeWireAuthors: true,
+        maxItems: 12,
     },
 ]);
 
@@ -238,7 +282,7 @@ const PUBLISHER_FUNDING_INFO = Object.freeze({
     },
     'globalvoices.org': {
         sourceName: 'Global Voices',
-        fundingLabel: 'Nonprofit volunteer media (CC BY 3.0)',
+        fundingLabel: 'Nonprofit volunteer & citizen media (CC BY 3.0)',
         attributionUrl: 'https://globalvoices.org/',
     },
     'theconversation.com': {
@@ -248,8 +292,13 @@ const PUBLISHER_FUNDING_INFO = Object.freeze({
     },
     'devpolicy.org': {
         sourceName: 'Devpolicy Blog',
-        fundingLabel: 'University research blog (ANU, CC BY-NC-SA 4.0)',
+        fundingLabel: 'University research blog (ANU Crawford School, CC BY-NC-SA 4.0)',
         attributionUrl: 'https://devpolicy.org/',
+    },
+    'mongabay.com': {
+        sourceName: 'Mongabay',
+        fundingLabel: 'Nonprofit conservation journalism (CC BY-ND 4.0)',
+        attributionUrl: 'https://news.mongabay.com/',
     },
 });
 
@@ -318,10 +367,65 @@ function decodeXmlEntities(text = '') {
         .trim();
 }
 
-function extractTag(block, tagName) {
+function extractRawTag(block, tagName) {
     const regex = new RegExp(`<${tagName}(?:\\s[^>]*)?>([\\s\\S]*?)<\\/${tagName}>`, 'i');
     const match = block.match(regex);
-    return match ? decodeXmlEntities(match[1]) : '';
+    return match ? match[1] : '';
+}
+
+function extractTag(block, tagName) {
+    return decodeXmlEntities(extractRawTag(block, tagName));
+}
+
+function cleanFeedDescription(rawDescription = '') {
+    const bounded = String(rawDescription || '').slice(0, 20000);
+    const unwrapped = bounded.replace(/<!\[CDATA\[([\s\S]*?)\]\]>/g, '$1');
+    // Strip trailing standalone WordPress Disclosure / About-the-author boilerplate blocks before flattening HTML.
+    const withoutBoilerplate = unwrapped.replace(
+        /<(h[1-6]|p)\b[^>]{0,120}>\s*(?:<(?:b|strong|em|i)\b[^>]{0,80}>\s*)*(?:Disclosure|About\s+the\s+author(?:\/s|s)?)\s*:?\s*(?:<\/(?:b|strong|em|i)>\s*)*<\/\1>[\s\S]*$/i,
+        ''
+    );
+    return decodeXmlEntities(withoutBoilerplate);
+}
+
+function normalizeAuthorCandidate(rawAuthor = '', sourceName = '') {
+    let candidate = String(rawAuthor || '').replace(/\s+/g, ' ').trim();
+    if (!candidate) return '';
+    // Handle RFC 2822 RSS <author>user@example.org (Real Name)</author>
+    const parenName = candidate.match(/^[^\s@]+@[^\s@]+\s*\(([^)]+)\)$/);
+    if (parenName) {
+        candidate = parenName[1].trim();
+    } else if (/^[^\s@]+@[^\s@]+$/.test(candidate)) {
+        return '';
+    }
+    const cleanSource = String(sourceName || '').trim().toLowerCase().replace(/\.com$/i, '');
+    const lower = candidate.toLowerCase();
+    if (!candidate || lower === cleanSource || lower === `${cleanSource}.com`) return '';
+    if (/\bannouncements\b/i.test(candidate) || /^(?:staff|admin|editorial|redaction|desk)$/i.test(lower)) return '';
+    if (candidate.length > 120) candidate = `${candidate.slice(0, 119).trimEnd()}…`;
+    return candidate;
+}
+
+const WIRE_AGENCY_AUTHOR_PATTERN = /^(?:(?:the\s+)?associated\s+press(?:\s+news)?|ap(?:\s+news)?|agence\s+france[- ]presse|afp|(?:thomson\s+)?reuters)(?:\s*\([^)]*\))?$/i;
+const WIRE_AGENCY_EMBEDDED_PATTERN = /(?<![\p{L}\p{N}])(?:associated\s+press|agence\s+france[- ]presse|(?:thomson\s+)?reuters)(?![\p{L}\p{N}])/iu;
+const WIRE_AGENCY_ACRONYM_PATTERN = /(?:^|[\/,(|&]\s*|\bby\s+)(?:AP|AFP)(?=\s*$|\s*[\/,)|&])/u;
+const WIRE_DATELINE_PATTERN = /^.{0,80}\((?:AP|AFP|Reuters)\)\s*[—–-]/;
+
+function isWireAgencyAuthor(author = '') {
+    const trimmed = String(author || '').replace(/\s+/g, ' ').trim();
+    return Boolean(
+        trimmed && (
+            WIRE_AGENCY_AUTHOR_PATTERN.test(trimmed)
+            || WIRE_AGENCY_EMBEDDED_PATTERN.test(trimmed)
+            || WIRE_AGENCY_ACRONYM_PATTERN.test(trimmed)
+        )
+    );
+}
+
+function extractItemAuthor(block, sourceName = '') {
+    const creator = normalizeAuthorCandidate(extractTag(block, 'dc:creator'), sourceName);
+    if (creator) return creator;
+    return normalizeAuthorCandidate(extractTag(block, 'author'), sourceName);
 }
 
 function sanitizeHttpsUrl(rawUrl, upgradeHttpHost = '') {
@@ -406,6 +510,9 @@ function parseRssItems(xmlText, {
     fundingLabel = '',
     attributionUrl = '',
     upgradeHttpHost = '',
+    contentType = 'news',
+    requireAuthor = false,
+    excludeWireAuthors = false,
     maxItems = 5,
     now = new Date(),
     maxAgeDays = MAX_ITEM_AGE_DAYS,
@@ -420,10 +527,21 @@ function parseRssItems(xmlText, {
         const title = extractTag(block, 'title');
         const rawLink = extractTag(block, 'link') || extractTag(block, 'guid');
         const link = sanitizeHttpsUrl(rawLink, upgradeHttpHost);
-        const snippet = truncateSnippet(extractTag(block, 'description'), maxSnippetChars);
+        const snippet = truncateSnippet(cleanFeedDescription(extractRawTag(block, 'description')), maxSnippetChars);
         const rawPubDate = extractTag(block, 'pubDate') || extractTag(block, 'dc:date');
         const isoDate = normalizeFeedDate(rawPubDate);
+        const rawCreator = extractTag(block, 'dc:creator');
+        const rawAuthor = extractTag(block, 'author');
+        const author = extractItemAuthor(block, sourceName);
         if (!title || !link || !isoDate) continue;
+        if (requireAuthor && !author) continue;
+        if (excludeWireAuthors && (
+            isWireAgencyAuthor(author)
+            || isWireAgencyAuthor(rawCreator)
+            || isWireAgencyAuthor(rawAuthor)
+            || WIRE_DATELINE_PATTERN.test(snippet)
+            || WIRE_DATELINE_PATTERN.test(title)
+        )) continue;
         if (!isFreshAndConsistentDate(rawPubDate, link, { now, maxAgeDays })) continue;
         parsed.push({
             title,
@@ -431,6 +549,8 @@ function parseRssItems(xmlText, {
             link,
             source: sourceName,
             date: isoDate,
+            contentType,
+            ...(author ? { author } : {}),
             ...(fundingLabel ? { fundingLabel } : {}),
             ...(cleanAttributionUrl ? { attributionUrl: cleanAttributionUrl } : {}),
         });
@@ -451,7 +571,7 @@ async function fetchRssFeed(fetchImpl, feedConfig, { now = new Date() } = {}) {
         const response = await fetchImpl(feedConfig.url, {
             method: 'GET',
             headers: {
-                'User-Agent': 'GlobalCommandCenter2026/1.0 (+https://globalcommandcenter2026.netlify.app)',
+                'User-Agent': 'Mozilla/5.0 (compatible; GlobalCommandCenter2026/1.0; +https://globalcommandcenter2026.netlify.app)',
                 Accept: 'application/rss+xml, application/xml, text/xml;q=0.9, */*;q=0.1',
             },
             signal: controller.signal,
@@ -467,6 +587,9 @@ async function fetchRssFeed(fetchImpl, feedConfig, { now = new Date() } = {}) {
             fundingLabel: feedConfig.fundingLabel,
             attributionUrl: feedConfig.attributionUrl,
             upgradeHttpHost: feedConfig.upgradeHttpHost || '',
+            contentType: feedConfig.contentType || 'news',
+            requireAuthor: Boolean(feedConfig.requireAuthor),
+            excludeWireAuthors: Boolean(feedConfig.excludeWireAuthors),
             ...(Number.isInteger(feedConfig.maxSnippetChars) ? { maxSnippetChars: feedConfig.maxSnippetChars } : {}),
             maxItems: feedConfig.maxItems,
             now,
@@ -584,17 +707,23 @@ module.exports = {
     MAX_ITEM_AGE_DAYS,
     MAX_SNIPPET_CHARS,
     MAX_URL_DATE_DRIFT_DAYS,
+    OPEN_LICENSED_RSS_FEEDS,
     PUBLIC_NEWS_RSS_FEEDS,
     PUBLISHER_FUNDING_INFO,
     RELIEFWEB_API_V2,
     UN_NEWS_FEEDS,
+    WIRE_AGENCY_AUTHOR_PATTERN,
+    WIRE_DATELINE_PATTERN,
+    cleanFeedDescription,
     decodeXmlEntities,
+    extractItemAuthor,
     extractUrlDateBounds,
     fetchGdeltQuery,
     fetchReliefWebReports,
     fetchRssFeed,
     getPublisherFundingInfo,
     isFreshAndConsistentDate,
+    isWireAgencyAuthor,
     parseRssItems,
     truncateSnippet,
 };
