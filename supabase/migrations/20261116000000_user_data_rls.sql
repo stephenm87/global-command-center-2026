@@ -1,4 +1,7 @@
 -- Versioned schema and Row Level Security (RLS) migration for public.user_data
+-- NOTE: public.user_data is shared by three apps: Global Command Center (gcc-preferences),
+-- GloPo Companion (e.g. glopo-practice-lab), and AHSAS (e.g. ahsas_research_studio).
+-- The 1 MB (1048576 bytes) value size cap prevents silently dropping larger student saves.
 -- Safe and idempotent on both fresh databases and the live production table
 -- (which already carries PRIMARY KEY (id) and UNIQUE (user_id, key)).
 -- Replaces all legacy public-role policies with authenticated-only policies atomically
@@ -53,7 +56,7 @@ begin
         where conrelid = 'public.user_data'::regclass and conname = 'user_data_value_size_check'
     ) then
         alter table public.user_data
-            add constraint user_data_value_size_check check (octet_length(value::text) <= 65536) not valid;
+            add constraint user_data_value_size_check check (octet_length(value::text) <= 1048576) not valid;
         alter table public.user_data validate constraint user_data_value_size_check;
     end if;
 end $$;

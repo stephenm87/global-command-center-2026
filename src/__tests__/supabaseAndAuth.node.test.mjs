@@ -113,6 +113,8 @@ test('App.jsx uses maybeSingle() + debounced upsert, createDebouncedRunner coale
     assert.match(combinedSql, /force row level security/i);
     assert.match(combinedSql, /pg_constraint/i, 'Migration should idempotently backfill constraints on pre-existing user_data');
     assert.match(combinedSql, /contype\s+in\s*\(\s*'p'\s*,\s*'u'\s*\)/i, 'Migration must respect existing (id) PK + UNIQUE (user_id, key) without dropping existing PK');
+    assert.match(combinedSql, /octet_length\(value::text\)\s*<=\s*1048576/i, 'Migration must enforce a 1 MB (1048576 bytes) cap for shared user_data');
+    assert.doesNotMatch(combinedSql, /65536/, 'Migration must not retain the 64 KB cap on shared user_data');
     assert.match(combinedSql, /pg_policies/i, 'Migration must atomically clear legacy public-role policies');
     assert.match(combinedSql, /set search_path\s*=\s*''/i, 'Trigger function must lock search_path');
     assert.match(combinedSql, /\(?\s*(?:select\s+)?auth\.uid\(\)\s*\)?\s*=\s*user_id/i);
