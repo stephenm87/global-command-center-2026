@@ -16,6 +16,7 @@ Run `npm run build` to verify the production bundle and route-level lazy chunks.
 8. At 1440×900, 1024×768, and 390×844, confirm Globe and Guided Briefings have no horizontal page overflow and their primary controls remain at least 44px high.
 9. On Globe, collapse and restore the Intel Feed and operational dashboard; confirm the canvas resizes, Intel cards do not overlap, and the preferences survive refresh.
 10. On Guided Briefings, hide and restore the case library, expand the six-case result page, select a case on a narrow viewport, and move from step 3 to 4; confirm the selected heading receives focus and the active progress step remains visible.
+11. On the pilot briefings (`myanmar-fragmented-sovereignty` and `somaliland-recognition-red-sea-order`), step through `1..4` and `All` across `390px–1900px` in both 3D and flat SVG fallback modes; confirm zero label overlaps, floating badges stay inside the frame, mobile initial load fetches zero 3D textures before tapping `Open 3D terrain view`, `prefers-reduced-motion: reduce` uses the static flat fallback cleanly, and every actor/connection/mapped place can be selected by keyboard with a visible source link and text type label.
 
 Run `npm audit` during dependency reviews. The current Vite 5 development-only advisories are tracked in `docs/KNOWN_ISSUES.md`; do not expose the local development server beyond loopback.
 
