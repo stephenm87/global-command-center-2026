@@ -23,7 +23,7 @@ const assertValidEditorialDate = (value, message) => {
     assert.equal(new Date(`${value}T00:00:00Z`).toISOString().slice(0, 10), value, message);
 };
 
-test('curated case studies remain balanced across 7 regions x 6 lenses, auditable, archival-ready, and Nexus-compatible', async t => {
+test('curated case studies remain balanced across 7 regions x 6 lenses, auditable, archival-ready, and actor-consistent', async t => {
     const vite = await createServer({
         configFile: false,
         cacheDir: `/tmp/vite-gcc-content-test-${process.pid}`,
@@ -56,14 +56,14 @@ test('curated case studies remain balanced across 7 regions x 6 lenses, auditabl
             toForecastRecord,
         },
         { GUIDED_TOURS, projectGuidedTour },
-        focusData,
+        actorData,
         eventAnalysis,
         theoryData,
         stalenessCli,
     ] = await Promise.all([
         vite.ssrLoadModule('/src/caseStudies2026.js'),
         vite.ssrLoadModule('/src/nexusTours.js'),
-        vite.ssrLoadModule('/src/nexusFocusData.js'),
+        vite.ssrLoadModule('/src/briefingActors.js'),
         vite.ssrLoadModule('/src/eventAnalysis.js'),
         vite.ssrLoadModule('/src/theories.js'),
         import('../../scripts/check-case-staleness.mjs'),
@@ -224,11 +224,11 @@ test('curated case studies remain balanced across 7 regions x 6 lenses, auditabl
         }
 
         for (const actorId of caseStudy.nexusNodeIds) {
-            assert.ok(focusData.NEXUS_ACTORS[actorId], `${caseStudy.id} has unknown actor ${actorId}`);
+            assert.ok(actorData.BRIEFING_ACTORS[actorId], `${caseStudy.id} has unknown actor ${actorId}`);
         }
 
         for (const waypoint of caseStudy.waypoints) {
-            assert.ok(focusData.NEXUS_ACTORS[waypoint.nodeId], `${caseStudy.id} waypoint has unknown actor ${waypoint.nodeId}`);
+            assert.ok(actorData.BRIEFING_ACTORS[waypoint.nodeId], `${caseStudy.id} waypoint has unknown actor ${waypoint.nodeId}`);
             assert.ok(caseStudy.nexusNodeIds.includes(waypoint.nodeId), `${caseStudy.id} waypoint actor is absent from nexusNodeIds`);
             assertNonEmptyString(waypoint.title, `${caseStudy.id} has an untitled waypoint`);
             assertNonEmptyString(waypoint.perspectiveLabel, `${caseStudy.id} waypoint needs a perspective label`);
@@ -352,13 +352,6 @@ test('curated case studies remain balanced across 7 regions x 6 lenses, auditabl
     assert.equal(archivedTour.status, 'archived');
     assert.equal(archivedTour.archivedAt, '2027-01-15');
     assert.equal(archivedTour.supersededById, CASE_STUDIES_2026[0].id);
-
-    const relationships = focusData.getNexusRelationships();
-    assert.ok(relationships.length > 0);
-    assert.deepEqual(
-        focusData.inferForecastActorIds(toForecastRecord(CASE_STUDIES_2026[0])),
-        CASE_STUDIES_2026[0].nexusNodeIds,
-    );
 
     // Synthetic fixture decoupled from any single live case ID so future archival never breaks 5W1H tests
     const syntheticFixture = toForecastRecord(normalizeCaseStudy({

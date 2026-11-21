@@ -2,7 +2,7 @@
 
 ## Purpose and current scope
 
-The case-study library is an educational editorial product, not a live intelligence service. Active regional modules live under `src/cases/active/*.mjs` (`29` baseline active cases across `7` canonical regions) and retired historical snapshots live under `src/cases/archive/archived-2026.mjs`, re-exported through `src/caseStudies2026.js`. Every active case is available as a Guided Briefing, as an Editorial Cases globe item, and as evidence-linked context for the Relations Nexus.
+The case-study library is an educational editorial product, not a live intelligence service. Active regional modules live under `src/cases/active/*.mjs` (`29` baseline active cases across `7` canonical regions) and retired historical snapshots live under `src/cases/archive/archived-2026.mjs`, re-exported through `src/caseStudies2026.js`. Every active case is available as a Guided Briefing and as an Editorial Cases globe item.
 
 This standard applies whenever a case is added, materially revised, reviewed, or archived.
 
@@ -11,7 +11,7 @@ This standard applies whenever a case is added, materially revised, reviewed, or
 Each case must provide:
 
 - A permanent kebab-case `id`, lifecycle `status` (`'active'` or `'archived'`), `title`, `subtitle`, canonical `coverageRegion`, `regionTags`, `issueLens`, `broadCategory`, and `issueDimensions`.
-- Named `actors` and valid `nexusNodeIds` (`2–4` distinct IDs that exist in `NEXUS_ACTORS`).
+- Named `actors` and valid `nexusNodeIds` (`2–4` distinct IDs that exist in `BRIEFING_ACTORS`).
 - An attributed `statusSummary`, an analytical `whyItMatters`, an ISO `updatedAt` date, `confidence` (`'high'` or `'medium'`), and explicit `uncertainty`.
 - An explicit `sensitivity` level (`'standard'` or `'high'`) and `editorialCaution` explaining representation, terminology, privacy, safety, or attribution risks.
 - A deliberate boolean `featured` value; this is a curatorial presentation choice, not a quality or importance ranking.
@@ -71,7 +71,7 @@ Perspective labels describe source position, not neutrality or reliability. A re
 
 Each case uses four or five waypoints. Every waypoint must contain:
 
-- A valid `nodeId` from `NEXUS_ACTORS` (which must also appear in `nexusNodeIds`).
+- A valid `nodeId` from `BRIEFING_ACTORS` (which must also appear in `nexusNodeIds`).
 - `title`, `perspectiveLabel`, `perspectiveType`, `narration`, and `focusQuestion`.
 - Narration traceable to the core readings and a question framed for analysis rather than prediction.
 
@@ -111,7 +111,7 @@ Deepened briefings (`briefingVersion: 2`) follow `docs/BRIEFING_VOICE.md` and pa
 Because teachers embed `?view=briefings&tour=<case-id>&step=<n>` URLs into syllabi and LMS assignments, superseded or concluded cases must **never** be deleted:
 
 1. Move the record from `src/cases/active/<region>.mjs` to `src/cases/archive/archived-2026.mjs` with `status: 'archived'`, ISO `archivedAt`, `archivedReason`, and optional `supersededById`.
-2. Active browse surfaces (Globe Editorial Cases, Intel Feed curated cards, Nexus active counts, and the default Guided Briefings catalog) consume `CASE_STUDIES_2026` (`status === 'active'`), while Guided Briefings deep links and the opt-in archive toggle resolve against `ALL_CASE_STUDIES_2026` (`active + archived`) and display an **Archived Historical Snapshot** banner instead of an overdue alert.
+2. Active browse surfaces (Globe Editorial Cases, Intel Feed curated cards, and the default Guided Briefings catalog) consume `CASE_STUDIES_2026` (`status === 'active'`), while Guided Briefings deep links and the opt-in archive toggle resolve against `ALL_CASE_STUDIES_2026` (`active + archived`) and display an **Archived Historical Snapshot** banner instead of an overdue alert.
 
 ## Review workflow
 
@@ -122,7 +122,7 @@ Before adding or renewing a case:
 3. Check for newer local, institutional, and independent evidence, not merely a newer institutional announcement.
 4. Re-read the status, uncertainty, sensitivity, map roles, and every waypoint narration for overstatement or changed conditions.
 5. Set `updatedAt` to the date through which the status was substantively checked, select a risk-appropriate `reviewCadenceDays`, and set `reviewBy = addDays(updatedAt, reviewCadenceDays)` explicitly.
-6. Run `npm run content:staleness`, `npm test`, `npm run build`, and a browser pass through Briefings, the Editorial Cases globe layer, and the linked Nexus actor.
+6. Run `npm run content:staleness`, `npm test`, `npm run build`, and a browser pass through Briefings and the Editorial Cases globe layer.
 
 ## Discovery behavior & link health
 
