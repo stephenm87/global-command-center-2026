@@ -16,22 +16,8 @@ export const APP_WORKSPACE_FILES = [
     'src/components/AppFooter.jsx',
 ];
 
-export const NEXUS_WORKSPACE_FILES = [
-    'src/NexusWorkspace.jsx',
-    'src/NexusFocusView.jsx',
-    'src/nexusFocusData.js',
-    'src/nexusEdgeData.js',
-    'src/nexus/actorIds.js',
-];
-
 export function readAppWorkspaceSource() {
     return APP_WORKSPACE_FILES
-        .map(relPath => fs.readFileSync(path.join(REPO_ROOT, relPath), 'utf8'))
-        .join('\n/* --- MODULE BOUNDARY --- */\n');
-}
-
-export function readNexusWorkspaceSource() {
-    return NEXUS_WORKSPACE_FILES
         .map(relPath => fs.readFileSync(path.join(REPO_ROOT, relPath), 'utf8'))
         .join('\n/* --- MODULE BOUNDARY --- */\n');
 }

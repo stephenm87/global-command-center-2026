@@ -88,7 +88,7 @@
     background: rgba(94, 234, 212, .1);
 }
 
-.nexus-route-loading {
+.route-loading {
     display: grid;
     place-items: center;
     width: 100%;
@@ -3556,22 +3556,11 @@ input:focus-visible {
     overflow: visible;
 }
 
-.dashboard-view--briefings .main-content,
-.dashboard-view--nexus .main-content {
-    min-height: calc(100dvh - 74px);
-}
-
 .dashboard-view--briefings .main-content {
+    min-height: calc(100dvh - 74px);
     display: block;
     flex: 1 0 auto;
     overflow: visible;
-}
-
-.dashboard-view--nexus .main-content {
-    display: flex;
-    flex: 1 1 auto;
-    height: calc(100dvh - 74px);
-    overflow: hidden;
 }
 
 .sr-only {
@@ -3591,7 +3580,7 @@ input:focus-visible {
 .header {
     position: relative;
     display: grid;
-    grid-template-columns: auto minmax(24rem, 1fr) auto;
+    grid-template-columns: auto minmax(18rem, 1fr) auto;
     align-items: center;
     gap: 1rem;
     min-height: 72px;
@@ -3615,7 +3604,7 @@ input:focus-visible {
 
 .view-mode-selector {
     justify-self: center;
-    width: min(100%, 40rem);
+    width: min(100%, 27rem);
     margin: 0;
     padding: 0;
     border: 0;
