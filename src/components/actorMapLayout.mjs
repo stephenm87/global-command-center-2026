@@ -1,0 +1,209 @@
+/**
+ * Screen-space collision-free label placement solver shared by both the 3D
+ * actor map (DOM buttons) and 2D flat SVG fallback. Never shrinks fonts below
+ * design size and hides lower-priority labels first across 390px-1900px.
+ */
+
+const CHAR_WIDTH_PRIMARY = 7.1;
+const CHAR_WIDTH_SUB = 6.0;
+const CHAR_WIDTH_LINK = 6.6;
+const CHAR_WIDTH_COUNTRY = 7.8;
+
+const intersects = (a, b, pad = 2) => !(
+    a.x1 + pad <= b.x0
+    || a.x0 - pad >= b.x1
+    || a.y1 + pad <= b.y0
+    || a.y0 - pad >= b.y1
+);
+
+const insideFrame = (box, width, height, padding) => (
+    box.x0 >= padding
+    && box.x1 <= width - padding
+    && box.y0 >= padding
+    && box.y1 <= height - padding
+);
+
+export function actorLabelBox(x, y, r, side, title, note = '') {
+    const titleW = String(title || '').length * CHAR_WIDTH_PRIMARY;
+    const subW = note ? String(note).length * CHAR_WIDTH_SUB : 0;
+    const w = Math.max(titleW, subW) + 8;
+    const h = note ? 29 : 16;
+    const gap = r + 8;
+
+    if (side === 'r') {
+        const x0 = x + gap;
+        const y0 = y - h / 2;
+        return { x0, y0, x1: x0 + w, y1: y0 + h };
+    }
+    if (side === 'l') {
+        const x1 = x - gap;
+        const y0 = y - h / 2;
+        return { x0: x1 - w, y0, x1, y1: y0 + h };
+    }
+    if (side === 't') {
+        const x0 = x - w / 2;
+        const y1 = y - gap;
+        return { x0, y0: y1 - h, x1: x0 + w, y1 };
+    }
+    if (side === 'b') {
+        const x0 = x - w / 2;
+        const y0 = y + gap;
+        return { x0, y0, x1: x0 + w, y1: y0 + h };
+    }
+    if (side === 'tr') {
+        const x0 = x + gap * 0.75;
+        const y1 = y - gap * 0.65;
+        return { x0, y0: y1 - h, x1: x0 + w, y1 };
+    }
+    if (side === 'tl') {
+        const x1 = x - gap * 0.75;
+        const y1 = y - gap * 0.65;
+        return { x0: x1 - w, y0: y1 - h, x1, y1 };
+    }
+    if (side === 'br') {
+        const x0 = x + gap * 0.75;
+        const y0 = y + gap * 0.65;
+        return { x0, y0, x1: x0 + w, y1: y0 + h };
+    }
+    const x1 = x - gap * 0.75;
+    const y0 = y + gap * 0.65;
+    return { x0: x1 - w, y0, x1, y1: y0 + h };
+}
+
+export function linkLabelBox(x, y, text) {
+    const w = String(text || '').length * CHAR_WIDTH_LINK + 16;
+    const h = 22;
+    return { x0: x - w / 2, y0: y - h / 2, x1: x + w / 2, y1: y + h / 2 };
+}
+
+export function countryLabelBox(x, y, text) {
+    const w = String(text || '').length * CHAR_WIDTH_COUNTRY + 6;
+    const h = 14;
+    return { x0: x - w / 2, y0: y - h / 2, x1: x + w / 2, y1: y + h / 2 };
+}
+
+const DEFAULT_SIDE_ORDER = ['r', 'l', 't', 'b', 'tr', 'br', 'tl', 'bl'];
+
+function orderedSides(preferredSide) {
+    if (!preferredSide || !DEFAULT_SIDE_ORDER.includes(preferredSide)) {
+        return DEFAULT_SIDE_ORDER;
+    }
+    return [preferredSide, ...DEFAULT_SIDE_ORDER.filter(s => s !== preferredSide)];
+}
+
+/**
+ * Places labels greedily by priority against marker obstacles, HUD boxes,
+ * floating badges, and already-accepted labels.
+ */
+export function solveActorMapLabels({
+    width,
+    height,
+    markers = [],
+    floatingBadges = [],
+    actorLabels = [],
+    linkLabels = [],
+    countryLabels = [],
+    reservedBoxes = [],
+    padding = 8,
+}) {
+    const occupied = [];
+
+    // Reserve fixed HUD boxes and floating badges (including caption beneath badge)
+    for (const box of reservedBoxes) {
+        if (box) occupied.push({ ...box });
+    }
+    for (const badge of floatingBadges) {
+        occupied.push({
+            x0: badge.cx - badge.w / 2 - 4,
+            y0: badge.cy - badge.h / 2 - 2,
+            x1: badge.cx + badge.w / 2 + 4,
+            y1: badge.cy + badge.h / 2 + 16,
+        });
+    }
+    // Every visible actor marker circle is a hard obstacle
+    const markerBoxes = markers.map(m => ({
+        id: m.id,
+        box: {
+            x0: m.x - (m.r || 8) - 2,
+            y0: m.y - (m.r || 8) - 2,
+            x1: m.x + (m.r || 8) + 2,
+            y1: m.y + (m.r || 8) + 2,
+        },
+    }));
+
+    const isFree = (candidate, ownMarkerId = null) => {
+        if (!insideFrame(candidate, width, height, padding)) return false;
+        for (const m of markerBoxes) {
+            if (ownMarkerId && m.id === ownMarkerId) continue;
+            if (intersects(candidate, m.box, 2)) return false;
+        }
+        for (const box of occupied) {
+            if (intersects(candidate, box, 3)) return false;
+        }
+        return true;
+    };
+
+    const sortedActors = [...actorLabels].sort((a, b) => (b.priority || 0) - (a.priority || 0));
+    const placedActors = new Map();
+
+    for (const item of sortedActors) {
+        if (item.hidden) {
+            placedActors.set(item.id, { visible: false, side: item.preferredSide || 'r', showNote: false, box: null });
+            continue;
+        }
+        const sides = orderedSides(item.preferredSide);
+        let chosen = null;
+
+        // Pass 1: try placing with optional note; Pass 2: drop subtitle note before hiding label
+        const variants = item.note ? [true, false] : [false];
+        for (const showNote of variants) {
+            for (const side of sides) {
+                const box = actorLabelBox(item.x, item.y, item.r || 8, side, item.name, showNote ? item.note : '');
+                if (isFree(box, item.id)) {
+                    chosen = { visible: true, side, showNote, box };
+                    occupied.push(box);
+                    break;
+                }
+            }
+            if (chosen) break;
+        }
+
+        if (!chosen) {
+            chosen = { visible: false, side: item.preferredSide || 'r', showNote: false, box: null };
+        }
+        placedActors.set(item.id, chosen);
+    }
+
+    const sortedLinks = [...linkLabels].sort((a, b) => (b.priority || 0) - (a.priority || 0));
+    const placedLinks = new Map();
+
+    for (const item of sortedLinks) {
+        if (item.hidden || !Array.isArray(item.candidates) || item.candidates.length === 0) {
+            placedLinks.set(item.id, { visible: false, candidate: null, box: null });
+            continue;
+        }
+        let chosen = null;
+        for (const cand of item.candidates) {
+            const box = linkLabelBox(cand.x, cand.y, item.label);
+            if (isFree(box, null)) {
+                chosen = { visible: true, candidate: cand, box };
+                occupied.push(box);
+                break;
+            }
+        }
+        placedLinks.set(item.id, chosen || { visible: false, candidate: null, box: null });
+    }
+
+    const placedCountries = new Map();
+    for (const item of countryLabels) {
+        const box = countryLabelBox(item.x, item.y, item.name);
+        if (isFree(box, null)) {
+            occupied.push(box);
+            placedCountries.set(item.name, { visible: true, x: item.x, y: item.y, box });
+        } else {
+            placedCountries.set(item.name, { visible: false, x: item.x, y: item.y, box: null });
+        }
+    }
+
+    return { actors: placedActors, links: placedLinks, countries: placedCountries, occupied };
+}
