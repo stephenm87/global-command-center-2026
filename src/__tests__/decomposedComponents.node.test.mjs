@@ -831,4 +831,36 @@ test('GuidedBriefings and decomposed UI components preserve archived banners and
             assert.ok(!pilotHtml.includes('Active step'), `${pilotId} step ${step} must use "Related to this step" rather than "Active step"`);
         }
     }
+
+    // Verify 3D actor map pilot SSR-renders flat fallback, All step button, connections, and mapped places on pilot cases only
+    for (const actorPilotId of ['myanmar-fragmented-sovereignty', 'somaliland-recognition-red-sea-order']) {
+        const html = renderToStaticMarkup(React.createElement(GuidedBriefings, {
+            initialTourId: actorPilotId,
+            initialStep: 1,
+            onRouteChange: () => {},
+            activeTours: GUIDED_TOURS,
+            archivedTours: [],
+        }));
+        assert.match(html, /class="briefing-actor-stage"/, `${actorPilotId} must render actor map stage`);
+        assert.match(html, /Show all actors and connections on the globe/, `${actorPilotId} must render All step tab`);
+        assert.match(html, /Connections in this step/, `${actorPilotId} must render accessible connections panel`);
+        assert.match(html, /Mapped places in this case/, `${actorPilotId} must keep existing mapped places and roles available`);
+        const allHtml = renderToStaticMarkup(React.createElement(GuidedBriefings, {
+            initialTourId: actorPilotId,
+            initialStep: 'all',
+            onRouteChange: () => {},
+            activeTours: GUIDED_TOURS,
+            archivedTours: [],
+        }));
+        assert.match(allHtml, /ALL STEPS/, `${actorPilotId} step=all must open All view`);
+    }
+    const nonPilotHtml = renderToStaticMarkup(React.createElement(GuidedBriefings, {
+        initialTourId: 'western-sahara-autonomy-self-determination',
+        initialStep: 1,
+        onRouteChange: () => {},
+        activeTours: GUIDED_TOURS,
+        archivedTours: [],
+    }));
+    assert.match(nonPilotHtml, /class="briefing-focus-card"/, 'Non-pilot cases must keep existing locator map layout');
+    assert.ok(!nonPilotHtml.includes('briefing-actor-stage'), 'Non-pilot cases must not render pilot actor stage');
 });

@@ -400,6 +400,13 @@
     font: 700 var(--briefing-secondary-size)/1 'Roboto Mono', monospace;
 }
 
+.briefing-progress button.is-all > span {
+    width: auto;
+    min-width: 40px;
+    padding-inline: 10px;
+    border-radius: 999px;
+}
+
 .briefing-progress button.active > span,
 .briefing-progress button.complete > span { border-color: var(--tour-color); color: var(--tour-color); }
 .briefing-progress button.active::before,
@@ -1323,6 +1330,11 @@
         width: 30px;
         height: 30px;
         font-size: .8125rem;
+    }
+    .briefing-stepnav .briefing-progress button.is-all > span {
+        width: auto;
+        min-width: 36px;
+        padding-inline: 8px;
     }
     .briefing-stepnav .briefing-progress small { display: none; }
     .briefing-focus-card { margin-block: 10px 22px; gap: 14px; }

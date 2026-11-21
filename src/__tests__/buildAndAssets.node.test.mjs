@@ -13,6 +13,31 @@ test('index.html and App workspace modules use self-hosted assets and favicon, a
     assert.ok(fs.existsSync(path.join(REPO_ROOT, 'public/assets/globe/countries-110m.json')), 'countries-110m.json must be self-hosted');
     assert.ok(fs.existsSync(path.join(REPO_ROOT, 'public/assets/globe/earth-night.jpg')), 'earth-night.jpg must be self-hosted');
     assert.ok(fs.existsSync(path.join(REPO_ROOT, 'public/assets/globe/night-sky.jpg')), 'night-sky.jpg must be self-hosted');
+    assert.ok(fs.existsSync(path.join(REPO_ROOT, 'public/assets/actor-map/countries-50m.json')), 'countries-50m.json must be self-hosted');
+    for (const texFile of [
+        'blue-marble-base.jpg',
+        'myanmar-region.jpg',
+        'myanmar-local.jpg',
+        'somaliland-region.jpg',
+        'somaliland-local.jpg',
+    ]) {
+        const texPath = path.join(REPO_ROOT, 'public/assets/actor-map', texFile);
+        assert.ok(fs.existsSync(texPath), `public/assets/actor-map/${texFile} must exist`);
+        const buf = fs.readFileSync(texPath);
+        let w = 0;
+        let h = 0;
+        for (let i = 0; i < buf.length - 9; i += 1) {
+            if (buf[i] === 0xff && (buf[i + 1] === 0xc0 || buf[i + 1] === 0xc2)) {
+                h = buf.readUInt16BE(i + 5);
+                w = buf.readUInt16BE(i + 7);
+                break;
+            }
+        }
+        assert.ok(w > 0 && h > 0 && Math.max(w, h) <= 4096, `${texFile} (${w}x${h}) must stay <= 4096px on its longer side`);
+    }
+    const caseActorMapSource = fs.readFileSync(path.join(REPO_ROOT, 'src/components/CaseActorMap.jsx'), 'utf8');
+    assert.match(caseActorMapSource, /React\.lazy\s*\(/, 'CaseActorMap must lazy-load 3D WebGL bundle');
+    assert.ok(!caseActorMapSource.includes("from 'globe.gl'"), 'CaseActorMap wrapper must not statically import globe.gl');
     assert.ok(fs.existsSync(path.join(REPO_ROOT, 'public/assets/fonts/fonts.css')), 'local fonts.css must exist');
     assert.ok(fs.existsSync(path.join(REPO_ROOT, 'public/assets/netlify-badge-color-accent.svg')), 'local Netlify SVG badge must exist');
     for (const removedFile of [

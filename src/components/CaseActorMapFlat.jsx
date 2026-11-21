@@ -1,0 +1,616 @@
+import { useEffect, useId, useMemo, useRef, useState } from 'react';
+import { geoDistance, geoGraticule10, geoOrthographic, geoPath } from 'd3-geo';
+import * as topojson from 'topojson-client';
+import { computeFloatingBadgeScreenSlots, cubicInOut } from './actorMapCamera.mjs';
+import { solveActorMapLabels } from './actorMapLayout.mjs';
+
+const LEVEL_COLORS = {
+    local: '#ffd9a0',
+    state: '#67d5f5',
+    regional: '#b79cff',
+    global: '#f7f3e8',
+};
+
+const TYPE_COLORS = {
+    conflict: '#ff5d6c',
+    pressure: '#ff9f43',
+    support: '#4ade80',
+    movement: '#cfe3ee',
+};
+
+const NODE_RADIUS = {
+    local: 6,
+    state: 8,
+    regional: 9.5,
+    global: 7.5,
+};
+
+let world110Promise = null;
+function loadWorld110() {
+    if (!world110Promise) {
+        world110Promise = fetch('/assets/globe/countries-110m.json')
+            .then(res => (res.ok ? res.json() : Promise.reject(new Error(`HTTP ${res.status}`))))
+            .then(world => topojson.feature(world, world.objects.countries).features)
+            .catch(err => {
+                world110Promise = null;
+                throw err;
+            });
+    }
+    return world110Promise;
+}
+
+function actorCoord(actor) {
+    if (!actor?.location) return null;
+    if (actor.location.kind === 'pin') {
+        return [actor.location.longitude, actor.location.latitude];
+    }
+    if (actor.location.kind === 'area' && actor.location.anchor) {
+        return [actor.location.anchor.longitude, actor.location.anchor.latitude];
+    }
+    return null;
+}
+
+function computeTargetView(step, surfaceCoords, width, height, hasFloating) {
+    if (!step) return { lng: 96, lat: 20, half: 10 };
+    if (step.key === 'all' || !surfaceCoords.length) {
+        return { lng: step.cam.lng, lat: step.cam.lat, half: Math.min(62, Math.max(18, step.cam.dist * 34)) };
+    }
+    const baseHalf = step.cam.dist < 0.14
+        ? 3.2
+        : step.cam.dist < 0.28
+            ? 6.2
+            : step.cam.dist < 0.72
+                ? 17.5
+                : 30;
+    const minAspectSpan = Math.min(width, height) / Math.max(width, height);
+    let half = Math.max(baseHalf, baseHalf / Math.max(0.65, minAspectSpan));
+
+    const testProj = geoOrthographic().clipAngle(90);
+    const leftPad = width < 640 ? 34 : 64;
+    const rightPad = width < 640 ? 34 : 64;
+    const topPad = hasFloating ? (width < 640 ? 112 : 84) : 34;
+    const bottomPad = 104;
+
+    for (let i = 0; i < 18; i += 1) {
+        const scale = Math.min(width, height) / (2 * Math.sin((half * Math.PI) / 180));
+        testProj
+            .translate([width / 2, height / 2 + (hasFloating ? 16 : 0)])
+            .rotate([-step.cam.lng, -step.cam.lat])
+            .scale(scale);
+        const fits = surfaceCoords.every(c => {
+            if (geoDistance(c, [step.cam.lng, step.cam.lat]) > 1.38) return false;
+            const p = testProj(c);
+            return p && p[0] >= leftPad && p[0] <= width - rightPad && p[1] >= topPad && p[1] <= height - bottomPad;
+        });
+        if (fits || half >= 62) break;
+        half = Math.min(62, half * 1.15);
+    }
+    return { lng: step.cam.lng, lat: step.cam.lat, half };
+}
+
+export default function CaseActorMapFlat({
+    actorMap,
+    mapLocations = [],
+    activeStepKey = '1',
+    selected = null,
+    onSelect,
+    reducedMotion = false,
+}) {
+    const uid = useId().replace(/[^a-zA-Z0-9_-]/g, '');
+    const wrapRef = useRef(null);
+    const [box, setBox] = useState({ width: 720, height: 520 });
+    const [countries, setCountries] = useState(null);
+    const [view, setView] = useState(() => ({
+        lng: actorMap?.steps?.[0]?.cam?.lng ?? 96,
+        lat: actorMap?.steps?.[0]?.cam?.lat ?? 20,
+        half: 10,
+    }));
+    const currentViewRef = useRef(view);
+    currentViewRef.current = view;
+
+    useEffect(() => {
+        let cancelled = false;
+        loadWorld110()
+            .then(feats => { if (!cancelled) setCountries(feats); })
+            .catch(() => {});
+        return () => { cancelled = true; };
+    }, []);
+
+    useEffect(() => {
+        const el = wrapRef.current;
+        if (!el) return undefined;
+        const measure = () => {
+            const w = Math.floor(el.clientWidth);
+            const h = Math.floor(el.clientHeight);
+            if (w > 0 && h > 0) {
+                setBox(prev => (prev.width === w && prev.height === h ? prev : { width: w, height: h }));
+            }
+        };
+        measure();
+        const ro = typeof ResizeObserver === 'function' ? new ResizeObserver(measure) : null;
+        ro?.observe(el);
+        return () => ro?.disconnect();
+    }, []);
+
+    const step = useMemo(
+        () => actorMap?.steps?.find(s => String(s.key) === String(activeStepKey)) || actorMap?.steps?.[0],
+        [actorMap, activeStepKey],
+    );
+
+    const actorById = useMemo(
+        () => new Map((actorMap?.actors || []).map(a => [a.id, a])),
+        [actorMap],
+    );
+    const connById = useMemo(
+        () => new Map((actorMap?.connections || []).map(c => [c.id, c])),
+        [actorMap],
+    );
+
+    const surfaceCoords = useMemo(() => {
+        if (!step) return [];
+        return (step.actors || [])
+            .map(entry => actorCoord(actorById.get(entry.id)))
+            .filter(Boolean);
+    }, [step, actorById]);
+
+    const floatingActors = useMemo(() => {
+        if (!step) return [];
+        return (step.actors || [])
+            .map(entry => actorById.get(entry.id))
+            .filter(actor => actor?.location?.kind === 'noSinglePlace');
+    }, [step, actorById]);
+
+    useEffect(() => {
+        const target = computeTargetView(step, surfaceCoords, box.width, box.height, floatingActors.length > 0);
+        if (reducedMotion || typeof requestAnimationFrame !== 'function') {
+            setView(target);
+            return undefined;
+        }
+        const from = { ...currentViewRef.current };
+        const t0 = performance.now();
+        const dur = 1100;
+        let raf = 0;
+        const tick = now => {
+            const k = Math.min(1, (now - t0) / dur);
+            const e = cubicInOut(k);
+            const nextHalf = Math.exp(Math.log(Math.max(1, from.half)) * (1 - e) + Math.log(Math.max(1, target.half)) * e);
+            setView({
+                lng: from.lng + (target.lng - from.lng) * e,
+                lat: from.lat + (target.lat - from.lat) * e,
+                half: nextHalf,
+            });
+            if (k < 1) raf = requestAnimationFrame(tick);
+        };
+        raf = requestAnimationFrame(tick);
+        return () => cancelAnimationFrame(raf);
+    }, [step, surfaceCoords, box.width, box.height, floatingActors.length, reducedMotion]);
+
+    const scene = useMemo(() => {
+        if (!step) return null;
+        const { width, height } = box;
+        const hasFloating = floatingActors.length > 0;
+        const radius = Math.min(width, height) / (2 * Math.sin((Math.max(1, view.half) * Math.PI) / 180));
+        const tx = width / 2;
+        const ty = height / 2 + (hasFloating ? 18 : 0);
+        const projection = geoOrthographic()
+            .clipAngle(90)
+            .precision(0.4)
+            .translate([tx, ty])
+            .rotate([-view.lng, -view.lat])
+            .scale(radius);
+        const pathGen = geoPath(projection);
+        const graticule = pathGen(geoGraticule10()) || '';
+        const sphereDisc = `M${tx - radius},${ty} a${radius},${radius} 0 1,0 ${2 * radius},0 a${radius},${radius} 0 1,0 ${-2 * radius},0`;
+        const isVisible = coord => geoDistance(coord, [view.lng, view.lat]) < 1.44;
+
+        const blocSet = new Set(step.bloc && actorMap?.bloc?.members ? actorMap.bloc.members : []);
+        const activeCountries = new Set();
+        const stepActorMap = new Map((step.actors || []).map(entry => [entry.id, entry]));
+
+        for (const entry of step.actors || []) {
+            const actor = actorById.get(entry.id);
+            if (actor?.location?.kind === 'area' && Array.isArray(actor.location.countries)) {
+                actor.location.countries.forEach(c => activeCountries.add(c));
+            }
+        }
+
+        const floatingSlots = computeFloatingBadgeScreenSlots(floatingActors, width, height);
+        const slotById = new Map(floatingSlots.map(s => [s.id, s]));
+
+        const actorPositions = new Map();
+        const markers = [];
+        const actorLabels = [];
+
+        for (const entry of step.actors || []) {
+            const actor = actorById.get(entry.id);
+            if (!actor) continue;
+            if (actor.location.kind === 'noSinglePlace') {
+                const slot = slotById.get(actor.id);
+                if (slot) actorPositions.set(actor.id, [slot.cx, slot.cy + slot.h / 2]);
+                continue;
+            }
+            const coord = actorCoord(actor);
+            if (!coord || !isVisible(coord)) continue;
+            const pt = projection(coord);
+            if (!pt) continue;
+            actorPositions.set(actor.id, pt);
+            const r = step.quietLabels
+                ? Math.max(3.5, (NODE_RADIUS[actor.level] || 6) * 0.72)
+                : (NODE_RADIUS[actor.level] || 7);
+            markers.push({
+                actor,
+                entry,
+                x: pt[0],
+                y: pt[1],
+                r,
+                isRelated: isRelatedItem(selected, 'actor', actor.id, step, connById),
+                isSelected: selected?.kind === 'actor' && selected.id === actor.id,
+            });
+            const isSel = selected?.kind === 'actor' && selected.id === actor.id;
+            const subNote = entry.note || (actor.location.kind === 'pin' ? actor.location.place : actor.location.label);
+            actorLabels.push({
+                id: actor.id,
+                name: actor.name,
+                note: subNote,
+                x: pt[0],
+                y: pt[1],
+                r,
+                preferredSide: entry.preferredSide || 'r',
+                hidden: Boolean(entry.small && !isSel),
+                priority: isSel ? 200 : actor.level === 'regional' ? 95 : actor.level === 'state' ? 88 : 78,
+            });
+        }
+
+        // Subtle place markers from existing map.locations not already plotted cleanly as step actors
+        const extraPlaces = [];
+        const stepPlaceThresholdDeg = 0.08;
+        for (const loc of mapLocations || []) {
+            if (!Number.isFinite(Number(loc.latitude)) || !Number.isFinite(Number(loc.longitude))) continue;
+            const coord = [Number(loc.longitude), Number(loc.latitude)];
+            const matchesStepActor = [...actorPositions.keys()].some(id => {
+                const c = actorCoord(actorById.get(id));
+                return c && Math.hypot(c[0] - coord[0], c[1] - coord[1]) < stepPlaceThresholdDeg;
+            });
+            if (matchesStepActor || !isVisible(coord)) continue;
+            const pt = projection(coord);
+            if (!pt) continue;
+            extraPlaces.push({
+                loc,
+                x: pt[0],
+                y: pt[1],
+                isSelected: selected?.kind === 'place' && selected.id === loc.label,
+            });
+        }
+
+        const linkItems = [];
+        const linkLabelRequests = [];
+        for (const cid of step.connections || []) {
+            const conn = connById.get(cid);
+            if (!conn) continue;
+            const a = actorPositions.get(conn.from);
+            const b = actorPositions.get(conn.to);
+            if (!a || !b) continue;
+            const fromActor = actorById.get(conn.from);
+            const fromFloating = fromActor?.location?.kind === 'noSinglePlace';
+            const padA = fromFloating ? 4 : ((stepActorMap.get(conn.from)?.small ? 4 : NODE_RADIUS[fromActor?.level] || 7) + 4);
+            const padB = (stepActorMap.get(conn.to)?.small ? 4 : NODE_RADIUS[actorById.get(conn.to)?.level] || 7) + 5;
+            const dx = b[0] - a[0];
+            const dy = b[1] - a[1];
+            const len = Math.hypot(dx, dy) || 1;
+            const ctrl = fromFloating
+                ? [a[0] + dx * 0.14, a[1] + dy * 0.72]
+                : [(a[0] + b[0]) / 2 - (dy / len) * (conn.side || 0.16) * len, (a[1] + b[1]) / 2 + (dx / len) * (conn.side || 0.16) * len];
+            const trim = (p, toward, pad) => {
+                const vx = toward[0] - p[0];
+                const vy = toward[1] - p[1];
+                const vl = Math.hypot(vx, vy) || 1;
+                return [p[0] + (vx / vl) * pad, p[1] + (vy / vl) * pad];
+            };
+            const a2 = trim(a, ctrl, padA);
+            const b2 = trim(b, ctrl, padB);
+            const quadAt = t => [
+                (1 - t) * (1 - t) * a2[0] + 2 * (1 - t) * t * ctrl[0] + t * t * b2[0],
+                (1 - t) * (1 - t) * a2[1] + 2 * (1 - t) * t * ctrl[1] + t * t * b2[1],
+            ];
+            const isSel = selected?.kind === 'connection' && selected.id === conn.id;
+            linkItems.push({
+                conn,
+                d: `M${a2[0]},${a2[1]} Q${ctrl[0]},${ctrl[1]} ${b2[0]},${b2[1]}`,
+                isRelated: isRelatedItem(selected, 'connection', conn.id, step, connById),
+                isSelected: isSel,
+            });
+            linkLabelRequests.push({
+                id: conn.id,
+                label: conn.label,
+                priority: isSel ? 180 : conn.type === 'pressure' ? 68 : 60,
+                hidden: Boolean((step.quietLabels && !isSel) || len < 48),
+                candidates: [0.5, 0.4, 0.6, 0.34, 0.66].map(t => {
+                    const p = quadAt(t);
+                    return { x: p[0], y: p[1] - 10 };
+                }),
+            });
+        }
+
+        const countryLabelRequests = view.half < 36
+            ? (actorMap?.contextLabels || [])
+                .filter(item => {
+                    const c = [item.longitude, item.latitude];
+                    return isVisible(c);
+                })
+                .map(item => {
+                    const p = projection([item.longitude, item.latitude]);
+                    return p ? { name: item.name, x: p[0], y: p[1] } : null;
+                })
+                .filter(Boolean)
+            : [];
+
+        const reservedBoxes = [
+            { x0: 6, y0: height - 122, x1: 146, y1: height - 6 }, // bottom-left levels overlay
+        ];
+        if (hasFloating) {
+            reservedBoxes.push({ x0: 8, y0: 4, x1: Math.min(width - 8, 250), y1: 20 });
+        }
+
+        const solvedLabels = solveActorMapLabels({
+            width,
+            height,
+            markers: markers.map(m => ({ id: m.actor.id, x: m.x, y: m.y, r: m.r })),
+            floatingBadges: floatingSlots,
+            actorLabels,
+            linkLabels: linkLabelRequests,
+            countryLabels: countryLabelRequests,
+            reservedBoxes,
+            padding: 8,
+        });
+
+        return {
+            width,
+            height,
+            hasFloating,
+            pathGen,
+            graticule,
+            sphereDisc,
+            blocSet,
+            activeCountries,
+            floatingSlots,
+            markers,
+            extraPlaces,
+            linkItems,
+            solvedLabels,
+        };
+    }, [step, box, view, floatingActors, actorMap, actorById, connById, mapLocations, selected]);
+
+    if (!actorMap || !step || !scene) return null;
+
+    const glowId = `flat-glow-${uid}`;
+    const onActivateKey = (e, fn) => {
+        if (e.key === 'Enter' || e.key === ' ') {
+            e.preventDefault();
+            fn();
+        }
+    };
+
+    return (
+        <div ref={wrapRef} className="actor-map-canvas actor-map-canvas--flat">
+            <svg
+                className="actor-flat-svg"
+                viewBox={`0 0 ${scene.width} ${scene.height}`}
+                role="img"
+                aria-label={`Interactive flat actor map for ${step.key === 'all' ? 'All steps' : `Step ${step.key}`}: ${actorMap.focusCountry}. Use the Connections list below or tab through markers to inspect sources.`}
+            >
+                <defs>
+                    <radialGradient id={glowId} cx="50%" cy="50%" r="50%">
+                        <stop offset="80%" stopColor="rgba(103,213,245,0)" />
+                        <stop offset="100%" stopColor="rgba(103,213,245,0.22)" />
+                    </radialGradient>
+                    {['conflict', 'pressure', 'support', 'movement'].map(type => (
+                        <marker
+                            key={type}
+                            id={`flat-arr-${uid}-${type}`}
+                            viewBox="0 0 10 10"
+                            refX="8.5"
+                            refY="5"
+                            markerWidth="8"
+                            markerHeight="8"
+                            orient="auto-start-reverse"
+                            markerUnits="userSpaceOnUse"
+                        >
+                            <path d="M0,1.2 L9,5 L0,8.8 z" fill={TYPE_COLORS[type]} />
+                        </marker>
+                    ))}
+                </defs>
+
+                <path d={scene.sphereDisc} className="flat-sphere" />
+                <path d={scene.graticule} className="flat-graticule" />
+                <g>
+                    {(countries || []).map(feat => {
+                        const name = feat.properties?.name;
+                        const isFocus = name === actorMap.focusCountry;
+                        const isBloc = !isFocus && scene.blocSet.has(name);
+                        const isArea = !isFocus && !isBloc && scene.activeCountries.has(name);
+                        const d = scene.pathGen(feat);
+                        if (!d) return null;
+                        return (
+                            <path
+                                key={feat.id ?? name}
+                                d={d}
+                                className={`flat-country${isFocus ? ' is-focus' : ''}${isBloc ? ' is-bloc' : ''}${isArea ? ' is-area' : ''}`}
+                            />
+                        );
+                    })}
+                </g>
+                <path d={scene.sphereDisc} fill={`url(#${glowId})`} pointerEvents="none" />
+                <path d={scene.sphereDisc} className="flat-rim" />
+
+                {scene.hasFloating && (
+                    <g pointerEvents="none">
+                        <text className="flat-rail-title" x={12} y={16}>
+                            {scene.width < 520 ? 'Global · no single place' : 'Global actors · no single place on the map'}
+                        </text>
+                    </g>
+                )}
+
+                <g>
+                    {Array.from(scene.solvedLabels.countries.entries()).map(([name, pos]) => (
+                        pos.visible ? (
+                            <text key={name} x={pos.x} y={pos.y} className="flat-country-label">
+                                {name}
+                            </text>
+                        ) : null
+                    ))}
+                </g>
+
+                <g>
+                    {scene.linkItems.map(item => {
+                        const placed = scene.solvedLabels.links.get(item.conn.id);
+                        return (
+                            <g
+                                key={item.conn.id}
+                                role="button"
+                                tabIndex={0}
+                                aria-label={`${item.conn.type}: ${item.conn.label}`}
+                                aria-pressed={item.isSelected}
+                                className={`flat-link type-${item.conn.type}${item.isSelected ? ' is-sel' : ''}${!item.isRelated ? ' is-dim' : ''}${reducedMotion ? ' no-anim' : ''}`}
+                                style={{ '--c': TYPE_COLORS[item.conn.type] }}
+                                onClick={() => onSelect?.('connection', item.conn.id)}
+                                onKeyDown={e => onActivateKey(e, () => onSelect?.('connection', item.conn.id))}
+                            >
+                                <path d={item.d} className="flat-link-hit" />
+                                <path
+                                    d={item.d}
+                                    className="flat-link-line"
+                                    markerEnd={`url(#flat-arr-${uid}-${item.conn.type})`}
+                                />
+                                {placed?.visible && placed.candidate && (
+                                    <text x={placed.candidate.x} y={placed.candidate.y} className="flat-link-label">
+                                        {item.conn.label}
+                                    </text>
+                                )}
+                            </g>
+                        );
+                    })}
+                </g>
+
+                <g>
+                    {scene.extraPlaces.map(({ loc, x, y, isSelected }) => (
+                        <g
+                            key={`place-${loc.label}`}
+                            role="button"
+                            tabIndex={0}
+                            transform={`translate(${x},${y})`}
+                            aria-label={`Mapped place: ${loc.label}`}
+                            aria-pressed={isSelected}
+                            className={`flat-place-pin${isSelected ? ' is-sel' : ''}`}
+                            onClick={() => onSelect?.('place', loc.label)}
+                            onKeyDown={e => onActivateKey(e, () => onSelect?.('place', loc.label))}
+                        >
+                            <circle r="11" fill="transparent" />
+                            <rect x="-3.5" y="-3.5" width="7" height="7" transform="rotate(45)" className="flat-place-diamond" />
+                            <text y="14" className="flat-place-label">{loc.label}</text>
+                        </g>
+                    ))}
+                </g>
+
+                <g>
+                    {scene.markers.map(m => {
+                        const placed = scene.solvedLabels.actors.get(m.actor.id);
+                        const color = LEVEL_COLORS[m.actor.level] || '#67d5f5';
+                        return (
+                            <g
+                                key={m.actor.id}
+                                role="button"
+                                tabIndex={0}
+                                transform={`translate(${m.x},${m.y})`}
+                                aria-label={`${m.actor.name}, ${m.actor.level} level`}
+                                aria-pressed={m.isSelected}
+                                className={`flat-node level-${m.actor.level}${m.isSelected ? ' is-sel' : ''}${!m.isRelated ? ' is-dim' : ''}`}
+                                style={{ '--c': color }}
+                                onClick={() => onSelect?.('actor', m.actor.id)}
+                                onKeyDown={e => onActivateKey(e, () => onSelect?.('actor', m.actor.id))}
+                            >
+                                <circle r={Math.max(14, m.r + 6)} fill="transparent" />
+                                {!step.quietLabels && !reducedMotion && <circle r={m.r} className="flat-node-pulse" />}
+                                {!step.quietLabels && <circle r={m.r + 4} className="flat-node-halo" />}
+                                <circle r={m.r} className="flat-node-core" />
+                                {placed?.visible && renderFlatActorLabel(m, placed)}
+                            </g>
+                        );
+                    })}
+                </g>
+
+                <g>
+                    {scene.floatingSlots.map(slot => {
+                        const isSel = selected?.kind === 'actor' && selected.id === slot.actor.id;
+                        const isRel = isRelatedItem(selected, 'actor', slot.actor.id, step, connById);
+                        return (
+                            <g
+                                key={slot.actor.id}
+                                role="button"
+                                tabIndex={0}
+                                transform={`translate(${slot.cx},${slot.cy})`}
+                                aria-label={`${slot.actor.name}, global level, no single place`}
+                                aria-pressed={isSel}
+                                className={`flat-node level-global flat-badge${isSel ? ' is-sel' : ''}${!isRel ? ' is-dim' : ''}`}
+                                style={{ '--c': LEVEL_COLORS.global }}
+                                onClick={() => onSelect?.('actor', slot.actor.id)}
+                                onKeyDown={e => onActivateKey(e, () => onSelect?.('actor', slot.actor.id))}
+                            >
+                                <rect x={-slot.w / 2} y={-slot.h / 2} width={slot.w} height={slot.h} rx={slot.h / 2} className="flat-badge-rect" />
+                                <text y="4" className="flat-badge-text">{slot.actor.name}</text>
+                            </g>
+                        );
+                    })}
+                </g>
+            </svg>
+        </div>
+    );
+}
+
+function renderFlatActorLabel(m, placed) {
+    const off = m.r + 8;
+    let x = 0;
+    let y = 0;
+    let anchor = 'middle';
+
+    if (placed.side === 'r') { x = off; y = -2; anchor = 'start'; }
+    else if (placed.side === 'l') { x = -off; y = -2; anchor = 'end'; }
+    else if (placed.side === 't') { x = 0; y = -off - (placed.showNote ? 14 : 2); anchor = 'middle'; }
+    else if (placed.side === 'b') { x = 0; y = off + 10; anchor = 'middle'; }
+    else if (placed.side === 'tr') { x = off * 0.85; y = -off * 0.7; anchor = 'start'; }
+    else if (placed.side === 'tl') { x = -off * 0.85; y = -off * 0.7; anchor = 'end'; }
+    else if (placed.side === 'br') { x = off * 0.85; y = off * 0.85; anchor = 'start'; }
+    else { x = -off * 0.85; y = off * 0.85; anchor = 'end'; }
+
+    const noteText = placed.showNote
+        ? (m.entry.note || (m.actor.location.kind === 'pin' ? m.actor.location.place : m.actor.location.label))
+        : '';
+
+    return (
+        <g pointerEvents="none">
+            <text x={x} y={y} textAnchor={anchor} className="flat-node-name">{m.actor.name}</text>
+            {noteText && <text x={x} y={y + 12} textAnchor={anchor} className="flat-node-sub">{noteText}</text>}
+        </g>
+    );
+}
+
+function isRelatedItem(selected, kind, id, step, connById) {
+    if (!selected) return true;
+    if (selected.kind === 'place') return false;
+    if (selected.kind === 'connection') {
+        if (kind === 'connection') return id === selected.id;
+        const c = connById.get(selected.id);
+        return c ? (id === c.from || id === c.to) : false;
+    }
+    if (selected.kind === 'actor') {
+        if (kind === 'actor') {
+            if (id === selected.id) return true;
+            return (step.connections || []).some(cid => {
+                const c = connById.get(cid);
+                return c && ((c.from === selected.id && c.to === id) || (c.to === selected.id && c.from === id));
+            });
+        }
+        const c = connById.get(id);
+        return c ? (c.from === selected.id || c.to === selected.id) : false;
+    }
+    return true;
+}

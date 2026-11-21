@@ -6,6 +6,7 @@ import { categoryColors, getAccessibleTextAccent, getCaseReviewNotice, isReviewO
 import { indexSourceHealth, shouldPreferAlternate, sourceHealthLabel } from './sourceHealth.mjs';
 import CaseLocatorMap from './components/CaseLocatorMap';
 import PrintErrorBoundary from './components/PrintErrorBoundary';
+import CaseActorMap, { ActorMapSidePanel } from './components/CaseActorMap';
 import {
     buildSourceByNumber,
     buildSourceIndex,
@@ -116,6 +117,11 @@ export default function GuidedBriefings({
 
     const [tourId, setTourId] = useState(() => resolveInitialTour(allTours, activeTours, initialTourId, initialNodeId)?.id);
     const [stepIndex, setStepIndex] = useState(() => resolveStepIndex(allTours, activeTours, initialTourId, initialNodeId, initialStep));
+    const [showAllView, setShowAllView] = useState(() => {
+        const initTour = resolveInitialTour(allTours, activeTours, initialTourId, initialNodeId);
+        return Boolean(initTour?.actorMap && initialStep === 'all');
+    });
+    const [mapSelected, setMapSelected] = useState(null);
     const [librarySearch, setLibrarySearch] = useState('');
     const [regionFilter, setRegionFilter] = useState('all');
     const [issueFilter, setIssueFilter] = useState('all');
@@ -195,11 +201,17 @@ export default function GuidedBriefings({
         if (!matched) return;
         setTourId(matched.id);
         setStepIndex(resolveStepIndex(allTours, activeTours, matched.id, initialNodeId, initialStep));
+        setShowAllView(Boolean(matched.actorMap && initialStep === 'all'));
+        setMapSelected(null);
     }, [allTours, activeTours, initialTourId, initialNodeId, initialStep]);
 
     useEffect(() => {
         setVisibleCaseCount(INITIAL_LIBRARY_COUNT);
     }, [librarySearch, regionFilter, issueFilter]);
+
+    useEffect(() => {
+        setMapSelected(null);
+    }, [stepIndex, showAllView, tour?.id]);
 
     useEffect(() => {
         const activeStep = progressRef.current?.querySelector('.active');
@@ -210,31 +222,56 @@ export default function GuidedBriefings({
             block: 'nearest',
             inline: 'center',
         });
-    }, [stepIndex, tour?.id]);
+    }, [stepIndex, showAllView, tour?.id]);
 
     useEffect(() => {
         if (!tour) return;
+        const isAll = Boolean(tour.actorMap && showAllView);
+        const stepParam = isAll ? 'all' : String(stepIndex + 1);
         const url = new URL(window.location.href);
         url.searchParams.set('view', 'briefings');
         url.searchParams.set('tour', tour.id);
-        url.searchParams.set('step', String(stepIndex + 1));
+        url.searchParams.set('step', stepParam);
         url.searchParams.delete('actor');
-        window.history.replaceState({ view: 'briefings', tour: tour.id, step: stepIndex + 1 }, '', url);
-        onRouteChange?.({ tourId: tour.id, nodeId: tour.waypoints[stepIndex]?.nodeId, step: stepIndex + 1 });
-    }, [tour, stepIndex, onRouteChange]);
+        window.history.replaceState({ view: 'briefings', tour: tour.id, step: stepParam }, '', url);
+        onRouteChange?.({ tourId: tour.id, nodeId: tour.waypoints[stepIndex]?.nodeId, step: stepParam });
+    }, [tour, stepIndex, showAllView, onRouteChange]);
 
     if (!tour || !waypoint) return <div className="briefings-empty">No guided briefings are available.</div>;
+
+    const hasActorMap = Boolean(tour.actorMap);
+    const isAllStep = hasActorMap && showAllView;
+    const activeMapStepKey = isAllStep ? 'all' : String(stepIndex + 1);
+    const allStepMeta = hasActorMap ? tour.actorMap.steps?.find(item => item.key === 'all') : null;
 
     const chooseTour = id => {
         setTourId(id);
         setStepIndex(0);
+        setShowAllView(false);
+        setMapSelected(null);
         if (isNarrowLibraryViewport()) {
             setLibraryOpen(false);
             window.requestAnimationFrame(() => stageHeadingRef.current?.focus());
         }
     };
 
-    const move = delta => setStepIndex(index => Math.min(Math.max(index + delta, 0), tour.waypoints.length - 1));
+    const move = delta => {
+        if (delta > 0) {
+            if (isAllStep) return;
+            if (stepIndex === tour.waypoints.length - 1 && hasActorMap) {
+                setShowAllView(true);
+            } else {
+                setStepIndex(index => Math.min(index + 1, tour.waypoints.length - 1));
+            }
+            return;
+        }
+        if (isAllStep) {
+            setShowAllView(false);
+            setStepIndex(tour.waypoints.length - 1);
+            return;
+        }
+        setStepIndex(index => Math.max(index - 1, 0));
+    };
 
     const handleJumpToSource = (event, number, src) => {
         event?.preventDefault?.();
@@ -483,7 +520,9 @@ export default function GuidedBriefings({
                             ))}
                         </div>
                     </div>
-                    <div className="briefing-progress-label">STEP {stepIndex + 1} / {tour.waypoints.length}</div>
+                    <div className="briefing-progress-label">
+                        {isAllStep ? 'ALL STEPS' : `STEP ${stepIndex + 1} / ${tour.waypoints.length}`}
+                    </div>
                 </header>
 
                 {reviewNotice && (
@@ -510,69 +549,137 @@ export default function GuidedBriefings({
                     </div>
                 )}
 
-                <nav className="briefing-stepnav" aria-label={`Step navigation (${stepIndex + 1} of ${tour.waypoints.length})`}>
+                <nav className="briefing-stepnav" aria-label={`Step navigation (${isAllStep ? 'All' : `${stepIndex + 1} of ${tour.waypoints.length}`})`}>
                     <button
                         type="button"
                         className="briefing-stepnav-arrow"
-                        onClick={() => { if (stepIndex > 0) move(-1); }}
-                        aria-disabled={stepIndex === 0}
+                        onClick={() => { if (isAllStep || stepIndex > 0) move(-1); }}
+                        aria-disabled={!isAllStep && stepIndex === 0}
                         aria-label="Previous step"
                     >
                         ←<span className="stepnav-word"> Prev</span>
                     </button>
                     <div ref={progressRef} className="briefing-progress">
-                        {tour.waypoints.map((item, index) => (
+                        {tour.waypoints.map((item, index) => {
+                            const isCurrent = !isAllStep && index === stepIndex;
+                            const isPast = isAllStep || index < stepIndex;
+                            return (
+                                <button
+                                    key={`${item.nodeId}-${index}`}
+                                    type="button"
+                                    className={isCurrent ? 'active' : isPast ? 'complete' : ''}
+                                    onClick={() => { setShowAllView(false); setStepIndex(index); }}
+                                    aria-label={`Go to step ${index + 1}: ${item.title}`}
+                                    aria-current={isCurrent ? 'step' : undefined}
+                                >
+                                    <span>{index + 1}</span>
+                                    <small>{item.perspectiveLabel || BRIEFING_ACTORS[item.nodeId]?.shortName || item.nodeId}</small>
+                                </button>
+                            );
+                        })}
+                        {hasActorMap && (
                             <button
-                                key={`${item.nodeId}-${index}`}
+                                key="step-all"
                                 type="button"
-                                className={index === stepIndex ? 'active' : index < stepIndex ? 'complete' : ''}
-                                onClick={() => setStepIndex(index)}
-                                aria-label={`Go to step ${index + 1}: ${item.title}`}
-                                aria-current={index === stepIndex ? 'step' : undefined}
+                                className={`is-all${isAllStep ? ' active' : ''}`}
+                                onClick={() => setShowAllView(true)}
+                                aria-label="Show all actors and connections on the globe"
+                                aria-current={isAllStep ? 'step' : undefined}
                             >
-                                <span>{index + 1}</span>
-                                <small>{item.perspectiveLabel || BRIEFING_ACTORS[item.nodeId]?.shortName || item.nodeId}</small>
+                                <span>All</span>
+                                <small>Every level</small>
                             </button>
-                        ))}
+                        )}
                     </div>
                     <button
                         type="button"
                         className="briefing-stepnav-arrow"
-                        onClick={() => { if (stepIndex < tour.waypoints.length - 1) move(1); }}
-                        aria-disabled={stepIndex === tour.waypoints.length - 1}
+                        onClick={() => { if (!isAllStep && (stepIndex < tour.waypoints.length - 1 || hasActorMap)) move(1); }}
+                        aria-disabled={isAllStep || (!hasActorMap && stepIndex === tour.waypoints.length - 1)}
                         aria-label="Next step"
                     >
                         <span className="stepnav-word">Next </span>→
                     </button>
                 </nav>
 
-                <div className="briefing-focus-card">
-                    <div className="briefing-visual" style={{ '--actor-color': actor?.color || tour.color }}>
-                        <CaseLocatorMap map={tour.map} color={tour.color} title={tour.title} />
-                        <div className="briefing-perspective-chip">
-                            <span className={`briefing-perspective-type type-${waypoint.perspectiveType || 'other'}`}>
-                                {waypoint.perspectiveType || actor?.type || 'Perspective'}
-                            </span>
-                            <strong>{perspectiveLabel}</strong>
+                {hasActorMap ? (
+                    <div className="briefing-actor-stage">
+                        <div className="actor-stage-mapcol">
+                            <CaseActorMap
+                                actorMap={tour.actorMap}
+                                mapLocations={tour.map?.locations || []}
+                                activeStepKey={activeMapStepKey}
+                                selected={mapSelected}
+                                onSelect={setMapSelected}
+                                sourceIndex={sourceIndex}
+                                onJumpToSource={handleJumpToSource}
+                            />
+                        </div>
+                        <div className="actor-stage-readingcol">
+                            {isAllStep ? (
+                                <div className="actor-all-summary">
+                                    <span className="briefing-step-label">All steps · Every scale</span>
+                                    <h2>The whole picture</h2>
+                                    <p>{allStepMeta?.summary || tour.whyItMatters}</p>
+                                </div>
+                            ) : (
+                                <div className="briefing-narrative">
+                                    <span className="briefing-step-label">{perspectiveLabel} · {waypoint.title}</span>
+                                    <h2>{waypoint.title}</h2>
+                                    {waypoint.conceptInFocus && (
+                                        <span className="briefing-chip briefing-concept-focus">
+                                            Concept in focus · {waypoint.conceptInFocus}
+                                        </span>
+                                    )}
+                                    <StepNarration
+                                        key={`${tour.id}-${stepIndex}`}
+                                        narration={waypoint.narration}
+                                        sourceByNumber={sourceByNumber}
+                                        onJumpToSource={handleJumpToSource}
+                                    />
+                                    {waypoint.focusQuestion && <blockquote>{waypoint.focusQuestion}</blockquote>}
+                                </div>
+                            )}
+                            <ActorMapSidePanel
+                                actorMap={tour.actorMap}
+                                mapLocations={tour.map?.locations || []}
+                                activeStepKey={activeMapStepKey}
+                                selected={mapSelected}
+                                onSelect={setMapSelected}
+                                sourceIndex={sourceIndex}
+                                onJumpToSource={handleJumpToSource}
+                            />
                         </div>
                     </div>
-                    <div className="briefing-narrative">
-                        <span className="briefing-step-label">{perspectiveLabel} · {waypoint.title}</span>
-                        <h2>{waypoint.title}</h2>
-                        {waypoint.conceptInFocus && (
-                            <span className="briefing-chip briefing-concept-focus">
-                                Concept in focus · {waypoint.conceptInFocus}
-                            </span>
-                        )}
-                        <StepNarration
-                            key={`${tour.id}-${stepIndex}`}
-                            narration={waypoint.narration}
-                            sourceByNumber={sourceByNumber}
-                            onJumpToSource={handleJumpToSource}
-                        />
-                        {waypoint.focusQuestion && <blockquote>{waypoint.focusQuestion}</blockquote>}
+                ) : (
+                    <div className="briefing-focus-card">
+                        <div className="briefing-visual" style={{ '--actor-color': actor?.color || tour.color }}>
+                            <CaseLocatorMap map={tour.map} color={tour.color} title={tour.title} />
+                            <div className="briefing-perspective-chip">
+                                <span className={`briefing-perspective-type type-${waypoint.perspectiveType || 'other'}`}>
+                                    {waypoint.perspectiveType || actor?.type || 'Perspective'}
+                                </span>
+                                <strong>{perspectiveLabel}</strong>
+                            </div>
+                        </div>
+                        <div className="briefing-narrative">
+                            <span className="briefing-step-label">{perspectiveLabel} · {waypoint.title}</span>
+                            <h2>{waypoint.title}</h2>
+                            {waypoint.conceptInFocus && (
+                                <span className="briefing-chip briefing-concept-focus">
+                                    Concept in focus · {waypoint.conceptInFocus}
+                                </span>
+                            )}
+                            <StepNarration
+                                key={`${tour.id}-${stepIndex}`}
+                                narration={waypoint.narration}
+                                sourceByNumber={sourceByNumber}
+                                onJumpToSource={handleJumpToSource}
+                            />
+                            {waypoint.focusQuestion && <blockquote>{waypoint.focusQuestion}</blockquote>}
+                        </div>
                     </div>
-                </div>
+                )}
 
                 <KeyFigures figures={tour.keyFigures} sourceIndex={sourceIndex} />
                 <InfluenceCheck stages={tour.influenceCheck} sourceIndex={sourceIndex} />
@@ -630,8 +737,8 @@ export default function GuidedBriefings({
                 </div>
 
                 <footer className="briefing-controls">
-                    <button type="button" onClick={() => { if (stepIndex > 0) move(-1); }} aria-disabled={stepIndex === 0}>← Previous</button>
-                    <button type="button" onClick={() => { if (stepIndex < tour.waypoints.length - 1) move(1); }} aria-disabled={stepIndex === tour.waypoints.length - 1}>Next →</button>
+                    <button type="button" onClick={() => { if (isAllStep || stepIndex > 0) move(-1); }} aria-disabled={!isAllStep && stepIndex === 0}>← Previous</button>
+                    <button type="button" onClick={() => { if (!isAllStep && (stepIndex < tour.waypoints.length - 1 || hasActorMap)) move(1); }} aria-disabled={isAllStep || (!hasActorMap && stepIndex === tour.waypoints.length - 1)}>Next →</button>
                 </footer>
             </div>
             {printJob && (
