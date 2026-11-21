@@ -633,7 +633,6 @@
 
 .briefing-controls button:disabled,
 .briefing-controls button[aria-disabled="true"] { opacity: .42; cursor: not-allowed; }
-.briefing-controls .briefing-explore { border-color: var(--tour-color); color: var(--tour-text-color, var(--tour-color)); background: color-mix(in srgb, var(--tour-color) 10%, var(--briefing-surface)); }
 
 .briefings-empty {
     display: grid;
@@ -692,11 +691,10 @@
 
     .briefing-controls {
         display: grid;
-        grid-template-columns: 1fr 1fr;
+        grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
     }
 
     .briefing-controls button { width: 100%; }
-    .briefing-controls .briefing-explore { grid-column: 1 / -1; grid-row: 1; }
 }
 
 @media (max-width: 480px) {
@@ -704,8 +702,6 @@
     .briefing-library-close { grid-column: 1; grid-row: auto; width: 100%; margin-bottom: 16px; justify-content: center; }
     .briefing-library-heading p { grid-column: 1; }
     .briefing-stage-header h1 { font-size: 1.65rem; }
-    .briefing-controls { grid-template-columns: 1fr; }
-    .briefing-controls .briefing-explore { grid-column: 1; }
 }
 
 @media (prefers-reduced-motion: reduce) {

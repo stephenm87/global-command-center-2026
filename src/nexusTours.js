@@ -1,6 +1,6 @@
 /**
  * Guided Briefings are projected from the canonical, source-aware case-study
- * records so the feed, evidence panel, and Nexus never drift into separate
+ * records so the feed, evidence panel, and briefings never drift into separate
  * versions of the same current claim.
  */
 import { CASE_STUDIES_2026, ARCHIVED_CASE_STUDIES_2026 } from './caseStudies2026';

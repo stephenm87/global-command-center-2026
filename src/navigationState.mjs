@@ -1,6 +1,6 @@
-import { resolveActorId } from './nexus/actorIds.js';
+import { resolveActorId } from './briefingActors.js';
 
-export const VIEW_MODES = Object.freeze(['globe', 'briefings', 'nexus']);
+export const VIEW_MODES = Object.freeze(['globe', 'briefings']);
 
 export const categoryColors = Object.freeze({
     'Geopolitics & Conflict': '#ff0066',
@@ -58,6 +58,7 @@ export const THEORY_LABELS = Object.freeze({
 
 export function parseViewFromSearch(search = '') {
     const requested = new URLSearchParams(search).get('view');
+    if (requested === 'nexus') return 'briefings';
     return VIEW_MODES.includes(requested) ? requested : 'globe';
 }
 
