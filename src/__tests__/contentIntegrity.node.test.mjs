@@ -49,6 +49,9 @@ test('curated case studies remain balanced across 7 regions x 6 lenses, auditabl
             IB_THEMATIC_STUDIES,
             INFLUENCE_CHECK_STAGES,
             INFLUENCE_RATINGS,
+            ACTOR_MAP_LEVELS,
+            ACTOR_MAP_CONNECTION_TYPES,
+            ACTOR_MAP_LOCATION_KINDS,
             countWords,
             computeBriefingReadingTimes,
             addDays,
@@ -628,5 +631,139 @@ test('curated case studies remain balanced across 7 regions x 6 lenses, auditabl
 
         const times = computeBriefingReadingTimes(item);
         assert.ok(times.fullMinutes >= times.quickMinutes && times.quickMinutes >= 1);
+    }
+
+    // Actor map pilot validation (Step 4a: Somaliland and Myanmar only)
+    const PILOT_ACTOR_MAP_IDS = ['myanmar-fragmented-sovereignty', 'somaliland-recognition-red-sea-order'];
+    const actorLevelSet = new Set(ACTOR_MAP_LEVELS);
+    const connTypeSet = new Set(ACTOR_MAP_CONNECTION_TYPES);
+    const locationKindSet = new Set(ACTOR_MAP_LOCATION_KINDS);
+    const countries50mPath = path.join(REPO_ROOT, 'public/assets/actor-map/countries-50m.json');
+    assert.ok(fs.existsSync(countries50mPath), 'public/assets/actor-map/countries-50m.json must exist for 3D actor maps');
+    const countries50mNames = new Set(
+        JSON.parse(fs.readFileSync(countries50mPath, 'utf8')).objects.countries.geometries.map(g => g.properties.name),
+    );
+    const globalHqCitiesRegex = /\b(?:new york|geneva|brussels|washington|vienna|the hague|nairobi|strasbourg)\b/i;
+
+    for (const item of ALL_CASE_STUDIES_2026) {
+        if (PILOT_ACTOR_MAP_IDS.includes(item.id)) {
+            assert.ok(item.actorMap && typeof item.actorMap === 'object', `Pilot case ${item.id} must define actorMap`);
+        } else {
+            assert.equal(item.actorMap, undefined, `Non-pilot case ${item.id} must not add actorMap during pilot stage`);
+        }
+    }
+
+    for (const pilotId of PILOT_ACTOR_MAP_IDS) {
+        const item = byId.get(pilotId);
+        const actorMap = item.actorMap;
+        const validUrls = new Set([
+            ...item.sources.map(source => source.url),
+            ...item.supplementalSources.map(source => source.url),
+        ]);
+        assert.ok(countries50mNames.has(actorMap.focusCountry), `${pilotId} focusCountry "${actorMap.focusCountry}" must match countries-50m.json`);
+        assert.ok(Array.isArray(actorMap.terrainPatches) && actorMap.terrainPatches.length >= 1, `${pilotId} actorMap needs static terrainPatches`);
+        for (const patch of actorMap.terrainPatches) {
+            const assetPath = path.join(REPO_ROOT, 'public', patch.url.replace(/^\//, ''));
+            assert.ok(fs.existsSync(assetPath), `${pilotId} terrainPatch asset ${patch.url} must exist in public/`);
+            assert.equal(patch.bounds.length, 4, `${pilotId} terrainPatch bounds must have [w, s, e, n]`);
+        }
+        assertNonEmptyString(actorMap.bloc?.name, `${pilotId} bloc needs name`);
+        assert.ok(Array.isArray(actorMap.bloc?.members) && actorMap.bloc.members.length > 0, `${pilotId} bloc needs members`);
+        for (const member of actorMap.bloc.members) {
+            assert.ok(countries50mNames.has(member), `${pilotId} bloc member "${member}" must match countries-50m.json`);
+        }
+
+        const actorIds = new Set();
+        assert.ok(Array.isArray(actorMap.actors) && actorMap.actors.length >= 4, `${pilotId} actorMap needs at least 4 actors`);
+        for (const actor of actorMap.actors) {
+            assertNonEmptyString(actor.id, `${pilotId} actor missing id`);
+            assert.ok(!actorIds.has(actor.id), `${pilotId} repeats actor id "${actor.id}"`);
+            actorIds.add(actor.id);
+            assertNonEmptyString(actor.name, `${pilotId} actor "${actor.id}" missing name`);
+            assert.ok(actorLevelSet.has(actor.level), `${pilotId} actor "${actor.id}" invalid level "${actor.level}"`);
+            assertNonEmptyString(actor.role, `${pilotId} actor "${actor.id}" missing role`);
+            assert.ok(validUrls.has(actor.sourceUrl), `${pilotId} actor "${actor.id}" sourceUrl "${actor.sourceUrl}" not in case sources`);
+            assert.doesNotMatch(
+                `${actor.name} ${actor.role} ${actor.location?.place || ''} ${actor.location?.label || ''}`,
+                CONTESTED_CAPITAL_PATTERN,
+                `${pilotId} actor "${actor.id}" must name state rather than contested capital`,
+            );
+
+            const loc = actor.location;
+            assert.ok(loc && locationKindSet.has(loc.kind), `${pilotId} actor "${actor.id}" must have exact location kind`);
+            if (loc.kind === 'pin') {
+                assertNonEmptyString(loc.place, `${pilotId} pin actor "${actor.id}" requires place name`);
+                assertNonEmptyString(loc.gazetteer, `${pilotId} pin actor "${actor.id}" requires gazetteer check citation`);
+                assert.ok(Number.isFinite(loc.latitude) && loc.latitude >= -90 && loc.latitude <= 90, `${pilotId} actor "${actor.id}" bad lat`);
+                assert.ok(Number.isFinite(loc.longitude) && loc.longitude >= -180 && loc.longitude <= 180, `${pilotId} actor "${actor.id}" bad lng`);
+                assert.equal(loc.countries, undefined, `${pilotId} pin actor "${actor.id}" cannot also define area countries`);
+                if (actor.level === 'global') {
+                    assert.doesNotMatch(`${loc.place} ${loc.gazetteer}`, globalHqCitiesRegex, `${pilotId} global actor "${actor.id}" must not pin HQ city`);
+                }
+            } else if (loc.kind === 'area') {
+                assertNonEmptyString(loc.label, `${pilotId} area actor "${actor.id}" requires label`);
+                assert.equal(loc.latitude, undefined, `${pilotId} area actor "${actor.id}" must not double as direct pin`);
+                if (Array.isArray(loc.countries)) {
+                    for (const country of loc.countries) {
+                        assert.ok(countries50mNames.has(country), `${pilotId} area actor "${actor.id}" country "${country}" missing from countries-50m.json`);
+                    }
+                }
+                assert.ok(
+                    loc.anchor && Number.isFinite(loc.anchor.latitude) && Number.isFinite(loc.anchor.longitude),
+                    `${pilotId} area actor "${actor.id}" requires anchor coordinates`,
+                );
+                assertNonEmptyString(loc.anchor.gazetteer, `${pilotId} area actor "${actor.id}" requires anchor gazetteer/centroid note`);
+            } else if (loc.kind === 'noSinglePlace') {
+                assert.equal(loc.place, undefined, `${pilotId} noSinglePlace actor "${actor.id}" must not specify place`);
+                assert.equal(loc.latitude, undefined, `${pilotId} noSinglePlace actor "${actor.id}" must not specify latitude`);
+                assert.equal(loc.longitude, undefined, `${pilotId} noSinglePlace actor "${actor.id}" must not specify longitude`);
+                assert.equal(loc.countries, undefined, `${pilotId} noSinglePlace actor "${actor.id}" must not specify countries`);
+                assert.equal(loc.anchor, undefined, `${pilotId} noSinglePlace actor "${actor.id}" must not specify anchor`);
+            }
+        }
+
+        assert.ok(
+            Array.isArray(actorMap.connections) && actorMap.connections.length >= 6 && actorMap.connections.length <= 10,
+            `${pilotId} actorMap must define 6 to 10 connections (got ${actorMap.connections?.length})`,
+        );
+        const connIds = new Set();
+        for (const conn of actorMap.connections) {
+            assertNonEmptyString(conn.id, `${pilotId} connection missing id`);
+            assert.ok(!connIds.has(conn.id), `${pilotId} repeats connection id "${conn.id}"`);
+            connIds.add(conn.id);
+            assert.ok(actorIds.has(conn.from), `${pilotId} connection "${conn.id}" unknown from "${conn.from}"`);
+            assert.ok(actorIds.has(conn.to), `${pilotId} connection "${conn.id}" unknown to "${conn.to}"`);
+            assert.notEqual(conn.from, conn.to, `${pilotId} connection "${conn.id}" cannot self-loop`);
+            assert.ok(connTypeSet.has(conn.type), `${pilotId} connection "${conn.id}" invalid type "${conn.type}"`);
+            assertNonEmptyString(conn.label, `${pilotId} connection "${conn.id}" missing label`);
+            assert.ok(countWords(conn.label) <= 4, `${pilotId} connection "${conn.id}" label "${conn.label}" exceeds 4 words`);
+            assertNonEmptyString(conn.text, `${pilotId} connection "${conn.id}" missing 1-sentence explanation`);
+            assert.ok(validUrls.has(conn.sourceUrl), `${pilotId} connection "${conn.id}" sourceUrl "${conn.sourceUrl}" not in case sources`);
+            assert.doesNotMatch(`${conn.label} ${conn.text}`, CONTESTED_CAPITAL_PATTERN, `${pilotId} connection "${conn.id}" names contested capital`);
+            assert.ok(Array.isArray(conn.steps) && conn.steps.includes('all'), `${pilotId} connection "${conn.id}" must appear in All view`);
+        }
+
+        const expectedStepKeys = [...item.waypoints.map((_, i) => String(i + 1)), 'all'];
+        assert.deepEqual(
+            (actorMap.steps || []).map(s => String(s.key)),
+            expectedStepKeys,
+            `${pilotId} actorMap.steps must match numbered waypoints 1..${item.waypoints.length} plus 'all'`,
+        );
+        for (const step of actorMap.steps) {
+            assertNonEmptyString(step.shortLabel, `${pilotId} step ${step.key} missing shortLabel`);
+            assert.ok(Array.isArray(step.levels) && step.levels.length > 0, `${pilotId} step ${step.key} needs levels`);
+            for (const lv of step.levels) assert.ok(actorLevelSet.has(lv), `${pilotId} step ${step.key} bad level ${lv}`);
+            assert.ok(step.cam && Number.isFinite(step.cam.lat) && Number.isFinite(step.cam.lng) && Number.isFinite(step.cam.dist) && Number.isFinite(step.cam.tilt), `${pilotId} step ${step.key} needs cam`);
+            const stepActorIds = new Set(step.actors.map(entry => entry.id));
+            for (const entry of step.actors) {
+                assert.ok(actorIds.has(entry.id), `${pilotId} step ${step.key} unknown actor "${entry.id}"`);
+            }
+            assert.ok(Array.isArray(step.connections) && step.connections.length > 0, `${pilotId} step ${step.key} needs connections`);
+            for (const cid of step.connections) {
+                assert.ok(connIds.has(cid), `${pilotId} step ${step.key} unknown connection "${cid}"`);
+                const conn = actorMap.connections.find(c => c.id === cid);
+                assert.ok(stepActorIds.has(conn.from) && stepActorIds.has(conn.to), `${pilotId} step ${step.key} connection "${cid}" endpoints must be present in step.actors`);
+            }
+        }
     }
 });

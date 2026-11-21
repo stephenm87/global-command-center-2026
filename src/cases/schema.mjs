@@ -111,6 +111,61 @@ export const INFLUENCE_RATINGS = Object.freeze([
     'WEAK',
 ]);
 
+export const ACTOR_MAP_LEVELS = Object.freeze([
+    'local',
+    'state',
+    'regional',
+    'global',
+]);
+
+export const ACTOR_MAP_CONNECTION_TYPES = Object.freeze([
+    'conflict',
+    'pressure',
+    'support',
+    'movement',
+]);
+
+export const ACTOR_MAP_LOCATION_KINDS = Object.freeze([
+    'pin',
+    'area',
+    'noSinglePlace',
+]);
+
+function cloneActorMap(actorMap) {
+    if (!actorMap || typeof actorMap !== 'object') return undefined;
+    return {
+        ...actorMap,
+        terrainPatches: (actorMap.terrainPatches || []).map(patch => ({
+            ...patch,
+            bounds: [...(patch.bounds || [])],
+        })),
+        bloc: actorMap.bloc ? {
+            ...actorMap.bloc,
+            members: [...(actorMap.bloc.members || [])],
+        } : undefined,
+        contextLabels: (actorMap.contextLabels || []).map(label => ({ ...label })),
+        actors: (actorMap.actors || []).map(actor => ({
+            ...actor,
+            location: actor.location ? {
+                ...actor.location,
+                ...(Array.isArray(actor.location.countries) ? { countries: [...actor.location.countries] } : {}),
+                ...(actor.location.anchor ? { anchor: { ...actor.location.anchor } } : {}),
+            } : undefined,
+        })),
+        connections: (actorMap.connections || []).map(conn => ({
+            ...conn,
+            steps: [...(conn.steps || [])],
+        })),
+        steps: (actorMap.steps || []).map(step => ({
+            ...step,
+            levels: [...(step.levels || [])],
+            cam: step.cam ? { ...step.cam } : undefined,
+            actors: (step.actors || []).map(entry => ({ ...entry })),
+            connections: [...(step.connections || [])],
+        })),
+    };
+}
+
 export const stripCitationMarkers = value => String(value || '')
     .replace(/\[\s*\d+(?:\s*,\s*\d+)*\s*\]/g, '')
     .replace(/\s+([,.;:!?])/g, '$1');
@@ -260,6 +315,7 @@ export function normalizeCaseStudy(caseStudy) {
         ...(Array.isArray(caseStudy.influenceCheck) ? { influenceCheck: caseStudy.influenceCheck.map(item => ({ ...item, sourceUrls: [...(item.sourceUrls || [])] })) } : {}),
         ...(caseStudy.conceptLens ? { conceptLens: { ...caseStudy.conceptLens } } : {}),
         ...(caseStudy.essayBuilder ? { essayBuilder: { ...caseStudy.essayBuilder, sourceUrls: [...(caseStudy.essayBuilder.sourceUrls || [])] } } : {}),
+        ...(caseStudy.actorMap ? { actorMap: cloneActorMap(caseStudy.actorMap) } : {}),
     };
 }
 
