@@ -137,14 +137,27 @@ function addCurvedPatch(globe, img, bounds, alt, order) {
     texture.anisotropy = maxAniso;
     texture.needsUpdate = true;
 
+    baseMesh.renderOrder = -20;
+
     const material = new MaterialCtor({ map: texture });
     material.side = 2;
+    material.transparent = true;
+    material.depthWrite = false;
     material.polygonOffset = true;
-    material.polygonOffsetFactor = -2 * order;
-    material.polygonOffsetUnits = -4 * order;
+    material.polygonOffsetFactor = -order;
+    material.polygonOffsetUnits = -2 * order;
+    material.onBeforeCompile = shader => {
+        shader.fragmentShader = shader.fragmentShader.replace(
+            '#include <map_fragment>',
+            `#include <map_fragment>
+             float patchEdgeX = smoothstep(0.0, 0.08, vMapUv.x) * smoothstep(1.0, 0.92, vMapUv.x);
+             float patchEdgeY = smoothstep(0.0, 0.08, vMapUv.y) * smoothstep(1.0, 0.92, vMapUv.y);
+             diffuseColor.a *= patchEdgeX * patchEdgeY;`,
+        );
+    };
 
     const mesh = new MeshCtor(geometry, material);
-    mesh.renderOrder = order;
+    mesh.renderOrder = -20 + order;
     globe.scene().add(mesh);
     return { mesh, geometry, material, texture };
 }
@@ -196,6 +209,7 @@ export default function CaseActorMap3D({
 
     const [ready, setReady] = useState(false);
     const [settled, setSettled] = useState(false);
+    const [renderedStepKey, setRenderedStepKey] = useState('');
     const [statusNote, setStatusNote] = useState('Loading 3D terrain…');
 
     const actorById = useMemo(
@@ -833,6 +847,7 @@ export default function CaseActorMap3D({
             .pathColor(d => (d.shadow ? d.color : isRelatedItem(currentSel, 'connection', d.id, activeStep, connsMap) ? d.color : 'rgba(120,140,150,0.24)'))
             .ringsData(red ? [] : rings);
         if (!tweenRef.current) {
+            setRenderedStepKey(String(activeStep.key));
             setSettled(true);
         }
     };
@@ -860,6 +875,7 @@ export default function CaseActorMap3D({
             camRef.current = target;
             tweenRef.current = null;
             buildAndApplySceneRef.current(true);
+            setRenderedStepKey(String(step.key));
             setSettled(true);
             return;
         }
@@ -877,7 +893,8 @@ export default function CaseActorMap3D({
     return (
         <div
             className="actor-map-canvas actor-map-canvas--3d"
-            data-actor-map-settled={ready && settled ? 'true' : 'false'}
+            data-actor-map-step={renderedStepKey}
+            data-actor-map-settled={ready && settled && renderedStepKey === String(activeStepKey) ? 'true' : 'false'}
         >
             <div ref={hostRef} className="actor-map-globe-mount" aria-label="Interactive 3D terrain actor map" />
             {!ready && (

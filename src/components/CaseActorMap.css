@@ -460,6 +460,15 @@
     text-anchor: middle;
 }
 
+.flat-badge-cap {
+    fill: var(--briefing-muted);
+    font: 500 9px/1 'Roboto Mono', monospace;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    text-anchor: middle;
+    pointer-events: none;
+}
+
 .flat-place-pin { cursor: pointer; }
 .flat-place-diamond { fill: #67d5f5; stroke: #04080d; stroke-width: 1.2; }
 .flat-place-label {

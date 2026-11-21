@@ -345,11 +345,8 @@ export default function CaseActorMapFlat({
             : [];
 
         const reservedBoxes = [
-            { x0: 6, y0: height - 122, x1: 146, y1: height - 6 }, // bottom-left levels overlay
+            { x0: 6, y0: height - 132, x1: 148, y1: height - 6 }, // bottom-left levels overlay
         ];
-        if (hasFloating) {
-            reservedBoxes.push({ x0: 8, y0: 4, x1: Math.min(width - 8, 250), y1: 20 });
-        }
 
         const solvedLabels = solveActorMapLabels({
             width,
@@ -441,14 +438,6 @@ export default function CaseActorMapFlat({
                 </g>
                 <path d={scene.sphereDisc} fill={`url(#${glowId})`} pointerEvents="none" />
                 <path d={scene.sphereDisc} className="flat-rim" />
-
-                {scene.hasFloating && (
-                    <g pointerEvents="none">
-                        <text className="flat-rail-title" x={12} y={16}>
-                            {scene.width < 520 ? 'Global · no single place' : 'Global actors · no single place on the map'}
-                        </text>
-                    </g>
-                )}
 
                 <g>
                     {Array.from(scene.solvedLabels.countries.entries()).map(([name, pos]) => (
@@ -557,6 +546,7 @@ export default function CaseActorMapFlat({
                             >
                                 <rect x={-slot.w / 2} y={-slot.h / 2} width={slot.w} height={slot.h} rx={slot.h / 2} className="flat-badge-rect" />
                                 <text y="4" className="flat-badge-text">{slot.actor.name}</text>
+                                <text y={slot.h / 2 + 12} className="flat-badge-cap">No single place</text>
                             </g>
                         );
                     })}
