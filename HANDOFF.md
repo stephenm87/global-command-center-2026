@@ -2,6 +2,17 @@
 
 Newest entry first. Each agent adds an entry before it stops. Keep entries short.
 
+## 2026-11-21 — Antigravity (Lead) — Unit 26 (PR #43 Merge, Production Supabase Migration & Step 2 Feed Fixes)
+- **PR #43 Production Go-Live (Step 1):**
+  - Squash-merged PR #43 into `main` (`0e353621363f1ec36994bde61b03a3565f8dfb14`) and verified production deploy `6b011d3b526fcf172095235f` (`state: ready`) in Playwright across all 6 Batch 1 cases at `1440×900` and `390×844` (`0` errors, `0` overflow, locator pins and v2 depth confirmed).
+- **Supabase Production Migration Applied (`2026-11-21T04:15:00Z`):**
+  - `supabase/migrations/20261116000000_user_data_rls.sql` was applied to production on `2026-11-21` at `04:15 UTC` by Claude at the owner's request. Result: RLS enabled and forced; four policies (`SELECT`, `INSERT`, `UPDATE`, `DELETE`), all for role `authenticated`; the two new `CHECK` constraints valid (`1..128` key length, `1 MB` / `1048576` byte value cap); `trg_user_data_updated_at` trigger present; `anon` holds `SELECT` only; `0` rows in table; keep-alive `GET` still returns `200` with `[]`; signed-out `INSERT` returns `401`.
+- **Did (on `feat/feed-place-partners-ap`, Step 2):**
+  - **Place Names Outrank Nationalities (`intel-normalization.js`):** Split `PLACE_NAME_MATCHERS` ahead of `DEMONYM_MATCHERS` in `resolveCoords()` so `"Russian missile hits Poland..."` pins `poland`, guarded `guinea` against `-bissauan`, and added `macau`/`macao` coords and HK/Macau demonyms.
+  - **Partner Republications (`free-feeds.js`):** Enabled `excludePartnerOrgAuthors: true` on `global-voices` (`isPartnerOrgAuthor`, `PARTNER_REPUBLICATION_PATTERN`) to drop partner news-organization credits such as `"Hong Kong Free Press"` and `"OC Media"` while keeping individual volunteer contributors.
+  - **Asia-Pacific Coverage (`intel-snapshot.js`, `public-intel.node.test.js`):** Added `hong kong|macau|macao` to `REGION_PATTERNS['Asia-Pacific']` alongside `taiwan`, bumped `SNAPSHOT_SCHEMA_VERSION` to `4`, and added regression tests for Poland, Global Voices partners, and HK/Macau/Taiwan.
+- **Tested (Step 2):** `npm test` (`84/84` pass) and `npm run build` (`552` modules); Claude review & live production verification recorded before merge.
+
 ## 2026-11-21 — Antigravity (Lead) — Unit 25 (Gate 4: Voice Refinement, Somaliland/WS Pass, 29/29 Map Roles & Batch 1 v2 Briefings)
 - **Did (on `feat/gate4-voice-batch1`, awaiting PR & Deploy Preview sign-off at Gate 4):**
   - **Voice Guide Refinement (`docs/BRIEFING_VOICE.md`):** Updated Rules 4–5 to vary sentence rhythm, allow linking bridges carrying one clear idea while keeping any single sentence `<= ~30` words, end steps analytically rather than with slogans, added 3 Before/After examples (`cb68bb5`), and corrected Example 2's bridge count (`21 words`).
