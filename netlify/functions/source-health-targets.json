@@ -2,7 +2,7 @@
   "schemaVersion": 1,
   "caseStudyCount": 29,
   "staticPageCount": 1,
-  "targetCount": 202,
+  "targetCount": 204,
   "targets": [
     {
       "id": "sudan-displacement-regional-spillover:core:0",
@@ -214,7 +214,7 @@
       "id": "myanmar-fragmented-sovereignty:core:0",
       "caseStudyId": "myanmar-fragmented-sovereignty",
       "caseStudyTitle": "Myanmar: Fragmented Sovereignty and Humanitarian Access",
-      "sourceTitle": "150,000 People Displaced by Fighting in Pakokku in Urgent Need",
+      "sourceTitle": "150,000 People Displaced by Fighting in Pakokku in ‘Urgent Need’",
       "publisher": "The Irrawaddy",
       "group": "core",
       "kind": "primary",
@@ -433,6 +433,17 @@
       "kind": "primary",
       "lifecycle": "active",
       "url": "https://www.unhcr.org/sites/default/files/2026-04/unhcr-syria-operational-update-march.pdf"
+    },
+    {
+      "id": "syria-transition-return-sanctions:supplemental:1",
+      "caseStudyId": "syria-transition-return-sanctions",
+      "caseStudyTitle": "Syria: Political Transition, Return, and Sanctions Relief",
+      "sourceTitle": "Syrians “cannot afford more instability,” UN deputy relief chief tells Security Council",
+      "publisher": "United Nations Office for the Coordination of Humanitarian Affairs",
+      "group": "supplemental",
+      "kind": "primary",
+      "lifecycle": "active",
+      "url": "https://www.unocha.org/news/syrians-cannot-afford-more-instability-un-deputy-relief-chief-tells-security-council"
     },
     {
       "id": "guyana-venezuela-essequibo-icj:core:0",
@@ -943,7 +954,7 @@
       "id": "sahel-after-ecowas-regional-order:core:1",
       "caseStudyId": "sahel-after-ecowas-regional-order",
       "caseStudyTitle": "The Sahel After ECOWAS: Competing Regional Orders",
-      "sourceTitle": "Before the Security Council, Special Representative Leonardo Santos Simão Calls for Renewed Regional Cooperation",
+      "sourceTitle": "Before the Security Council, Special Representative Leonardo Santos Simão calls for strengthening regional dialogue to address persistent challenges in West Africa and the Sahel",
       "publisher": "United Nations Office for West Africa and the Sahel",
       "group": "core",
       "kind": "primary",
@@ -1881,6 +1892,17 @@
       "kind": "primary",
       "lifecycle": "active",
       "url": "https://www.unmissions.org/en/unsoh/news/security-council-extends-gang-suppression-force-and-unsoh-mandates"
+    },
+    {
+      "id": "haiti-security-legitimacy-haitian-ownership:supplemental:1",
+      "caseStudyId": "haiti-security-legitimacy-haitian-ownership",
+      "caseStudyTitle": "Haiti: Security, Legitimacy, and Haitian Ownership",
+      "sourceTitle": "United Nations Integrated Office in Haiti: Report of the Secretary-General (S/2026/574)",
+      "publisher": "United Nations Security Council / BINUH",
+      "group": "supplemental",
+      "kind": "primary",
+      "lifecycle": "active",
+      "url": "https://binuh.unmissions.org/sites/default/files/2026-07/SG%20Report%20on%20the%20situation%20in%20Haiti%20%2814%20July%202026%29.pdf"
     },
     {
       "id": "amazon-indigenous-co-governance:core:0",

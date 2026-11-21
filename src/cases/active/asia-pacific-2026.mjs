@@ -2,6 +2,7 @@ export const ASIA_PACIFIC_CASES_2026 = [
     {
         "id": "myanmar-fragmented-sovereignty",
         "status": "active",
+        "briefingVersion": 2,
         "title": "Myanmar: Fragmented Sovereignty and Humanitarian Access",
         "subtitle": "Conflict, displacement, and the struggle to reach civilians",
         "coverageRegion": "Asia-Pacific",
@@ -28,7 +29,7 @@ export const ASIA_PACIFIC_CASES_2026 = [
             "AsiaPacific",
             "UN_OPEC"
         ],
-        "statusSummary": "OCHA reported on 13 July 2026 that more than 16 million people needed humanitarian assistance across Myanmar and nearly 3.8 million were displaced, while conflict, movement restrictions, and administrative requirements continued to obstruct aid access. At the November 2026 ASEAN Summit in Manila, Southeast Asian leaders again denounced ongoing violence in Myanmar and extended the bloc's summit ban on Myanmar's leader.",
+        "statusSummary": "OCHA reported on 13 July 2026 that more than 16 million people needed humanitarian assistance across Myanmar and nearly 3.8 million were displaced. Armed hostilities, movement restrictions, and administrative requirements continued to block aid, while donors had supplied 43 per cent of the US$890 million needed. At the November 2026 ASEAN Summit in Manila, Southeast Asian leaders denounced ongoing violence and extended the bloc's summit ban on Myanmar's leader.",
         "whyItMatters": "Myanmar shows how competing claims to authority, territorial fragmentation, and restricted humanitarian access can weaken both domestic governance and regional diplomacy.",
         "updatedAt": "2026-11-17",
         "confidence": "high",
@@ -49,25 +50,25 @@ export const ASIA_PACIFIC_CASES_2026 = [
                     "label": "Naypyidaw",
                     "latitude": 19.745,
                     "longitude": 96.1297,
-                    "role": "Seat of Myanmar's government and target of ASEAN's extended summit representation ban"
+                    "role": "Seat of Myanmar's military-led administration, whose leader ASEAN bars from its summits"
                 },
                 {
                     "label": "Pakokku",
                     "latitude": 21.3349,
                     "longitude": 95.0844,
-                    "role": "Magway Region town where local reporting documented 150,000 displaced people in urgent need of food, water, medicine, and shelter"
+                    "role": "Magway Region district where local aid workers estimated 150,000 displaced villagers in urgent need of food, medicine, and shelter"
                 },
                 {
                     "label": "Yangon",
                     "latitude": 16.8053,
                     "longitude": 96.1561,
-                    "role": "Primary United Nations and OCHA Myanmar coordination hub tracking nationwide humanitarian access and funding gaps"
+                    "role": "Location of the UN country team office that publishes OCHA's humanitarian updates"
                 }
             ]
         },
         "sources": [
             {
-                "title": "150,000 People Displaced by Fighting in Pakokku in Urgent Need",
+                "title": "150,000 People Displaced by Fighting in Pakokku in ‘Urgent Need’",
                 "publisher": "The Irrawaddy",
                 "publishedAt": "2026-07-02",
                 "url": "https://www.irrawaddy.com/news/burma/150000-people-displaced-by-fighting-in-pakokku-in-urgent-need.html",
@@ -96,8 +97,8 @@ export const ASIA_PACIFIC_CASES_2026 = [
                 "publishedAt": "2026-06-22",
                 "url": "https://bangkok.ohchr.org/myanmar",
                 "perspectiveType": "independent",
-                "perspective": "Independent human-rights monitoring of all major conflict actors",
-                "supports": "Civilian protection, accountability, inclusive governance, and limits on humanitarian access"
+                "perspective": "UN Human Rights Office reporting and Myanmar updates (including the 26 February 2026 annual update and June 2026 report abstract)",
+                "supports": "2021 coup context, 2025 record year for child deaths from airstrikes (February 2026 update), civil-society and pro-democracy support, inclusive governance, and transitional justice"
             }
         ],
         "supplementalSources": [
@@ -113,26 +114,237 @@ export const ASIA_PACIFIC_CASES_2026 = [
             {
                 "nodeId": "AsiaPacific",
                 "title": "A Nationwide Humanitarian Crisis",
-                "narration": "OCHA estimated that more than 16 million people needed assistance across Myanmar in July 2026.",
+                "perspectiveLabel": "Displaced communities in central Myanmar",
+                "perspectiveType": "local",
+                "conceptInFocus": "Legitimacy",
+                "relatedTimelineDate": "2026-03",
+                "narration": "On 23 June 2026, aid workers handed out rice to displaced villagers in Magway Region, in Myanmar's heartland [1]. Aid workers estimated fighting had displaced 150,000 people in Pakokku District, leaving families sheltering in the jungle short of rice and drinking water [1]. Nationwide, the United Nations Office for the Coordination of Humanitarian Affairs (OCHA) counted over 16 million people in need [2].\n\nTwo authorities claim to govern this ground. The military and an allied militia intensified offensives in late 2025, and villagers fled amid reports of arbitrary killings and arson by regime troops [1]. Anti-regime groups formed an interim Magwe Federal Unit Government in March 2026, though its deputy chief minister said clashes and scarce resources hampered relief [1]. Legitimacy—acceptance as a rightful ruler—rests partly on protection and food, so unmet need tests every claimant in Pakokku.",
                 "focusQuestion": "What does widespread humanitarian need reveal about the state's capacity and legitimacy?"
             },
             {
                 "nodeId": "AsiaPacific",
                 "title": "Repeated Displacement",
-                "narration": "Nearly 3.8 million people were estimated to be displaced nationwide, while The Irrawaddy reported on 2 July 2026 that fighting had displaced 150,000 people in Pakokku.",
+                "perspectiveLabel": "Displaced families and host communities",
+                "perspectiveType": "local",
+                "conceptInFocus": "Power",
+                "relatedTimelineDate": "2026-05",
+                "narration": "Nearly 3.8 million people are displaced across Myanmar, many of them more than once [2]. In Magway Region alone, recent hostilities uprooted over 100,000 people across four townships, including more than 80,000 in Pakokku since mid-May 2026 [2]. Counts remain approximate as families keep fleeing, and a local observer noted villages that once hosted displaced people were later forced to run [1].\n\nRepeated uprooting leaves civilians with shrinking refuge as local aid capacity wears thin. In early June, about 900 people from Sagaing crossed into India, which imposed movement curbs on 9 June [2]. In Kayah and Shan states, OCHA noted mounting pressure on families to leave collective shelters, risking unsafe returns [2]. When host communities empty and neighbouring borders tighten, repeated flight leaves civilians with fewer safe places to turn.",
                 "focusQuestion": "How does repeated displacement change communities' political and economic choices?"
             },
             {
                 "nodeId": "UN_OPEC",
                 "title": "Blocked Humanitarian Reach",
-                "narration": "OCHA identified hostilities, movement restrictions, and administrative requirements as continuing barriers to aid.",
+                "perspectiveLabel": "OCHA and humanitarian partners",
+                "perspectiveType": "institutional",
+                "conceptInFocus": "Sovereignty",
+                "relatedTimelineDate": "2021-02-01",
+                "narration": "Since the military seized power on 1 February 2021, armed resistance has grown into a civil war across much of the country [3, 4]. Aid agencies report that hostilities, movement restrictions, and administrative requirements—the official approvals authorities demand before supplies can move—block relief [2]. Fuel rationing and high transport costs worsen delays in remote areas [2].\n\nThe shortfall shows in delivery. By end-March 2026, partners reached 1.6 million people, about one-third of the 4.9 million targeted [2]. Shelter aid hit only 3 per cent of its annual goal, and donors supplied 43 per cent of the US$890 million needed [2]. Where legal standing (de jure sovereignty) and territorial control (de facto sovereignty) sit with rival forces, every delivery depends on more than one gatekeeper.",
                 "focusQuestion": "How can humanitarian actors remain neutral while negotiating access with competing authorities?"
             },
             {
                 "nodeId": "UN_OPEC",
-                "title": "The Response Gap",
-                "narration": "By the end of March, partners had reached 1.6 million people, while the 2026 response was 43 percent funded in the July update.",
-                "focusQuestion": "How should scarce assistance be prioritized when the target population cannot all be reached?"
+                "title": "Regional Pressure and Its Limits",
+                "perspectiveLabel": "ASEAN and regional diplomacy",
+                "perspectiveType": "synthesis",
+                "conceptInFocus": "Interdependence",
+                "relatedTimelineDate": "2026-11",
+                "narration": "In Manila in November 2026, leaders of the Association of Southeast Asian Nations (ASEAN) extended a ban on Myanmar's leader attending summits [4]. Saying Myanmar failed to implement April 2021's Five-Point Consensus peace plan, leaders urged all parties to \"stop targeted attacks against civilians and civilian infrastructure\" [4]. Only lower-level career diplomats may attend summits for Myanmar [4].\n\nWithholding a seat has not ended bilateral ties. Min Aung Hlaing assumed the presidency after December 2025–January 2026 elections widely seen as rigged according to Al Jazeera, and visited several ASEAN states without bloc discouragement [4]. Meanwhile, civilians fleeing fighting cross into India or gather near Thailand [2]. Regional interdependence means neighbours absorb the war's spillover while continuing to deal with its rulers.",
+                "focusQuestion": "How much can a regional organization influence a member's internal conflict when its own states keep dealing with that member's rulers?"
+            }
+        ],
+        "concepts": [
+            "Legitimacy",
+            "Power",
+            "Sovereignty",
+            "Interdependence"
+        ],
+        "ibThemes": [
+            "peace-and-conflict",
+            "rights-and-justice"
+        ],
+        "background": "Myanmar's military seized power on 1 February 2021 from the elected government led by Aung San Suu Kyi [3, 4]. Widespread pro-democracy protests were brutally quashed, and armed resistance grew into a civil war across much of the country [4]. In April 2021, the Association of Southeast Asian Nations (ASEAN) approved the Five-Point Consensus, a peace plan meant to ease the violence [4].\n\nAuthority has since fragmented. The military organized elections in December 2025 and January 2026—which Al Jazeera says were widely seen as rigged—and former army chief Min Aung Hlaing assumed the presidency [4]. Anti-regime organizations set up regional interim administrations, including the Magwe Federal Unit Government in March 2026, toward a federal democratic system [1].\n\nCivilians carry the cost. In a February 2026 update, the UN Human Rights Office called 2025 a record year for child deaths from airstrikes [3]. By July 2026, OCHA counted over 16 million people needing humanitarian aid—life-saving food, shelter, and health care—and nearly 3.8 million displaced [2].",
+        "backgroundSources": [
+            "https://bangkok.ohchr.org/myanmar",
+            "https://www.aljazeera.com/news/2026/11/16/asean-china-fall-short-of-agreeing-on-south-china-sea-code",
+            "https://www.irrawaddy.com/news/burma/150000-people-displaced-by-fighting-in-pakokku-in-urgent-need.html",
+            "https://myanmar.un.org/en/319232-myanmar-humanitarian-update-no-52"
+        ],
+        "keyTerms": [
+            {
+                "term": "Internally displaced person (IDP)",
+                "definition": "Someone forced to flee home who remains inside their own country. OCHA estimates that nearly 3.8 million people are displaced across Myanmar, many after multiple displacements.",
+                "sourceUrl": "https://myanmar.un.org/en/319232-myanmar-humanitarian-update-no-52"
+            },
+            {
+                "term": "Humanitarian access",
+                "definition": "The ability of aid organizations to reach people in need safely and without obstruction. OCHA reports that armed hostilities, movement restrictions and administrative requirements continue to block access in Myanmar.",
+                "sourceUrl": "https://myanmar.un.org/en/319232-myanmar-humanitarian-update-no-52"
+            },
+            {
+                "term": "Hyper-prioritized caseload",
+                "definition": "The 2.6 million people whom the 2026 response plan puts first within its wider target of 4.9 million. Partners had reached 832,000 of them by the end of March 2026.",
+                "sourceUrl": "https://myanmar.un.org/en/319232-myanmar-humanitarian-update-no-52"
+            },
+            {
+                "term": "Five-Point Consensus",
+                "definition": "A peace plan that ASEAN approved in April 2021 to ease the violence that followed the coup. In November 2026, ASEAN leaders said it remains the main reference for addressing Myanmar's political crisis.",
+                "sourceUrl": "https://www.aljazeera.com/news/2026/11/16/asean-china-fall-short-of-agreeing-on-south-china-sea-code"
+            },
+            {
+                "term": "Federal Unit Government (FUG)",
+                "definition": "An interim regional administration set up by anti-regime organizations. The Magwe FUG emerged in March 2026 as part of efforts to build a future federal democratic system.",
+                "sourceUrl": "https://www.irrawaddy.com/news/burma/150000-people-displaced-by-fighting-in-pakokku-in-urgent-need.html"
+            }
+        ],
+        "debate": [
+            {
+                "claimBy": "ASEAN leaders (Manila summit, as reported on 16 November 2026)",
+                "claim": "Myanmar has failed to comply with the 2021 peace plan, so its leader stays barred from summits. The plan remains \"the main reference for addressing the political crisis in Myanmar\".",
+                "counterBy": "UN Human Rights Office (report launched 22 June 2026)",
+                "counterClaim": "Instead of treating summit exclusions as the central lever, the UN office argued foreign indifference compounds civilian suffering and urged direct support for pro-democracy and civil-society institutions.",
+                "sourceUrls": [
+                    "https://www.aljazeera.com/news/2026/11/16/asean-china-fall-short-of-agreeing-on-south-china-sea-code",
+                    "https://bangkok.ohchr.org/myanmar"
+                ]
+            },
+            {
+                "claimBy": "Local aid workers and The Irrawaddy (Pakokku District, five townships, 2 July 2026)",
+                "claim": "Local aid workers estimated 150,000 villagers displaced by fighting in Pakokku District urgently need food, medicine and shelter. The Irrawaddy adds the exact district figure is hard to establish because families keep moving.",
+                "counterBy": "OCHA (Humanitarian Update No. 52, township-level window, 13 July 2026)",
+                "counterClaim": "Measuring a narrower timeframe across four Magway townships, OCHA reported over 100,000 displaced recently—including more than 80,000 in Pakokku Township since mid-May 2026.",
+                "sourceUrls": [
+                    "https://www.irrawaddy.com/news/burma/150000-people-displaced-by-fighting-in-pakokku-in-urgent-need.html",
+                    "https://myanmar.un.org/en/319232-myanmar-humanitarian-update-no-52"
+                ]
+            },
+            {
+                "claimBy": "A local observer (as quoted by The Irrawaddy, 2 July 2026)",
+                "claim": "The interim Magwe government is short of personnel, with one minister covering two large ministries, and feeding so many displaced people every day is beyond donors' capacity.",
+                "counterBy": "Chit Win Maung, deputy chief minister of the Magwe Federal Unit Government (2 July 2026)",
+                "counterClaim": "The interim government is working to deliver donor assistance and receives updates from township governing bodies, but intensifying clashes and limited resources make that work more difficult.",
+                "sourceUrls": [
+                    "https://www.irrawaddy.com/news/burma/150000-people-displaced-by-fighting-in-pakokku-in-urgent-need.html"
+                ]
+            }
+        ],
+        "watchFor": [
+            {
+                "date": "2027 (Singapore's year as ASEAN chair)",
+                "indicator": "Singapore takes over the ASEAN chair from the Philippines in 2027. Check whether leaders keep the ban on Myanmar's leader attending summits and how they assess progress on the Five-Point Consensus.",
+                "sourceUrl": "https://www.aljazeera.com/news/2026/11/16/asean-china-fall-short-of-agreeing-on-south-china-sea-code"
+            },
+            {
+                "date": "Next OCHA Myanmar Humanitarian Update (no date published)",
+                "indicator": "Update No. 52 recorded 43 per cent of the US$890 million requirement received and 1.6 million of 4.9 million targeted people reached by end-March 2026. Check the funding share, the number reached, and the displacement estimate in the next update.",
+                "sourceUrl": "https://myanmar.un.org/en/319232-myanmar-humanitarian-update-no-52"
+            },
+            {
+                "date": "Next UN Human Rights Council reporting cycle (no date published)",
+                "indicator": "The UN Human Rights Office reports to the Council on Myanmar under resolution 58/20 and published reports in June and August 2026. Check the next report's findings on civilian protection and on local governance institutions.",
+                "sourceUrl": "https://bangkok.ohchr.org/myanmar"
+            }
+        ],
+        "examPrompts": [
+            "To what extent does a government's inability to protect and provide for its population weaken its claim to sovereignty?",
+            "Evaluate the effectiveness of regional organizations in responding to armed conflict inside a member state."
+        ],
+        "influenceCheck": [
+            {
+                "stage": "Setting the agenda",
+                "rating": "STRONG",
+                "evidence": "ASEAN's Five-Point Consensus, approved in April 2021, was still the yardstick at the November 2026 Manila summit. Leaders reviewed progress against it and called it the main reference for addressing Myanmar's political crisis.",
+                "sourceUrls": [
+                    "https://www.aljazeera.com/news/2026/11/16/asean-china-fall-short-of-agreeing-on-south-china-sea-code"
+                ]
+            },
+            {
+                "stage": "The formal decision",
+                "rating": "MIXED",
+                "evidence": "ASEAN leaders extended the ban on Myanmar's leader attending summits. Earlier, Myanmar had also lost its 2026 turn as chair, which passed to the Philippines. Meanwhile, the bloc did not discourage Min Aung Hlaing's official visits to individual member states.",
+                "sourceUrls": [
+                    "https://www.aljazeera.com/news/2026/11/16/asean-china-fall-short-of-agreeing-on-south-china-sea-code"
+                ]
+            },
+            {
+                "stage": "What changed in practice",
+                "rating": "WEAK",
+                "evidence": "ASEAN leaders themselves expressed deep concern over insufficient progress on the plan. OCHA counted more than 16 million people in need and nearly 3.8 million displaced in July 2026, with aid access still blocked.",
+                "sourceUrls": [
+                    "https://www.aljazeera.com/news/2026/11/16/asean-china-fall-short-of-agreeing-on-south-china-sea-code",
+                    "https://myanmar.un.org/en/319232-myanmar-humanitarian-update-no-52"
+                ]
+            }
+        ],
+        "conceptLens": {
+            "power": "Whoever controls roads and approvals decides where aid can go: OCHA says hostilities, movement restrictions and administrative requirements block access. Donors hold a second lever, having supplied 43 per cent of the US$890 million required.",
+            "sovereignty": "Authority on paper and control on the ground have separated. The military intensified offensives in late 2025 to regain lost territory in Magway, where anti-regime groups set up an interim administration in March 2026.",
+            "legitimacy": "Min Aung Hlaing took the presidency after elections that Al Jazeera says were widely seen as rigged, and ASEAN still bars him from its summits. The interim Magwe administration claims a federal democratic future but reports great difficulty delivering aid.",
+            "interdependence": "People fleeing the fighting cross into India and gather along the Thai border, and ASEAN treats the crisis as a regional matter. The aid response depends on donor support and is slowed by fuel rationing linked to global market pressures alongside domestic supply and distribution constraints."
+        },
+        "essayBuilder": {
+            "prompt": "Evaluate the effectiveness of regional organizations in responding to armed conflict inside a member state.",
+            "claim": "ASEAN has limited the regional standing of Myanmar's rulers, but it has not changed conditions for civilians.",
+            "evidence": "ASEAN approved the Five-Point Consensus in April 2021. In November 2026, its leaders extended the ban on Myanmar's leader attending summits, saying the country had failed to comply. Myanmar had also lost its 2026 turn as chair, which passed to the Philippines. Meanwhile, OCHA counted more than 16 million people in need and nearly 3.8 million displaced in July 2026.",
+            "counterClaim": "The ban still carries a diplomatic cost, because only lower-level career diplomats may represent Myanmar at summits. Its effect is reduced, however, because ASEAN has not discouraged Min Aung Hlaing's official visits to individual member states.",
+            "judgment": "On balance, ASEAN has shaped who is treated as a rightful representative more than it has shaped conduct on the ground. However, the evidence covers one bloc and one conflict, so it shows the limits of diplomatic exclusion used alone rather than a rule about all regional organizations.",
+            "sourceUrls": [
+                "https://www.aljazeera.com/news/2026/11/16/asean-china-fall-short-of-agreeing-on-south-china-sea-code",
+                "https://myanmar.un.org/en/319232-myanmar-humanitarian-update-no-52"
+            ]
+        },
+        "timeline": [
+            {
+                "date": "2021-02-01",
+                "label": "Myanmar's military seizes power in a coup.",
+                "sourceUrl": "https://bangkok.ohchr.org/myanmar"
+            },
+            {
+                "date": "2021-04",
+                "label": "ASEAN approves the Five-Point Consensus, a peace plan for Myanmar.",
+                "sourceUrl": "https://www.aljazeera.com/news/2026/11/16/asean-china-fall-short-of-agreeing-on-south-china-sea-code"
+            },
+            {
+                "date": "2025-12",
+                "label": "Elections begin in December 2025 and conclude in January 2026; former military chief Min Aung Hlaing later assumes the presidency.",
+                "sourceUrl": "https://www.aljazeera.com/news/2026/11/16/asean-china-fall-short-of-agreeing-on-south-china-sea-code"
+            },
+            {
+                "date": "2026-03",
+                "label": "Anti-regime organizations establish the interim Magwe Federal Unit Government.",
+                "sourceUrl": "https://www.irrawaddy.com/news/burma/150000-people-displaced-by-fighting-in-pakokku-in-urgent-need.html"
+            },
+            {
+                "date": "2026-05",
+                "label": "From mid-May, hostilities displace more than 80,000 people in Pakokku Township, Magway Region.",
+                "sourceUrl": "https://myanmar.un.org/en/319232-myanmar-humanitarian-update-no-52"
+            },
+            {
+                "date": "2026-11",
+                "label": "At their Manila summit, ASEAN leaders extend the ban on Myanmar's leader attending the bloc's summits.",
+                "sourceUrl": "https://www.aljazeera.com/news/2026/11/16/asean-china-fall-short-of-agreeing-on-south-china-sea-code"
+            }
+        ],
+        "keyFigures": [
+            {
+                "value": "16 million",
+                "unit": "people",
+                "label": "In need of humanitarian assistance across Myanmar (OCHA reports more than this figure)",
+                "asOf": "13 July 2026",
+                "sourceUrl": "https://myanmar.un.org/en/319232-myanmar-humanitarian-update-no-52"
+            },
+            {
+                "value": "3.8 million",
+                "unit": "people",
+                "label": "Estimated displaced across Myanmar (OCHA reports nearly this figure)",
+                "asOf": "13 July 2026",
+                "sourceUrl": "https://myanmar.un.org/en/319232-myanmar-humanitarian-update-no-52"
+            },
+            {
+                "value": "43 per cent",
+                "unit": "of US$890 million",
+                "label": "Share of the 2026 humanitarian funding requirement received",
+                "asOf": "13 July 2026",
+                "sourceUrl": "https://myanmar.un.org/en/319232-myanmar-humanitarian-update-no-52"
             }
         ]
     },
@@ -590,22 +802,26 @@ export const ASIA_PACIFIC_CASES_2026 = [
                 {
                     "label": "New Delhi",
                     "latitude": 28.6139,
-                    "longitude": 77.209
+                    "longitude": 77.209,
+                    "role": "Indian federal government asserting unilateral abeyance of the 1960 treaty and rejecting arbitration"
                 },
                 {
                     "label": "Srinagar",
                     "latitude": 34.0837,
-                    "longitude": 74.7973
+                    "longitude": 74.7973,
+                    "role": "Upstream basin location tied to disputes over hydroelectric design and shared Indus waters"
                 },
                 {
                     "label": "Tarbela",
                     "latitude": 34.0894,
-                    "longitude": 72.6987
+                    "longitude": 72.6987,
+                    "role": "Downstream Pakistani basin site representing irrigation, hydropower, and river-flow reliance"
                 },
                 {
                     "label": "Islamabad",
                     "latitude": 33.6844,
-                    "longitude": 73.0479
+                    "longitude": 73.0479,
+                    "role": "Pakistani government arguing the 1960 Indus Waters Treaty remains binding and invoking arbitration"
                 }
             ]
         },
@@ -750,22 +966,26 @@ export const ASIA_PACIFIC_CASES_2026 = [
                 {
                     "label": "Dhaka",
                     "latitude": 23.8103,
-                    "longitude": 90.4125
+                    "longitude": 90.4125,
+                    "role": "National government pursuing domestic reforms and negotiating extension of LDC graduation to 2029"
                 },
                 {
                     "label": "Chattogram",
                     "latitude": 22.3569,
-                    "longitude": 91.7832
+                    "longitude": 91.7832,
+                    "role": "Port hub linked in case analysis to export competitiveness and adjustment pressures on workers"
                 },
                 {
                     "label": "Geneva",
                     "latitude": 46.2044,
-                    "longitude": 6.1432
+                    "longitude": 6.1432,
+                    "role": "Multilateral trade setting linked to LDC rules, medicine-policy flexibilities, and transition terms"
                 },
                 {
                     "label": "Brussels",
                     "latitude": 50.8503,
-                    "longitude": 4.3517
+                    "longitude": 4.3517,
+                    "role": "European institutional hub associated with shifting market-access preferences and exporter compliance expectations"
                 }
             ]
         },
@@ -888,22 +1108,26 @@ export const ASIA_PACIFIC_CASES_2026 = [
                 {
                     "label": "Bishkek",
                     "latitude": 42.8746,
-                    "longitude": 74.5698
+                    "longitude": 74.5698,
+                    "role": "Kyrgyz capital concluding the March 2025 bilateral border treaty and joint demarcation oversight"
                 },
                 {
                     "label": "Batken",
                     "latitude": 40.0626,
-                    "longitude": 70.8194
+                    "longitude": 70.8194,
+                    "role": "Border province experiencing crossing reopenings, fencing, patrol-road construction, and land compensation questions"
                 },
                 {
                     "label": "Khujand",
                     "latitude": 40.2833,
-                    "longitude": 69.6222
+                    "longitude": 69.6222,
+                    "role": "Northern Tajik regional center bordering the Fergana Valley crossing and water-access corridors"
                 },
                 {
                     "label": "Dushanbe",
                     "latitude": 38.5598,
-                    "longitude": 68.787
+                    "longitude": 68.787,
+                    "role": "Tajik capital concluding the bilateral border settlement and managing joint demarcation implementation"
                 }
             ]
         },
@@ -1047,22 +1271,26 @@ export const ASIA_PACIFIC_CASES_2026 = [
                 {
                     "label": "Ulaanbaatar",
                     "latitude": 47.8864,
-                    "longitude": 106.9057
+                    "longitude": 106.9057,
+                    "role": "Capital setting strategic-deposit benefit reforms and the 2025 Just Energy Transition Framework"
                 },
                 {
                     "label": "Oyu Tolgoi",
                     "latitude": 43.008,
-                    "longitude": 106.843
+                    "longitude": 106.843,
+                    "role": "Strategic mineral-sector site tied to domestic ownership, governance, and investor-confidence debates"
                 },
                 {
                     "label": "Sainshand",
                     "latitude": 44.89,
-                    "longitude": 110.136
+                    "longitude": 110.136,
+                    "role": "Regional hub tied to coal-to-clean-energy transition and grid-reliability planning"
                 },
                 {
                     "label": "Zamyn-Uud",
                     "latitude": 43.715,
-                    "longitude": 111.904
+                    "longitude": 111.904,
+                    "role": "Southern border crossing connecting Mongolia's mineral economy to Chinese market access"
                 }
             ]
         },
@@ -1182,22 +1410,26 @@ export const ASIA_PACIFIC_CASES_2026 = [
                 {
                     "label": "Jakarta",
                     "latitude": -6.2088,
-                    "longitude": 106.8456
+                    "longitude": 106.8456,
+                    "role": "National capital enforcing mineral-processing mandates, annual RKAB nickel quotas, and the WTO DS592 appeal"
                 },
                 {
                     "label": "Morowali",
                     "latitude": -2.996,
-                    "longitude": 121.948
+                    "longitude": 121.948,
+                    "role": "Nickel-processing region linked to tests over skills transfer, worker safety, and environmental standards"
                 },
                 {
                     "label": "Weda Bay",
                     "latitude": 0.474,
-                    "longitude": 127.955
+                    "longitude": 127.955,
+                    "role": "Industrial processing hub balancing foreign capital and capacity against community benefit"
                 },
                 {
                     "label": "Raja Ampat",
                     "latitude": -0.234,
-                    "longitude": 130.516
+                    "longitude": 130.516,
+                    "role": "Coastal area cited in scrutiny of environmental performance and local livelihoods around mining expansion"
                 }
             ]
         },
@@ -1334,22 +1566,26 @@ export const ASIA_PACIFIC_CASES_2026 = [
                 {
                     "label": "Vientiane",
                     "latitude": 17.9757,
-                    "longitude": 102.6331
+                    "longitude": 102.6331,
+                    "role": "Mekong River Commission Secretariat headquarters coordinating joint mainstream dam monitoring and data sharing"
                 },
                 {
                     "label": "Xayaburi",
                     "latitude": 19.25,
-                    "longitude": 101.75
+                    "longitude": 101.75,
+                    "role": "Mainstream Mekong hydropower dam covered by the MRC's September 2025 joint environmental monitoring plan"
                 },
                 {
                     "label": "Tonle Sap",
                     "latitude": 12.876,
-                    "longitude": 104.067
+                    "longitude": 104.067,
+                    "role": "Downstream basin water system affected by upstream hydropower flows, sediment changes, and fisheries pressures"
                 },
                 {
                     "label": "Can Tho and the Mekong Delta",
                     "latitude": 10.0452,
-                    "longitude": 105.7469
+                    "longitude": 105.7469,
+                    "role": "Downstream Vietnamese farming and fisheries region dependent on basin sediment, flow, and flood resilience"
                 }
             ]
         },
