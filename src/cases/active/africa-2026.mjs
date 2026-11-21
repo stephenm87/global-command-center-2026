@@ -1704,28 +1704,28 @@ export const AFRICA_CASES_2026 = [
                     "id": "somaliland-authorities",
                     "name": "Somaliland authorities",
                     "level": "local",
-                    "role": "De facto governing administration in Hargeisa that declared independence in 1991 and signed Israel's 26 December 2025 recognition declaration.",
+                    "role": "Administering authority in Hargeisa that signed the 26 December 2025 joint declaration formalizing Israel's recognition of Somaliland.",
                     "sourceUrl": "https://www.horndiplomat.com/israel-officially-recognizes-somaliland-as-sovereign-state/",
                     "location": {
                         "kind": "pin",
                         "place": "Hargeisa",
-                        "latitude": 9.5611,
-                        "longitude": 44.0667,
-                        "gazetteer": "Wikipedia / GeoNames 57289 (Hargeisa)"
+                        "latitude": 9.5624,
+                        "longitude": 44.077,
+                        "gazetteer": "GeoNames 57289 (Hargeisa, matched to map.locations)"
                     }
                 },
                 {
                     "id": "ssc-khaatumo",
                     "name": "SSC-Khaatumo / Dhulbahante leaders",
                     "level": "local",
-                    "role": "Autonomous local administration claimed in Sool, Sanaag, and Cayn with Las Anod / Laascaanood as its capital, opposing Somaliland's recognition bid.",
+                    "role": "Autonomous local administration claimed in Sool, Sanaag, and Buuhoodle with Las Anod / Laascaanood as its capital, opposing Somaliland's recognition bid (reported through June 2025).",
                     "sourceUrl": "https://www.theeastafrican.co.ke/tea/news/east-africa/why-ssc-khaatumo-opposes-somaliland-s-bid-for-recognition-5086894",
                     "location": {
                         "kind": "pin",
                         "place": "Las Anod / Laascaanood",
-                        "latitude": 8.476,
-                        "longitude": 47.357,
-                        "gazetteer": "Wikipedia / GeoNames 400769 (Laascaanood)"
+                        "latitude": 8.4774,
+                        "longitude": 47.3597,
+                        "gazetteer": "GeoNames 400769 (Laascaanood, matched to map.locations)"
                     }
                 },
                 {
@@ -1737,9 +1737,9 @@ export const AFRICA_CASES_2026 = [
                     "location": {
                         "kind": "pin",
                         "place": "Mogadishu",
-                        "latitude": 2.0392,
-                        "longitude": 45.3419,
-                        "gazetteer": "Wikipedia / GeoNames 53654 (Mogadishu)"
+                        "latitude": 2.0469,
+                        "longitude": 45.3182,
+                        "gazetteer": "Wikipedia / GeoNames 53654 (Mogadishu, lands inside Somalia 50m coastline)"
                     }
                 },
                 {
@@ -1768,7 +1768,7 @@ export const AFRICA_CASES_2026 = [
                     "location": {
                         "kind": "area",
                         "label": "IGAD member states (Horn of Africa)",
-                        "countries": ["Djibouti", "Eritrea", "Ethiopia", "Kenya", "Somalia", "S. Sudan", "Sudan", "Uganda"],
+                        "countries": ["Djibouti", "Ethiopia", "Kenya", "Somalia", "S. Sudan", "Sudan", "Uganda"],
                         "anchor": {
                             "latitude": 9.0,
                             "longitude": 41.5,
@@ -1845,7 +1845,7 @@ export const AFRICA_CASES_2026 = [
                     "label": "2023 fighting in east",
                     "type": "conflict",
                     "side": 0.18,
-                    "text": "Fighting began in Las Anod / Laascaanood on 6 February 2023 between Somaliland forces and Dhulbahante clan militia, displacing over 200,000 people by May 2023.",
+                    "text": "Fighting began in Las Anod / Laascaanood on 6 February 2023 between Somaliland forces and Dhulbahante clan militia; hospital data put displacement above 200,000 by May 2023.",
                     "sourceUrl": "https://www.aljazeera.com/features/2023/5/10/conflict-in-disputed-las-anod-dims-somalilands-diplomatic-dreams",
                     "steps": [2, "all"]
                 },
@@ -1856,7 +1856,7 @@ export const AFRICA_CASES_2026 = [
                     "label": "Opposes recognition bid",
                     "type": "pressure",
                     "side": 0.22,
-                    "text": "SSC-Khaatumo officials in Sool, Sanaag, and Cayn reject Somaliland's territorial claim and oppose its bid for state recognition.",
+                    "text": "SSC-Khaatumo officials in Sool, Sanaag, and Buuhoodle reject Somaliland's territorial claim and oppose its bid for state recognition (reported through June 2025).",
                     "sourceUrl": "https://www.theeastafrican.co.ke/tea/news/east-africa/why-ssc-khaatumo-opposes-somaliland-s-bid-for-recognition-5086894",
                     "steps": [2, "all"]
                 },
@@ -1864,10 +1864,10 @@ export const AFRICA_CASES_2026 = [
                     "id": "somaliland-embassy",
                     "from": "somaliland-authorities",
                     "to": "israel",
-                    "label": "Opens mutual embassies",
+                    "label": "Opens embassy in Israel",
                     "type": "support",
                     "side": -0.16,
-                    "text": "Somaliland opened an embassy in Israel in June 2026, and Israel's first ambassador presented credentials in Hargeisa in late October.",
+                    "text": "Somaliland opened an embassy in Israel in June 2026, and Israel's first ambassador presented credentials in Hargeisa in late October alongside an embassy cornerstone ceremony.",
                     "sourceUrl": "https://www.aljazeera.com/news/2026/11/1/israels-first-ambassador-to-somaliland-presents-credentials-in-hargeisa",
                     "steps": [3, "all"]
                 },
@@ -1878,7 +1878,7 @@ export const AFRICA_CASES_2026 = [
                     "label": "Calls visit incursion",
                     "type": "pressure",
                     "side": 0.16,
-                    "text": "Somalia's foreign ministry condemned Israel's January 2026 visit to Hargeisa as an unauthorized incursion and urged Security Council rejection.",
+                    "text": "Somalia's foreign ministry condemned Israeli Foreign Minister Gideon Sa'ar's 6 January 2026 visit to Hargeisa as an \"unauthorized incursion\" into Somali territory.",
                     "sourceUrl": "https://www.aljazeera.com/news/2026/1/6/israeli-fm-visits-somaliland-after-world-first-recognition-storm",
                     "steps": [3, "all"]
                 },
@@ -1900,7 +1900,7 @@ export const AFRICA_CASES_2026 = [
                     "label": "Backs Somali unity",
                     "type": "support",
                     "side": -0.18,
-                    "text": "IGAD reiterated its firm commitment to Somalia's unity, sovereignty, and territorial integrity on 27 December 2025 and urged dialogue.",
+                    "text": "The IGAD Secretariat reiterated its firm commitment to Somalia's unity, sovereignty, and territorial integrity on 27 December 2025 and called for dialogue.",
                     "sourceUrl": "https://igad.int/igad-secretariat-reiterates-its-firm-commitment-to-the-federal-republic-of-somalias-unity-sovereignty-and-territorial-integrity",
                     "steps": [4, "all"]
                 },
@@ -1910,7 +1910,7 @@ export const AFRICA_CASES_2026 = [
                     "to": "israel",
                     "label": "14 of 15 condemn",
                     "type": "pressure",
-                    "text": "In an emergency UN Security Council session, 14 of 15 members condemned Israel's recognition while the United States said it had no announcement to make.",
+                    "text": "In an emergency UN Security Council session, 14 of 15 members condemned Israel's recognition while the United States said it had no announcement to make on US recognition of Somaliland.",
                     "sourceUrl": "https://www.aljazeera.com/news/2025/12/30/un-security-council-members-condemn-israels-recognition-of-somaliland",
                     "steps": [4, "all"]
                 }
@@ -1923,7 +1923,7 @@ export const AFRICA_CASES_2026 = [
                     "cam": { "lat": 14.5, "lng": 41.5, "dist": 0.56, "tilt": 36 },
                     "bloc": false,
                     "actors": [
-                        { "id": "somaliland-authorities", "preferredSide": "l", "note": "declared May 1991" },
+                        { "id": "somaliland-authorities", "preferredSide": "l", "note": "Hargeisa administration" },
                         { "id": "israel", "preferredSide": "t", "note": "recognized Dec 2025" },
                         { "id": "somalia-fg", "preferredSide": "b" }
                     ],
@@ -1932,26 +1932,27 @@ export const AFRICA_CASES_2026 = [
                 {
                     "key": "2",
                     "shortLabel": "Disputed east",
+                    "note": "Hospital data put displacement in Las Anod / Laascaanood above 200,000 by May 2023 (Al Jazeera).",
                     "levels": ["local", "state"],
                     "cam": { "lat": 6.8, "lng": 45.6, "dist": 0.19, "tilt": 50 },
                     "bloc": false,
                     "actors": [
                         { "id": "somaliland-authorities", "preferredSide": "l" },
-                        { "id": "ssc-khaatumo", "preferredSide": "r", "note": "200,000+ displaced (2023)" },
+                        { "id": "ssc-khaatumo", "preferredSide": "r", "note": "capital claim" },
                         { "id": "somalia-fg", "preferredSide": "b" }
                     ],
                     "connections": ["las-anod-fighting", "ssc-opposes-bid", "somalia-contests"]
                 },
                 {
                     "key": "3",
-                    "shortLabel": "Red Sea ties",
-                    "note": "Not drawn: Somalia's president alleged base terms around the Red Sea; President Cirro stated no base talks were held (Al Jazeera).",
+                    "shortLabel": "Embassy ties",
+                    "note": "Not drawn: Somalia's president alleged Somaliland agreed to host an Israeli military base; Somaliland denied it, and President Cirro said no base talks had been held (Al Jazeera).",
                     "levels": ["local", "state"],
                     "cam": { "lat": 15.8, "lng": 40.8, "dist": 0.58, "tilt": 38 },
                     "bloc": false,
                     "actors": [
                         { "id": "somaliland-authorities", "preferredSide": "l" },
-                        { "id": "israel", "preferredSide": "t", "note": "embassies opened 2026" },
+                        { "id": "israel", "preferredSide": "t", "note": "ambassador accredited Oct 2026" },
                         { "id": "somalia-fg", "preferredSide": "r" }
                     ],
                     "connections": ["israel-recognizes", "somaliland-embassy", "somalia-rejects-israel"]
@@ -1976,7 +1977,7 @@ export const AFRICA_CASES_2026 = [
                     "key": "all",
                     "shortLabel": "All",
                     "summary": "Every sourced actor and connection connecting Hargeisa, Las Anod, Mogadishu, Israel, IGAD, the African Union, and UN Security Council.",
-                    "note": "Not drawn: No other UN member state had recognized Somaliland as of November 2026 (Al Jazeera).",
+                    "note": "Not drawn: No other UN member state had recognized Somaliland as of 1 November 2026 (Al Jazeera).",
                     "levels": ["local", "state", "regional", "global"],
                     "cam": { "lat": 14.0, "lng": 37.0, "dist": 1.65, "tilt": 14 },
                     "bloc": true,

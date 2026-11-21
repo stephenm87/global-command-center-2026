@@ -371,7 +371,7 @@ export const ASIA_PACIFIC_CASES_2026 = [
             },
             "contextLabels": [
                 { "name": "Myanmar", "latitude": 22.2, "longitude": 96.4 },
-                { "name": "India", "latitude": 24.9, "longitude": 92.2 },
+                { "name": "India", "latitude": 25.3, "longitude": 92.9 },
                 { "name": "Thailand", "latitude": 15.4, "longitude": 101.2 },
                 { "name": "China", "latitude": 25.4, "longitude": 101.0 },
                 { "name": "Bangladesh", "latitude": 23.8, "longitude": 90.3 },
@@ -386,21 +386,21 @@ export const ASIA_PACIFIC_CASES_2026 = [
                     "id": "displaced-pakokku",
                     "name": "Displaced villagers",
                     "level": "local",
-                    "role": "Families uprooted by fighting in Pakokku District, Magway Region, sheltering short of rice and drinking water.",
+                    "role": "Local aid workers estimated 150,000 villagers were displaced by fighting in Pakokku District, Magway Region, urgently needing food, medicine, and shelter.",
                     "sourceUrl": "https://www.irrawaddy.com/news/burma/150000-people-displaced-by-fighting-in-pakokku-in-urgent-need.html",
                     "location": {
                         "kind": "pin",
                         "place": "Pakokku",
                         "latitude": 21.3349,
                         "longitude": 95.0844,
-                        "gazetteer": "GeoNames 1300466 (Pakokku)"
+                        "gazetteer": "GeoNames 1302439 (Pakokku)"
                     }
                 },
                 {
                     "id": "magwe-fug",
                     "name": "Magwe interim government",
                     "level": "local",
-                    "role": "Interim Magwe Federal Unit Government formed by anti-regime groups in March 2026 to organize regional governance and relief.",
+                    "role": "Interim Magwe Federal Unit Government formed by anti-regime groups in March 2026 in Magway Region.",
                     "sourceUrl": "https://www.irrawaddy.com/news/burma/150000-people-displaced-by-fighting-in-pakokku-in-urgent-need.html",
                     "location": {
                         "kind": "area",
@@ -408,7 +408,7 @@ export const ASIA_PACIFIC_CASES_2026 = [
                         "anchor": {
                             "latitude": 20.1496,
                             "longitude": 94.9325,
-                            "gazetteer": "GeoNames 1312795 (Magway, regional seat anchor)"
+                            "gazetteer": "GeoNames 1312609 (Magway, regional seat anchor)"
                         }
                     }
                 },
@@ -430,15 +430,15 @@ export const ASIA_PACIFIC_CASES_2026 = [
                     "id": "sagaing-displaced",
                     "name": "Families fleeing Sagaing",
                     "level": "local",
-                    "role": "Civilians displaced from Sagaing Region, around 900 of whom crossed into India in early June 2026.",
+                    "role": "More than 2,200 people displaced by early-June operations in Tamu Township, Sagaing Region, including about 900 who crossed into India.",
                     "sourceUrl": "https://myanmar.un.org/en/319232-myanmar-humanitarian-update-no-52",
                     "location": {
                         "kind": "area",
-                        "label": "Sagaing Region",
+                        "label": "Sagaing Region (Tamu Township)",
                         "anchor": {
-                            "latitude": 22.1086,
-                            "longitude": 95.1358,
-                            "gazetteer": "GeoNames 1308522 (Monywa, Sagaing regional seat anchor)"
+                            "latitude": 24.2166,
+                            "longitude": 94.3122,
+                            "gazetteer": "GeoNames 1294761 (Tamu Township, Sagaing Region)"
                         }
                     }
                 },
@@ -446,7 +446,7 @@ export const ASIA_PACIFIC_CASES_2026 = [
                     "id": "shelter-families",
                     "name": "Families in collective shelters",
                     "level": "local",
-                    "role": "Displaced households in Kayah and Shan states facing mounting pressure to leave collective shelters, risking unsafe returns.",
+                    "role": "Displaced households in Kayah and Shan states facing mounting pressure to leave collective centres and temporary shelters.",
                     "sourceUrl": "https://myanmar.un.org/en/319232-myanmar-humanitarian-update-no-52",
                     "location": {
                         "kind": "area",
@@ -454,7 +454,7 @@ export const ASIA_PACIFIC_CASES_2026 = [
                         "anchor": {
                             "latitude": 19.678,
                             "longitude": 97.2098,
-                            "gazetteer": "GeoNames 1313507 (Loikaw, Kayah State anchor)"
+                            "gazetteer": "GeoNames 1313479 (Loikaw, Kayah State anchor)"
                         }
                     }
                 },
@@ -462,33 +462,16 @@ export const ASIA_PACIFIC_CASES_2026 = [
                     "id": "india",
                     "name": "India",
                     "level": "state",
-                    "role": "Neighbouring state that imposed movement curbs on 9 June 2026 after people from Sagaing crossed the border.",
+                    "role": "Neighbouring state that about 900 people from Sagaing's Tamu Township crossed into in early June 2026; India introduced movement restrictions on 9 June.",
                     "sourceUrl": "https://myanmar.un.org/en/319232-myanmar-humanitarian-update-no-52",
                     "location": {
                         "kind": "area",
-                        "label": "India (eastern border area)",
+                        "label": "India (border region opposite Tamu)",
                         "countries": ["India"],
                         "anchor": {
-                            "latitude": 23.456,
-                            "longitude": 93.329,
-                            "gazetteer": "Wikipedia / GeoNames (Champhai border district anchor adjoining Myanmar)"
-                        }
-                    }
-                },
-                {
-                    "id": "thailand",
-                    "name": "Thailand",
-                    "level": "state",
-                    "role": "Neighbouring state along whose border civilians fleeing conflict gather.",
-                    "sourceUrl": "https://myanmar.un.org/en/319232-myanmar-humanitarian-update-no-52",
-                    "location": {
-                        "kind": "area",
-                        "label": "Thailand (western border area)",
-                        "countries": ["Thailand"],
-                        "anchor": {
-                            "latitude": 16.713,
-                            "longitude": 98.575,
-                            "gazetteer": "Wikipedia / GeoNames (Mae Sot border crossing anchor adjoining Myanmar)"
+                            "latitude": 24.8081,
+                            "longitude": 93.9442,
+                            "gazetteer": "GeoNames 1269771 (Manipur border corridor opposite Tamu Township, verified in India 50m polygon)"
                         }
                     }
                 },
@@ -522,7 +505,7 @@ export const ASIA_PACIFIC_CASES_2026 = [
                 },
                 {
                     "id": "donors",
-                    "name": "Donor governments",
+                    "name": "Donors",
                     "level": "global",
                     "role": "International donors supplying 43 per cent of the US$890 million needed for Myanmar's 2026 humanitarian response plan.",
                     "sourceUrl": "https://myanmar.un.org/en/319232-myanmar-humanitarian-update-no-52",
@@ -547,10 +530,10 @@ export const ASIA_PACIFIC_CASES_2026 = [
                     "id": "rival-governance",
                     "from": "military-authorities",
                     "to": "magwe-fug",
-                    "label": "Contests regional rule",
+                    "label": "Competing authority claims",
                     "type": "conflict",
                     "side": -0.18,
-                    "text": "Anti-regime groups established the interim Magwe Federal Unit Government in March 2026 over territory military forces also claim to govern.",
+                    "text": "Two authorities claim to govern in Magway Region: the military, and the interim Magwe Federal Unit Government formed in March 2026.",
                     "sourceUrl": "https://www.irrawaddy.com/news/burma/150000-people-displaced-by-fighting-in-pakokku-in-urgent-need.html",
                     "steps": [1, "all"]
                 },
@@ -558,10 +541,10 @@ export const ASIA_PACIFIC_CASES_2026 = [
                     "id": "magwe-relief",
                     "from": "magwe-fug",
                     "to": "displaced-pakokku",
-                    "label": "Delivers constrained relief",
+                    "label": "Says it routes aid",
                     "type": "support",
                     "side": -0.2,
-                    "text": "The interim Magwe administration says it works to distribute donor assistance in Pakokku District despite intensifying clashes and scarce resources.",
+                    "text": "The interim Magwe deputy chief minister said his administration works to deliver donor aid despite clashes and scarce resources.",
                     "sourceUrl": "https://www.irrawaddy.com/news/burma/150000-people-displaced-by-fighting-in-pakokku-in-urgent-need.html",
                     "steps": [1, "all"]
                 },
@@ -572,7 +555,7 @@ export const ASIA_PACIFIC_CASES_2026 = [
                     "label": "About 900 cross",
                     "type": "movement",
                     "side": 0.22,
-                    "text": "OCHA reported that about 900 people displaced from Sagaing Region crossed into neighbouring India in early June 2026.",
+                    "text": "OCHA reported that about 900 people displaced from Sagaing's Tamu Township crossed into neighbouring India in early June 2026.",
                     "sourceUrl": "https://myanmar.un.org/en/319232-myanmar-humanitarian-update-no-52",
                     "steps": [2, 4, "all"]
                 },
@@ -580,10 +563,10 @@ export const ASIA_PACIFIC_CASES_2026 = [
                     "id": "india-curbs",
                     "from": "india",
                     "to": "sagaing-displaced",
-                    "label": "Imposes movement curbs",
+                    "label": "Introduces movement curbs",
                     "type": "pressure",
                     "side": 0.22,
-                    "text": "India imposed movement restrictions on 9 June 2026 after displaced people from Sagaing crossed the border.",
+                    "text": "On 9 June 2026, OCHA noted that India introduced movement restrictions as operations in Tamu Township displaced civilians across the border.",
                     "sourceUrl": "https://myanmar.un.org/en/319232-myanmar-humanitarian-update-no-52",
                     "steps": [2, "all"]
                 },
@@ -591,21 +574,10 @@ export const ASIA_PACIFIC_CASES_2026 = [
                     "id": "ocha-aid",
                     "from": "ocha-partners",
                     "to": "displaced-pakokku",
-                    "label": "Reaches one in three",
+                    "label": "Reaches 1.6M nationwide",
                     "type": "support",
                     "side": 0.08,
-                    "text": "Across Myanmar, aid partners reached 1.6 million of 4.9 million targeted people by end-March 2026, while OCHA noted urgent needs across Pakokku and Magway.",
-                    "sourceUrl": "https://myanmar.un.org/en/319232-myanmar-humanitarian-update-no-52",
-                    "steps": [3, "all"]
-                },
-                {
-                    "id": "access-barriers",
-                    "from": "military-authorities",
-                    "to": "ocha-partners",
-                    "label": "Approvals block access",
-                    "type": "pressure",
-                    "side": 0.24,
-                    "text": "OCHA reports that armed hostilities, movement restrictions, and required administrative approvals continue to delay or block humanitarian deliveries.",
+                    "text": "Nationwide, aid partners reached 1.6 million of 4.9 million targeted people in Q1 2026, while OCHA noted Magway Region was particularly affected by new displacement.",
                     "sourceUrl": "https://myanmar.un.org/en/319232-myanmar-humanitarian-update-no-52",
                     "steps": [3, "all"]
                 },
@@ -615,7 +587,7 @@ export const ASIA_PACIFIC_CASES_2026 = [
                     "to": "ocha-partners",
                     "label": "Supplies 43% funding",
                     "type": "support",
-                    "text": "By 13 July 2026, donor governments had supplied 43 per cent of the US$890 million requested for the humanitarian response.",
+                    "text": "Donors had supplied 43 per cent of the US$890 million required for the 2026 response, according to OCHA's 13 July 2026 update.",
                     "sourceUrl": "https://myanmar.un.org/en/319232-myanmar-humanitarian-update-no-52",
                     "steps": [3, "all"]
                 },
@@ -628,17 +600,6 @@ export const ASIA_PACIFIC_CASES_2026 = [
                     "side": 0.12,
                     "text": "At its Manila summit in November 2026, ASEAN leaders extended the ban on Myanmar's leader attending summits over lack of progress on the Five-Point Consensus.",
                     "sourceUrl": "https://www.aljazeera.com/news/2026/11/16/asean-china-fall-short-of-agreeing-on-south-china-sea-code",
-                    "steps": [4, "all"]
-                },
-                {
-                    "id": "border-gathering",
-                    "from": "shelter-families",
-                    "to": "thailand",
-                    "label": "Gathers near Thailand",
-                    "type": "movement",
-                    "side": -0.22,
-                    "text": "Alongside pressure on families to leave shelters in Kayah and Shan states, OCHA reports civilians fleeing conflict gather near the Thai border.",
-                    "sourceUrl": "https://myanmar.un.org/en/319232-myanmar-humanitarian-update-no-52",
                     "steps": [4, "all"]
                 }
             ],
@@ -660,7 +621,7 @@ export const ASIA_PACIFIC_CASES_2026 = [
                     "key": "2",
                     "shortLabel": "Displacement",
                     "levels": ["local", "state"],
-                    "cam": { "lat": 21.6, "lng": 95.4, "dist": 0.14, "tilt": 50 },
+                    "cam": { "lat": 22.8, "lng": 95.0, "dist": 0.18, "tilt": 48 },
                     "bloc": false,
                     "actors": [
                         { "id": "displaced-pakokku", "preferredSide": "b", "note": "80,000+ since mid-May" },
@@ -673,42 +634,39 @@ export const ASIA_PACIFIC_CASES_2026 = [
                 {
                     "key": "3",
                     "shortLabel": "Blocked aid",
-                    "levels": ["local", "state", "global"],
-                    "cam": { "lat": 19.3, "lng": 95.6, "dist": 0.16, "tilt": 50 },
+                    "note": "Not drawn: OCHA reports armed hostilities, movement restrictions, and administrative requirements continue to block access across Myanmar, without attributing barriers to a single actor.",
+                    "levels": ["local", "global"],
+                    "cam": { "lat": 19.2, "lng": 95.6, "dist": 0.16, "tilt": 48 },
                     "bloc": false,
                     "actors": [
                         { "id": "ocha-partners", "preferredSide": "r" },
-                        { "id": "displaced-pakokku", "preferredSide": "l", "note": "aid destination" },
-                        { "id": "military-authorities", "preferredSide": "r" },
-                        { "id": "magwe-fug", "preferredSide": "l" },
+                        { "id": "displaced-pakokku", "preferredSide": "l", "note": "urgent needs (OCHA)" },
                         { "id": "donors" }
                     ],
-                    "connections": ["ocha-aid", "access-barriers", "donor-funding"]
+                    "connections": ["ocha-aid", "donor-funding"]
                 },
                 {
                     "key": "4",
                     "shortLabel": "ASEAN diplomacy",
-                    "note": "Not drawn: Min Aung Hlaing visited several ASEAN states individually, which the bloc did not discourage (Al Jazeera).",
+                    "note": "Not drawn: OCHA reports about 7,000 displaced people remain along the Myanmar–Thailand border in Myawaddy Township, Kayin State, and Min Aung Hlaing visited several ASEAN states without bloc discouragement (Al Jazeera).",
                     "levels": ["local", "state", "regional"],
-                    "cam": { "lat": 16.5, "lng": 107.0, "dist": 0.56, "tilt": 36 },
+                    "cam": { "lat": 18.0, "lng": 106.5, "dist": 0.62, "tilt": 34 },
                     "bloc": true,
                     "actors": [
                         { "id": "asean", "preferredSide": "b", "note": "Manila, Nov 2026" },
                         { "id": "military-authorities", "preferredSide": "l" },
                         { "id": "india", "preferredSide": "t" },
-                        { "id": "thailand", "preferredSide": "r" },
-                        { "id": "sagaing-displaced", "small": true },
-                        { "id": "shelter-families", "small": true }
+                        { "id": "sagaing-displaced", "small": true }
                     ],
-                    "connections": ["asean-ban", "sagaing-crosses", "border-gathering"]
+                    "connections": ["asean-ban", "sagaing-crosses"]
                 },
                 {
                     "key": "all",
                     "shortLabel": "All",
                     "summary": "Every sourced actor and connection across central Myanmar districts, border crossings, donor financing, and ASEAN summit diplomacy.",
-                    "note": "Not drawn: Min Aung Hlaing visited several ASEAN states individually, which the bloc did not discourage (Al Jazeera).",
+                    "note": "Not drawn: OCHA notes access barriers without naming one party and reports ~7,000 displaced remain near Myawaddy Township; Min Aung Hlaing also visited individual ASEAN states without bloc discouragement.",
                     "levels": ["local", "state", "regional", "global"],
-                    "cam": { "lat": 16.0, "lng": 106.0, "dist": 1.65, "tilt": 14 },
+                    "cam": { "lat": 17.5, "lng": 105.0, "dist": 1.65, "tilt": 14 },
                     "bloc": true,
                     "quietLabels": true,
                     "actors": [
@@ -716,7 +674,6 @@ export const ASIA_PACIFIC_CASES_2026 = [
                         { "id": "magwe-fug", "small": true },
                         { "id": "sagaing-displaced", "small": true },
                         { "id": "shelter-families", "small": true },
-                        { "id": "thailand", "small": true },
                         { "id": "india", "preferredSide": "t" },
                         { "id": "military-authorities", "preferredSide": "l" },
                         { "id": "ocha-partners", "small": true },
@@ -730,10 +687,8 @@ export const ASIA_PACIFIC_CASES_2026 = [
                         "sagaing-crosses",
                         "india-curbs",
                         "ocha-aid",
-                        "access-barriers",
                         "donor-funding",
-                        "asean-ban",
-                        "border-gathering"
+                        "asean-ban"
                     ]
                 }
             ]
