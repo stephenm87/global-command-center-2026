@@ -390,7 +390,7 @@ test('public snapshot builds live institutional feed with zero SERPER_API_KEY an
     });
 
     assert.equal(snapshot.meta.status, 'fresh');
-    assert.equal(snapshot.meta.snapshotSchemaVersion, 2);
+    assert.equal(snapshot.meta.snapshotSchemaVersion, 3);
     assert.equal(snapshot.meta.errorCode, undefined);
     assert.equal('serperStatus' in snapshot.meta, false, 'Public meta must not expose billing state');
     assert.equal(snapshot.items.length, 8);

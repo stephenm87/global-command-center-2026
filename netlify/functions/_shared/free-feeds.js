@@ -169,6 +169,7 @@ const OPEN_LICENSED_RSS_FEEDS = Object.freeze([
         attributionUrl: 'https://news.mongabay.com/',
         contentType: 'news',
         requireAuthor: true,
+        excludeWireAuthors: true,
         maxItems: 12,
     },
 ]);
@@ -405,6 +406,14 @@ function normalizeAuthorCandidate(rawAuthor = '', sourceName = '') {
     return candidate;
 }
 
+const WIRE_AGENCY_AUTHOR_PATTERN = /^(?:(?:the\s+)?associated\s+press(?:\s+news)?|ap(?:\s+news)?|agence\s+france[- ]presse|afp|(?:thomson\s+)?reuters)(?:\s*\([^)]*\))?$/i;
+const WIRE_DATELINE_PATTERN = /^.{0,80}\((?:AP|AFP|Reuters)\)\s*[—–-]/;
+
+function isWireAgencyAuthor(author = '') {
+    const trimmed = String(author || '').replace(/\s+/g, ' ').trim();
+    return Boolean(trimmed && WIRE_AGENCY_AUTHOR_PATTERN.test(trimmed));
+}
+
 function extractItemAuthor(block, sourceName = '') {
     const creator = normalizeAuthorCandidate(extractTag(block, 'dc:creator'), sourceName);
     if (creator) return creator;
@@ -495,6 +504,7 @@ function parseRssItems(xmlText, {
     upgradeHttpHost = '',
     contentType = 'news',
     requireAuthor = false,
+    excludeWireAuthors = false,
     maxItems = 5,
     now = new Date(),
     maxAgeDays = MAX_ITEM_AGE_DAYS,
@@ -512,9 +522,18 @@ function parseRssItems(xmlText, {
         const snippet = truncateSnippet(cleanFeedDescription(extractRawTag(block, 'description')), maxSnippetChars);
         const rawPubDate = extractTag(block, 'pubDate') || extractTag(block, 'dc:date');
         const isoDate = normalizeFeedDate(rawPubDate);
+        const rawCreator = extractTag(block, 'dc:creator');
+        const rawAuthor = extractTag(block, 'author');
         const author = extractItemAuthor(block, sourceName);
         if (!title || !link || !isoDate) continue;
         if (requireAuthor && !author) continue;
+        if (excludeWireAuthors && (
+            isWireAgencyAuthor(author)
+            || isWireAgencyAuthor(rawCreator)
+            || isWireAgencyAuthor(rawAuthor)
+            || WIRE_DATELINE_PATTERN.test(snippet)
+            || WIRE_DATELINE_PATTERN.test(title)
+        )) continue;
         if (!isFreshAndConsistentDate(rawPubDate, link, { now, maxAgeDays })) continue;
         parsed.push({
             title,
@@ -562,6 +581,7 @@ async function fetchRssFeed(fetchImpl, feedConfig, { now = new Date() } = {}) {
             upgradeHttpHost: feedConfig.upgradeHttpHost || '',
             contentType: feedConfig.contentType || 'news',
             requireAuthor: Boolean(feedConfig.requireAuthor),
+            excludeWireAuthors: Boolean(feedConfig.excludeWireAuthors),
             ...(Number.isInteger(feedConfig.maxSnippetChars) ? { maxSnippetChars: feedConfig.maxSnippetChars } : {}),
             maxItems: feedConfig.maxItems,
             now,
@@ -684,6 +704,8 @@ module.exports = {
     PUBLISHER_FUNDING_INFO,
     RELIEFWEB_API_V2,
     UN_NEWS_FEEDS,
+    WIRE_AGENCY_AUTHOR_PATTERN,
+    WIRE_DATELINE_PATTERN,
     cleanFeedDescription,
     decodeXmlEntities,
     extractItemAuthor,
@@ -693,6 +715,7 @@ module.exports = {
     fetchRssFeed,
     getPublisherFundingInfo,
     isFreshAndConsistentDate,
+    isWireAgencyAuthor,
     parseRssItems,
     truncateSnippet,
 };
