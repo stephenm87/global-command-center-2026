@@ -413,7 +413,7 @@ const WIRE_AGENCY_ACRONYM_PATTERN = /(?:^|[\/,(|&]\s*|\bby\s+)(?:AP|AFP)(?=\s*$|
 const WIRE_DATELINE_PATTERN = /^.{0,80}\((?:AP|AFP|Reuters)\)\s*[—–-]/;
 const KNOWN_PARTNER_OUTLET_PATTERN = /(?<![\p{L}\p{N}])(?:hong\s+kong\s+free\s+press|hkfp|oc\s+media|meduza|meta\.mk|cari-bois|coda\s+story|eurasianet|groundup|the\s+conversation|minority\s+africa|new\s+naratif|opendemocracy|kyiv\s+independent|bulatlat|rappler|chai\s+khana|smex|access\s+now|mongabay|al\s+jazeera|bbc|france\s*24|deutsche\s+welle|rfe\/rl|radio\s+free(?:\s+europe|\s+asia)?|voice\s+of\s+america|the\s+guardian|the\s+new\s+humanitarian|rest\s+of\s+world|balkan\s+insight|animal\s+pol[ií]tico|ojop[uú]blico|techcabal|premium\s+times|daily\s+maverick|mada\s+masr|7iber|raseef22|daraj|frontier\s+myanmar|the\s+irrawaddy|prachatai|malaysiakini|new\s+bloom|china\s+digital\s+times)(?![\p{L}\p{N}])/iu;
 const PARTNER_ORG_NOUN_PATTERN = /\b(?:free\s+press|news(?:\s+(?:network|agency|service|desk|room|watch|line|wire))?|press(?:\s+(?:agency|service|office|freedom))?|media(?:\s+(?:network|group|watch|center|hub))?|tribune|gazette|herald|chronicle|journal|observer|monitor|telegraph|broadcasting|magazine|agency|foundation|institute|coalition|collective|council|editorial|bureau)\b|\.(?:org|com|net|mk|in|ua|hk|tw|my|ph|za)$/i;
-const PARTNER_REPUBLICATION_PATTERN = /(?:originally\s+(?:published|appeared)\s+(?:on|in|by)\s+(?!global\s+voices\b)|republished\s+(?:here\s+)?(?:under|via|with\s+permission|from)\s+(?:a\s+)?(?:content[- ]sharing|media\s+partnership|partnership)|under\s+a\s+content[- ]sharing\s+agreement)/i;
+const PARTNER_REPUBLICATION_PATTERN = /(?:originally\s+(?:published|appeared)\s+(?:on|by)\s+(?!global\s+voices\b)|republished\s+(?:here\s+)?(?:under|via|with\s+permission|from)\s+(?:a\s+)?(?:content[- ]sharing|media\s+partnership|partnership)|under\s+a\s+content[- ]sharing\s+agreement)/i;
 
 function isWireAgencyAuthor(author = '') {
     const trimmed = String(author || '').replace(/\s+/g, ' ').trim();
@@ -429,9 +429,10 @@ function isWireAgencyAuthor(author = '') {
 function isPartnerOrgAuthor(author = '') {
     const trimmed = String(author || '').replace(/\s+/g, ' ').trim();
     if (!trimmed) return false;
-    return isWireAgencyAuthor(trimmed)
-        || KNOWN_PARTNER_OUTLET_PATTERN.test(trimmed)
-        || PARTNER_ORG_NOUN_PATTERN.test(trimmed);
+    if (isWireAgencyAuthor(trimmed) || KNOWN_PARTNER_OUTLET_PATTERN.test(trimmed)) return true;
+    // Preserve Global Voices' own editorial/staff credits (e.g. "Global Voices Editorial", "GV Editorial").
+    if (/^(?:global\s+voices|gv)(?:\s+|$)/i.test(trimmed)) return false;
+    return PARTNER_ORG_NOUN_PATTERN.test(trimmed);
 }
 
 function extractItemAuthor(block, sourceName = '') {

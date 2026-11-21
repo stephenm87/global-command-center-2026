@@ -1577,18 +1577,16 @@ test('Demonym matching pins Indonesian and Yemeni headlines, covers all 193 UN m
     }
 });
 
-test('Explicit country names outrank nationalities, Global Voices drops partner orgs, and Hong Kong/Macau/Taiwan map to Asia-Pacific', () => {
+test('Explicit country names outrank nationalities even when a nationality appears earlier in the headline', () => {
     const { resolveCoords } = require('../_shared/intel-normalization');
-    const { parseRssItems } = require('../_shared/free-feeds');
 
     const globalQuery = {
         id: 'global-governance',
         region: 'Global / Transnational',
-        issueHints: ['Governance & Rights'],
+        issueHints: ['Security & Diplomacy'],
         fallbackCoords: null,
     };
 
-    // 1. Explicit country name outranks nationality/demonym even earlier in the title
     const polandHeadline = "Russian missile hits Poland as Ukraine's allies hold military exercise, says Tusk";
     assert.equal(resolveCoords(polandHeadline, '').matchedPlace, 'poland');
     const polandArticle = assessArticle({
@@ -1602,8 +1600,10 @@ test('Explicit country names outrank nationalities, Global Voices drops partner 
     assert.equal(polandArticle.coverage.matchedPlace, 'poland');
     assert.equal(polandArticle.Latitude, '51.9');
     assert.equal(polandArticle.Longitude, '19.1');
+});
 
-    // 2. Global Voices drops partner news organization republications while keeping volunteer contributors
+test('Global Voices drops partner news-organization republications while keeping volunteer contributors, translations, and GV staff credits', () => {
+    const { parseRssItems } = require('../_shared/free-feeds');
     const fixedNow = new Date('2026-11-21T12:00:00Z');
     const gvXml = `<rss version="2.0" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:content="http://purl.org/rss/1.0/modules/content/"><channel>
         <item>
@@ -1632,15 +1632,29 @@ test('Explicit country names outrank nationalities, Global Voices drops partner 
             <title>Supreme court orders reform of Military Justice Law in Indonesia</title>
             <link>https://globalvoices.org/2026/11/17/volunteer-human-author-test/</link>
             <dc:creator><![CDATA[Mong Palatino]]></dc:creator>
-            <description><![CDATA[Judges ordered parliament to revise court jurisdiction rules. Originally published on Global Voices.]]></description>
+            <description><![CDATA[Judges ordered parliament to revise court jurisdiction rules. Originally published in Spanish.]]></description>
             <pubDate>Tue, 17 Nov 2026 08:00:00 +0000</pubDate>
         </item>
         <item>
             <title>Madagascar parliament reviews marine governance bill</title>
             <link>https://globalvoices.org/2026/11/15/volunteer-cluett-test/</link>
             <dc:creator><![CDATA[Rebecca Cluett]]></dc:creator>
-            <description><![CDATA[Coastal communities and regulators reviewed coastal fisheries policy.]]></description>
+            <description><![CDATA[Originally published on Global Voices. Coastal communities reviewed fisheries policy.]]></description>
             <pubDate>Sun, 15 Nov 2026 08:00:00 +0000</pubDate>
+        </item>
+        <item>
+            <title>Civic coalition monitors digital rights bill in parliament</title>
+            <link>https://globalvoices.org/2026/11/19/gv-editorial-test/</link>
+            <dc:creator><![CDATA[Global Voices Editorial]]></dc:creator>
+            <description><![CDATA[Lawmakers reviewed internet governance protections.]]></description>
+            <pubDate>Thu, 19 Nov 2026 08:00:00 +0000</pubDate>
+        </item>
+        <item>
+            <title>Local reporters document municipal transparency rules</title>
+            <link>https://globalvoices.org/2026/11/19/gv-short-editorial-test/</link>
+            <dc:creator><![CDATA[GV Editorial]]></dc:creator>
+            <description><![CDATA[Civic monitors reviewed public disclosure legislation.]]></description>
+            <pubDate>Thu, 19 Nov 2026 07:00:00 +0000</pubDate>
         </item>
     </channel></rss>`;
 
@@ -1653,9 +1667,20 @@ test('Explicit country names outrank nationalities, Global Voices drops partner 
         maxItems: 12,
         now: fixedNow,
     });
-    assert.deepEqual(gvKept.map(i => i.author), ['Mong Palatino', 'Rebecca Cluett']);
+    assert.deepEqual(
+        gvKept.map(i => i.author),
+        ['Mong Palatino', 'Rebecca Cluett', 'Global Voices Editorial', 'GV Editorial']
+    );
+});
 
-    // 3. Hong Kong, Macau and Taiwan resolve to Asia-Pacific
+test('Hong Kong, Macau and Taiwan resolve to Asia-Pacific with explicit coordinates', () => {
+    const globalQuery = {
+        id: 'global-governance',
+        region: 'Global / Transnational',
+        issueHints: ['Governance & Rights'],
+        fallbackCoords: null,
+    };
+
     const hkArticle = assessArticle({
         title: "‘Who will respond?’: Jailed Hong Kong pro-democracy activist Joshua Wong fears being forgotten amid 10-year sentence",
         description: 'Rights advocates cited human rights protections and judicial oversight.',
