@@ -156,6 +156,7 @@ const OPEN_LICENSED_RSS_FEEDS = Object.freeze([
         attributionUrl: 'https://globalvoices.org/',
         contentType: 'news',
         requireAuthor: true,
+        excludePartnerOrgAuthors: true,
         maxItems: 12,
     },
     {
@@ -410,6 +411,9 @@ const WIRE_AGENCY_AUTHOR_PATTERN = /^(?:(?:the\s+)?associated\s+press(?:\s+news)
 const WIRE_AGENCY_EMBEDDED_PATTERN = /(?<![\p{L}\p{N}])(?:associated\s+press|agence\s+france[- ]presse|(?:thomson\s+)?reuters)(?![\p{L}\p{N}])/iu;
 const WIRE_AGENCY_ACRONYM_PATTERN = /(?:^|[\/,(|&]\s*|\bby\s+)(?:AP|AFP)(?=\s*$|\s*[\/,)|&])/u;
 const WIRE_DATELINE_PATTERN = /^.{0,80}\((?:AP|AFP|Reuters)\)\s*[—–-]/;
+const KNOWN_PARTNER_OUTLET_PATTERN = /(?<![\p{L}\p{N}])(?:hong\s+kong\s+free\s+press|hkfp|oc\s+media|meduza|meta\.mk|cari-bois|coda\s+story|eurasianet|groundup|the\s+conversation|minority\s+africa|new\s+naratif|opendemocracy|kyiv\s+independent|bulatlat|rappler|chai\s+khana|smex|access\s+now|mongabay|al\s+jazeera|bbc|france\s*24|deutsche\s+welle|rfe\/rl|radio\s+free(?:\s+europe|\s+asia)?|voice\s+of\s+america|the\s+guardian|the\s+new\s+humanitarian|rest\s+of\s+world|balkan\s+insight|animal\s+pol[ií]tico|ojop[uú]blico|techcabal|premium\s+times|daily\s+maverick|mada\s+masr|7iber|raseef22|daraj|frontier\s+myanmar|the\s+irrawaddy|prachatai|malaysiakini|new\s+bloom|china\s+digital\s+times)(?![\p{L}\p{N}])/iu;
+const PARTNER_ORG_NOUN_PATTERN = /\b(?:free\s+press|news(?:\s+(?:network|agency|service|desk|room|watch|line|wire))?|press(?:\s+(?:agency|service|office|freedom))?|media(?:\s+(?:network|group|watch|center|hub))?|tribune|gazette|herald|chronicle|journal|observer|monitor|telegraph|broadcasting|magazine|agency|foundation|institute|coalition|collective|council|editorial|bureau)\b|\.(?:org|com|net|mk|in|ua|hk|tw|my|ph|za)$/i;
+const PARTNER_REPUBLICATION_PATTERN = /(?:originally\s+(?:published|appeared)\s+(?:on|by)\s+(?!global\s+voices\b)|republished\s+(?:here\s+)?(?:under|via|with\s+permission|from)\s+(?:a\s+)?(?:content[- ]sharing|media\s+partnership|partnership)|under\s+a\s+content[- ]sharing\s+agreement)/i;
 
 function isWireAgencyAuthor(author = '') {
     const trimmed = String(author || '').replace(/\s+/g, ' ').trim();
@@ -420,6 +424,15 @@ function isWireAgencyAuthor(author = '') {
             || WIRE_AGENCY_ACRONYM_PATTERN.test(trimmed)
         )
     );
+}
+
+function isPartnerOrgAuthor(author = '') {
+    const trimmed = String(author || '').replace(/\s+/g, ' ').trim();
+    if (!trimmed) return false;
+    if (isWireAgencyAuthor(trimmed) || KNOWN_PARTNER_OUTLET_PATTERN.test(trimmed)) return true;
+    // Preserve Global Voices' own editorial/staff credits (e.g. "Global Voices Editorial", "GV Editorial").
+    if (/^(?:global\s+voices|gv)(?:\s+|$)/i.test(trimmed)) return false;
+    return PARTNER_ORG_NOUN_PATTERN.test(trimmed);
 }
 
 function extractItemAuthor(block, sourceName = '') {
@@ -513,6 +526,7 @@ function parseRssItems(xmlText, {
     contentType = 'news',
     requireAuthor = false,
     excludeWireAuthors = false,
+    excludePartnerOrgAuthors = false,
     maxItems = 5,
     now = new Date(),
     maxAgeDays = MAX_ITEM_AGE_DAYS,
@@ -527,7 +541,12 @@ function parseRssItems(xmlText, {
         const title = extractTag(block, 'title');
         const rawLink = extractTag(block, 'link') || extractTag(block, 'guid');
         const link = sanitizeHttpsUrl(rawLink, upgradeHttpHost);
-        const snippet = truncateSnippet(cleanFeedDescription(extractRawTag(block, 'description')), maxSnippetChars);
+        const rawDescription = extractRawTag(block, 'description');
+        const decodedDescription = decodeXmlEntities(String(rawDescription || '').slice(0, 20000));
+        const decodedContent = excludePartnerOrgAuthors
+            ? decodeXmlEntities(String(extractRawTag(block, 'content:encoded') || '').slice(0, 20000))
+            : '';
+        const snippet = truncateSnippet(cleanFeedDescription(rawDescription), maxSnippetChars);
         const rawPubDate = extractTag(block, 'pubDate') || extractTag(block, 'dc:date');
         const isoDate = normalizeFeedDate(rawPubDate);
         const rawCreator = extractTag(block, 'dc:creator');
@@ -541,6 +560,13 @@ function parseRssItems(xmlText, {
             || isWireAgencyAuthor(rawAuthor)
             || WIRE_DATELINE_PATTERN.test(snippet)
             || WIRE_DATELINE_PATTERN.test(title)
+        )) continue;
+        if (excludePartnerOrgAuthors && (
+            isPartnerOrgAuthor(author)
+            || isPartnerOrgAuthor(rawCreator)
+            || isPartnerOrgAuthor(rawAuthor)
+            || PARTNER_REPUBLICATION_PATTERN.test(decodedDescription)
+            || PARTNER_REPUBLICATION_PATTERN.test(decodedContent)
         )) continue;
         if (!isFreshAndConsistentDate(rawPubDate, link, { now, maxAgeDays })) continue;
         parsed.push({
@@ -590,6 +616,7 @@ async function fetchRssFeed(fetchImpl, feedConfig, { now = new Date() } = {}) {
             contentType: feedConfig.contentType || 'news',
             requireAuthor: Boolean(feedConfig.requireAuthor),
             excludeWireAuthors: Boolean(feedConfig.excludeWireAuthors),
+            excludePartnerOrgAuthors: Boolean(feedConfig.excludePartnerOrgAuthors),
             ...(Number.isInteger(feedConfig.maxSnippetChars) ? { maxSnippetChars: feedConfig.maxSnippetChars } : {}),
             maxItems: feedConfig.maxItems,
             now,
@@ -708,6 +735,7 @@ module.exports = {
     MAX_SNIPPET_CHARS,
     MAX_URL_DATE_DRIFT_DAYS,
     OPEN_LICENSED_RSS_FEEDS,
+    PARTNER_REPUBLICATION_PATTERN,
     PUBLIC_NEWS_RSS_FEEDS,
     PUBLISHER_FUNDING_INFO,
     RELIEFWEB_API_V2,
@@ -723,6 +751,7 @@ module.exports = {
     fetchRssFeed,
     getPublisherFundingInfo,
     isFreshAndConsistentDate,
+    isPartnerOrgAuthor,
     isWireAgencyAuthor,
     parseRssItems,
     truncateSnippet,

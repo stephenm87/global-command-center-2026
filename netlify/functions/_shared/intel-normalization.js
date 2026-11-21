@@ -156,6 +156,8 @@ const SPECIFIC_PLACE_COORDS = Object.freeze({
     afghanistan: [33.9, 67.7],
     'oyu tolgoi': [43.0, 106.8],
     'hong kong': [22.3, 114.2],
+    macau: [22.2, 113.5],
+    macao: [22.2, 113.5],
     'islamabad': [33.7, 73.1],
     'new delhi': [28.6, 77.2],
     'raja ampat': [-0.5, 130.5],
@@ -440,7 +442,9 @@ function compileMatchers(table) {
     return Object.entries(table)
         .sort((a, b) => b[0].length - a[0].length)
         .map(([key, coords]) => {
-            const extraLookahead = key === 'guinea' ? '(?!\\s+pigs?(?![\\p{L}\\p{N}]))' : '';
+            const extraLookahead = key === 'guinea'
+                ? '(?!\\s+pigs?(?![\\p{L}\\p{N}])|-bissauan?s?(?![\\p{L}\\p{N}]))'
+                : '';
             return {
                 key,
                 coords,
@@ -657,6 +661,8 @@ const UN_MEMBER_STATE_DEMONYMS = Object.freeze({
 const OBSERVER_AND_TERRITORY_DEMONYMS = Object.freeze({
     palestine: ['palestinian', 'palestinians'],
     taiwan: ['taiwanese'],
+    'hong kong': ['hong konger', 'hong kongers', 'hongkonger', 'hongkongers'],
+    macau: ['macanese'],
     kosovo: ['kosovar', 'kosovars'],
     greenland: ['greenlandic'],
     'western sahara': ['sahrawi', 'sahrawis'],
@@ -760,9 +766,8 @@ const DEMONYM_MATCHERS = Object.entries({ ...UN_MEMBER_STATE_DEMONYMS, ...OBSERV
         };
     });
 
-const SPECIFIC_MATCHERS = [
+const PLACE_NAME_MATCHERS = [
     ...compileMatchers(SPECIFIC_PLACE_COORDS),
-    ...DEMONYM_MATCHERS,
     // Exact uppercase acronyms avoid matching lowercase "us" or ".png" image extensions
     {
         key: 'united states',
@@ -824,13 +829,22 @@ function findFirstMatch(text, matchers) {
 }
 
 function resolveCoords(title, snippet = '') {
-    const titleSpecific = findFirstMatch(title, SPECIFIC_MATCHERS);
-    if (titleSpecific) {
-        return { coords: titleSpecific.coords, matchedPlace: titleSpecific.key, precision: 'named-place' };
+    // Explicit place/country names in the title outrank nationalities/demonyms in the title.
+    const titlePlace = findFirstMatch(title, PLACE_NAME_MATCHERS);
+    if (titlePlace) {
+        return { coords: titlePlace.coords, matchedPlace: titlePlace.key, precision: 'named-place' };
     }
-    const snippetSpecific = findFirstMatch(snippet, SPECIFIC_MATCHERS);
-    if (snippetSpecific) {
-        return { coords: snippetSpecific.coords, matchedPlace: snippetSpecific.key, precision: 'named-place' };
+    const titleDemonym = findFirstMatch(title, DEMONYM_MATCHERS);
+    if (titleDemonym) {
+        return { coords: titleDemonym.coords, matchedPlace: titleDemonym.key, precision: 'named-place' };
+    }
+    const snippetPlace = findFirstMatch(snippet, PLACE_NAME_MATCHERS);
+    if (snippetPlace) {
+        return { coords: snippetPlace.coords, matchedPlace: snippetPlace.key, precision: 'named-place' };
+    }
+    const snippetDemonym = findFirstMatch(snippet, DEMONYM_MATCHERS);
+    if (snippetDemonym) {
+        return { coords: snippetDemonym.coords, matchedPlace: snippetDemonym.key, precision: 'named-place' };
     }
     const titleContinent = findFirstMatch(title, CONTINENT_MATCHERS);
     if (titleContinent) {

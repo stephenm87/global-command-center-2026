@@ -390,7 +390,7 @@ test('public snapshot builds live institutional feed with zero SERPER_API_KEY an
     });
 
     assert.equal(snapshot.meta.status, 'fresh');
-    assert.equal(snapshot.meta.snapshotSchemaVersion, 3);
+    assert.equal(snapshot.meta.snapshotSchemaVersion, 4);
     assert.equal(snapshot.meta.errorCode, undefined);
     assert.equal('serperStatus' in snapshot.meta, false, 'Public meta must not expose billing state');
     assert.equal(snapshot.items.length, 8);
@@ -1575,4 +1575,159 @@ test('Demonym matching pins Indonesian and Yemeni headlines, covers all 193 UN m
             assert.equal(validMatch, true, `Demonym "${demonym}" resolved to ${resolved.matchedPlace} instead of ${countryKey}`);
         }
     }
+});
+
+test('Explicit country names outrank nationalities even when a nationality appears earlier in the headline', () => {
+    const { resolveCoords } = require('../_shared/intel-normalization');
+
+    const globalQuery = {
+        id: 'global-governance',
+        region: 'Global / Transnational',
+        issueHints: ['Security & Diplomacy'],
+        fallbackCoords: null,
+    };
+
+    const polandHeadline = "Russian missile hits Poland as Ukraine's allies hold military exercise, says Tusk";
+    assert.equal(resolveCoords(polandHeadline, '').matchedPlace, 'poland');
+    const polandArticle = assessArticle({
+        title: polandHeadline,
+        description: 'Officials reviewed defense readiness and NATO diplomacy following the strike.',
+        link: 'https://www.bbc.co.uk/news/articles/poland-missile-test',
+        date: '2026-11-21',
+        source: 'BBC News',
+    }, globalQuery, { scraperSource: 'public-rss', isConfiguredFeed: true });
+    assert.ok(polandArticle);
+    assert.equal(polandArticle.coverage.matchedPlace, 'poland');
+    assert.equal(polandArticle.Latitude, '51.9');
+    assert.equal(polandArticle.Longitude, '19.1');
+});
+
+test('Global Voices drops partner news-organization republications while keeping volunteer contributors, translations, and GV staff credits', () => {
+    const { parseRssItems } = require('../_shared/free-feeds');
+    const fixedNow = new Date('2026-11-21T12:00:00Z');
+    const gvXml = `<rss version="2.0" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:content="http://purl.org/rss/1.0/modules/content/"><channel>
+        <item>
+            <title>Jailed activist fears being forgotten amid sentence</title>
+            <link>https://globalvoices.org/2026/11/18/hkfp-republication-test/</link>
+            <dc:creator><![CDATA[Hong Kong Free Press]]></dc:creator>
+            <description><![CDATA[Activists raised concerns about human rights enforcement in Hong Kong.]]></description>
+            <pubDate>Wed, 18 Nov 2026 10:00:00 +0000</pubDate>
+        </item>
+        <item>
+            <title>Border customs protests pause after talks in South Caucasus</title>
+            <link>https://globalvoices.org/2026/11/18/oc-media-republication-test/</link>
+            <dc:creator><![CDATA[OC Media]]></dc:creator>
+            <description><![CDATA[Local residents marched over new border regulations.]]></description>
+            <pubDate>Wed, 18 Nov 2026 09:30:00 +0000</pubDate>
+        </item>
+        <item>
+            <title>Regional water pact sparks debate in municipal assembly</title>
+            <link>https://globalvoices.org/2026/11/18/partner-notice-test/</link>
+            <dc:creator><![CDATA[Elena Reporter]]></dc:creator>
+            <description><![CDATA[Municipal lawmakers debated drought rules.]]></description>
+            <content:encoded><![CDATA[<p>This article was <a href="https://example.org/story">originally published on Example Press</a> under a content-sharing agreement.</p>]]></content:encoded>
+            <pubDate>Wed, 18 Nov 2026 09:00:00 +0000</pubDate>
+        </item>
+        <item>
+            <title>Supreme court orders reform of Military Justice Law in Indonesia</title>
+            <link>https://globalvoices.org/2026/11/17/volunteer-human-author-test/</link>
+            <dc:creator><![CDATA[Mong Palatino]]></dc:creator>
+            <description><![CDATA[Judges ordered parliament to revise court jurisdiction rules. Originally published in Spanish.]]></description>
+            <pubDate>Tue, 17 Nov 2026 08:00:00 +0000</pubDate>
+        </item>
+        <item>
+            <title>Madagascar parliament reviews marine governance bill</title>
+            <link>https://globalvoices.org/2026/11/15/volunteer-cluett-test/</link>
+            <dc:creator><![CDATA[Rebecca Cluett]]></dc:creator>
+            <description><![CDATA[Originally published on Global Voices. Coastal communities reviewed fisheries policy.]]></description>
+            <pubDate>Sun, 15 Nov 2026 08:00:00 +0000</pubDate>
+        </item>
+        <item>
+            <title>Civic coalition monitors digital rights bill in parliament</title>
+            <link>https://globalvoices.org/2026/11/19/gv-editorial-test/</link>
+            <dc:creator><![CDATA[Global Voices Editorial]]></dc:creator>
+            <description><![CDATA[Lawmakers reviewed internet governance protections.]]></description>
+            <pubDate>Thu, 19 Nov 2026 08:00:00 +0000</pubDate>
+        </item>
+        <item>
+            <title>Local reporters document municipal transparency rules</title>
+            <link>https://globalvoices.org/2026/11/19/gv-short-editorial-test/</link>
+            <dc:creator><![CDATA[GV Editorial]]></dc:creator>
+            <description><![CDATA[Civic monitors reviewed public disclosure legislation.]]></description>
+            <pubDate>Thu, 19 Nov 2026 07:00:00 +0000</pubDate>
+        </item>
+    </channel></rss>`;
+
+    const gvKept = parseRssItems(gvXml, {
+        sourceName: 'Global Voices',
+        fundingLabel: 'Nonprofit volunteer & citizen media (CC BY 3.0)',
+        attributionUrl: 'https://globalvoices.org/',
+        requireAuthor: true,
+        excludePartnerOrgAuthors: true,
+        maxItems: 12,
+        now: fixedNow,
+    });
+    assert.deepEqual(
+        gvKept.map(i => i.author),
+        ['Mong Palatino', 'Rebecca Cluett', 'Global Voices Editorial', 'GV Editorial']
+    );
+});
+
+test('Hong Kong, Macau and Taiwan resolve to Asia-Pacific with explicit coordinates', () => {
+    const globalQuery = {
+        id: 'global-governance',
+        region: 'Global / Transnational',
+        issueHints: ['Governance & Rights'],
+        fallbackCoords: null,
+    };
+
+    const hkArticle = assessArticle({
+        title: "‘Who will respond?’: Jailed Hong Kong pro-democracy activist Joshua Wong fears being forgotten amid 10-year sentence",
+        description: 'Rights advocates cited human rights protections and judicial oversight.',
+        link: 'https://globalvoices.org/2026/11/18/hong-kong-joshua-wong-test/',
+        date: '2026-11-18',
+        source: 'Global Voices',
+    }, globalQuery, { scraperSource: 'public-rss', isConfiguredFeed: true });
+    assert.ok(hkArticle);
+    assert.equal(hkArticle.coverage.region, 'Asia-Pacific');
+    assert.equal(hkArticle.coverage.matchedPlace, 'hong kong');
+    assert.equal(hkArticle.Latitude, '22.3');
+    assert.equal(hkArticle.Longitude, '114.2');
+
+    const macauArticle = assessArticle({
+        title: 'Macau legislature passes election law amendments ahead of vote',
+        description: 'Lawmakers revised election vetting procedures.',
+        link: 'https://globalvoices.org/2026/11/19/macau-election-law-test/',
+        date: '2026-11-19',
+        source: 'Global Voices',
+    }, globalQuery, { scraperSource: 'public-rss', isConfiguredFeed: true });
+    assert.ok(macauArticle);
+    assert.equal(macauArticle.coverage.region, 'Asia-Pacific');
+    assert.equal(macauArticle.coverage.matchedPlace, 'macau');
+    assert.equal(macauArticle.Latitude, '22.2');
+    assert.equal(macauArticle.Longitude, '113.5');
+
+    const macaoArticle = assessArticle({
+        title: 'Macao regulators tighten cross-border finance and court compliance rules',
+        description: 'Officials cited regulatory oversight.',
+        link: 'https://globalvoices.org/2026/11/19/macao-rules-test/',
+        date: '2026-11-19',
+        source: 'Global Voices',
+    }, globalQuery, { scraperSource: 'public-rss', isConfiguredFeed: true });
+    assert.ok(macaoArticle);
+    assert.equal(macaoArticle.coverage.region, 'Asia-Pacific');
+    assert.equal(macaoArticle.coverage.matchedPlace, 'macao');
+
+    const taiwanArticle = assessArticle({
+        title: 'Taiwan parliament debates defense budget and maritime security policy',
+        description: 'Lawmakers reviewed diplomacy and treaty commitments.',
+        link: 'https://www.bbc.co.uk/news/articles/taiwan-defense-test',
+        date: '2026-11-20',
+        source: 'BBC News',
+    }, globalQuery, { scraperSource: 'public-rss', isConfiguredFeed: true });
+    assert.ok(taiwanArticle);
+    assert.equal(taiwanArticle.coverage.region, 'Asia-Pacific');
+    assert.equal(taiwanArticle.coverage.matchedPlace, 'taiwan');
+    assert.equal(taiwanArticle.Latitude, '23.7');
+    assert.equal(taiwanArticle.Longitude, '120.9');
 });

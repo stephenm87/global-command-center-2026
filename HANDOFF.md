@@ -2,6 +2,24 @@
 
 Newest entry first. Each agent adds an entry before it stops. Keep entries short.
 
+## 2026-11-21 — Antigravity (Lead) — Unit 26b (Step 2 Feed Follow-Up & Production Supabase Migration Record)
+- **Supabase Production Migration Applied (`2026-11-21T04:15:00Z`):**
+  - `supabase/migrations/20261116000000_user_data_rls.sql` was applied to production on `2026-11-21` at `04:15 UTC` by Claude at the owner's request. Result: RLS enabled and forced; four policies (`SELECT`, `INSERT`, `UPDATE`, `DELETE`), all for role `authenticated`; the two new `CHECK` constraints valid (`1..128` key length, `1 MB` / `1048576` byte value cap); `trg_user_data_updated_at` trigger present; `anon` holds `SELECT` only; `0` rows in table; keep-alive `GET` still returns `200` with `[]`; signed-out `INSERT` returns `401`. Documented in `docs/SUPABASE.md` and `docs/ARCHITECTURE.md`.
+- **Did (on `feat/feed-place-partners-ap`, Step 2):**
+  - **Place Names Outrank Nationalities (`intel-normalization.js`):** Split `PLACE_NAME_MATCHERS` ahead of `DEMONYM_MATCHERS` in `resolveCoords()` (`76ccedd`), guarded `guinea` against `-bissauan?s?`, and added `macau`/`macao` coords and HK/Macau demonyms.
+  - **Partner Republications (`free-feeds.js`):** Enabled `excludePartnerOrgAuthors: true` on `global-voices` (`isPartnerOrgAuthor`, `PARTNER_REPUBLICATION_PATTERN`, `b75bc54`) to drop partner news organizations (`"Hong Kong Free Press"`, `"OC Media"`, etc.) while preserving individual volunteers and Global Voices' own translations/editorial credits.
+  - **Asia-Pacific Coverage (`intel-snapshot.js`, `public-intel.node.test.js`):** Added `hong kong|macau|macao` to `REGION_PATTERNS['Asia-Pacific']` alongside `taiwan`, bumped `SNAPSHOT_SCHEMA_VERSION` to `4`, and added regression tests (`fabd0c5`).
+- **Claude Collaboration (`Review [Pre-Merge]`, `claude-opus-5-5`, read-only `--permission-mode plan`):** `review/claude-review-20261121-step2-feed.md` (`0 BLOCKING, 3 SHOULD-FIX, 4 SUGGESTION`):
+  - **`ACCEPT` (fixed now):** Removed `in` branch from `PARTNER_REPUBLICATION_PATTERN` so `"Originally published in Spanish"` translations stay (`#1`); exempted `Global Voices` / `GV` staff credits in `isPartnerOrgAuthor` (`#2`); updated `HANDOFF.md` with review metadata/triage and split Unit 26a/26b (`#3`, `#7`); split Step 2 tests into three focused tests (`#6`).
+  - **`ACCEPT-LATER` (backlog):** Narrowing surname collisions in `PARTNER_ORG_NOUN_PATTERN` (`"Press"`, `"Herald"`, `"Monitor"`, `#5`).
+  - **Noted for owner report (`#4`):** Place-first priority follows owner's rule (`"Russian missile hits Poland..."` -> `poland`); note side-actor trade-off (`"Iranian foreign minister meets US envoy"` -> `united states`) in gate report.
+- **Unfinished / Next agent should check:** Merge Step 2 PR after checks pass and verify live `public-intel` (`snapshotSchemaVersion: 4`), then remove the Nexus tab on `feat/remove-nexus-tab` (Step 3) and build the 3D actor map pilot (Step 4).
+
+## 2026-11-21 — Antigravity (Lead) — Unit 26a (Step 1: PR #43 Production Go-Live)
+- **Did:** Squash-merged PR #43 into `main` (`0e353621363f1ec36994bde61b03a3565f8dfb14`, `"feat(cases): Gate 4 voice refinement, 29/29 map roles and Batch 1 v2 briefings"`).
+- **Production Deploy ID:** `6b011d3b526fcf172095235f` (`state: ready`, published `2026-11-21T04:25:50.975Z`).
+- **Tested:** Verified all 6 Batch 1 cases (`myanmar-fragmented-sovereignty`, `syria-transition-return-sanctions`, `eastern-drc-peace-civilian-protection`, `sahel-after-ecowas-regional-order`, `haiti-security-legitimacy-haitian-ownership`, `libya-roadmap-elections-oil-assets`) on live production in Playwright at `1440×900` and `390×844` (`0` console/page errors, `0` overflow, locator pins and v2 depth confirmed).
+
 ## 2026-11-21 — Antigravity (Lead) — Unit 25 (Gate 4: Voice Refinement, Somaliland/WS Pass, 29/29 Map Roles & Batch 1 v2 Briefings)
 - **Did (on `feat/gate4-voice-batch1`, awaiting PR & Deploy Preview sign-off at Gate 4):**
   - **Voice Guide Refinement (`docs/BRIEFING_VOICE.md`):** Updated Rules 4–5 to vary sentence rhythm, allow linking bridges carrying one clear idea while keeping any single sentence `<= ~30` words, end steps analytically rather than with slogans, added 3 Before/After examples (`cb68bb5`), and corrected Example 2's bridge count (`21 words`).
