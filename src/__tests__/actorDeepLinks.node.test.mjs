@@ -43,18 +43,6 @@ test('resolveActorId and legacy ?view=nexus links resolve cleanly into Guided Br
         step: undefined,
     });
 
-    for (const removedFile of [
-        'src/NexusWorkspace.jsx',
-        'src/NexusWorkspace.css',
-        'src/NexusFocusView.jsx',
-        'src/NexusFocusView.css',
-        'src/nexusFocusData.js',
-        'src/nexusEdgeData.js',
-        'src/nexus/actorIds.js',
-    ]) {
-        assert.equal(fs.existsSync(path.join(REPO_ROOT, removedFile)), false, `${removedFile} must be removed`);
-    }
-
     // Verify all 4 previously 404 URLs remain absent across modular src/cases/active/*.mjs
     const activeCasesDir = path.join(REPO_ROOT, 'src/cases/active');
     const combinedCaseSources = fs.readdirSync(activeCasesDir)

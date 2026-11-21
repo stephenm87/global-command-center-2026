@@ -31,7 +31,7 @@ const ACTOR_LOOKUP = new Map(
     ])
 );
 
-export function resolveActorId(rawActorId, fallback = 'USA') {
+export function resolveActorId(rawActorId, fallback = undefined) {
     if (typeof rawActorId !== 'string' || !rawActorId.trim()) return fallback;
     const normalized = rawActorId.trim().toLowerCase();
     return ACTOR_LOOKUP.get(normalized)

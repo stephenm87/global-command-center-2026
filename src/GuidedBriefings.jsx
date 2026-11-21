@@ -25,13 +25,19 @@ const isNarrowLibraryViewport = () => (
     && window.matchMedia(NARROW_LIBRARY_QUERY).matches
 );
 
-const resolveInitialTour = (allTours, activeTours, tourId, nodeId) => (
+export const resolveInitialTour = (
+    allTours,
+    activeTours,
+    tourId,
+    nodeId,
+    { fallbackToFirst = true } = {},
+) => (
     allTours.find(item => item.id === tourId)
     || (nodeId ? activeTours.find(item => item.waypoints?.some(wp => wp.nodeId === nodeId)) : null)
-    || activeTours[0]
+    || (fallbackToFirst ? activeTours[0] : null)
 );
 
-const resolveStepIndex = (allTours, activeTours, tourId, nodeId, step) => {
+export const resolveStepIndex = (allTours, activeTours, tourId, nodeId, step) => {
     const requestedTour = resolveInitialTour(allTours, activeTours, tourId, nodeId);
     const numericStep = Number(step);
     if (Number.isInteger(numericStep) && numericStep >= 1) {
@@ -178,13 +184,13 @@ export default function GuidedBriefings({
     }, []);
 
     useEffect(() => {
-        const matched = isValidTourId(initialTourId)
-            ? allTours.find(item => item.id === initialTourId)
-            : (initialNodeId ? activeTours.find(item => item.waypoints?.some(wp => wp.nodeId === initialNodeId)) : null);
+        const matched = resolveInitialTour(allTours, activeTours, initialTourId, initialNodeId, {
+            fallbackToFirst: false,
+        });
         if (!matched) return;
         setTourId(matched.id);
         setStepIndex(resolveStepIndex(allTours, activeTours, matched.id, initialNodeId, initialStep));
-    }, [isValidTourId, allTours, activeTours, initialTourId, initialNodeId, initialStep]);
+    }, [allTours, activeTours, initialTourId, initialNodeId, initialStep]);
 
     useEffect(() => {
         setVisibleCaseCount(INITIAL_LIBRARY_COUNT);

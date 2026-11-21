@@ -15,11 +15,18 @@ test('index.html and App workspace modules use self-hosted assets and favicon, a
     assert.ok(fs.existsSync(path.join(REPO_ROOT, 'public/assets/globe/night-sky.jpg')), 'night-sky.jpg must be self-hosted');
     assert.ok(fs.existsSync(path.join(REPO_ROOT, 'public/assets/fonts/fonts.css')), 'local fonts.css must exist');
     assert.ok(fs.existsSync(path.join(REPO_ROOT, 'public/assets/netlify-badge-color-accent.svg')), 'local Netlify SVG badge must exist');
-    assert.equal(fs.existsSync(path.join(REPO_ROOT, 'src/GlobalRelationsNexus.jsx')), false, '3D GlobalRelationsNexus bundle must be removed');
-    assert.equal(fs.existsSync(path.join(REPO_ROOT, 'src/NexusWorkspace.jsx')), false, 'NexusWorkspace bundle must be removed');
-    assert.equal(fs.existsSync(path.join(REPO_ROOT, 'src/NexusFocusView.jsx')), false, 'NexusFocusView bundle must be removed');
-    assert.equal(fs.existsSync(path.join(REPO_ROOT, 'src/nexusFocusData.js')), false, 'nexusFocusData module must be removed');
-    assert.equal(fs.existsSync(path.join(REPO_ROOT, 'src/nexusEdgeData.js')), false, 'nexusEdgeData module must be removed');
+    for (const removedFile of [
+        'src/GlobalRelationsNexus.jsx',
+        'src/NexusWorkspace.jsx',
+        'src/NexusWorkspace.css',
+        'src/NexusFocusView.jsx',
+        'src/NexusFocusView.css',
+        'src/nexusFocusData.js',
+        'src/nexusEdgeData.js',
+        'src/nexus/actorIds.js',
+    ]) {
+        assert.equal(fs.existsSync(path.join(REPO_ROOT, removedFile)), false, `${removedFile} must be removed`);
+    }
     assert.equal(Boolean(pkgJson.dependencies?.['react-force-graph-3d']), false, 'package.json must omit react-force-graph-3d');
 
     assert.match(indexHtml, /href="\/favicon\.svg"/, 'index.html must link /favicon.svg');

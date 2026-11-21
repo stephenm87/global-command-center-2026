@@ -520,7 +520,11 @@ test('extracted App components preserve unescaped & query URLs, guard invalid th
 
 test('GuidedBriefings handles legacy ?view=nexus&actor= links without an Explore-in-Nexus button', async t => {
     const vite = await createSsrViteServer(t);
-    const { default: GuidedBriefings } = await vite.ssrLoadModule('/src/GuidedBriefings.jsx');
+    const {
+        default: GuidedBriefings,
+        resolveInitialTour,
+        resolveStepIndex,
+    } = await vite.ssrLoadModule('/src/GuidedBriefings.jsx');
     const { GUIDED_TOURS } = await vite.ssrLoadModule('/src/nexusTours.js');
 
     const expectedChinaTour = GUIDED_TOURS.find(item => item.waypoints.some(wp => wp.nodeId === 'China'));
@@ -552,6 +556,47 @@ test('GuidedBriefings handles legacy ?view=nexus&actor= links without an Explore
     }));
     assert.match(fallbackHtml, /class="briefing-stage"/);
     assert.match(fallbackHtml, new RegExp(GUIDED_TOURS[0].title.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')));
+
+    // Edge cases flagged in review: archived tour + actor, known actor without active waypoints, and dynamic prop updates
+    const archivedWithActor = {
+        ...GUIDED_TOURS[0],
+        id: 'archived-actor-edge-case',
+        status: 'archived',
+        waypoints: [
+            { ...GUIDED_TOURS[0].waypoints[0], nodeId: 'USA' },
+            { ...GUIDED_TOURS[0].waypoints[1], nodeId: 'CyberActors' },
+        ],
+    };
+    const combinedAll = [...GUIDED_TOURS, archivedWithActor];
+    assert.equal(
+        resolveInitialTour(combinedAll, GUIDED_TOURS, 'archived-actor-edge-case', 'CyberActors')?.id,
+        'archived-actor-edge-case',
+        'Archived tour= param combined with actor= must resolve to the archived case',
+    );
+    assert.equal(
+        resolveStepIndex(combinedAll, GUIDED_TOURS, 'archived-actor-edge-case', 'CyberActors', undefined),
+        1,
+        'Archived tour= + actor= must select matching waypoint step index',
+    );
+    assert.equal(
+        resolveInitialTour(GUIDED_TOURS, GUIDED_TOURS, undefined, 'CyberActors')?.id,
+        GUIDED_TOURS[0].id,
+        'Known actor with no active tour waypoints falls back to first active tour on initial load',
+    );
+    assert.equal(
+        resolveStepIndex(GUIDED_TOURS, GUIDED_TOURS, undefined, 'CyberActors', undefined),
+        0,
+    );
+    assert.equal(
+        resolveInitialTour(GUIDED_TOURS, GUIDED_TOURS, undefined, 'CyberActors', { fallbackToFirst: false }),
+        null,
+        'Dynamic route sync returns null when actor has no matching active tour so active tour stays unchanged',
+    );
+    assert.equal(
+        resolveInitialTour(GUIDED_TOURS, GUIDED_TOURS, undefined, 'China', { fallbackToFirst: false })?.id,
+        expectedChinaTour.id,
+        'Dynamic route sync (e.g. popstate to ?view=nexus&actor=China) resolves matching active tour',
+    );
 });
 
 test('GuidedBriefings and decomposed UI components preserve archived banners and deep links', async t => {
