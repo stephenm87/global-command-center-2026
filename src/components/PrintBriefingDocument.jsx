@@ -735,7 +735,10 @@ export default function PrintBriefingHost({ job, MapComponent = null, onComplete
             }
         };
 
-        const stuckButtonFallback = window.setTimeout(finishPrintNow, 20000);
+        // Generous failsafe (2 min) so non-blocking print previews (Firefox/Zen, iOS sheets)
+        // never tear down .gcc-print-active while a user chooses PDF settings, while still
+        // resetting the button if a browser fails to fire afterprint/focus.
+        const stuckButtonFallback = window.setTimeout(finishPrintNow, 120000);
         window.addEventListener('afterprint', handleAfterPrint);
         window.addEventListener('focus', handleReturnFocus);
         document.addEventListener('visibilitychange', handleReturnFocus);

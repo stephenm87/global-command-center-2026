@@ -88,6 +88,14 @@
         font-family: Georgia, "Times New Roman", Times, serif;
     }
 
+    .gcc-print-doc .gcc-print-step-kicker,
+    .gcc-print-doc .gcc-print-note,
+    .gcc-print-doc .gcc-print-tag-line,
+    .gcc-print-doc .gcc-print-handout-kicker {
+        break-after: avoid;
+        page-break-after: avoid;
+    }
+
     .gcc-print-doc a {
         color: #111827;
         text-decoration: underline;
@@ -99,6 +107,7 @@
         font-size: 7.5pt;
         line-height: 0;
         color: #374151;
+        white-space: nowrap;
     }
 
     /* 1. Title block */
@@ -157,6 +166,7 @@
 
     .gcc-print-meta-url,
     .gcc-print-source-url {
+        max-width: 100%;
         overflow-wrap: anywhere;
         word-break: break-word;
     }
@@ -324,6 +334,8 @@
 
     .gcc-print-locations li {
         margin-bottom: 3pt;
+        break-inside: avoid;
+        page-break-inside: avoid;
     }
 
     /* 4. Briefing steps */
@@ -339,6 +351,10 @@
 
     .gcc-print-step-head {
         margin-bottom: 5pt;
+        break-inside: avoid;
+        page-break-inside: avoid;
+        break-after: avoid;
+        page-break-after: avoid;
     }
 
     .gcc-print-step-kicker {
@@ -586,6 +602,8 @@
 
     .gcc-print-watch-list li {
         margin-bottom: 4pt;
+        break-inside: avoid;
+        page-break-inside: avoid;
     }
 
     /* 8. Exam practice handout (starts on fresh page when present) */
@@ -611,6 +629,8 @@
 
     .gcc-print-exam-prompts li {
         margin-bottom: 5pt;
+        break-inside: avoid;
+        page-break-inside: avoid;
     }
 
     .gcc-print-essay-step {
