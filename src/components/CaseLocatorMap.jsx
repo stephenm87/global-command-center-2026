@@ -52,7 +52,7 @@ function frameFor(mode, locations) {
     };
 }
 
-export default function CaseLocatorMap({ map, color = '#67d5f5', title }) {
+export default function CaseLocatorMap({ map, color = '#67d5f5', title, onReady }) {
     const uid = useId().replace(/[^a-zA-Z0-9_-]/g, '');
     const clipId = `case-locator-clip-${uid}`;
     const glowId = `case-locator-glow-${uid}`;
@@ -66,6 +66,12 @@ export default function CaseLocatorMap({ map, color = '#67d5f5', title }) {
             .catch(() => { if (!cancelled) setFailed(true); });
         return () => { cancelled = true; };
     }, []);
+
+    useEffect(() => {
+        if (countries !== null || failed) {
+            onReady?.();
+        }
+    }, [countries, failed, onReady]);
 
     const locations = useMemo(() => validLocations(map), [map]);
     const mode = map?.mode || 'point';

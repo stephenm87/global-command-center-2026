@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useRef, useState } from 'react';
+import { lazy, Suspense, useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { GUIDED_TOURS, ARCHIVED_GUIDED_TOURS, ALL_GUIDED_TOURS } from './nexusTours';
 import { BRIEFING_ACTORS } from './briefingActors';
 import { computeBriefingReadingTimes, IB_THEME_LABELS } from './caseStudies2026';
@@ -14,7 +14,10 @@ import {
     KeyFigures,
     StepNarration,
 } from './components/BriefingDepth';
+import { buildCasePrintUrl, formatExportDate } from './utils/briefingPrint.mjs';
 import './GuidedBriefings.css';
+
+const PrintBriefingHost = lazy(() => import('./components/PrintBriefingDocument'));
 
 const INITIAL_LIBRARY_COUNT = 6;
 const NARROW_LIBRARY_QUERY = '(max-width: 1100px)';
@@ -119,6 +122,7 @@ export default function GuidedBriefings({
     const [sourceHealth, setSourceHealth] = useState(null);
     const [libraryOpen, setLibraryOpen] = useState(() => !isNarrowLibraryViewport());
     const [visibleCaseCount, setVisibleCaseCount] = useState(INITIAL_LIBRARY_COUNT);
+    const [printJob, setPrintJob] = useState(null);
     const stageHeadingRef = useRef(null);
     const progressRef = useRef(null);
     const supplementalDetailsRef = useRef(null);
@@ -245,6 +249,24 @@ export default function GuidedBriefings({
             target.focus({ preventScroll: true });
         });
     };
+
+    const handleSaveAsPdf = useCallback(() => {
+        if (!tour) return;
+        const pageUrl = buildCasePrintUrl(
+            tour.id,
+            typeof window !== 'undefined' ? window.location.href : undefined,
+        );
+        setPrintJob({
+            mode: 'case',
+            tour,
+            exportedAt: formatExportDate(),
+            pageUrl,
+        });
+    }, [tour]);
+
+    const handlePrintComplete = useCallback(() => {
+        setPrintJob(null);
+    }, []);
 
     return (
         <section
@@ -414,6 +436,14 @@ export default function GuidedBriefings({
                         aria-expanded={libraryOpen}
                     >
                         {libraryOpen ? 'Hide case library' : `Browse ${activeTours.length} cases`}
+                    </button>
+                    <button
+                        type="button"
+                        className="briefing-pdf-export-btn"
+                        onClick={handleSaveAsPdf}
+                        disabled={Boolean(printJob)}
+                    >
+                        {printJob ? 'Preparing PDF…' : 'Save as PDF'}
                     </button>
                 </div>
                 <header className="briefing-stage-header">
@@ -603,6 +633,15 @@ export default function GuidedBriefings({
                     <button type="button" onClick={() => { if (stepIndex < tour.waypoints.length - 1) move(1); }} aria-disabled={stepIndex === tour.waypoints.length - 1}>Next →</button>
                 </footer>
             </div>
+            {printJob && (
+                <Suspense fallback={null}>
+                    <PrintBriefingHost
+                        job={printJob}
+                        MapComponent={CaseLocatorMap}
+                        onComplete={handlePrintComplete}
+                    />
+                </Suspense>
+            )}
         </section>
     );
 }
