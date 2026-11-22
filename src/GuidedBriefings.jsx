@@ -5,6 +5,7 @@ import { computeBriefingReadingTimes, IB_THEME_LABELS } from './caseStudies2026'
 import { categoryColors, getAccessibleTextAccent, getCaseReviewNotice, isReviewOverdue } from './navigationState.mjs';
 import { indexSourceHealth, shouldPreferAlternate, sourceHealthLabel } from './sourceHealth.mjs';
 import CaseLocatorMap from './components/CaseLocatorMap';
+import PrintErrorBoundary from './components/PrintErrorBoundary';
 import {
     buildSourceByNumber,
     buildSourceIndex,
@@ -634,13 +635,15 @@ export default function GuidedBriefings({
                 </footer>
             </div>
             {printJob && (
-                <Suspense fallback={null}>
-                    <PrintBriefingHost
-                        job={printJob}
-                        MapComponent={CaseLocatorMap}
-                        onComplete={handlePrintComplete}
-                    />
-                </Suspense>
+                <PrintErrorBoundary onError={handlePrintComplete}>
+                    <Suspense fallback={null}>
+                        <PrintBriefingHost
+                            job={printJob}
+                            MapComponent={CaseLocatorMap}
+                            onComplete={handlePrintComplete}
+                        />
+                    </Suspense>
+                </PrintErrorBoundary>
             )}
         </section>
     );

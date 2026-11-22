@@ -6,7 +6,7 @@
 }
 
 @media print {
-    @page {
+    @page gcc-briefing {
         margin: 18mm 16mm;
 
         @bottom-left {
@@ -41,6 +41,7 @@
 
     body.gcc-print-active > .gcc-print-root {
         display: block !important;
+        page: gcc-briefing;
         width: 100%;
         background: #ffffff !important;
         color: #111827 !important;
@@ -93,6 +94,7 @@
         text-underline-offset: 2pt;
     }
 
+    .gcc-print-doc sup.cite-group,
     .gcc-print-doc sup.gcc-print-cite {
         font-size: 7.5pt;
         line-height: 0;
@@ -263,9 +265,7 @@
     .gcc-print-figure .case-locator-country.is-active {
         fill: #cbd5e1;
         stroke: #334155;
-        stroke-width: 0.9;
-        print-color-adjust: exact;
-        -webkit-print-color-adjust: exact;
+        stroke-width: 1;
     }
 
     .gcc-print-figure .case-locator-arc {
@@ -379,6 +379,7 @@
     .gcc-print-swatch--local { background: #dc2626; }
     .gcc-print-swatch--institutional { background: #0284c7; }
     .gcc-print-swatch--independent { background: #059669; }
+    .gcc-print-swatch--synthesis { background: #7c3aed; }
     .gcc-print-swatch--other { background: #4b5563; }
 
     .gcc-print-rating-dot--strong { background: #059669; }
@@ -443,8 +444,7 @@
         background: #f3f4f6;
         font-weight: 700;
         color: #0f172a;
-        print-color-adjust: exact;
-        -webkit-print-color-adjust: exact;
+        border-bottom: 1.25pt solid #374151;
     }
 
     .gcc-print-table-col-narrow {

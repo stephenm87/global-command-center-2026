@@ -18,43 +18,37 @@ export function buildListPrintTitle(mode) {
     return 'Global Intelligence Briefing - Global Command Center';
 }
 
-export function buildCasePrintUrl(tourId, locationHref) {
+export function buildCasePrintUrl(tourId) {
     const cleanId = String(tourId || '').trim();
-    let origin = DEFAULT_PUBLIC_ORIGIN;
-    if (typeof locationHref === 'string' && locationHref.trim()) {
-        try {
-            const parsed = new URL(locationHref);
-            if (['http:', 'https:'].includes(parsed.protocol)) {
-                origin = parsed.origin;
-            }
-        } catch {
-            origin = DEFAULT_PUBLIC_ORIGIN;
-        }
-    }
     const target = cleanId
-        ? `${origin}/?view=briefings&tour=${encodeURIComponent(cleanId)}`
-        : `${origin}/?view=briefings`;
+        ? `${DEFAULT_PUBLIC_ORIGIN}/?view=briefings&tour=${encodeURIComponent(cleanId)}`
+        : `${DEFAULT_PUBLIC_ORIGIN}/?view=briefings`;
     return safeHttpUrl(target) || `${DEFAULT_PUBLIC_ORIGIN}/?view=briefings`;
 }
 
 export function buildPageUrl(locationHref) {
     if (typeof locationHref === 'string' && locationHref.trim()) {
-        const clean = safeHttpUrl(locationHref);
-        if (clean) return clean;
+        try {
+            const parsed = new URL(locationHref);
+            if (parsed.hostname === 'globalcommandcenter2026.netlify.app') {
+                return safeHttpUrl(locationHref) || DEFAULT_PUBLIC_ORIGIN;
+            }
+        } catch {
+            return DEFAULT_PUBLIC_ORIGIN;
+        }
     }
     return DEFAULT_PUBLIC_ORIGIN;
 }
 
 export function collectSanitizedSources(tour) {
     if (!tour) return [];
-    const seenKeys = new Set();
+    const seenUrls = new Set();
     const collected = [];
     const pushSource = (source, isSupplemental) => {
         if (!source || typeof source !== 'object') return;
-        const rawUrl = typeof source.url === 'string' ? source.url.trim() : '';
-        const key = rawUrl || `__no_url_${collected.length}`;
-        if (rawUrl && seenKeys.has(key)) return;
-        if (rawUrl) seenKeys.add(key);
+        const rawUrl = typeof source.url === 'string' ? source.url : '';
+        if (!rawUrl || seenUrls.has(rawUrl)) return;
+        seenUrls.add(rawUrl);
         collected.push({
             number: collected.length + 1,
             publisher: source.publisher || '',

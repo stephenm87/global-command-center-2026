@@ -4,6 +4,12 @@ import { BRIEFING_ACTORS } from '../briefingActors';
 import { IB_THEME_LABELS } from '../cases/schema.mjs';
 import { getCaseReviewNotice } from '../navigationState.mjs';
 import {
+    buildSourceByNumber,
+    buildSourceIndex,
+    renderCitedText as renderDepthCitedText,
+    splitNarration,
+} from './BriefingDepth';
+import {
     buildCasePrintTitle,
     buildCasePrintUrl,
     buildListPrintTitle,
@@ -23,50 +29,14 @@ const CONCEPT_TITLES = {
     interdependence: 'Interdependence',
 };
 const RATING_LABELS = { STRONG: 'Strong', MIXED: 'Mixed', WEAK: 'Weak' };
-const CITE_MARKER_REGEX = /\[\s*(\d+(?:\s*,\s*\d+)*)\s*\]/g;
 
-function splitParagraphs(text) {
-    return String(text || '')
-        .split(/\n\s*\n/)
-        .map(part => part.trim())
-        .filter(Boolean);
-}
-
-function renderCitedText(text, sourceByNumber) {
-    const raw = String(text || '');
-    if (!raw.includes('[')) return raw;
-    const parts = [];
-    let lastIndex = 0;
-    for (const match of raw.matchAll(CITE_MARKER_REGEX)) {
-        const start = match.index ?? 0;
-        if (start > lastIndex) parts.push(raw.slice(lastIndex, start));
-        const numbers = match[1]
-            .split(',')
-            .map(token => Number.parseInt(token.trim(), 10))
-            .filter(num => Number.isInteger(num) && num > 0);
-        if (numbers.length === 0) {
-            parts.push(match[0]);
-        } else {
-            parts.push(
-                <sup key={`cite-${start}`} className="gcc-print-cite">
-                    [{numbers.map((num, idx) => {
-                        const src = sourceByNumber?.get(num);
-                        const label = src ? `Source ${num}: ${src.publisher}` : `Source ${num}`;
-                        return (
-                            <span key={num} title={label}>
-                                {idx > 0 ? ', ' : ''}
-                                {num}
-                            </span>
-                        );
-                    })}]
-                </sup>
-            );
-        }
-        lastIndex = start + match[0].length;
-    }
-    if (lastIndex < raw.length) parts.push(raw.slice(lastIndex));
-    return parts;
-}
+const splitParagraphs = splitNarration;
+const renderCitedText = (text, sourceByNumber) => renderDepthCitedText(
+    text,
+    sourceByNumber,
+    undefined,
+    { linkCitations: false },
+);
 
 function PrintSourceRefs({ urls, sourceByRawUrl, label = 'Sources' }) {
     const rawList = (Array.isArray(urls) ? urls : [urls]).filter(Boolean);
@@ -99,8 +69,9 @@ export function CaseBriefingPrintContent({
 }) {
     if (!tour) return null;
 
+    const screenSourceIndex = buildSourceIndex(tour);
+    const sourceByNumber = buildSourceByNumber(screenSourceIndex);
     const sources = collectSanitizedSources(tour);
-    const sourceByNumber = new Map(sources.map(src => [src.number, src]));
     const sourceByRawUrl = new Map(sources.filter(src => src.rawUrl).map(src => [src.rawUrl, src]));
 
     const canonicalUrl = pageUrl || buildCasePrintUrl(tour.id);
@@ -700,9 +671,16 @@ export default function PrintBriefingHost({ job, MapComponent = null, onComplete
     const hasMap = job?.mode === 'case' && Boolean(job.tour?.map?.locations?.length) && Boolean(MapComponent);
     const [mapReady, setMapReady] = useState(!hasMap);
     const printedRef = useRef(false);
+    const printDispatchedAtRef = useRef(0);
+    const finishTimerRef = useRef(null);
 
     useEffect(() => {
         printedRef.current = false;
+        printDispatchedAtRef.current = 0;
+        if (finishTimerRef.current) {
+            window.clearTimeout(finishTimerRef.current);
+            finishTimerRef.current = null;
+        }
         setMapReady(!hasMap);
     }, [job, hasMap]);
 
@@ -723,16 +701,53 @@ export default function PrintBriefingHost({ job, MapComponent = null, onComplete
         const previousTitle = document.title;
         document.title = expectedTitle;
         document.body.classList.add('gcc-print-active');
+        let finished = false;
 
-        const finishPrint = () => {
+        const finishPrintNow = () => {
+            if (finished) return;
+            finished = true;
+            if (finishTimerRef.current) {
+                window.clearTimeout(finishTimerRef.current);
+                finishTimerRef.current = null;
+            }
             document.title = previousTitle;
             document.body.classList.remove('gcc-print-active');
             onComplete?.();
         };
 
-        window.addEventListener('afterprint', finishPrint);
+        const handleAfterPrint = () => {
+            const elapsed = Date.now() - printDispatchedAtRef.current;
+            // Mobile WebKit/Chrome can emit afterprint before snapshotting the print DOM.
+            if (printDispatchedAtRef.current > 0 && elapsed < 150) {
+                if (!finishTimerRef.current) {
+                    finishTimerRef.current = window.setTimeout(finishPrintNow, 450);
+                }
+                return;
+            }
+            finishPrintNow();
+        };
+
+        const handleReturnFocus = () => {
+            if (!printedRef.current || printDispatchedAtRef.current === 0) return;
+            if (document.visibilityState && document.visibilityState !== 'visible') return;
+            if (Date.now() - printDispatchedAtRef.current >= 300) {
+                finishPrintNow();
+            }
+        };
+
+        const stuckButtonFallback = window.setTimeout(finishPrintNow, 20000);
+        window.addEventListener('afterprint', handleAfterPrint);
+        window.addEventListener('focus', handleReturnFocus);
+        document.addEventListener('visibilitychange', handleReturnFocus);
         return () => {
-            window.removeEventListener('afterprint', finishPrint);
+            window.clearTimeout(stuckButtonFallback);
+            if (finishTimerRef.current) {
+                window.clearTimeout(finishTimerRef.current);
+                finishTimerRef.current = null;
+            }
+            window.removeEventListener('afterprint', handleAfterPrint);
+            window.removeEventListener('focus', handleReturnFocus);
+            document.removeEventListener('visibilitychange', handleReturnFocus);
             document.title = previousTitle;
             document.body.classList.remove('gcc-print-active');
         };
@@ -774,6 +789,7 @@ export default function PrintBriefingHost({ job, MapComponent = null, onComplete
             await new Promise(resolve => window.requestAnimationFrame(() => window.requestAnimationFrame(resolve)));
             if (cancelled || printedRef.current) return;
             printedRef.current = true;
+            printDispatchedAtRef.current = Date.now();
             window.print();
         };
 

@@ -24,6 +24,7 @@ import OperationalDashboard from './components/OperationalDashboard';
 import AppFooter from './components/AppFooter';
 import DetailModal from './components/DetailModal';
 import MineralsModal from './components/MineralsModal';
+import PrintErrorBoundary from './components/PrintErrorBoundary';
 import {
     ALL_INTEL_CATEGORY,
     LIVE_INTEL_CATEGORY,
@@ -1253,12 +1254,14 @@ function App() {
                 onClose={() => setShowMineralsModal(false)}
             />
             {listPrintJob && (
-                <React.Suspense fallback={null}>
-                    <PrintBriefingHost
-                        job={listPrintJob}
-                        onComplete={handleListPrintComplete}
-                    />
-                </React.Suspense>
+                <PrintErrorBoundary onError={handleListPrintComplete}>
+                    <React.Suspense fallback={null}>
+                        <PrintBriefingHost
+                            job={listPrintJob}
+                            onComplete={handleListPrintComplete}
+                        />
+                    </React.Suspense>
+                </PrintErrorBoundary>
             )}
         </div>
     );
