@@ -2,6 +2,8 @@ import React, { useState, useEffect, useRef, useCallback } from 'react';
 import { supabase } from './supabase';
 import './auth.css';
 
+export const ACCOUNT_NOT_ALLOWED_MESSAGE = 'This account is not authorized to use AI analysis or live search tools. Contact your teacher or administrator.';
+
 export function getDisplayName(user) {
     if (!user) return null;
     const emailPart = typeof user.email === 'string' ? user.email.split('@')[0].trim() : '';
@@ -215,7 +217,12 @@ export function useAuth() {
         return () => subscription.unsubscribe();
     }, []);
 
-    const openModal = useCallback(() => setShowModal(true), []);
+    const openModal = useCallback((initialMessage = '') => {
+        if (typeof initialMessage === 'string' && initialMessage.trim()) {
+            setAuthError(initialMessage);
+        }
+        setShowModal(true);
+    }, []);
     const closeModal = useCallback(() => {
         setShowModal(false);
         setAuthError('');

@@ -468,7 +468,14 @@ function App() {
                 body: JSON.stringify({ url, title, content }),
                 signal: AbortSignal.timeout(45000),
             });
-            const data = await res.json();
+            const data = await res.json().catch(() => null);
+            if (!res.ok || !data) {
+                setAiSummary({
+                    error: data?.error || 'AI analysis unavailable',
+                    ...(data?.code === 'account_not_allowed' ? { accountNotAllowed: true } : {}),
+                });
+                return;
+            }
             setAiSummary(data);
         } catch {
             setAiSummary({ error: 'AI analysis unavailable' });
@@ -496,11 +503,24 @@ function App() {
                 body: JSON.stringify({ url }),
                 signal: AbortSignal.timeout(30000),
             });
-            const data = await res.json();
+            const data = await res.json().catch(() => null);
             if (res.status === 401) {
                 setDeepScanResult({
                     error: data?.error || 'Your session expired. Sign in again to run Deep Scan.',
                     requiresAuth: true,
+                });
+                return;
+            }
+            if (res.status === 403 && data?.code === 'account_not_allowed') {
+                setDeepScanResult({
+                    error: data?.error || 'This account is not authorized to use AI analysis or live search tools. Contact your teacher or administrator.',
+                    accountNotAllowed: true,
+                });
+                return;
+            }
+            if (!res.ok || !data) {
+                setDeepScanResult({
+                    error: data?.error || 'Deep scan unavailable. Please try again later.',
                 });
                 return;
             }
@@ -543,13 +563,18 @@ function App() {
                 setNewsScanLoading(false);
                 return;
             } else {
-                const errText = await fnRes.text().catch(() => '');
-                path1Error = `Netlify fn error ${fnRes.status}: ${errText.substring(0, 80)}`;
+                const errData = await fnRes.json().catch(() => null);
+                if (fnRes.status === 403 && errData?.code === 'account_not_allowed') {
+                    setNewsScanError(errData.error || 'This account is not authorized to use AI analysis or live search tools. Contact your teacher or administrator.');
+                    setNewsScanLoading(false);
+                    return;
+                }
+                path1Error = errData?.error || `Scan failed (${fnRes.status}). Please try again later.`;
             }
-        } catch (e) { path1Error = e.message; }
+        } catch (e) { path1Error = e?.message || 'Scan failed. Please try again later.'; }
 
         if (path1Error) {
-            setNewsScanError(`Scan failed. Server: ${path1Error}`);
+            setNewsScanError(path1Error);
         }
         setNewsScanLoading(false);
     };

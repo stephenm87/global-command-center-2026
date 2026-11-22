@@ -7,6 +7,7 @@ const AUTH_TIMEOUT_MS = 5000;
 const MAX_TRACKED_BAD_TOKENS = 2000;
 const PRUNE_INTERVAL_MS = 60 * 1000;
 const BAD_TOKEN_MAX_CHECKS = 3;
+const ACCOUNT_NOT_ALLOWED_MESSAGE = 'This account is not authorized to use AI analysis or live search tools. Contact your teacher or administrator.';
 const DEFAULT_ALLOWED_ORIGINS = [
     'https://globalcommandcenter2026.netlify.app',
     'http://localhost:5173',
@@ -135,6 +136,41 @@ function jsonResponse(event, statusCode, message, extraHeaders = {}, extraBody =
 
 function hashIdentifier(value) {
     return crypto.createHash('sha256').update(String(value)).digest('hex').slice(0, 32);
+}
+
+function parseAllowList(env = process.env) {
+    const rawEmails = readEnv('ALLOWED_SIGNIN_EMAILS', env) || '';
+    const rawDomains = readEnv('ALLOWED_SIGNIN_DOMAINS', env) || '';
+    const emails = new Set(
+        String(rawEmails)
+            .split(',')
+            .map(entry => entry.trim().toLowerCase())
+            .filter(Boolean)
+    );
+    const domains = new Set(
+        String(rawDomains)
+            .split(',')
+            .map(entry => entry.trim().toLowerCase().replace(/^@/, ''))
+            .filter(Boolean)
+    );
+    return {
+        emails,
+        domains,
+        enabled: emails.size > 0 || domains.size > 0,
+    };
+}
+
+function isEmailAllowed(userEmail, allowList) {
+    if (!allowList?.enabled) return true;
+    if (typeof userEmail !== 'string') return false;
+    const normalized = userEmail.trim().toLowerCase();
+    if (!normalized || /\s/.test(normalized)) return false;
+    const atIndex = normalized.lastIndexOf('@');
+    if (atIndex <= 0 || atIndex === normalized.length - 1 || normalized.indexOf('@') !== atIndex) {
+        return false;
+    }
+    const domain = normalized.slice(atIndex + 1);
+    return allowList.emails.has(normalized) || allowList.domains.has(domain);
 }
 
 function pruneBadTokenBuckets(now, cutoff) {
@@ -374,6 +410,22 @@ async function protectEndpoint(
         return { response: reply(401, 'The authenticated user response is invalid.') };
     }
 
+    const allowList = parseAllowList(env);
+    if (!isEmailAllowed(user.email, allowList)) {
+        console.warn('[security] Allow-list denied access', {
+            userHash: hashIdentifier(user.id),
+            scope: bucketScope,
+        });
+        return {
+            response: reply(
+                403,
+                ACCOUNT_NOT_ALLOWED_MESSAGE,
+                {},
+                { code: 'account_not_allowed' },
+            ),
+        };
+    }
+
     let rawBody;
     if (maxBodyBytes !== undefined && !['GET', 'HEAD', 'OPTIONS'].includes(event.httpMethod)) {
         const bodyResult = await readBoundedBody(eventOrRequest, maxBodyBytes);
@@ -525,8 +577,11 @@ function protectBackgroundCron(eventOrRequest, { secret = process.env.CRON_SECRE
 module.exports = {
     RATE_LIMIT_STORE_NAME,
     RATE_WINDOW_MS,
+    ACCOUNT_NOT_ALLOWED_MESSAGE,
     readEnv,
     hashIdentifier,
+    parseAllowList,
+    isEmailAllowed,
     isAllowedOrigin,
     responseHeaders,
     publicResponseHeaders,
