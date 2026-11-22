@@ -217,12 +217,7 @@ export function useAuth() {
         return () => subscription.unsubscribe();
     }, []);
 
-    const openModal = useCallback((initialMessage = '') => {
-        if (typeof initialMessage === 'string' && initialMessage.trim()) {
-            setAuthError(initialMessage);
-        }
-        setShowModal(true);
-    }, []);
+    const openModal = useCallback(() => setShowModal(true), []);
     const closeModal = useCallback(() => {
         setShowModal(false);
         setAuthError('');

@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef, useCallback, useMemo, Component } from 'react';
 import Papa from 'papaparse';
 import { theories } from './theories';
-import { AuthBadge, AuthModal, useAuth } from './AuthModal';
+import { ACCOUNT_NOT_ALLOWED_MESSAGE, AuthBadge, AuthModal, useAuth } from './AuthModal';
 import { secureFetch } from './api';
 import { CASE_STUDIES_2026, toForecastRecord } from './caseStudies2026';
 import criticalMineralsCatalog from './data/criticalMinerals.json';
@@ -513,7 +513,7 @@ function App() {
             }
             if (res.status === 403 && data?.code === 'account_not_allowed') {
                 setDeepScanResult({
-                    error: data?.error || 'This account is not authorized to use AI analysis or live search tools. Contact your teacher or administrator.',
+                    error: data?.error || ACCOUNT_NOT_ALLOWED_MESSAGE,
                     accountNotAllowed: true,
                 });
                 return;
@@ -565,7 +565,7 @@ function App() {
             } else {
                 const errData = await fnRes.json().catch(() => null);
                 if (fnRes.status === 403 && errData?.code === 'account_not_allowed') {
-                    setNewsScanError(errData.error || 'This account is not authorized to use AI analysis or live search tools. Contact your teacher or administrator.');
+                    setNewsScanError(errData.error || ACCOUNT_NOT_ALLOWED_MESSAGE);
                     setNewsScanLoading(false);
                     return;
                 }

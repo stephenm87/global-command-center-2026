@@ -411,7 +411,8 @@ async function protectEndpoint(
     }
 
     const allowList = parseAllowList(env);
-    if (!isEmailAllowed(user.email, allowList)) {
+    const hasConfirmedEmail = Boolean(user.email_confirmed_at || user.confirmed_at);
+    if (allowList.enabled && (!hasConfirmedEmail || !isEmailAllowed(user.email, allowList))) {
         console.warn('[security] Allow-list denied access', {
             userHash: hashIdentifier(user.id),
             scope: bucketScope,

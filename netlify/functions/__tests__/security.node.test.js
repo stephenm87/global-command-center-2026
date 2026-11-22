@@ -341,13 +341,26 @@ test('server-side sign-in allow-list accepts matching email/domain, rejects spoo
     console.warn = (...args) => capturedLogs.push(args.map(a => (typeof a === 'string' ? a : JSON.stringify(a))).join(' '));
 
     try {
-        // Allowed via Supabase email
-        mockSupabaseOk({ id: 'teacher-1', email: 'Teacher@Example.ORG' });
+        // Allowed via Supabase confirmed email
+        mockSupabaseOk({
+            id: 'teacher-1',
+            email: 'Teacher@Example.ORG',
+            email_confirmed_at: '2026-11-21T00:00:00Z',
+        });
         const allowed = await protectEndpoint(
             event({ headers: { authorization: 'Bearer t1' } }),
             { env, store, scope: 'ai-summary' },
         );
         assert.equal(allowed.response, undefined);
+
+        // Unconfirmed email matching allow-list domain/address must still be refused when allow-list is enabled
+        mockSupabaseOk({ id: 'unconfirmed-1', email: 'teacher@example.org', email_confirmed_at: null });
+        const unconfirmed = await protectEndpoint(
+            event({ headers: { authorization: 'Bearer t-unconfirmed' } }),
+            { env, store, scope: 'ai-summary' },
+        );
+        assert.equal(unconfirmed.response.statusCode, 403);
+        assert.equal(JSON.parse(unconfirmed.response.body).code, 'account_not_allowed');
 
         // Unauthorized email returned by Supabase — even if client sends an allowed email header/body
         const refusedEmail = 'private.unauthorized@outsider.example';
