@@ -274,13 +274,6 @@ export default function CaseActorMap3D({
         let onPointerMove = null;
         let onPointerLeave = null;
 
-        // Fail gracefully to 2D if Blue Marble/GeoJSON/patches 404 or texture upload stalls
-        readyTimeoutId = setTimeout(() => {
-            if (!cancelled && !readyRef.current) {
-                onFatalRef.current?.(new Error('3D terrain load timeout'));
-            }
-        }, 20000);
-
         const placeCameraLoop = now => {
             if (cancelled || paused || !globe) return;
             const { reducedMotion: red } = latestSceneInputRef.current;
@@ -358,6 +351,12 @@ export default function CaseActorMap3D({
 
         const initGlobe = (features, patches) => {
             if (cancelled || !container.isConnected) return;
+            // Guard WebGL/TextureLoader readiness once assets have already finished downloading
+            readyTimeoutId = setTimeout(() => {
+                if (!cancelled && !readyRef.current) {
+                    onFatalRef.current?.(new Error('3D terrain ready timeout'));
+                }
+            }, 15000);
             const handleGlobeReady = () => {
                 if (cancelled) return;
                 clearTimeout(readyTimeoutId);

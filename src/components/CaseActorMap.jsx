@@ -154,7 +154,7 @@ export default function CaseActorMap({
                     </button>
                 ) : (
                     <span className="actor-mode-status">
-                        {reducedMotion ? 'Flat view · Reduced motion' : 'Flat view · WebGL unavailable'}
+                        {reducedMotion ? 'Flat view · Reduced motion' : !webglAvailable ? 'Flat view · WebGL unavailable' : 'Flat view · 3D unavailable'}
                     </span>
                 )}
             </div>
