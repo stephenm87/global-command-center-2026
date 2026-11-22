@@ -7,7 +7,7 @@ import { createServer } from 'vite';
 
 const REPO_ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '../..');
 
-test('resolveActorId normalizes case-insensitive ?actor= deep links in Nexus', async t => {
+test('resolveActorId and legacy ?view=nexus links resolve cleanly into Guided Briefings', async t => {
     const vite = await createServer({
         configFile: false,
         root: REPO_ROOT,
@@ -19,14 +19,14 @@ test('resolveActorId normalizes case-insensitive ?actor= deep links in Nexus', a
     });
     t.after(() => vite.close());
 
-    const { NEXUS_ACTORS, resolveActorId } = await vite.ssrLoadModule('/src/nexusFocusData.js');
-    const { CANONICAL_ACTOR_IDS } = await vite.ssrLoadModule('/src/nexus/actorIds.js');
+    const { BRIEFING_ACTORS, CANONICAL_ACTOR_IDS, resolveActorId } = await vite.ssrLoadModule('/src/briefingActors.js');
+    const { parseViewFromSearch, parseBriefingEntryFromSearch, VIEW_MODES } = await vite.ssrLoadModule('/src/navigationState.mjs');
     assert.deepEqual(
         [...CANONICAL_ACTOR_IDS].sort(),
-        Object.keys(NEXUS_ACTORS).sort(),
-        'CANONICAL_ACTOR_IDS in actorIds.js must stay in 1:1 sync with NEXUS_ACTORS'
+        Object.keys(BRIEFING_ACTORS).sort(),
+        'CANONICAL_ACTOR_IDS must stay in 1:1 sync with BRIEFING_ACTORS'
     );
-    assert.equal(typeof resolveActorId, 'function', 'nexusFocusData.js must export resolveActorId');
+    assert.equal(typeof resolveActorId, 'function', 'briefingActors.js must export resolveActorId');
     assert.equal(resolveActorId('europe'), 'Europe');
     assert.equal(resolveActorId('EUROPE'), 'Europe');
     assert.equal(resolveActorId('cyberactors'), 'CyberActors');
@@ -34,11 +34,14 @@ test('resolveActorId normalizes case-insensitive ?actor= deep links in Nexus', a
     assert.equal(resolveActorId('unknown-actor', 'USA'), 'USA');
     assert.equal(resolveActorId('unknown-actor', null), null);
 
-    const appSource = fs.readFileSync(path.join(REPO_ROOT, 'src/App.jsx'), 'utf8');
-    const focusSource = fs.readFileSync(path.join(REPO_ROOT, 'src/NexusFocusView.jsx'), 'utf8');
-
-    assert.ok(appSource.includes('resolveActorId('), 'App.jsx must normalize ?actor= via resolveActorId');
-    assert.ok(focusSource.includes('resolveActorId('), 'NexusFocusView.jsx must normalize initialNodeId via resolveActorId');
+    assert.deepEqual(VIEW_MODES, ['globe', 'briefings']);
+    assert.equal(parseViewFromSearch('?view=nexus'), 'briefings', 'Legacy ?view=nexus must resolve to briefings');
+    assert.equal(parseViewFromSearch('?view=nexus&actor=China'), 'briefings', 'Legacy ?view=nexus&actor=... must resolve to briefings');
+    assert.deepEqual(parseBriefingEntryFromSearch('?view=nexus&actor=china'), {
+        tourId: undefined,
+        nodeId: 'China',
+        step: undefined,
+    });
 
     // Verify all 4 previously 404 URLs remain absent across modular src/cases/active/*.mjs
     const activeCasesDir = path.join(REPO_ROOT, 'src/cases/active');

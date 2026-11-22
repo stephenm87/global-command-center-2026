@@ -47,7 +47,9 @@ test('navigationState.mjs distinguishes raw safeHttpUrl (for JSX & API calls) fr
     const nav = await import('../navigationState.mjs');
 
     assert.equal(nav.parseViewFromSearch('?view=briefings'), 'briefings');
-    assert.equal(nav.parseViewFromSearch('?view=nexus'), 'nexus');
+    assert.equal(nav.parseViewFromSearch('?view=nexus'), 'briefings');
+    assert.equal(nav.parseViewFromSearch('?view=nexus&actor=China'), 'briefings');
+    assert.deepEqual(nav.VIEW_MODES, ['globe', 'briefings']);
     assert.equal(nav.parseViewFromSearch('?view=invalid'), 'globe');
 
     const entry = nav.parseBriefingEntryFromSearch('?view=briefings&tour=sudan-rsf-saf&actor=africa&step=3');
@@ -516,23 +518,85 @@ test('extracted App components preserve unescaped & query URLs, guard invalid th
     assert.match(footerHtml, /width="114" height="50"/);
 });
 
-test('NexusWorkspace renders 2D Focus view only with Nexus labels and actor deep-linking', async t => {
+test('GuidedBriefings handles legacy ?view=nexus&actor= links without an Explore-in-Nexus button', async t => {
     const vite = await createSsrViteServer(t);
-    const { default: NexusWorkspace } = await vite.ssrLoadModule('/src/NexusWorkspace.jsx');
+    const {
+        default: GuidedBriefings,
+        resolveInitialTour,
+        resolveStepIndex,
+    } = await vite.ssrLoadModule('/src/GuidedBriefings.jsx');
+    const { GUIDED_TOURS } = await vite.ssrLoadModule('/src/nexusTours.js');
 
-    const html = renderToStaticMarkup(React.createElement(NexusWorkspace, {
-        forecasts: [],
-        initialNodeId: 'europe',
-        onActorChange: () => {},
-        onOpenBriefing: () => {},
+    const expectedChinaTour = GUIDED_TOURS.find(item => item.waypoints.some(wp => wp.nodeId === 'China'));
+    const expectedChinaStep = expectedChinaTour.waypoints.find(wp => wp.nodeId === 'China');
+    const actorHtml = renderToStaticMarkup(React.createElement(GuidedBriefings, {
+        initialTourId: undefined,
+        initialNodeId: 'China',
+        initialStep: undefined,
+        onRouteChange: () => {},
+        activeTours: GUIDED_TOURS,
+        archivedTours: [],
     }));
 
-    assert.match(html, /aria-label="Nexus workspace"/);
-    assert.match(html, /aria-label="Nexus"/);
-    assert.match(html, /Europe/);
-    assert.ok(!html.includes('3D spatial'), 'NexusWorkspace must not render 3D spatial toggle');
-    assert.ok(!html.includes('Open 3D spatial'), 'NexusFocusView must not render Open 3D spatial button');
-    assert.ok(!html.includes('Advanced Nexus'), 'NexusWorkspace must not use Advanced Nexus label');
+    assert.match(actorHtml, /class="briefing-stage"/);
+    assert.ok(actorHtml.includes(expectedChinaTour.title), 'Legacy ?actor=China entry should open a China-linked briefing');
+    assert.ok(
+        actorHtml.includes(expectedChinaStep.title.replace(/'/g, '&#x27;')) || actorHtml.includes(expectedChinaStep.title.replace(/'/g, '&#39;')) || actorHtml.includes(expectedChinaStep.title),
+        'Legacy ?actor=China entry should open the China waypoint step',
+    );
+    assert.ok(!actorHtml.includes('Explore this actor in Nexus'), 'GuidedBriefings must not render Explore this actor in Nexus');
+
+    const fallbackHtml = renderToStaticMarkup(React.createElement(GuidedBriefings, {
+        initialTourId: undefined,
+        initialNodeId: undefined,
+        initialStep: undefined,
+        onRouteChange: () => {},
+        activeTours: GUIDED_TOURS,
+        archivedTours: [],
+    }));
+    assert.match(fallbackHtml, /class="briefing-stage"/);
+    assert.match(fallbackHtml, new RegExp(GUIDED_TOURS[0].title.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')));
+
+    // Edge cases flagged in review: archived tour + actor, known actor without active waypoints, and dynamic prop updates
+    const archivedWithActor = {
+        ...GUIDED_TOURS[0],
+        id: 'archived-actor-edge-case',
+        status: 'archived',
+        waypoints: [
+            { ...GUIDED_TOURS[0].waypoints[0], nodeId: 'USA' },
+            { ...GUIDED_TOURS[0].waypoints[1], nodeId: 'CyberActors' },
+        ],
+    };
+    const combinedAll = [...GUIDED_TOURS, archivedWithActor];
+    assert.equal(
+        resolveInitialTour(combinedAll, GUIDED_TOURS, 'archived-actor-edge-case', 'CyberActors')?.id,
+        'archived-actor-edge-case',
+        'Archived tour= param combined with actor= must resolve to the archived case',
+    );
+    assert.equal(
+        resolveStepIndex(combinedAll, GUIDED_TOURS, 'archived-actor-edge-case', 'CyberActors', undefined),
+        1,
+        'Archived tour= + actor= must select matching waypoint step index',
+    );
+    assert.equal(
+        resolveInitialTour(GUIDED_TOURS, GUIDED_TOURS, undefined, 'CyberActors')?.id,
+        GUIDED_TOURS[0].id,
+        'Known actor with no active tour waypoints falls back to first active tour on initial load',
+    );
+    assert.equal(
+        resolveStepIndex(GUIDED_TOURS, GUIDED_TOURS, undefined, 'CyberActors', undefined),
+        0,
+    );
+    assert.equal(
+        resolveInitialTour(GUIDED_TOURS, GUIDED_TOURS, undefined, 'CyberActors', { fallbackToFirst: false }),
+        null,
+        'Dynamic route sync returns null when actor has no matching active tour so active tour stays unchanged',
+    );
+    assert.equal(
+        resolveInitialTour(GUIDED_TOURS, GUIDED_TOURS, undefined, 'China', { fallbackToFirst: false })?.id,
+        expectedChinaTour.id,
+        'Dynamic route sync (e.g. popstate to ?view=nexus&actor=China) resolves matching active tour',
+    );
 });
 
 test('GuidedBriefings and decomposed UI components preserve archived banners and deep links', async t => {
@@ -555,7 +619,6 @@ test('GuidedBriefings and decomposed UI components preserve archived banners and
     const archivedBriefingHtml = renderToStaticMarkup(React.createElement(GuidedBriefings, {
         initialTourId: 'archived-usmca-2026',
         initialStep: 2,
-        onExploreNode: () => {},
         onRouteChange: () => {},
         activeTours: GUIDED_TOURS,
         archivedTours: [archivedFixtureTour],
@@ -569,12 +632,11 @@ test('GuidedBriefings and decomposed UI components preserve archived banners and
     assert.ok(!archivedBriefingHtml.includes('update in progress'), 'Archived snapshots must suppress update-in-progress notices');
 
     // Verify synthetic update-in-progress active case renders honest "Last reviewed <date>, update in progress"
-    // across GuidedBriefings, IntelSidebar, DetailModal, NexusFocusView, and 5W1H without depending on wall-clock date
+    // across GuidedBriefings, IntelSidebar, DetailModal, and 5W1H without depending on wall-clock date
     const { CASE_STUDIES_2026, normalizeCaseStudy, toForecastRecord } = await vite.ssrLoadModule('/src/caseStudies2026.js');
     const { projectGuidedTour } = await vite.ssrLoadModule('/src/nexusTours.js');
     const { default: IntelSidebar } = await vite.ssrLoadModule('/src/components/IntelSidebar.jsx');
     const { default: DetailModal } = await vite.ssrLoadModule('/src/components/DetailModal.jsx');
-    const { default: NexusFocusView } = await vite.ssrLoadModule('/src/NexusFocusView.jsx');
     const { generate5W1H } = await vite.ssrLoadModule('/src/eventAnalysis.js');
 
     const syntheticUpdateInProgressCase = normalizeCaseStudy({
@@ -612,7 +674,6 @@ test('GuidedBriefings and decomposed UI components preserve archived banners and
     const overdueBriefingHtml = renderToStaticMarkup(React.createElement(GuidedBriefings, {
         initialTourId: 'synthetic-update-in-progress',
         initialStep: 1,
-        onExploreNode: () => {},
         onRouteChange: () => {},
         activeTours: [syntheticTour],
         archivedTours: [],
@@ -667,14 +728,6 @@ test('GuidedBriefings and decomposed UI components preserve archived banners and
     assert.match(overdueModalHtml, /Last reviewed 2026-06-30, update in progress/);
     assert.match(overdueModalHtml, /case-study-update-notice/);
 
-    const focusNexusHtml = renderToStaticMarkup(React.createElement(NexusFocusView, {
-        forecasts: [syntheticForecast],
-        initialNodeId: 'USA',
-        onSelectActor: () => {},
-        onOpenBriefing: () => {},
-    }));
-    assert.match(focusNexusHtml, /Current cases \(1\)/);
-
     const conflictCaseForecast = toForecastRecord(normalizeCaseStudy({
         ...syntheticUpdateInProgressCase,
         id: 'synthetic-conflict-case',
@@ -713,7 +766,6 @@ test('GuidedBriefings and decomposed UI components preserve archived banners and
     const conflictBriefingHtml = renderToStaticMarkup(React.createElement(GuidedBriefings, {
         initialTourId: 'synthetic-conflict-tour',
         initialStep: 1,
-        onExploreNode: () => {},
         onRouteChange: () => {},
         activeTours: [{ ...syntheticTour, id: 'synthetic-conflict-tour', broadCategory: 'Geopolitics & Conflict' }],
         archivedTours: [],
@@ -753,7 +805,6 @@ test('GuidedBriefings and decomposed UI components preserve archived banners and
             const pilotHtml = renderToStaticMarkup(React.createElement(GuidedBriefings, {
                 initialTourId: pilotId,
                 initialStep: step,
-                onExploreNode: () => {},
                 onRouteChange: () => {},
                 activeTours: GUIDED_TOURS,
                 archivedTours: [],

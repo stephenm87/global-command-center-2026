@@ -4,7 +4,6 @@ import { theories } from './theories';
 import { AuthBadge, AuthModal, useAuth } from './AuthModal';
 import { secureFetch } from './api';
 import { CASE_STUDIES_2026, toForecastRecord } from './caseStudies2026';
-import { resolveActorId } from './nexus/actorIds';
 import criticalMineralsCatalog from './data/criticalMinerals.json';
 import {
     VIEW_MODES,
@@ -39,7 +38,6 @@ import {
 import './App.css';
 
 const GuidedBriefings = React.lazy(() => import('./GuidedBriefings'));
-const NexusWorkspace = React.lazy(() => import('./NexusWorkspace'));
 
 const CURATED_CASE_RECORDS = CASE_STUDIES_2026.map(toForecastRecord);
 const DEFAULT_MINERALS = criticalMineralsCatalog.minerals;
@@ -69,12 +67,12 @@ class GlobeErrorBoundary extends Component {
     }
 }
 
-class NexusErrorBoundary extends React.Component {
+class BriefingsErrorBoundary extends React.Component {
     constructor(props) { super(props); this.state = { error: null, info: null }; }
     static getDerivedStateFromError(err) { return { error: err }; }
     componentDidCatch(err, info) {
         this.setState({ info });
-        console.error('[NEXUS CRASH]', err.message, err.stack);
+        console.error('[BRIEFINGS CRASH]', err.message, err.stack);
     }
     render() {
         if (this.state.error) {
@@ -83,7 +81,7 @@ class NexusErrorBoundary extends React.Component {
                 {
                     style: { color: '#ff0066', background: '#0a0a1a', padding: '40px', fontFamily: 'Roboto Mono, monospace', fontSize: '13px', position: 'absolute', top: '60px', left: 0, right: 0, bottom: 0, zIndex: 100, overflow: 'auto' },
                 },
-                React.createElement('h2', { style: { color: '#ff0066', marginBottom: '16px' } }, '⚠ NEXUS COMPONENT CRASHED'),
+                React.createElement('h2', { style: { color: '#ff0066', marginBottom: '16px' } }, '⚠ BRIEFINGS COMPONENT CRASHED'),
                 React.createElement('div', { style: { color: '#ff9900', marginBottom: '8px' } }, 'Error: ' + this.state.error.message),
                 React.createElement('pre', { style: { color: '#888', fontSize: '11px', whiteSpace: 'pre-wrap', maxHeight: '300px', overflow: 'auto', background: 'rgba(255,255,255,0.03)', padding: '12px', borderRadius: '4px' } }, this.state.error.stack),
                 this.state.info && React.createElement('pre', { style: { color: '#555', fontSize: '10px', whiteSpace: 'pre-wrap', marginTop: '12px' } }, this.state.info.componentStack),
@@ -104,7 +102,6 @@ function App() {
     const [selectedForecast, setSelectedForecast] = useState(null);
     const [selectedTheory, setSelectedTheory] = useState('Realism');
     const [viewMode, setViewMode] = useState(getViewFromLocation);
-    const [nexusEntry, setNexusEntry] = useState(() => ({ nodeId: resolveActorId(new URLSearchParams(window.location.search).get('actor'), 'USA') }));
     const [briefingEntry, setBriefingEntry] = useState(getBriefingEntryFromLocation);
 
     const [stressLevel, setStressLevel] = useState(0);
@@ -172,19 +169,10 @@ function App() {
         setViewMode(nextMode);
     }, [viewMode]);
 
-    const openNexusAtActor = useCallback((nodeId, tourId) => {
-        setNexusEntry({ nodeId, tourId });
-        navigateView('nexus', { actor: nodeId });
-    }, [navigateView]);
-
     const openBriefing = useCallback((tourId, nodeId) => {
         setBriefingEntry({ tourId, nodeId, step: 1 });
         navigateView('briefings', { tour: tourId, actor: nodeId, step: 1 });
     }, [navigateView]);
-
-    const rememberNexusActor = useCallback(nodeId => {
-        setNexusEntry(previous => ({ ...previous, nodeId }));
-    }, []);
 
     const rememberBriefingRoute = useCallback(entry => {
         setBriefingEntry(previous => (
@@ -198,9 +186,7 @@ function App() {
 
     useEffect(() => {
         const handleHistory = () => {
-            const params = new URLSearchParams(window.location.search);
             setViewMode(getViewFromLocation());
-            setNexusEntry({ nodeId: resolveActorId(params.get('actor'), 'USA') });
             setBriefingEntry(getBriefingEntryFromLocation());
         };
         window.addEventListener('popstate', handleHistory);
@@ -635,7 +621,6 @@ function App() {
                         {[
                             ['globe', '🌎', 'LIVE GLOBE'],
                             ['briefings', '▤', 'GUIDED BRIEFINGS'],
-                            ['nexus', '⚯', 'NEXUS'],
                         ].map(([id, icon, label]) => (
                             <button
                                 key={id}
@@ -644,9 +629,7 @@ function App() {
                                 className={`view-mode-btn ${viewMode === id ? 'active' : ''}`}
                                 onClick={() => {
                                     if (viewMode === id) return;
-                                    if (id === 'nexus') {
-                                        navigateView(id, { actor: nexusEntry.nodeId });
-                                    } else if (id === 'briefings') {
+                                    if (id === 'briefings') {
                                         navigateView(id, { tour: briefingEntry.tourId, step: briefingEntry.step });
                                     } else {
                                         navigateView(id);
@@ -1020,30 +1003,16 @@ function App() {
                     </GlobeErrorBoundary>
 
                     {viewMode === 'briefings' && (
-                        <NexusErrorBoundary>
-                            <React.Suspense fallback={<div className="nexus-route-loading" role="status">LOADING GUIDED BRIEFINGS…</div>}>
+                        <BriefingsErrorBoundary>
+                            <React.Suspense fallback={<div className="route-loading" role="status">LOADING GUIDED BRIEFINGS…</div>}>
                                 <GuidedBriefings
                                     initialTourId={briefingEntry.tourId}
                                     initialNodeId={briefingEntry.nodeId}
                                     initialStep={briefingEntry.step}
-                                    onExploreNode={openNexusAtActor}
                                     onRouteChange={rememberBriefingRoute}
                                 />
                             </React.Suspense>
-                        </NexusErrorBoundary>
-                    )}
-
-                    {viewMode === 'nexus' && (
-                        <NexusErrorBoundary>
-                            <React.Suspense fallback={<div className="nexus-route-loading" role="status">LOADING NEXUS…</div>}>
-                                <NexusWorkspace
-                                    forecasts={filteredForecasts}
-                                    initialNodeId={nexusEntry.nodeId}
-                                    onActorChange={rememberNexusActor}
-                                    onOpenBriefing={openBriefing}
-                                />
-                            </React.Suspense>
-                        </NexusErrorBoundary>
+                        </BriefingsErrorBoundary>
                     )}
 
                     {expandedCluster && (

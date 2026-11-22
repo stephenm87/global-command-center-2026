@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { GUIDED_TOURS, ARCHIVED_GUIDED_TOURS, ALL_GUIDED_TOURS } from './nexusTours';
-import { NEXUS_ACTORS } from './nexusFocusData';
+import { BRIEFING_ACTORS } from './briefingActors';
 import { computeBriefingReadingTimes, IB_THEME_LABELS } from './caseStudies2026';
 import { categoryColors, getAccessibleTextAccent, getCaseReviewNotice, isReviewOverdue } from './navigationState.mjs';
 import { indexSourceHealth, shouldPreferAlternate, sourceHealthLabel } from './sourceHealth.mjs';
@@ -25,8 +25,20 @@ const isNarrowLibraryViewport = () => (
     && window.matchMedia(NARROW_LIBRARY_QUERY).matches
 );
 
-const resolveStepIndex = (allTours, activeTours, tourId, nodeId, step) => {
-    const requestedTour = allTours.find(item => item.id === tourId) || activeTours[0];
+export const resolveInitialTour = (
+    allTours,
+    activeTours,
+    tourId,
+    nodeId,
+    { fallbackToFirst = true } = {},
+) => (
+    allTours.find(item => item.id === tourId)
+    || (nodeId ? activeTours.find(item => item.waypoints?.some(wp => wp.nodeId === nodeId)) : null)
+    || (fallbackToFirst ? activeTours[0] : null)
+);
+
+export const resolveStepIndex = (allTours, activeTours, tourId, nodeId, step) => {
+    const requestedTour = resolveInitialTour(allTours, activeTours, tourId, nodeId);
     const numericStep = Number(step);
     if (Number.isInteger(numericStep) && numericStep >= 1) {
         return Math.min(numericStep - 1, Math.max((requestedTour?.waypoints.length || 1) - 1, 0));
@@ -83,7 +95,6 @@ export default function GuidedBriefings({
     initialTourId,
     initialNodeId,
     initialStep,
-    onExploreNode,
     onRouteChange,
     activeTours = GUIDED_TOURS,
     archivedTours = ARCHIVED_GUIDED_TOURS,
@@ -99,7 +110,7 @@ export default function GuidedBriefings({
         return id => ids.has(id);
     }, [allTours]);
 
-    const [tourId, setTourId] = useState(() => (isValidTourId(initialTourId) ? initialTourId : activeTours[0]?.id));
+    const [tourId, setTourId] = useState(() => resolveInitialTour(allTours, activeTours, initialTourId, initialNodeId)?.id);
     const [stepIndex, setStepIndex] = useState(() => resolveStepIndex(allTours, activeTours, initialTourId, initialNodeId, initialStep));
     const [librarySearch, setLibrarySearch] = useState('');
     const [regionFilter, setRegionFilter] = useState('all');
@@ -114,7 +125,7 @@ export default function GuidedBriefings({
 
     const tour = useMemo(() => allTours.find(item => item.id === tourId) || activeTours[0], [allTours, activeTours, tourId]);
     const waypoint = tour?.waypoints[stepIndex];
-    const actor = waypoint ? NEXUS_ACTORS[waypoint.nodeId] : null;
+    const actor = waypoint ? BRIEFING_ACTORS[waypoint.nodeId] : null;
     const perspectiveLabel = waypoint?.perspectiveLabel || actor?.shortName || waypoint?.nodeId;
     const isArchivedTour = tour?.status === 'archived';
     const reviewOverdue = !isArchivedTour && isReviewOverdue(tour?.reviewBy);
@@ -173,10 +184,13 @@ export default function GuidedBriefings({
     }, []);
 
     useEffect(() => {
-        if (!isValidTourId(initialTourId)) return;
-        setTourId(initialTourId);
-        setStepIndex(resolveStepIndex(allTours, activeTours, initialTourId, initialNodeId, initialStep));
-    }, [isValidTourId, allTours, activeTours, initialTourId, initialNodeId, initialStep]);
+        const matched = resolveInitialTour(allTours, activeTours, initialTourId, initialNodeId, {
+            fallbackToFirst: false,
+        });
+        if (!matched) return;
+        setTourId(matched.id);
+        setStepIndex(resolveStepIndex(allTours, activeTours, matched.id, initialNodeId, initialStep));
+    }, [allTours, activeTours, initialTourId, initialNodeId, initialStep]);
 
     useEffect(() => {
         setVisibleCaseCount(INITIAL_LIBRARY_COUNT);
@@ -381,7 +395,7 @@ export default function GuidedBriefings({
                         )}
                     </div>
                 )}
-                <p className="briefing-library-note">Every case has three perspective-labelled readings, appears on the globe, and opens into the Nexus.</p>
+                <p className="briefing-library-note">Every case has three perspective-labelled readings and appears on the globe.</p>
             </aside>
 
             <div
@@ -486,7 +500,7 @@ export default function GuidedBriefings({
                                 aria-current={index === stepIndex ? 'step' : undefined}
                             >
                                 <span>{index + 1}</span>
-                                <small>{item.perspectiveLabel || NEXUS_ACTORS[item.nodeId]?.shortName || item.nodeId}</small>
+                                <small>{item.perspectiveLabel || BRIEFING_ACTORS[item.nodeId]?.shortName || item.nodeId}</small>
                             </button>
                         ))}
                     </div>
@@ -586,7 +600,6 @@ export default function GuidedBriefings({
 
                 <footer className="briefing-controls">
                     <button type="button" onClick={() => { if (stepIndex > 0) move(-1); }} aria-disabled={stepIndex === 0}>← Previous</button>
-                    <button type="button" className="briefing-explore" onClick={() => onExploreNode(waypoint.nodeId, tour.id)}>Explore this actor in Nexus</button>
                     <button type="button" onClick={() => { if (stepIndex < tour.waypoints.length - 1) move(1); }} aria-disabled={stepIndex === tour.waypoints.length - 1}>Next →</button>
                 </footer>
             </div>
