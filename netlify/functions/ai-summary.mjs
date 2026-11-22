@@ -1,19 +1,24 @@
-// ai-summary.js - Gemini-powered geopolitical intelligence brief generator
+// ai-summary.mjs - Gemini-powered geopolitical intelligence brief generator
 // Accepts: POST { url, title, content } where content = Firecrawl markdown
 // Returns: structured intelligence brief for IB Global Politics students
-const { callGeminiWithRetry } = require('./gemini-retry');
-const { protectEndpoint } = require('./security');
+import retryModule from './gemini-retry.js';
+import securityModule from './security.js';
+
+const { callGeminiWithRetry } = retryModule;
+const { protectEndpoint, readEnv, toResponse } = securityModule;
 
 const BRIEF_SCHEMA_VERSION = '1.0';
 const DEFAULT_GEMINI_MODEL = 'gemini-3.5-flash-lite';
 const MIN_ARTICLE_CONTENT_LENGTH = 200;
 const MAX_ARTICLE_CONTENT_LENGTH = 12000;
+const MAX_BODY_BYTES = 64 * 1024;
+const DEFAULT_DAILY_CAP = 200;
 const HANDLER_BUDGET_MS = 21500;
 const BLOCKED_FINISH_REASONS = new Set(['SAFETY', 'BLOCKLIST', 'PROHIBITED_CONTENT', 'SPII', 'RECITATION']);
 
 const SOURCE_TYPES = new Set([
     'State Media', 'Wire Service', 'Independent Media', 'Think Tank',
-    'NGO Report', 'Social Media', 'Academic'
+    'NGO Report', 'Social Media', 'Academic',
 ]);
 
 function resolveGeminiModel(envModel = process.env.GEMINI_SUMMARY_MODEL) {
@@ -67,10 +72,10 @@ function sanitizeBrief(brief = {}, model = resolveGeminiModel()) {
         paper2Prompts: {
             identify: cleanText(brief.paper2Prompts?.identify),
             explain: cleanText(brief.paper2Prompts?.explain),
-            evaluate: cleanText(brief.paper2Prompts?.evaluate)
+            evaluate: cleanText(brief.paper2Prompts?.evaluate),
         },
         rawSummary: cleanText(brief.rawSummary),
-        generatedAt: new Date().toISOString()
+        generatedAt: new Date().toISOString(),
     };
 }
 
@@ -112,7 +117,7 @@ function buildGenerationConfig(model) {
             temperature: 0.3,
             maxOutputTokens: 1500,
             responseMimeType: 'application/json',
-            ...(/pro/i.test(model) ? {} : { thinkingConfig: { thinkingBudget: 0 } })
+            ...(/pro/i.test(model) ? {} : { thinkingConfig: { thinkingBudget: 0 } }),
         };
     }
 
@@ -121,7 +126,7 @@ function buildGenerationConfig(model) {
     return {
         maxOutputTokens: 1500,
         responseMimeType: 'application/json',
-        ...(/pro/i.test(model) ? {} : { thinkingConfig: { thinkingLevel: 'minimal' } })
+        ...(/pro/i.test(model) ? {} : { thinkingConfig: { thinkingLevel: 'minimal' } }),
     };
 }
 
@@ -130,20 +135,20 @@ function buildGeminiRequest(model, userMessage, geminiKey) {
     return {
         url: `https://generativelanguage.googleapis.com/v1beta/models/${encodeURIComponent(resolvedModel)}:generateContent`,
         headers: {
-            'x-goog-api-key': geminiKey
+            'x-goog-api-key': geminiKey,
         },
         body: {
             systemInstruction: {
-                parts: [{ text: SYSTEM_PROMPT }]
+                parts: [{ text: SYSTEM_PROMPT }],
             },
             contents: [
                 {
                     role: 'user',
-                    parts: [{ text: userMessage }]
-                }
+                    parts: [{ text: userMessage }],
+                },
             ],
-            generationConfig: buildGenerationConfig(resolvedModel)
-        }
+            generationConfig: buildGenerationConfig(resolvedModel),
+        },
     };
 }
 
@@ -175,37 +180,53 @@ function extractCandidateJsonText(geminiData) {
     return responsePart.text;
 }
 
-exports.handler = async (event) => {
+function jsonResponse(status, headers, payload) {
+    return new Response(JSON.stringify(payload), { status, headers });
+}
+
+export async function handleAiSummary(request, context = null, deps = {}) {
     const startedAt = Date.now();
-    const security = await protectEndpoint(event, { maxRequests: 12, scope: 'ai-summary' });
-    if (security.response) return security.response;
+    const env = deps.env || process.env;
+    const security = await protectEndpoint(request, {
+        maxRequests: 12,
+        scope: 'ai-summary',
+        context,
+        dailyCapEnv: 'AI_SUMMARY_DAILY_CAP',
+        defaultDailyCap: DEFAULT_DAILY_CAP,
+        maxBodyBytes: MAX_BODY_BYTES,
+        env,
+        ...(deps.securityOptions || {}),
+    });
+    if (security.response) return toResponse(security.response);
 
     const headers = security.headers;
 
     try {
-        const { url, title, content } = JSON.parse(event.body || '{}');
+        let payload;
+        try {
+            payload = JSON.parse(security.rawBody || '{}');
+        } catch {
+            return jsonResponse(400, headers, { error: 'Invalid JSON request body.' });
+        }
+        if (!payload || typeof payload !== 'object' || Array.isArray(payload)) {
+            return jsonResponse(400, headers, { error: 'Request body must be a JSON object.' });
+        }
+
+        const { url, title, content } = payload;
 
         const articleContent = selectArticleContent(content);
         if (articleContent.length < MIN_ARTICLE_CONTENT_LENGTH) {
-            return {
-                statusCode: 400,
-                headers,
-                body: JSON.stringify({
-                    error: `At least ${MIN_ARTICLE_CONTENT_LENGTH} characters of article content are required for a reliable brief.`
-                })
-            };
+            return jsonResponse(400, headers, {
+                error: `At least ${MIN_ARTICLE_CONTENT_LENGTH} characters of article content are required for a reliable brief.`,
+            });
         }
 
-        const geminiKey = process.env.GEMINI_API_KEY;
+        const geminiKey = readEnv('GEMINI_API_KEY', env);
         if (!geminiKey) {
-            return {
-                statusCode: 503,
-                headers,
-                body: JSON.stringify({ error: 'AI Summary unavailable — Gemini not configured' })
-            };
+            return jsonResponse(503, headers, { error: 'AI Summary unavailable — Gemini not configured' });
         }
 
-        const activeModel = resolveGeminiModel();
+        const activeModel = resolveGeminiModel(readEnv('GEMINI_SUMMARY_MODEL', env));
         const userMessage = `Article URL: ${url || 'Unknown'}
 Article Title: ${title || 'Untitled'}
 
@@ -219,12 +240,11 @@ Generate the intelligence brief JSON now.`;
         const geminiRes = await callGeminiWithRetry(reqSpec.url, reqSpec.body, {
             headers: reqSpec.headers,
             deadlineAt: startedAt + HANDLER_BUDGET_MS,
-            deadlineMs: remainingMs
+            deadlineMs: remainingMs,
         });
 
         if (!geminiRes.ok) {
-            const errText = await geminiRes.text();
-            throw new Error(`Gemini error ${geminiRes.status}: ${errText.substring(0, 200)}`);
+            throw new Error(`Gemini error ${geminiRes.status}`);
         }
 
         const geminiData = await geminiRes.json();
@@ -243,41 +263,38 @@ Generate the intelligence brief JSON now.`;
         }
 
         const safeBrief = sanitizeBrief(brief, activeModel);
-        return { statusCode: 200, headers, body: JSON.stringify(safeBrief) };
-
+        return jsonResponse(200, headers, safeBrief);
     } catch (error) {
         console.error('[ai-summary] Error:', error.message);
         if (error.statusCode === 422) {
-            return {
-                statusCode: 422,
-                headers,
-                body: JSON.stringify({ error: 'AI summary unavailable because article content triggered safety filters.' })
-            };
+            return jsonResponse(422, headers, {
+                error: 'AI summary unavailable because article content triggered safety filters.',
+            });
         }
         if (error.statusCode === 502) {
-            return {
-                statusCode: 502,
-                headers,
-                body: JSON.stringify({ error: 'AI analysis returned an empty response. Please try again.' })
-            };
+            return jsonResponse(502, headers, {
+                error: 'AI analysis returned an empty response. Please try again.',
+            });
         }
-        return {
-            statusCode: 500,
-            headers,
-            body: JSON.stringify({ error: 'AI analysis temporarily unavailable. Please try again later.' })
-        };
+        return jsonResponse(500, headers, {
+            error: 'AI analysis temporarily unavailable. Please try again later.',
+        });
     }
-};
+}
 
-exports._test = {
+export default async (request, context) => handleAiSummary(request, context);
+
+export const _test = {
     BRIEF_SCHEMA_VERSION,
     DEFAULT_GEMINI_MODEL,
     MIN_ARTICLE_CONTENT_LENGTH,
     MAX_ARTICLE_CONTENT_LENGTH,
+    MAX_BODY_BYTES,
+    DEFAULT_DAILY_CAP,
     resolveGeminiModel,
     buildGenerationConfig,
     buildGeminiRequest,
     extractCandidateJsonText,
     sanitizeBrief,
-    selectArticleContent
+    selectArticleContent,
 };

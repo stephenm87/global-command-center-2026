@@ -1,13 +1,20 @@
-// fetch-news.js — Global Command Center
+// fetch-news.mjs — Global Command Center
 // Fetches latest geopolitical news via Serper, extracts entities+locations via Cloud NL API,
 // returns globe-ready node objects for display as LIVE INTEL nodes
-const { protectEndpoint } = require('./security');
+import securityModule from './security.js';
+
+const { protectEndpoint, readEnv, toResponse } = securityModule;
+
+const MAX_BODY_BYTES = 4 * 1024;
+const MAX_QUERY_LENGTH = 200;
+const FIXED_RESULT_COUNT = 10;
+const DEFAULT_DAILY_CAP = 300;
 
 // ── Input sanitization ─────────────────────────────────────────────────────
 function sanitizeQuery(raw) {
     if (!raw || typeof raw !== 'string') return null;
     // Max 200 chars, strip control chars and angle brackets
-    return raw.substring(0, 200).replace(/[<>{}|\\^`]/g, '').trim();
+    return raw.substring(0, MAX_QUERY_LENGTH).replace(/[<>{}|\\^`]/g, '').trim();
 }
 
 const GEOPOLITICS_QUERY = 'geopolitical crisis conflict war sanctions sovereignty 2025 2026';
@@ -93,7 +100,7 @@ function inferCoordsFromText(text) {
         if (lower.includes(country)) {
             return {
                 lat: coords[0] + (Math.random() - 0.5) * 2.5,
-                lng: coords[1] + (Math.random() - 0.5) * 2.5
+                lng: coords[1] + (Math.random() - 0.5) * 2.5,
             };
         }
     }
@@ -121,19 +128,19 @@ function extractCoordsFromEntities(entities) {
     return null;
 }
 
-async function analyzeArticle(text, apiKey) {
+async function analyzeArticle(text, apiKey, fetchImpl = fetch) {
     try {
-        const res = await fetch(
+        const res = await fetchImpl(
             'https://language.googleapis.com/v1/documents:analyzeEntities',
             {
                 method: 'POST',
                 signal: AbortSignal.timeout(10000),
                 headers: {
                     'Content-Type': 'application/json',
-                    'X-Goog-Api-Key': apiKey
+                    'X-Goog-Api-Key': apiKey,
                 },
-                body: JSON.stringify({ document: { type: 'PLAIN_TEXT', content: text }, encodingType: 'UTF8' })
-            }
+                body: JSON.stringify({ document: { type: 'PLAIN_TEXT', content: text }, encodingType: 'UTF8' }),
+            },
         );
         if (!res.ok) return null;
         const data = await res.json();
@@ -143,30 +150,54 @@ async function analyzeArticle(text, apiKey) {
     }
 }
 
-exports.handler = async (event) => {
-    const security = await protectEndpoint(event, { maxRequests: 30, scope: 'fetch-news' });
-    if (security.response) return security.response;
+function jsonResponse(status, headers, payload) {
+    return new Response(JSON.stringify(payload), { status, headers });
+}
+
+export async function handleFetchNews(request, context = null, deps = {}) {
+    const env = deps.env || process.env;
+    const security = await protectEndpoint(request, {
+        maxRequests: 30,
+        scope: 'fetch-news',
+        context,
+        dailyCapEnv: 'FETCH_NEWS_DAILY_CAP',
+        defaultDailyCap: DEFAULT_DAILY_CAP,
+        maxBodyBytes: MAX_BODY_BYTES,
+        env,
+        ...(deps.securityOptions || {}),
+    });
+    if (security.response) return toResponse(security.response);
 
     const headers = security.headers;
-    const serperKey = process.env.SERPER_API_KEY;
-    const googleNlKey = process.env.GOOGLE_NL_API_KEY;
+    const fetchImpl = deps.fetchImpl || fetch;
+    const serperKey = readEnv('SERPER_API_KEY', env);
+    const googleNlKey = readEnv('GOOGLE_NL_API_KEY', env);
 
     if (!serperKey) {
-        return { statusCode: 503, headers, body: JSON.stringify({ error: 'SERPER_API_KEY not configured' }) };
+        return jsonResponse(503, headers, { error: 'News search service is not configured.' });
     }
 
     try {
-        // 1. Fetch news via Serper (with input sanitization)
-        const rawQuery = event.httpMethod === 'POST'
-            ? (JSON.parse(event.body || '{}').query || null)
-            : null;
+        let rawQuery = null;
+        if (request.method === 'POST') {
+            let payload;
+            try {
+                payload = JSON.parse(security.rawBody || '{}');
+            } catch {
+                return jsonResponse(400, headers, { error: 'Invalid JSON request body.' });
+            }
+            if (!payload || typeof payload !== 'object' || Array.isArray(payload)) {
+                return jsonResponse(400, headers, { error: 'Request body must be a JSON object.' });
+            }
+            rawQuery = payload.query || null;
+        }
         const customQuery = sanitizeQuery(rawQuery) || GEOPOLITICS_QUERY;
 
-        const serperRes = await fetch('https://google.serper.dev/news', {
+        const serperRes = await fetchImpl('https://google.serper.dev/news', {
             method: 'POST',
             signal: AbortSignal.timeout(12000),
             headers: { 'X-API-KEY': serperKey, 'Content-Type': 'application/json' },
-            body: JSON.stringify({ q: customQuery, num: 10, tbs: 'qdr:d' }) // last 24h
+            body: JSON.stringify({ q: customQuery, num: FIXED_RESULT_COUNT, tbs: 'qdr:d' }), // last 24h
         });
 
         if (!serperRes.ok) {
@@ -174,16 +205,16 @@ exports.handler = async (event) => {
         }
 
         const serperData = await serperRes.json();
-        const articles = serperData.news || [];
+        const articles = Array.isArray(serperData.news) ? serperData.news : [];
 
         if (articles.length === 0) {
-            return { statusCode: 200, headers, body: JSON.stringify({ nodes: [], count: 0 }) };
+            return jsonResponse(200, headers, { nodes: [], count: 0 });
         }
 
         // 2. For each article: text-based coord inference (always works) + optional NL API enhancement
         const nodes = [];
 
-        await Promise.all(articles.slice(0, 10).map(async (article) => {
+        await Promise.all(articles.slice(0, FIXED_RESULT_COUNT).map(async (article) => {
             const text = `${article.title}. ${article.snippet || ''}`;
 
             // PRIMARY: fast text-based lookup — no external API needed
@@ -192,7 +223,7 @@ exports.handler = async (event) => {
             // ENHANCEMENT: try NL API for better entity extraction (only if GCP key available)
             let entities = null;
             if (googleNlKey && coords) { // only call NL API if text already found a region
-                entities = await analyzeArticle(text, googleNlKey);
+                entities = await analyzeArticle(text, googleNlKey, fetchImpl);
                 const nlCoords = extractCoordsFromEntities(entities);
                 if (nlCoords) coords = nlCoords; // prefer NL precision when available
             }
@@ -217,22 +248,27 @@ exports.handler = async (event) => {
                 url: article.link,
                 isLive: true,
                 isNews: true,
-                source: article.source || 'News'
+                source: article.source || 'News',
             });
         }));
 
-        return {
-            statusCode: 200,
-            headers,
-            body: JSON.stringify({ nodes, count: nodes.length })
-        };
-
+        return jsonResponse(200, headers, { nodes, count: nodes.length });
     } catch (err) {
-        console.error('fetch-news error:', err);
-        return {
-            statusCode: 500,
-            headers,
-            body: JSON.stringify({ error: 'News scan failed. Please try again later.' })
-        };
+        console.error('[fetch-news] Error:', err?.message || 'Unknown error');
+        return jsonResponse(500, headers, { error: 'News scan failed. Please try again later.' });
     }
+}
+
+export default async (request, context) => handleFetchNews(request, context);
+
+export const _test = {
+    MAX_BODY_BYTES,
+    MAX_QUERY_LENGTH,
+    FIXED_RESULT_COUNT,
+    DEFAULT_DAILY_CAP,
+    GEOPOLITICS_QUERY,
+    sanitizeQuery,
+    inferCategory,
+    inferCoordsFromText,
+    extractCoordsFromEntities,
 };

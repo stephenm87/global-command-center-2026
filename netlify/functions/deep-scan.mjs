@@ -1,11 +1,15 @@
-// deep-scan.js - Firecrawl-powered article deep extractor
+// deep-scan.mjs - Firecrawl-powered article deep extractor
 // Called on-demand when a user requests full article content for an Intel card
 // POST body: { url: "https://..." }
-const dns = require('node:dns').promises;
-const net = require('node:net');
-const { protectEndpoint } = require('./security');
+import { promises as dns } from 'node:dns';
+import net from 'node:net';
+import securityModule from './security.js';
+
+const { protectEndpoint, readEnv, toResponse } = securityModule;
 
 const MAX_SCRAPE_CONTENT_LENGTH = 15000;
+const MAX_BODY_BYTES = 4 * 1024;
+const DEFAULT_DAILY_CAP = 100;
 const HANDLER_BUDGET_MS = 21500;
 const DNS_PRECHECK_TIMEOUT_MS = 1500;
 const DISALLOWED_HOST_SUFFIXES = [
@@ -131,44 +135,69 @@ function selectScrapedMarkdown(markdown) {
     return `${normalized.slice(0, leadLength)}\n\n[...middle omitted during extraction...]\n\n${normalized.slice(-tailLength)}`;
 }
 
-exports.handler = async (event) => {
+function jsonResponse(status, headers, payload) {
+    return new Response(JSON.stringify(payload), { status, headers });
+}
+
+export async function handleDeepScan(request, context = null, deps = {}) {
     const startedAt = Date.now();
-    const security = await protectEndpoint(event, { maxRequests: 15, scope: 'deep-scan' });
-    if (security.response) return security.response;
+    const env = deps.env || process.env;
+    const security = await protectEndpoint(request, {
+        maxRequests: 15,
+        scope: 'deep-scan',
+        context,
+        dailyCapEnv: 'DEEP_SCAN_DAILY_CAP',
+        defaultDailyCap: DEFAULT_DAILY_CAP,
+        maxBodyBytes: MAX_BODY_BYTES,
+        env,
+        ...(deps.securityOptions || {}),
+    });
+    if (security.response) return toResponse(security.response);
 
     const headers = security.headers;
+    const fetchImpl = deps.fetchImpl || fetch;
 
     try {
-        const { url } = JSON.parse(event.body || '{}');
+        let payload;
+        try {
+            payload = JSON.parse(security.rawBody || '{}');
+        } catch {
+            return jsonResponse(400, headers, { error: 'Invalid JSON request body.' });
+        }
+        if (!payload || typeof payload !== 'object' || Array.isArray(payload)) {
+            return jsonResponse(400, headers, { error: 'Request body must be a JSON object.' });
+        }
+
+        const { url } = payload;
         if (typeof url !== 'string' || !url.trim()) {
-            return { statusCode: 400, headers, body: JSON.stringify({ error: 'URL required' }) };
+            return jsonResponse(400, headers, { error: 'URL required' });
         }
 
         const normalizedUrl = normalizeOutboundUrl(url);
-        if (!normalizedUrl || !(await validateOutboundUrl(normalizedUrl))) {
-            return { statusCode: 400, headers, body: JSON.stringify({ error: 'Invalid or disallowed URL' }) };
+        if (!normalizedUrl || !(await validateOutboundUrl(normalizedUrl, deps.lookupFn))) {
+            return jsonResponse(400, headers, { error: 'Invalid or disallowed URL' });
         }
 
-        const firecrawlKey = process.env.FIRECRAWL_API_KEY;
+        const firecrawlKey = readEnv('FIRECRAWL_API_KEY', env);
         if (!firecrawlKey) {
-            return { statusCode: 503, headers, body: JSON.stringify({ error: 'Firecrawl not configured' }) };
+            return jsonResponse(503, headers, { error: 'Firecrawl not configured' });
         }
 
         const remainingMs = Math.max(3000, HANDLER_BUDGET_MS - (Date.now() - startedAt));
         // Scrape the article with Firecrawl within remaining handler wall-clock budget
-        const res = await fetch('https://api.firecrawl.dev/v2/scrape', {
+        const res = await fetchImpl('https://api.firecrawl.dev/v2/scrape', {
             method: 'POST',
             signal: AbortSignal.timeout(remainingMs),
             headers: {
                 'Authorization': `Bearer ${firecrawlKey}`,
-                'Content-Type': 'application/json'
+                'Content-Type': 'application/json',
             },
             body: JSON.stringify({
                 url: normalizedUrl,
                 formats: ['markdown'],
                 onlyMainContent: true,
-                timeout: Math.max(2500, Math.min(15000, remainingMs - 1500))
-            })
+                timeout: Math.max(2500, Math.min(15000, remainingMs - 1500)),
+            }),
         });
 
         if (!res.ok) throw new Error(`Firecrawl error: ${res.status}`);
@@ -176,33 +205,28 @@ exports.handler = async (event) => {
 
         const excerpt = selectScrapedMarkdown(data.data?.markdown || '');
 
-        return {
-            statusCode: 200,
-            headers,
-            body: JSON.stringify({
-                url: normalizedUrl,
-                title: data.data?.metadata?.title || '',
-                description: data.data?.metadata?.description || '',
-                content: excerpt,
-                scrapedAt: new Date().toISOString()
-            })
-        };
-
+        return jsonResponse(200, headers, {
+            url: normalizedUrl,
+            title: data.data?.metadata?.title || '',
+            description: data.data?.metadata?.description || '',
+            content: excerpt,
+            scrapedAt: new Date().toISOString(),
+        });
     } catch (error) {
         console.error('[deep-scan] Error:', error.message);
-        return {
-            statusCode: 500,
-            headers,
-            body: JSON.stringify({ error: 'Deep scan failed. Please try again later.' })
-        };
+        return jsonResponse(500, headers, { error: 'Deep scan failed. Please try again later.' });
     }
-};
+}
 
-exports._test = {
+export default async (request, context) => handleDeepScan(request, context);
+
+export const _test = {
     MAX_SCRAPE_CONTENT_LENGTH,
+    MAX_BODY_BYTES,
+    DEFAULT_DAILY_CAP,
     selectScrapedMarkdown,
     isPrivateIpAddress,
     normalizeOutboundUrl,
     isValidUrl,
-    validateOutboundUrl
+    validateOutboundUrl,
 };
