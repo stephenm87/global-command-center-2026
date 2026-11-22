@@ -58,6 +58,7 @@ test('AuthBadge handles null user.email safely and AuthModal renders accessible 
         getDisplayName,
         ACCOUNT_NOT_ALLOWED_MESSAGE,
         SIGNUP_DISABLED_MESSAGE,
+        SMTP_DELIVERY_REFUSED_MESSAGE,
         formatAuthError,
     } = await vite.ssrLoadModule('/src/AuthModal.jsx');
 
@@ -93,7 +94,8 @@ test('AuthBadge handles null user.email safely and AuthModal renders accessible 
     assert.equal(formatAuthError({ code: 'signup_disabled' }), SIGNUP_DISABLED_MESSAGE);
     assert.equal(formatAuthError({ code: 'otp_disabled', message: 'Signups not allowed for otp' }), SIGNUP_DISABLED_MESSAGE);
     assert.equal(formatAuthError({ code: 'user_not_found', message: 'User not found' }), SIGNUP_DISABLED_MESSAGE);
-    assert.equal(formatAuthError({ code: 'email_address_not_authorized' }), SIGNUP_DISABLED_MESSAGE);
+    assert.equal(formatAuthError({ code: 'email_address_not_authorized' }), SMTP_DELIVERY_REFUSED_MESSAGE);
+    assert.equal(formatAuthError({ message: 'Email address not authorized by SMTP' }), SMTP_DELIVERY_REFUSED_MESSAGE);
     assert.equal(formatAuthError({ message: 'Signups not allowed for this instance' }), SIGNUP_DISABLED_MESSAGE);
     assert.match(formatAuthError({ code: 'over_email_send_rate_limit' }), /Too many sign-in requests/i);
     assert.match(formatAuthError({ message: 'unexpected internal provider detail' }), /Sign-in could not be completed/i);

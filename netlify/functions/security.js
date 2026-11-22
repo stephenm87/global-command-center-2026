@@ -67,8 +67,12 @@ function toLegacyEvent(requestOrEvent, context = null) {
 }
 
 function toResponse(response) {
-    return new Response(response?.body ?? null, {
-        status: response?.statusCode || 500,
+    const status = response?.statusCode || 500;
+    const body = (status === 204 || status === 205 || status === 304)
+        ? null
+        : (response?.body ?? null);
+    return new Response(body, {
+        status,
         headers: response?.headers || {},
     });
 }

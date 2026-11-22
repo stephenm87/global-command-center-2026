@@ -87,6 +87,18 @@ test('handleDeepScan enforces 4 KiB body limit, rejects multi-URL payloads, resp
 
         const store = createMemoryStore();
 
+        // 0. Approved-origin OPTIONS preflight returns 204 null-body Response cleanly
+        const rOptions = await handleDeepScan(
+            new Request('https://example.org/.netlify/functions/deep-scan', {
+                method: 'OPTIONS',
+                headers: { origin: 'http://localhost:5173' },
+            }),
+            null,
+            { env: baseEnv, securityOptions: { store } },
+        );
+        assert.equal(rOptions.status, 204);
+        assert.equal(rOptions.headers.get('access-control-allow-origin'), 'http://localhost:5173');
+
         // 1. Oversized body (> 4 KiB) rejected with 413 before parsing or calling Firecrawl
         const r413 = await handleDeepScan(
             new Request('https://example.org/.netlify/functions/deep-scan', {

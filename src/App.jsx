@@ -472,7 +472,6 @@ function App() {
             if (!res.ok || !data) {
                 setAiSummary({
                     error: data?.error || 'AI analysis unavailable',
-                    ...(data?.code === 'account_not_allowed' ? { accountNotAllowed: true } : {}),
                 });
                 return;
             }
@@ -514,7 +513,6 @@ function App() {
             if (res.status === 403 && data?.code === 'account_not_allowed') {
                 setDeepScanResult({
                     error: data?.error || ACCOUNT_NOT_ALLOWED_MESSAGE,
-                    accountNotAllowed: true,
                 });
                 return;
             }

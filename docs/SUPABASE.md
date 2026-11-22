@@ -1,8 +1,8 @@
 # Supabase Configuration
 
 ## Authentication
-- Users authenticate via OTP magic links (`supabase.auth.signInWithOtp` in `src/AuthModal.jsx`).
-- Any valid email address may request a magic link, subject to the configured Supabase Auth policies.
+- Users authenticate via OTP magic links (`supabase.auth.signInWithOtp` in `src/AuthModal.jsx`). Self-service account creation is closed in the client (`shouldCreateUser: false`); only existing/invited users can receive a magic link.
+- To onboard a new student or teacher, create or invite their account from the Supabase Dashboard (**Authentication -> Users -> Invite user** or **Add user**), and ensure custom SMTP is configured for external recipients (`email_address_not_authorized` displays a dedicated refusal prompt).
 - Configure Supabase **Authentication -> URL Configuration**:
   - **Site URL**: `https://globalcommandcenter2026.netlify.app`
   - **Redirect URLs**: `https://globalcommandcenter2026.netlify.app/**`, `https://deploy-preview-*--globalcommandcenter2026.netlify.app/**`, `http://localhost:5173/**`, `http://localhost:8888/**`

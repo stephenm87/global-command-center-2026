@@ -172,6 +172,18 @@ test('handleAiSummary enforces 64 KiB body limit, bounds prompt length & maxOutp
             throw new Error(`Unexpected external fetch: ${url}`);
         };
 
+        // 0. Approved-origin OPTIONS preflight returns 204 null-body Response cleanly
+        const rOptions = await handleAiSummary(
+            new Request('https://example.org/.netlify/functions/ai-summary', {
+                method: 'OPTIONS',
+                headers: { origin: 'http://localhost:5173' },
+            }),
+            null,
+            { env: baseEnv, securityOptions: { store: createMemoryStore() } },
+        );
+        assert.equal(rOptions.status, 204);
+        assert.equal(rOptions.headers.get('access-control-allow-origin'), 'http://localhost:5173');
+
         // 1. Oversized body (> 64 KiB) rejected with 413 before parsing or touching Gemini
         const oversizedReq = new Request('https://example.org/.netlify/functions/ai-summary', {
             method: 'POST',

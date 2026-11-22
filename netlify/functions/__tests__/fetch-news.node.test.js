@@ -58,6 +58,18 @@ test('handleFetchNews enforces 4 KiB body limit, fixed num:10 result count, dail
 
         const store = createMemoryStore();
 
+        // 0. Approved-origin OPTIONS preflight returns 204 null-body Response cleanly
+        const rOptions = await handleFetchNews(
+            new Request('https://example.org/.netlify/functions/fetch-news', {
+                method: 'OPTIONS',
+                headers: { origin: 'http://localhost:5173' },
+            }),
+            null,
+            { env: baseEnv, securityOptions: { store } },
+        );
+        assert.equal(rOptions.status, 204);
+        assert.equal(rOptions.headers.get('access-control-allow-origin'), 'http://localhost:5173');
+
         // 1. Oversized body (> 4 KiB) rejected with 413 before parsing or calling Serper
         const r413 = await handleFetchNews(
             new Request('https://example.org/.netlify/functions/fetch-news', {
