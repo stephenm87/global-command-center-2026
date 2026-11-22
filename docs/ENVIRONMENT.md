@@ -8,8 +8,8 @@ The application requires the following environment variables. Do NOT commit the 
 
 Provider API keys must never use the `VITE_` prefix because Vite exposes those values to browser code.
 
-## Server-Side Variables (Netlify Functions Only)
-Paid API credentials (`GEMINI_API_KEY`, `FIRECRAWL_API_KEY`, `SERPER_API_KEY`, and `GOOGLE_NL_API_KEY`) must be scoped strictly to **Netlify Functions only** in Netlify environment settings — builds must never receive them.
+## Server-Side Variables (Netlify Functions Only — Production Context)
+Paid API credentials (`GEMINI_API_KEY`, `FIRECRAWL_API_KEY`, `SERPER_API_KEY`, and `GOOGLE_NL_API_KEY`) are configured strictly in the **Netlify Production deploy context only**, scoped to Functions (never exposed to builds), and flagged as Netlify secret values. Legacy `GNEWS_API_KEY` has been deleted. Because these keys live in Production only, Deploy Previews intentionally return `"not configured"` for paid functions (`ai-summary.mjs`, `deep-scan.mjs`, `fetch-news.mjs`) without risking production provider credits.
 
 - `GEMINI_API_KEY`: Functions-only secret used by `ai-summary.mjs`.
 - `GEMINI_SUMMARY_MODEL`: Optional intelligence-brief model override; defaults to `gemini-3.5-flash-lite` ahead of the `2026-12-01` `gemini-2.5-flash` auto-routing date. Evaluate any replacement against representative articles before deployment.
