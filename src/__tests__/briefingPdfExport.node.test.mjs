@@ -150,7 +150,11 @@ test('CaseBriefingPrintContent renders every step and all ten ordered sections o
             lastPos = pos;
         }
 
-        assert.match(markup, /Editorial caution:/, `${id} should render editorialCaution`);
+        assert.match(
+            markup,
+            /(?:Editorial caution:|Uncertainty and editorial caution:)/,
+            `${id} should render editorialCaution`,
+        );
         assert.match(markup, /class="gcc-print-section gcc-print-exam"/, `${id} should isolate Exam practice on a new page`);
         assert.doesNotMatch(markup, /NASA Earth Observatory/, `${id} should omit NASA credit unless usesNasaImagery is set`);
 
@@ -358,4 +362,45 @@ test('src omits document.write/window.open, and briefingPrint.css has no leaked 
         const allowed = selector === '.gcc-print-root' || /^@media\s+print$/i.test(selector);
         assert.equal(allowed, true, `Unexpected top-level CSS rule outside @media print in briefingPrint.css: ${selector}`);
     }
+    assert.match(css, /\.gcc-print-debate-pair\s*\{[^}]*width:\s*100%[^}]*max-width:\s*none/s);
+    assert.match(css, /\.gcc-print-tail-keep\s*\{[^}]*break-inside:\s*avoid/s);
+});
+
+test('Print layout deduplicates matching caution text, binds tail source to footer, and matches normalized text safely', async t => {
+    const vite = await createTestViteServer(t);
+    const { CaseBriefingPrintContent } = await vite.ssrLoadModule('/src/components/PrintBriefingDocument.jsx');
+    const { GUIDED_TOURS } = await vite.ssrLoadModule('/src/nexusTours.js');
+    const { normalizePrintText, isSamePrintText } = await vite.ssrLoadModule('/src/utils/briefingPrint.mjs');
+
+    assert.equal(normalizePrintText('  Caution   Text \n Here  '), 'caution text here');
+    assert.equal(isSamePrintText('Same   text.', 'same text.'), true);
+    assert.equal(isSamePrintText('First text.', 'Second text.'), false);
+    assert.equal(isSamePrintText('', ''), false);
+
+    // Matching uncertainty + editorialCaution renders a single combined callout
+    const myanmar = GUIDED_TOURS.find(item => item.id === 'myanmar-fragmented-sovereignty');
+    const myanmarMarkup = renderToStaticMarkup(React.createElement(CaseBriefingPrintContent, {
+        tour: myanmar,
+        exportedAt: '23 November 2026',
+    }));
+    assert.match(myanmarMarkup, /<strong>Uncertainty and editorial caution:<\/strong>/);
+    assert.doesNotMatch(myanmarMarkup, /<strong>Uncertainty:<\/strong>/);
+    assert.doesNotMatch(myanmarMarkup, /<strong>Editorial caution:<\/strong>/);
+
+    // Distinct uncertainty + editorialCaution renders both blocks separately
+    const sudan = GUIDED_TOURS.find(item => item.id === 'sudan-displacement-regional-spillover');
+    const sudanMarkup = renderToStaticMarkup(React.createElement(CaseBriefingPrintContent, {
+        tour: sudan,
+        exportedAt: '23 November 2026',
+    }));
+    assert.match(sudanMarkup, /<strong>Uncertainty:<\/strong>/);
+    assert.match(sudanMarkup, /<strong>Editorial caution:<\/strong>/);
+    assert.doesNotMatch(sudanMarkup, /Uncertainty and editorial caution:/);
+
+    // Final source item is grouped with footer inside .gcc-print-tail-keep with preserved numbering
+    assert.match(
+        sudanMarkup,
+        /<div class="gcc-print-tail-keep"><ol class="gcc-print-sources gcc-print-sources--tail" start="\d+">/,
+    );
+    assert.match(sudanMarkup, /class="gcc-print-tail-keep"[\s\S]*class="gcc-print-footer"/);
 });

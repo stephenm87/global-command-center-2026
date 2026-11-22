@@ -17,6 +17,7 @@ import {
     collectSanitizedSources,
     FORECAST_EXPORT_LIMIT,
     formatExportDate,
+    isSamePrintText,
     sanitizeListItems,
 } from '../utils/briefingPrint.mjs';
 import '../briefingPrint.css';
@@ -60,6 +61,76 @@ function PrintSourceRefs({ urls, sourceByRawUrl, label = 'Sources' }) {
     );
 }
 
+function CasePrintSourceItem({ src }) {
+    return (
+        <li className="gcc-print-source-item">
+            <div className="gcc-print-source-head">
+                {src.publisher || 'Source'}
+                {src.dateLabel ? ` · ${src.dateLabel}` : ''}
+                {src.isSupplemental
+                    ? ' · Supplemental source'
+                    : src.perspectiveType ? ` · ${src.perspectiveType} perspective` : ''}
+            </div>
+            {src.title && (
+                <span className="gcc-print-source-title">
+                    {src.safeUrl ? (
+                        <a href={src.safeUrl} target="_blank" rel="noopener noreferrer">{src.title}</a>
+                    ) : src.title}
+                </span>
+            )}
+            {src.perspective && <p className="gcc-print-source-note">{src.perspective}</p>}
+            {src.supports && (
+                <p className="gcc-print-source-note">
+                    <strong>Relevance:</strong> {src.supports}
+                </p>
+            )}
+            {src.safeUrl && (
+                <div className="gcc-print-source-url">{src.safeUrl}</div>
+            )}
+        </li>
+    );
+}
+
+function ListPrintItem({ item }) {
+    return (
+        <li className="gcc-print-list-item">
+            <p className="gcc-print-list-item-head">
+                {String(item.index).padStart(2, '0')} · {item.category}
+            </p>
+            <h2>{item.subject}</h2>
+            <p><strong>Players:</strong> {item.players}</p>
+            <p><strong>Impact:</strong> {item.impact}</p>
+            <p><strong>Timeline:</strong> {item.timeline}</p>
+            {item.safeUrl && (
+                <p className="gcc-print-source-url">
+                    <strong>Source:</strong>{' '}
+                    <a href={item.safeUrl} target="_blank" rel="noopener noreferrer">
+                        {item.sourceLabel || item.safeUrl}
+                    </a>{' '}
+                    ({item.safeUrl})
+                </p>
+            )}
+        </li>
+    );
+}
+
+function CasePrintFooter({ hasLocations, usesNasaImagery }) {
+    return (
+        <footer className="gcc-print-footer">
+            <p><strong>2026 Global Command Center — IB Global Politics</strong></p>
+            <p>
+                This briefing is an educational summary compiled from the cited sources for classroom study and exam preparation.
+            </p>
+            {hasLocations && (
+                <p>
+                    Locator map country boundaries are rendered from the bundled Natural Earth 1:110m dataset.
+                    {usesNasaImagery ? ' Map imagery credit: NASA Earth Observatory.' : ''}
+                </p>
+            )}
+        </footer>
+    );
+}
+
 export function CaseBriefingPrintContent({
     tour,
     exportedAt = formatExportDate(),
@@ -88,6 +159,10 @@ export function CaseBriefingPrintContent({
         reviewNotice ? `(${reviewNotice})` : '',
     ].filter(Boolean).join(' ');
 
+    const duplicateCaution = isSamePrintText(tour.uncertainty, tour.editorialCaution);
+    const showUncertaintyLine = Boolean(tour.uncertainty && !duplicateCaution);
+    const showConfidenceSub = Boolean(tour.confidence || showUncertaintyLine);
+
     const hasAtGlance = Boolean(
         tour.statusSummary
         || tour.whyItMatters
@@ -115,6 +190,8 @@ export function CaseBriefingPrintContent({
     const hasSection6 = Boolean(concepts.length || ibThemes.length || conceptLensEntries.length || keyTerms.length);
     const hasSection7 = Boolean(debatePairs.length || watchForItems.length);
     const hasSection8 = Boolean(examPrompts.length || hasEssayBuilder);
+    const leadSources = sources.length > 1 ? sources.slice(0, -1) : [];
+    const tailSource = sources.length > 0 ? sources[sources.length - 1] : null;
 
     return (
         <article className="gcc-print-doc gcc-print-doc--case" aria-label={`Printable briefing: ${tour.title}`}>
@@ -180,16 +257,19 @@ export function CaseBriefingPrintContent({
                             <p>{tour.whyItMatters}</p>
                         </div>
                     )}
-                    {(tour.confidence || tour.uncertainty) && (
+                    {showConfidenceSub && (
                         <div className="gcc-print-subsection">
                             <h3>Confidence and uncertainty</h3>
                             {tour.confidence && <p><strong>Evidence confidence:</strong> {tour.confidence}</p>}
-                            {tour.uncertainty && <p><strong>Uncertainty:</strong> {tour.uncertainty}</p>}
+                            {showUncertaintyLine && <p><strong>Uncertainty:</strong> {tour.uncertainty}</p>}
                         </div>
                     )}
                     {tour.editorialCaution && (
                         <div className="gcc-print-callout">
-                            <p><strong>Editorial caution:</strong> {tour.editorialCaution}</p>
+                            <p>
+                                <strong>{duplicateCaution ? 'Uncertainty and editorial caution:' : 'Editorial caution:'}</strong>{' '}
+                                {tour.editorialCaution}
+                            </p>
                         </div>
                     )}
                 </section>
@@ -529,55 +609,33 @@ export function CaseBriefingPrintContent({
                 </section>
             )}
 
-            {/* 9. Sources */}
-            {sources.length > 0 && (
+            {/* 9. Sources & 10. Footer note */}
+            {sources.length > 0 ? (
                 <section className="gcc-print-section" aria-labelledby="gcc-print-sources">
                     <h2 id="gcc-print-sources">Sources</h2>
-                    <ol className="gcc-print-sources">
-                        {sources.map(src => (
-                            <li key={src.number} className="gcc-print-source-item">
-                                <div className="gcc-print-source-head">
-                                    {src.publisher || 'Source'}
-                                    {src.dateLabel ? ` · ${src.dateLabel}` : ''}
-                                    {src.isSupplemental
-                                        ? ' · Supplemental source'
-                                        : src.perspectiveType ? ` · ${src.perspectiveType} perspective` : ''}
-                                </div>
-                                {src.title && (
-                                    <span className="gcc-print-source-title">
-                                        {src.safeUrl ? (
-                                            <a href={src.safeUrl} target="_blank" rel="noopener noreferrer">{src.title}</a>
-                                        ) : src.title}
-                                    </span>
-                                )}
-                                {src.perspective && <p className="gcc-print-source-note">{src.perspective}</p>}
-                                {src.supports && (
-                                    <p className="gcc-print-source-note">
-                                        <strong>Relevance:</strong> {src.supports}
-                                    </p>
-                                )}
-                                {src.safeUrl && (
-                                    <div className="gcc-print-source-url">{src.safeUrl}</div>
-                                )}
-                            </li>
-                        ))}
-                    </ol>
+                    {leadSources.length > 0 && (
+                        <ol className="gcc-print-sources">
+                            {leadSources.map(src => (
+                                <CasePrintSourceItem key={src.number} src={src} />
+                            ))}
+                        </ol>
+                    )}
+                    <div className="gcc-print-tail-keep">
+                        <ol className="gcc-print-sources gcc-print-sources--tail" start={sources.length}>
+                            <CasePrintSourceItem src={tailSource} />
+                        </ol>
+                        <CasePrintFooter
+                            hasLocations={locations.length > 0}
+                            usesNasaImagery={tour.usesNasaImagery}
+                        />
+                    </div>
                 </section>
+            ) : (
+                <CasePrintFooter
+                    hasLocations={locations.length > 0}
+                    usesNasaImagery={tour.usesNasaImagery}
+                />
             )}
-
-            {/* 10. Footer note */}
-            <footer className="gcc-print-footer">
-                <p><strong>2026 Global Command Center — IB Global Politics</strong></p>
-                <p>
-                    This briefing is an educational summary compiled from the cited sources for classroom study and exam preparation.
-                </p>
-                {locations.length > 0 && (
-                    <p>
-                        Locator map country boundaries are rendered from the bundled Natural Earth 1:110m dataset.
-                        {tour.usesNasaImagery ? ' Map imagery credit: NASA Earth Observatory.' : ''}
-                    </p>
-                )}
-            </footer>
         </article>
     );
 }
@@ -596,6 +654,8 @@ export function ListBriefingPrintContent({
     const sanitizedItems = sanitizeListItems(items, limit);
     const heading = title || (isNews ? 'Live News Intel Briefing' : 'Global Intelligence Briefing');
     const cleanUrl = buildPageUrl(pageUrl);
+    const leadItems = sanitizedItems.length > 1 ? sanitizedItems.slice(0, -1) : [];
+    const tailItem = sanitizedItems.length > 0 ? sanitizedItems[sanitizedItems.length - 1] : null;
 
     return (
         <article className="gcc-print-doc gcc-print-doc--list" aria-label={heading}>
@@ -632,36 +692,33 @@ export function ListBriefingPrintContent({
             </header>
 
             {sanitizedItems.length > 0 ? (
-                <ol className="gcc-print-list-items">
-                    {sanitizedItems.map(item => (
-                        <li key={item.index} className="gcc-print-list-item">
-                            <p className="gcc-print-list-item-head">
-                                {String(item.index).padStart(2, '0')} · {item.category}
-                            </p>
-                            <h2>{item.subject}</h2>
-                            <p><strong>Players:</strong> {item.players}</p>
-                            <p><strong>Impact:</strong> {item.impact}</p>
-                            <p><strong>Timeline:</strong> {item.timeline}</p>
-                            {item.safeUrl && (
-                                <p className="gcc-print-source-url">
-                                    <strong>Source:</strong>{' '}
-                                    <a href={item.safeUrl} target="_blank" rel="noopener noreferrer">
-                                        {item.sourceLabel || item.safeUrl}
-                                    </a>{' '}
-                                    ({item.safeUrl})
-                                </p>
-                            )}
-                        </li>
-                    ))}
-                </ol>
+                <>
+                    {leadItems.length > 0 && (
+                        <ol className="gcc-print-list-items">
+                            {leadItems.map(item => (
+                                <ListPrintItem key={item.index} item={item} />
+                            ))}
+                        </ol>
+                    )}
+                    <div className="gcc-print-tail-keep">
+                        <ol className="gcc-print-list-items gcc-print-list-items--tail">
+                            <ListPrintItem item={tailItem} />
+                        </ol>
+                        <footer className="gcc-print-footer">
+                            <p><strong>2026 Global Command Center — IB Global Politics</strong></p>
+                            <p>Educational intelligence summary generated {exportedAt}.</p>
+                        </footer>
+                    </div>
+                </>
             ) : (
-                <p>No items match the current view.</p>
+                <>
+                    <p>No items match the current view.</p>
+                    <footer className="gcc-print-footer">
+                        <p><strong>2026 Global Command Center — IB Global Politics</strong></p>
+                        <p>Educational intelligence summary generated {exportedAt}.</p>
+                    </footer>
+                </>
             )}
-
-            <footer className="gcc-print-footer">
-                <p><strong>2026 Global Command Center — IB Global Politics</strong></p>
-                <p>Educational intelligence summary generated {exportedAt}.</p>
-            </footer>
         </article>
     );
 }

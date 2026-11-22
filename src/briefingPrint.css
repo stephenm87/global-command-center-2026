@@ -483,6 +483,7 @@
     }
 
     .gcc-print-key-figure {
+        max-width: none;
         padding: 6pt 8pt;
         border: 0.75pt solid #9ca3af;
         background: #ffffff;
@@ -520,6 +521,7 @@
     }
 
     .gcc-print-concept-card {
+        max-width: none;
         padding: 6pt 8pt;
         border: 0.75pt solid #9ca3af;
         break-inside: avoid;
@@ -563,14 +565,17 @@
         margin: 5pt 0 0;
         padding: 0;
         list-style: none;
+        width: 100%;
     }
 
     .gcc-print-debate-pair {
         display: grid;
         grid-template-columns: repeat(2, minmax(0, 1fr));
         gap: 8pt;
-        padding: 7pt;
-        margin-bottom: 7pt;
+        width: 100%;
+        max-width: none;
+        padding: 6pt 7pt;
+        margin-bottom: 5.5pt;
         border: 0.75pt solid #9ca3af;
         break-inside: avoid;
         page-break-inside: avoid;
@@ -585,6 +590,7 @@
     .gcc-print-debate-pair p {
         margin: 0;
         font-size: 9.5pt;
+        max-width: none;
     }
 
     .gcc-print-debate-sources {
@@ -601,7 +607,7 @@
     }
 
     .gcc-print-watch-list li {
-        margin-bottom: 4pt;
+        margin-bottom: 3pt;
         break-inside: avoid;
         page-break-inside: avoid;
     }
@@ -655,9 +661,21 @@
     .gcc-print-sources {
         margin: 5pt 0 0;
         padding-left: 18pt;
+        width: 100%;
+    }
+
+    .gcc-print-sources--tail,
+    .gcc-print-list-items--tail {
+        margin-top: 0;
+    }
+
+    .gcc-print-tail-keep {
+        break-inside: avoid;
+        page-break-inside: avoid;
     }
 
     .gcc-print-source-item {
+        max-width: none;
         margin-bottom: 7pt;
         break-inside: avoid;
         page-break-inside: avoid;
@@ -691,9 +709,12 @@
         margin: 8pt 0 0;
         padding: 0;
         list-style: none;
+        width: 100%;
     }
 
     .gcc-print-list-item {
+        width: 100%;
+        max-width: none;
         padding: 7pt 0;
         border-top: 0.6pt solid #cbd5e1;
         break-inside: avoid;
@@ -723,8 +744,8 @@
 
     /* 10. Footer note */
     .gcc-print-footer {
-        margin-top: 14pt;
-        padding-top: 8pt;
+        margin-top: 10pt;
+        padding-top: 7pt;
         border-top: 1pt solid #9ca3af;
         font-size: 8.75pt;
         line-height: 1.4;

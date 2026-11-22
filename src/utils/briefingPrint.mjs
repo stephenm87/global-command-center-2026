@@ -3,6 +3,16 @@ import { safeHttpUrl } from '../navigationState.mjs';
 export const FORECAST_EXPORT_LIMIT = 40;
 export const DEFAULT_PUBLIC_ORIGIN = 'https://globalcommandcenter2026.netlify.app';
 
+export function normalizePrintText(text) {
+    return typeof text === 'string' ? text.trim().replace(/\s+/g, ' ').toLowerCase() : '';
+}
+
+export function isSamePrintText(a, b) {
+    const left = normalizePrintText(a);
+    const right = normalizePrintText(b);
+    return Boolean(left && right && left === right);
+}
+
 export function formatExportDate(date = new Date()) {
     const d = date instanceof Date && !Number.isNaN(date.getTime()) ? date : new Date();
     return d.toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric' });
