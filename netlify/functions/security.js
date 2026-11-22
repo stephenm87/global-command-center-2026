@@ -1,5 +1,4 @@
 const crypto = require('node:crypto');
-const { getDeployStore, getStore } = require('@netlify/blobs');
 
 const RATE_WINDOW_MS = 15 * 60 * 1000;
 const RATE_LIMIT_STORE_NAME = 'global-command-center-rate-limits';
@@ -232,13 +231,15 @@ function resolveRateLimitStore({
     context = null,
     env = process.env,
     store = null,
-    getStoreFn = getStore,
-    getDeployStoreFn = getDeployStore,
+    getStoreFn = null,
+    getDeployStoreFn = null,
 } = {}) {
     if (store) return store;
-    return isProductionContext({ context, env })
-        ? getStoreFn(RATE_LIMIT_STORE_NAME)
-        : getDeployStoreFn(RATE_LIMIT_STORE_NAME);
+    const factory = isProductionContext({ context, env }) ? getStoreFn : getDeployStoreFn;
+    if (typeof factory !== 'function') {
+        throw new Error('MissingBlobsStoreFactoryError');
+    }
+    return factory(RATE_LIMIT_STORE_NAME);
 }
 
 function resolveDailyCap(capEnvName, defaultCap, env = process.env) {
@@ -337,8 +338,8 @@ async function protectEndpoint(
         maxBodyBytes,
         env = process.env,
         store = null,
-        getStoreFn = getStore,
-        getDeployStoreFn = getDeployStore,
+        getStoreFn = null,
+        getDeployStoreFn = null,
         nowFn = Date.now,
     } = {},
 ) {

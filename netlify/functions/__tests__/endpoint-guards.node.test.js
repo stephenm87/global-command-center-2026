@@ -42,11 +42,20 @@ test('every HTTP-reachable Netlify function invokes protectEndpoint or protectPu
         assert.ok(hasGuard, `${fileName} must guard requests with protectEndpoint, protectPublicEndpoint, or protectBackgroundCron`);
     }
 
+    const securitySrc = fs.readFileSync(path.join(FUNCTIONS_DIR, 'security.js'), 'utf8');
+    assert.doesNotMatch(
+        securitySrc,
+        /require\(\s*['"]@netlify\/blobs['"]\s*\)/,
+        'CommonJS security.js must not require(@netlify/blobs) directly (fails under esbuild __require2 in Netlify .mjs functions)',
+    );
+
     for (const paidStem of ['ai-summary', 'deep-scan', 'fetch-news']) {
         assert.equal(fs.existsSync(path.join(FUNCTIONS_DIR, `${paidStem}.js`)), false, `Legacy ${paidStem}.js must not coexist with ${paidStem}.mjs`);
         assert.equal(fs.existsSync(path.join(FUNCTIONS_DIR, `${paidStem}.mjs`)), true, `Migrated v2 ${paidStem}.mjs must exist`);
         const src = fs.readFileSync(path.join(FUNCTIONS_DIR, `${paidStem}.mjs`), 'utf8');
         assert.match(src, /\bcontext\b/, `${paidStem}.mjs must thread runtime Netlify context into protectEndpoint`);
+        assert.match(src, /_shared\/rate-limit-store\.mjs/, `${paidStem}.mjs must statically import @netlify/blobs via _shared/rate-limit-store.mjs`);
+        assert.match(src, /RATE_LIMIT_BLOB_FACTORIES/, `${paidStem}.mjs must pass RATE_LIMIT_BLOB_FACTORIES into protectEndpoint`);
     }
 });
 

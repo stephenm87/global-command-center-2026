@@ -2,6 +2,7 @@
 // Fetches latest geopolitical news via Serper, extracts entities+locations via Cloud NL API,
 // returns globe-ready node objects for display as LIVE INTEL nodes
 import securityModule from './security.js';
+import { RATE_LIMIT_BLOB_FACTORIES } from './_shared/rate-limit-store.mjs';
 
 const { protectEndpoint, readEnv, toResponse } = securityModule;
 
@@ -164,6 +165,7 @@ export async function handleFetchNews(request, context = null, deps = {}) {
         defaultDailyCap: DEFAULT_DAILY_CAP,
         maxBodyBytes: MAX_BODY_BYTES,
         env,
+        ...RATE_LIMIT_BLOB_FACTORIES,
         ...(deps.securityOptions || {}),
     });
     if (security.response) return toResponse(security.response);

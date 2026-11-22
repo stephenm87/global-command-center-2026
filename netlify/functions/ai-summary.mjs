@@ -3,6 +3,7 @@
 // Returns: structured intelligence brief for IB Global Politics students
 import retryModule from './gemini-retry.js';
 import securityModule from './security.js';
+import { RATE_LIMIT_BLOB_FACTORIES } from './_shared/rate-limit-store.mjs';
 
 const { callGeminiWithRetry } = retryModule;
 const { protectEndpoint, readEnv, toResponse } = securityModule;
@@ -211,6 +212,7 @@ export async function handleAiSummary(request, context = null, deps = {}) {
         defaultDailyCap: DEFAULT_DAILY_CAP,
         maxBodyBytes: MAX_BODY_BYTES,
         env,
+        ...RATE_LIMIT_BLOB_FACTORIES,
         ...(deps.securityOptions || {}),
     });
     if (security.response) return toResponse(security.response);
