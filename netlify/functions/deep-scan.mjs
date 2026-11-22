@@ -168,6 +168,10 @@ export async function handleDeepScan(request, context = null, deps = {}) {
             return jsonResponse(400, headers, { error: 'Request body must be a JSON object.' });
         }
 
+        if (Object.prototype.hasOwnProperty.call(payload, 'urls')) {
+            return jsonResponse(400, headers, { error: 'Only one URL per request is supported.' });
+        }
+
         const { url } = payload;
         if (typeof url !== 'string' || !url.trim()) {
             return jsonResponse(400, headers, { error: 'URL required' });
@@ -180,7 +184,7 @@ export async function handleDeepScan(request, context = null, deps = {}) {
 
         const firecrawlKey = readEnv('FIRECRAWL_API_KEY', env);
         if (!firecrawlKey) {
-            return jsonResponse(503, headers, { error: 'Firecrawl not configured' });
+            return jsonResponse(503, headers, { error: 'Article extraction service is not configured.' });
         }
 
         const remainingMs = Math.max(3000, HANDLER_BUDGET_MS - (Date.now() - startedAt));
@@ -200,7 +204,7 @@ export async function handleDeepScan(request, context = null, deps = {}) {
             }),
         });
 
-        if (!res.ok) throw new Error(`Firecrawl error: ${res.status}`);
+        if (!res.ok) throw new Error(`Firecrawl upstream error (${res.status})`);
         const data = await res.json();
 
         const excerpt = selectScrapedMarkdown(data.data?.markdown || '');
@@ -213,7 +217,10 @@ export async function handleDeepScan(request, context = null, deps = {}) {
             scrapedAt: new Date().toISOString(),
         });
     } catch (error) {
-        console.error('[deep-scan] Error:', error.message);
+        const safeLabel = /^Firecrawl upstream error/.test(error?.message || '')
+            ? error.message
+            : (error?.name || 'Error');
+        console.error('[deep-scan] Error:', safeLabel);
         return jsonResponse(500, headers, { error: 'Deep scan failed. Please try again later.' });
     }
 }

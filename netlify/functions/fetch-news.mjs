@@ -201,7 +201,7 @@ export async function handleFetchNews(request, context = null, deps = {}) {
         });
 
         if (!serperRes.ok) {
-            throw new Error(`Serper API error: ${serperRes.status}`);
+            throw new Error(`Serper upstream error (${serperRes.status})`);
         }
 
         const serperData = await serperRes.json();
@@ -254,7 +254,10 @@ export async function handleFetchNews(request, context = null, deps = {}) {
 
         return jsonResponse(200, headers, { nodes, count: nodes.length });
     } catch (err) {
-        console.error('[fetch-news] Error:', err?.message || 'Unknown error');
+        const safeLabel = /^Serper upstream error/.test(err?.message || '')
+            ? err.message
+            : (err?.name || 'Error');
+        console.error('[fetch-news] Error:', safeLabel);
         return jsonResponse(500, headers, { error: 'News scan failed. Please try again later.' });
     }
 }

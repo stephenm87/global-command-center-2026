@@ -11,6 +11,10 @@ const BRIEF_SCHEMA_VERSION = '1.0';
 const DEFAULT_GEMINI_MODEL = 'gemini-3.5-flash-lite';
 const MIN_ARTICLE_CONTENT_LENGTH = 200;
 const MAX_ARTICLE_CONTENT_LENGTH = 12000;
+const MAX_URL_LENGTH = 2048;
+const MAX_TITLE_LENGTH = 300;
+const MAX_PROMPT_LENGTH = 15000;
+const MAX_OUTPUT_TOKENS = 1500;
 const MAX_BODY_BYTES = 64 * 1024;
 const DEFAULT_DAILY_CAP = 200;
 const HANDLER_BUDGET_MS = 21500;
@@ -115,7 +119,7 @@ function buildGenerationConfig(model) {
     if (/^gemini-2\.5\b/i.test(model)) {
         return {
             temperature: 0.3,
-            maxOutputTokens: 1500,
+            maxOutputTokens: MAX_OUTPUT_TOKENS,
             responseMimeType: 'application/json',
             ...(/pro/i.test(model) ? {} : { thinkingConfig: { thinkingBudget: 0 } }),
         };
@@ -124,10 +128,22 @@ function buildGenerationConfig(model) {
     // Gemini 3.5 Flash-Lite and Flash models deprecate sampling parameters (temperature)
     // and configure reasoning effort via thinkingLevel: 'minimal'; Pro overrides omit minimal.
     return {
-        maxOutputTokens: 1500,
+        maxOutputTokens: MAX_OUTPUT_TOKENS,
         responseMimeType: 'application/json',
         ...(/pro/i.test(model) ? {} : { thinkingConfig: { thinkingLevel: 'minimal' } }),
     };
+}
+
+function buildUserMessage({ url, title, articleContent }) {
+    const safeUrl = cleanText(url, 'Unknown').slice(0, MAX_URL_LENGTH) || 'Unknown';
+    const safeTitle = cleanText(title, 'Untitled').slice(0, MAX_TITLE_LENGTH) || 'Untitled';
+    const prefix = `Article URL: ${safeUrl}\nArticle Title: ${safeTitle}\n\nArticle Content:\n`;
+    const suffix = '\n\nGenerate the intelligence brief JSON now.';
+    const maxContentBudget = Math.max(0, MAX_PROMPT_LENGTH - prefix.length - suffix.length);
+    const boundedContent = articleContent.length > maxContentBudget
+        ? articleContent.slice(0, maxContentBudget)
+        : articleContent;
+    return `${prefix}${boundedContent}${suffix}`;
 }
 
 function buildGeminiRequest(model, userMessage, geminiKey) {
@@ -227,24 +243,19 @@ export async function handleAiSummary(request, context = null, deps = {}) {
         }
 
         const activeModel = resolveGeminiModel(readEnv('GEMINI_SUMMARY_MODEL', env));
-        const userMessage = `Article URL: ${url || 'Unknown'}
-Article Title: ${title || 'Untitled'}
-
-Article Content:
-${articleContent}
-
-Generate the intelligence brief JSON now.`;
+        const userMessage = buildUserMessage({ url, title, articleContent });
 
         const reqSpec = buildGeminiRequest(activeModel, userMessage, geminiKey);
         const remainingMs = Math.max(2500, HANDLER_BUDGET_MS - (Date.now() - startedAt));
-        const geminiRes = await callGeminiWithRetry(reqSpec.url, reqSpec.body, {
+        const callGemini = deps.callGeminiWithRetry || callGeminiWithRetry;
+        const geminiRes = await callGemini(reqSpec.url, reqSpec.body, {
             headers: reqSpec.headers,
             deadlineAt: startedAt + HANDLER_BUDGET_MS,
             deadlineMs: remainingMs,
         });
 
         if (!geminiRes.ok) {
-            throw new Error(`Gemini error ${geminiRes.status}`);
+            throw new Error(`Gemini upstream error (${geminiRes.status})`);
         }
 
         const geminiData = await geminiRes.json();
@@ -265,7 +276,10 @@ Generate the intelligence brief JSON now.`;
         const safeBrief = sanitizeBrief(brief, activeModel);
         return jsonResponse(200, headers, safeBrief);
     } catch (error) {
-        console.error('[ai-summary] Error:', error.message);
+        const safeLabel = error?.statusCode === 422 || error?.statusCode === 502 || /^Gemini upstream error/.test(error?.message || '')
+            ? error.message
+            : (error?.name || 'Error');
+        console.error(`[ai-summary] Error (${error?.statusCode || 500}):`, safeLabel);
         if (error.statusCode === 422) {
             return jsonResponse(422, headers, {
                 error: 'AI summary unavailable because article content triggered safety filters.',
@@ -289,9 +303,14 @@ export const _test = {
     DEFAULT_GEMINI_MODEL,
     MIN_ARTICLE_CONTENT_LENGTH,
     MAX_ARTICLE_CONTENT_LENGTH,
+    MAX_URL_LENGTH,
+    MAX_TITLE_LENGTH,
+    MAX_PROMPT_LENGTH,
+    MAX_OUTPUT_TOKENS,
     MAX_BODY_BYTES,
     DEFAULT_DAILY_CAP,
     resolveGeminiModel,
+    buildUserMessage,
     buildGenerationConfig,
     buildGeminiRequest,
     extractCandidateJsonText,
