@@ -863,4 +863,14 @@ test('GuidedBriefings and decomposed UI components preserve archived banners and
     }));
     assert.match(nonPilotHtml, /class="briefing-focus-card"/, 'Non-pilot cases must keep existing locator map layout');
     assert.ok(!nonPilotHtml.includes('briefing-actor-stage'), 'Non-pilot cases must not render pilot actor stage');
+
+    const nonPilotStepAllHtml = renderToStaticMarkup(React.createElement(GuidedBriefings, {
+        initialTourId: 'western-sahara-autonomy-self-determination',
+        initialStep: 'all',
+        onRouteChange: () => {},
+        activeTours: GUIDED_TOURS,
+        archivedTours: [],
+    }));
+    assert.match(nonPilotStepAllHtml, /STEP 1 \/ 4/, 'Non-pilot case with initialStep="all" must render Step 1');
+    assert.ok(!nonPilotStepAllHtml.includes('Show all actors and connections on the globe'), 'Non-pilot case must not render All step tab');
 });

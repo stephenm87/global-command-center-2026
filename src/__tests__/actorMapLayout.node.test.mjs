@@ -18,6 +18,11 @@ import {
     linkLabelBox,
     solveActorMapLabels,
 } from '../components/actorMapLayout.mjs';
+import {
+    chooseActorMapMode,
+    isLowPowerDeviceConfig,
+} from '../components/actorMapMode.mjs';
+import { parseBriefingEntryFromSearch } from '../navigationState.mjs';
 import { CASE_STUDIES_2026 } from '../cases/index.mjs';
 
 test('latLngAltToVec3 and vec3ToLatLngAlt invert accurately and camera flights never enter the globe', () => {
@@ -171,4 +176,47 @@ test('solveActorMapLabels avoids all marker/label overlaps and keeps lower-prior
     assert.ok(actorLabelBox(100, 100, 8, 'r', 'Test').x0 > 100);
     assert.ok(linkLabelBox(100, 100, 'Link').x0 < 100);
     assert.ok(countryLabelBox(100, 100, 'Myanmar').y1 > 100);
+});
+
+test('chooseActorMapMode, isLowPowerDeviceConfig, antimeridian wrap, and step=all parsing enforce lazy-loading rules', () => {
+    // WebGL unavailable, reduced-motion, or forced fallback must stay flat regardless of userChoice/inView
+    for (const forceFlat of [
+        { webgl: false, reducedMotion: false, fallbackForced: false },
+        { webgl: true, reducedMotion: true, fallbackForced: false },
+        { webgl: true, reducedMotion: false, fallbackForced: true },
+    ]) {
+        for (const lowPower of [false, true]) {
+            for (const userChoice of [null, '3d', 'flat']) {
+                for (const inView of [false, true]) {
+                    assert.equal(
+                        chooseActorMapMode({ ...forceFlat, lowPower, userChoice, inView }),
+                        'flat',
+                    );
+                }
+            }
+        }
+    }
+
+    // Mobile/low-power defaults to flat even in view, until explicit tap
+    assert.equal(chooseActorMapMode({ webgl: true, lowPower: true, userChoice: null, inView: false }), 'flat');
+    assert.equal(chooseActorMapMode({ webgl: true, lowPower: true, userChoice: null, inView: true }), 'flat');
+    assert.equal(chooseActorMapMode({ webgl: true, lowPower: true, userChoice: '3d', inView: true }), '3d');
+
+    // Desktop defers 3D until scrolled into view, and respects manual switch back to 2D
+    assert.equal(chooseActorMapMode({ webgl: true, lowPower: false, userChoice: null, inView: false }), 'flat');
+    assert.equal(chooseActorMapMode({ webgl: true, lowPower: false, userChoice: null, inView: true }), '3d');
+    assert.equal(chooseActorMapMode({ webgl: true, lowPower: false, userChoice: 'flat', inView: true }), 'flat');
+
+    // Device capability heuristics
+    assert.equal(isLowPowerDeviceConfig({ innerWidth: 390, hardwareConcurrency: 8, deviceMemory: 8, saveData: false }), true);
+    assert.equal(isLowPowerDeviceConfig({ innerWidth: 1440, hardwareConcurrency: 4, deviceMemory: 8, saveData: false }), true);
+    assert.equal(isLowPowerDeviceConfig({ innerWidth: 1440, hardwareConcurrency: 8, deviceMemory: 2, saveData: false }), true);
+    assert.equal(isLowPowerDeviceConfig({ innerWidth: 1440, hardwareConcurrency: 8, deviceMemory: 8, saveData: true }), true);
+    assert.equal(isLowPowerDeviceConfig({ innerWidth: 1440, hardwareConcurrency: 8, deviceMemory: 8, saveData: false }), false);
+
+    // URL query ?step=all parsing and antimeridian bow wrapping
+    assert.equal(parseBriefingEntryFromSearch('?view=briefings&tour=myanmar-fragmented-sovereignty&step=all').step, 'all');
+    const pacificArc = computeArcProfile([175, -18], [-175, -17], { camDist: 0.5, side: 0.1 });
+    assert.ok(pacificArc.lenDeg < 15, `expected short antimeridian arc, got ${pacificArc.lenDeg}`);
+    assert.ok(Math.abs(pacificArc.pts[24][1] + 17.5) < 5, 'perpendicular bow near antimeridian must stay wrapped');
 });

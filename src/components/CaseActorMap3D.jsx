@@ -50,6 +50,7 @@ function loadStaticImage(url) {
     if (!imageCache.has(url)) {
         imageCache.set(url, new Promise((resolve, reject) => {
             const img = new Image();
+            img.crossOrigin = 'anonymous';
             img.decoding = 'async';
             img.onload = () => {
                 if (typeof img.decode === 'function') {
@@ -202,6 +203,8 @@ export default function CaseActorMap3D({
     const swayTargetRef = useRef({ h: 0, t: 0 });
     const tweenRef = useRef(null);
     const htmlItemsRef = useRef([]);
+    const activeHtmlCacheRef = useRef(new Map());
+    const lastPolygonKeyRef = useRef('');
     const onSelectRef = useRef(onSelect);
     onSelectRef.current = onSelect;
     const onFatalRef = useRef(onFatalError);
@@ -244,6 +247,14 @@ export default function CaseActorMap3D({
         let cancelled = false;
         let globe = null;
         let resizeObserver = null;
+        let visibilityObserver = null;
+        let resizeRaf = 0;
+        let readyTimeoutId = 0;
+        let isInView = true;
+        let isTabVisible = typeof document === 'undefined' ? true : !document.hidden;
+        let paused = false;
+        const readyRef = { current: false };
+        const lastSize = { w: 0, h: 0 };
 
         const disposePatches = () => {
             for (const h of patchHandlesRef.current) {
@@ -259,103 +270,19 @@ export default function CaseActorMap3D({
             patchHandlesRef.current = [];
         };
 
-        try {
-            globe = new Globe(container, { animateIn: false })
-                .backgroundColor('rgba(0,0,0,0)')
-                .globeImageUrl('/assets/actor-map/blue-marble-base.jpg')
-                .showAtmosphere(true)
-                .atmosphereColor('#67d5f5')
-                .atmosphereAltitude(0.15)
-                .enablePointerInteraction(false);
-            globe.controls().enabled = false;
-            globeRef.current = globe;
+        let onVisibilityChange = null;
+        let onPointerMove = null;
+        let onPointerLeave = null;
 
-            const renderer = globe.renderer?.();
-            if (renderer && typeof window !== 'undefined' && window.innerWidth < 768) {
-                renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 1.5));
+        // Fail gracefully to 2D if Blue Marble/GeoJSON/patches 404 or texture upload stalls
+        readyTimeoutId = setTimeout(() => {
+            if (!cancelled && !readyRef.current) {
+                onFatalRef.current?.(new Error('3D terrain load timeout'));
             }
-        } catch (err) {
-            onFatalRef.current?.(err);
-            return undefined;
-        }
-
-        const updateSize = () => {
-            if (!globe || !container.isConnected) return;
-            const w = Math.floor(container.clientWidth) || 640;
-            const h = Math.floor(container.clientHeight) || 480;
-            globe.width(w).height(h);
-        };
-        updateSize();
-        if (typeof ResizeObserver === 'function') {
-            resizeObserver = new ResizeObserver(() => {
-                updateSize();
-                if (globeRef.current && readyRef.current) {
-                    buildAndApplySceneRef.current(true);
-                }
-            });
-            resizeObserver.observe(container);
-        }
-
-        const readyRef = { current: false };
-
-        globe
-            .polygonsData([])
-            .polygonsTransitionDuration(0)
-            .polygonCapCurvatureResolution(1.5)
-            .pathsData([])
-            .pathPoints('pts')
-            .pathPointLat(p => p[1])
-            .pathPointLng(p => p[0])
-            .pathPointAlt(p => p[2])
-            .pathColor(d => d.color)
-            .pathStroke(d => d.stroke)
-            .pathDashLength(d => d.dash)
-            .pathDashGap(d => d.gap)
-            .pathDashAnimateTime(d => d.anim)
-            .pathTransitionDuration(0)
-            .ringsData([])
-            .ringLat(d => d.at[1])
-            .ringLng(d => d.at[0])
-            .ringAltitude(d => d.alt)
-            .ringColor(d => t => `rgba(${d.rgb},${Math.max(0, 0.85 - t)})`)
-            .ringMaxRadius(d => d.max)
-            .ringPropagationSpeed(d => d.max * 0.9)
-            .ringRepeatPeriod(d => d.period)
-            .htmlElementsData([])
-            .htmlLat(d => d.at[1])
-            .htmlLng(d => d.at[0])
-            .htmlAltitude(d => d.alt)
-            .htmlElement(d => d.el)
-            .htmlTransitionDuration(0);
-
-        globe.htmlElementVisibilityModifier?.(() => {});
-
-        globe.onGlobeReady(() => {
-            if (cancelled) return;
-            Promise.all([
-                loadWorld50(),
-                Promise.all((actorMap?.terrainPatches || []).map(p => loadStaticImage(p.url).then(img => ({ img, p })))),
-            ])
-                .then(([features, patches]) => {
-                    if (cancelled) return;
-                    countriesRef.current = features;
-                    disposePatches();
-                    for (const { img, p } of patches) {
-                        const handle = addCurvedPatch(globe, img, p.bounds, p.altitude, p.order);
-                        if (handle) patchHandlesRef.current.push(handle);
-                    }
-                    readyRef.current = true;
-                    setReady(true);
-                    setStatusNote('');
-                    buildAndApplySceneRef.current(true);
-                })
-                .catch(err => {
-                    if (!cancelled) onFatalRef.current?.(err);
-                });
-        });
+        }, 20000);
 
         const placeCameraLoop = now => {
-            if (cancelled) return;
+            if (cancelled || paused || !globe) return;
             const { reducedMotion: red } = latestSceneInputRef.current;
             const curTween = tweenRef.current;
             if (curTween) {
@@ -363,7 +290,13 @@ export default function CaseActorMap3D({
                 camRef.current = interpolateCamera(curTween.a, curTween.b, k);
                 if (k >= 1) {
                     tweenRef.current = null;
-                    buildAndApplySceneRef.current(false);
+                    try {
+                        buildAndApplySceneRef.current(false);
+                    } catch (err) {
+                        cancelled = true;
+                        onFatalRef.current?.(err);
+                        return;
+                    }
                     setSettled(true);
                 }
             }
@@ -406,36 +339,193 @@ export default function CaseActorMap3D({
 
             animRafRef.current = requestAnimationFrame(placeCameraLoop);
         };
-        animRafRef.current = requestAnimationFrame(placeCameraLoop);
 
-        const onPointerMove = e => {
-            if (latestSceneInputRef.current.reducedMotion || e.pointerType === 'touch') return;
-            const r = container.getBoundingClientRect();
-            swayTargetRef.current = {
-                h: ((e.clientX - r.left) / Math.max(1, r.width) - 0.5) * 9,
-                t: ((e.clientY - r.top) / Math.max(1, r.height) - 0.5) * -5,
-            };
+        const syncPauseState = () => {
+            const shouldPause = readyRef.current && (!isInView || !isTabVisible);
+            if (shouldPause === paused) return;
+            paused = shouldPause;
+            if (paused) {
+                cancelAnimationFrame(animRafRef.current);
+                animRafRef.current = 0;
+                globe?.pauseAnimation?.();
+            } else if (!cancelled && globe) {
+                globe.resumeAnimation?.();
+                if (!animRafRef.current) {
+                    animRafRef.current = requestAnimationFrame(placeCameraLoop);
+                }
+            }
         };
-        const onPointerLeave = () => { swayTargetRef.current = { h: 0, t: 0 }; };
-        container.addEventListener('pointermove', onPointerMove);
-        container.addEventListener('pointerleave', onPointerLeave);
+
+        const initGlobe = (features, patches) => {
+            if (cancelled || !container.isConnected) return;
+            const handleGlobeReady = () => {
+                if (cancelled) return;
+                clearTimeout(readyTimeoutId);
+                countriesRef.current = features;
+                disposePatches();
+                for (const { img, p } of patches) {
+                    const handle = addCurvedPatch(globe, img, p.bounds, p.altitude, p.order);
+                    if (handle) patchHandlesRef.current.push(handle);
+                }
+                readyRef.current = true;
+                lastPolygonKeyRef.current = '';
+                setReady(true);
+                setStatusNote('');
+                buildAndApplySceneRef.current(true);
+                syncPauseState();
+            };
+
+            try {
+                globe = new Globe(container, { animateIn: false })
+                    .backgroundColor('rgba(0,0,0,0)')
+                    .onGlobeReady(handleGlobeReady)
+                    .globeImageUrl('/assets/actor-map/blue-marble-base.jpg')
+                    .showAtmosphere(true)
+                    .atmosphereColor('#67d5f5')
+                    .atmosphereAltitude(0.15)
+                    .enablePointerInteraction(false);
+                globe.controls().enabled = false;
+                globeRef.current = globe;
+
+                const renderer = globe.renderer?.();
+                if (renderer && typeof window !== 'undefined' && window.innerWidth < 768) {
+                    renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 1.5));
+                }
+            } catch (err) {
+                clearTimeout(readyTimeoutId);
+                onFatalRef.current?.(err);
+                return;
+            }
+
+            const updateSize = () => {
+                if (!globe || !container.isConnected) return false;
+                const w = Math.floor(container.clientWidth) || 640;
+                const h = Math.floor(container.clientHeight) || 480;
+                if (Math.abs(w - lastSize.w) < 2 && Math.abs(h - lastSize.h) < 2) return false;
+                lastSize.w = w;
+                lastSize.h = h;
+                globe.width(w).height(h);
+                return true;
+            };
+            updateSize();
+            if (typeof ResizeObserver === 'function') {
+                resizeObserver = new ResizeObserver(() => {
+                    if (cancelled || resizeRaf) return;
+                    resizeRaf = requestAnimationFrame(() => {
+                        resizeRaf = 0;
+                        if (cancelled || !globeRef.current) return;
+                        const changed = updateSize();
+                        if (changed && readyRef.current && !tweenRef.current) {
+                            buildAndApplySceneRef.current(true);
+                        }
+                    });
+                });
+                resizeObserver.observe(container);
+            }
+
+            globe
+                .polygonsData([])
+                .polygonsTransitionDuration(0)
+                .polygonCapCurvatureResolution(1.5)
+                .pathsData([])
+                .pathPoints('pts')
+                .pathPointLat(p => p[1])
+                .pathPointLng(p => p[0])
+                .pathPointAlt(p => p[2])
+                .pathColor(d => d.color)
+                .pathStroke(d => d.stroke)
+                .pathDashLength(d => d.dash)
+                .pathDashGap(d => d.gap)
+                .pathDashAnimateTime(d => d.anim)
+                .pathTransitionDuration(0)
+                .ringsData([])
+                .ringLat(d => d.at[1])
+                .ringLng(d => d.at[0])
+                .ringAltitude(d => d.alt)
+                .ringColor(d => t => `rgba(${d.rgb},${Math.max(0, 0.85 - t)})`)
+                .ringMaxRadius(d => d.max)
+                .ringPropagationSpeed(d => d.max * 0.9)
+                .ringRepeatPeriod(d => d.period)
+                .htmlElementsData([])
+                .htmlLat(d => d.at[1])
+                .htmlLng(d => d.at[0])
+                .htmlAltitude(d => d.alt)
+                .htmlElement(d => d.el)
+                .htmlTransitionDuration(0);
+
+            globe.htmlElementVisibilityModifier?.(() => {});
+
+            if (typeof IntersectionObserver === 'function') {
+                visibilityObserver = new IntersectionObserver(
+                    entries => {
+                        isInView = entries.some(entry => entry.isIntersecting);
+                        syncPauseState();
+                    },
+                    { rootMargin: '80px', threshold: 0.01 },
+                );
+                visibilityObserver.observe(container);
+            }
+            onVisibilityChange = () => {
+                isTabVisible = !document.hidden;
+                syncPauseState();
+            };
+            if (typeof document !== 'undefined') {
+                document.addEventListener('visibilitychange', onVisibilityChange);
+            }
+
+            if (!paused) {
+                animRafRef.current = requestAnimationFrame(placeCameraLoop);
+            }
+
+            onPointerMove = e => {
+                if (latestSceneInputRef.current.reducedMotion || e.pointerType === 'touch') return;
+                const r = container.getBoundingClientRect();
+                swayTargetRef.current = {
+                    h: ((e.clientX - r.left) / Math.max(1, r.width) - 0.5) * 9,
+                    t: ((e.clientY - r.top) / Math.max(1, r.height) - 0.5) * -5,
+                };
+            };
+            onPointerLeave = () => { swayTargetRef.current = { h: 0, t: 0 }; };
+            container.addEventListener('pointermove', onPointerMove);
+            container.addEventListener('pointerleave', onPointerLeave);
+        };
+
+        Promise.all([
+            loadStaticImage('/assets/actor-map/blue-marble-base.jpg'),
+            loadWorld50(),
+            Promise.all((actorMap?.terrainPatches || []).map(p => loadStaticImage(p.url).then(img => ({ img, p })))),
+        ])
+            .then(([, features, patches]) => initGlobe(features, patches))
+            .catch(err => {
+                clearTimeout(readyTimeoutId);
+                if (!cancelled && !readyRef.current) onFatalRef.current?.(err);
+            });
 
         return () => {
             cancelled = true;
+            clearTimeout(readyTimeoutId);
             cancelAnimationFrame(animRafRef.current);
+            cancelAnimationFrame(resizeRaf);
             resizeObserver?.disconnect();
-            container.removeEventListener('pointermove', onPointerMove);
-            container.removeEventListener('pointerleave', onPointerLeave);
+            visibilityObserver?.disconnect();
+            if (typeof document !== 'undefined' && onVisibilityChange) {
+                document.removeEventListener('visibilitychange', onVisibilityChange);
+            }
+            if (onPointerMove) container.removeEventListener('pointermove', onPointerMove);
+            if (onPointerLeave) container.removeEventListener('pointerleave', onPointerLeave);
+            activeHtmlCacheRef.current.clear();
+            lastPolygonKeyRef.current = '';
             disposePatches();
-            try {
-                globe?.pauseAnimation?.();
-                globe?.htmlElementsData([]);
-                globe?.pathsData([]);
-                globe?.ringsData([]);
-                globe?.polygonsData([]);
-                globe?.renderer?.()?.dispose?.();
-            } catch {
-                // ignore disposal noise
+            if (globe) {
+                try {
+                    const renderer = globe.renderer?.();
+                    globe._destructor?.();
+                    renderer?.forceContextLoss?.();
+                    renderer?.dispose?.();
+                    container.replaceChildren();
+                } catch {
+                    // ignore disposal noise
+                }
             }
             if (globeRef.current === globe) globeRef.current = null;
         };
@@ -499,37 +589,41 @@ export default function CaseActorMap3D({
         }
         const scaleFactor = Math.min(1, activeCam.dist / 0.65);
 
-        // Rule 4d.5: single-edge crisp outlines aligned with Blue Marble coastlines
-        globe
-            .polygonsData(features)
-            .polygonCapColor(f => {
-                const name = f.properties?.name;
-                if (name === mapData.focusCountry) return 'rgba(103, 213, 245, 0.16)';
-                if (blocSet.has(name)) return 'rgba(183, 156, 255, 0.20)';
-                if (activeAreas.has(name)) return 'rgba(103, 213, 245, 0.12)';
-                return 'rgba(0, 0, 0, 0)';
-            })
-            .polygonSideColor(f => {
-                const name = f.properties?.name;
-                if (name === mapData.focusCountry) return 'rgba(103, 213, 245, 0.26)';
-                if (blocSet.has(name)) return 'rgba(183, 156, 255, 0.22)';
-                if (activeAreas.has(name)) return 'rgba(103, 213, 245, 0.16)';
-                return 'rgba(0, 0, 0, 0)';
-            })
-            .polygonStrokeColor(f => {
-                const name = f.properties?.name;
-                if (name === mapData.focusCountry) return 'rgba(165, 238, 255, 0.96)';
-                if (blocSet.has(name)) return 'rgba(205, 188, 255, 0.78)';
-                if (activeAreas.has(name)) return 'rgba(145, 225, 245, 0.72)';
-                return 'rgba(145, 210, 232, 0.30)';
-            })
-            .polygonAltitude(f => {
-                const name = f.properties?.name;
-                if (name === mapData.focusCountry) return 0.0007 + 0.0022 * scaleFactor;
-                if (blocSet.has(name)) return 0.0005 + 0.0016 * scaleFactor;
-                if (activeAreas.has(name)) return 0.0004 + 0.0010 * scaleFactor;
-                return 0.0002;
-            });
+        // Rule 4d.5: single-edge crisp outlines aligned with Blue Marble coastlines (upload only on polygon state changes)
+        const polygonKey = `${mapData.focusCountry}|${activeStep.bloc ? '1' : '0'}|${[...activeAreas].sort().join(',')}|${scaleFactor.toFixed(3)}`;
+        if (polygonKey !== lastPolygonKeyRef.current) {
+            lastPolygonKeyRef.current = polygonKey;
+            globe
+                .polygonsData(features)
+                .polygonCapColor(f => {
+                    const name = f.properties?.name;
+                    if (name === mapData.focusCountry) return 'rgba(103, 213, 245, 0.16)';
+                    if (blocSet.has(name)) return 'rgba(183, 156, 255, 0.20)';
+                    if (activeAreas.has(name)) return 'rgba(103, 213, 245, 0.12)';
+                    return 'rgba(0, 0, 0, 0)';
+                })
+                .polygonSideColor(f => {
+                    const name = f.properties?.name;
+                    if (name === mapData.focusCountry) return 'rgba(103, 213, 245, 0.26)';
+                    if (blocSet.has(name)) return 'rgba(183, 156, 255, 0.22)';
+                    if (activeAreas.has(name)) return 'rgba(103, 213, 245, 0.16)';
+                    return 'rgba(0, 0, 0, 0)';
+                })
+                .polygonStrokeColor(f => {
+                    const name = f.properties?.name;
+                    if (name === mapData.focusCountry) return 'rgba(165, 238, 255, 0.96)';
+                    if (blocSet.has(name)) return 'rgba(205, 188, 255, 0.78)';
+                    if (activeAreas.has(name)) return 'rgba(145, 225, 245, 0.72)';
+                    return 'rgba(145, 210, 232, 0.30)';
+                })
+                .polygonAltitude(f => {
+                    const name = f.properties?.name;
+                    if (name === mapData.focusCountry) return 0.0007 + 0.0022 * scaleFactor;
+                    if (blocSet.has(name)) return 0.0005 + 0.0016 * scaleFactor;
+                    if (activeAreas.has(name)) return 0.0004 + 0.0010 * scaleFactor;
+                    return 0.0002;
+                });
+        }
 
         // Floating badges pinned safely inside viewport upper band & projected into 3D space
         const floatingSlots = computeFloatingBadgeScreenSlots(floatingActors, width, height);
@@ -559,20 +653,7 @@ export default function CaseActorMap3D({
 
             if (pt.isFloating) {
                 const slot = floatingGeoById.get(entry.id).slot;
-                const wrap = document.createElement('div');
-                wrap.className = 'n3 global orbit';
-                const btn = document.createElement('button');
-                btn.type = 'button';
-                btn.className = 'actor-floating-btn';
-                btn.textContent = actor.name;
-                btn.setAttribute('aria-label', `${actor.name}, global level, no single place`);
-                btn.setAttribute('aria-pressed', String(currentSel?.kind === 'actor' && currentSel.id === actor.id));
-                btn.addEventListener('click', () => onSelectRef.current?.('actor', actor.id));
-                wrap.appendChild(btn);
-                const cap = document.createElement('small');
-                cap.textContent = 'no single place';
-                wrap.appendChild(cap);
-                items.push({ kind: 'badge', id: actor.id, at: [pt.lng, pt.lat], alt: pt.alt, el: wrap, slot });
+                items.push({ kind: 'badge', id: actor.id, actor, at: [pt.lng, pt.lat], alt: pt.alt, slot });
                 continue;
             }
 
@@ -747,105 +828,186 @@ export default function CaseActorMap3D({
             padding: 8,
         });
 
-        // Build final crisp DOM buttons using solved collision-free placements
+        // Reuse active DOM buttons across selection updates so keyboard/screen-reader focus never drops
+        const activeEl = typeof document !== 'undefined' ? document.activeElement : null;
+        const activeFocusKey = activeEl && container.contains(activeEl)
+            ? activeEl.getAttribute('data-focus-key')
+            : null;
+        const prevCache = activeHtmlCacheRef.current;
+        const nextCache = new Map();
+
+        const acquireButtonDatum = (focusKey, kind, id, createExtras) => {
+            let entry = prevCache.get(focusKey);
+            if (!entry) {
+                const wrap = document.createElement('div');
+                const btn = document.createElement('button');
+                btn.type = 'button';
+                btn.setAttribute('data-focus-key', focusKey);
+                btn.addEventListener('click', () => entry._onClick?.());
+                wrap.appendChild(btn);
+                const extras = createExtras ? createExtras(wrap) : {};
+                entry = {
+                    datum: { kind, id, at: [0, 0], alt: 0, el: wrap, focusKey },
+                    wrap,
+                    btn,
+                    ...extras,
+                    _onClick: null,
+                };
+            }
+            nextCache.set(focusKey, entry);
+            return entry;
+        };
+
+        const syncPinLabel = (entry, placed, title, subText) => {
+            if (!placed?.visible) {
+                if (entry.lab) {
+                    entry.lab.remove();
+                    entry.lab = null;
+                }
+                return;
+            }
+            if (!entry.lab) {
+                const lab = document.createElement('div');
+                const b = document.createElement('b');
+                lab.appendChild(b);
+                entry.wrap.appendChild(lab);
+                entry.lab = lab;
+                entry.labB = b;
+                entry.labSpan = null;
+            }
+            entry.lab.className = `lab ${placed.side} actor-label-box`;
+            entry.labB.textContent = title;
+            if (subText) {
+                if (!entry.labSpan) {
+                    entry.labSpan = document.createElement('span');
+                    entry.lab.appendChild(entry.labSpan);
+                }
+                entry.labSpan.textContent = subText;
+            } else if (entry.labSpan) {
+                entry.labSpan.remove();
+                entry.labSpan = null;
+            }
+        };
+
         const finalHtml = [];
         for (const it of items) {
             if (it.kind === 'badge') {
-                it.el.classList.toggle('sel', currentSel?.kind === 'actor' && currentSel.id === it.id);
-                it.el.classList.toggle('dim', !isRelatedItem(currentSel, 'actor', it.id, activeStep, connsMap));
-                finalHtml.push(it);
+                const focusKey = `actor:${it.id}`;
+                const isSel = currentSel?.kind === 'actor' && currentSel.id === it.id;
+                const isRel = isRelatedItem(currentSel, 'actor', it.id, activeStep, connsMap);
+                const entry = acquireButtonDatum(focusKey, 'badge', it.id, wrap => {
+                    const cap = document.createElement('small');
+                    cap.textContent = 'no single place';
+                    wrap.appendChild(cap);
+                    return { cap };
+                });
+                entry.wrap.className = `n3 global orbit${isSel ? ' sel' : ''}${!isRel ? ' dim' : ''}`;
+                entry.btn.className = 'actor-floating-btn';
+                entry.btn.textContent = it.actor.name;
+                entry.btn.setAttribute('aria-label', `${it.actor.name}, global level, no single place`);
+                entry.btn.setAttribute('aria-pressed', String(isSel));
+                entry._onClick = () => onSelectRef.current?.('actor', it.id);
+                entry.datum.at = it.at;
+                entry.datum.alt = it.alt;
+                entry.datum.slot = it.slot;
+                finalHtml.push(entry.datum);
                 continue;
             }
+
+            const focusKey = `actor:${it.id}`;
             const placed = solved.actors.get(it.id);
-            const wrap = document.createElement('div');
             const isSel = currentSel?.kind === 'actor' && currentSel.id === it.id;
             const isRel = isRelatedItem(currentSel, 'actor', it.id, activeStep, connsMap);
-            wrap.className = `n3 ${it.actor.level}${it.entry.small ? ' small' : ''}${isSel ? ' sel' : ''}${!isRel ? ' dim' : ''}`;
-            const btn = document.createElement('button');
-            btn.type = 'button';
-            btn.className = 'actor-pin-btn';
-            btn.setAttribute('aria-label', `${it.actor.name}, ${it.actor.level} level`);
-            btn.setAttribute('aria-pressed', String(isSel));
-            btn.addEventListener('click', () => onSelectRef.current?.('actor', it.id));
-            wrap.appendChild(btn);
-
-            if (placed?.visible) {
-                const lab = document.createElement('div');
-                lab.className = `lab ${placed.side} actor-label-box`;
-                const b = document.createElement('b');
-                b.textContent = it.actor.name;
-                lab.appendChild(b);
-                const subText = placed.showNote
-                    ? (it.entry.note || (it.actor.location.kind === 'pin' ? it.actor.location.place : it.actor.location.label))
-                    : '';
-                if (subText) {
-                    const sp = document.createElement('span');
-                    sp.textContent = subText;
-                    lab.appendChild(sp);
-                }
-                wrap.appendChild(lab);
-            }
-            finalHtml.push({ kind: 'actor', id: it.id, at: it.at, alt: it.alt, el: wrap });
+            const entry = acquireButtonDatum(focusKey, 'actor', it.id);
+            entry.wrap.className = `n3 ${it.actor.level}${it.entry.small ? ' small' : ''}${isSel ? ' sel' : ''}${!isRel ? ' dim' : ''}`;
+            entry.btn.className = 'actor-pin-btn';
+            entry.btn.setAttribute('aria-label', `${it.actor.name}, ${it.actor.level} level`);
+            entry.btn.setAttribute('aria-pressed', String(isSel));
+            entry._onClick = () => onSelectRef.current?.('actor', it.id);
+            const subText = placed?.showNote
+                ? (it.entry.note || (it.actor.location.kind === 'pin' ? it.actor.location.place : it.actor.location.label))
+                : '';
+            syncPinLabel(entry, placed, it.actor.name, subText);
+            entry.datum.at = it.at;
+            entry.datum.alt = it.alt;
+            finalHtml.push(entry.datum);
         }
 
         for (const extra of extraPlaces) {
             const key = `place:${extra.loc.label}`;
             const placed = solved.actors.get(key);
             const isSel = currentSel?.kind === 'place' && currentSel.id === extra.loc.label;
-            const wrap = document.createElement('div');
-            wrap.className = `n3 place-pin${isSel ? ' sel' : ''}${currentSel && !isSel ? ' dim' : ''}`;
-            const btn = document.createElement('button');
-            btn.type = 'button';
-            btn.setAttribute('aria-label', `Mapped place: ${extra.loc.label}`);
-            btn.setAttribute('aria-pressed', String(isSel));
-            btn.addEventListener('click', () => onSelectRef.current?.('place', extra.loc.label));
-            wrap.appendChild(btn);
-            if (placed?.visible) {
-                const lab = document.createElement('div');
-                lab.className = `lab ${placed.side} actor-label-box`;
-                const b = document.createElement('b');
-                b.textContent = extra.loc.label;
-                lab.appendChild(b);
-                wrap.appendChild(lab);
-            }
-            finalHtml.push({ kind: 'place', id: extra.loc.label, at: [extra.lng, extra.lat], alt: visBase, el: wrap });
+            const entry = acquireButtonDatum(key, 'place', extra.loc.label);
+            entry.wrap.className = `n3 place-pin${isSel ? ' sel' : ''}${currentSel && !isSel ? ' dim' : ''}`;
+            entry.btn.className = '';
+            entry.btn.setAttribute('aria-label', `Mapped place: ${extra.loc.label}`);
+            entry.btn.setAttribute('aria-pressed', String(isSel));
+            entry._onClick = () => onSelectRef.current?.('place', extra.loc.label);
+            syncPinLabel(entry, placed, extra.loc.label, '');
+            entry.datum.at = [extra.lng, extra.lat];
+            entry.datum.alt = visBase;
+            finalHtml.push(entry.datum);
         }
 
         for (const [cid, conn] of linkMidPoints.entries()) {
             const placed = solved.links.get(cid);
             if (!placed?.visible || !placed.candidate?.coord) continue;
+            const focusKey = `link:${cid}`;
             const isSel = currentSel?.kind === 'connection' && currentSel.id === cid;
             const isRel = isRelatedItem(currentSel, 'connection', cid, activeStep, connsMap);
-            const wrap = document.createElement('div');
-            wrap.className = `l3wrap${!isRel ? ' dim' : ''}`;
-            const btn = document.createElement('button');
-            btn.type = 'button';
-            btn.className = `l3${isSel ? ' sel' : ''}`;
-            btn.style.setProperty('--c', TYPE_COLORS[conn.type] || '#67d5f5');
-            btn.textContent = conn.label;
-            btn.setAttribute('aria-label', `${conn.type}: ${conn.label}`);
-            btn.setAttribute('aria-pressed', String(isSel));
-            btn.addEventListener('click', () => onSelectRef.current?.('connection', cid));
-            wrap.appendChild(btn);
+            const entry = acquireButtonDatum(focusKey, 'link', cid);
+            entry.wrap.className = `l3wrap${!isRel ? ' dim' : ''}`;
+            entry.btn.className = `l3${isSel ? ' sel' : ''}`;
+            entry.btn.style.setProperty('--c', TYPE_COLORS[conn.type] || '#67d5f5');
+            entry.btn.textContent = conn.label;
+            entry.btn.setAttribute('aria-label', `${conn.type}: ${conn.label}`);
+            entry.btn.setAttribute('aria-pressed', String(isSel));
+            entry._onClick = () => onSelectRef.current?.('connection', cid);
             const coord = placed.candidate.coord;
-            finalHtml.push({ kind: 'link', id: cid, at: [coord[0], coord[1]], alt: coord[2], el: wrap });
+            entry.datum.at = [coord[0], coord[1]];
+            entry.datum.alt = coord[2];
+            finalHtml.push(entry.datum);
         }
 
         for (const c of countryRequests) {
             const placed = solved.countries.get(c.name);
             if (!placed?.visible) continue;
-            const d = document.createElement('div');
-            d.className = 'cn3';
-            d.textContent = c.name;
-            finalHtml.push({ kind: 'country', id: c.name, at: [c.longitude, c.latitude], alt: 0.0005, el: d });
+            const focusKey = `country:${c.name}`;
+            let entry = prevCache.get(focusKey);
+            if (!entry) {
+                const d = document.createElement('div');
+                d.className = 'cn3';
+                d.textContent = c.name;
+                entry = { datum: { kind: 'country', id: c.name, at: [0, 0], alt: 0.0005, el: d }, d };
+            }
+            nextCache.set(focusKey, entry);
+            entry.datum.at = [c.longitude, c.latitude];
+            entry.datum.alt = 0.0005;
+            finalHtml.push(entry.datum);
         }
 
+        activeHtmlCacheRef.current = nextCache;
         htmlItemsRef.current = finalHtml;
         globe
             .htmlElementsData(finalHtml)
             .pathsData(paths)
             .pathColor(d => (d.shadow ? d.color : isRelatedItem(currentSel, 'connection', d.id, activeStep, connsMap) ? d.color : 'rgba(120,140,150,0.24)'))
             .ringsData(red ? [] : rings);
+
+        if (activeFocusKey) {
+            const targetBtn = nextCache.get(activeFocusKey)?.btn;
+            if (targetBtn) {
+                if (targetBtn.isConnected && document.activeElement !== targetBtn) {
+                    targetBtn.focus({ preventScroll: true });
+                } else {
+                    requestAnimationFrame(() => {
+                        if (targetBtn.isConnected && document.activeElement !== targetBtn) {
+                            targetBtn.focus({ preventScroll: true });
+                        }
+                    });
+                }
+            }
+        }
         if (!tweenRef.current) {
             setRenderedStepKey(String(activeStep.key));
             setSettled(true);
@@ -880,13 +1042,14 @@ export default function CaseActorMap3D({
             return;
         }
         setSettled(false);
+        activeHtmlCacheRef.current.clear();
         globeRef.current.htmlElementsData([]);
         tweenRef.current = { a: { ...cur }, b: target, t0: performance.now(), dur: FLIGHT_DURATION_MS };
     }, [ready, step, actorById, reducedMotion]);
 
-    // Update dimming/selection without re-flying camera
+    // Update dimming/selection without re-flying camera (never reveal labels mid-flight)
     useEffect(() => {
-        if (!ready) return;
+        if (!ready || tweenRef.current) return;
         buildAndApplySceneRef.current(false);
     }, [ready, selected]);
 

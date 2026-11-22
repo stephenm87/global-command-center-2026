@@ -257,7 +257,8 @@ export function computeArcProfile(
     const rawPeak = (angRad > 0.2 ? 0.11 : 0.065) * angRad;
     const peak = isDrop ? 0 : Math.min(relCap, rawPeak, 0.14);
 
-    const dx = toLngLat[0] - fromLngLat[0];
+    const rawDx = toLngLat[0] - fromLngLat[0];
+    const dx = ((rawDx + 540) % 360) - 180;
     const dy = toLngLat[1] - fromLngLat[1];
     const px = -dy;
     const py = dx;

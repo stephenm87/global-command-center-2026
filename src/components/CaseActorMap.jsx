@@ -1,5 +1,7 @@
 import React, { Component, Suspense, useEffect, useMemo, useRef, useState } from 'react';
 import CaseActorMapFlat from './CaseActorMapFlat';
+import { chooseActorMapMode, detectWebGLSupport, isLowPowerDeviceConfig } from './actorMapMode.mjs';
+import { safeHttpUrl } from '../navigationState.mjs';
 import './CaseActorMap.css';
 
 const CaseActorMap3D = React.lazy(() => import('./CaseActorMap3D'));
@@ -32,25 +34,6 @@ const CONNECTION_COLORS = {
     movement: '#e6f2f7',
 };
 
-function detectWebGL() {
-    if (typeof document === 'undefined') return false;
-    try {
-        const canvas = document.createElement('canvas');
-        return Boolean(canvas.getContext('webgl2') || canvas.getContext('webgl'));
-    } catch {
-        return false;
-    }
-}
-
-function isLowPowerOrSmallDevice() {
-    if (typeof window === 'undefined') return true;
-    const narrow = window.innerWidth < 768;
-    const lowCores = typeof navigator?.hardwareConcurrency === 'number' && navigator.hardwareConcurrency <= 4;
-    const lowMem = typeof navigator?.deviceMemory === 'number' && navigator.deviceMemory <= 2;
-    const saveData = Boolean(navigator?.connection?.saveData);
-    return narrow || lowCores || lowMem || saveData;
-}
-
 class ActorMap3DErrorBoundary extends Component {
     constructor(props) {
         super(props);
@@ -81,8 +64,8 @@ export default function CaseActorMap({
     const [reducedMotion, setReducedMotion] = useState(() => (
         typeof window !== 'undefined' && Boolean(window.matchMedia?.('(prefers-reduced-motion: reduce)').matches)
     ));
-    const [webglAvailable] = useState(() => detectWebGL());
-    const [lowPowerInitial] = useState(() => isLowPowerOrSmallDevice());
+    const [webglAvailable] = useState(() => detectWebGLSupport());
+    const [lowPowerInitial] = useState(() => isLowPowerDeviceConfig());
     const [hasScrolledIntoView, setHasScrolledIntoView] = useState(false);
     // null = automatic choice; '3d' = user opted in; 'flat' = user chose 2D flat fallback
     const [userModeChoice, setUserModeChoice] = useState(null);
@@ -118,13 +101,14 @@ export default function CaseActorMap({
     }, [hasScrolledIntoView]);
 
     const canUse3D = webglAvailable && !reducedMotion && !fallbackForced;
-    const activeMode = useMemo(() => {
-        if (!canUse3D) return 'flat';
-        if (userModeChoice === 'flat') return 'flat';
-        if (userModeChoice === '3d') return '3d';
-        if (lowPowerInitial) return 'flat';
-        return hasScrolledIntoView ? '3d' : 'flat';
-    }, [canUse3D, userModeChoice, lowPowerInitial, hasScrolledIntoView]);
+    const activeMode = useMemo(() => chooseActorMapMode({
+        webgl: webglAvailable,
+        reducedMotion,
+        fallbackForced,
+        lowPower: lowPowerInitial,
+        userChoice: userModeChoice,
+        inView: hasScrolledIntoView,
+    }), [webglAvailable, reducedMotion, fallbackForced, userModeChoice, lowPowerInitial, hasScrolledIntoView]);
 
     const step = useMemo(
         () => actorMap?.steps?.find(s => String(s.key) === String(activeStepKey)) || actorMap?.steps?.[0],
@@ -287,6 +271,7 @@ export function ActorMapSidePanel({
     const renderSourceCitation = url => {
         const src = url ? sourceIndex?.get(url) : null;
         if (!src) return null;
+        const safeSrcUrl = safeHttpUrl(src.url);
         return (
             <div className="actor-detail-src">
                 <span>Source: </span>
@@ -296,10 +281,14 @@ export function ActorMapSidePanel({
                 >
                     [{src.number}] {src.publisher}{src.dateLabel ? ` (${src.dateLabel})` : ''}
                 </a>
-                {' · '}
-                <a href={src.url} target="_blank" rel="noopener noreferrer">
-                    Open original <span aria-hidden="true">↗</span>
-                </a>
+                {safeSrcUrl && (
+                    <>
+                        {' · '}
+                        <a href={safeSrcUrl} target="_blank" rel="noopener noreferrer">
+                            Open original <span aria-hidden="true">↗</span>
+                        </a>
+                    </>
+                )}
             </div>
         );
     };
@@ -308,7 +297,7 @@ export function ActorMapSidePanel({
         if (!selected) {
             return (
                 <p className="actor-detail-empty">
-                    Select any actor pin, connection line, or entry below to inspect what connects them and its source.
+                    Select any actor pin, connection label, or entry below to inspect what connects them and its source.
                 </p>
             );
         }

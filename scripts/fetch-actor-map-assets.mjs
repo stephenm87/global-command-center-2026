@@ -122,8 +122,11 @@ async function main() {
         const tmpRaw = path.join(OUT_DIR, `.raw-${spec.file}`);
         const outPath = path.join(OUT_DIR, spec.file);
         fs.writeFileSync(tmpRaw, buf);
-        execFileSync('python3', ['-c', PYTHON_GRADE_SCRIPT, tmpRaw, outPath, String(spec.quality)], { stdio: 'inherit' });
-        fs.unlinkSync(tmpRaw);
+        try {
+            execFileSync('python3', ['-c', PYTHON_GRADE_SCRIPT, tmpRaw, outPath, String(spec.quality)], { stdio: 'inherit' });
+        } finally {
+            if (fs.existsSync(tmpRaw)) fs.unlinkSync(tmpRaw);
+        }
         const stat = fs.statSync(outPath);
         console.log(`  Saved ${spec.file}: ${Math.round(stat.size / 1024)} KB`);
     }

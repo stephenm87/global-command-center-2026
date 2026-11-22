@@ -174,8 +174,9 @@ export default function CaseActorMapFlat({
             const k = Math.min(1, (now - t0) / dur);
             const e = cubicInOut(k);
             const nextHalf = Math.exp(Math.log(Math.max(1, from.half)) * (1 - e) + Math.log(Math.max(1, target.half)) * e);
+            const lngDelta = ((target.lng - from.lng + 540) % 360) - 180;
             setView({
-                lng: from.lng + (target.lng - from.lng) * e,
+                lng: from.lng + lngDelta * e,
                 lat: from.lat + (target.lat - from.lat) * e,
                 half: nextHalf,
             });

@@ -348,6 +348,26 @@
     color: #04121a;
 }
 
+.l3::after {
+    content: '';
+    position: absolute;
+    inset: -6px -4px;
+}
+
+@media (pointer: coarse) {
+    .n3 button::after {
+        inset: -16px;
+    }
+
+    .n3.orbit button::after {
+        inset: -8px -4px;
+    }
+
+    .l3::after {
+        inset: -13px -8px;
+    }
+}
+
 .cn3 {
     font-family: 'Roboto Mono', monospace;
     font-size: 10px;
