@@ -41,6 +41,13 @@ test('every HTTP-reachable Netlify function invokes protectEndpoint or protectPu
             || /\bprotectBackgroundCron\s*\(/.test(source);
         assert.ok(hasGuard, `${fileName} must guard requests with protectEndpoint, protectPublicEndpoint, or protectBackgroundCron`);
     }
+
+    for (const paidStem of ['ai-summary', 'deep-scan', 'fetch-news']) {
+        assert.equal(fs.existsSync(path.join(FUNCTIONS_DIR, `${paidStem}.js`)), false, `Legacy ${paidStem}.js must not coexist with ${paidStem}.mjs`);
+        assert.equal(fs.existsSync(path.join(FUNCTIONS_DIR, `${paidStem}.mjs`)), true, `Migrated v2 ${paidStem}.mjs must exist`);
+        const src = fs.readFileSync(path.join(FUNCTIONS_DIR, `${paidStem}.mjs`), 'utf8');
+        assert.match(src, /\bcontext\b/, `${paidStem}.mjs must thread runtime Netlify context into protectEndpoint`);
+    }
 });
 
 test('netlify.toml CSP omits unsafe-eval/unsafe-inline in script-src and restricts fonts/images/connect to self + Supabase', () => {
