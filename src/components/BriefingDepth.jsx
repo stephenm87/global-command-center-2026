@@ -40,7 +40,7 @@ export function buildSourceByNumber(sourceIndex) {
     return byNumber;
 }
 
-export function renderCitedText(text, sourceByNumber, onJumpToSource) {
+export function renderCitedText(text, sourceByNumber, onJumpToSource, { linkCitations = true } = {}) {
     const raw = String(text || '');
     if (!raw.includes('[')) return raw;
     const parts = [];
@@ -59,26 +59,34 @@ export function renderCitedText(text, sourceByNumber, onJumpToSource) {
         } else {
             parts.push(
                 <sup key={`cite-${matchStart}`} className="cite-group">
-                    {numbers.map((num, idx) => {
-                        const src = sourceByNumber?.get(num);
-                        const label = src
-                            ? `Source ${num}: ${src.publisher}${src.dateLabel ? `, ${src.dateLabel}` : ''}`
-                            : `Source ${num}`;
-                        return (
-                            <span key={num}>
-                                {idx > 0 && <span className="cite-sep">, </span>}
-                                <a
-                                    href={`#briefing-source-${num}`}
-                                    className="cite-marker"
-                                    title={label}
-                                    aria-label={label}
-                                    onClick={event => onJumpToSource?.(event, num, src)}
-                                >
-                                    [{num}]
-                                </a>
-                            </span>
-                        );
-                    })}
+                    {linkCitations ? (
+                        numbers.map((num, idx) => {
+                            const src = sourceByNumber?.get(num);
+                            const label = src
+                                ? `Source ${num}: ${src.publisher}${src.dateLabel ? `, ${src.dateLabel}` : ''}`
+                                : `Source ${num}`;
+                            return (
+                                <span key={num}>
+                                    {idx > 0 && <span className="cite-sep">, </span>}
+                                    <a
+                                        href={`#briefing-source-${num}`}
+                                        className="cite-marker"
+                                        title={label}
+                                        aria-label={label}
+                                        onClick={event => onJumpToSource?.(event, num, src)}
+                                    >
+                                        [{num}]
+                                    </a>
+                                </span>
+                            );
+                        })
+                    ) : (
+                        <>
+                            [{numbers.map((num, idx) => (
+                                <span key={num}>{idx > 0 ? ', ' : ''}{num}</span>
+                            ))}]
+                        </>
+                    )}
                 </sup>
             );
         }
