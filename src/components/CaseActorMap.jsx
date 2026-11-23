@@ -1,6 +1,13 @@
 import React, { Component, Suspense, useEffect, useMemo, useRef, useState } from 'react';
-import CaseActorMapFlat from './CaseActorMapFlat';
-import { chooseActorMapMode, detectWebGLSupport, isLowPowerDeviceConfig } from './actorMapMode.mjs';
+import CaseActorMapFlat, { loadWorld110Timed } from './CaseActorMapFlat';
+import {
+    actorMapLoadingStatus,
+    chooseActorMapMode,
+    detectWebGLSupport,
+    isLowPowerDeviceConfig,
+    isSlowConnectionConfig,
+    isSlowMeasuredThroughput,
+} from './actorMapMode.mjs';
 import { safeHttpUrl } from '../navigationState.mjs';
 import './CaseActorMap.css';
 
@@ -64,12 +71,65 @@ export default function CaseActorMap({
     const [reducedMotion, setReducedMotion] = useState(() => (
         typeof window !== 'undefined' && Boolean(window.matchMedia?.('(prefers-reduced-motion: reduce)').matches)
     ));
-    const [webglAvailable] = useState(() => detectWebGLSupport());
+    const [webglAvailable, setWebglAvailable] = useState(true);
+    const [webglChecked, setWebglChecked] = useState(false);
     const [lowPowerInitial] = useState(() => isLowPowerDeviceConfig());
+    const [networkChecked, setNetworkChecked] = useState(() => isSlowConnectionConfig());
+    const [slowConnection, setSlowConnection] = useState(() => isSlowConnectionConfig());
+    const [terrainReady, setTerrainReady] = useState(false);
     const [hasScrolledIntoView, setHasScrolledIntoView] = useState(false);
     // null = automatic choice; '3d' = user opted in; 'flat' = user chose 2D flat fallback
     const [userModeChoice, setUserModeChoice] = useState(null);
     const [fallbackForced, setFallbackForced] = useState(false);
+
+    // Check connection speed once using timed countries-110m fetch fallback when NetworkInfo
+    // does not already mark a slow connection (or when running without Network Information API).
+    useEffect(() => {
+        if (isSlowConnectionConfig()) {
+            setSlowConnection(true);
+            setNetworkChecked(true);
+            return undefined;
+        }
+        let cancelled = false;
+        loadWorld110Timed()
+            .then(({ bytes, durationMs }) => {
+                if (cancelled) return;
+                const slow = isSlowMeasuredThroughput(bytes, durationMs);
+                setSlowConnection(slow);
+                setNetworkChecked(true);
+            })
+            .catch(() => {
+                if (cancelled) return;
+                setSlowConnection(false);
+                setNetworkChecked(true);
+            });
+        return () => {
+            cancelled = true;
+        };
+    }, []);
+
+    // Defer WebGL2 probe off synchronous initial render (Section D) once in view or idle.
+    useEffect(() => {
+        if (webglChecked || reducedMotion) return undefined;
+        let cancelled = false;
+        const runProbe = () => {
+            if (cancelled) return;
+            setWebglAvailable(detectWebGLSupport());
+            setWebglChecked(true);
+        };
+        if (typeof window !== 'undefined' && typeof window.requestIdleCallback === 'function' && !hasScrolledIntoView && userModeChoice !== '3d') {
+            const idleId = window.requestIdleCallback(() => { runProbe(); }, { timeout: 600 });
+            return () => {
+                cancelled = true;
+                window.cancelIdleCallback?.(idleId);
+            };
+        }
+        const tId = setTimeout(() => { runProbe(); }, hasScrolledIntoView || userModeChoice === '3d' ? 0 : 120);
+        return () => {
+            cancelled = true;
+            clearTimeout(tId);
+        };
+    }, [webglChecked, reducedMotion, hasScrolledIntoView, userModeChoice]);
 
     useEffect(() => {
         if (typeof window === 'undefined' || !window.matchMedia) return undefined;
@@ -106,9 +166,16 @@ export default function CaseActorMap({
         reducedMotion,
         fallbackForced,
         lowPower: lowPowerInitial,
+        slowConnection: slowConnection || !networkChecked,
         userChoice: userModeChoice,
-        inView: hasScrolledIntoView,
-    }), [webglAvailable, reducedMotion, fallbackForced, userModeChoice, lowPowerInitial, hasScrolledIntoView]);
+        inView: hasScrolledIntoView && webglChecked,
+    }), [webglAvailable, reducedMotion, fallbackForced, userModeChoice, lowPowerInitial, slowConnection, networkChecked, hasScrolledIntoView, webglChecked]);
+
+    useEffect(() => {
+        setTerrainReady(false);
+    }, [activeMode, actorMap?.focusCountry]);
+
+    const loadingStatus = actorMapLoadingStatus(activeMode, terrainReady);
 
     const step = useMemo(
         () => actorMap?.steps?.find(s => String(s.key) === String(activeStepKey)) || actorMap?.steps?.[0],
@@ -138,7 +205,9 @@ export default function CaseActorMap({
         <div className="case-actor-map">
             <div className="actor-map-toolbar">
                 <span className="actor-map-badge-label">
-                    {activeMode === '3d' ? '3D TERRAIN ACTOR MAP' : '2D ACTOR MAP'}
+                    {activeMode === '3d'
+                        ? (terrainReady ? '3D TERRAIN ACTOR MAP' : '2D ACTOR MAP · LOADING 3D TERRAIN')
+                        : '2D ACTOR MAP'}
                     {step?.bloc && actorMap?.bloc?.name ? ` · ${actorMap.bloc.name}` : ''}
                 </span>
                 {canUse3D ? (
@@ -147,6 +216,7 @@ export default function CaseActorMap({
                         className="actor-mode-btn"
                         onClick={() => {
                             setHasScrolledIntoView(true);
+                            setWebglChecked(true);
                             setUserModeChoice(activeMode === '3d' ? 'flat' : '3d');
                         }}
                     >
@@ -169,9 +239,11 @@ export default function CaseActorMap({
                     }
                 }}
             >
-                {activeMode === '3d' ? (
+                {(activeMode !== '3d' || !terrainReady) && flatFallbackEl}
+
+                {activeMode === '3d' && (
                     <ActorMap3DErrorBoundary fallback={flatFallbackEl} onFallback={() => setFallbackForced(true)}>
-                        <Suspense fallback={flatFallbackEl}>
+                        <Suspense fallback={null}>
                             <CaseActorMap3D
                                 key={actorMap.focusCountry}
                                 actorMap={actorMap}
@@ -180,12 +252,17 @@ export default function CaseActorMap({
                                 selected={selected}
                                 onSelect={handleSelect}
                                 reducedMotion={reducedMotion}
+                                onReady={() => setTerrainReady(true)}
                                 onFatalError={() => setFallbackForced(true)}
                             />
                         </Suspense>
                     </ActorMap3DErrorBoundary>
-                ) : (
-                    flatFallbackEl
+                )}
+
+                {loadingStatus && (
+                    <div className="actor-map-loading-banner" role="status" aria-live="polite">
+                        {loadingStatus}
+                    </div>
                 )}
 
                 <div className="actor-levels-key" aria-label="Levels in view">

@@ -25,18 +25,49 @@ const NODE_RADIUS = {
     global: 7.5,
 };
 
-let world110Promise = null;
-function loadWorld110() {
-    if (!world110Promise) {
-        world110Promise = fetch('/assets/globe/countries-110m.json')
-            .then(res => (res.ok ? res.json() : Promise.reject(new Error(`HTTP ${res.status}`))))
-            .then(world => topojson.feature(world, world.objects.countries).features)
+let world110TimedPromise = null;
+export function loadWorld110Timed() {
+    if (!world110TimedPromise) {
+        const startedAt = typeof performance !== 'undefined' && typeof performance.now === 'function'
+            ? performance.now()
+            : Date.now();
+        world110TimedPromise = fetch('/assets/globe/countries-110m.json')
+            .then(async res => {
+                if (!res.ok) throw new Error(`HTTP ${res.status}`);
+                const text = await res.text();
+                const endedAt = typeof performance !== 'undefined' && typeof performance.now === 'function'
+                    ? performance.now()
+                    : Date.now();
+                const world = JSON.parse(text);
+                const byteLength = typeof TextEncoder !== 'undefined'
+                    ? new TextEncoder().encode(text).length
+                    : text.length;
+                const entry = typeof performance !== 'undefined' && typeof performance.getEntriesByType === 'function'
+                    ? performance.getEntriesByType('resource').filter(r => r.name.includes('countries-110m.json')).pop()
+                    : null;
+                const cachedHit = Boolean(entry && entry.transferSize === 0 && entry.decodedBodySize > 0);
+                const wireBytes = cachedHit
+                    ? 0
+                    : (entry && entry.transferSize > 0 ? entry.transferSize : byteLength);
+                const timingDuration = entry && entry.responseEnd > entry.fetchStart
+                    ? (entry.responseEnd - entry.fetchStart)
+                    : Math.max(0, endedAt - startedAt);
+                return {
+                    features: topojson.feature(world, world.objects.countries).features,
+                    bytes: wireBytes,
+                    durationMs: timingDuration,
+                };
+            })
             .catch(err => {
-                world110Promise = null;
+                world110TimedPromise = null;
                 throw err;
             });
     }
-    return world110Promise;
+    return world110TimedPromise;
+}
+
+function loadWorld110() {
+    return loadWorld110Timed().then(result => result.features);
 }
 
 function actorCoord(actor) {

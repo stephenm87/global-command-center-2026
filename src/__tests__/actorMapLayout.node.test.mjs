@@ -1,5 +1,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
+import fs from 'node:fs';
+import path from 'node:path';
 import {
     GLOBE_RADIUS,
     computeArcProfile,
@@ -19,8 +21,14 @@ import {
     solveActorMapLabels,
 } from '../components/actorMapLayout.mjs';
 import {
+    HONEST_3D_LOADING_MESSAGE,
+    SLOW_THROUGHPUT_BYTES_PER_SEC,
+    actorMapLoadingStatus,
     chooseActorMapMode,
     isLowPowerDeviceConfig,
+    isSlowConnectionConfig,
+    isSlowMeasuredThroughput,
+    preferWebpUrl,
 } from '../components/actorMapMode.mjs';
 import { parseBriefingEntryFromSearch } from '../navigationState.mjs';
 import { CASE_STUDIES_2026 } from '../cases/index.mjs';
@@ -219,4 +227,46 @@ test('chooseActorMapMode, isLowPowerDeviceConfig, antimeridian wrap, and step=al
     const pacificArc = computeArcProfile([175, -18], [-175, -17], { camDist: 0.5, side: 0.1 });
     assert.ok(pacificArc.lenDeg < 15, `expected short antimeridian arc, got ${pacificArc.lenDeg}`);
     assert.ok(Math.abs(pacificArc.pts[24][1] + 17.5) < 5, 'perpendicular bow near antimeridian must stay wrapped');
+});
+
+test('Slow-connection gating, WebP preference with JPG fallback, honest loading status, and trimmed 50m borders stay consistent', () => {
+    assert.equal(isSlowConnectionConfig({ effectiveType: '3g', downlink: 10, saveData: false }), true);
+    assert.equal(isSlowConnectionConfig({ effectiveType: '2g', downlink: 10, saveData: false }), true);
+    assert.equal(isSlowConnectionConfig({ effectiveType: 'slow-2g', downlink: 10, saveData: false }), true);
+    assert.equal(isSlowConnectionConfig({ effectiveType: '4g', downlink: 1.2, saveData: false }), true);
+    assert.equal(isSlowConnectionConfig({ effectiveType: '4g', downlink: 5.0, saveData: true }), true);
+    assert.equal(isSlowConnectionConfig({ effectiveType: '4g', downlink: 2.0, saveData: false }), false);
+
+    // Timed fallback ignores sub-20ms cache hits and gates <150 KB/s transfers
+    assert.equal(isSlowMeasuredThroughput(105000, 10), false);
+    assert.equal(isSlowMeasuredThroughput(100000, 1000), true);
+    assert.equal(isSlowMeasuredThroughput(SLOW_THROUGHPUT_BYTES_PER_SEC * 2, 1000), false);
+
+    // Slow connection holds on flat map even on high-power desktop in view until user opts in
+    assert.equal(
+        chooseActorMapMode({ webgl: true, lowPower: false, slowConnection: true, userChoice: null, inView: true }),
+        'flat',
+    );
+    assert.equal(
+        chooseActorMapMode({ webgl: true, lowPower: false, slowConnection: true, userChoice: '3d', inView: true }),
+        '3d',
+    );
+
+    assert.equal(actorMapLoadingStatus('3d', false), HONEST_3D_LOADING_MESSAGE);
+    assert.equal(actorMapLoadingStatus('3d', true), '');
+    assert.equal(actorMapLoadingStatus('flat', false), '');
+    assert.equal(preferWebpUrl('/assets/actor-map/myanmar-region.jpg'), '/assets/actor-map/myanmar-region.webp');
+
+    const assetDir = path.resolve('public/assets/actor-map');
+    for (const jpg of ['blue-marble-base.jpg', 'myanmar-region.jpg', 'myanmar-local.jpg', 'somaliland-region.jpg', 'somaliland-local.jpg']) {
+        assert.equal(fs.existsSync(path.join(assetDir, jpg)), true, `missing fallback ${jpg}`);
+        assert.equal(fs.existsSync(path.join(assetDir, jpg.replace(/\.jpg$/, '.webp'))), true, `missing WebP ${jpg}`);
+    }
+
+    const topo = JSON.parse(fs.readFileSync(path.join(assetDir, 'countries-50m.json'), 'utf8'));
+    assert.deepEqual(Object.keys(topo.objects), ['countries']);
+    const names = new Set(topo.objects.countries.geometries.map(g => g.properties?.name).filter(Boolean));
+    for (const required of ['Myanmar', 'India', 'Philippines', 'Somalia', 'Somaliland', 'Ethiopia', 'Kenya', 'Djibouti', 'Israel']) {
+        assert.ok(names.has(required), `trimmed countries-50m.json missing required country "${required}"`);
+    }
 });

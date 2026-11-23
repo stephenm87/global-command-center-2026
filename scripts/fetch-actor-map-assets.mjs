@@ -78,6 +78,8 @@ with Image.open(raw_path) as im:
     rgb = im.convert('RGB')
     graded = rgb.point(luts)
     graded.save(out_path, format='JPEG', quality=quality, optimize=True, progressive=True)
+    webp_out = out_path[:-4] + '.webp' if out_path.endswith('.jpg') else out_path + '.webp'
+    graded.save(webp_out, format='WEBP', quality=max(70, quality - 6), method=6)
 `;
 
 async function downloadBuffer(url) {

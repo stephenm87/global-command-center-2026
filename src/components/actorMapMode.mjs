@@ -1,8 +1,11 @@
 /**
- * Pure device-capability and mode-selection helpers for CaseActorMap.
- * Extracted so unit tests exercise every lazy-loading, reduced-motion,
- * WebGL2, and low-power mobile fallback rule directly.
+ * Pure device-capability, network-speed, and mode-selection helpers for CaseActorMap.
+ * Extracted so unit tests exercise every lazy-loading, slow-link gating,
+ * reduced-motion, WebGL2, and WebP fallback rule directly.
  */
+
+export const SLOW_THROUGHPUT_BYTES_PER_SEC = 150 * 1024;
+export const HONEST_3D_LOADING_MESSAGE = 'Flat map shown while 3D terrain loads';
 
 export function detectWebGLSupport() {
     if (typeof document === 'undefined') return false;
@@ -30,17 +33,59 @@ export function isLowPowerDeviceConfig({
     return Boolean(lowCores || lowMem || saveData);
 }
 
+export function hasNetworkConnectionMetrics(conn = typeof navigator !== 'undefined' ? navigator?.connection : undefined) {
+    if (!conn) return false;
+    return Boolean(
+        (typeof conn.effectiveType === 'string' && conn.effectiveType.trim().length > 0)
+        || (typeof conn.downlink === 'number' && Number.isFinite(conn.downlink) && conn.downlink > 0),
+    );
+}
+
+export function isSlowConnectionConfig({
+    effectiveType = typeof navigator !== 'undefined' ? navigator?.connection?.effectiveType : undefined,
+    downlink = typeof navigator !== 'undefined' ? navigator?.connection?.downlink : undefined,
+    saveData = typeof navigator !== 'undefined' ? Boolean(navigator?.connection?.saveData) : false,
+} = {}) {
+    if (saveData) return true;
+    if (typeof effectiveType === 'string' && /^(slow-2g|2g|3g)$/i.test(effectiveType.trim())) {
+        return true;
+    }
+    if (typeof downlink === 'number' && Number.isFinite(downlink) && downlink > 0 && downlink < 1.5) {
+        return true;
+    }
+    return false;
+}
+
+export function isSlowMeasuredThroughput(bytes, durationMs, minBytesPerSec = SLOW_THROUGHPUT_BYTES_PER_SEC) {
+    if (!(typeof bytes === 'number' && bytes > 0)) return false;
+    // Sub-20ms fetches come from HTTP/memory cache and cannot diagnose slow links.
+    if (!(typeof durationMs === 'number' && durationMs > 20)) return false;
+    return ((bytes * 1000) / durationMs) < minBytesPerSec;
+}
+
 export function chooseActorMapMode({
     webgl = false,
     reducedMotion = false,
     fallbackForced = false,
     lowPower = false,
+    slowConnection = false,
     userChoice = null,
     inView = false,
 } = {}) {
     if (!webgl || reducedMotion || fallbackForced) return 'flat';
     if (userChoice === 'flat') return 'flat';
     if (userChoice === '3d') return '3d';
-    if (lowPower) return 'flat';
+    if (lowPower || slowConnection) return 'flat';
     return inView ? '3d' : 'flat';
+}
+
+export function preferWebpUrl(url) {
+    if (typeof url !== 'string') return url;
+    return /\.jpe?g(\?.*)?$/i.test(url)
+        ? url.replace(/\.jpe?g(\?.*)?$/i, '.webp$1')
+        : url;
+}
+
+export function actorMapLoadingStatus(activeMode, terrainReady) {
+    return activeMode === '3d' && !terrainReady ? HONEST_3D_LOADING_MESSAGE : '';
 }

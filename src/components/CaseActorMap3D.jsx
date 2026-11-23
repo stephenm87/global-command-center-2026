@@ -14,6 +14,7 @@ import {
     unprojectScreenToGlobeSpace,
 } from './actorMapCamera.mjs';
 import { solveActorMapLabels } from './actorMapLayout.mjs';
+import { preferWebpUrl } from './actorMapMode.mjs';
 
 const LEVEL_COLORS = {
     local: '#ffd9a0',
@@ -45,8 +46,21 @@ function loadWorld50() {
     return world50Promise;
 }
 
+let webpSupportedCache = null;
+function supportsWebp() {
+    if (webpSupportedCache !== null) return webpSupportedCache;
+    if (typeof document === 'undefined') return false;
+    try {
+        const canvas = document.createElement('canvas');
+        webpSupportedCache = canvas.toDataURL('image/webp').startsWith('data:image/webp');
+    } catch {
+        webpSupportedCache = false;
+    }
+    return webpSupportedCache;
+}
+
 const imageCache = new Map();
-function loadStaticImage(url) {
+function loadSingleStaticImage(url) {
     if (!imageCache.has(url)) {
         imageCache.set(url, new Promise((resolve, reject) => {
             const img = new Image();
@@ -54,9 +68,9 @@ function loadStaticImage(url) {
             img.decoding = 'async';
             img.onload = () => {
                 if (typeof img.decode === 'function') {
-                    img.decode().then(() => resolve(img)).catch(() => resolve(img));
+                    img.decode().then(() => resolve({ img, url })).catch(() => resolve({ img, url }));
                 } else {
-                    resolve(img);
+                    resolve({ img, url });
                 }
             };
             img.onerror = () => {
@@ -67,6 +81,14 @@ function loadStaticImage(url) {
         }));
     }
     return imageCache.get(url);
+}
+
+function loadStaticImageWithFallback(url) {
+    const preferred = supportsWebp() ? preferWebpUrl(url) : url;
+    if (preferred === url) {
+        return loadSingleStaticImage(url);
+    }
+    return loadSingleStaticImage(preferred).catch(() => loadSingleStaticImage(url));
 }
 
 function actorCoord(actor) {
@@ -192,6 +214,7 @@ export default function CaseActorMap3D({
     selected = null,
     onSelect,
     reducedMotion = false,
+    onReady,
     onFatalError,
 }) {
     const hostRef = useRef(null);
@@ -207,13 +230,14 @@ export default function CaseActorMap3D({
     const lastPolygonKeyRef = useRef('');
     const onSelectRef = useRef(onSelect);
     onSelectRef.current = onSelect;
+    const onReadyRef = useRef(onReady);
+    onReadyRef.current = onReady;
     const onFatalRef = useRef(onFatalError);
     onFatalRef.current = onFatalError;
 
     const [ready, setReady] = useState(false);
     const [settled, setSettled] = useState(false);
     const [renderedStepKey, setRenderedStepKey] = useState('');
-    const [statusNote, setStatusNote] = useState('Loading 3D terrain…');
 
     const actorById = useMemo(
         () => new Map((actorMap?.actors || []).map(a => [a.id, a])),
@@ -349,9 +373,9 @@ export default function CaseActorMap3D({
             }
         };
 
-        const initGlobe = (features, patches) => {
+        const initGlobe = (baseImageUrl, features, initialPatchesLoaded, deferredPatches) => {
             if (cancelled || !container.isConnected) return;
-            // Guard WebGL/TextureLoader readiness once assets have already finished downloading
+            // Guard WebGL/TextureLoader readiness once base + regional assets finish downloading
             readyTimeoutId = setTimeout(() => {
                 if (!cancelled && !readyRef.current) {
                     onFatalRef.current?.(new Error('3D terrain ready timeout'));
@@ -362,23 +386,36 @@ export default function CaseActorMap3D({
                 clearTimeout(readyTimeoutId);
                 countriesRef.current = features;
                 disposePatches();
-                for (const { img, p } of patches) {
+                for (const { img, p } of initialPatchesLoaded) {
                     const handle = addCurvedPatch(globe, img, p.bounds, p.altitude, p.order);
                     if (handle) patchHandlesRef.current.push(handle);
                 }
                 readyRef.current = true;
                 lastPolygonKeyRef.current = '';
                 setReady(true);
-                setStatusNote('');
+                onReadyRef.current?.();
                 buildAndApplySceneRef.current(true);
                 syncPauseState();
+
+                // Progressive local terrain enhancement after first 3D frame is visible
+                for (const p of deferredPatches) {
+                    loadStaticImageWithFallback(p.url)
+                        .then(({ img }) => {
+                            if (cancelled || !container.isConnected || globeRef.current !== globe) return;
+                            const handle = addCurvedPatch(globe, img, p.bounds, p.altitude, p.order);
+                            if (handle) patchHandlesRef.current.push(handle);
+                        })
+                        .catch(() => {
+                            // Regional patch remains visible if local detail fetch fails
+                        });
+                }
             };
 
             try {
                 globe = new Globe(container, { animateIn: false })
                     .backgroundColor('rgba(0,0,0,0)')
                     .onGlobeReady(handleGlobeReady)
-                    .globeImageUrl('/assets/actor-map/blue-marble-base.jpg')
+                    .globeImageUrl(baseImageUrl)
                     .showAtmosphere(true)
                     .atmosphereColor('#67d5f5')
                     .atmosphereAltitude(0.15)
@@ -489,12 +526,16 @@ export default function CaseActorMap3D({
             container.addEventListener('pointerleave', onPointerLeave);
         };
 
+        const sortedPatches = [...(actorMap?.terrainPatches || [])].sort((a, b) => (Number(a.order) || 0) - (Number(b.order) || 0));
+        const initialPatches = sortedPatches.filter(p => (Number(p.order) || 0) <= 1);
+        const deferredPatches = sortedPatches.filter(p => (Number(p.order) || 0) > 1);
+
         Promise.all([
-            loadStaticImage('/assets/actor-map/blue-marble-base.jpg'),
+            loadStaticImageWithFallback('/assets/actor-map/blue-marble-base.jpg'),
             loadWorld50(),
-            Promise.all((actorMap?.terrainPatches || []).map(p => loadStaticImage(p.url).then(img => ({ img, p })))),
+            Promise.all(initialPatches.map(p => loadStaticImageWithFallback(p.url).then(({ img }) => ({ img, p })))),
         ])
-            .then(([, features, patches]) => initGlobe(features, patches))
+            .then(([baseAsset, features, initialLoaded]) => initGlobe(baseAsset.url, features, initialLoaded, deferredPatches))
             .catch(err => {
                 clearTimeout(readyTimeoutId);
                 if (!cancelled && !readyRef.current) onFatalRef.current?.(err);
@@ -1054,16 +1095,11 @@ export default function CaseActorMap3D({
 
     return (
         <div
-            className="actor-map-canvas actor-map-canvas--3d"
+            className={`actor-map-canvas actor-map-canvas--3d ${ready ? 'is-ready' : 'is-loading'}`}
             data-actor-map-step={renderedStepKey}
             data-actor-map-settled={ready && settled && renderedStepKey === String(activeStepKey) ? 'true' : 'false'}
         >
             <div ref={hostRef} className="actor-map-globe-mount" aria-label="Interactive 3D terrain actor map" />
-            {!ready && (
-                <div className="actor-map-loading" role="status">
-                    {statusNote}
-                </div>
-            )}
         </div>
     );
 }
