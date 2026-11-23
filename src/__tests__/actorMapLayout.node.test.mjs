@@ -20,6 +20,7 @@ import {
     CLUSTER_DOT_RADIUS,
     actorLabelBox,
     boxIntersectsArcs,
+    buildFlatArcGeometry,
     buildStepClusterIndex,
     countryLabelBox,
     isRelatedActorMapItem,
@@ -542,6 +543,7 @@ test('Strict geometry across every step (1-4 & All) at 1440px and 390px (3D & Fl
                 let cam = null;
                 let pose = null;
                 let projection = null;
+                let flatHalf = 0;
                 if (mode === '3d') {
                     cam = fitCameraToActors(step.cam, surfaceCoords, W, H, { fovDeg, hasFloatingBadges: floatingActors.length > 0 });
                     pose = computeCameraPose(cam, { h: 0, t: 0 }, 0, GLOBE_RADIUS);
@@ -553,6 +555,7 @@ test('Strict geometry across every step (1-4 & All) at 1440px and 390px (3D & Fl
                         H,
                         floatingActors.length > 0,
                     );
+                    flatHalf = view.half;
                     const radius = Math.min(W, H) / (2 * Math.sin((Math.max(1, view.half) * Math.PI) / 180));
                     projection = geoOrthographic()
                         .clipAngle(90)
@@ -675,6 +678,15 @@ test('Strict geometry across every step (1-4 & All) at 1440px and 390px (3D & Fl
                     if (r) { req.x = r.x; req.y = r.y; }
                 }
 
+                const stepActorMap = new Map(entries.map(e => [e.id, e]));
+                const endpointPad = (actorId, isTo) => {
+                    if (actorToCluster.has(actorId)) return CLUSTER_DOT_RADIUS + (isTo ? 5 : 4);
+                    const a = byId.get(actorId);
+                    if (a?.location?.kind === 'noSinglePlace') return isTo ? 5 : 4;
+                    const baseR = a?.level === 'regional' ? 9.5 : a?.level === 'state' ? 8 : 7;
+                    return (stepActorMap.get(actorId)?.small ? 4 : baseR) + (isTo ? 5 : 4);
+                };
+
                 const arcPoints = [];
                 const linkLabels = [];
                 for (const cid of step.connections || []) {
@@ -686,23 +698,14 @@ test('Strict geometry across every step (1-4 & All) at 1440px and 390px (3D & Fl
                     const pT = clTo ? posMap.get(clTo.id) : posMap.get(conn.to);
                     if (!pF || !pT) continue;
                     if (mode === 'flat') {
-                        const dx = pT[0] - pF[0];
-                        const dy = pT[1] - pF[1];
-                        const len = Math.hypot(dx, dy) || 1;
                         const fromFloat = byId.get(conn.from)?.location?.kind === 'noSinglePlace';
-                        const ctrl = fromFloat
-                            ? [pF[0] + dx * 0.14, pF[1] + dy * 0.72]
-                            : [(pF[0] + pT[0]) / 2 - (dy / len) * (conn.side || 0.16) * len, (pF[1] + pT[1]) / 2 + (dx / len) * (conn.side || 0.16) * len];
-                        const quadAt = t => [
-                            (1 - t) * (1 - t) * pF[0] + 2 * (1 - t) * t * ctrl[0] + t * t * pT[0],
-                            (1 - t) * (1 - t) * pF[1] + 2 * (1 - t) * t * ctrl[1] + t * t * pT[1],
-                        ];
-                        const pts = [];
-                        for (let s = 1; s <= 23; s += 1) {
-                            const p = quadAt(s / 24);
-                            pts.push({ x: p[0], y: p[1] });
-                        }
-                        arcPoints.push({ id: conn.id, points: pts });
+                        const { len, quadAt, samplePts } = buildFlatArcGeometry(pF, pT, {
+                            padA: endpointPad(conn.from, false),
+                            padB: endpointPad(conn.to, true),
+                            side: conn.side || 0.16,
+                            fromFloating: fromFloat,
+                        });
+                        arcPoints.push({ id: conn.id, points: samplePts });
                         const halfW = Math.ceil((String(conn.label || '').length * 6.6 + 16) / 2) + 8;
                         linkLabels.push({
                             id: conn.id,
@@ -730,8 +733,12 @@ test('Strict geometry across every step (1-4 & All) at 1440px and 390px (3D & Fl
                             toAlt: pT.alt,
                         });
                         const pts = [];
+                        const lastSampleIdx = Math.max(1, prof.pts.length - 2);
                         const ast = Math.max(1, Math.floor((prof.pts.length - 1) / 22));
-                        for (let si = 1; si <= prof.pts.length - 2; si += ast) {
+                        const indices = [];
+                        for (let si = 1; si <= lastSampleIdx; si += ast) indices.push(si);
+                        if (indices[indices.length - 1] !== lastSampleIdx) indices.push(lastSampleIdx);
+                        for (const si of indices) {
                             const ptS = prof.pts[si];
                             const pr = projectPointWithPose(latLngAltToVec3(ptS[1], ptS[0], ptS[2], GLOBE_RADIUS), pose, W, H, fovDeg);
                             if (pr.visibleOnHorizon) pts.push({ x: pr.x, y: pr.y });
@@ -754,18 +761,21 @@ test('Strict geometry across every step (1-4 & All) at 1440px and 390px (3D & Fl
                 }
 
                 const stepActorIds = new Set(entries.map(e => e.id));
-                const countryLabels = (cs.actorMap.contextLabels || [])
-                    .filter(cl => !stepActorIds.has(cl.name.toLowerCase()))
-                    .map(cl => {
-                        const pt = mode === 'flat'
-                            ? projection([cl.longitude, cl.latitude])
-                            : (() => {
-                                const pr = projectPointWithPose(latLngAltToVec3(cl.latitude, cl.longitude, 0.0005, GLOBE_RADIUS), pose, W, H, fovDeg);
-                                return pr.visibleOnHorizon ? [pr.x, pr.y] : null;
-                            })();
-                        return pt ? { name: cl.name, x: pt[0], y: pt[1] } : null;
-                    })
-                    .filter(Boolean);
+                const showCountries = mode === '3d' ? cam.dist < 0.88 : flatHalf < 36;
+                const countryLabels = showCountries
+                    ? (cs.actorMap.contextLabels || [])
+                        .filter(cl => mode === 'flat' || !stepActorIds.has(cl.name.toLowerCase()))
+                        .map(cl => {
+                            const pt = mode === 'flat'
+                                ? projection([cl.longitude, cl.latitude])
+                                : (() => {
+                                    const pr = projectPointWithPose(latLngAltToVec3(cl.latitude, cl.longitude, 0.0005, GLOBE_RADIUS), pose, W, H, fovDeg);
+                                    return pr.visibleOnHorizon ? [pr.x, pr.y] : null;
+                                })();
+                            return pt ? { name: cl.name, x: pt[0], y: pt[1] } : null;
+                        })
+                        .filter(Boolean)
+                    : [];
 
                 const reservedBoxes = [
                     { x0: 6, y0: H - (W < 480 ? 116 : 132), x1: W < 480 ? 114 : 148, y1: H - 6 },
@@ -842,9 +852,44 @@ test('Strict geometry across every step (1-4 & All) at 1440px and 390px (3D & Fl
                 if (cs.id === 'somaliland-recognition-red-sea-order' && vpLabel === '390px-flat') {
                     const fg = solved.actors.get('somalia-fg');
                     assert.ok(fg?.visible, `Federal Government of Somalia must stay visible in Somaliland step ${step.key} at 390px flat`);
-                    assert.equal(fg.side, 'b', `Federal Government of Somalia should sit below Mogadishu clear of pressure arc in step ${step.key}`);
+                    assert.equal(boxIntersectsArcs(fg.box, arcPoints, { pad: 1 }), false, `Federal Government of Somalia must stay clear of every arc in step ${step.key}`);
                 }
             }
         }
     }
+
+    // Cluster selection highlights, intra-cluster connection suppression, and selected-item arc fallback
+    const my = CASE_STUDIES_2026.find(c => c.id === 'myanmar-fragmented-sovereignty');
+    const allStep = my.actorMap.steps.find(s => String(s.key) === 'all');
+    const connMap = new Map(my.actorMap.connections.map(c => [c.id, c]));
+    assert.equal(isRelatedActorMapItem({ kind: 'cluster', id: 'myanmar-actors' }, 'actor', 'military-authorities', allStep, connMap), true);
+    assert.equal(isRelatedActorMapItem({ kind: 'cluster', id: 'myanmar-actors' }, 'connection', 'asean-ban', allStep, connMap), true);
+    assert.equal(isRelatedActorMapItem({ kind: 'actor', id: 'military-authorities' }, 'cluster', 'myanmar-actors', allStep, connMap), true);
+    assert.equal(isRelatedActorMapItem({ kind: 'connection', id: 'donor-funding' }, 'cluster', 'myanmar-actors', allStep, connMap), true);
+    assert.equal(isRelatedActorMapItem({ kind: 'connection', id: 'asean-ban' }, 'actor', 'india', allStep, connMap), false);
+
+    // When every side touches an arc, unselected actor hides while allowArcFallback keeps selected actor visible
+    const crowdedArcs = [
+        { id: 'n', points: [{ x: 150, y: 185 }, { x: 250, y: 185 }] },
+        { id: 's', points: [{ x: 150, y: 215 }, { x: 250, y: 215 }] },
+        { id: 'w', points: [{ x: 180, y: 160 }, { x: 180, y: 240 }] },
+        { id: 'e', points: [{ x: 220, y: 160 }, { x: 220, y: 240 }] },
+    ];
+    const hiddenCrowded = solveActorMapLabels({
+        width: 400,
+        height: 400,
+        markers: [{ id: 'p', x: 200, y: 200, r: 8 }],
+        actorLabels: [{ id: 'p', name: 'Crowded', x: 200, y: 200, r: 8, priority: 50 }],
+        arcPoints: crowdedArcs,
+    });
+    assert.equal(hiddenCrowded.actors.get('p').visible, false);
+
+    const visibleSelected = solveActorMapLabels({
+        width: 400,
+        height: 400,
+        markers: [{ id: 'p', x: 200, y: 200, r: 8 }],
+        actorLabels: [{ id: 'p', name: 'Crowded', x: 200, y: 200, r: 8, priority: 200, allowArcFallback: true }],
+        arcPoints: crowdedArcs,
+    });
+    assert.equal(visibleSelected.actors.get('p').visible, true);
 });

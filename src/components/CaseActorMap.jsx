@@ -474,7 +474,7 @@ export function ActorMapSidePanel({
                                     <button
                                         type="button"
                                         className="actor-place-btn"
-                                        onClick={() => onSelect?.('actor', member.id)}
+                                        onClick={() => toggleSelect('actor', member.id)}
                                     >
                                         <strong>{member.name}</strong>
                                         <span>{member.level} level · {locSummary}</span>

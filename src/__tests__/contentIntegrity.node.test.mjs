@@ -764,6 +764,18 @@ test('curated case studies remain balanced across 7 regions x 6 lenses, auditabl
                 const conn = actorMap.connections.find(c => c.id === cid);
                 assert.ok(stepActorIds.has(conn.from) && stepActorIds.has(conn.to), `${pilotId} step ${step.key} connection "${cid}" endpoints must be present in step.actors`);
             }
+            if (Array.isArray(step.clusters)) {
+                for (const cluster of step.clusters) {
+                    assertNonEmptyString(cluster.id, `${pilotId} step ${step.key} cluster missing id`);
+                    assertNonEmptyString(cluster.name, `${pilotId} step ${step.key} cluster "${cluster.id}" missing name`);
+                    assert.ok(Number.isFinite(cluster.lat) && Number.isFinite(cluster.lng), `${pilotId} step ${step.key} cluster "${cluster.id}" requires finite lat/lng`);
+                    assert.ok(Array.isArray(cluster.memberIds) && cluster.memberIds.length > 0, `${pilotId} step ${step.key} cluster "${cluster.id}" needs memberIds`);
+                    assert.equal(new Set(cluster.memberIds).size, cluster.memberIds.length, `${pilotId} step ${step.key} cluster "${cluster.id}" memberIds must be unique`);
+                    for (const mid of cluster.memberIds) {
+                        assert.ok(actorIds.has(mid) && stepActorIds.has(mid), `${pilotId} step ${step.key} cluster "${cluster.id}" unknown member "${mid}"`);
+                    }
+                }
+            }
         }
     }
 });

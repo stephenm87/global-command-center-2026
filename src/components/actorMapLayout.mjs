@@ -16,6 +16,13 @@ const intersects = (a, b, pad = 2) => !(
     || a.y0 - pad >= b.y1
 );
 
+const pointNearBox = (pt, box, pad = 5) => (
+    pt.x >= box.x0 - pad
+    && pt.x <= box.x1 + pad
+    && pt.y >= box.y0 - pad
+    && pt.y <= box.y1 + pad
+);
+
 export function segmentIntersectsBox(p0, p1, box, pad = 4) {
     if (!p0 || !p1 || !box) return false;
     const minX = box.x0 - pad;
@@ -60,6 +67,41 @@ export function boxIntersectsArcs(box, arcPoints = [], { excludeArcId = null, pa
         }
     }
     return false;
+}
+
+export function buildFlatArcGeometry(a, b, { padA = 0, padB = 0, side = 0.16, fromFloating = false } = {}) {
+    const dx = b[0] - a[0];
+    const dy = b[1] - a[1];
+    const len = Math.hypot(dx, dy) || 1;
+    const ctrl = fromFloating
+        ? [a[0] + dx * 0.14, a[1] + dy * 0.72]
+        : [(a[0] + b[0]) / 2 - (dy / len) * side * len, (a[1] + b[1]) / 2 + (dx / len) * side * len];
+    const trim = (p, toward, pad) => {
+        const vx = toward[0] - p[0];
+        const vy = toward[1] - p[1];
+        const vl = Math.hypot(vx, vy) || 1;
+        return [p[0] + (vx / vl) * pad, p[1] + (vy / vl) * pad];
+    };
+    const a2 = trim(a, ctrl, padA);
+    const b2 = trim(b, ctrl, padB);
+    const quadAt = t => [
+        (1 - t) * (1 - t) * a2[0] + 2 * (1 - t) * t * ctrl[0] + t * t * b2[0],
+        (1 - t) * (1 - t) * a2[1] + 2 * (1 - t) * t * ctrl[1] + t * t * b2[1],
+    ];
+    const samplePts = [];
+    for (let s = 1; s <= 23; s += 1) {
+        const ptSample = quadAt(s / 24);
+        samplePts.push({ x: ptSample[0], y: ptSample[1] });
+    }
+    return {
+        a2,
+        b2,
+        ctrl,
+        len,
+        d: `M${a2[0]},${a2[1]} Q${ctrl[0]},${ctrl[1]} ${b2[0]},${b2[1]}`,
+        quadAt,
+        samplePts,
+    };
 }
 
 /**
@@ -131,13 +173,6 @@ const insideFrame = (box, width, height, padding) => (
     && box.x1 <= width - padding
     && box.y0 >= padding
     && box.y1 <= height - padding
-);
-
-const pointNearBox = (pt, box, pad = 5) => (
-    pt.x >= box.x0 - pad
-    && pt.x <= box.x1 + pad
-    && pt.y >= box.y0 - pad
-    && pt.y <= box.y1 + pad
 );
 
 const TOP_BOTTOM_NUDGE_X = [0, 18, -18, 36, -36, 56, -56, 76, -76];
@@ -311,6 +346,7 @@ export function solveActorMapLabels({
             ];
 
         let chosen = null;
+        let fallbackFree = null;
         for (const { showNote, lines } of attempts) {
             for (const side of sides) {
                 const offsets = (side === 't' || side === 'b') ? TOP_BOTTOM_NUDGE_X : [0];
@@ -322,6 +358,9 @@ export function solveActorMapLabels({
                         chosen = { visible: true, side, showNote, offsetX, lines, box };
                         break;
                     }
+                    if (item.allowArcFallback && !fallbackFree) {
+                        fallbackFree = { visible: true, side, showNote, offsetX, lines, box };
+                    }
                 }
                 if (chosen) break;
             }
@@ -331,6 +370,10 @@ export function solveActorMapLabels({
             }
         }
 
+        if (!chosen && fallbackFree) {
+            chosen = fallbackFree;
+            occupied.push(chosen.box);
+        }
         if (!chosen) {
             chosen = { visible: false, side: item.preferredSide || 'r', showNote: false, offsetX: 0, lines: singleLines, box: null };
         }

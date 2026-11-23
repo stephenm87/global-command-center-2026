@@ -4,6 +4,7 @@ import * as topojson from 'topojson-client';
 import { computeFlatTargetView, computeFloatingBadgeScreenSlots, cubicInOut } from './actorMapCamera.mjs';
 import {
     CLUSTER_DOT_RADIUS,
+    buildFlatArcGeometry,
     buildStepClusterIndex,
     isRelatedActorMapItem,
     isStepConnectionVisible,
@@ -316,6 +317,7 @@ export default function CaseActorMapFlat({
                 r,
                 preferredSide: entry.preferredSide || 'r',
                 hidden: Boolean(entry.small && !isSel),
+                allowArcFallback: isSel,
                 priority: isSel ? 200 : actor.level === 'regional' ? 95 : actor.level === 'state' ? 88 : 78,
             });
         }
@@ -346,6 +348,7 @@ export default function CaseActorMapFlat({
                 r: CLUSTER_DOT_RADIUS,
                 preferredSide: cluster.preferredSide || 'b',
                 hidden: false,
+                allowArcFallback: isSel,
                 priority: isSel ? 200 : 94,
             });
         }
@@ -363,11 +366,12 @@ export default function CaseActorMapFlat({
             if (matchesStepActor || !isVisible(coord)) continue;
             const pt = projection(coord);
             if (!pt) continue;
+            const isPlaceSel = selected?.kind === 'place' && selected.id === loc.label;
             extraPlaces.push({
                 loc,
                 x: pt[0],
                 y: pt[1],
-                isSelected: selected?.kind === 'place' && selected.id === loc.label,
+                isSelected: isPlaceSel,
             });
             actorLabels.push({
                 id: `place:${loc.label}`,
@@ -377,8 +381,9 @@ export default function CaseActorMapFlat({
                 y: pt[1],
                 r: 5.5,
                 preferredSide: 'r',
-                hidden: Boolean(step.quietLabels && !(selected?.kind === 'place' && selected.id === loc.label)),
-                priority: selected?.kind === 'place' && selected.id === loc.label ? 190 : 52,
+                hidden: Boolean(step.quietLabels && !isPlaceSel),
+                allowArcFallback: isPlaceSel,
+                priority: isPlaceSel ? 190 : 52,
             });
         }
 
@@ -444,34 +449,17 @@ export default function CaseActorMapFlat({
             const fromFloating = fromActor?.location?.kind === 'noSinglePlace';
             const padA = endpointPad(conn.from, false);
             const padB = endpointPad(conn.to, true);
-            const dx = b[0] - a[0];
-            const dy = b[1] - a[1];
-            const len = Math.hypot(dx, dy) || 1;
-            const ctrl = fromFloating
-                ? [a[0] + dx * 0.14, a[1] + dy * 0.72]
-                : [(a[0] + b[0]) / 2 - (dy / len) * (conn.side || 0.16) * len, (a[1] + b[1]) / 2 + (dx / len) * (conn.side || 0.16) * len];
-            const trim = (p, toward, pad) => {
-                const vx = toward[0] - p[0];
-                const vy = toward[1] - p[1];
-                const vl = Math.hypot(vx, vy) || 1;
-                return [p[0] + (vx / vl) * pad, p[1] + (vy / vl) * pad];
-            };
-            const a2 = trim(a, ctrl, padA);
-            const b2 = trim(b, ctrl, padB);
-            const quadAt = t => [
-                (1 - t) * (1 - t) * a2[0] + 2 * (1 - t) * t * ctrl[0] + t * t * b2[0],
-                (1 - t) * (1 - t) * a2[1] + 2 * (1 - t) * t * ctrl[1] + t * t * b2[1],
-            ];
-            const samplePts = [];
-            for (let s = 1; s <= 23; s += 1) {
-                const ptSample = quadAt(s / 24);
-                samplePts.push({ x: ptSample[0], y: ptSample[1] });
-            }
+            const { d, len, quadAt, samplePts } = buildFlatArcGeometry(a, b, {
+                padA,
+                padB,
+                side: conn.side || 0.16,
+                fromFloating,
+            });
             arcPoints.push({ id: conn.id, points: samplePts });
             const isSel = selected?.kind === 'connection' && selected.id === conn.id;
             linkItems.push({
                 conn,
-                d: `M${a2[0]},${a2[1]} Q${ctrl[0]},${ctrl[1]} ${b2[0]},${b2[1]}`,
+                d,
                 isRelated: isRelatedActorMapItem(selected, 'connection', conn.id, step, connById),
                 isSelected: isSel,
             });
@@ -781,6 +769,8 @@ export default function CaseActorMapFlat({
                         style={{ left: `${popLeft}px`, top: `${popTop}px` }}
                         onMouseEnter={() => openClusterPopover(activeClusterMarker.cluster.id)}
                         onMouseLeave={scheduleCloseClusterPopover}
+                        onFocus={() => openClusterPopover(activeClusterMarker.cluster.id)}
+                        onBlur={scheduleCloseClusterPopover}
                     >
                         <div className="actor-cluster-popover-title">{activeClusterMarker.cluster.name}</div>
                         <ul className="actor-cluster-popover-list">
@@ -798,7 +788,9 @@ export default function CaseActorMapFlat({
                                             <small>
                                                 {member.location.kind === 'pin'
                                                     ? member.location.place
-                                                    : member.location.label}
+                                                    : member.location.kind === 'area'
+                                                        ? member.location.label
+                                                        : 'No single place'}
                                             </small>
                                         </span>
                                     </button>

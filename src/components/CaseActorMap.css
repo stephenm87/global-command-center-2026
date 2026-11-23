@@ -813,7 +813,8 @@
 }
 
 .n3.cluster:hover .actor-cluster-popover,
-.n3.cluster:focus-within .actor-cluster-popover {
+.n3.cluster:focus-within .actor-cluster-popover,
+.n3.cluster.sel .actor-cluster-popover {
     display: block;
 }
 

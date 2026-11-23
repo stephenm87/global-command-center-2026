@@ -590,7 +590,7 @@ export default function CaseActorMap3D({
                 .filter(e => !actorToCluster.has(e.id))
                 .map(e => actorCoord(actorsMap.get(e.id)))
                 .filter(Boolean),
-            ...clusters.map(cluster => [cluster.lng, cluster.lat]),
+            ...clusters.map(cluster => ({ lat: cluster.lat, lng: cluster.lng })),
         ];
         const floatingActors = stepActorEntries
             .map(e => actorsMap.get(e.id))
@@ -710,6 +710,7 @@ export default function CaseActorMap3D({
                     r: dotR,
                     preferredSide: entry.preferredSide || 'r',
                     hidden: Boolean(entry.small && !isSel),
+                    allowArcFallback: isSel,
                     priority: isSel ? 200 : actor.level === 'regional' ? 96 : actor.level === 'state' ? 88 : 78,
                 });
             }
@@ -744,6 +745,7 @@ export default function CaseActorMap3D({
                     y: proj.y,
                     r: dotR,
                     preferredSide: cluster.preferredSide || 'b',
+                    allowArcFallback: isSel,
                     priority: isSel ? 200 : 94,
                 });
             }
@@ -761,6 +763,7 @@ export default function CaseActorMap3D({
                 id: cluster.id,
                 cluster,
                 members,
+                proj,
                 at: [cluster.lng, cluster.lat],
                 alt: visBase,
             });
@@ -781,6 +784,7 @@ export default function CaseActorMap3D({
             if (!proj.visibleOnHorizon || proj.x < 12 || proj.x > width - 12 || proj.y < 12 || proj.y > height - 12) continue;
             extraPlaces.push({ loc, lat, lng, proj });
             markers.push({ id: `place:${loc.label}`, x: proj.x, y: proj.y, r: 5.5 });
+            const isPlaceSel = currentSel?.kind === 'place' && currentSel.id === loc.label;
             actorLabelRequests.push({
                 id: `place:${loc.label}`,
                 name: loc.label,
@@ -789,8 +793,9 @@ export default function CaseActorMap3D({
                 y: proj.y,
                 r: 5.5,
                 preferredSide: 'r',
-                hidden: Boolean(activeStep.quietLabels && !(currentSel?.kind === 'place' && currentSel.id === loc.label)),
-                priority: currentSel?.kind === 'place' && currentSel.id === loc.label ? 190 : 52,
+                hidden: Boolean(activeStep.quietLabels && !isPlaceSel),
+                allowArcFallback: isPlaceSel,
+                priority: isPlaceSel ? 190 : 52,
             });
         }
 
@@ -839,8 +844,16 @@ export default function CaseActorMap3D({
             );
 
             const arcScreenPts = [];
+            const lastSampleIdx = Math.max(1, profile.pts.length - 2);
             const arcStep = Math.max(1, Math.floor((profile.pts.length - 1) / 22));
-            for (let si = 1; si <= profile.pts.length - 2; si += arcStep) {
+            const sampleIndices = [];
+            for (let si = 1; si <= lastSampleIdx; si += arcStep) {
+                sampleIndices.push(si);
+            }
+            if (sampleIndices[sampleIndices.length - 1] !== lastSampleIdx) {
+                sampleIndices.push(lastSampleIdx);
+            }
+            for (const si of sampleIndices) {
                 const ptSample = profile.pts[si];
                 const projSample = projectPointWithPose(
                     latLngAltToVec3(ptSample[1], ptSample[0], ptSample[2], GLOBE_RADIUS),
@@ -1107,12 +1120,16 @@ export default function CaseActorMap3D({
                 entry.btn.setAttribute('aria-pressed', String(isSel));
                 entry._onClick = () => onSelectRef.current?.('cluster', it.id);
                 entry.pop.setAttribute('aria-label', it.cluster.name);
+                const screenX = (it.proj?.x || 0) + (adj?.dx || 0);
+                const popLeft = Math.max(8 - screenX, Math.min(width - 232 - screenX, 10));
+                entry.pop.style.left = `${popLeft.toFixed(1)}px`;
                 entry.popTitle.textContent = it.cluster.name;
                 entry.popList.replaceChildren(...it.members.map(member => {
                     const li = document.createElement('li');
                     const btn = document.createElement('button');
                     btn.type = 'button';
                     btn.className = 'actor-cluster-popover-item';
+                    btn.setAttribute('data-focus-key', `cluster-member:${it.id}:${member.id}`);
                     btn.style.setProperty('--c', LEVEL_COLORS[member.level] || '#67d5f5');
                     const dot = document.createElement('i');
                     dot.setAttribute('aria-hidden', 'true');
@@ -1120,7 +1137,11 @@ export default function CaseActorMap3D({
                     const b = document.createElement('b');
                     b.textContent = member.name;
                     const sm = document.createElement('small');
-                    sm.textContent = member.location.kind === 'pin' ? member.location.place : member.location.label;
+                    sm.textContent = member.location.kind === 'pin'
+                        ? member.location.place
+                        : member.location.kind === 'area'
+                            ? member.location.label
+                            : 'No single place';
                     copy.appendChild(b);
                     copy.appendChild(sm);
                     btn.appendChild(dot);
@@ -1228,7 +1249,11 @@ export default function CaseActorMap3D({
             .ringsData(red ? [] : rings);
 
         if (activeFocusKey) {
-            const targetBtn = nextCache.get(activeFocusKey)?.btn;
+            const safeKey = typeof CSS !== 'undefined' && typeof CSS.escape === 'function'
+                ? CSS.escape(activeFocusKey)
+                : activeFocusKey.replace(/"/g, '\\"');
+            const targetBtn = nextCache.get(activeFocusKey)?.btn
+                || container.querySelector(`[data-focus-key="${safeKey}"]`);
             if (targetBtn) {
                 if (targetBtn.isConnected && document.activeElement !== targetBtn) {
                     targetBtn.focus({ preventScroll: true });
@@ -1261,7 +1286,7 @@ export default function CaseActorMap3D({
                 .filter(e => !flyActorToCluster.has(e.id))
                 .map(e => actorCoord(actorById.get(e.id)))
                 .filter(Boolean),
-            ...flyClusters.map(c => [c.lng, c.lat]),
+            ...flyClusters.map(c => ({ lat: c.lat, lng: c.lng })),
         ];
         const floatingActors = stepActorEntries.map(e => actorById.get(e.id)).filter(a => a?.location?.kind === 'noSinglePlace');
         const target = fitCameraToActors(step.cam, surfaceCoords, width, height, {
