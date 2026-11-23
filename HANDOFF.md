@@ -2,6 +2,13 @@
 
 Newest entry first. Each agent adds an entry before it stops. Keep entries short.
 
+## 2026-11-24 — Antigravity — PR #48 Production Merge & PR #49 Rebase Onto `main`
+- **Did:**
+  - Confirmed PR #48 (`feat/actor-map-pilot-3d` at `ee02166`, all 5 checks green) and squash-merged it into `main` at `d4847dc` (`feat(briefings): 3D actor map pilot for Somaliland and Myanmar`).
+  - Verified Netlify production deploy `6b04bc1e660a83a586b36638` (`state: ready`, 0 secrets scan matches over 225 files) and checked `https://globalcommandcenter2026.netlify.app`: Myanmar & Somaliland actor maps loaded on `step=1` and `"all"`, `"Myanmar: 6 actors"` opened its list, `"Save as PDF"` triggered print on checked cases, Sudan (`sudan-displacement-regional-spillover`) remained unchanged with no actor map, and console/page errors were `0`.
+  - Rebased `fix/security-hardening-paid-limits` (`PR #49`) onto `main` (`d4847dc`), preserving both PR #48 and PR #49 `HANDOFF.md` histories. Left PR #49 and PR #47 open/unmerged pending owner Supabase account setup.
+- **Tested:** Rebased branch verified with `npm test` (`109/109` pass) and `npm run build` (`vite build`); held unmerged.
+
 ## 2026-11-23 — Antigravity — PR #48 Actor Map Legibility Follow-Up
 - **Did (on `feat/actor-map-pilot-3d`, held OPEN at `PR #48`; DO NOT MERGE):**
   - **Myanmar `"All"` Cluster (`497c1df`):** Grouped the 6 Myanmar-based actors (`military-authorities`, `displaced-pakokku`, `magwe-fug`, `sagaing-displaced`, `shelter-families`, `ocha-partners`) in Myanmar's `"All"` step into one interactive `"Myanmar: 6 actors"` cluster badge (`step.clusters` deep-cloned in `src/cases/schema.mjs`, shared cluster/relationship helpers in `src/components/actorMapLayout.mjs`), eliminating unlabeled tight central clusters while omitting redundant intra-cluster arcs and keeping all cross-cluster arcs routed cleanly to the cluster anchor. Added hover/focus/tap popovers in both `CaseActorMap3D.jsx` and `CaseActorMapFlat.jsx`, click-to-inspect member listing in `renderInspector`, and a permanently visible `"Actors in cluster"` clickable list in `ActorMapSidePanel` (`src/components/CaseActorMap.jsx`).
