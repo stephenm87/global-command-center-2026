@@ -1,6 +1,6 @@
 # Testing
 
-Run `npm test` for the Netlify function security-boundary tests, intelligence-feed fallback and filtering checks, URL navigation and actor normalization checks, local-state checks, and curated-content integrity tests.
+Run `npm test` for the Netlify function security-boundary tests, intelligence-feed fallback and filtering checks, URL navigation and actor normalization checks, local-state checks, and curated-content integrity tests. Refreshing `public/assets/actor-map/*` via `node scripts/fetch-actor-map-assets.mjs` requires Python 3 with Pillow (`PIL`).
 
 The feed tests ensure public source links survive provider unavailability, reference and provider-fallback records are not mislabelled as live, cached provider records retain precedence, loading does not announce a false failure, archive filters recover safely, and empty filters expose a recovery action. Snapshot tests verify that anonymous Serper queries are fixed and server-controlled; promotional and weak results are rejected; URLs and headlines are deduplicated; regional, issue, publisher, topic-cluster, and discovery-source limits are enforced; unavailable states remain accurate; and editorial source-health responses distinguish healthy, restricted, broken, and uncertain links. Content checks require 29 unique case studies, exactly three perspective-labelled core readings per case, broad regional and issue coverage, HTTPS source metadata, valid actor metadata, evidence-aligned waypoints, case-specific 5W1H output, appropriately qualified theory prompts, and a current generated source-health manifest.
 
@@ -16,6 +16,7 @@ Run `npm run build` to verify the production bundle and route-level lazy chunks.
 8. At 1440×900, 1024×768, and 390×844, confirm Globe and Guided Briefings have no horizontal page overflow and their primary controls remain at least 44px high.
 9. On Globe, collapse and restore the Intel Feed and operational dashboard; confirm the canvas resizes, Intel cards do not overlap, and the preferences survive refresh.
 10. On Guided Briefings, hide and restore the case library, expand the six-case result page, select a case on a narrow viewport, and move from step 3 to 4; confirm the selected heading receives focus and the active progress step remains visible.
+11. On the pilot briefings (`myanmar-fragmented-sovereignty` and `somaliland-recognition-red-sea-order`), step through `1..4` and `All` across `390px–1900px` in both 3D and flat SVG fallback modes; confirm zero label overlaps, floating badges stay inside the frame, mobile initial load fetches zero 3D textures before tapping `Open 3D terrain view`, `prefers-reduced-motion: reduce` uses the static flat fallback cleanly, and every actor/connection/mapped place can be selected by keyboard with a visible source link and text type label.
 
 Run `npm audit` during dependency reviews. The current Vite 5 development-only advisories are tracked in `docs/KNOWN_ISSUES.md`; do not expose the local development server beyond loopback.
 

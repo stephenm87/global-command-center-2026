@@ -1246,7 +1246,7 @@ export const AFRICA_CASES_2026 = [
                     "label": "Las Anod / Laascaanood",
                     "latitude": 8.4774,
                     "longitude": 47.3597,
-                    "role": "Contested eastern city claimed as capital by SSC-Khaatumo, where fighting erupted in February 2023"
+                    "role": "Contested eastern city claimed as capital by the North Eastern State of Somalia (formerly SSC-Khaatumo), where fighting erupted in February 2023"
                 },
                 {
                     "label": "Mogadishu",
@@ -1256,9 +1256,9 @@ export const AFRICA_CASES_2026 = [
                 },
                 {
                     "label": "Israel",
-                    "latitude": 31.7683,
-                    "longitude": 35.2137,
-                    "role": "Recognizing state whose December 2025 declaration opened embassies with Somaliland in 2026"
+                    "latitude": 31.5,
+                    "longitude": 34.75,
+                    "role": "Recognizing state; Somaliland opened an embassy in Israel in June 2026 and Israel laid an embassy cornerstone in Hargeisa in October 2026"
                 }
             ]
         },
@@ -1394,6 +1394,14 @@ export const AFRICA_CASES_2026 = [
                 "url": "https://www.aljazeera.com/news/2026/11/1/israels-first-ambassador-to-somaliland-presents-credentials-in-hargeisa",
                 "perspective": "Independent reporting on Israeli Ambassador Michael Lotem presenting credentials in Hargeisa, the Israeli embassy cornerstone ceremony, Somaliland's June 2026 embassy opening in Israel, and Somali objections",
                 "supports": "Supports the late-October 2026 credentials and Israeli embassy cornerstone ceremonies in Hargeisa (announced 1 November 2026), Somaliland's June 2026 embassy opening in Israel, Somaliland officials' signalled openness to a base alongside President Cirro's statement that no base talks had been held, and that no other UN member state had recognized Somaliland."
+            },
+            {
+                "title": "2.7. Sool, Sanaag, Cayn and North-Eastern State (NES) — Somalia: Security situation",
+                "publisher": "European Union Agency for Asylum (EUAA)",
+                "publishedAt": "2026-06-01",
+                "url": "https://www.euaa.europa.eu/somalia-security-situation/27-sool-sanaag-cayn-and-north-eastern-state-nes",
+                "perspective": "European Union country-of-origin security report (June 2026) documenting the late-July 2025 establishment of North-East Somalia / North Eastern State (NES) from SSC-Khaatumo",
+                "supports": "Supports the late-July 2025 formation of the North Eastern State of Somalia (NES, formerly SSC-Khaatumo) across Sool, Sanaag, and Buuhoodle, its recognition by Somalia's federal government as a federal member state, and overlapping territorial objections."
             }
         ],
         "waypoints": [
@@ -1414,7 +1422,7 @@ export const AFRICA_CASES_2026 = [
                 "perspectiveType": "local",
                 "conceptInFocus": "Legitimacy",
                 "relatedTimelineDate": "2023-02-06",
-                "narration": "Somalia's federal government rejected Israel's 26 December 2025 declaration as an unlawful move [10]. Its foreign ministry called Sa'ar's trip an \"unauthorized incursion\" into Somali territory [12]. Somalia's UN ambassador urged an emergency Security Council meeting to reject what he called an \"act of aggression\" [11]. Mogadishu and regional blocs invoke Somalia's territorial integrity [6]. Territorial integrity is the principle that a state's borders should not be divided without its consent.\n\nSomaliland's claim to self-determination—a people's right to choose its own political status—is also contested inside the eastern territory it claims [4, 13]. On 6 February 2023, fighting broke out in Las Anod / Laascaanood between Somaliland forces and Dhulbahante clan militia [13]. By May 2023, local hospital data put displacement above 200,000 people [13]. Dhulbahante leaders claim the city as the capital of SSC-Khaatumo, an autonomous local administration for Sool, Sanaag, and Cayn that opposes recognition [4, 13]. Evaluating a statehood bid means asking whose consent counts when local communities themselves disagree.",
+                "narration": "Somalia rejected Israel's 26 December 2025 declaration as unlawful [10], calling Sa'ar's trip an \"unauthorized incursion\" [12] and urging Security Council condemnation of an \"act of aggression\" [11]. Mogadishu and regional blocs invoke territorial integrity—the principle that a state's borders should not be divided without consent [6].\n\nSomaliland's self-determination claim is also contested inside the eastern territory it claims [4, 13]. On 6 February 2023, fighting erupted in Las Anod / Laascaanood between Somaliland forces and Dhulbahante militia; local hospital data put displacement above 200,000 by May 2023 [13]. Dhulbahante leaders claimed the city as capital of SSC-Khaatumo, which opposed recognition [4, 13]; in late July 2025, delegates established the North Eastern State of Somalia, recognized by Mogadishu [16]. Evaluating recognition means asking whose consent counts when local communities disagree.",
                 "focusQuestion": "How should recognition policy account for both territorial integrity and non-uniform local preferences?"
             },
             {
@@ -1424,7 +1432,7 @@ export const AFRICA_CASES_2026 = [
                 "perspectiveType": "institutional",
                 "conceptInFocus": "Power",
                 "relatedTimelineDate": "2026-10",
-                "narration": "Prime Minister Benjamin Netanyahu's office issued the 26 December 2025 declaration \"in the spirit of the Abraham Accords\", the US-backed normalization deals between Israel and several Arab states [1]. Israel also announced plans to cooperate in agriculture, health, technology, and economic development [1]. Somaliland opened an embassy in Israel in June 2026 [15]. In late October, Israeli Ambassador Michael Lotem presented credentials—formal letters accrediting an envoy—in Hargeisa alongside an embassy cornerstone ceremony [15].\n\nGeography gives those diplomatic ties wider strategic reach because Somaliland sits on the Gulf of Aden near the entrance to the Bab el-Mandeb strait, a major sea lane [9]. Somalia's President Hassan Sheikh Mohamud alleged Israel wanted Red Sea naval access [12, 15]. Somaliland officials signalled openness to hosting an Israeli base, though President Cirro stated no base talks had been held [15]. By November 2026, recognition had produced embassies rather than a military base or a second recognizing state [15].",
+                "narration": "Prime Minister Benjamin Netanyahu's office issued the 26 December 2025 declaration \"in the spirit of the Abraham Accords\", the US-backed normalization deals between Israel and several Arab states [1]. Israel also announced plans to cooperate in agriculture, health, technology, and economic development [1]. Somaliland opened an embassy in Israel in June 2026 [15]. In late October, Israeli Ambassador Michael Lotem presented credentials—formal letters accrediting an envoy—in Hargeisa alongside an embassy cornerstone ceremony [15].\n\nGeography gives those diplomatic ties wider strategic reach because Somaliland sits on the Gulf of Aden near the entrance to the Bab el-Mandeb strait, a major sea lane [9]. Somalia's President Hassan Sheikh Mohamud alleged Israel wanted Red Sea naval access [12, 15]. Somaliland officials signalled openness to hosting an Israeli base, though President Cirro stated no base talks had been held [15]. By November 2026, recognition had produced ambassadorial credentials, a Somaliland embassy in Israel, and an Israeli embassy cornerstone rather than a military base or a second recognizing state [15].",
                 "focusQuestion": "When does bilateral recognition alter a regional order rather than merely signal a political preference?"
             },
             {
@@ -1477,9 +1485,9 @@ export const AFRICA_CASES_2026 = [
                 "sourceUrl": "https://au-ssom.org/communique-on-the-preservation-of-the-sovereignty-territorial-integrity-unity-and-stability-of-the-federal-republic-of-somalia/"
             },
             {
-                "term": "SSC-Khaatumo",
-                "definition": "An administration claimed by the Dhulbahante clan in the Sool, Sanaag and Buuhoodle areas, with Las Anod / Laascaanood as its capital. Al Jazeera reported in May 2023 that it had declared itself autonomous.",
-                "sourceUrl": "https://www.aljazeera.com/features/2023/5/10/conflict-in-disputed-las-anod-dims-somalilands-diplomatic-dreams"
+                "term": "North Eastern State of Somalia (formerly SSC-Khaatumo)",
+                "definition": "Federal member state recognized by Somalia in late July 2025 across Sool, Sanaag, and Buuhoodle with Las Anod / Laascaanood as its capital, transitioning from the interim SSC-Khaatumo administration documented by Al Jazeera in May 2023.",
+                "sourceUrl": "https://www.euaa.europa.eu/somalia-security-situation/27-sool-sanaag-cayn-and-north-eastern-state-nes"
             }
         ],
         "debate": [
@@ -1620,7 +1628,392 @@ export const AFRICA_CASES_2026 = [
                 "label": "After Somaliland's June embassy opening in Israel, Israel's first ambassador presents credentials in Hargeisa alongside an embassy cornerstone ceremony (announced 1 November 2026).",
                 "sourceUrl": "https://www.aljazeera.com/news/2026/11/1/israels-first-ambassador-to-somaliland-presents-credentials-in-hargeisa"
             }
-        ]
+        ],
+        "actorMap": {
+            "focusCountry": "Somaliland",
+            "boundaryNote": "The outline shows the territory Somaliland claims and does not imply recognition.",
+            "terrainPatches": [
+                { "url": "/assets/actor-map/somaliland-region.jpg", "bounds": [20, -12, 62, 36], "altitude": 0.00015, "order": 1 },
+                { "url": "/assets/actor-map/somaliland-local.jpg", "bounds": [38, 0, 53, 15], "altitude": 0.0003, "order": 2 }
+            ],
+            "bloc": {
+                "name": "African Union & IGAD member states",
+                "members": [
+                    "Algeria",
+                    "Angola",
+                    "Benin",
+                    "Botswana",
+                    "Burkina Faso",
+                    "Burundi",
+                    "Cabo Verde",
+                    "Cameroon",
+                    "Central African Rep.",
+                    "Chad",
+                    "Comoros",
+                    "Congo",
+                    "Côte d'Ivoire",
+                    "Dem. Rep. Congo",
+                    "Djibouti",
+                    "Egypt",
+                    "Eq. Guinea",
+                    "Eritrea",
+                    "Ethiopia",
+                    "Gabon",
+                    "Gambia",
+                    "Ghana",
+                    "Guinea",
+                    "Guinea-Bissau",
+                    "Kenya",
+                    "Lesotho",
+                    "Liberia",
+                    "Libya",
+                    "Madagascar",
+                    "Malawi",
+                    "Mali",
+                    "Mauritania",
+                    "Mauritius",
+                    "Morocco",
+                    "Mozambique",
+                    "Namibia",
+                    "Niger",
+                    "Nigeria",
+                    "Rwanda",
+                    "S. Sudan",
+                    "São Tomé and Principe",
+                    "Senegal",
+                    "Seychelles",
+                    "Sierra Leone",
+                    "Somalia",
+                    "South Africa",
+                    "Sudan",
+                    "Tanzania",
+                    "Togo",
+                    "Tunisia",
+                    "Uganda",
+                    "W. Sahara",
+                    "Zambia",
+                    "Zimbabwe",
+                    "eSwatini"
+                ]
+            },
+            "contextLabels": [
+                { "name": "Somaliland", "latitude": 9.8, "longitude": 45.6 },
+                { "name": "Somalia", "latitude": 4.7, "longitude": 45.7 },
+                { "name": "Ethiopia", "latitude": 8.6, "longitude": 39.6 },
+                { "name": "Djibouti", "latitude": 11.7, "longitude": 42.6 },
+                { "name": "Eritrea", "latitude": 15.3, "longitude": 38.9 },
+                { "name": "Kenya", "latitude": 0.5, "longitude": 37.9 },
+                { "name": "Yemen", "latitude": 15.5, "longitude": 47.6 },
+                { "name": "Saudi Arabia", "latitude": 23.9, "longitude": 45.1 },
+                { "name": "Egypt", "latitude": 26.8, "longitude": 30.8 },
+                { "name": "Sudan", "latitude": 15.6, "longitude": 30.2 }
+            ],
+            "actors": [
+                {
+                    "id": "somaliland-authorities",
+                    "name": "Somaliland authorities",
+                    "level": "local",
+                    "role": "Self-declared state administering territory from Hargeisa since 1991, recognised by Israel under the 26 December 2025 joint declaration and claimed by the Federal Government of Somalia.",
+                    "sourceUrl": "https://www.horndiplomat.com/israel-officially-recognizes-somaliland-as-sovereign-state/",
+                    "location": {
+                        "kind": "pin",
+                        "place": "Hargeisa",
+                        "latitude": 9.5624,
+                        "longitude": 44.077,
+                        "gazetteer": "GeoNames 57289 (Hargeisa, matched to map.locations)"
+                    }
+                },
+                {
+                    "id": "ssc-khaatumo",
+                    "name": "North Eastern State of Somalia",
+                    "level": "local",
+                    "role": "Established in late July 2025 from the interim SSC-Khaatumo administration across Sool, Sanaag, and Buuhoodle with Las Anod / Laascaanood as capital; recognized by Somalia's federal government as a federal member state and contested by Somaliland and Puntland.",
+                    "sourceUrl": "https://www.euaa.europa.eu/somalia-security-situation/27-sool-sanaag-cayn-and-north-eastern-state-nes",
+                    "location": {
+                        "kind": "pin",
+                        "place": "Las Anod / Laascaanood (formerly SSC-Khaatumo)",
+                        "latitude": 8.4774,
+                        "longitude": 47.3597,
+                        "gazetteer": "GeoNames 400769 (Laascaanood, matched to map.locations)"
+                    }
+                },
+                {
+                    "id": "somalia-fg",
+                    "name": "Federal Government of Somalia",
+                    "level": "state",
+                    "role": "Recognized federal government in Mogadishu rejecting Israel's declaration under Somalia's sovereignty and territorial integrity.",
+                    "sourceUrl": "https://www.pbs.org/newshour/world/african-regional-bodies-reject-somalilands-recognition-as-independent-nation-by-israel",
+                    "location": {
+                        "kind": "pin",
+                        "place": "Mogadishu",
+                        "latitude": 2.0469,
+                        "longitude": 45.3182,
+                        "gazetteer": "Wikipedia / GeoNames 53654 (Mogadishu, lands inside Somalia 50m coastline)"
+                    }
+                },
+                {
+                    "id": "israel",
+                    "name": "Israel",
+                    "level": "state",
+                    "role": "UN member state that signed the 26 December 2025 declaration recognizing Somaliland and accredited an ambassador in October 2026.",
+                    "sourceUrl": "https://www.aljazeera.com/news/2026/11/1/israels-first-ambassador-to-somaliland-presents-credentials-in-hargeisa",
+                    "location": {
+                        "kind": "area",
+                        "label": "Israel",
+                        "countries": ["Israel"],
+                        "anchor": {
+                            "latitude": 31.5,
+                            "longitude": 34.75,
+                            "gazetteer": "GeoNames 294640 (State of Israel geographic center; avoids contested Jerusalem)"
+                        }
+                    }
+                },
+                {
+                    "id": "igad",
+                    "name": "IGAD",
+                    "level": "regional",
+                    "role": "Horn of Africa regional bloc whose secretariat reaffirmed Somalia's unity, sovereignty, and territorial integrity on 27 December 2025.",
+                    "sourceUrl": "https://igad.int/igad-secretariat-reiterates-its-firm-commitment-to-the-federal-republic-of-somalias-unity-sovereignty-and-territorial-integrity",
+                    "location": {
+                        "kind": "area",
+                        "label": "IGAD member states (Horn of Africa)",
+                        "countries": ["Djibouti", "Ethiopia", "Kenya", "Somalia", "S. Sudan", "Sudan", "Uganda"],
+                        "anchor": {
+                            "latitude": 7.2,
+                            "longitude": 37.8,
+                            "gazetteer": "Horn of Africa regional area centroid across IGAD states (not pinned to an HQ city)"
+                        }
+                    }
+                },
+                {
+                    "id": "african-union",
+                    "name": "African Union",
+                    "level": "regional",
+                    "role": "Continental body whose Peace and Security Council declared Israel's recognition null and void on 6 January 2026.",
+                    "sourceUrl": "https://au-ssom.org/communique-on-the-preservation-of-the-sovereignty-territorial-integrity-unity-and-stability-of-the-federal-republic-of-somalia/",
+                    "location": {
+                        "kind": "area",
+                        "label": "African Union member states",
+                        "countries": [
+                            "Algeria", "Angola", "Benin", "Botswana", "Burkina Faso", "Burundi",
+                            "Cabo Verde", "Cameroon", "Central African Rep.", "Chad", "Comoros",
+                            "Congo", "Côte d'Ivoire", "Dem. Rep. Congo", "Djibouti", "Egypt",
+                            "Eq. Guinea", "Eritrea", "Ethiopia", "Gabon", "Gambia", "Ghana",
+                            "Guinea", "Guinea-Bissau", "Kenya", "Lesotho", "Liberia", "Libya",
+                            "Madagascar", "Malawi", "Mali", "Mauritania", "Mauritius", "Morocco",
+                            "Mozambique", "Namibia", "Niger", "Nigeria", "Rwanda", "S. Sudan",
+                            "São Tomé and Principe", "Senegal", "Seychelles", "Sierra Leone",
+                            "Somalia", "South Africa", "Sudan", "Tanzania", "Togo", "Tunisia",
+                            "Uganda", "W. Sahara", "Zambia", "Zimbabwe", "eSwatini"
+                        ],
+                        "anchor": {
+                            "latitude": 7.5,
+                            "longitude": 29.5,
+                            "gazetteer": "Central-East Africa area centroid across AU member states (not pinned to an HQ city)"
+                        }
+                    }
+                },
+                {
+                    "id": "un-security-council",
+                    "name": "UN Security Council (14 of 15)",
+                    "level": "global",
+                    "role": "Fourteen of fifteen Council members condemned Israel's recognition in an emergency meeting on 29 December 2025.",
+                    "sourceUrl": "https://www.aljazeera.com/news/2025/12/30/un-security-council-members-condemn-israels-recognition-of-somaliland",
+                    "location": {
+                        "kind": "noSinglePlace"
+                    }
+                }
+            ],
+            "connections": [
+                {
+                    "id": "israel-recognizes",
+                    "from": "israel",
+                    "to": "somaliland-authorities",
+                    "label": "Recognizes statehood claim",
+                    "type": "support",
+                    "side": 0.14,
+                    "text": "On 26 December 2025, Israel signed a joint declaration with President Abdirahman Mohamed Abdillahi Cirro formally recognizing Somaliland as a sovereign state.",
+                    "sourceUrl": "https://www.horndiplomat.com/israel-officially-recognizes-somaliland-as-sovereign-state/",
+                    "steps": [1, 3, "all"]
+                },
+                {
+                    "id": "somalia-contests",
+                    "from": "somalia-fg",
+                    "to": "somaliland-authorities",
+                    "label": "Asserts territorial integrity",
+                    "type": "pressure",
+                    "side": -0.18,
+                    "text": "Somalia's federal government rejected unilateral recognition as unlawful and asserts legal sovereignty over Somaliland under territorial integrity.",
+                    "sourceUrl": "https://www.pbs.org/newshour/world/african-regional-bodies-reject-somalilands-recognition-as-independent-nation-by-israel",
+                    "steps": [1, 2, "all"]
+                },
+                {
+                    "id": "las-anod-fighting",
+                    "from": "somaliland-authorities",
+                    "to": "ssc-khaatumo",
+                    "label": "2023 fighting in east",
+                    "type": "conflict",
+                    "side": 0.18,
+                    "text": "Fighting began in Las Anod / Laascaanood on 6 February 2023 between Somaliland forces and Dhulbahante clan militia; hospital data put displacement above 200,000 by May 2023.",
+                    "sourceUrl": "https://www.aljazeera.com/features/2023/5/10/conflict-in-disputed-las-anod-dims-somalilands-diplomatic-dreams",
+                    "steps": [2, "all"]
+                },
+                {
+                    "id": "ssc-opposes-bid",
+                    "from": "ssc-khaatumo",
+                    "to": "somaliland-authorities",
+                    "label": "Opposes recognition bid",
+                    "type": "pressure",
+                    "side": 0.22,
+                    "text": "SSC-Khaatumo officials in Sool, Sanaag, and Buuhoodle reject Somaliland's territorial claim and oppose its bid for state recognition (reported through June 2025).",
+                    "sourceUrl": "https://www.theeastafrican.co.ke/tea/news/east-africa/why-ssc-khaatumo-opposes-somaliland-s-bid-for-recognition-5086894",
+                    "steps": [2, "all"]
+                },
+                {
+                    "id": "somaliland-embassy",
+                    "from": "somaliland-authorities",
+                    "to": "israel",
+                    "label": "Opens embassy in Israel",
+                    "type": "support",
+                    "side": -0.16,
+                    "text": "Somaliland opened an embassy in Israel in June 2026, and Israel's first ambassador presented credentials in Hargeisa in late October alongside an embassy cornerstone ceremony.",
+                    "sourceUrl": "https://www.aljazeera.com/news/2026/11/1/israels-first-ambassador-to-somaliland-presents-credentials-in-hargeisa",
+                    "steps": [3, "all"]
+                },
+                {
+                    "id": "somalia-rejects-israel",
+                    "from": "somalia-fg",
+                    "to": "israel",
+                    "label": "Calls visit incursion",
+                    "type": "pressure",
+                    "side": 0.16,
+                    "text": "Somalia's foreign ministry condemned Israeli Foreign Minister Gideon Sa'ar's 6 January 2026 visit to Hargeisa as an \"unauthorized incursion\" into Somali territory.",
+                    "sourceUrl": "https://www.aljazeera.com/news/2026/1/6/israeli-fm-visits-somaliland-after-world-first-recognition-storm",
+                    "steps": [3, "all"]
+                },
+                {
+                    "id": "au-null-void",
+                    "from": "african-union",
+                    "to": "israel",
+                    "label": "Declares move void",
+                    "type": "pressure",
+                    "side": 0.18,
+                    "text": "On 6 January 2026, the AU Peace and Security Council declared Israel's recognition null and void and called for its immediate revocation.",
+                    "sourceUrl": "https://au-ssom.org/communique-on-the-preservation-of-the-sovereignty-territorial-integrity-unity-and-stability-of-the-federal-republic-of-somalia/",
+                    "steps": [4, "all"]
+                },
+                {
+                    "id": "igad-backs-somalia",
+                    "from": "igad",
+                    "to": "somalia-fg",
+                    "label": "Backs Somali unity",
+                    "type": "support",
+                    "side": -0.18,
+                    "text": "The IGAD Secretariat reiterated its firm commitment to Somalia's unity, sovereignty, and territorial integrity on 27 December 2025 and called for dialogue.",
+                    "sourceUrl": "https://igad.int/igad-secretariat-reiterates-its-firm-commitment-to-the-federal-republic-of-somalias-unity-sovereignty-and-territorial-integrity",
+                    "steps": [4, "all"]
+                },
+                {
+                    "id": "unsc-condemns",
+                    "from": "un-security-council",
+                    "to": "israel",
+                    "label": "14 of 15 condemn",
+                    "type": "pressure",
+                    "text": "In an emergency UN Security Council session, 14 of 15 members condemned Israel's recognition while the United States said it had no announcement to make on US recognition of Somaliland.",
+                    "sourceUrl": "https://www.aljazeera.com/news/2025/12/30/un-security-council-members-condemn-israels-recognition-of-somaliland",
+                    "steps": [4, "all"]
+                }
+            ],
+            "steps": [
+                {
+                    "key": "1",
+                    "shortLabel": "Statehood claim",
+                    "levels": ["local", "state"],
+                    "cam": { "lat": 14.5, "lng": 41.5, "dist": 0.56, "tilt": 36 },
+                    "bloc": false,
+                    "actors": [
+                        { "id": "somaliland-authorities", "preferredSide": "l", "note": "Hargeisa administration" },
+                        { "id": "israel", "preferredSide": "t", "note": "recognized Dec 2025" },
+                        { "id": "somalia-fg", "preferredSide": "b" }
+                    ],
+                    "connections": ["israel-recognizes", "somalia-contests"]
+                },
+                {
+                    "key": "2",
+                    "shortLabel": "Disputed east",
+                    "note": "Hospital data put displacement in Las Anod / Laascaanood above 200,000 by May 2023 (Al Jazeera).",
+                    "levels": ["local", "state"],
+                    "cam": { "lat": 6.8, "lng": 45.6, "dist": 0.19, "tilt": 50 },
+                    "bloc": false,
+                    "actors": [
+                        { "id": "somaliland-authorities", "preferredSide": "l" },
+                        { "id": "ssc-khaatumo", "preferredSide": "r", "note": "capital claim" },
+                        { "id": "somalia-fg", "preferredSide": "b" }
+                    ],
+                    "connections": ["las-anod-fighting", "ssc-opposes-bid", "somalia-contests"]
+                },
+                {
+                    "key": "3",
+                    "shortLabel": "Embassy ties",
+                    "note": "Not drawn: Somalia's president alleged Somaliland agreed to host an Israeli military base; Somaliland denied it, and President Cirro said no base talks had been held (Al Jazeera).",
+                    "levels": ["local", "state"],
+                    "cam": { "lat": 15.8, "lng": 40.8, "dist": 0.58, "tilt": 38 },
+                    "bloc": false,
+                    "actors": [
+                        { "id": "somaliland-authorities", "preferredSide": "l" },
+                        { "id": "israel", "preferredSide": "t", "note": "ambassador accredited Oct 2026" },
+                        { "id": "somalia-fg", "preferredSide": "b" }
+                    ],
+                    "connections": ["israel-recognizes", "somaliland-embassy", "somalia-rejects-israel"]
+                },
+                {
+                    "key": "4",
+                    "shortLabel": "AU & UN response",
+                    "levels": ["local", "state", "regional", "global"],
+                    "cam": { "lat": 16.5, "lng": 37.5, "dist": 0.85, "tilt": 18 },
+                    "bloc": true,
+                    "actors": [
+                        { "id": "african-union", "preferredSide": "l", "note": "calls move null and void" },
+                        { "id": "igad", "preferredSide": "bl" },
+                        { "id": "somalia-fg", "preferredSide": "b" },
+                        { "id": "israel", "preferredSide": "r" },
+                        { "id": "somaliland-authorities", "small": true },
+                        { "id": "un-security-council" }
+                    ],
+                    "connections": ["au-null-void", "igad-backs-somalia", "unsc-condemns"]
+                },
+                {
+                    "key": "all",
+                    "shortLabel": "All",
+                    "summary": "Every sourced actor and connection connecting Hargeisa, Las Anod, Mogadishu, Israel, IGAD, the African Union, and UN Security Council.",
+                    "note": "Not drawn: No other UN member state had recognized Somaliland as of 1 November 2026 (Al Jazeera).",
+                    "levels": ["local", "state", "regional", "global"],
+                    "cam": { "lat": 16.5, "lng": 37.5, "dist": 0.92, "tilt": 16 },
+                    "bloc": true,
+                    "quietLabels": true,
+                    "actors": [
+                        { "id": "somaliland-authorities", "preferredSide": "l" },
+                        { "id": "ssc-khaatumo", "small": true },
+                        { "id": "somalia-fg", "preferredSide": "b" },
+                        { "id": "israel", "preferredSide": "r" },
+                        { "id": "igad", "small": true },
+                        { "id": "african-union", "preferredSide": "l" },
+                        { "id": "un-security-council" }
+                    ],
+                    "connections": [
+                        "israel-recognizes",
+                        "somalia-contests",
+                        "las-anod-fighting",
+                        "ssc-opposes-bid",
+                        "somaliland-embassy",
+                        "somalia-rejects-israel",
+                        "au-null-void",
+                        "igad-backs-somalia",
+                        "unsc-condemns"
+                    ]
+                }
+            ]
+        }
     },
     {
         "id": "zambia-electricity-reset-climate-access",

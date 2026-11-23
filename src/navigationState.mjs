@@ -66,10 +66,13 @@ export function parseBriefingEntryFromSearch(search = '') {
     const params = new URLSearchParams(search);
     const rawStep = params.get('step');
     const numericStep = rawStep === null ? undefined : Number(rawStep);
+    const step = rawStep === 'all'
+        ? 'all'
+        : (Number.isInteger(numericStep) && numericStep >= 1 ? numericStep : undefined);
     return {
         tourId: params.get('tour') || undefined,
         nodeId: resolveActorId(params.get('actor'), undefined),
-        step: Number.isInteger(numericStep) && numericStep >= 1 ? numericStep : undefined,
+        step,
     };
 }
 
