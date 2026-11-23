@@ -15,6 +15,7 @@ import {
     buildCasePrintUrl,
     buildListPrintTitle,
     buildPageUrl,
+    collectActorMapConnections,
     collectSanitizedSources,
     FORECAST_EXPORT_LIMIT,
     formatExportDate,
@@ -173,6 +174,7 @@ export function CaseBriefingPrintContent({
     );
 
     const locations = Array.isArray(tour.map?.locations) ? tour.map.locations : [];
+    const actorConnections = collectActorMapConnections(tour);
     const waypoints = Array.isArray(tour.waypoints) ? tour.waypoints : [];
     const influenceStages = Array.isArray(tour.influenceCheck) ? tour.influenceCheck : [];
     const backgroundParagraphs = splitParagraphs(tour.background);
@@ -283,10 +285,10 @@ export function CaseBriefingPrintContent({
             )}
 
             {/* 3. Where */}
-            {locations.length > 0 && (
+            {(locations.length > 0 || actorConnections.length > 0) && (
                 <section className="gcc-print-section" aria-labelledby="gcc-print-where">
                     <h2 id="gcc-print-where">Where</h2>
-                    {MapComponent && tour.map && (
+                    {locations.length > 0 && MapComponent && tour.map && (
                         <div className="gcc-print-figure">
                             <MapComponent
                                 map={tour.map}
@@ -296,14 +298,41 @@ export function CaseBriefingPrintContent({
                             />
                         </div>
                     )}
-                    <ol className="gcc-print-locations">
-                        {locations.map((loc, idx) => (
-                            <li key={`${loc.label}-${idx}`}>
-                                <strong>{loc.label}</strong>
-                                {loc.role ? ` — ${loc.role}` : ''}
-                            </li>
-                        ))}
-                    </ol>
+                    {locations.length > 0 && (
+                        <ol className="gcc-print-locations">
+                            {locations.map((loc, idx) => (
+                                <li key={`${loc.label}-${idx}`}>
+                                    <strong>{loc.label}</strong>
+                                    {loc.role ? ` — ${loc.role}` : ''}
+                                </li>
+                            ))}
+                        </ol>
+                    )}
+                    {actorConnections.length > 0 && (
+                        <div className="gcc-print-subsection">
+                            <h3>Actor connections</h3>
+                            <table className="gcc-print-table gcc-print-table--connections">
+                                <thead>
+                                    <tr>
+                                        <th scope="col" className="gcc-print-table-col-actor">From</th>
+                                        <th scope="col" className="gcc-print-table-col-actor">To</th>
+                                        <th scope="col" className="gcc-print-table-col-type">Type</th>
+                                        <th scope="col">Description</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {actorConnections.map(conn => (
+                                        <tr key={conn.id}>
+                                            <td>{conn.from}</td>
+                                            <td>{conn.to}</td>
+                                            <td>{conn.type}</td>
+                                            <td>{conn.description}</td>
+                                        </tr>
+                                    ))}
+                                </tbody>
+                            </table>
+                        </div>
+                    )}
                 </section>
             )}
 

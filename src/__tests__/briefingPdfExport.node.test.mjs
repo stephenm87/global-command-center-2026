@@ -404,3 +404,54 @@ test('Print layout deduplicates matching caution text, binds tail source to foot
     );
     assert.match(sudanMarkup, /class="gcc-print-tail-keep"[\s\S]*class="gcc-print-footer"/);
 });
+
+test('Print Where section includes actor connections table only for cases with actorMap connections', async t => {
+    const vite = await createTestViteServer(t);
+    const { CaseBriefingPrintContent } = await vite.ssrLoadModule('/src/components/PrintBriefingDocument.jsx');
+    const { GUIDED_TOURS } = await vite.ssrLoadModule('/src/nexusTours.js');
+    const { collectActorMapConnections } = await vite.ssrLoadModule('/src/utils/briefingPrint.mjs');
+
+    const expectedCounts = {
+        'myanmar-fragmented-sovereignty': 8,
+        'somaliland-recognition-red-sea-order': 9,
+    };
+
+    for (const [id, count] of Object.entries(expectedCounts)) {
+        const tour = GUIDED_TOURS.find(item => item.id === id);
+        const rows = collectActorMapConnections(tour);
+        assert.equal(rows.length, count, `${id} should collect all actorMap connections`);
+        const markup = renderToStaticMarkup(React.createElement(CaseBriefingPrintContent, {
+            tour,
+            exportedAt: '24 November 2026',
+        }));
+        const whereIdx = markup.indexOf('>Where</h2>');
+        const briefingIdx = markup.indexOf('>The briefing</h2>');
+        const whereSlice = markup.slice(whereIdx, briefingIdx);
+        assert.match(whereSlice, /<h3>Actor connections<\/h3>/);
+        assert.match(whereSlice, /class="gcc-print-table gcc-print-table--connections"/);
+        for (const col of ['From', 'To', 'Type', 'Description']) {
+            assert.match(whereSlice, new RegExp(`>${col}</th>`));
+        }
+        for (const row of rows) {
+            assert.ok(decodeHtmlEntities(whereSlice).includes(row.from), `${id} missing from ${row.from}`);
+            assert.ok(decodeHtmlEntities(whereSlice).includes(row.to), `${id} missing to ${row.to}`);
+            assert.ok(decodeHtmlEntities(whereSlice).includes(row.type), `${id} missing type ${row.type}`);
+            assert.ok(decodeHtmlEntities(whereSlice).includes(row.description), `${id} missing description ${row.description}`);
+        }
+    }
+
+    for (const id of [
+        'greenland-autonomy-security-minerals',
+        'sudan-displacement-regional-spillover',
+        'mongolia-coal-critical-minerals-transition',
+    ]) {
+        const tour = GUIDED_TOURS.find(item => item.id === id);
+        assert.deepEqual(collectActorMapConnections(tour), []);
+        const markup = renderToStaticMarkup(React.createElement(CaseBriefingPrintContent, {
+            tour,
+            exportedAt: '24 November 2026',
+        }));
+        assert.doesNotMatch(markup, /Actor connections/);
+        assert.doesNotMatch(markup, /gcc-print-table--connections/);
+    }
+});

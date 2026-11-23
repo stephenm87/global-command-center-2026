@@ -78,6 +78,31 @@ export function collectSanitizedSources(tour) {
     return collected;
 }
 
+const CONNECTION_TYPE_LABELS = {
+    conflict: 'Conflict',
+    pressure: 'Pressure',
+    support: 'Support',
+    movement: 'Movement',
+};
+
+export function collectActorMapConnections(tour) {
+    const connections = tour?.actorMap?.connections;
+    if (!Array.isArray(connections) || connections.length === 0) return [];
+    const actorNameById = new Map((tour.actorMap.actors || []).map(actor => [actor.id, actor.name]));
+    return connections.map((conn, idx) => {
+        const rawType = String(conn.type || '').trim();
+        const type = CONNECTION_TYPE_LABELS[rawType]
+            || (rawType ? `${rawType[0].toUpperCase()}${rawType.slice(1)}` : '');
+        return {
+            id: conn.id || `${conn.from}-${conn.to}-${idx}`,
+            from: actorNameById.get(conn.from) || conn.from || '',
+            to: actorNameById.get(conn.to) || conn.to || '',
+            type,
+            description: String(conn.label || conn.text || '').trim(),
+        };
+    });
+}
+
 export function sanitizeListItems(items, limit = null) {
     const rawList = Array.isArray(items) ? items : [];
     const sliced = Number.isInteger(limit) && limit >= 0 ? rawList.slice(0, limit) : rawList;

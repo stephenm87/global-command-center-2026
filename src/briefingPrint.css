@@ -475,6 +475,25 @@
         width: 24%;
     }
 
+    .gcc-print-table--connections {
+        font-size: 9pt;
+        line-height: 1.32;
+    }
+
+    .gcc-print-table--connections th,
+    .gcc-print-table--connections td {
+        padding: 3.5pt 5pt;
+    }
+
+    .gcc-print-table-col-actor {
+        width: 24%;
+    }
+
+    .gcc-print-table-col-type {
+        width: 12%;
+        white-space: nowrap;
+    }
+
     /* Key figures */
     .gcc-print-figures-grid {
         display: grid;
