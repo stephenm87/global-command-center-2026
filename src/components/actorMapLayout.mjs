@@ -228,21 +228,21 @@ export function actorLabelBox(x, y, r, side, title, note = '', offsetX = 0, line
         return { x0, y0, x1: x0 + w, y1: y0 + h };
     }
     if (side === 'tr') {
-        const x0 = x + gap * 0.75;
+        const x0 = x + gap * 0.75 + offsetX;
         const y1 = y - gap * 0.65;
         return { x0, y0: y1 - h, x1: x0 + w, y1 };
     }
     if (side === 'tl') {
-        const x1 = x - gap * 0.75;
+        const x1 = x - gap * 0.75 + offsetX;
         const y1 = y - gap * 0.65;
         return { x0: x1 - w, y0: y1 - h, x1, y1 };
     }
     if (side === 'br') {
-        const x0 = x + gap * 0.75;
+        const x0 = x + gap * 0.75 + offsetX;
         const y0 = y + gap * 0.65;
         return { x0, y0, x1: x0 + w, y1: y0 + h };
     }
-    const x1 = x - gap * 0.75;
+    const x1 = x - gap * 0.75 + offsetX;
     const y0 = y + gap * 0.65;
     return { x0: x1 - w, y0, x1, y1: y0 + h };
 }
@@ -349,10 +349,16 @@ export function solveActorMapLabels({
         let fallbackFree = null;
         for (const { showNote, lines } of attempts) {
             for (const side of sides) {
-                const offsets = (side === 't' || side === 'b') ? TOP_BOTTOM_NUDGE_X : [0];
+                const offsets = (side === 't' || side === 'b')
+                    ? TOP_BOTTOM_NUDGE_X
+                    : (side === 'tr' || side === 'br')
+                        ? [0, 14]
+                        : (side === 'tl' || side === 'bl')
+                            ? [0, -14]
+                            : [0];
                 for (const offsetX of offsets) {
                     const box = actorLabelBox(item.x, item.y, item.r || 8, side, item.name, showNote ? item.note : '', offsetX, lines);
-                    if (offsetX !== 0 && (item.x < box.x0 - 10 || item.x > box.x1 + 10)) continue;
+                    if ((side === 't' || side === 'b') && offsetX !== 0 && (item.x < box.x0 - 10 || item.x > box.x1 + 10)) continue;
                     if (!isFree(box, item.id)) continue;
                     if (!boxIntersectsArcs(box, arcPoints, { excludeArcId: null, pad: 4 })) {
                         chosen = { visible: true, side, showNote, offsetX, lines, box };

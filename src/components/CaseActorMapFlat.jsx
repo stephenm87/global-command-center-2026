@@ -359,8 +359,8 @@ export default function CaseActorMapFlat({
         for (const loc of mapLocations || []) {
             if (!Number.isFinite(Number(loc.latitude)) || !Number.isFinite(Number(loc.longitude))) continue;
             const coord = [Number(loc.longitude), Number(loc.latitude)];
-            const matchesStepActor = [...actorPositions.keys()].some(id => {
-                const c = actorCoord(actorById.get(id));
+            const matchesStepActor = (step.actors || []).some(e => {
+                const c = actorCoord(actorById.get(e.id));
                 return c && Math.hypot(c[0] - coord[0], c[1] - coord[1]) < stepPlaceThresholdDeg;
             });
             if (matchesStepActor || !isVisible(coord)) continue;
@@ -831,19 +831,19 @@ function renderFlatPositionedText(r, placed, title, noteText = '', titleClass = 
         y = off + 11;
         anchor = 'middle';
     } else if (placed.side === 'tr') {
-        x = off * 0.85;
+        x = off * 0.85 + (placed.offsetX || 0);
         y = -off * 0.7 - (noteText ? 13 : 2) - extraLineH;
         anchor = 'start';
     } else if (placed.side === 'tl') {
-        x = -off * 0.85;
+        x = -off * 0.85 + (placed.offsetX || 0);
         y = -off * 0.7 - (noteText ? 13 : 2) - extraLineH;
         anchor = 'end';
     } else if (placed.side === 'br') {
-        x = off * 0.85;
+        x = off * 0.85 + (placed.offsetX || 0);
         y = off * 0.7 + 11;
         anchor = 'start';
     } else {
-        x = -off * 0.85;
+        x = -off * 0.85 + (placed.offsetX || 0);
         y = off * 0.7 + 11;
         anchor = 'end';
     }

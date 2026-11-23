@@ -539,7 +539,6 @@
 .flat-place-label {
     fill: #c4d6de;
     font: 600 9.5px/1 'Roboto Mono', monospace;
-    text-anchor: middle;
     paint-order: stroke;
     stroke: #04080d;
     stroke-width: 3px;
@@ -798,6 +797,7 @@
 
 /* Cluster popover (3D hover/focus & Flat overlay) + Side panel actor list */
 .n3.cluster .actor-cluster-popover {
+    box-sizing: border-box;
     display: none;
     position: absolute;
     left: 10px;
@@ -819,6 +819,7 @@
 }
 
 .flat-cluster-popover {
+    box-sizing: border-box;
     position: absolute;
     z-index: 30;
     width: 230px;

@@ -1124,35 +1124,39 @@ export default function CaseActorMap3D({
                 const popLeft = Math.max(8 - screenX, Math.min(width - 232 - screenX, 10));
                 entry.pop.style.left = `${popLeft.toFixed(1)}px`;
                 entry.popTitle.textContent = it.cluster.name;
-                entry.popList.replaceChildren(...it.members.map(member => {
-                    const li = document.createElement('li');
-                    const btn = document.createElement('button');
-                    btn.type = 'button';
-                    btn.className = 'actor-cluster-popover-item';
-                    btn.setAttribute('data-focus-key', `cluster-member:${it.id}:${member.id}`);
-                    btn.style.setProperty('--c', LEVEL_COLORS[member.level] || '#67d5f5');
-                    const dot = document.createElement('i');
-                    dot.setAttribute('aria-hidden', 'true');
-                    const copy = document.createElement('span');
-                    const b = document.createElement('b');
-                    b.textContent = member.name;
-                    const sm = document.createElement('small');
-                    sm.textContent = member.location.kind === 'pin'
-                        ? member.location.place
-                        : member.location.kind === 'area'
-                            ? member.location.label
-                            : 'No single place';
-                    copy.appendChild(b);
-                    copy.appendChild(sm);
-                    btn.appendChild(dot);
-                    btn.appendChild(copy);
-                    btn.addEventListener('click', e => {
-                        e.stopPropagation();
-                        onSelectRef.current?.('actor', member.id);
-                    });
-                    li.appendChild(btn);
-                    return li;
-                }));
+                const memberKey = it.members.map(m => m.id).join(',');
+                if (entry.popMemberKey !== memberKey) {
+                    entry.popMemberKey = memberKey;
+                    entry.popList.replaceChildren(...it.members.map(member => {
+                        const li = document.createElement('li');
+                        const btn = document.createElement('button');
+                        btn.type = 'button';
+                        btn.className = 'actor-cluster-popover-item';
+                        btn.setAttribute('data-focus-key', `cluster-member:${it.id}:${member.id}`);
+                        btn.style.setProperty('--c', LEVEL_COLORS[member.level] || '#67d5f5');
+                        const dot = document.createElement('i');
+                        dot.setAttribute('aria-hidden', 'true');
+                        const copy = document.createElement('span');
+                        const b = document.createElement('b');
+                        b.textContent = member.name;
+                        const sm = document.createElement('small');
+                        sm.textContent = member.location.kind === 'pin'
+                            ? member.location.place
+                            : member.location.kind === 'area'
+                                ? member.location.label
+                                : 'No single place';
+                        copy.appendChild(b);
+                        copy.appendChild(sm);
+                        btn.appendChild(dot);
+                        btn.appendChild(copy);
+                        btn.addEventListener('click', e => {
+                            e.stopPropagation();
+                            onSelectRef.current?.('actor', member.id);
+                        });
+                        li.appendChild(btn);
+                        return li;
+                    }));
+                }
                 syncPinLabel(entry, placed, it.cluster.name, placed?.showNote ? (it.cluster.note || '') : '');
                 entry.datum.at = it.at;
                 entry.datum.alt = it.alt;
