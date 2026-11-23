@@ -74,7 +74,7 @@ export default function CaseActorMap({
     const [webglAvailable, setWebglAvailable] = useState(true);
     const [webglChecked, setWebglChecked] = useState(false);
     const [lowPowerInitial] = useState(() => isLowPowerDeviceConfig());
-    const [networkChecked, setNetworkChecked] = useState(() => isSlowConnectionConfig());
+    const [networkChecked, setNetworkChecked] = useState(() => isLowPowerDeviceConfig() || isSlowConnectionConfig());
     const [slowConnection, setSlowConnection] = useState(() => isSlowConnectionConfig());
     const [terrainReady, setTerrainReady] = useState(false);
     const [hasScrolledIntoView, setHasScrolledIntoView] = useState(false);
@@ -82,11 +82,11 @@ export default function CaseActorMap({
     const [userModeChoice, setUserModeChoice] = useState(null);
     const [fallbackForced, setFallbackForced] = useState(false);
 
-    // Check connection speed once using timed countries-110m fetch fallback when NetworkInfo
-    // does not already mark a slow connection (or when running without Network Information API).
+    // Check connection speed once using timed countries-110m fetch fallback on desktop
+    // when NetworkInfo does not already mark a slow connection.
     useEffect(() => {
-        if (isSlowConnectionConfig()) {
-            setSlowConnection(true);
+        if (isLowPowerDeviceConfig() || isSlowConnectionConfig()) {
+            setSlowConnection(isSlowConnectionConfig());
             setNetworkChecked(true);
             return undefined;
         }

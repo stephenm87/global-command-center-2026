@@ -119,6 +119,14 @@ function computeTargetView(step, surfaceCoords, width, height, hasFloating) {
     return { lng: step.cam.lng, lat: step.cam.lat, half };
 }
 
+function initialFlatBox() {
+    if (typeof window === 'undefined') return { width: 533, height: 540 };
+    if (window.innerWidth < 720) {
+        return { width: Math.max(280, window.innerWidth - 32), height: 440 };
+    }
+    return { width: 533, height: 540 };
+}
+
 export default function CaseActorMapFlat({
     actorMap,
     mapLocations = [],
@@ -129,39 +137,8 @@ export default function CaseActorMapFlat({
 }) {
     const uid = useId().replace(/[^a-zA-Z0-9_-]/g, '');
     const wrapRef = useRef(null);
-    const [box, setBox] = useState({ width: 720, height: 520 });
+    const [box, setBox] = useState(initialFlatBox);
     const [countries, setCountries] = useState(null);
-    const [view, setView] = useState(() => ({
-        lng: actorMap?.steps?.[0]?.cam?.lng ?? 96,
-        lat: actorMap?.steps?.[0]?.cam?.lat ?? 20,
-        half: 10,
-    }));
-    const currentViewRef = useRef(view);
-    currentViewRef.current = view;
-
-    useEffect(() => {
-        let cancelled = false;
-        loadWorld110()
-            .then(feats => { if (!cancelled) setCountries(feats); })
-            .catch(() => {});
-        return () => { cancelled = true; };
-    }, []);
-
-    useEffect(() => {
-        const el = wrapRef.current;
-        if (!el) return undefined;
-        const measure = () => {
-            const w = Math.floor(el.clientWidth);
-            const h = Math.floor(el.clientHeight);
-            if (w > 0 && h > 0) {
-                setBox(prev => (prev.width === w && prev.height === h ? prev : { width: w, height: h }));
-            }
-        };
-        measure();
-        const ro = typeof ResizeObserver === 'function' ? new ResizeObserver(measure) : null;
-        ro?.observe(el);
-        return () => ro?.disconnect();
-    }, []);
 
     const step = useMemo(
         () => actorMap?.steps?.find(s => String(s.key) === String(activeStepKey)) || actorMap?.steps?.[0],
@@ -191,10 +168,57 @@ export default function CaseActorMapFlat({
             .filter(actor => actor?.location?.kind === 'noSinglePlace');
     }, [step, actorById]);
 
+    const [view, setView] = useState(() => computeTargetView(
+        step,
+        surfaceCoords,
+        box.width,
+        box.height,
+        floatingActors.length > 0,
+    ));
+    const currentViewRef = useRef(view);
+    currentViewRef.current = view;
+    const lastStepKeyRef = useRef(`${actorMap?.focusCountry || ''}:${String(step?.key || activeStepKey)}`);
+    const mountInitRef = useRef(false);
+
+    useEffect(() => {
+        let cancelled = false;
+        loadWorld110()
+            .then(feats => { if (!cancelled) setCountries(feats); })
+            .catch(() => {});
+        return () => { cancelled = true; };
+    }, []);
+
+    useEffect(() => {
+        const el = wrapRef.current;
+        if (!el) return undefined;
+        const measure = () => {
+            const w = Math.floor(el.clientWidth);
+            const h = Math.floor(el.clientHeight);
+            if (w > 0 && h > 0) {
+                setBox(prev => (prev.width === w && prev.height === h ? prev : { width: w, height: h }));
+            }
+        };
+        measure();
+        const ro = typeof ResizeObserver === 'function' ? new ResizeObserver(measure) : null;
+        ro?.observe(el);
+        return () => ro?.disconnect();
+    }, []);
+
     useEffect(() => {
         const target = computeTargetView(step, surfaceCoords, box.width, box.height, floatingActors.length > 0);
-        if (reducedMotion || typeof requestAnimationFrame !== 'function') {
-            setView(target);
+        const stepId = `${actorMap?.focusCountry || ''}:${String(step?.key || activeStepKey)}`;
+        const isStepTransition = mountInitRef.current && lastStepKeyRef.current !== stepId;
+        mountInitRef.current = true;
+        lastStepKeyRef.current = stepId;
+
+        if (!isStepTransition || reducedMotion || typeof requestAnimationFrame !== 'function') {
+            setView(prev => (
+                Math.abs(prev.lng - target.lng) < 0.01
+                && Math.abs(prev.lat - target.lat) < 0.01
+                && Math.abs(prev.half - target.half) < 0.01
+                    ? prev
+                    : target
+            ));
             return undefined;
         }
         const from = { ...currentViewRef.current };
@@ -215,7 +239,7 @@ export default function CaseActorMapFlat({
         };
         raf = requestAnimationFrame(tick);
         return () => cancelAnimationFrame(raf);
-    }, [step, surfaceCoords, box.width, box.height, floatingActors.length, reducedMotion]);
+    }, [actorMap?.focusCountry, activeStepKey, step, surfaceCoords, box.width, box.height, floatingActors.length, reducedMotion]);
 
     const scene = useMemo(() => {
         if (!step) return null;
@@ -463,6 +487,25 @@ export default function CaseActorMapFlat({
         };
     }, [step, box, view, floatingActors, actorMap, actorById, connById, mapLocations, selected]);
 
+    const countryPaths = useMemo(() => {
+        if (!countries || !scene) return [];
+        const items = [];
+        for (const feat of countries) {
+            const name = feat.properties?.name;
+            const d = scene.pathGen(feat);
+            if (!d) continue;
+            const isFocus = name === actorMap.focusCountry;
+            const isBloc = !isFocus && scene.blocSet.has(name);
+            const isArea = !isFocus && !isBloc && scene.activeCountries.has(name);
+            items.push({
+                key: feat.id ?? name,
+                d,
+                cls: `flat-country${isFocus ? ' is-focus' : ''}${isBloc ? ' is-bloc' : ''}${isArea ? ' is-area' : ''}`,
+            });
+        }
+        return items;
+    }, [countries, scene, actorMap?.focusCountry]);
+
     if (!actorMap || !step || !scene) return null;
 
     const glowId = `flat-glow-${uid}`;
@@ -506,21 +549,9 @@ export default function CaseActorMapFlat({
                 <path d={scene.sphereDisc} className="flat-sphere" />
                 <path d={scene.graticule} className="flat-graticule" />
                 <g>
-                    {(countries || []).map(feat => {
-                        const name = feat.properties?.name;
-                        const isFocus = name === actorMap.focusCountry;
-                        const isBloc = !isFocus && scene.blocSet.has(name);
-                        const isArea = !isFocus && !isBloc && scene.activeCountries.has(name);
-                        const d = scene.pathGen(feat);
-                        if (!d) return null;
-                        return (
-                            <path
-                                key={feat.id ?? name}
-                                d={d}
-                                className={`flat-country${isFocus ? ' is-focus' : ''}${isBloc ? ' is-bloc' : ''}${isArea ? ' is-area' : ''}`}
-                            />
-                        );
-                    })}
+                    {countryPaths.map(item => (
+                        <path key={item.key} d={item.d} className={item.cls} />
+                    ))}
                 </g>
                 <path d={scene.sphereDisc} fill={`url(#${glowId})`} pointerEvents="none" />
                 <path d={scene.sphereDisc} className="flat-rim" />
