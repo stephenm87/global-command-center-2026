@@ -52,7 +52,15 @@ test('supabase client rejects placeholder publishable keys and exposes maybeSing
 
 test('AuthBadge handles null user.email safely and AuthModal renders accessible labelled email input', async t => {
     const vite = await createTestViteServer(t);
-    const { AuthBadge, AuthModal, getDisplayName } = await vite.ssrLoadModule('/src/AuthModal.jsx');
+    const {
+        AuthBadge,
+        AuthModal,
+        getDisplayName,
+        ACCOUNT_NOT_ALLOWED_MESSAGE,
+        SIGNUP_DISABLED_MESSAGE,
+        SMTP_DELIVERY_REFUSED_MESSAGE,
+        formatAuthError,
+    } = await vite.ssrLoadModule('/src/AuthModal.jsx');
 
     assert.equal(typeof getDisplayName, 'function');
     assert.equal(getDisplayName({ id: 'u-no-email', email: null }), 'Operator');
@@ -75,6 +83,37 @@ test('AuthBadge handles null user.email safely and AuthModal renders accessible 
     assert.match(modalMarkup, /id="gcc-auth-email"/);
     assert.match(modalMarkup, /role="alert"/);
     assert.match(modalMarkup, /expired/);
+
+    const refusedMarkup = renderToStaticMarkup(React.createElement(AuthModal, {
+        onClose: () => {},
+        initialError: ACCOUNT_NOT_ALLOWED_MESSAGE,
+    }));
+    assert.match(refusedMarkup, /role="alert"/);
+    assert.match(refusedMarkup, /not authorized/i);
+
+    assert.equal(formatAuthError({ code: 'signup_disabled' }), SIGNUP_DISABLED_MESSAGE);
+    assert.equal(formatAuthError({ code: 'otp_disabled', message: 'Signups not allowed for otp' }), SIGNUP_DISABLED_MESSAGE);
+    assert.equal(formatAuthError({ code: 'user_not_found', message: 'User not found' }), SIGNUP_DISABLED_MESSAGE);
+    assert.equal(formatAuthError({ code: 'email_address_not_authorized' }), SMTP_DELIVERY_REFUSED_MESSAGE);
+    assert.equal(formatAuthError({ message: 'Email address not authorized by SMTP' }), SMTP_DELIVERY_REFUSED_MESSAGE);
+    assert.equal(formatAuthError({ message: 'Signups not allowed for this instance' }), SIGNUP_DISABLED_MESSAGE);
+    assert.match(formatAuthError({ code: 'over_email_send_rate_limit' }), /Too many sign-in requests/i);
+    assert.match(formatAuthError({ message: 'unexpected internal provider detail' }), /Sign-in could not be completed/i);
+
+    const signupClosedMarkup = renderToStaticMarkup(React.createElement(AuthModal, {
+        onClose: () => {},
+        initialError: SIGNUP_DISABLED_MESSAGE,
+    }));
+    assert.match(signupClosedMarkup, /role="alert"/);
+    assert.match(signupClosedMarkup, /New accounts are closed right now/);
+
+    const authSource = fs.readFileSync(path.join(REPO_ROOT, 'src/AuthModal.jsx'), 'utf8');
+    assert.match(authSource, /shouldCreateUser:\s*false/, 'AuthModal must set shouldCreateUser: false when new sign-ups are closed');
+    assert.doesNotMatch(authSource, /console\.(log|warn|info|error)\(/, 'AuthModal must never log user email addresses');
+
+    const appJsx = fs.readFileSync(path.join(REPO_ROOT, 'src/App.jsx'), 'utf8');
+    assert.match(appJsx, /account_not_allowed/, 'App.jsx must handle server-side allow-list refusals cleanly');
+    assert.ok(!appJsx.includes('errText.substring'), 'App.jsx fetchLiveNews must not leak raw response text');
 });
 
 test('App.jsx uses maybeSingle() + debounced upsert, createDebouncedRunner coalesces bursts, and user_data RLS SQL migration exists', async t => {

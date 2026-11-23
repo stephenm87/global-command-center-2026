@@ -7,7 +7,7 @@ Global Command Center 2026 is an educational web application tailored for IB Glo
 - **Multi-Perspective Case Library**: 29 dated editorial cases—nine original cases plus 20 new cases—with exactly three core readings apiece: one local, one institutional, and one independent perspective.
 - **Searchable Guided Briefings**: Four- or five-step learning paths with text search, region and issue filters, attributed evidence, uncertainty, review dates, source links, and discussion questions.
 - **Editorial Cases Globe Layer**: A dedicated toggle maps the case library separately from provider intelligence. Regional and global cases can use multiple representative locations instead of a misleading single pin.
-- **AI-Powered Intelligence**: Summaries and news aggregation leveraging Gemini, Serper, and GNews.
+- **AI-Powered Intelligence**: Authenticated summaries and custom topic search via Gemini, Firecrawl, and Serper, guarded by durable rate limits, daily spend caps, and optional sign-in allow-lists.
 - **Balanced Current-Intelligence Feed**: Anonymous cached updates are selected across seven regions and six issue lenses with publisher and repeated-event limits, transparent source roles, and visible selection provenance.
 - **Deep Scan**: Advanced web scraping powered by Firecrawl.
 - **Teacher Guide**: A standalone HTML reference guide for educators.

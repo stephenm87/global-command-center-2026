@@ -2,6 +2,38 @@ import React, { useState, useEffect, useRef, useCallback } from 'react';
 import { supabase } from './supabase';
 import './auth.css';
 
+export const ACCOUNT_NOT_ALLOWED_MESSAGE = 'This account is not authorized to use AI analysis or live search tools. Contact your teacher or administrator.';
+export const SIGNUP_DISABLED_MESSAGE = 'New accounts are closed right now. Sign in with an existing approved email, or ask your teacher or administrator for access.';
+export const SMTP_DELIVERY_REFUSED_MESSAGE = 'Sign-in emails cannot be sent to this address right now. Contact your teacher or administrator.';
+
+const SIGNUP_REFUSAL_CODES = new Set([
+    'signup_disabled',
+    'otp_disabled',
+    'user_not_found',
+]);
+const SIGNUP_REFUSAL_PATTERN = /signups?\s+not\s+allowed|signup_disabled|otp_disabled|user\s+not\s+found/i;
+const SMTP_REFUSAL_CODES = new Set(['email_address_not_authorized']);
+const SMTP_REFUSAL_PATTERN = /email.*not\s+authorized/i;
+const RATE_LIMIT_CODES = new Set(['over_email_send_rate_limit', 'over_request_rate_limit']);
+
+export function formatAuthError(err) {
+    const code = String(err?.code || '').trim().toLowerCase();
+    const message = String(err?.message || '').trim();
+    if (SIGNUP_REFUSAL_CODES.has(code) || SIGNUP_REFUSAL_PATTERN.test(message)) {
+        return SIGNUP_DISABLED_MESSAGE;
+    }
+    if (SMTP_REFUSAL_CODES.has(code) || SMTP_REFUSAL_PATTERN.test(message)) {
+        return SMTP_DELIVERY_REFUSED_MESSAGE;
+    }
+    if (RATE_LIMIT_CODES.has(code) || /rate\s*limit|too\s+many\s+requests/i.test(message)) {
+        return 'Too many sign-in requests. Wait a minute and try again.';
+    }
+    if (code === 'otp_expired' || /otp.*expired|link.*expired/i.test(message)) {
+        return 'That sign-in link expired or was already used. Enter your email for a fresh link.';
+    }
+    return 'Sign-in could not be completed. Check your email address and try again.';
+}
+
 export function getDisplayName(user) {
     if (!user) return null;
     const emailPart = typeof user.email === 'string' ? user.email.split('@')[0].trim() : '';
@@ -126,12 +158,12 @@ export function AuthModal({ onClose, initialError = '' }) {
                 : undefined;
             const { error: sbError } = await supabase.auth.signInWithOtp({
                 email: trimmed,
-                options: { emailRedirectTo: redirectUrl, shouldCreateUser: true }
+                options: { emailRedirectTo: redirectUrl, shouldCreateUser: false }
             });
             if (sbError) throw sbError;
             setSent(true);
         } catch (err) {
-            setError(err.message || 'Something went wrong. Try again.');
+            setError(formatAuthError(err));
         } finally {
             setLoading(false);
         }
@@ -194,10 +226,13 @@ export function useAuth() {
             const hashParams = new URLSearchParams(window.location.hash.replace(/^#/, ''));
             const errorCode = hashParams.get('error_code') || hashParams.get('error');
             if (errorCode) {
+                const normalizedCode = errorCode.trim().toLowerCase();
                 setAuthError(
-                    errorCode === 'otp_expired'
-                        ? 'That sign-in link expired or was already used. Enter your email for a fresh link.'
-                        : 'Sign-in link could not be verified. Request a new magic link below.'
+                    SIGNUP_REFUSAL_CODES.has(normalizedCode)
+                        ? SIGNUP_DISABLED_MESSAGE
+                        : normalizedCode === 'otp_expired'
+                            ? 'That sign-in link expired or was already used. Enter your email for a fresh link.'
+                            : 'Sign-in link could not be verified. Request a new magic link below.'
                 );
                 setShowModal(true);
                 window.history.replaceState(null, '', `${window.location.pathname}${window.location.search}`);
