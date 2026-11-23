@@ -672,6 +672,25 @@ export const ASIA_PACIFIC_CASES_2026 = [
                     "cam": { "lat": 19.6, "lng": 107.2, "dist": 0.48, "tilt": 16 },
                     "bloc": true,
                     "quietLabels": true,
+                    "clusters": [
+                        {
+                            "id": "myanmar-actors",
+                            "name": "Myanmar: 6 actors",
+                            "note": "Tap or hover to list",
+                            "level": "local",
+                            "lat": 19.8,
+                            "lng": 96.1,
+                            "preferredSide": "b",
+                            "memberIds": [
+                                "military-authorities",
+                                "displaced-pakokku",
+                                "magwe-fug",
+                                "sagaing-displaced",
+                                "shelter-families",
+                                "ocha-partners"
+                            ]
+                        }
+                    ],
                     "actors": [
                         { "id": "displaced-pakokku", "small": true },
                         { "id": "magwe-fug", "small": true },

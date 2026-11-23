@@ -13,7 +13,14 @@ import {
     projectPointWithPose,
     unprojectScreenToGlobeSpace,
 } from './actorMapCamera.mjs';
-import { resolveMarkerCollisions, solveActorMapLabels } from './actorMapLayout.mjs';
+import {
+    CLUSTER_DOT_RADIUS,
+    buildStepClusterIndex,
+    isRelatedActorMapItem,
+    isStepConnectionVisible,
+    resolveMarkerCollisions,
+    solveActorMapLabels,
+} from './actorMapLayout.mjs';
 import { preferWebpUrl } from './actorMapMode.mjs';
 
 const LEVEL_COLORS = {
@@ -187,28 +194,6 @@ function addCurvedPatch(globe, img, bounds, alt, order) {
     mesh.renderOrder = -20 + order;
     globe.scene().add(mesh);
     return { mesh, geometry, material, texture };
-}
-
-function isRelatedItem(selected, kind, id, step, connById) {
-    if (!selected) return true;
-    if (selected.kind === 'place') return false;
-    if (selected.kind === 'connection') {
-        if (kind === 'connection') return id === selected.id;
-        const c = connById.get(selected.id);
-        return c ? (id === c.from || id === c.to) : false;
-    }
-    if (selected.kind === 'actor') {
-        if (kind === 'actor') {
-            if (id === selected.id) return true;
-            return (step.connections || []).some(cid => {
-                const c = connById.get(cid);
-                return c && ((c.from === selected.id && c.to === id) || (c.to === selected.id && c.from === id));
-            });
-        }
-        const c = connById.get(id);
-        return c ? (c.from === selected.id || c.to === selected.id) : false;
-    }
-    return true;
 }
 
 export default function CaseActorMap3D({
@@ -599,9 +584,14 @@ export default function CaseActorMap3D({
 
         const stepActorEntries = activeStep.actors || [];
         const stepActorMap = new Map(stepActorEntries.map(e => [e.id, e]));
-        const surfaceCoords = stepActorEntries
-            .map(e => actorCoord(actorsMap.get(e.id)))
-            .filter(Boolean);
+        const { clusters, actorToCluster } = buildStepClusterIndex(activeStep);
+        const surfaceCoords = [
+            ...stepActorEntries
+                .filter(e => !actorToCluster.has(e.id))
+                .map(e => actorCoord(actorsMap.get(e.id)))
+                .filter(Boolean),
+            ...clusters.map(cluster => [cluster.lng, cluster.lat]),
+        ];
         const floatingActors = stepActorEntries
             .map(e => actorsMap.get(e.id))
             .filter(a => a?.location?.kind === 'noSinglePlace');
@@ -678,6 +668,8 @@ export default function CaseActorMap3D({
         }
 
         const nodePoint = id => {
+            const cluster = actorToCluster.get(id);
+            if (cluster) return { lat: cluster.lat, lng: cluster.lng, alt: visBase, isFloating: false };
             const floatItem = floatingGeoById.get(id);
             if (floatItem) return { lat: floatItem.lat, lng: floatItem.lng, alt: floatItem.alt, isFloating: true };
             const actor = actorsMap.get(id);
@@ -691,6 +683,7 @@ export default function CaseActorMap3D({
         const items = [];
 
         for (const entry of stepActorEntries) {
+            if (actorToCluster.has(entry.id)) continue;
             const actor = actorsMap.get(entry.id);
             const pt = nodePoint(entry.id);
             if (!actor || !pt) continue;
@@ -732,6 +725,45 @@ export default function CaseActorMap3D({
             }
 
             items.push({ kind: 'actor', id: actor.id, actor, entry, at: [pt.lng, pt.lat], alt: pt.alt });
+        }
+
+        for (const cluster of clusters) {
+            const members = (cluster.memberIds || []).map(id => actorsMap.get(id)).filter(Boolean);
+            if (!members.length) continue;
+            const vec = latLngAltToVec3(cluster.lat, cluster.lng, visBase, GLOBE_RADIUS);
+            const proj = projectPointWithPose(vec, pose, width, height, fovDeg);
+            const dotR = CLUSTER_DOT_RADIUS;
+            const isSel = currentSel?.kind === 'cluster' && currentSel.id === cluster.id;
+            if (proj.visibleOnHorizon) {
+                markers.push({ id: cluster.id, x: proj.x, y: proj.y, r: dotR });
+                actorLabelRequests.push({
+                    id: cluster.id,
+                    name: cluster.name,
+                    note: cluster.note || `${members.length} actors`,
+                    x: proj.x,
+                    y: proj.y,
+                    r: dotR,
+                    preferredSide: cluster.preferredSide || 'b',
+                    priority: isSel ? 200 : 94,
+                });
+            }
+            if (!activeStep.quietLabels) {
+                rings.push({
+                    at: [cluster.lng, cluster.lat],
+                    alt: visBase * 0.85,
+                    rgb: hexToRgb('#67d5f5'),
+                    max: Math.max(0.16, Math.min(2.6, activeCam.dist * 2.1)),
+                    period: 1700,
+                });
+            }
+            items.push({
+                kind: 'cluster',
+                id: cluster.id,
+                cluster,
+                members,
+                at: [cluster.lng, cluster.lat],
+                alt: visBase,
+            });
         }
 
         // Legacy place pins (e.g., Berbera) not already shown as step actors
@@ -786,7 +818,7 @@ export default function CaseActorMap3D({
 
         for (const cid of activeStep.connections || []) {
             const conn = connsMap.get(cid);
-            if (!conn) continue;
+            if (!conn || !isStepConnectionVisible(conn, actorToCluster)) continue;
             const pFrom = nodePoint(conn.from);
             const pTo = nodePoint(conn.to);
             if (!pFrom || !pTo) continue;
@@ -1007,7 +1039,7 @@ export default function CaseActorMap3D({
             if (it.kind === 'badge') {
                 const focusKey = `actor:${it.id}`;
                 const isSel = currentSel?.kind === 'actor' && currentSel.id === it.id;
-                const isRel = isRelatedItem(currentSel, 'actor', it.id, activeStep, connsMap);
+                const isRel = isRelatedActorMapItem(currentSel, 'actor', it.id, activeStep, connsMap);
                 const entry = acquireButtonDatum(focusKey, 'badge', it.id, wrap => {
                     const cap = document.createElement('small');
                     cap.textContent = 'no single place';
@@ -1029,11 +1061,77 @@ export default function CaseActorMap3D({
                 continue;
             }
 
+            if (it.kind === 'cluster') {
+                const focusKey = `cluster:${it.id}`;
+                const placed = solved.actors.get(it.id);
+                const adj = resolvedMarkerPos.get(it.id);
+                const isSel = currentSel?.kind === 'cluster' && currentSel.id === it.id;
+                const isRel = isRelatedActorMapItem(currentSel, 'cluster', it.id, activeStep, connsMap);
+                const entry = acquireButtonDatum(focusKey, 'cluster', it.id, wrap => {
+                    const countSpan = document.createElement('span');
+                    countSpan.className = 'cluster-count';
+                    const pop = document.createElement('div');
+                    pop.className = 'actor-cluster-popover';
+                    pop.setAttribute('role', 'region');
+                    const popTitle = document.createElement('div');
+                    popTitle.className = 'actor-cluster-popover-title';
+                    const popList = document.createElement('ul');
+                    popList.className = 'actor-cluster-popover-list';
+                    pop.appendChild(popTitle);
+                    pop.appendChild(popList);
+                    wrap.appendChild(pop);
+                    return { countSpan, pop, popTitle, popList };
+                });
+                entry.wrap.className = `n3 cluster${isSel ? ' sel' : ''}${!isRel ? ' dim' : ''}`;
+                entry.wrap.style.marginLeft = `${(adj?.dx || 0).toFixed(1)}px`;
+                entry.wrap.style.marginTop = `${(adj?.dy || 0).toFixed(1)}px`;
+                entry.btn.className = 'actor-pin-btn actor-cluster-btn';
+                if (!entry.btn.contains(entry.countSpan)) {
+                    entry.btn.textContent = '';
+                    entry.btn.appendChild(entry.countSpan);
+                }
+                entry.countSpan.textContent = String(it.members.length);
+                entry.btn.setAttribute('aria-label', `${it.cluster.name}. Activate or hover to list ${it.members.length} actors`);
+                entry.btn.setAttribute('aria-pressed', String(isSel));
+                entry._onClick = () => onSelectRef.current?.('cluster', it.id);
+                entry.pop.setAttribute('aria-label', it.cluster.name);
+                entry.popTitle.textContent = it.cluster.name;
+                entry.popList.replaceChildren(...it.members.map(member => {
+                    const li = document.createElement('li');
+                    const btn = document.createElement('button');
+                    btn.type = 'button';
+                    btn.className = 'actor-cluster-popover-item';
+                    btn.style.setProperty('--c', LEVEL_COLORS[member.level] || '#67d5f5');
+                    const dot = document.createElement('i');
+                    dot.setAttribute('aria-hidden', 'true');
+                    const copy = document.createElement('span');
+                    const b = document.createElement('b');
+                    b.textContent = member.name;
+                    const sm = document.createElement('small');
+                    sm.textContent = member.location.kind === 'pin' ? member.location.place : member.location.label;
+                    copy.appendChild(b);
+                    copy.appendChild(sm);
+                    btn.appendChild(dot);
+                    btn.appendChild(copy);
+                    btn.addEventListener('click', e => {
+                        e.stopPropagation();
+                        onSelectRef.current?.('actor', member.id);
+                    });
+                    li.appendChild(btn);
+                    return li;
+                }));
+                syncPinLabel(entry, placed, it.cluster.name, placed?.showNote ? (it.cluster.note || '') : '');
+                entry.datum.at = it.at;
+                entry.datum.alt = it.alt;
+                finalHtml.push(entry.datum);
+                continue;
+            }
+
             const focusKey = `actor:${it.id}`;
             const placed = solved.actors.get(it.id);
             const adj = resolvedMarkerPos.get(it.id);
             const isSel = currentSel?.kind === 'actor' && currentSel.id === it.id;
-            const isRel = isRelatedItem(currentSel, 'actor', it.id, activeStep, connsMap);
+            const isRel = isRelatedActorMapItem(currentSel, 'actor', it.id, activeStep, connsMap);
             const entry = acquireButtonDatum(focusKey, 'actor', it.id);
             entry.wrap.className = `n3 ${it.actor.level}${it.entry.small ? ' small' : ''}${isSel ? ' sel' : ''}${!isRel ? ' dim' : ''}`;
             entry.wrap.style.marginLeft = `${(adj?.dx || 0).toFixed(1)}px`;
@@ -1075,7 +1173,7 @@ export default function CaseActorMap3D({
             if (!placed?.visible || !placed.candidate?.coord) continue;
             const focusKey = `link:${cid}`;
             const isSel = currentSel?.kind === 'connection' && currentSel.id === cid;
-            const isRel = isRelatedItem(currentSel, 'connection', cid, activeStep, connsMap);
+            const isRel = isRelatedActorMapItem(currentSel, 'connection', cid, activeStep, connsMap);
             const entry = acquireButtonDatum(focusKey, 'link', cid);
             entry.wrap.className = `l3wrap${!isRel ? ' dim' : ''}`;
             entry.wrap.style.marginLeft = `${(placed.candidate.dx || 0).toFixed(1)}px`;
@@ -1114,7 +1212,7 @@ export default function CaseActorMap3D({
         globe
             .htmlElementsData(finalHtml)
             .pathsData(paths)
-            .pathColor(d => (d.shadow ? d.color : isRelatedItem(currentSel, 'connection', d.id, activeStep, connsMap) ? d.color : 'rgba(120,140,150,0.24)'))
+            .pathColor(d => (d.shadow ? d.color : isRelatedActorMapItem(currentSel, 'connection', d.id, activeStep, connsMap) ? d.color : 'rgba(120,140,150,0.24)'))
             .ringsData(red ? [] : rings);
 
         if (activeFocusKey) {
@@ -1144,8 +1242,15 @@ export default function CaseActorMap3D({
         const width = Math.floor(container?.clientWidth || 640);
         const height = Math.floor(container?.clientHeight || 480);
         const fovDeg = globeRef.current.camera?.()?.fov || 50;
+        const { clusters: flyClusters, actorToCluster: flyActorToCluster } = buildStepClusterIndex(step);
         const stepActorEntries = step.actors || [];
-        const surfaceCoords = stepActorEntries.map(e => actorCoord(actorById.get(e.id))).filter(Boolean);
+        const surfaceCoords = [
+            ...stepActorEntries
+                .filter(e => !flyActorToCluster.has(e.id))
+                .map(e => actorCoord(actorById.get(e.id)))
+                .filter(Boolean),
+            ...flyClusters.map(c => [c.lng, c.lat]),
+        ];
         const floatingActors = stepActorEntries.map(e => actorById.get(e.id)).filter(a => a?.location?.kind === 'noSinglePlace');
         const target = fitCameraToActors(step.cam, surfaceCoords, width, height, {
             fovDeg,

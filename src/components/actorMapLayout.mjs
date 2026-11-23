@@ -304,3 +304,84 @@ export function solveActorMapLabels({
 
     return { actors: placedActors, links: placedLinks, countries: placedCountries, occupied };
 }
+
+export const CLUSTER_DOT_RADIUS = 12;
+
+export function buildStepClusterIndex(step) {
+    const clusters = Array.isArray(step?.clusters) ? step.clusters : [];
+    const clusterById = new Map();
+    const actorToCluster = new Map();
+    for (const cluster of clusters) {
+        if (!cluster?.id) continue;
+        clusterById.set(cluster.id, cluster);
+        for (const memberId of cluster.memberIds || []) {
+            actorToCluster.set(memberId, cluster);
+        }
+    }
+    return { clusters, clusterById, actorToCluster };
+}
+
+export function isStepConnectionVisible(conn, actorToCluster) {
+    if (!conn) return false;
+    const cFrom = actorToCluster?.get(conn.from);
+    const cTo = actorToCluster?.get(conn.to);
+    return !(cFrom && cTo && cFrom.id === cTo.id);
+}
+
+export function isRelatedActorMapItem(selected, kind, id, step, connById) {
+    if (!selected) return true;
+    if (selected.kind === 'place') return false;
+    const { clusterById, actorToCluster } = buildStepClusterIndex(step);
+    const isActorInIdOrCluster = (actorId, targetKind, targetId) => {
+        if (targetKind === 'actor') return actorId === targetId;
+        if (targetKind === 'cluster') return actorToCluster.get(actorId)?.id === targetId;
+        return false;
+    };
+
+    if (selected.kind === 'connection') {
+        if (kind === 'connection') return id === selected.id;
+        const c = connById.get(selected.id);
+        if (!c) return false;
+        return isActorInIdOrCluster(c.from, kind, id) || isActorInIdOrCluster(c.to, kind, id);
+    }
+
+    if (selected.kind === 'cluster') {
+        const cluster = clusterById.get(selected.id);
+        const members = new Set(cluster?.memberIds || []);
+        if (kind === 'cluster') return id === selected.id;
+        if (kind === 'actor') {
+            if (members.has(id)) return true;
+            return (step?.connections || []).some(cid => {
+                const c = connById.get(cid);
+                return c && ((members.has(c.from) && c.to === id) || (members.has(c.to) && c.from === id));
+            });
+        }
+        const c = connById.get(id);
+        return c ? (members.has(c.from) || members.has(c.to)) : false;
+    }
+
+    if (selected.kind === 'actor') {
+        if (kind === 'cluster') {
+            const cluster = clusterById.get(id);
+            const members = new Set(cluster?.memberIds || []);
+            if (members.has(selected.id)) return true;
+            return (step?.connections || []).some(cid => {
+                const c = connById.get(cid);
+                return c && (
+                    (c.from === selected.id && members.has(c.to))
+                    || (c.to === selected.id && members.has(c.from))
+                );
+            });
+        }
+        if (kind === 'actor') {
+            if (id === selected.id) return true;
+            return (step?.connections || []).some(cid => {
+                const c = connById.get(cid);
+                return c && ((c.from === selected.id && c.to === id) || (c.to === selected.id && c.from === id));
+            });
+        }
+        const c = connById.get(id);
+        return c ? (c.from === selected.id || c.to === selected.id) : false;
+    }
+    return true;
+}

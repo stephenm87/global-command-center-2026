@@ -161,6 +161,12 @@ function cloneActorMap(actorMap) {
             levels: [...(step.levels || [])],
             cam: step.cam ? { ...step.cam } : undefined,
             actors: (step.actors || []).map(entry => ({ ...entry })),
+            ...(Array.isArray(step.clusters) ? {
+                clusters: step.clusters.map(cluster => ({
+                    ...cluster,
+                    memberIds: [...(cluster.memberIds || [])],
+                })),
+            } : {}),
             connections: [...(step.connections || [])],
         })),
     };

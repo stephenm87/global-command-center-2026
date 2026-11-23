@@ -2,7 +2,14 @@ import { useEffect, useId, useMemo, useRef, useState } from 'react';
 import { geoDistance, geoGraticule10, geoOrthographic, geoPath } from 'd3-geo';
 import * as topojson from 'topojson-client';
 import { computeFloatingBadgeScreenSlots, cubicInOut } from './actorMapCamera.mjs';
-import { resolveMarkerCollisions, solveActorMapLabels } from './actorMapLayout.mjs';
+import {
+    CLUSTER_DOT_RADIUS,
+    buildStepClusterIndex,
+    isRelatedActorMapItem,
+    isStepConnectionVisible,
+    resolveMarkerCollisions,
+    solveActorMapLabels,
+} from './actorMapLayout.mjs';
 import { measureResourceThroughput } from './actorMapMode.mjs';
 
 const LEVEL_COLORS = {
@@ -134,10 +141,42 @@ export default function CaseActorMapFlat({
     const wrapRef = useRef(null);
     const [box, setBox] = useState(initialFlatBox);
     const [countries, setCountries] = useState(null);
+    const [hoveredClusterId, setHoveredClusterId] = useState(null);
+    const clusterHoverTimerRef = useRef(null);
+
+    const clearClusterHoverTimer = () => {
+        if (clusterHoverTimerRef.current) {
+            clearTimeout(clusterHoverTimerRef.current);
+            clusterHoverTimerRef.current = null;
+        }
+    };
+
+    const openClusterPopover = clusterId => {
+        clearClusterHoverTimer();
+        setHoveredClusterId(clusterId);
+    };
+
+    const scheduleCloseClusterPopover = () => {
+        clearClusterHoverTimer();
+        clusterHoverTimerRef.current = setTimeout(() => {
+            setHoveredClusterId(null);
+        }, 140);
+    };
+
+    useEffect(() => () => clearClusterHoverTimer(), []);
+    useEffect(() => {
+        clearClusterHoverTimer();
+        setHoveredClusterId(null);
+    }, [activeStepKey, actorMap?.focusCountry]);
 
     const step = useMemo(
         () => actorMap?.steps?.find(s => String(s.key) === String(activeStepKey)) || actorMap?.steps?.[0],
         [actorMap, activeStepKey],
+    );
+
+    const { clusters: stepClusters, actorToCluster } = useMemo(
+        () => buildStepClusterIndex(step),
+        [step],
     );
 
     const actorById = useMemo(
@@ -151,10 +190,14 @@ export default function CaseActorMapFlat({
 
     const surfaceCoords = useMemo(() => {
         if (!step) return [];
-        return (step.actors || [])
-            .map(entry => actorCoord(actorById.get(entry.id)))
-            .filter(Boolean);
-    }, [step, actorById]);
+        return [
+            ...(step.actors || [])
+                .filter(entry => !actorToCluster.has(entry.id))
+                .map(entry => actorCoord(actorById.get(entry.id)))
+                .filter(Boolean),
+            ...stepClusters.map(cluster => [cluster.lng, cluster.lat]),
+        ];
+    }, [step, actorById, stepClusters, actorToCluster]);
 
     const floatingActors = useMemo(() => {
         if (!step) return [];
@@ -269,10 +312,13 @@ export default function CaseActorMapFlat({
         const slotById = new Map(floatingSlots.map(s => [s.id, s]));
 
         const actorPositions = new Map();
+        const clusterPositions = new Map();
         const markers = [];
+        const clusterMarkers = [];
         const actorLabels = [];
 
         for (const entry of step.actors || []) {
+            if (actorToCluster.has(entry.id)) continue;
             const actor = actorById.get(entry.id);
             if (!actor) continue;
             if (actor.location.kind === 'noSinglePlace') {
@@ -294,7 +340,7 @@ export default function CaseActorMapFlat({
                 x: pt[0],
                 y: pt[1],
                 r,
-                isRelated: isRelatedItem(selected, 'actor', actor.id, step, connById),
+                isRelated: isRelatedActorMapItem(selected, 'actor', actor.id, step, connById),
                 isSelected: selected?.kind === 'actor' && selected.id === actor.id,
             });
             const isSel = selected?.kind === 'actor' && selected.id === actor.id;
@@ -309,6 +355,36 @@ export default function CaseActorMapFlat({
                 preferredSide: entry.preferredSide || 'r',
                 hidden: Boolean(entry.small && !isSel),
                 priority: isSel ? 200 : actor.level === 'regional' ? 95 : actor.level === 'state' ? 88 : 78,
+            });
+        }
+
+        for (const cluster of stepClusters) {
+            const members = (cluster.memberIds || []).map(id => actorById.get(id)).filter(Boolean);
+            const coord = [cluster.lng, cluster.lat];
+            if (!members.length || !isVisible(coord)) continue;
+            const pt = projection(coord);
+            if (!pt) continue;
+            clusterPositions.set(cluster.id, pt);
+            const isSel = selected?.kind === 'cluster' && selected.id === cluster.id;
+            clusterMarkers.push({
+                cluster,
+                members,
+                x: pt[0],
+                y: pt[1],
+                r: CLUSTER_DOT_RADIUS,
+                isRelated: isRelatedActorMapItem(selected, 'cluster', cluster.id, step, connById),
+                isSelected: isSel,
+            });
+            actorLabels.push({
+                id: cluster.id,
+                name: cluster.name,
+                note: cluster.note || `${members.length} actors`,
+                x: pt[0],
+                y: pt[1],
+                r: CLUSTER_DOT_RADIUS,
+                preferredSide: cluster.preferredSide || 'b',
+                hidden: false,
+                priority: isSel ? 200 : 94,
             });
         }
 
@@ -346,6 +422,7 @@ export default function CaseActorMapFlat({
 
         const collisionTargets = [
             ...markers.map(m => ({ id: m.actor.id, x: m.x, y: m.y, r: m.r })),
+            ...clusterMarkers.map(m => ({ id: m.cluster.id, x: m.x, y: m.y, r: m.r })),
             ...extraPlaces.map(p => ({ id: `place:${p.loc.label}`, x: p.x, y: p.y, r: 5.5 })),
         ];
         const resolvedCoords = resolveMarkerCollisions(collisionTargets, { width, height, padding: 10, minGap: 2 });
@@ -355,6 +432,14 @@ export default function CaseActorMapFlat({
                 m.x = p.x;
                 m.y = p.y;
                 actorPositions.set(m.actor.id, [p.x, p.y]);
+            }
+        }
+        for (const m of clusterMarkers) {
+            const p = resolvedCoords.get(m.cluster.id);
+            if (p) {
+                m.x = p.x;
+                m.y = p.y;
+                clusterPositions.set(m.cluster.id, [p.x, p.y]);
             }
         }
         for (const extra of extraPlaces) {
@@ -372,19 +457,31 @@ export default function CaseActorMapFlat({
             }
         }
 
+        const resolveEndpoint = id => {
+            const cluster = actorToCluster.get(id);
+            if (cluster) return clusterPositions.get(cluster.id);
+            return actorPositions.get(id);
+        };
+        const endpointPad = (id, isTo) => {
+            if (actorToCluster.has(id)) return CLUSTER_DOT_RADIUS + (isTo ? 5 : 4);
+            const a = actorById.get(id);
+            if (a?.location?.kind === 'noSinglePlace') return isTo ? 5 : 4;
+            return (stepActorMap.get(id)?.small ? 4 : NODE_RADIUS[a?.level] || 7) + (isTo ? 5 : 4);
+        };
+
         const linkItems = [];
         const linkLabelRequests = [];
         const arcPoints = [];
         for (const cid of step.connections || []) {
             const conn = connById.get(cid);
-            if (!conn) continue;
-            const a = actorPositions.get(conn.from);
-            const b = actorPositions.get(conn.to);
+            if (!conn || !isStepConnectionVisible(conn, actorToCluster)) continue;
+            const a = resolveEndpoint(conn.from);
+            const b = resolveEndpoint(conn.to);
             if (!a || !b) continue;
             const fromActor = actorById.get(conn.from);
             const fromFloating = fromActor?.location?.kind === 'noSinglePlace';
-            const padA = fromFloating ? 4 : ((stepActorMap.get(conn.from)?.small ? 4 : NODE_RADIUS[fromActor?.level] || 7) + 4);
-            const padB = (stepActorMap.get(conn.to)?.small ? 4 : NODE_RADIUS[actorById.get(conn.to)?.level] || 7) + 5;
+            const padA = endpointPad(conn.from, false);
+            const padB = endpointPad(conn.to, true);
             const dx = b[0] - a[0];
             const dy = b[1] - a[1];
             const len = Math.hypot(dx, dy) || 1;
@@ -413,7 +510,7 @@ export default function CaseActorMapFlat({
             linkItems.push({
                 conn,
                 d: `M${a2[0]},${a2[1]} Q${ctrl[0]},${ctrl[1]} ${b2[0]},${b2[1]}`,
-                isRelated: isRelatedItem(selected, 'connection', conn.id, step, connById),
+                isRelated: isRelatedActorMapItem(selected, 'connection', conn.id, step, connById),
                 isSelected: isSel,
             });
             linkLabelRequests.push({
@@ -476,11 +573,12 @@ export default function CaseActorMapFlat({
             activeCountries,
             floatingSlots,
             markers,
+            clusterMarkers,
             extraPlaces,
             linkItems,
             solvedLabels,
         };
-    }, [step, box, view, floatingActors, actorMap, actorById, connById, mapLocations, selected]);
+    }, [step, box, view, floatingActors, actorMap, actorById, connById, mapLocations, selected, stepClusters, actorToCluster]);
 
     const countryPaths = useMemo(() => {
         if (!countries || !scene) return [];
@@ -643,9 +741,48 @@ export default function CaseActorMapFlat({
                 </g>
 
                 <g>
+                    {scene.clusterMarkers.map(m => {
+                        const placed = scene.solvedLabels.actors.get(m.cluster.id);
+                        const namesSummary = m.members.map(member => member.name).join(', ');
+                        return (
+                            <g
+                                key={m.cluster.id}
+                                role="button"
+                                tabIndex={0}
+                                transform={`translate(${m.x},${m.y})`}
+                                aria-label={`${m.cluster.name}. Activate or hover to list ${m.members.length} actors`}
+                                aria-pressed={m.isSelected}
+                                className={`flat-node flat-node--cluster${m.isSelected ? ' is-sel' : ''}${!m.isRelated ? ' is-dim' : ''}`}
+                                style={{ '--c': '#67d5f5' }}
+                                onMouseEnter={() => openClusterPopover(m.cluster.id)}
+                                onMouseLeave={scheduleCloseClusterPopover}
+                                onFocus={() => openClusterPopover(m.cluster.id)}
+                                onBlur={scheduleCloseClusterPopover}
+                                onClick={() => onSelect?.('cluster', m.cluster.id)}
+                                onKeyDown={e => onActivateKey(e, () => onSelect?.('cluster', m.cluster.id))}
+                            >
+                                <title>{`${m.cluster.name}: ${namesSummary}`}</title>
+                                <circle r={Math.max(16, m.r + 6)} fill="transparent" />
+                                {!step.quietLabels && !reducedMotion && <circle r={m.r} className="flat-node-pulse" />}
+                                {!step.quietLabels && <circle r={m.r + 4} className="flat-node-halo" />}
+                                <circle r={m.r} className="flat-node-core flat-cluster-core" />
+                                <text y="4" className="flat-cluster-count">{m.members.length}</text>
+                                {placed?.visible && renderFlatPositionedText(
+                                    m.r,
+                                    placed,
+                                    m.cluster.name,
+                                    placed.showNote ? (m.cluster.note || '') : '',
+                                    'flat-node-name',
+                                )}
+                            </g>
+                        );
+                    })}
+                </g>
+
+                <g>
                     {scene.floatingSlots.map(slot => {
                         const isSel = selected?.kind === 'actor' && selected.id === slot.actor.id;
-                        const isRel = isRelatedItem(selected, 'actor', slot.actor.id, step, connById);
+                        const isRel = isRelatedActorMapItem(selected, 'actor', slot.actor.id, step, connById);
                         return (
                             <g
                                 key={slot.actor.id}
@@ -667,6 +804,48 @@ export default function CaseActorMapFlat({
                     })}
                 </g>
             </svg>
+            {(() => {
+                const activeClusterMarker = hoveredClusterId
+                    ? scene.clusterMarkers.find(m => m.cluster.id === hoveredClusterId)
+                    : null;
+                if (!activeClusterMarker) return null;
+                const popLeft = Math.max(8, Math.min(scene.width - 246, activeClusterMarker.x + 14));
+                const popTop = Math.max(8, Math.min(scene.height - 240, activeClusterMarker.y - 36));
+                return (
+                    <div
+                        className="flat-cluster-popover"
+                        role="region"
+                        aria-label={activeClusterMarker.cluster.name}
+                        style={{ left: `${popLeft}px`, top: `${popTop}px` }}
+                        onMouseEnter={() => openClusterPopover(activeClusterMarker.cluster.id)}
+                        onMouseLeave={scheduleCloseClusterPopover}
+                    >
+                        <div className="actor-cluster-popover-title">{activeClusterMarker.cluster.name}</div>
+                        <ul className="actor-cluster-popover-list">
+                            {activeClusterMarker.members.map(member => (
+                                <li key={member.id}>
+                                    <button
+                                        type="button"
+                                        className="actor-cluster-popover-item"
+                                        style={{ '--c': LEVEL_COLORS[member.level] || '#67d5f5' }}
+                                        onClick={() => onSelect?.('actor', member.id)}
+                                    >
+                                        <i aria-hidden="true" />
+                                        <span>
+                                            <b>{member.name}</b>
+                                            <small>
+                                                {member.location.kind === 'pin'
+                                                    ? member.location.place
+                                                    : member.location.label}
+                                            </small>
+                                        </span>
+                                    </button>
+                                </li>
+                            ))}
+                        </ul>
+                    </div>
+                );
+            })()}
         </div>
     );
 }
@@ -699,26 +878,4 @@ function renderFlatActorLabel(m, placed) {
         ? (m.entry.note || (m.actor.location.kind === 'pin' ? m.actor.location.place : m.actor.location.label))
         : '';
     return renderFlatPositionedText(m.r, placed, m.actor.name, noteText, 'flat-node-name');
-}
-
-function isRelatedItem(selected, kind, id, step, connById) {
-    if (!selected) return true;
-    if (selected.kind === 'place') return false;
-    if (selected.kind === 'connection') {
-        if (kind === 'connection') return id === selected.id;
-        const c = connById.get(selected.id);
-        return c ? (id === c.from || id === c.to) : false;
-    }
-    if (selected.kind === 'actor') {
-        if (kind === 'actor') {
-            if (id === selected.id) return true;
-            return (step.connections || []).some(cid => {
-                const c = connById.get(cid);
-                return c && ((c.from === selected.id && c.to === id) || (c.to === selected.id && c.from === id));
-            });
-        }
-        const c = connById.get(id);
-        return c ? (c.from === selected.id || c.to === selected.id) : false;
-    }
-    return true;
 }

@@ -9,6 +9,7 @@ import {
     isSlowMeasuredThroughput,
 } from './actorMapMode.mjs';
 import { safeHttpUrl } from '../navigationState.mjs';
+import { buildStepClusterIndex } from './actorMapLayout.mjs';
 import './CaseActorMap.css';
 
 const CaseActorMap3D = React.lazy(() => import('./CaseActorMap3D'));
@@ -451,6 +452,43 @@ export function ActorMapSidePanel({
                 </div>
             );
         }
+        if (selected.kind === 'cluster') {
+            const { clusterById } = buildStepClusterIndex(step);
+            const cluster = clusterById.get(selected.id);
+            if (!cluster) return null;
+            const members = (cluster.memberIds || []).map(id => actorById.get(id)).filter(Boolean);
+            return (
+                <div className="actor-detail-body" style={{ '--c': '#67d5f5' }}>
+                    <span className="actor-detail-tag">Grouped cluster · {members.length} actors</span>
+                    <strong>{cluster.name}</strong>
+                    <p>Select an actor below to inspect its role, location, and source link.</p>
+                    <ul className="actor-cluster-inspector-list">
+                        {members.map(member => {
+                            const locSummary = member.location.kind === 'pin'
+                                ? member.location.place
+                                : member.location.kind === 'area'
+                                    ? member.location.label
+                                    : 'No single place';
+                            return (
+                                <li key={member.id}>
+                                    <button
+                                        type="button"
+                                        className="actor-place-btn"
+                                        onClick={() => onSelect?.('actor', member.id)}
+                                    >
+                                        <strong>{member.name}</strong>
+                                        <span>{member.level} level · {locSummary}</span>
+                                    </button>
+                                </li>
+                            );
+                        })}
+                    </ul>
+                    <button type="button" className="actor-clear-btn" onClick={() => onSelect?.(null)}>
+                        Clear selection
+                    </button>
+                </div>
+            );
+        }
         if (selected.kind === 'place') {
             const place = mapLocations.find(loc => loc.label === selected.id);
             if (!place) return null;
@@ -487,6 +525,8 @@ export function ActorMapSidePanel({
         }
     };
 
+    const { clusters } = buildStepClusterIndex(step);
+
     return (
         <aside className="actor-map-panel" aria-label="Actor connections and mapped places">
             {step.note && <p className="actor-step-note">{step.note}</p>}
@@ -521,6 +561,44 @@ export function ActorMapSidePanel({
                     })}
                 </ul>
             </div>
+
+            {clusters.map(cluster => {
+                const members = (cluster.memberIds || []).map(id => actorById.get(id)).filter(Boolean);
+                if (!members.length) return null;
+                return (
+                    <div key={cluster.id} className="actor-panel-section">
+                        <h3>Actors in cluster — {cluster.name} ({members.length})</h3>
+                        <ul className="actor-cluster-side-list">
+                            {members.map(member => {
+                                const isMemberSel = selected?.kind === 'actor' && selected.id === member.id;
+                                const memberLoc = member.location.kind === 'pin'
+                                    ? member.location.place
+                                    : member.location.kind === 'area'
+                                        ? member.location.label
+                                        : 'No single place';
+                                return (
+                                    <li key={member.id}>
+                                        <button
+                                            type="button"
+                                            className={`actor-cluster-side-btn${isMemberSel ? ' is-sel' : ''}`}
+                                            style={{ '--c': LEVEL_COLORS[member.level] }}
+                                            aria-pressed={isMemberSel}
+                                            onClick={() => toggleSelect('actor', member.id)}
+                                        >
+                                            <i aria-hidden="true" />
+                                            <span className="actor-conn-copy">
+                                                <span className="actor-conn-type">{member.level} level</span>
+                                                <span className="actor-conn-title">{member.name}</span>
+                                                <small>{memberLoc}</small>
+                                            </span>
+                                        </button>
+                                    </li>
+                                );
+                            })}
+                        </ul>
+                    </div>
+                );
+            })}
 
             <div className="actor-detail-box" aria-live="polite">
                 {renderInspector()}
