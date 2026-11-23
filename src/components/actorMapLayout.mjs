@@ -16,6 +16,77 @@ const intersects = (a, b, pad = 2) => !(
     || a.y0 - pad >= b.y1
 );
 
+const pointNearBox = (pt, box, pad = 5) => (
+    pt.x >= box.x0 - pad
+    && pt.x <= box.x1 + pad
+    && pt.y >= box.y0 - pad
+    && pt.y <= box.y1 + pad
+);
+
+/**
+ * Deterministically pushes apart projected markers whose circles would overlap
+ * on screen (dist < r1 + r2 + minGap) while leaving well-separated markers untouched.
+ */
+export function resolveMarkerCollisions(
+    markers = [],
+    { width = 640, height = 480, padding = 10, minGap = 2, maxIterations = 24 } = {},
+) {
+    const pos = markers.map(m => ({
+        id: m.id,
+        origX: m.x,
+        origY: m.y,
+        x: m.x,
+        y: m.y,
+        r: m.r || 7,
+    }));
+
+    for (let iter = 0; iter < maxIterations; iter += 1) {
+        let moved = false;
+        for (let i = 0; i < pos.length; i += 1) {
+            for (let j = i + 1; j < pos.length; j += 1) {
+                const a = pos[i];
+                const b = pos[j];
+                let dx = b.x - a.x;
+                let dy = b.y - a.y;
+                let dist = Math.hypot(dx, dy);
+                const minDist = a.r + b.r + minGap;
+                if (dist >= minDist) continue;
+                if (dist < 1e-3) {
+                    const angle = ((i * 1.7 + j * 0.9) % (Math.PI * 2));
+                    dx = Math.cos(angle);
+                    dy = Math.sin(angle);
+                    dist = 1;
+                }
+                const push = (minDist - dist) * 0.52;
+                const ux = dx / dist;
+                const uy = dy / dist;
+                a.x -= ux * push;
+                a.y -= uy * push;
+                b.x += ux * push;
+                b.y += uy * push;
+                moved = true;
+            }
+        }
+        for (const p of pos) {
+            const margin = padding + p.r;
+            p.x = Math.max(margin, Math.min(width - margin, p.x));
+            p.y = Math.max(margin, Math.min(height - margin, p.y));
+        }
+        if (!moved) break;
+    }
+
+    const out = new Map();
+    for (const p of pos) {
+        out.set(p.id, {
+            x: p.x,
+            y: p.y,
+            dx: p.x - p.origX,
+            dy: p.y - p.origY,
+        });
+    }
+    return out;
+}
+
 const insideFrame = (box, width, height, padding) => (
     box.x0 >= padding
     && box.x1 <= width - padding
@@ -103,6 +174,7 @@ export function solveActorMapLabels({
     actorLabels = [],
     linkLabels = [],
     countryLabels = [],
+    arcPoints = [],
     reservedBoxes = [],
     padding = 8,
 }) {
@@ -143,6 +215,16 @@ export function solveActorMapLabels({
         return true;
     };
 
+    const isArcClear = (candidate, excludeArcId = null) => {
+        for (const arc of arcPoints) {
+            if (excludeArcId && arc.id === excludeArcId) continue;
+            for (const pt of arc.points || []) {
+                if (pointNearBox(pt, candidate, 5)) return false;
+            }
+        }
+        return true;
+    };
+
     const sortedActors = [...actorLabels].sort((a, b) => (b.priority || 0) - (a.priority || 0));
     const placedActors = new Map();
 
@@ -154,18 +236,27 @@ export function solveActorMapLabels({
         const sides = orderedSides(item.preferredSide);
         let chosen = null;
 
-        // Pass 1: try placing with optional note; Pass 2: drop subtitle note before hiding label
+        // Pass 1: try placing with optional note (arc-free first, then any free);
+        // Pass 2: drop subtitle note before hiding label
         const variants = item.note ? [true, false] : [false];
         for (const showNote of variants) {
+            let fallbackFree = null;
             for (const side of sides) {
                 const box = actorLabelBox(item.x, item.y, item.r || 8, side, item.name, showNote ? item.note : '');
-                if (isFree(box, item.id)) {
+                if (!isFree(box, item.id)) continue;
+                if (isArcClear(box, null)) {
                     chosen = { visible: true, side, showNote, box };
-                    occupied.push(box);
                     break;
                 }
+                if (!fallbackFree) {
+                    fallbackFree = { visible: true, side, showNote, box };
+                }
             }
-            if (chosen) break;
+            if (!chosen && fallbackFree) chosen = fallbackFree;
+            if (chosen) {
+                occupied.push(chosen.box);
+                break;
+            }
         }
 
         if (!chosen) {
@@ -183,14 +274,20 @@ export function solveActorMapLabels({
             continue;
         }
         let chosen = null;
+        let fallbackFree = null;
         for (const cand of item.candidates) {
             const box = linkLabelBox(cand.x, cand.y, item.label);
-            if (isFree(box, null)) {
+            if (!isFree(box, null)) continue;
+            if (isArcClear(box, item.id)) {
                 chosen = { visible: true, candidate: cand, box };
-                occupied.push(box);
                 break;
             }
+            if (!fallbackFree) {
+                fallbackFree = { visible: true, candidate: cand, box };
+            }
         }
+        if (!chosen && fallbackFree) chosen = fallbackFree;
+        if (chosen) occupied.push(chosen.box);
         placedLinks.set(item.id, chosen || { visible: false, candidate: null, box: null });
     }
 

@@ -13,7 +13,7 @@ import {
     projectPointWithPose,
     unprojectScreenToGlobeSpace,
 } from './actorMapCamera.mjs';
-import { solveActorMapLabels } from './actorMapLayout.mjs';
+import { resolveMarkerCollisions, solveActorMapLabels } from './actorMapLayout.mjs';
 import { preferWebpUrl } from './actorMapMode.mjs';
 
 const LEVEL_COLORS = {
@@ -744,24 +744,41 @@ export default function CaseActorMap3D({
             const proj = projectPointWithPose(latLngAltToVec3(lat, lng, visBase, GLOBE_RADIUS), pose, width, height, fovDeg);
             if (!proj.visibleOnHorizon || proj.x < 12 || proj.x > width - 12 || proj.y < 12 || proj.y > height - 12) continue;
             extraPlaces.push({ loc, lat, lng, proj });
-            markers.push({ id: `place:${loc.label}`, x: proj.x, y: proj.y, r: 5 });
+            markers.push({ id: `place:${loc.label}`, x: proj.x, y: proj.y, r: 5.5 });
             actorLabelRequests.push({
                 id: `place:${loc.label}`,
                 name: loc.label,
                 note: '',
                 x: proj.x,
                 y: proj.y,
-                r: 5,
-                preferredSide: 'b',
+                r: 5.5,
+                preferredSide: 'r',
                 hidden: Boolean(activeStep.quietLabels && !(currentSel?.kind === 'place' && currentSel.id === loc.label)),
                 priority: currentSel?.kind === 'place' && currentSel.id === loc.label ? 190 : 52,
             });
+        }
+
+        const resolvedMarkerPos = resolveMarkerCollisions(markers, { width, height, padding: 10, minGap: 2 });
+        for (const m of markers) {
+            const adj = resolvedMarkerPos.get(m.id);
+            if (adj) {
+                m.x = adj.x;
+                m.y = adj.y;
+            }
+        }
+        for (const req of actorLabelRequests) {
+            const adj = resolvedMarkerPos.get(req.id);
+            if (adj) {
+                req.x = adj.x;
+                req.y = adj.y;
+            }
         }
 
         // Connections & path shadows (Rules 4d.3 & 4d.4)
         const paths = [];
         const linkLabelRequests = [];
         const linkMidPoints = new Map();
+        const arcPoints = [];
 
         for (const cid of activeStep.connections || []) {
             const conn = connsMap.get(cid);
@@ -778,11 +795,28 @@ export default function CaseActorMap3D({
                     visBase,
                     side: conn.side || 0,
                     isDrop: pFrom.isFloating,
+                    noShadow: Boolean(conn.noShadow),
                     fromAlt: pFrom.alt,
                     toAlt: pTo.alt,
                     type: conn.type,
                 },
             );
+
+            const arcScreenPts = [];
+            for (let si = 2; si <= profile.pts.length - 3; si += Math.max(2, Math.floor(profile.pts.length / 12))) {
+                const ptSample = profile.pts[si];
+                const projSample = projectPointWithPose(
+                    latLngAltToVec3(ptSample[1], ptSample[0], ptSample[2], GLOBE_RADIUS),
+                    pose,
+                    width,
+                    height,
+                    fovDeg,
+                );
+                if (projSample.visibleOnHorizon) {
+                    arcScreenPts.push({ x: projSample.x, y: projSample.y });
+                }
+            }
+            arcPoints.push({ id: conn.id, points: arcScreenPts });
 
             if (profile.castShadow && profile.shadowPts) {
                 paths.push({
@@ -817,13 +851,47 @@ export default function CaseActorMap3D({
                 });
             }
 
-            const candidateFractions = [0.5, 0.4, 0.6, 0.34, 0.66];
+            const candidateFractions = [0.5, 0.4, 0.6, 0.34, 0.66, 0.26, 0.74];
             const candidates = [];
             for (const frac of candidateFractions) {
                 const pt = profile.pts[Math.round((profile.pts.length - 1) * frac)];
                 const proj = projectPointWithPose(latLngAltToVec3(pt[1], pt[0], pt[2], GLOBE_RADIUS), pose, width, height, fovDeg);
                 if (proj.visibleOnHorizon) {
-                    candidates.push({ x: proj.x, y: proj.y, frac, coord: pt });
+                    candidates.push({ x: proj.x, y: proj.y, frac, coord: pt, dx: 0, dy: 0 });
+                }
+            }
+            const midPt = profile.pts[Math.round((profile.pts.length - 1) * 0.5)];
+            const midProj = projectPointWithPose(latLngAltToVec3(midPt[1], midPt[0], midPt[2], GLOBE_RADIUS), pose, width, height, fovDeg);
+            const fromProj = projectPointWithPose(latLngAltToVec3(pFrom.lat, pFrom.lng, pFrom.alt, GLOBE_RADIUS), pose, width, height, fovDeg);
+            const toProj = projectPointWithPose(latLngAltToVec3(pTo.lat, pTo.lng, pTo.alt, GLOBE_RADIUS), pose, width, height, fovDeg);
+            if (midProj.visibleOnHorizon && fromProj.visibleOnHorizon && toProj.visibleOnHorizon) {
+                const chordMidX = (fromProj.x + toProj.x) / 2;
+                const chordMidY = (fromProj.y + toProj.y) / 2;
+                let nx = midProj.x - chordMidX;
+                let ny = midProj.y - chordMidY;
+                const nLen = Math.hypot(nx, ny);
+                if (nLen < 1) {
+                    const cdx = toProj.x - fromProj.x;
+                    const cdy = toProj.y - fromProj.y;
+                    const cl = Math.hypot(cdx, cdy) || 1;
+                    nx = -cdy / cl;
+                    ny = cdx / cl;
+                } else {
+                    nx /= nLen;
+                    ny /= nLen;
+                }
+                const halfLabelW = Math.ceil((String(conn.label || '').length * 6.6 + 16) / 2) + 8;
+                for (const dir of [1, -1]) {
+                    const shiftX = Math.abs(nx) > 0.35 ? Math.sign(nx * dir) * halfLabelW : nx * dir * 24;
+                    const shiftY = ny * dir * 18;
+                    candidates.push({
+                        x: midProj.x + shiftX,
+                        y: midProj.y + shiftY,
+                        frac: 0.5,
+                        coord: midPt,
+                        dx: shiftX,
+                        dy: shiftY,
+                    });
                 }
             }
             const isSel = currentSel?.kind === 'connection' && currentSel.id === conn.id;
@@ -864,6 +932,7 @@ export default function CaseActorMap3D({
             actorLabels: actorLabelRequests,
             linkLabels: linkLabelRequests,
             countryLabels: countryRequests,
+            arcPoints,
             reservedBoxes,
             padding: 8,
         });
@@ -942,6 +1011,8 @@ export default function CaseActorMap3D({
                     return { cap };
                 });
                 entry.wrap.className = `n3 global orbit${isSel ? ' sel' : ''}${!isRel ? ' dim' : ''}`;
+                entry.wrap.style.marginLeft = '0px';
+                entry.wrap.style.marginTop = '0px';
                 entry.btn.className = 'actor-floating-btn';
                 entry.btn.textContent = it.actor.name;
                 entry.btn.setAttribute('aria-label', `${it.actor.name}, global level, no single place`);
@@ -956,10 +1027,13 @@ export default function CaseActorMap3D({
 
             const focusKey = `actor:${it.id}`;
             const placed = solved.actors.get(it.id);
+            const adj = resolvedMarkerPos.get(it.id);
             const isSel = currentSel?.kind === 'actor' && currentSel.id === it.id;
             const isRel = isRelatedItem(currentSel, 'actor', it.id, activeStep, connsMap);
             const entry = acquireButtonDatum(focusKey, 'actor', it.id);
             entry.wrap.className = `n3 ${it.actor.level}${it.entry.small ? ' small' : ''}${isSel ? ' sel' : ''}${!isRel ? ' dim' : ''}`;
+            entry.wrap.style.marginLeft = `${(adj?.dx || 0).toFixed(1)}px`;
+            entry.wrap.style.marginTop = `${(adj?.dy || 0).toFixed(1)}px`;
             entry.btn.className = 'actor-pin-btn';
             entry.btn.setAttribute('aria-label', `${it.actor.name}, ${it.actor.level} level`);
             entry.btn.setAttribute('aria-pressed', String(isSel));
@@ -976,9 +1050,12 @@ export default function CaseActorMap3D({
         for (const extra of extraPlaces) {
             const key = `place:${extra.loc.label}`;
             const placed = solved.actors.get(key);
+            const adj = resolvedMarkerPos.get(key);
             const isSel = currentSel?.kind === 'place' && currentSel.id === extra.loc.label;
             const entry = acquireButtonDatum(key, 'place', extra.loc.label);
             entry.wrap.className = `n3 place-pin${isSel ? ' sel' : ''}${currentSel && !isSel ? ' dim' : ''}`;
+            entry.wrap.style.marginLeft = `${(adj?.dx || 0).toFixed(1)}px`;
+            entry.wrap.style.marginTop = `${(adj?.dy || 0).toFixed(1)}px`;
             entry.btn.className = '';
             entry.btn.setAttribute('aria-label', `Mapped place: ${extra.loc.label}`);
             entry.btn.setAttribute('aria-pressed', String(isSel));
@@ -997,6 +1074,8 @@ export default function CaseActorMap3D({
             const isRel = isRelatedItem(currentSel, 'connection', cid, activeStep, connsMap);
             const entry = acquireButtonDatum(focusKey, 'link', cid);
             entry.wrap.className = `l3wrap${!isRel ? ' dim' : ''}`;
+            entry.wrap.style.marginLeft = `${(placed.candidate.dx || 0).toFixed(1)}px`;
+            entry.wrap.style.marginTop = `${(placed.candidate.dy || 0).toFixed(1)}px`;
             entry.btn.className = `l3${isSel ? ' sel' : ''}`;
             entry.btn.style.setProperty('--c', TYPE_COLORS[conn.type] || '#67d5f5');
             entry.btn.textContent = conn.label;

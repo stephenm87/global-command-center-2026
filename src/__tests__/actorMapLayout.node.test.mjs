@@ -18,6 +18,7 @@ import {
     actorLabelBox,
     countryLabelBox,
     linkLabelBox,
+    resolveMarkerCollisions,
     solveActorMapLabels,
 } from '../components/actorMapLayout.mjs';
 import {
@@ -269,4 +270,183 @@ test('Slow-connection gating, WebP preference with JPG fallback, honest loading 
     for (const required of ['Myanmar', 'India', 'Philippines', 'Somalia', 'Somaliland', 'Ethiopia', 'Kenya', 'Djibouti', 'Israel']) {
         assert.ok(names.has(required), `trimmed countries-50m.json missing required country "${required}"`);
     }
+});
+
+test('Rule 4d.6 geometry: all pilot steps keep markers inside frame, non-overlapping at 1440px, and clear of crossing arcs/IGAD-AU collision', () => {
+    const W = 533;
+    const H = 540;
+    const fovDeg = 50;
+    const pilotIds = ['myanmar-fragmented-sovereignty', 'somaliland-recognition-red-sea-order'];
+    const coordOf = actor => (
+        actor?.location?.kind === 'pin'
+            ? { lat: actor.location.latitude, lng: actor.location.longitude }
+            : actor?.location?.kind === 'area' && actor.location.anchor
+                ? { lat: actor.location.anchor.latitude, lng: actor.location.anchor.longitude }
+                : null
+    );
+    const dotR = (actor, entry) => (entry.small ? 5 : actor.level === 'regional' ? 10.5 : actor.level === 'state' ? 8.5 : 7);
+
+    for (const id of pilotIds) {
+        const c = CASE_STUDIES_2026.find(item => item.id === id);
+        assert.ok(c?.actorMap, `missing pilot case ${id}`);
+        const byId = new Map(c.actorMap.actors.map(a => [a.id, a]));
+        const connsById = new Map(c.actorMap.connections.map(x => [x.id, x]));
+
+        for (const step of c.actorMap.steps) {
+            const entries = step.actors || [];
+            const surfaceCoords = entries.map(e => coordOf(byId.get(e.id))).filter(Boolean);
+            const floatingActors = entries.map(e => byId.get(e.id)).filter(a => a?.location?.kind === 'noSinglePlace');
+            const cam = fitCameraToActors(step.cam, surfaceCoords, W, H, {
+                fovDeg,
+                hasFloatingBadges: floatingActors.length > 0,
+            });
+            const pose = computeCameraPose(cam, { h: 0, t: 0 }, 0, GLOBE_RADIUS);
+
+            const markers = [];
+            const rawActorMarkers = [];
+            const labelRequests = [];
+            for (const entry of entries) {
+                const actor = byId.get(entry.id);
+                const co = coordOf(actor);
+                if (!actor || !co) continue;
+                const proj = projectPointWithPose(
+                    latLngAltToVec3(co.lat, co.lng, pose.visBase, GLOBE_RADIUS),
+                    pose,
+                    W,
+                    H,
+                    fovDeg,
+                );
+                assert.ok(proj.visibleOnHorizon, `${id} step ${step.key} actor ${actor.id} must stay visible in frame`);
+                assert.ok(proj.x >= 8 && proj.x <= W - 8 && proj.y >= 8 && proj.y <= H - 8, `${id} step ${step.key} actor ${actor.id} projected out of bounds`);
+                const r = dotR(actor, entry);
+                const m = { id: actor.id, x: proj.x, y: proj.y, r };
+                markers.push(m);
+                rawActorMarkers.push({ ...m });
+                labelRequests.push({
+                    id: actor.id,
+                    name: actor.name,
+                    note: entry.note || (actor.location.kind === 'pin' ? actor.location.place : actor.location.label),
+                    x: proj.x,
+                    y: proj.y,
+                    r,
+                    preferredSide: entry.preferredSide || 'r',
+                    hidden: Boolean(entry.small),
+                    priority: actor.level === 'regional' ? 96 : actor.level === 'state' ? 88 : 78,
+                });
+            }
+
+            // Include legacy extraPlaces (e.g. Berbera, Las Anod / Laascaanood)
+            for (const loc of c.map?.locations || []) {
+                const lat = Number(loc.latitude);
+                const lng = Number(loc.longitude);
+                const matched = entries.some(e => {
+                    const ac = coordOf(byId.get(e.id));
+                    return ac && Math.hypot(ac.lat - lat, ac.lng - lng) < 0.08;
+                });
+                if (matched) continue;
+                const proj = projectPointWithPose(
+                    latLngAltToVec3(lat, lng, pose.visBase, GLOBE_RADIUS),
+                    pose,
+                    W,
+                    H,
+                    fovDeg,
+                );
+                if (!proj.visibleOnHorizon || proj.x < 12 || proj.x > W - 12 || proj.y < 12 || proj.y > H - 12) continue;
+                markers.push({ id: `place:${loc.label}`, x: proj.x, y: proj.y, r: 5.5 });
+                labelRequests.push({
+                    id: `place:${loc.label}`,
+                    name: loc.label,
+                    note: '',
+                    x: proj.x,
+                    y: proj.y,
+                    r: 5.5,
+                    preferredSide: 'r',
+                    hidden: Boolean(step.quietLabels),
+                    priority: 52,
+                });
+            }
+
+            // Raw geo actors (without offset) must already satisfy dist >= r1 + r2 on focused narrative steps
+            if (id === 'somaliland-recognition-red-sea-order' || ['1', '2', '3'].includes(String(step.key))) {
+                for (let i = 0; i < rawActorMarkers.length; i += 1) {
+                    for (let j = i + 1; j < rawActorMarkers.length; j += 1) {
+                        const a = rawActorMarkers[i];
+                        const b = rawActorMarkers[j];
+                        const d = Math.hypot(a.x - b.x, a.y - b.y);
+                        assert.ok(d >= a.r + b.r, `${id} step ${step.key} raw overlap ${a.id} vs ${b.id}: ${d.toFixed(1)} < ${a.r + b.r}`);
+                    }
+                }
+            }
+
+            const resolved = resolveMarkerCollisions(markers, { width: W, height: H, padding: 10, minGap: 2 });
+            const resolvedList = markers.map(m => ({ ...m, ...resolved.get(m.id) }));
+            for (const m of resolvedList) {
+                assert.ok(
+                    Math.hypot(m.dx, m.dy) <= 12,
+                    `${id} step ${step.key} marker ${m.id} moved too far (${Math.hypot(m.dx, m.dy).toFixed(1)}px)`,
+                );
+            }
+            for (let i = 0; i < resolvedList.length; i += 1) {
+                for (let j = i + 1; j < resolvedList.length; j += 1) {
+                    const a = resolvedList[i];
+                    const b = resolvedList[j];
+                    const d = Math.hypot(a.x - b.x, a.y - b.y);
+                    assert.ok(
+                        d >= a.r + b.r,
+                        `${id} step ${step.key} marker diameter overlap: ${a.id} vs ${b.id} (${d.toFixed(1)} < ${a.r + b.r})`,
+                    );
+                }
+            }
+
+            if (id === 'somaliland-recognition-red-sea-order' && String(step.key) === '4') {
+                const adjReqs = labelRequests.map(req => ({ ...req, ...resolved.get(req.id) }));
+                const arcPts = (step.connections || []).map(cid => {
+                    const conn = connsById.get(cid);
+                    const pf = coordOf(byId.get(conn.from));
+                    const pt = coordOf(byId.get(conn.to));
+                    if (!pf || !pt) return null;
+                    const prof = computeArcProfile([pf.lng, pf.lat], [pt.lng, pt.lat], {
+                        camDist: cam.dist,
+                        visBase: pose.visBase,
+                        side: conn.side || 0,
+                    });
+                    return {
+                        id: cid,
+                        points: prof.pts.map(p => projectPointWithPose(latLngAltToVec3(p[1], p[0], p[2], GLOBE_RADIUS), pose, W, H, fovDeg))
+                            .filter(pr => pr.visibleOnHorizon),
+                    };
+                }).filter(Boolean);
+                const solved = solveActorMapLabels({
+                    width: W,
+                    height: H,
+                    markers: resolvedList,
+                    actorLabels: adjReqs,
+                    arcPoints: arcPts,
+                });
+                const igadLabel = solved.actors.get('igad');
+                const auMarker = resolvedList.find(m => m.id === 'african-union');
+                assert.ok(igadLabel?.visible, 'IGAD label must stay visible in Somaliland step 4');
+                assert.ok(
+                    igadLabel.box.x1 <= auMarker.x - auMarker.r - 2
+                    || igadLabel.box.x0 >= auMarker.x + auMarker.r + 2
+                    || igadLabel.box.y1 <= auMarker.y - auMarker.r - 2
+                    || igadLabel.box.y0 >= auMarker.y + auMarker.r + 2,
+                    'IGAD label box must not sit over African Union marker',
+                );
+            }
+        }
+    }
+
+    // noShadow suppresses arc shadow even on short arcs, and solveActorMapLabels avoids crossing arcPoints
+    const shortNoShadow = computeArcProfile([96.13, 19.74], [95.08, 21.33], { camDist: 0.1, side: 0.14, noShadow: true });
+    assert.equal(shortNoShadow.castShadow, false);
+
+    const arcAvoid = solveActorMapLabels({
+        width: 400,
+        height: 400,
+        markers: [{ id: 'p', x: 200, y: 200, r: 6 }],
+        actorLabels: [{ id: 'p', name: 'Las Anod', x: 200, y: 200, r: 6, preferredSide: 'b', priority: 50 }],
+        arcPoints: [{ id: 'a1', points: [{ x: 200, y: 222 }, { x: 205, y: 225 }] }],
+    });
+    assert.notEqual(arcAvoid.actors.get('p')?.side, 'b', 'actor label should avoid crossing arcPoints when clear side exists');
 });

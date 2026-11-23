@@ -1770,8 +1770,8 @@ export const AFRICA_CASES_2026 = [
                         "label": "IGAD member states (Horn of Africa)",
                         "countries": ["Djibouti", "Ethiopia", "Kenya", "Somalia", "S. Sudan", "Sudan", "Uganda"],
                         "anchor": {
-                            "latitude": 9.0,
-                            "longitude": 41.5,
+                            "latitude": 7.2,
+                            "longitude": 37.8,
                             "gazetteer": "Horn of Africa regional area centroid across IGAD states (not pinned to an HQ city)"
                         }
                     }
@@ -1961,11 +1961,11 @@ export const AFRICA_CASES_2026 = [
                     "key": "4",
                     "shortLabel": "AU & UN response",
                     "levels": ["local", "state", "regional", "global"],
-                    "cam": { "lat": 13.0, "lng": 36.5, "dist": 0.92, "tilt": 26 },
+                    "cam": { "lat": 16.5, "lng": 37.5, "dist": 0.85, "tilt": 18 },
                     "bloc": true,
                     "actors": [
                         { "id": "african-union", "preferredSide": "l", "note": "calls move null and void" },
-                        { "id": "igad", "preferredSide": "l" },
+                        { "id": "igad", "preferredSide": "bl" },
                         { "id": "somalia-fg", "preferredSide": "b" },
                         { "id": "israel", "preferredSide": "r" },
                         { "id": "somaliland-authorities", "small": true },
@@ -1979,7 +1979,7 @@ export const AFRICA_CASES_2026 = [
                     "summary": "Every sourced actor and connection connecting Hargeisa, Las Anod, Mogadishu, Israel, IGAD, the African Union, and UN Security Council.",
                     "note": "Not drawn: No other UN member state had recognized Somaliland as of 1 November 2026 (Al Jazeera).",
                     "levels": ["local", "state", "regional", "global"],
-                    "cam": { "lat": 14.0, "lng": 37.0, "dist": 1.65, "tilt": 14 },
+                    "cam": { "lat": 16.5, "lng": 37.5, "dist": 0.92, "tilt": 16 },
                     "bloc": true,
                     "quietLabels": true,
                     "actors": [

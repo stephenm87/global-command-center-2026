@@ -270,6 +270,12 @@
 
 .n3 .lab {
     position: absolute;
+    display: inline-flex;
+    flex-direction: column;
+    gap: 1px;
+    padding: 2px 6px;
+    border-radius: 4px;
+    background: rgba(5, 11, 18, 0.78);
     white-space: nowrap;
     pointer-events: none;
     font-family: 'Roboto Mono', monospace;
@@ -290,8 +296,8 @@
     color: #c4d6de;
 }
 
-.n3 .lab.r { left: calc(var(--d) / 2 + 8px); top: -8px; text-align: left; }
-.n3 .lab.l { right: calc(var(--d) / 2 + 8px); top: -8px; text-align: right; }
+.n3 .lab.r { left: calc(var(--d) / 2 + 8px); top: -10px; text-align: left; }
+.n3 .lab.l { right: calc(var(--d) / 2 + 8px); top: -10px; text-align: right; }
 .n3 .lab.t { left: 0; bottom: calc(var(--d) / 2 + 8px); transform: translateX(-50%); text-align: center; }
 .n3 .lab.b { left: 0; top: calc(var(--d) / 2 + 8px); transform: translateX(-50%); text-align: center; }
 .n3 .lab.tr { left: calc(var(--d) / 2 + 6px); bottom: calc(var(--d) / 2 + 4px); text-align: left; }
@@ -411,10 +417,10 @@
 .flat-sphere { fill: #061019; }
 .flat-graticule { fill: none; stroke: rgba(103, 213, 245, 0.08); stroke-width: 0.6; }
 .flat-rim { fill: none; stroke: rgba(103, 213, 245, 0.35); stroke-width: 1; }
-.flat-country { fill: #162b38; stroke: rgba(103, 213, 245, 0.28); stroke-width: 0.6; transition: fill 0.35s; }
-.flat-country.is-area { fill: #1b3c4d; stroke: rgba(103, 213, 245, 0.65); }
-.flat-country.is-bloc { fill: #2b2a55; stroke: rgba(183, 156, 255, 0.6); }
-.flat-country.is-focus { fill: #1e4a5a; stroke: rgba(103, 213, 245, 0.9); stroke-width: 1; }
+.flat-country { fill: #183241; stroke: rgba(140, 224, 248, 0.58); stroke-width: 0.9; transition: fill 0.35s; }
+.flat-country.is-area { fill: #1d4255; stroke: rgba(132, 224, 250, 0.78); }
+.flat-country.is-bloc { fill: #2b2a55; stroke: rgba(196, 174, 255, 0.74); }
+.flat-country.is-focus { fill: #204f60; stroke: rgba(154, 236, 255, 0.96); stroke-width: 1.15; }
 
 .flat-rail-title {
     fill: var(--briefing-muted);

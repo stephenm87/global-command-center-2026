@@ -242,6 +242,7 @@ export function computeArcProfile(
         visBase = visAltitudeBase(camDist),
         side = 0,
         isDrop = false,
+        noShadow = false,
         fromAlt = visBase,
         toAlt = visBase,
         type = 'pressure',
@@ -274,7 +275,7 @@ export function computeArcProfile(
         pts.push([q[0] + side * px * s, q[1] + side * py * s, alt]);
     }
 
-    const castShadow = !isDrop && lenDeg < 12 && peak > 0.0003;
+    const castShadow = !noShadow && !isDrop && lenDeg < 12 && peak > 0.0003;
     const shadowPts = castShadow ? pts.map(p => [p[0], p[1], visBase * 0.65]) : null;
     const [dv, gv, anim] = DASH_SPEC[type] || DASH_SPEC.pressure;
     const safeLenDeg = Math.max(0.3, lenDeg);

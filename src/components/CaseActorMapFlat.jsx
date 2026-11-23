@@ -2,7 +2,7 @@ import { useEffect, useId, useMemo, useRef, useState } from 'react';
 import { geoDistance, geoGraticule10, geoOrthographic, geoPath } from 'd3-geo';
 import * as topojson from 'topojson-client';
 import { computeFloatingBadgeScreenSlots, cubicInOut } from './actorMapCamera.mjs';
-import { solveActorMapLabels } from './actorMapLayout.mjs';
+import { resolveMarkerCollisions, solveActorMapLabels } from './actorMapLayout.mjs';
 
 const LEVEL_COLORS = {
     local: '#ffd9a0',
@@ -312,10 +312,50 @@ export default function CaseActorMapFlat({
                 y: pt[1],
                 isSelected: selected?.kind === 'place' && selected.id === loc.label,
             });
+            actorLabels.push({
+                id: `place:${loc.label}`,
+                name: loc.label,
+                note: '',
+                x: pt[0],
+                y: pt[1],
+                r: 5.5,
+                preferredSide: 'r',
+                hidden: Boolean(step.quietLabels && !(selected?.kind === 'place' && selected.id === loc.label)),
+                priority: selected?.kind === 'place' && selected.id === loc.label ? 190 : 52,
+            });
+        }
+
+        const collisionTargets = [
+            ...markers.map(m => ({ id: m.actor.id, x: m.x, y: m.y, r: m.r })),
+            ...extraPlaces.map(p => ({ id: `place:${p.loc.label}`, x: p.x, y: p.y, r: 5.5 })),
+        ];
+        const resolvedCoords = resolveMarkerCollisions(collisionTargets, { width, height, padding: 10, minGap: 2 });
+        for (const m of markers) {
+            const p = resolvedCoords.get(m.actor.id);
+            if (p) {
+                m.x = p.x;
+                m.y = p.y;
+                actorPositions.set(m.actor.id, [p.x, p.y]);
+            }
+        }
+        for (const extra of extraPlaces) {
+            const p = resolvedCoords.get(`place:${extra.loc.label}`);
+            if (p) {
+                extra.x = p.x;
+                extra.y = p.y;
+            }
+        }
+        for (const lbl of actorLabels) {
+            const p = resolvedCoords.get(lbl.id);
+            if (p) {
+                lbl.x = p.x;
+                lbl.y = p.y;
+            }
         }
 
         const linkItems = [];
         const linkLabelRequests = [];
+        const arcPoints = [];
         for (const cid of step.connections || []) {
             const conn = connById.get(cid);
             if (!conn) continue;
@@ -344,6 +384,12 @@ export default function CaseActorMapFlat({
                 (1 - t) * (1 - t) * a2[0] + 2 * (1 - t) * t * ctrl[0] + t * t * b2[0],
                 (1 - t) * (1 - t) * a2[1] + 2 * (1 - t) * t * ctrl[1] + t * t * b2[1],
             ];
+            const samplePts = [];
+            for (let s = 1; s <= 11; s += 1) {
+                const ptSample = quadAt(s / 12);
+                samplePts.push({ x: ptSample[0], y: ptSample[1] });
+            }
+            arcPoints.push({ id: conn.id, points: samplePts });
             const isSel = selected?.kind === 'connection' && selected.id === conn.id;
             linkItems.push({
                 conn,
@@ -355,11 +401,18 @@ export default function CaseActorMapFlat({
                 id: conn.id,
                 label: conn.label,
                 priority: isSel ? 180 : conn.type === 'pressure' ? 68 : 60,
-                hidden: Boolean((step.quietLabels && !isSel) || len < 48),
-                candidates: [0.5, 0.4, 0.6, 0.34, 0.66].map(t => {
-                    const p = quadAt(t);
-                    return { x: p[0], y: p[1] - 10 };
-                }),
+                hidden: Boolean((step.quietLabels && !isSel) || len < 22),
+                candidates: [
+                    ...[0.5, 0.4, 0.6, 0.34, 0.66, 0.26, 0.74].map(t => {
+                        const p = quadAt(t);
+                        return { x: p[0], y: p[1] - 10 };
+                    }),
+                    ...[1, -1].map(dir => {
+                        const p = quadAt(0.5);
+                        const halfW = Math.ceil((String(conn.label || '').length * 6.6 + 16) / 2) + 8;
+                        return { x: p[0] + dir * halfW, y: p[1] - 6 };
+                    }),
+                ],
             });
         }
 
@@ -377,17 +430,18 @@ export default function CaseActorMapFlat({
             : [];
 
         const reservedBoxes = [
-            { x0: 6, y0: height - 132, x1: 148, y1: height - 6 }, // bottom-left levels overlay
+            { x0: 6, y0: height - (width < 480 ? 116 : 132), x1: width < 480 ? 114 : 148, y1: height - 6 }, // bottom-left levels overlay
         ];
 
         const solvedLabels = solveActorMapLabels({
             width,
             height,
-            markers: markers.map(m => ({ id: m.actor.id, x: m.x, y: m.y, r: m.r })),
+            markers: collisionTargets,
             floatingBadges: floatingSlots,
             actorLabels,
             linkLabels: linkLabelRequests,
             countryLabels: countryLabelRequests,
+            arcPoints,
             reservedBoxes,
             padding: 8,
         });
@@ -513,23 +567,26 @@ export default function CaseActorMapFlat({
                 </g>
 
                 <g>
-                    {scene.extraPlaces.map(({ loc, x, y, isSelected }) => (
-                        <g
-                            key={`place-${loc.label}`}
-                            role="button"
-                            tabIndex={0}
-                            transform={`translate(${x},${y})`}
-                            aria-label={`Mapped place: ${loc.label}`}
-                            aria-pressed={isSelected}
-                            className={`flat-place-pin${isSelected ? ' is-sel' : ''}`}
-                            onClick={() => onSelect?.('place', loc.label)}
-                            onKeyDown={e => onActivateKey(e, () => onSelect?.('place', loc.label))}
-                        >
-                            <circle r="11" fill="transparent" />
-                            <rect x="-3.5" y="-3.5" width="7" height="7" transform="rotate(45)" className="flat-place-diamond" />
-                            <text y="14" className="flat-place-label">{loc.label}</text>
-                        </g>
-                    ))}
+                    {scene.extraPlaces.map(({ loc, x, y, isSelected }) => {
+                        const placed = scene.solvedLabels.actors.get(`place:${loc.label}`);
+                        return (
+                            <g
+                                key={`place-${loc.label}`}
+                                role="button"
+                                tabIndex={0}
+                                transform={`translate(${x},${y})`}
+                                aria-label={`Mapped place: ${loc.label}`}
+                                aria-pressed={isSelected}
+                                className={`flat-place-pin${isSelected ? ' is-sel' : ''}`}
+                                onClick={() => onSelect?.('place', loc.label)}
+                                onKeyDown={e => onActivateKey(e, () => onSelect?.('place', loc.label))}
+                            >
+                                <circle r="11" fill="transparent" />
+                                <rect x="-3.5" y="-3.5" width="7" height="7" transform="rotate(45)" className="flat-place-diamond" />
+                                {placed?.visible && renderFlatPositionedText(5.5, placed, loc.label, '', 'flat-place-label')}
+                            </g>
+                        );
+                    })}
                 </g>
 
                 <g>
@@ -588,31 +645,34 @@ export default function CaseActorMapFlat({
     );
 }
 
-function renderFlatActorLabel(m, placed) {
-    const off = m.r + 8;
+function renderFlatPositionedText(r, placed, title, noteText = '', titleClass = 'flat-node-name') {
+    const off = r + 8;
     let x = 0;
     let y = 0;
     let anchor = 'middle';
 
     if (placed.side === 'r') { x = off; y = -2; anchor = 'start'; }
     else if (placed.side === 'l') { x = -off; y = -2; anchor = 'end'; }
-    else if (placed.side === 't') { x = 0; y = -off - (placed.showNote ? 14 : 2); anchor = 'middle'; }
+    else if (placed.side === 't') { x = 0; y = -off - (noteText ? 14 : 2); anchor = 'middle'; }
     else if (placed.side === 'b') { x = 0; y = off + 10; anchor = 'middle'; }
     else if (placed.side === 'tr') { x = off * 0.85; y = -off * 0.7; anchor = 'start'; }
     else if (placed.side === 'tl') { x = -off * 0.85; y = -off * 0.7; anchor = 'end'; }
     else if (placed.side === 'br') { x = off * 0.85; y = off * 0.85; anchor = 'start'; }
     else { x = -off * 0.85; y = off * 0.85; anchor = 'end'; }
 
-    const noteText = placed.showNote
-        ? (m.entry.note || (m.actor.location.kind === 'pin' ? m.actor.location.place : m.actor.location.label))
-        : '';
-
     return (
         <g pointerEvents="none">
-            <text x={x} y={y} textAnchor={anchor} className="flat-node-name">{m.actor.name}</text>
+            <text x={x} y={y} textAnchor={anchor} className={titleClass}>{title}</text>
             {noteText && <text x={x} y={y + 12} textAnchor={anchor} className="flat-node-sub">{noteText}</text>}
         </g>
     );
+}
+
+function renderFlatActorLabel(m, placed) {
+    const noteText = placed.showNote
+        ? (m.entry.note || (m.actor.location.kind === 'pin' ? m.actor.location.place : m.actor.location.label))
+        : '';
+    return renderFlatPositionedText(m.r, placed, m.actor.name, noteText, 'flat-node-name');
 }
 
 function isRelatedItem(selected, kind, id, step, connById) {

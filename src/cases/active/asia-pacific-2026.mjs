@@ -522,6 +522,7 @@ export const ASIA_PACIFIC_CASES_2026 = [
                     "label": "Intensifies offensives",
                     "type": "conflict",
                     "side": 0.14,
+                    "noShadow": true,
                     "text": "The military and an allied militia intensified offensives in late 2025, and aid workers estimated fighting displaced 150,000 villagers in Pakokku District.",
                     "sourceUrl": "https://www.irrawaddy.com/news/burma/150000-people-displaced-by-fighting-in-pakokku-in-urgent-need.html",
                     "steps": [1, "all"]
@@ -532,7 +533,8 @@ export const ASIA_PACIFIC_CASES_2026 = [
                     "to": "magwe-fug",
                     "label": "Competing authority claims",
                     "type": "conflict",
-                    "side": -0.18,
+                    "side": -0.22,
+                    "noShadow": true,
                     "text": "Two authorities claim to govern in Magway Region: the military, and the interim Magwe Federal Unit Government formed in March 2026.",
                     "sourceUrl": "https://www.irrawaddy.com/news/burma/150000-people-displaced-by-fighting-in-pakokku-in-urgent-need.html",
                     "steps": [1, "all"]
@@ -543,7 +545,8 @@ export const ASIA_PACIFIC_CASES_2026 = [
                     "to": "displaced-pakokku",
                     "label": "Says it routes aid",
                     "type": "support",
-                    "side": -0.2,
+                    "side": 0.26,
+                    "noShadow": true,
                     "text": "The interim Magwe deputy chief minister said his administration works to deliver donor aid despite clashes and scarce resources.",
                     "sourceUrl": "https://www.irrawaddy.com/news/burma/150000-people-displaced-by-fighting-in-pakokku-in-urgent-need.html",
                     "steps": [1, "all"]
@@ -554,7 +557,7 @@ export const ASIA_PACIFIC_CASES_2026 = [
                     "to": "india",
                     "label": "About 900 cross",
                     "type": "movement",
-                    "side": 0.22,
+                    "side": 0.38,
                     "text": "OCHA reported that about 900 people displaced from Sagaing's Tamu Township crossed into neighbouring India in early June 2026.",
                     "sourceUrl": "https://myanmar.un.org/en/319232-myanmar-humanitarian-update-no-52",
                     "steps": [2, 4, "all"]
@@ -565,7 +568,7 @@ export const ASIA_PACIFIC_CASES_2026 = [
                     "to": "sagaing-displaced",
                     "label": "Introduces movement curbs",
                     "type": "pressure",
-                    "side": 0.22,
+                    "side": 0.38,
                     "text": "On 9 June 2026, OCHA noted that India introduced movement restrictions as operations in Tamu Township displaced civilians across the border.",
                     "sourceUrl": "https://myanmar.un.org/en/319232-myanmar-humanitarian-update-no-52",
                     "steps": [2, "all"]
@@ -621,7 +624,7 @@ export const ASIA_PACIFIC_CASES_2026 = [
                     "key": "2",
                     "shortLabel": "Displacement",
                     "levels": ["local", "state"],
-                    "cam": { "lat": 22.8, "lng": 95.0, "dist": 0.18, "tilt": 48 },
+                    "cam": { "lat": 22.3, "lng": 95.5, "dist": 0.14, "tilt": 18 },
                     "bloc": false,
                     "actors": [
                         { "id": "displaced-pakokku", "preferredSide": "b", "note": "80,000+ since mid-May" },
@@ -650,7 +653,7 @@ export const ASIA_PACIFIC_CASES_2026 = [
                     "shortLabel": "ASEAN diplomacy",
                     "note": "Not drawn: OCHA reports about 7,000 displaced people remain along the Myanmar–Thailand border in Myawaddy Township, Kayin State, and Min Aung Hlaing visited several ASEAN states without bloc discouragement (Al Jazeera).",
                     "levels": ["local", "state", "regional"],
-                    "cam": { "lat": 18.0, "lng": 106.5, "dist": 0.62, "tilt": 34 },
+                    "cam": { "lat": 19.6, "lng": 107.2, "dist": 0.45, "tilt": 16 },
                     "bloc": true,
                     "actors": [
                         { "id": "asean", "preferredSide": "b", "note": "Manila, Nov 2026" },
@@ -666,7 +669,7 @@ export const ASIA_PACIFIC_CASES_2026 = [
                     "summary": "Every sourced actor and connection across central Myanmar districts, border crossings, donor financing, and ASEAN summit diplomacy.",
                     "note": "Not drawn: OCHA notes access barriers without naming one party and reports ~7,000 displaced remain near Myawaddy Township; Min Aung Hlaing also visited individual ASEAN states without bloc discouragement.",
                     "levels": ["local", "state", "regional", "global"],
-                    "cam": { "lat": 17.5, "lng": 105.0, "dist": 1.65, "tilt": 14 },
+                    "cam": { "lat": 19.6, "lng": 107.2, "dist": 0.48, "tilt": 16 },
                     "bloc": true,
                     "quietLabels": true,
                     "actors": [
