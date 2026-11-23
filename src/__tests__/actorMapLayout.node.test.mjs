@@ -316,8 +316,12 @@ test('Rule 4d.6 geometry: all pilot steps keep markers inside frame, non-overlap
         const connsById = new Map(c.actorMap.connections.map(x => [x.id, x]));
 
         for (const step of c.actorMap.steps) {
+            const { clusters, actorToCluster } = buildStepClusterIndex(step);
             const entries = step.actors || [];
-            const surfaceCoords = entries.map(e => coordOf(byId.get(e.id))).filter(Boolean);
+            const surfaceCoords = [
+                ...entries.filter(e => !actorToCluster.has(e.id)).map(e => coordOf(byId.get(e.id))).filter(Boolean),
+                ...clusters.map(cl => ({ lat: cl.lat, lng: cl.lng })),
+            ];
             const floatingActors = entries.map(e => byId.get(e.id)).filter(a => a?.location?.kind === 'noSinglePlace');
             const cam = fitCameraToActors(step.cam, surfaceCoords, W, H, {
                 fovDeg,
@@ -329,6 +333,7 @@ test('Rule 4d.6 geometry: all pilot steps keep markers inside frame, non-overlap
             const rawActorMarkers = [];
             const labelRequests = [];
             for (const entry of entries) {
+                if (actorToCluster.has(entry.id)) continue;
                 const actor = byId.get(entry.id);
                 const co = coordOf(actor);
                 if (!actor || !co) continue;
@@ -355,6 +360,29 @@ test('Rule 4d.6 geometry: all pilot steps keep markers inside frame, non-overlap
                     preferredSide: entry.preferredSide || 'r',
                     hidden: Boolean(entry.small),
                     priority: actor.level === 'regional' ? 96 : actor.level === 'state' ? 88 : 78,
+                });
+            }
+            for (const cl of clusters) {
+                const proj = projectPointWithPose(
+                    latLngAltToVec3(cl.lat, cl.lng, pose.visBase, GLOBE_RADIUS),
+                    pose,
+                    W,
+                    H,
+                    fovDeg,
+                );
+                assert.ok(proj.visibleOnHorizon, `${id} step ${step.key} cluster ${cl.id} must stay visible in frame`);
+                assert.ok(proj.x >= 8 && proj.x <= W - 8 && proj.y >= 8 && proj.y <= H - 8, `${id} step ${step.key} cluster ${cl.id} projected out of bounds`);
+                markers.push({ id: cl.id, x: proj.x, y: proj.y, r: CLUSTER_DOT_RADIUS });
+                labelRequests.push({
+                    id: cl.id,
+                    name: cl.name,
+                    note: cl.note || `${cl.memberIds.length} actors`,
+                    x: proj.x,
+                    y: proj.y,
+                    r: CLUSTER_DOT_RADIUS,
+                    preferredSide: cl.preferredSide || 'b',
+                    hidden: false,
+                    priority: 94,
                 });
             }
 
@@ -491,9 +519,17 @@ test('Rule 4d.6 geometry: all pilot steps keep markers inside frame, non-overlap
 
     // Step cluster metadata must survive schema normalization cleanly
     const normalizedMy = normalizeCaseStudy(my);
+    const myStep4 = normalizedMy.actorMap.steps.find(s => String(s.key) === '4');
+    assert.equal(myStep4.clusters?.length, 1);
+    assert.equal(myStep4.clusters[0].memberIds.length, 2);
     const myAllStep = normalizedMy.actorMap.steps.find(s => String(s.key) === 'all');
     assert.equal(myAllStep.clusters?.length, 1);
     assert.equal(myAllStep.clusters[0].memberIds.length, 6);
+
+    const normalizedSom = normalizeCaseStudy(som);
+    const somAllStep = normalizedSom.actorMap.steps.find(s => String(s.key) === 'all');
+    assert.equal(somAllStep.clusters?.length, 1);
+    assert.equal(somAllStep.clusters[0].memberIds.length, 2);
 });
 
 test('Strict geometry across every step (1-4 & All) at 1440px and 390px (3D & Flat): zero label/marker/arc overlaps', () => {
@@ -509,6 +545,24 @@ test('Strict geometry across every step (1-4 & All) at 1440px and 390px (3D & Fl
         const cx = Math.max(b.x0, Math.min(b.x1, m.x));
         const cy = Math.max(b.y0, Math.min(b.y1, m.y));
         return Math.hypot(m.x - cx, m.y - cy) < m.r;
+    };
+    const findUnlabelledStepActors = (entries, byId, actorToCluster, slotById, solved) => {
+        const missing = [];
+        for (const entry of entries) {
+            const actor = byId.get(entry.id);
+            if (!actor) continue;
+            if (actor.location.kind === 'noSinglePlace') {
+                if (!slotById.has(actor.id)) missing.push(actor.id);
+                continue;
+            }
+            const cl = actorToCluster.get(entry.id);
+            if (cl) {
+                if (!solved.actors.get(cl.id)?.visible) missing.push(`${entry.id} (cluster ${cl.id})`);
+                continue;
+            }
+            if (!solved.actors.get(entry.id)?.visible) missing.push(entry.id);
+        }
+        return missing;
     };
 
     const configs = [
@@ -843,11 +897,29 @@ test('Strict geometry across every step (1-4 & All) at 1440px and 390px (3D & Fl
                     );
                 }
 
+                // 4) Every actor shown in step.actors must have a readable label (floating pill, visible cluster, or visible actor label)
+                const unlabelled = findUnlabelledStepActors(entries, byId, actorToCluster, slotById, solved);
+                assert.deepEqual(
+                    unlabelled,
+                    [],
+                    `${cs.id} step ${step.key} (${vpLabel}): unlabelled actors: ${unlabelled.join(', ')}`,
+                );
+
                 // Step-specific invariants required by review
+                if (cs.id === 'myanmar-fragmented-sovereignty' && String(step.key) === '4') {
+                    assert.ok(solved.actors.get('myanmar-step4-actors')?.visible, `Myanmar Step 4 cluster label must be visible (${vpLabel})`);
+                }
                 if (cs.id === 'myanmar-fragmented-sovereignty' && String(step.key) === 'all') {
                     assert.ok(solved.actors.get('myanmar-actors')?.visible, `Myanmar cluster label must be visible (${vpLabel})`);
                     assert.ok(solved.actors.get('india')?.visible, `India label must be visible in Myanmar All (${vpLabel})`);
                     assert.ok(solved.actors.get('asean')?.visible, `ASEAN label must be visible in Myanmar All (${vpLabel})`);
+                }
+                if (cs.id === 'somaliland-recognition-red-sea-order' && String(step.key) === '4') {
+                    assert.ok(solved.actors.get('somaliland-authorities')?.visible, `Somaliland authorities must be visible in Step 4 (${vpLabel})`);
+                }
+                if (cs.id === 'somaliland-recognition-red-sea-order' && String(step.key) === 'all') {
+                    assert.ok(solved.actors.get('somaliland-local-actors')?.visible, `Somaliland cluster label must be visible in All (${vpLabel})`);
+                    assert.ok(solved.actors.get('igad')?.visible, `IGAD label must be visible in Somaliland All (${vpLabel})`);
                 }
                 if (cs.id === 'somaliland-recognition-red-sea-order' && vpLabel === '390px-flat') {
                     const fg = solved.actors.get('somalia-fg');
@@ -892,4 +964,17 @@ test('Strict geometry across every step (1-4 & All) at 1440px and 390px (3D & Fl
         arcPoints: crowdedArcs,
     });
     assert.equal(visibleSelected.actors.get('p').visible, true);
+
+    // An unclustered hidden/small actor or unplaced actor fails findUnlabelledStepActors
+    const unlabelledCatch = solveActorMapLabels({
+        width: 400,
+        height: 400,
+        markers: [{ id: 'igad', x: 180, y: 260, r: 9 }],
+        actorLabels: [{ id: 'igad', name: 'IGAD', x: 180, y: 260, r: 9, hidden: true, priority: 96 }],
+    });
+    const somMap = new Map([['igad', { id: 'igad', location: { kind: 'area' } }]]);
+    assert.deepEqual(
+        findUnlabelledStepActors([{ id: 'igad', small: true }], somMap, new Map(), new Map(), unlabelledCatch),
+        ['igad'],
+    );
 });
