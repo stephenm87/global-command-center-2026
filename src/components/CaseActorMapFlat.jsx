@@ -1,7 +1,7 @@
 import { useEffect, useId, useMemo, useRef, useState } from 'react';
 import { geoDistance, geoGraticule10, geoOrthographic, geoPath } from 'd3-geo';
 import * as topojson from 'topojson-client';
-import { computeFloatingBadgeScreenSlots, cubicInOut } from './actorMapCamera.mjs';
+import { computeFlatTargetView, computeFloatingBadgeScreenSlots, cubicInOut } from './actorMapCamera.mjs';
 import {
     CLUSTER_DOT_RADIUS,
     buildStepClusterIndex,
@@ -81,44 +81,6 @@ function actorCoord(actor) {
         return [actor.location.anchor.longitude, actor.location.anchor.latitude];
     }
     return null;
-}
-
-function computeTargetView(step, surfaceCoords, width, height, hasFloating) {
-    if (!step) return { lng: 96, lat: 20, half: 10 };
-    if (step.key === 'all' || !surfaceCoords.length) {
-        return { lng: step.cam.lng, lat: step.cam.lat, half: Math.min(62, Math.max(18, step.cam.dist * 34)) };
-    }
-    const baseHalf = step.cam.dist < 0.14
-        ? 3.2
-        : step.cam.dist < 0.28
-            ? 6.2
-            : step.cam.dist < 0.72
-                ? 17.5
-                : 30;
-    const minAspectSpan = Math.min(width, height) / Math.max(width, height);
-    let half = Math.max(baseHalf, baseHalf / Math.max(0.65, minAspectSpan));
-
-    const testProj = geoOrthographic().clipAngle(90);
-    const leftPad = width < 640 ? 34 : 64;
-    const rightPad = width < 640 ? 34 : 64;
-    const topPad = hasFloating ? (width < 640 ? 112 : 84) : 34;
-    const bottomPad = 104;
-
-    for (let i = 0; i < 18; i += 1) {
-        const scale = Math.min(width, height) / (2 * Math.sin((half * Math.PI) / 180));
-        testProj
-            .translate([width / 2, height / 2 + (hasFloating ? 16 : 0)])
-            .rotate([-step.cam.lng, -step.cam.lat])
-            .scale(scale);
-        const fits = surfaceCoords.every(c => {
-            if (geoDistance(c, [step.cam.lng, step.cam.lat]) > 1.38) return false;
-            const p = testProj(c);
-            return p && p[0] >= leftPad && p[0] <= width - rightPad && p[1] >= topPad && p[1] <= height - bottomPad;
-        });
-        if (fits || half >= 62) break;
-        half = Math.min(62, half * 1.15);
-    }
-    return { lng: step.cam.lng, lat: step.cam.lat, half };
 }
 
 function initialFlatBox() {
@@ -206,7 +168,7 @@ export default function CaseActorMapFlat({
             .filter(actor => actor?.location?.kind === 'noSinglePlace');
     }, [step, actorById]);
 
-    const [view, setView] = useState(() => computeTargetView(
+    const [view, setView] = useState(() => computeFlatTargetView(
         step,
         surfaceCoords,
         box.width,
@@ -243,7 +205,7 @@ export default function CaseActorMapFlat({
     }, []);
 
     useEffect(() => {
-        const target = computeTargetView(step, surfaceCoords, box.width, box.height, floatingActors.length > 0);
+        const target = computeFlatTargetView(step, surfaceCoords, box.width, box.height, floatingActors.length > 0);
         const stepId = `${actorMap?.focusCountry || ''}:${String(step?.key || activeStepKey)}`;
         const isStepTransition = mountInitRef.current && lastStepKeyRef.current !== stepId;
         mountInitRef.current = true;
@@ -501,8 +463,8 @@ export default function CaseActorMapFlat({
                 (1 - t) * (1 - t) * a2[1] + 2 * (1 - t) * t * ctrl[1] + t * t * b2[1],
             ];
             const samplePts = [];
-            for (let s = 1; s <= 11; s += 1) {
-                const ptSample = quadAt(s / 12);
+            for (let s = 1; s <= 23; s += 1) {
+                const ptSample = quadAt(s / 24);
                 samplePts.push({ x: ptSample[0], y: ptSample[1] });
             }
             arcPoints.push({ id: conn.id, points: samplePts });
@@ -852,23 +814,60 @@ export default function CaseActorMapFlat({
 
 function renderFlatPositionedText(r, placed, title, noteText = '', titleClass = 'flat-node-name') {
     const off = r + 8;
+    const lines = Array.isArray(placed?.lines) && placed.lines.length > 0 ? placed.lines : [title];
+    const extraLineH = Math.max(0, lines.length - 1) * 14;
     let x = 0;
     let y = 0;
     let anchor = 'middle';
 
-    if (placed.side === 'r') { x = off; y = -2; anchor = 'start'; }
-    else if (placed.side === 'l') { x = -off; y = -2; anchor = 'end'; }
-    else if (placed.side === 't') { x = 0; y = -off - (noteText ? 14 : 2); anchor = 'middle'; }
-    else if (placed.side === 'b') { x = 0; y = off + 10; anchor = 'middle'; }
-    else if (placed.side === 'tr') { x = off * 0.85; y = -off * 0.7; anchor = 'start'; }
-    else if (placed.side === 'tl') { x = -off * 0.85; y = -off * 0.7; anchor = 'end'; }
-    else if (placed.side === 'br') { x = off * 0.85; y = off * 0.85; anchor = 'start'; }
-    else { x = -off * 0.85; y = off * 0.85; anchor = 'end'; }
+    if (placed.side === 'r') {
+        const blockH = lines.length * 14 + (noteText ? 13 : 0);
+        x = off;
+        y = -(blockH / 2) + 11;
+        anchor = 'start';
+    } else if (placed.side === 'l') {
+        const blockH = lines.length * 14 + (noteText ? 13 : 0);
+        x = -off;
+        y = -(blockH / 2) + 11;
+        anchor = 'end';
+    } else if (placed.side === 't') {
+        x = placed.offsetX || 0;
+        y = -off - (noteText ? 14 : 2) - extraLineH;
+        anchor = 'middle';
+    } else if (placed.side === 'b') {
+        x = placed.offsetX || 0;
+        y = off + 11;
+        anchor = 'middle';
+    } else if (placed.side === 'tr') {
+        x = off * 0.85;
+        y = -off * 0.7 - (noteText ? 13 : 2) - extraLineH;
+        anchor = 'start';
+    } else if (placed.side === 'tl') {
+        x = -off * 0.85;
+        y = -off * 0.7 - (noteText ? 13 : 2) - extraLineH;
+        anchor = 'end';
+    } else if (placed.side === 'br') {
+        x = off * 0.85;
+        y = off * 0.7 + 11;
+        anchor = 'start';
+    } else {
+        x = -off * 0.85;
+        y = off * 0.7 + 11;
+        anchor = 'end';
+    }
 
     return (
         <g pointerEvents="none">
-            <text x={x} y={y} textAnchor={anchor} className={titleClass}>{title}</text>
-            {noteText && <text x={x} y={y + 12} textAnchor={anchor} className="flat-node-sub">{noteText}</text>}
+            <text x={x} y={y} textAnchor={anchor} className={titleClass}>
+                {lines.map((line, idx) => (
+                    <tspan key={idx} x={x} dy={idx === 0 ? 0 : 14}>{line}</tspan>
+                ))}
+            </text>
+            {noteText && (
+                <text x={x} y={y + extraLineH + 13} textAnchor={anchor} className="flat-node-sub">
+                    {noteText}
+                </text>
+            )}
         </g>
     );
 }

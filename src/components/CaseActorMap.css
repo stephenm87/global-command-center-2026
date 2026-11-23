@@ -319,8 +319,8 @@
     color: #c4d6de;
 }
 
-.n3 .lab.r { left: calc(var(--d) / 2 + 8px); top: -10px; text-align: left; }
-.n3 .lab.l { right: calc(var(--d) / 2 + 8px); top: -10px; text-align: right; }
+.n3 .lab.r { left: calc(var(--d) / 2 + 8px); top: 0; transform: translateY(-50%); text-align: left; }
+.n3 .lab.l { right: calc(var(--d) / 2 + 8px); top: 0; transform: translateY(-50%); text-align: right; }
 .n3 .lab.t { left: 0; bottom: calc(var(--d) / 2 + 8px); transform: translateX(-50%); text-align: center; }
 .n3 .lab.b { left: 0; top: calc(var(--d) / 2 + 8px); transform: translateX(-50%); text-align: center; }
 .n3 .lab.tr { left: calc(var(--d) / 2 + 6px); bottom: calc(var(--d) / 2 + 4px); text-align: left; }

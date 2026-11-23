@@ -2,10 +2,12 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import fs from 'node:fs';
 import path from 'node:path';
+import { geoOrthographic } from 'd3-geo';
 import {
     GLOBE_RADIUS,
     computeArcProfile,
     computeCameraPose,
+    computeFlatTargetView,
     computeFloatingBadgeScreenSlots,
     fitCameraToActors,
     interpolateCamera,
@@ -15,11 +17,18 @@ import {
     vec3ToLatLngAlt,
 } from '../components/actorMapCamera.mjs';
 import {
+    CLUSTER_DOT_RADIUS,
     actorLabelBox,
+    boxIntersectsArcs,
+    buildStepClusterIndex,
     countryLabelBox,
+    isRelatedActorMapItem,
+    isStepConnectionVisible,
     linkLabelBox,
     resolveMarkerCollisions,
+    segmentIntersectsBox,
     solveActorMapLabels,
+    splitActorLabelLines,
 } from '../components/actorMapLayout.mjs';
 import {
     HONEST_3D_LOADING_MESSAGE,
@@ -33,6 +42,7 @@ import {
     preferWebpUrl,
 } from '../components/actorMapMode.mjs';
 import { parseBriefingEntryFromSearch } from '../navigationState.mjs';
+import { normalizeCaseStudy } from '../cases/schema.mjs';
 import { CASE_STUDIES_2026 } from '../cases/index.mjs';
 
 test('latLngAltToVec3 and vec3ToLatLngAlt invert accurately and camera flights never enter the globe', () => {
@@ -184,8 +194,12 @@ test('solveActorMapLabels avoids all marker/label overlaps and keeps lower-prior
     }
 
     assert.ok(actorLabelBox(100, 100, 8, 'r', 'Test').x0 > 100);
+    assert.ok(actorLabelBox(100, 100, 8, 't', 'Test Title', '', 24).x0 > actorLabelBox(100, 100, 8, 't', 'Test Title', '', 0).x0);
     assert.ok(linkLabelBox(100, 100, 'Link').x0 < 100);
     assert.ok(countryLabelBox(100, 100, 'Myanmar').y1 > 100);
+    assert.deepEqual(splitActorLabelLines('Federal Government of Somalia'), ['Federal Government', 'of Somalia']);
+    assert.equal(segmentIntersectsBox({ x: 0, y: 10 }, { x: 100, y: 10 }, { x0: 40, y0: 5, x1: 60, y1: 15 }, 0), true);
+    assert.equal(segmentIntersectsBox({ x: 0, y: 30 }, { x: 100, y: 30 }, { x0: 40, y0: 5, x1: 60, y1: 15 }, 2), false);
 });
 
 test('chooseActorMapMode, isLowPowerDeviceConfig, antimeridian wrap, and step=all parsing enforce lazy-loading rules', () => {
@@ -458,7 +472,7 @@ test('Rule 4d.6 geometry: all pilot steps keep markers inside frame, non-overlap
     });
     assert.notEqual(arcAvoid.actors.get('p')?.side, 'b', 'actor label should avoid crossing arcPoints when clear side exists');
 
-    // Section C regression checks
+    // Section C regression checks & cluster/strict-arc geometry across every step at 1440px and 390px
     const my = CASE_STUDIES_2026.find(c => c.id === 'myanmar-fragmented-sovereignty');
     const india = my.actorMap.actors.find(a => a.id === 'india');
     assert.equal(india.location.label, 'Imphal, Manipur');
@@ -473,4 +487,364 @@ test('Rule 4d.6 geometry: all pilot steps keep markers inside frame, non-overlap
     assert.equal(som.actorMap.boundaryNote, 'The outline shows the territory Somaliland claims and does not imply recognition.');
     const nes = som.actorMap.actors.find(a => a.id === 'ssc-khaatumo');
     assert.equal(nes.name, 'North Eastern State of Somalia');
+
+    // Step cluster metadata must survive schema normalization cleanly
+    const normalizedMy = normalizeCaseStudy(my);
+    const myAllStep = normalizedMy.actorMap.steps.find(s => String(s.key) === 'all');
+    assert.equal(myAllStep.clusters?.length, 1);
+    assert.equal(myAllStep.clusters[0].memberIds.length, 6);
+});
+
+test('Strict geometry across every step (1-4 & All) at 1440px and 390px (3D & Flat): zero label/marker/arc overlaps', () => {
+    const coordOf = actor => (
+        actor?.location?.kind === 'pin'
+            ? { lat: actor.location.latitude, lng: actor.location.longitude }
+            : actor?.location?.kind === 'area' && actor.location.anchor
+                ? { lat: actor.location.anchor.latitude, lng: actor.location.anchor.longitude }
+                : null
+    );
+    const boxOverlap = (a, b) => !(a.x1 <= b.x0 || a.x0 >= b.x1 || a.y1 <= b.y0 || a.y0 >= b.y1);
+    const circleHitsBox = (m, b) => {
+        const cx = Math.max(b.x0, Math.min(b.x1, m.x));
+        const cy = Math.max(b.y0, Math.min(b.y1, m.y));
+        return Math.hypot(m.x - cx, m.y - cy) < m.r;
+    };
+
+    const configs = [
+        { label: '1440px-3d', mode: '3d', width: 533, height: 540 },
+        { label: '1440px-flat', mode: 'flat', width: 533, height: 540 },
+        { label: '390px-flat', mode: 'flat', width: 360, height: 440 },
+        { label: '390px-3d', mode: '3d', width: 360, height: 440 },
+    ];
+    const fovDeg = 50;
+
+    for (const cs of [
+        CASE_STUDIES_2026.find(c => c.id === 'myanmar-fragmented-sovereignty'),
+        CASE_STUDIES_2026.find(c => c.id === 'somaliland-recognition-red-sea-order'),
+    ]) {
+        const byId = new Map(cs.actorMap.actors.map(a => [a.id, a]));
+        const connsById = new Map(cs.actorMap.connections.map(x => [x.id, x]));
+
+        for (const step of cs.actorMap.steps) {
+            const { clusters, actorToCluster } = buildStepClusterIndex(step);
+            const entries = step.actors || [];
+            const floatingActors = entries.map(e => byId.get(e.id)).filter(a => a?.location?.kind === 'noSinglePlace');
+            const surfaceCoords = [
+                ...entries.filter(e => !actorToCluster.has(e.id)).map(e => coordOf(byId.get(e.id))).filter(Boolean),
+                ...clusters.map(cl => ({ lat: cl.lat, lng: cl.lng })),
+            ];
+
+            for (const cfg of configs) {
+                const { mode, width: W, height: H, label: vpLabel } = cfg;
+                const floatingSlots = computeFloatingBadgeScreenSlots(floatingActors, W, H);
+                const slotById = new Map(floatingSlots.map(s => [s.id, s]));
+
+                let cam = null;
+                let pose = null;
+                let projection = null;
+                if (mode === '3d') {
+                    cam = fitCameraToActors(step.cam, surfaceCoords, W, H, { fovDeg, hasFloatingBadges: floatingActors.length > 0 });
+                    pose = computeCameraPose(cam, { h: 0, t: 0 }, 0, GLOBE_RADIUS);
+                } else {
+                    const view = computeFlatTargetView(
+                        step,
+                        surfaceCoords.map(c => [c.lng, c.lat]),
+                        W,
+                        H,
+                        floatingActors.length > 0,
+                    );
+                    const radius = Math.min(W, H) / (2 * Math.sin((Math.max(1, view.half) * Math.PI) / 180));
+                    projection = geoOrthographic()
+                        .clipAngle(90)
+                        .precision(0.4)
+                        .translate([W / 2, H / 2 + (floatingActors.length > 0 ? 18 : 0)])
+                        .rotate([-view.lng, -view.lat])
+                        .scale(radius);
+                }
+
+                const markers = [];
+                const actorLabels = [];
+                const posMap = new Map();
+
+                for (const entry of entries) {
+                    if (actorToCluster.has(entry.id)) continue;
+                    const actor = byId.get(entry.id);
+                    if (!actor) continue;
+                    if (actor.location.kind === 'noSinglePlace') {
+                        const sl = slotById.get(actor.id);
+                        if (sl) {
+                            posMap.set(
+                                actor.id,
+                                mode === 'flat'
+                                    ? [sl.cx, sl.cy + sl.h / 2]
+                                    : unprojectScreenToGlobeSpace(sl.cx, sl.cy, pose, W, H, fovDeg, GLOBE_RADIUS),
+                            );
+                        }
+                        continue;
+                    }
+                    const co = coordOf(actor);
+                    const pt = mode === 'flat'
+                        ? projection([co.lng, co.lat])
+                        : (() => {
+                            const pr = projectPointWithPose(latLngAltToVec3(co.lat, co.lng, pose.visBase, GLOBE_RADIUS), pose, W, H, fovDeg);
+                            return pr.visibleOnHorizon ? [pr.x, pr.y] : null;
+                        })();
+                    assert.ok(pt, `${cs.id} ${step.key} ${vpLabel}: actor ${actor.id} not visible`);
+                    const flatR = step.quietLabels
+                        ? Math.max(3.5, (actor.level === 'regional' ? 9.5 : actor.level === 'state' ? 8 : 6) * 0.72)
+                        : (actor.level === 'regional' ? 9.5 : actor.level === 'state' ? 8 : 7);
+                    const r = mode === 'flat'
+                        ? flatR
+                        : (entry.small ? 5 : actor.level === 'regional' ? 10.5 : actor.level === 'state' ? 8.5 : 7);
+                    markers.push({ id: actor.id, x: pt[0], y: pt[1], r });
+                    posMap.set(actor.id, mode === 'flat' ? pt : { lat: co.lat, lng: co.lng, alt: pose.visBase, isFloating: false });
+                    actorLabels.push({
+                        id: actor.id,
+                        name: actor.name,
+                        note: entry.note || (actor.location.kind === 'pin' ? actor.location.place : actor.location.label),
+                        x: pt[0],
+                        y: pt[1],
+                        r,
+                        preferredSide: entry.preferredSide || 'r',
+                        hidden: Boolean(entry.small),
+                        priority: actor.level === 'regional' ? 96 : actor.level === 'state' ? 88 : 78,
+                    });
+                }
+
+                for (const cl of clusters) {
+                    const pt = mode === 'flat'
+                        ? projection([cl.lng, cl.lat])
+                        : (() => {
+                            const pr = projectPointWithPose(latLngAltToVec3(cl.lat, cl.lng, pose.visBase, GLOBE_RADIUS), pose, W, H, fovDeg);
+                            return pr.visibleOnHorizon ? [pr.x, pr.y] : null;
+                        })();
+                    assert.ok(pt, `${cs.id} ${step.key} ${vpLabel}: cluster ${cl.id} not visible`);
+                    markers.push({ id: cl.id, x: pt[0], y: pt[1], r: CLUSTER_DOT_RADIUS });
+                    posMap.set(cl.id, mode === 'flat' ? pt : { lat: cl.lat, lng: cl.lng, alt: pose.visBase, isFloating: false });
+                    actorLabels.push({
+                        id: cl.id,
+                        name: cl.name,
+                        note: cl.note || `${cl.memberIds.length} actors`,
+                        x: pt[0],
+                        y: pt[1],
+                        r: CLUSTER_DOT_RADIUS,
+                        preferredSide: cl.preferredSide || 'b',
+                        hidden: false,
+                        priority: 94,
+                    });
+                }
+
+                for (const loc of cs.map?.locations || []) {
+                    const lat = Number(loc.latitude);
+                    const lng = Number(loc.longitude);
+                    const matched = entries.some(e => {
+                        const ac = coordOf(byId.get(e.id));
+                        return ac && Math.hypot(ac.lat - lat, ac.lng - lng) < 0.08;
+                    });
+                    if (matched) continue;
+                    const pt = mode === 'flat'
+                        ? projection([lng, lat])
+                        : (() => {
+                            const pr = projectPointWithPose(latLngAltToVec3(lat, lng, pose.visBase, GLOBE_RADIUS), pose, W, H, fovDeg);
+                            return pr.visibleOnHorizon ? [pr.x, pr.y] : null;
+                        })();
+                    if (!pt || pt[0] < 12 || pt[0] > W - 12 || pt[1] < 12 || pt[1] > H - 12) continue;
+                    markers.push({ id: `place:${loc.label}`, x: pt[0], y: pt[1], r: 5.5 });
+                    actorLabels.push({
+                        id: `place:${loc.label}`,
+                        name: loc.label,
+                        note: '',
+                        x: pt[0],
+                        y: pt[1],
+                        r: 5.5,
+                        preferredSide: 'r',
+                        hidden: Boolean(step.quietLabels),
+                        priority: 52,
+                    });
+                }
+
+                const resolved = resolveMarkerCollisions(markers, { width: W, height: H, padding: 10, minGap: 2 });
+                const resolvedList = markers.map(m => {
+                    const r = resolved.get(m.id);
+                    const updated = r ? { ...m, x: r.x, y: r.y } : m;
+                    if (mode === 'flat' && posMap.has(m.id) && r) posMap.set(m.id, [r.x, r.y]);
+                    return updated;
+                });
+                for (const req of actorLabels) {
+                    const r = resolved.get(req.id);
+                    if (r) { req.x = r.x; req.y = r.y; }
+                }
+
+                const arcPoints = [];
+                const linkLabels = [];
+                for (const cid of step.connections || []) {
+                    const conn = connsById.get(cid);
+                    if (!conn || !isStepConnectionVisible(conn, actorToCluster)) continue;
+                    const clFrom = actorToCluster.get(conn.from);
+                    const clTo = actorToCluster.get(conn.to);
+                    const pF = clFrom ? posMap.get(clFrom.id) : posMap.get(conn.from);
+                    const pT = clTo ? posMap.get(clTo.id) : posMap.get(conn.to);
+                    if (!pF || !pT) continue;
+                    if (mode === 'flat') {
+                        const dx = pT[0] - pF[0];
+                        const dy = pT[1] - pF[1];
+                        const len = Math.hypot(dx, dy) || 1;
+                        const fromFloat = byId.get(conn.from)?.location?.kind === 'noSinglePlace';
+                        const ctrl = fromFloat
+                            ? [pF[0] + dx * 0.14, pF[1] + dy * 0.72]
+                            : [(pF[0] + pT[0]) / 2 - (dy / len) * (conn.side || 0.16) * len, (pF[1] + pT[1]) / 2 + (dx / len) * (conn.side || 0.16) * len];
+                        const quadAt = t => [
+                            (1 - t) * (1 - t) * pF[0] + 2 * (1 - t) * t * ctrl[0] + t * t * pT[0],
+                            (1 - t) * (1 - t) * pF[1] + 2 * (1 - t) * t * ctrl[1] + t * t * pT[1],
+                        ];
+                        const pts = [];
+                        for (let s = 1; s <= 23; s += 1) {
+                            const p = quadAt(s / 24);
+                            pts.push({ x: p[0], y: p[1] });
+                        }
+                        arcPoints.push({ id: conn.id, points: pts });
+                        const halfW = Math.ceil((String(conn.label || '').length * 6.6 + 16) / 2) + 8;
+                        linkLabels.push({
+                            id: conn.id,
+                            label: conn.label,
+                            priority: conn.type === 'pressure' ? 68 : 60,
+                            hidden: Boolean(step.quietLabels || len < 22),
+                            candidates: [
+                                ...[0.5, 0.4, 0.6, 0.34, 0.66, 0.26, 0.74].map(t => {
+                                    const p = quadAt(t);
+                                    return { x: p[0], y: p[1] - 10 };
+                                }),
+                                ...[1, -1].map(dir => {
+                                    const p = quadAt(0.5);
+                                    return { x: p[0] + dir * halfW, y: p[1] - 6 };
+                                }),
+                            ],
+                        });
+                    } else {
+                        const prof = computeArcProfile([pF.lng, pF.lat], [pT.lng, pT.lat], {
+                            camDist: cam.dist,
+                            visBase: pose.visBase,
+                            side: conn.side || 0,
+                            isDrop: Boolean(pF.isFloating),
+                            fromAlt: pF.alt,
+                            toAlt: pT.alt,
+                        });
+                        const pts = [];
+                        const ast = Math.max(1, Math.floor((prof.pts.length - 1) / 22));
+                        for (let si = 1; si <= prof.pts.length - 2; si += ast) {
+                            const ptS = prof.pts[si];
+                            const pr = projectPointWithPose(latLngAltToVec3(ptS[1], ptS[0], ptS[2], GLOBE_RADIUS), pose, W, H, fovDeg);
+                            if (pr.visibleOnHorizon) pts.push({ x: pr.x, y: pr.y });
+                        }
+                        arcPoints.push({ id: conn.id, points: pts });
+                        const candidates = [];
+                        for (const frac of [0.5, 0.4, 0.6, 0.34, 0.66, 0.26, 0.74]) {
+                            const pt = prof.pts[Math.round((prof.pts.length - 1) * frac)];
+                            const pr = projectPointWithPose(latLngAltToVec3(pt[1], pt[0], pt[2], GLOBE_RADIUS), pose, W, H, fovDeg);
+                            if (pr.visibleOnHorizon) candidates.push({ x: pr.x, y: pr.y });
+                        }
+                        linkLabels.push({
+                            id: conn.id,
+                            label: conn.label,
+                            priority: conn.type === 'pressure' ? 68 : 60,
+                            hidden: Boolean(step.quietLabels),
+                            candidates,
+                        });
+                    }
+                }
+
+                const stepActorIds = new Set(entries.map(e => e.id));
+                const countryLabels = (cs.actorMap.contextLabels || [])
+                    .filter(cl => !stepActorIds.has(cl.name.toLowerCase()))
+                    .map(cl => {
+                        const pt = mode === 'flat'
+                            ? projection([cl.longitude, cl.latitude])
+                            : (() => {
+                                const pr = projectPointWithPose(latLngAltToVec3(cl.latitude, cl.longitude, 0.0005, GLOBE_RADIUS), pose, W, H, fovDeg);
+                                return pr.visibleOnHorizon ? [pr.x, pr.y] : null;
+                            })();
+                        return pt ? { name: cl.name, x: pt[0], y: pt[1] } : null;
+                    })
+                    .filter(Boolean);
+
+                const reservedBoxes = [
+                    { x0: 6, y0: H - (W < 480 ? 116 : 132), x1: W < 480 ? 114 : 148, y1: H - 6 },
+                ];
+                if (mode === '3d') {
+                    reservedBoxes.push({ x0: W - 250, y0: H - 40, x1: W - 6, y1: H - 6 });
+                }
+
+                const solved = solveActorMapLabels({
+                    width: W,
+                    height: H,
+                    markers: resolvedList,
+                    floatingBadges: floatingSlots,
+                    actorLabels,
+                    linkLabels,
+                    countryLabels,
+                    arcPoints,
+                    reservedBoxes,
+                    padding: 8,
+                });
+
+                const placedEntries = [];
+                for (const [aid, res] of solved.actors.entries()) {
+                    if (res.visible) placedEntries.push({ tag: `actor:${aid}`, box: res.box, excludeArcId: null, checkAllArcs: true });
+                }
+                for (const [lid, res] of solved.links.entries()) {
+                    if (res.visible) placedEntries.push({ tag: `link:${lid}`, box: res.box, excludeArcId: lid, checkAllArcs: false });
+                }
+                for (const [cname, res] of solved.countries.entries()) {
+                    if (res.visible) placedEntries.push({ tag: `country:${cname}`, box: res.box, excludeArcId: null, checkAllArcs: true });
+                }
+
+                // 1) No pairwise label overlap & no overlap with floating badges
+                for (let i = 0; i < placedEntries.length; i += 1) {
+                    const a = placedEntries[i];
+                    for (let j = i + 1; j < placedEntries.length; j += 1) {
+                        const b = placedEntries[j];
+                        assert.equal(
+                            boxOverlap(a.box, b.box),
+                            false,
+                            `${cs.id} step ${step.key} (${vpLabel}): ${a.tag} overlaps ${b.tag}`,
+                        );
+                    }
+                    for (const fb of floatingSlots) {
+                        const fbBox = { x0: fb.cx - fb.w / 2, y0: fb.cy - fb.h / 2, x1: fb.cx + fb.w / 2, y1: fb.cy + fb.h / 2 + 14 };
+                        assert.equal(
+                            boxOverlap(a.box, fbBox),
+                            false,
+                            `${cs.id} step ${step.key} (${vpLabel}): ${a.tag} overlaps floating badge ${fb.id}`,
+                        );
+                    }
+                    // 2) No label overlaps any visible marker circle
+                    for (const m of resolvedList) {
+                        assert.equal(
+                            circleHitsBox(m, a.box),
+                            false,
+                            `${cs.id} step ${step.key} (${vpLabel}): ${a.tag} overlaps marker ${m.id}`,
+                        );
+                    }
+                    // 3) No label overlaps arcs
+                    assert.equal(
+                        boxIntersectsArcs(a.box, arcPoints, { excludeArcId: a.excludeArcId, pad: 1 }),
+                        false,
+                        `${cs.id} step ${step.key} (${vpLabel}): ${a.tag} crosses an arc`,
+                    );
+                }
+
+                // Step-specific invariants required by review
+                if (cs.id === 'myanmar-fragmented-sovereignty' && String(step.key) === 'all') {
+                    assert.ok(solved.actors.get('myanmar-actors')?.visible, `Myanmar cluster label must be visible (${vpLabel})`);
+                    assert.ok(solved.actors.get('india')?.visible, `India label must be visible in Myanmar All (${vpLabel})`);
+                    assert.ok(solved.actors.get('asean')?.visible, `ASEAN label must be visible in Myanmar All (${vpLabel})`);
+                }
+                if (cs.id === 'somaliland-recognition-red-sea-order' && vpLabel === '390px-flat') {
+                    const fg = solved.actors.get('somalia-fg');
+                    assert.ok(fg?.visible, `Federal Government of Somalia must stay visible in Somaliland step ${step.key} at 390px flat`);
+                    assert.equal(fg.side, 'b', `Federal Government of Somalia should sit below Mogadishu clear of pressure arc in step ${step.key}`);
+                }
+            }
+        }
+    }
 });

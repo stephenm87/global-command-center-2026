@@ -2,7 +2,7 @@
  * Pure spherical camera, projection, framing, arc-profile, and floating-badge
  * geometry shared by the 3D WebGL actor map, 2D flat fallback, and Node tests.
  */
-import { geoDistance, geoInterpolate } from 'd3-geo';
+import { geoDistance, geoInterpolate, geoOrthographic } from 'd3-geo';
 
 export const GLOBE_RADIUS = 100;
 export const DEFAULT_FOV_DEG = 50;
@@ -342,4 +342,45 @@ export function computeFloatingBadgeScreenSlots(floatingActors, width, height) {
         });
     }
     return slots;
+}
+
+/**
+ * Computes auto-fitted orthographic view framing for the 2D flat fallback map.
+ */
+export function computeFlatTargetView(step, surfaceCoords, width, height, hasFloating) {
+    if (!step) return { lng: 96, lat: 20, half: 10 };
+    if (step.key === 'all' || !surfaceCoords.length) {
+        return { lng: step.cam.lng, lat: step.cam.lat, half: Math.min(62, Math.max(18, step.cam.dist * 34)) };
+    }
+    const baseHalf = step.cam.dist < 0.14
+        ? 3.2
+        : step.cam.dist < 0.28
+            ? 6.2
+            : step.cam.dist < 0.72
+                ? 17.5
+                : 30;
+    const minAspectSpan = Math.min(width, height) / Math.max(width, height);
+    let half = Math.max(baseHalf, baseHalf / Math.max(0.65, minAspectSpan));
+
+    const testProj = geoOrthographic().clipAngle(90);
+    const leftPad = width < 640 ? 34 : 64;
+    const rightPad = width < 640 ? 34 : 64;
+    const topPad = hasFloating ? (width < 640 ? 112 : 84) : 34;
+    const bottomPad = 104;
+
+    for (let i = 0; i < 18; i += 1) {
+        const scale = Math.min(width, height) / (2 * Math.sin((half * Math.PI) / 180));
+        testProj
+            .translate([width / 2, height / 2 + (hasFloating ? 16 : 0)])
+            .rotate([-step.cam.lng, -step.cam.lat])
+            .scale(scale);
+        const fits = surfaceCoords.every(c => {
+            if (geoDistance(c, [step.cam.lng, step.cam.lat]) > 1.38) return false;
+            const p = testProj(c);
+            return p && p[0] >= leftPad && p[0] <= width - rightPad && p[1] >= topPad && p[1] <= height - bottomPad;
+        });
+        if (fits || half >= 62) break;
+        half = Math.min(62, half * 1.15);
+    }
+    return { lng: step.cam.lng, lat: step.cam.lat, half };
 }

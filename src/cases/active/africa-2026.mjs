@@ -1962,7 +1962,7 @@ export const AFRICA_CASES_2026 = [
                     "actors": [
                         { "id": "somaliland-authorities", "preferredSide": "l" },
                         { "id": "israel", "preferredSide": "t", "note": "ambassador accredited Oct 2026" },
-                        { "id": "somalia-fg", "preferredSide": "r" }
+                        { "id": "somalia-fg", "preferredSide": "b" }
                     ],
                     "connections": ["israel-recognizes", "somaliland-embassy", "somalia-rejects-israel"]
                 },

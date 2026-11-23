@@ -16,12 +16,51 @@ const intersects = (a, b, pad = 2) => !(
     || a.y0 - pad >= b.y1
 );
 
-const pointNearBox = (pt, box, pad = 5) => (
-    pt.x >= box.x0 - pad
-    && pt.x <= box.x1 + pad
-    && pt.y >= box.y0 - pad
-    && pt.y <= box.y1 + pad
-);
+export function segmentIntersectsBox(p0, p1, box, pad = 4) {
+    if (!p0 || !p1 || !box) return false;
+    const minX = box.x0 - pad;
+    const maxX = box.x1 + pad;
+    const minY = box.y0 - pad;
+    const maxY = box.y1 + pad;
+    const dx = p1.x - p0.x;
+    const dy = p1.y - p0.y;
+    let t0 = 0;
+    let t1 = 1;
+    const clip = (p, q) => {
+        if (Math.abs(p) < 1e-9) return q >= 0;
+        const r = q / p;
+        if (p < 0) {
+            if (r > t1) return false;
+            if (r > t0) t0 = r;
+        } else {
+            if (r < t0) return false;
+            if (r < t1) t1 = r;
+        }
+        return true;
+    };
+    return (
+        clip(-dx, p0.x - minX)
+        && clip(dx, maxX - p0.x)
+        && clip(-dy, p0.y - minY)
+        && clip(dy, maxY - p0.y)
+    );
+}
+
+export function boxIntersectsArcs(box, arcPoints = [], { excludeArcId = null, pad = 4 } = {}) {
+    if (!box) return false;
+    for (const arc of arcPoints) {
+        if (excludeArcId && arc.id === excludeArcId) continue;
+        const pts = arc.points || [];
+        if (pts.length === 1) {
+            if (pointNearBox(pts[0], box, pad)) return true;
+            continue;
+        }
+        for (let i = 0; i < pts.length - 1; i += 1) {
+            if (segmentIntersectsBox(pts[i], pts[i + 1], box, pad)) return true;
+        }
+    }
+    return false;
+}
 
 /**
  * Deterministically pushes apart projected markers whose circles would overlap
@@ -94,11 +133,43 @@ const insideFrame = (box, width, height, padding) => (
     && box.y1 <= height - padding
 );
 
-export function actorLabelBox(x, y, r, side, title, note = '') {
-    const titleW = String(title || '').length * CHAR_WIDTH_PRIMARY;
+const pointNearBox = (pt, box, pad = 5) => (
+    pt.x >= box.x0 - pad
+    && pt.x <= box.x1 + pad
+    && pt.y >= box.y0 - pad
+    && pt.y <= box.y1 + pad
+);
+
+const TOP_BOTTOM_NUDGE_X = [0, 18, -18, 36, -36, 56, -56, 76, -76];
+
+export function splitActorLabelLines(title) {
+    const clean = String(title || '').trim();
+    if (clean.length < 12) return [clean];
+    const words = clean.split(/\s+/).filter(Boolean);
+    if (words.length < 2) return [clean];
+
+    let best = null;
+    let bestScore = Infinity;
+    for (let i = 1; i < words.length; i += 1) {
+        const line1 = words.slice(0, i).join(' ');
+        const line2 = words.slice(i).join(' ');
+        const maxLen = Math.max(line1.length, line2.length);
+        const balance = Math.abs(line1.length - line2.length);
+        const score = maxLen * 10 + balance;
+        if (score < bestScore) {
+            bestScore = score;
+            best = [line1, line2];
+        }
+    }
+    return best || [clean];
+}
+
+export function actorLabelBox(x, y, r, side, title, note = '', offsetX = 0, lines = null) {
+    const titleLines = Array.isArray(lines) && lines.length > 0 ? lines : [String(title || '')];
+    const titleW = Math.max(...titleLines.map(l => String(l || '').length)) * CHAR_WIDTH_PRIMARY;
     const subW = note ? String(note).length * CHAR_WIDTH_SUB : 0;
-    const w = Math.max(titleW, subW) + 8;
-    const h = note ? 29 : 16;
+    const w = Math.max(titleW, subW) + 14;
+    const h = titleLines.length * 14 + (note ? 13 : 0) + 4;
     const gap = r + 8;
 
     if (side === 'r') {
@@ -112,12 +183,12 @@ export function actorLabelBox(x, y, r, side, title, note = '') {
         return { x0: x1 - w, y0, x1, y1: y0 + h };
     }
     if (side === 't') {
-        const x0 = x - w / 2;
+        const x0 = x - w / 2 + offsetX;
         const y1 = y - gap;
         return { x0, y0: y1 - h, x1: x0 + w, y1 };
     }
     if (side === 'b') {
-        const x0 = x - w / 2;
+        const x0 = x - w / 2 + offsetX;
         const y0 = y + gap;
         return { x0, y0, x1: x0 + w, y1: y0 + h };
     }
@@ -215,44 +286,45 @@ export function solveActorMapLabels({
         return true;
     };
 
-    const isArcClear = (candidate, excludeArcId = null) => {
-        for (const arc of arcPoints) {
-            if (excludeArcId && arc.id === excludeArcId) continue;
-            for (const pt of arc.points || []) {
-                if (pointNearBox(pt, candidate, 5)) return false;
-            }
-        }
-        return true;
-    };
-
     const sortedActors = [...actorLabels].sort((a, b) => (b.priority || 0) - (a.priority || 0));
     const placedActors = new Map();
 
     for (const item of sortedActors) {
         if (item.hidden) {
-            placedActors.set(item.id, { visible: false, side: item.preferredSide || 'r', showNote: false, box: null });
+            placedActors.set(item.id, { visible: false, side: item.preferredSide || 'r', showNote: false, offsetX: 0, lines: [item.name], box: null });
             continue;
         }
         const sides = orderedSides(item.preferredSide);
-        let chosen = null;
+        const singleLines = [String(item.name || '')];
+        const wrappedLines = splitActorLabelLines(item.name);
+        const hasWrap = wrappedLines.length > 1;
+        const attempts = item.note
+            ? [
+                { showNote: true, lines: singleLines },
+                ...(hasWrap ? [{ showNote: true, lines: wrappedLines }] : []),
+                { showNote: false, lines: singleLines },
+                ...(hasWrap ? [{ showNote: false, lines: wrappedLines }] : []),
+            ]
+            : [
+                { showNote: false, lines: singleLines },
+                ...(hasWrap ? [{ showNote: false, lines: wrappedLines }] : []),
+            ];
 
-        // Pass 1: try placing with optional note (arc-free first, then any free);
-        // Pass 2: drop subtitle note before hiding label
-        const variants = item.note ? [true, false] : [false];
-        for (const showNote of variants) {
-            let fallbackFree = null;
+        let chosen = null;
+        for (const { showNote, lines } of attempts) {
             for (const side of sides) {
-                const box = actorLabelBox(item.x, item.y, item.r || 8, side, item.name, showNote ? item.note : '');
-                if (!isFree(box, item.id)) continue;
-                if (isArcClear(box, null)) {
-                    chosen = { visible: true, side, showNote, box };
-                    break;
+                const offsets = (side === 't' || side === 'b') ? TOP_BOTTOM_NUDGE_X : [0];
+                for (const offsetX of offsets) {
+                    const box = actorLabelBox(item.x, item.y, item.r || 8, side, item.name, showNote ? item.note : '', offsetX, lines);
+                    if (offsetX !== 0 && (item.x < box.x0 - 10 || item.x > box.x1 + 10)) continue;
+                    if (!isFree(box, item.id)) continue;
+                    if (!boxIntersectsArcs(box, arcPoints, { excludeArcId: null, pad: 4 })) {
+                        chosen = { visible: true, side, showNote, offsetX, lines, box };
+                        break;
+                    }
                 }
-                if (!fallbackFree) {
-                    fallbackFree = { visible: true, side, showNote, box };
-                }
+                if (chosen) break;
             }
-            if (!chosen && fallbackFree) chosen = fallbackFree;
             if (chosen) {
                 occupied.push(chosen.box);
                 break;
@@ -260,7 +332,7 @@ export function solveActorMapLabels({
         }
 
         if (!chosen) {
-            chosen = { visible: false, side: item.preferredSide || 'r', showNote: false, box: null };
+            chosen = { visible: false, side: item.preferredSide || 'r', showNote: false, offsetX: 0, lines: singleLines, box: null };
         }
         placedActors.set(item.id, chosen);
     }
@@ -274,19 +346,19 @@ export function solveActorMapLabels({
             continue;
         }
         let chosen = null;
-        let fallbackFree = null;
+        let ownArcOnly = null;
         for (const cand of item.candidates) {
             const box = linkLabelBox(cand.x, cand.y, item.label);
             if (!isFree(box, null)) continue;
-            if (isArcClear(box, item.id)) {
+            if (!boxIntersectsArcs(box, arcPoints, { excludeArcId: null, pad: 4 })) {
                 chosen = { visible: true, candidate: cand, box };
                 break;
             }
-            if (!fallbackFree) {
-                fallbackFree = { visible: true, candidate: cand, box };
+            if (!ownArcOnly && !boxIntersectsArcs(box, arcPoints, { excludeArcId: item.id, pad: 4 })) {
+                ownArcOnly = { visible: true, candidate: cand, box };
             }
         }
-        if (!chosen && fallbackFree) chosen = fallbackFree;
+        if (!chosen && ownArcOnly) chosen = ownArcOnly;
         if (chosen) occupied.push(chosen.box);
         placedLinks.set(item.id, chosen || { visible: false, candidate: null, box: null });
     }
@@ -294,7 +366,7 @@ export function solveActorMapLabels({
     const placedCountries = new Map();
     for (const item of countryLabels) {
         const box = countryLabelBox(item.x, item.y, item.name);
-        if (isFree(box, null)) {
+        if (isFree(box, null) && !boxIntersectsArcs(box, arcPoints, { excludeArcId: null, pad: 4 })) {
             occupied.push(box);
             placedCountries.set(item.name, { visible: true, x: item.x, y: item.y, box });
         } else {

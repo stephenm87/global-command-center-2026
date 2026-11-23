@@ -839,7 +839,8 @@ export default function CaseActorMap3D({
             );
 
             const arcScreenPts = [];
-            for (let si = 2; si <= profile.pts.length - 3; si += Math.max(2, Math.floor(profile.pts.length / 12))) {
+            const arcStep = Math.max(1, Math.floor((profile.pts.length - 1) / 22));
+            for (let si = 1; si <= profile.pts.length - 2; si += arcStep) {
                 const ptSample = profile.pts[si];
                 const projSample = projectPointWithPose(
                     latLngAltToVec3(ptSample[1], ptSample[0], ptSample[2], GLOBE_RADIUS),
@@ -1021,7 +1022,18 @@ export default function CaseActorMap3D({
                 entry.labSpan = null;
             }
             entry.lab.className = `lab ${placed.side} actor-label-box`;
-            entry.labB.textContent = title;
+            entry.lab.style.marginLeft = placed.offsetX ? `${placed.offsetX}px` : '';
+            const titleLines = Array.isArray(placed.lines) && placed.lines.length > 1 ? placed.lines : null;
+            if (titleLines) {
+                const nodes = [];
+                titleLines.forEach((line, idx) => {
+                    if (idx > 0) nodes.push(document.createElement('br'));
+                    nodes.push(document.createTextNode(line));
+                });
+                entry.labB.replaceChildren(...nodes);
+            } else {
+                entry.labB.textContent = title;
+            }
             if (subText) {
                 if (!entry.labSpan) {
                     entry.labSpan = document.createElement('span');
