@@ -68,6 +68,7 @@ export default function CaseActorMap({
     onJumpToSource,
 }) {
     const frameRef = useRef(null);
+    const pendingFocusKeyRef = useRef(null);
     const [reducedMotion, setReducedMotion] = useState(() => (
         typeof window !== 'undefined' && Boolean(window.matchMedia?.('(prefers-reduced-motion: reduce)').matches)
     ));
@@ -215,9 +216,23 @@ export default function CaseActorMap({
                         type="button"
                         className="actor-mode-btn"
                         onClick={() => {
+                            const nextMode = activeMode === '3d' ? 'flat' : '3d';
+                            if (nextMode === '3d' && !webglChecked) {
+                                const ok = detectWebGLSupport();
+                                setWebglAvailable(ok);
+                                setWebglChecked(true);
+                                if (!ok) return;
+                            }
+                            const activeEl = typeof document !== 'undefined' ? document.activeElement : null;
+                            if (activeEl && frameRef.current?.contains(activeEl)) {
+                                pendingFocusKeyRef.current = activeEl.getAttribute('data-focus-key') || '__frame__';
+                            }
+                            if (nextMode === '3d') {
+                                setTerrainReady(false);
+                            }
                             setHasScrolledIntoView(true);
                             setWebglChecked(true);
-                            setUserModeChoice(activeMode === '3d' ? 'flat' : '3d');
+                            setUserModeChoice(nextMode);
                         }}
                     >
                         {activeMode === '3d' ? 'Switch to 2D flat map' : 'Open 3D terrain view'}
@@ -232,6 +247,10 @@ export default function CaseActorMap({
             <div
                 ref={frameRef}
                 className="actor-map-frame"
+                onFocusCapture={e => {
+                    const key = e.target?.getAttribute?.('data-focus-key');
+                    if (key) pendingFocusKeyRef.current = key;
+                }}
                 onKeyDown={e => {
                     if (e.key === 'Escape' && selected) {
                         e.preventDefault();
@@ -252,7 +271,21 @@ export default function CaseActorMap({
                                 selected={selected}
                                 onSelect={handleSelect}
                                 reducedMotion={reducedMotion}
-                                onReady={() => setTerrainReady(true)}
+                                onReady={() => {
+                                    setTerrainReady(true);
+                                    const focusKey = pendingFocusKeyRef.current;
+                                    pendingFocusKeyRef.current = null;
+                                    if (focusKey && typeof requestAnimationFrame === 'function') {
+                                        requestAnimationFrame(() => {
+                                            const activeEl = document.activeElement;
+                                            if (activeEl && activeEl !== document.body) return;
+                                            const targetEl = focusKey !== '__frame__'
+                                                ? frameRef.current?.querySelector(`[data-focus-key="${CSS.escape ? CSS.escape(focusKey) : focusKey}"]`)
+                                                : null;
+                                            (targetEl || frameRef.current?.querySelector('button'))?.focus?.({ preventScroll: true });
+                                        });
+                                    }
+                                }}
                                 onFatalError={() => setFallbackForced(true)}
                             />
                         </Suspense>

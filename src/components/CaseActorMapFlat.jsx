@@ -3,6 +3,7 @@ import { geoDistance, geoGraticule10, geoOrthographic, geoPath } from 'd3-geo';
 import * as topojson from 'topojson-client';
 import { computeFloatingBadgeScreenSlots, cubicInOut } from './actorMapCamera.mjs';
 import { resolveMarkerCollisions, solveActorMapLabels } from './actorMapLayout.mjs';
+import { measureResourceThroughput } from './actorMapMode.mjs';
 
 const LEVEL_COLORS = {
     local: '#ffd9a0',
@@ -45,17 +46,11 @@ export function loadWorld110Timed() {
                 const entry = typeof performance !== 'undefined' && typeof performance.getEntriesByType === 'function'
                     ? performance.getEntriesByType('resource').filter(r => r.name.includes('countries-110m.json')).pop()
                     : null;
-                const cachedHit = Boolean(entry && entry.transferSize === 0 && entry.decodedBodySize > 0);
-                const wireBytes = cachedHit
-                    ? 0
-                    : (entry && entry.transferSize > 0 ? entry.transferSize : byteLength);
-                const timingDuration = entry && entry.responseEnd > entry.fetchStart
-                    ? (entry.responseEnd - entry.fetchStart)
-                    : Math.max(0, endedAt - startedAt);
+                const { bytes, durationMs } = measureResourceThroughput(entry, byteLength, Math.max(0, endedAt - startedAt));
                 return {
                     features: topojson.feature(world, world.objects.countries).features,
-                    bytes: wireBytes,
-                    durationMs: timingDuration,
+                    bytes,
+                    durationMs,
                 };
             })
             .catch(err => {

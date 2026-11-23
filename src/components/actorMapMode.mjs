@@ -56,11 +56,31 @@ export function isSlowConnectionConfig({
     return false;
 }
 
+export function measureResourceThroughput(entry, fallbackBytes = 0, fallbackDurationMs = 0) {
+    if (entry) {
+        const cachedHit = entry.responseStatus === 304
+            || ((entry.transferSize === 0
+                || (entry.encodedBodySize > 0 && entry.transferSize < entry.encodedBodySize * 0.5))
+                && entry.decodedBodySize > 0);
+        if (cachedHit) {
+            return { bytes: 0, durationMs: 0 };
+        }
+        const wireBytes = entry.transferSize > 0 ? entry.transferSize : fallbackBytes;
+        const durationMs = entry.responseStart > 0 && entry.responseEnd > entry.responseStart
+            ? (entry.responseEnd - entry.responseStart)
+            : (entry.responseEnd > entry.fetchStart
+                ? (entry.responseEnd - entry.fetchStart)
+                : Math.max(0, fallbackDurationMs));
+        return { bytes: wireBytes, durationMs };
+    }
+    return { bytes: fallbackBytes, durationMs: Math.max(0, fallbackDurationMs) };
+}
+
 export function isSlowMeasuredThroughput(bytes, durationMs, minBytesPerSec = SLOW_THROUGHPUT_BYTES_PER_SEC) {
     if (!(typeof bytes === 'number' && bytes > 0)) return false;
-    // Sub-20ms fetches come from HTTP/memory cache and cannot diagnose slow links.
+    // Sub-20ms body transfers come from cache or fast CDN bursts and cannot diagnose slow links.
     if (!(typeof durationMs === 'number' && durationMs > 20)) return false;
-    return ((bytes * 1000) / durationMs) < minBytesPerSec;
+    return ((bytes * 1000) / durationMs) <= minBytesPerSec * 1.05;
 }
 
 export function chooseActorMapMode({

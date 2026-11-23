@@ -29,6 +29,7 @@ import {
     isLowPowerDeviceConfig,
     isSlowConnectionConfig,
     isSlowMeasuredThroughput,
+    measureResourceThroughput,
     preferWebpUrl,
 } from '../components/actorMapMode.mjs';
 import { parseBriefingEntryFromSearch } from '../navigationState.mjs';
@@ -238,10 +239,17 @@ test('Slow-connection gating, WebP preference with JPG fallback, honest loading 
     assert.equal(isSlowConnectionConfig({ effectiveType: '4g', downlink: 5.0, saveData: true }), true);
     assert.equal(isSlowConnectionConfig({ effectiveType: '4g', downlink: 2.0, saveData: false }), false);
 
-    // Timed fallback ignores sub-20ms cache hits and gates <150 KB/s transfers
+    // Timed fallback ignores sub-20ms bursts, HTTP 304/300B cache revalidations, and cold TLS RTT before responseStart
     assert.equal(isSlowMeasuredThroughput(105000, 10), false);
     assert.equal(isSlowMeasuredThroughput(100000, 1000), true);
     assert.equal(isSlowMeasuredThroughput(SLOW_THROUGHPUT_BYTES_PER_SEC * 2, 1000), false);
+    const reval304 = measureResourceThroughput({ responseStatus: 304, transferSize: 300, encodedBodySize: 38000, decodedBodySize: 107761, fetchStart: 100, responseStart: 140, responseEnd: 145 }, 107761, 45);
+    assert.equal(reval304.bytes, 0);
+    assert.equal(isSlowMeasuredThroughput(reval304.bytes, reval304.durationMs), false);
+    const fastCdnColdTls = measureResourceThroughput({ responseStatus: 200, transferSize: 38276, encodedBodySize: 37976, decodedBodySize: 107761, fetchStart: 2765.7, responseStart: 3033.9, responseEnd: 3039.4 }, 107761, 273.7);
+    assert.equal(isSlowMeasuredThroughput(fastCdnColdTls.bytes, fastCdnColdTls.durationMs), false);
+    const slow150k = measureResourceThroughput({ responseStatus: 200, transferSize: 38276, encodedBodySize: 37976, decodedBodySize: 107761, fetchStart: 100, responseStart: 200, responseEnd: 460 }, 107761, 360);
+    assert.equal(isSlowMeasuredThroughput(slow150k.bytes, slow150k.durationMs), true);
 
     // Slow connection holds on flat map even on high-power desktop in view until user opts in
     assert.equal(

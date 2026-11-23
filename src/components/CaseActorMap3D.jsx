@@ -46,17 +46,20 @@ function loadWorld50() {
     return world50Promise;
 }
 
-let webpSupportedCache = null;
+let webpSupportPromise = null;
 function supportsWebp() {
-    if (webpSupportedCache !== null) return webpSupportedCache;
-    if (typeof document === 'undefined') return false;
-    try {
-        const canvas = document.createElement('canvas');
-        webpSupportedCache = canvas.toDataURL('image/webp').startsWith('data:image/webp');
-    } catch {
-        webpSupportedCache = false;
+    if (webpSupportPromise) return webpSupportPromise;
+    if (typeof Image === 'undefined') {
+        webpSupportPromise = Promise.resolve(false);
+        return webpSupportPromise;
     }
-    return webpSupportedCache;
+    webpSupportPromise = new Promise(resolve => {
+        const probe = new Image();
+        probe.onload = () => resolve(probe.width > 0 && probe.height > 0);
+        probe.onerror = () => resolve(false);
+        probe.src = 'data:image/webp;base64,UklGRhoAAABXRUJQVlA4TA0AAAAvAAAAEAcQERGIiP4HAA==';
+    });
+    return webpSupportPromise;
 }
 
 const imageCache = new Map();
@@ -83,8 +86,9 @@ function loadSingleStaticImage(url) {
     return imageCache.get(url);
 }
 
-function loadStaticImageWithFallback(url) {
-    const preferred = supportsWebp() ? preferWebpUrl(url) : url;
+async function loadStaticImageWithFallback(url) {
+    const useWebp = await supportsWebp();
+    const preferred = useWebp ? preferWebpUrl(url) : url;
     if (preferred === url) {
         return loadSingleStaticImage(url);
     }

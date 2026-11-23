@@ -1727,7 +1727,7 @@ export const AFRICA_CASES_2026 = [
                     "id": "ssc-khaatumo",
                     "name": "North Eastern State of Somalia",
                     "level": "local",
-                    "role": "Renamed from SSC-Khaatumo in late July 2025 and recognized by Somalia's federal government across Sool, Sanaag, and Buuhoodle with Las Anod / Laascaanood as capital; SSC-Khaatumo officials opposed Somaliland's recognition bid (reported through June 2025).",
+                    "role": "Established in late July 2025 from the interim SSC-Khaatumo administration across Sool, Sanaag, and Buuhoodle with Las Anod / Laascaanood as capital; recognized by Somalia's federal government as a federal member state and contested by Somaliland and Puntland.",
                     "sourceUrl": "https://www.euaa.europa.eu/somalia-security-situation/27-sool-sanaag-cayn-and-north-eastern-state-nes",
                     "location": {
                         "kind": "pin",
