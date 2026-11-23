@@ -148,7 +148,7 @@ export const ASIA_PACIFIC_CASES_2026 = [
                 "perspectiveType": "synthesis",
                 "conceptInFocus": "Interdependence",
                 "relatedTimelineDate": "2026-11",
-                "narration": "In Manila in November 2026, leaders of the Association of Southeast Asian Nations (ASEAN) extended a ban on Myanmar's leader attending summits [4]. Saying Myanmar failed to implement April 2021's Five-Point Consensus peace plan, leaders urged all parties to \"stop targeted attacks against civilians and civilian infrastructure\" [4]. Only lower-level career diplomats may attend summits for Myanmar [4].\n\nWithholding a seat has not ended bilateral ties. Min Aung Hlaing assumed the presidency after December 2025–January 2026 elections widely seen as rigged according to Al Jazeera, and visited several ASEAN states without bloc discouragement [4]. Meanwhile, civilians fleeing fighting cross into India or gather near Thailand [2]. Regional interdependence means neighbours absorb the war's spillover while continuing to deal with its rulers.",
+                "narration": "In Manila in November 2026, leaders of the Association of Southeast Asian Nations (ASEAN) extended a ban on Myanmar's leader attending summits [4]. Saying Myanmar failed to implement April 2021's Five-Point Consensus peace plan, leaders urged all parties to \"stop targeted attacks against civilians and civilian infrastructure\" [4]. Only lower-level career diplomats may attend summits for Myanmar [4].\n\nWithholding a seat has not ended bilateral ties. Min Aung Hlaing assumed the presidency after December 2025–January 2026 elections widely seen as rigged according to Al Jazeera, and visited several ASEAN states without bloc discouragement [4]. Meanwhile, civilians fleeing fighting in Sagaing crossed into India, while renewed hostilities in Kayin State left about 7,000 displaced people along the Myanmar–Thailand border in Myawaddy Township [2]. Regional interdependence means neighbours absorb the war's spillover while continuing to deal with its rulers.",
                 "focusQuestion": "How much can a regional organization influence a member's internal conflict when its own states keep dealing with that member's rulers?"
             }
         ],
@@ -279,7 +279,7 @@ export const ASIA_PACIFIC_CASES_2026 = [
             "power": "Whoever controls roads and approvals decides where aid can go: OCHA says hostilities, movement restrictions and administrative requirements block access. Donors hold a second lever, having supplied 43 per cent of the US$890 million required.",
             "sovereignty": "Authority on paper and control on the ground have separated. The military intensified offensives in late 2025 to regain lost territory in Magway, where anti-regime groups set up an interim administration in March 2026.",
             "legitimacy": "Min Aung Hlaing took the presidency after elections that Al Jazeera says were widely seen as rigged, and ASEAN still bars him from its summits. The interim Magwe administration claims a federal democratic future but reports great difficulty delivering aid.",
-            "interdependence": "People fleeing the fighting cross into India and gather along the Thai border, and ASEAN treats the crisis as a regional matter. The aid response depends on donor support and is slowed by fuel rationing linked to global market pressures alongside domestic supply and distribution constraints."
+            "interdependence": "People displaced by fighting crossed from Sagaing into India, about 7,000 people in Kayin State remained along the Myanmar–Thailand border in Myawaddy Township, and ASEAN treats the crisis as a regional matter. The aid response depends on donor support and is slowed by fuel rationing linked to global market pressures alongside domestic supply and distribution constraints."
         },
         "essayBuilder": {
             "prompt": "Evaluate the effectiveness of regional organizations in responding to armed conflict inside a member state.",
@@ -466,12 +466,12 @@ export const ASIA_PACIFIC_CASES_2026 = [
                     "sourceUrl": "https://myanmar.un.org/en/319232-myanmar-humanitarian-update-no-52",
                     "location": {
                         "kind": "area",
-                        "label": "India (border region opposite Tamu)",
+                        "label": "Imphal, Manipur",
                         "countries": ["India"],
                         "anchor": {
                             "latitude": 24.8081,
                             "longitude": 93.9442,
-                            "gazetteer": "GeoNames 1269771 (Manipur border corridor opposite Tamu Township, verified in India 50m polygon)"
+                            "gazetteer": "GeoNames 1269771 (Imphal, Manipur, India, verified in India 50m polygon)"
                         }
                     }
                 },

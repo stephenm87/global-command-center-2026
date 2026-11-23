@@ -308,6 +308,9 @@ export default function CaseActorMap({
                         ? 'Terrain imagery: NASA Blue Marble (public domain) · Country borders: Natural Earth 1:50m.'
                         : 'Country outlines: Natural Earth 1:110m (public domain).'}
                 </p>
+                {actorMap?.boundaryNote && (
+                    <p className="actor-map-boundary-note">{actorMap.boundaryNote}</p>
+                )}
             </div>
         </div>
     );

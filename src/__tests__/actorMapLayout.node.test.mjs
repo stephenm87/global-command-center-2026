@@ -449,4 +449,20 @@ test('Rule 4d.6 geometry: all pilot steps keep markers inside frame, non-overlap
         arcPoints: [{ id: 'a1', points: [{ x: 200, y: 222 }, { x: 205, y: 225 }] }],
     });
     assert.notEqual(arcAvoid.actors.get('p')?.side, 'b', 'actor label should avoid crossing arcPoints when clear side exists');
+
+    // Section C regression checks
+    const my = CASE_STUDIES_2026.find(c => c.id === 'myanmar-fragmented-sovereignty');
+    const india = my.actorMap.actors.find(a => a.id === 'india');
+    assert.equal(india.location.label, 'Imphal, Manipur');
+    assert.equal(india.location.anchor.latitude, 24.8081);
+    assert.equal(india.location.anchor.longitude, 93.9442);
+    assert.match(india.location.anchor.gazetteer, /1269771/);
+
+    const som = CASE_STUDIES_2026.find(c => c.id === 'somaliland-recognition-red-sea-order');
+    const somAuth = som.actorMap.actors.find(a => a.id === 'somaliland-authorities');
+    assert.equal(somAuth.level, 'local');
+    assert.match(somAuth.role, /Self-declared state.*recognised by Israel.*claimed by the Federal Government of Somalia/i);
+    assert.equal(som.actorMap.boundaryNote, 'The outline shows the territory Somaliland claims and does not imply recognition.');
+    const nes = som.actorMap.actors.find(a => a.id === 'ssc-khaatumo');
+    assert.equal(nes.name, 'North Eastern State of Somalia');
 });

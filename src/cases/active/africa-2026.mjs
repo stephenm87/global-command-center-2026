@@ -1246,7 +1246,7 @@ export const AFRICA_CASES_2026 = [
                     "label": "Las Anod / Laascaanood",
                     "latitude": 8.4774,
                     "longitude": 47.3597,
-                    "role": "Contested eastern city claimed as capital by SSC-Khaatumo, where fighting erupted in February 2023"
+                    "role": "Contested eastern city claimed as capital by the North Eastern State of Somalia (formerly SSC-Khaatumo), where fighting erupted in February 2023"
                 },
                 {
                     "label": "Mogadishu",
@@ -1258,7 +1258,7 @@ export const AFRICA_CASES_2026 = [
                     "label": "Israel",
                     "latitude": 31.5,
                     "longitude": 34.75,
-                    "role": "Recognizing state whose December 2025 declaration opened embassies with Somaliland in 2026"
+                    "role": "Recognizing state; Somaliland opened an embassy in Israel in June 2026 and Israel laid an embassy cornerstone in Hargeisa in October 2026"
                 }
             ]
         },
@@ -1394,6 +1394,14 @@ export const AFRICA_CASES_2026 = [
                 "url": "https://www.aljazeera.com/news/2026/11/1/israels-first-ambassador-to-somaliland-presents-credentials-in-hargeisa",
                 "perspective": "Independent reporting on Israeli Ambassador Michael Lotem presenting credentials in Hargeisa, the Israeli embassy cornerstone ceremony, Somaliland's June 2026 embassy opening in Israel, and Somali objections",
                 "supports": "Supports the late-October 2026 credentials and Israeli embassy cornerstone ceremonies in Hargeisa (announced 1 November 2026), Somaliland's June 2026 embassy opening in Israel, Somaliland officials' signalled openness to a base alongside President Cirro's statement that no base talks had been held, and that no other UN member state had recognized Somaliland."
+            },
+            {
+                "title": "2.7. Sool, Sanaag, Cayn and North-Eastern State (NES) — Somalia: Security situation",
+                "publisher": "European Union Agency for Asylum (EUAA)",
+                "publishedAt": "2026-06-01",
+                "url": "https://www.euaa.europa.eu/somalia-security-situation/27-sool-sanaag-cayn-and-north-eastern-state-nes",
+                "perspective": "European Union country-of-origin security report (June 2026) documenting the late-July 2025 establishment of North-East Somalia / North Eastern State (NES) from SSC-Khaatumo",
+                "supports": "Supports the late-July 2025 formation of the North Eastern State of Somalia (NES, formerly SSC-Khaatumo) across Sool, Sanaag, and Buuhoodle, its recognition by Somalia's federal government as a federal member state, and overlapping territorial objections."
             }
         ],
         "waypoints": [
@@ -1414,7 +1422,7 @@ export const AFRICA_CASES_2026 = [
                 "perspectiveType": "local",
                 "conceptInFocus": "Legitimacy",
                 "relatedTimelineDate": "2023-02-06",
-                "narration": "Somalia's federal government rejected Israel's 26 December 2025 declaration as an unlawful move [10]. Its foreign ministry called Sa'ar's trip an \"unauthorized incursion\" into Somali territory [12]. Somalia's UN ambassador urged an emergency Security Council meeting to reject what he called an \"act of aggression\" [11]. Mogadishu and regional blocs invoke Somalia's territorial integrity [6]. Territorial integrity is the principle that a state's borders should not be divided without its consent.\n\nSomaliland's claim to self-determination—a people's right to choose its own political status—is also contested inside the eastern territory it claims [4, 13]. On 6 February 2023, fighting broke out in Las Anod / Laascaanood between Somaliland forces and Dhulbahante clan militia [13]. By May 2023, local hospital data put displacement above 200,000 people [13]. Dhulbahante leaders claim the city as the capital of SSC-Khaatumo, an autonomous local administration for Sool, Sanaag, and Cayn that opposes recognition [4, 13]. Evaluating a statehood bid means asking whose consent counts when local communities themselves disagree.",
+                "narration": "Somalia rejected Israel's 26 December 2025 declaration as unlawful [10], calling Sa'ar's trip an \"unauthorized incursion\" [12] and urging Security Council condemnation of an \"act of aggression\" [11]. Mogadishu and regional blocs invoke territorial integrity—the principle that a state's borders should not be divided without consent [6].\n\nSomaliland's self-determination claim is also contested inside the eastern territory it claims [4, 13]. On 6 February 2023, fighting erupted in Las Anod / Laascaanood between Somaliland forces and Dhulbahante militia; local hospital data put displacement above 200,000 by May 2023 [13]. Dhulbahante leaders claimed the city as capital of SSC-Khaatumo, which opposed recognition [4, 13]; in late July 2025, delegates established the North Eastern State of Somalia, recognized by Mogadishu [16]. Evaluating recognition means asking whose consent counts when local communities disagree.",
                 "focusQuestion": "How should recognition policy account for both territorial integrity and non-uniform local preferences?"
             },
             {
@@ -1424,7 +1432,7 @@ export const AFRICA_CASES_2026 = [
                 "perspectiveType": "institutional",
                 "conceptInFocus": "Power",
                 "relatedTimelineDate": "2026-10",
-                "narration": "Prime Minister Benjamin Netanyahu's office issued the 26 December 2025 declaration \"in the spirit of the Abraham Accords\", the US-backed normalization deals between Israel and several Arab states [1]. Israel also announced plans to cooperate in agriculture, health, technology, and economic development [1]. Somaliland opened an embassy in Israel in June 2026 [15]. In late October, Israeli Ambassador Michael Lotem presented credentials—formal letters accrediting an envoy—in Hargeisa alongside an embassy cornerstone ceremony [15].\n\nGeography gives those diplomatic ties wider strategic reach because Somaliland sits on the Gulf of Aden near the entrance to the Bab el-Mandeb strait, a major sea lane [9]. Somalia's President Hassan Sheikh Mohamud alleged Israel wanted Red Sea naval access [12, 15]. Somaliland officials signalled openness to hosting an Israeli base, though President Cirro stated no base talks had been held [15]. By November 2026, recognition had produced embassies rather than a military base or a second recognizing state [15].",
+                "narration": "Prime Minister Benjamin Netanyahu's office issued the 26 December 2025 declaration \"in the spirit of the Abraham Accords\", the US-backed normalization deals between Israel and several Arab states [1]. Israel also announced plans to cooperate in agriculture, health, technology, and economic development [1]. Somaliland opened an embassy in Israel in June 2026 [15]. In late October, Israeli Ambassador Michael Lotem presented credentials—formal letters accrediting an envoy—in Hargeisa alongside an embassy cornerstone ceremony [15].\n\nGeography gives those diplomatic ties wider strategic reach because Somaliland sits on the Gulf of Aden near the entrance to the Bab el-Mandeb strait, a major sea lane [9]. Somalia's President Hassan Sheikh Mohamud alleged Israel wanted Red Sea naval access [12, 15]. Somaliland officials signalled openness to hosting an Israeli base, though President Cirro stated no base talks had been held [15]. By November 2026, recognition had produced ambassadorial credentials, a Somaliland embassy in Israel, and an Israeli embassy cornerstone rather than a military base or a second recognizing state [15].",
                 "focusQuestion": "When does bilateral recognition alter a regional order rather than merely signal a political preference?"
             },
             {
@@ -1477,9 +1485,9 @@ export const AFRICA_CASES_2026 = [
                 "sourceUrl": "https://au-ssom.org/communique-on-the-preservation-of-the-sovereignty-territorial-integrity-unity-and-stability-of-the-federal-republic-of-somalia/"
             },
             {
-                "term": "SSC-Khaatumo",
-                "definition": "An administration claimed by the Dhulbahante clan in the Sool, Sanaag and Buuhoodle areas, with Las Anod / Laascaanood as its capital. Al Jazeera reported in May 2023 that it had declared itself autonomous.",
-                "sourceUrl": "https://www.aljazeera.com/features/2023/5/10/conflict-in-disputed-las-anod-dims-somalilands-diplomatic-dreams"
+                "term": "North Eastern State of Somalia (formerly SSC-Khaatumo)",
+                "definition": "Federal member state recognized by Somalia in late July 2025 across Sool, Sanaag, and Buuhoodle with Las Anod / Laascaanood as its capital, transitioning from the interim SSC-Khaatumo administration documented by Al Jazeera in May 2023.",
+                "sourceUrl": "https://www.euaa.europa.eu/somalia-security-situation/27-sool-sanaag-cayn-and-north-eastern-state-nes"
             }
         ],
         "debate": [
@@ -1623,6 +1631,7 @@ export const AFRICA_CASES_2026 = [
         ],
         "actorMap": {
             "focusCountry": "Somaliland",
+            "boundaryNote": "The outline shows the territory Somaliland claims and does not imply recognition.",
             "terrainPatches": [
                 { "url": "/assets/actor-map/somaliland-region.jpg", "bounds": [20, -12, 62, 36], "altitude": 0.00015, "order": 1 },
                 { "url": "/assets/actor-map/somaliland-local.jpg", "bounds": [38, 0, 53, 15], "altitude": 0.0003, "order": 2 }
@@ -1704,7 +1713,7 @@ export const AFRICA_CASES_2026 = [
                     "id": "somaliland-authorities",
                     "name": "Somaliland authorities",
                     "level": "local",
-                    "role": "Administering authority in Hargeisa that signed the 26 December 2025 joint declaration formalizing Israel's recognition of Somaliland.",
+                    "role": "Self-declared state administering territory from Hargeisa since 1991, recognised by Israel under the 26 December 2025 joint declaration and claimed by the Federal Government of Somalia.",
                     "sourceUrl": "https://www.horndiplomat.com/israel-officially-recognizes-somaliland-as-sovereign-state/",
                     "location": {
                         "kind": "pin",
@@ -1716,13 +1725,13 @@ export const AFRICA_CASES_2026 = [
                 },
                 {
                     "id": "ssc-khaatumo",
-                    "name": "SSC-Khaatumo / Dhulbahante leaders",
+                    "name": "North Eastern State of Somalia",
                     "level": "local",
-                    "role": "Autonomous local administration claimed in Sool, Sanaag, and Buuhoodle with Las Anod / Laascaanood as its capital, opposing Somaliland's recognition bid (reported through June 2025).",
-                    "sourceUrl": "https://www.theeastafrican.co.ke/tea/news/east-africa/why-ssc-khaatumo-opposes-somaliland-s-bid-for-recognition-5086894",
+                    "role": "Renamed from SSC-Khaatumo in late July 2025 and recognized by Somalia's federal government across Sool, Sanaag, and Buuhoodle with Las Anod / Laascaanood as capital; SSC-Khaatumo officials opposed Somaliland's recognition bid (reported through June 2025).",
+                    "sourceUrl": "https://www.euaa.europa.eu/somalia-security-situation/27-sool-sanaag-cayn-and-north-eastern-state-nes",
                     "location": {
                         "kind": "pin",
-                        "place": "Las Anod / Laascaanood",
+                        "place": "Las Anod / Laascaanood (formerly SSC-Khaatumo)",
                         "latitude": 8.4774,
                         "longitude": 47.3597,
                         "gazetteer": "GeoNames 400769 (Laascaanood, matched to map.locations)"

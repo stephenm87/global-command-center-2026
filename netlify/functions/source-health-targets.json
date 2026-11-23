@@ -2,7 +2,7 @@
   "schemaVersion": 1,
   "caseStudyCount": 29,
   "staticPageCount": 1,
-  "targetCount": 204,
+  "targetCount": 205,
   "targets": [
     {
       "id": "sudan-displacement-regional-spillover:core:0",
@@ -1160,6 +1160,17 @@
       "kind": "primary",
       "lifecycle": "active",
       "url": "https://www.aljazeera.com/news/2026/11/1/israels-first-ambassador-to-somaliland-presents-credentials-in-hargeisa"
+    },
+    {
+      "id": "somaliland-recognition-red-sea-order:supplemental:12",
+      "caseStudyId": "somaliland-recognition-red-sea-order",
+      "caseStudyTitle": "Somaliland Recognition and the Red Sea Order",
+      "sourceTitle": "2.7. Sool, Sanaag, Cayn and North-Eastern State (NES) — Somalia: Security situation",
+      "publisher": "European Union Agency for Asylum (EUAA)",
+      "group": "supplemental",
+      "kind": "primary",
+      "lifecycle": "active",
+      "url": "https://www.euaa.europa.eu/somalia-security-situation/27-sool-sanaag-cayn-and-north-eastern-state-nes"
     },
     {
       "id": "zambia-electricity-reset-climate-access:core:0",

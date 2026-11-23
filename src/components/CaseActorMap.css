@@ -557,6 +557,12 @@
     font: 500 0.75rem/1.4 'Roboto Mono', monospace;
 }
 
+.actor-map-boundary-note {
+    margin: 4px 0 0;
+    color: #d7e7ee;
+    font: 500 0.75rem/1.4 'Roboto Mono', monospace;
+}
+
 /* Connections & Inspector side panel */
 .actor-map-panel {
     display: flex;
