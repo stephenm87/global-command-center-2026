@@ -629,6 +629,19 @@ test('curated case studies remain balanced across 7 regions x 6 lenses, auditabl
             }
         }
 
+        if (item.relatedCases !== undefined) {
+            assert.ok(Array.isArray(item.relatedCases) && item.relatedCases.length > 0, `${item.id} relatedCases must be a non-empty array when set`);
+            const seenRelated = new Set();
+            for (const link of item.relatedCases) {
+                assertNonEmptyString(link?.caseId, `${item.id} relatedCases entry missing caseId`);
+                assert.notEqual(link.caseId, item.id, `${item.id} relatedCases cannot link to itself`);
+                assert.ok(byId.has(link.caseId), `${item.id} relatedCases unknown caseId "${link.caseId}"`);
+                assert.ok(!seenRelated.has(link.caseId), `${item.id} relatedCases repeats "${link.caseId}"`);
+                seenRelated.add(link.caseId);
+                assertNonEmptyString(link?.note, `${item.id} relatedCases "${link.caseId}" missing note`);
+            }
+        }
+
         const times = computeBriefingReadingTimes(item);
         assert.ok(times.fullMinutes >= times.quickMinutes && times.quickMinutes >= 1);
     }

@@ -690,6 +690,8 @@ export default function GuidedBriefings({
                     sourceIndex={sourceIndex}
                     sourceByNumber={sourceByNumber}
                     onJumpToSource={handleJumpToSource}
+                    allTours={allTours}
+                    onSelectTour={chooseTour}
                 />
 
                 <div className="briefing-evidence">

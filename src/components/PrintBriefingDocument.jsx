@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { createPortal } from 'react-dom';
 import { BRIEFING_ACTORS } from '../briefingActors';
+import { ALL_CASE_STUDIES_2026 } from '../cases/index.mjs';
 import { IB_THEME_LABELS } from '../cases/schema.mjs';
 import { getCaseReviewNotice } from '../navigationState.mjs';
 import {
@@ -183,12 +184,18 @@ export function CaseBriefingPrintContent({
     const keyTerms = Array.isArray(tour.keyTerms) ? tour.keyTerms : [];
     const debatePairs = Array.isArray(tour.debate) ? tour.debate : [];
     const watchForItems = Array.isArray(tour.watchFor) ? tour.watchFor : [];
+    const relatedLinks = (Array.isArray(tour.relatedCases) ? tour.relatedCases : [])
+        .map(link => {
+            const target = ALL_CASE_STUDIES_2026.find(item => item.id === link.caseId);
+            return target ? { ...link, title: target.title } : null;
+        })
+        .filter(Boolean);
     const examPrompts = Array.isArray(tour.examPrompts) ? tour.examPrompts : [];
     const hasEssayBuilder = Boolean(tour.essayBuilder);
 
     const hasSection5 = Boolean(backgroundParagraphs.length || timelineEvents.length || keyFigures.length);
     const hasSection6 = Boolean(concepts.length || ibThemes.length || conceptLensEntries.length || keyTerms.length);
-    const hasSection7 = Boolean(debatePairs.length || watchForItems.length);
+    const hasSection7 = Boolean(debatePairs.length || watchForItems.length || relatedLinks.length);
     const hasSection8 = Boolean(examPrompts.length || hasEssayBuilder);
     const leadSources = sources.length > 1 ? sources.slice(0, -1) : [];
     const tailSource = sources.length > 0 ? sources[sources.length - 1] : null;
@@ -544,6 +551,18 @@ export function CaseBriefingPrintContent({
                                         {entry.sourceUrl && (
                                             <PrintSourceRefs urls={entry.sourceUrl} sourceByRawUrl={sourceByRawUrl} label="Source" />
                                         )}
+                                    </li>
+                                ))}
+                            </ul>
+                        </div>
+                    )}
+                    {relatedLinks.length > 0 && (
+                        <div className="gcc-print-subsection">
+                            <h3>Compare with related briefings</h3>
+                            <ul className="gcc-print-watch-list">
+                                {relatedLinks.map(link => (
+                                    <li key={link.caseId}>
+                                        <strong>{link.title}:</strong> {link.note}
                                     </li>
                                 ))}
                             </ul>
