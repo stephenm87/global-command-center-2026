@@ -476,13 +476,13 @@
     }
 
     .gcc-print-table--connections {
-        font-size: 9pt;
-        line-height: 1.32;
+        font-size: 8.75pt;
+        line-height: 1.25;
     }
 
     .gcc-print-table--connections th,
     .gcc-print-table--connections td {
-        padding: 3.5pt 5pt;
+        padding: 2.5pt 4.5pt;
     }
 
     .gcc-print-table-col-actor {

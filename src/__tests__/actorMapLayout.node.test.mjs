@@ -546,13 +546,22 @@ test('Strict geometry across every step (1-4 & All) at 1440px and 390px (3D & Fl
         const cy = Math.max(b.y0, Math.min(b.y1, m.y));
         return Math.hypot(m.x - cx, m.y - cy) < m.r;
     };
-    const findUnlabelledStepActors = (entries, byId, actorToCluster, slotById, solved) => {
+    const findUnlabelledStepActors = (entries, byId, actorToCluster, slotById, solved, { width = Infinity, height = Infinity } = {}) => {
         const missing = [];
         for (const entry of entries) {
             const actor = byId.get(entry.id);
-            if (!actor) continue;
+            if (!actor) {
+                missing.push(`${entry.id} (missing actor def)`);
+                continue;
+            }
             if (actor.location.kind === 'noSinglePlace') {
-                if (!slotById.has(actor.id)) missing.push(actor.id);
+                const slot = slotById.get(actor.id);
+                const onScreen = slot
+                    && slot.cx - slot.w / 2 >= 8
+                    && slot.cx + slot.w / 2 <= width - 8
+                    && slot.cy - slot.h / 2 >= 6
+                    && slot.cy + slot.h / 2 <= height * 0.5;
+                if (!onScreen) missing.push(actor.id);
                 continue;
             }
             const cl = actorToCluster.get(entry.id);
@@ -664,7 +673,7 @@ test('Strict geometry across every step (1-4 & All) at 1440px and 390px (3D & Fl
                         r,
                         preferredSide: entry.preferredSide || 'r',
                         hidden: Boolean(entry.small),
-                        priority: actor.level === 'regional' ? 96 : actor.level === 'state' ? 88 : 78,
+                        priority: actor.level === 'regional' ? (mode === 'flat' ? 95 : 96) : actor.level === 'state' ? 88 : 78,
                     });
                 }
 
@@ -833,10 +842,9 @@ test('Strict geometry across every step (1-4 & All) at 1440px and 390px (3D & Fl
 
                 const reservedBoxes = [
                     { x0: 6, y0: H - (W < 480 ? 116 : 132), x1: W < 480 ? 114 : 148, y1: H - 6 },
+                    ...(mode === '3d' && W >= 480 ? [{ x0: W - 250, y0: H - 40, x1: W - 6, y1: H - 6 }] : []),
+                    ...(mode === '3d' && floatingSlots.length > 0 ? [{ x0: 8, y0: 4, x1: Math.min(W - 8, 250), y1: 22 }] : []),
                 ];
-                if (mode === '3d') {
-                    reservedBoxes.push({ x0: W - 250, y0: H - 40, x1: W - 6, y1: H - 6 });
-                }
 
                 const solved = solveActorMapLabels({
                     width: W,
@@ -898,7 +906,7 @@ test('Strict geometry across every step (1-4 & All) at 1440px and 390px (3D & Fl
                 }
 
                 // 4) Every actor shown in step.actors must have a readable label (floating pill, visible cluster, or visible actor label)
-                const unlabelled = findUnlabelledStepActors(entries, byId, actorToCluster, slotById, solved);
+                const unlabelled = findUnlabelledStepActors(entries, byId, actorToCluster, slotById, solved, { width: W, height: H });
                 assert.deepEqual(
                     unlabelled,
                     [],
@@ -965,7 +973,7 @@ test('Strict geometry across every step (1-4 & All) at 1440px and 390px (3D & Fl
     });
     assert.equal(visibleSelected.actors.get('p').visible, true);
 
-    // An unclustered hidden/small actor or unplaced actor fails findUnlabelledStepActors
+    // An unclustered hidden/small actor or misspelled actor id fails findUnlabelledStepActors
     const unlabelledCatch = solveActorMapLabels({
         width: 400,
         height: 400,
@@ -974,7 +982,7 @@ test('Strict geometry across every step (1-4 & All) at 1440px and 390px (3D & Fl
     });
     const somMap = new Map([['igad', { id: 'igad', location: { kind: 'area' } }]]);
     assert.deepEqual(
-        findUnlabelledStepActors([{ id: 'igad', small: true }], somMap, new Map(), new Map(), unlabelledCatch),
-        ['igad'],
+        findUnlabelledStepActors([{ id: 'igad', small: true }, { id: 'typo-actor' }], somMap, new Map(), new Map(), unlabelledCatch),
+        ['igad', 'typo-actor (missing actor def)'],
     );
 });

@@ -440,18 +440,15 @@ test('Print Where section includes actor connections table only for cases with a
         }
     }
 
-    for (const id of [
-        'greenland-autonomy-security-minerals',
-        'sudan-displacement-regional-spillover',
-        'mongolia-coal-critical-minerals-transition',
-    ]) {
-        const tour = GUIDED_TOURS.find(item => item.id === id);
+    const nonPilotTours = GUIDED_TOURS.filter(item => !expectedCounts[item.id]);
+    assert.equal(nonPilotTours.length, 27, 'Expected all 27 remaining briefings to lack actorMap connections');
+    for (const tour of nonPilotTours) {
         assert.deepEqual(collectActorMapConnections(tour), []);
         const markup = renderToStaticMarkup(React.createElement(CaseBriefingPrintContent, {
             tour,
             exportedAt: '24 November 2026',
         }));
-        assert.doesNotMatch(markup, /Actor connections/);
-        assert.doesNotMatch(markup, /gcc-print-table--connections/);
+        assert.doesNotMatch(markup, /Actor connections/, `${tour.id} must remain unchanged without Actor connections`);
+        assert.doesNotMatch(markup, /gcc-print-table--connections/, `${tour.id} must not render connections table`);
     }
 });

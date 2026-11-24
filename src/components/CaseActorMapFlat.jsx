@@ -759,8 +759,19 @@ export default function CaseActorMapFlat({
                     ? scene.clusterMarkers.find(m => m.cluster.id === hoveredClusterId)
                     : null;
                 if (!activeClusterMarker) return null;
-                const popLeft = Math.max(8, Math.min(scene.width - 246, activeClusterMarker.x + 14));
-                const popTop = Math.max(8, Math.min(scene.height - 240, activeClusterMarker.y - 36));
+                const popW = 230;
+                let popLeft = activeClusterMarker.x + 16;
+                let popTop = Math.max(8, Math.min(scene.height - 220, activeClusterMarker.y - 36));
+                if (activeClusterMarker.x + 16 + popW <= scene.width - 8) {
+                    popLeft = activeClusterMarker.x + 16;
+                } else if (activeClusterMarker.x - 16 - popW >= 8) {
+                    popLeft = activeClusterMarker.x - 16 - popW;
+                } else {
+                    popLeft = Math.max(8, Math.min(scene.width - popW - 8, activeClusterMarker.x - popW / 2));
+                    popTop = activeClusterMarker.y > scene.height * 0.55
+                        ? Math.max(8, activeClusterMarker.y - 170)
+                        : Math.min(scene.height - 170, activeClusterMarker.y + 20);
+                }
                 return (
                     <div
                         className="flat-cluster-popover"
