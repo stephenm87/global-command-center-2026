@@ -642,7 +642,7 @@ export const GLOBAL_INSTITUTIONS_CASES_2026 = [
             "peace-and-conflict",
             "rights-and-justice"
         ],
-        "statusSummary": "As reviewed on 24 November 2026, five European states—Estonia, Latvia, Lithuania, Finland, and Poland—completed six-month withdrawals from the 1997 Ottawa Convention between December 2025 and February 2026, while Ukraine attempted an unprecedented wartime suspension that treaty members rejected. Russia, the United States, and China remain outside the accord. Meanwhile, 162 States Parties remain bound after Lebanon's accession took effect on 1 November 2026, even as global monitoring logged 6,270 confirmed deaths and injuries (at least 6,279 total casualties including unknown outcomes) in 2024.",
+        "statusSummary": "As reviewed on 24 November 2026, five European states—Estonia, Latvia, Lithuania, Finland, and Poland—completed six-month withdrawals from the 1997 Ottawa Convention between December 2025 and February 2026, while Ukraine attempted an unprecedented wartime suspension that treaty members rejected. Russia, the United States, and China remain outside the accord. Meanwhile, 162 States Parties remain bound after Lebanon's accession took effect on 1 November 2026, even as the UN Human Rights Office cited global monitoring of 6,270 confirmed deaths and injuries (1,945 killed and 4,325 injured) in 2024.",
         "whyItMatters": "The Ottawa Treaty rupture tests a core tension in global politics: whether humanitarian disarmament norms hold up once non-party warfare leads democratic states to reclaim banned defensive weapons.",
         "updatedAt": "2026-11-24",
         "confidence": "high",
@@ -694,7 +694,7 @@ export const GLOBAL_INSTITUTIONS_CASES_2026 = [
             },
             {
                 "value": "6,270",
-                "label": "Confirmed global deaths (1,945) and injuries (4,325) in 2024 (6,279 total including 9 unknown outcomes) reported via OHCHR",
+                "label": "Confirmed global deaths (1,945) and injuries (4,325) in 2024 from mines and explosive remnants of war cited by OHCHR",
                 "asOf": "June 2026",
                 "sourceUrl": "https://www.ohchr.org/en/press-releases/2026/06/un-report-warns-about-persistent-use-anti-personnel-mines-urges-adherence"
             },
@@ -837,7 +837,7 @@ export const GLOBAL_INSTITUTIONS_CASES_2026 = [
                 "perspectiveType": "local",
                 "conceptInFocus": "Legitimacy",
                 "relatedTimelineDate": "1999-03-01",
-                "narration": "Across rural southern Lebanon and 52 affected countries in 2024, residents clearing farmland confronted hidden anti-personnel mines that killed 1,945 people and injured 4,325—6,270 confirmed victims within at least 6,279 total casualties, 86% civilian (90% of known-status victims) [4, 15].\n\nAppalled by lasting civilian harm, middle powers led by Canada partnered with the International Campaign to Ban Landmines in 1996 to bypass deadlocked UN talks [1, 16]. Adopted in Oslo in 1997, the Ottawa Convention took effect on 1 March 1999, banning anti-personnel mines while excluding anti-vehicle mines [2, 10, 16]. Yet Russia, the United States, and China never joined [2, 3].",
+                "narration": "In December 1997, 122 governments gathered in Ottawa to sign a total treaty ban on anti-personnel landmines [16]. Negotiators acted after traditional United Nations (UN) disarmament talks stalled over loopholes [16]. Anti-personnel mines explode from a person's presence, proximity, or contact, locking farmland and roads for decades after wars end [10, 16]. Global monitoring cited by the UN Human Rights Office recorded 6,270 confirmed deaths and injuries from mines and explosive remnants of war in 2024 [4]. Where casualty status was known, civilians accounted for roughly 90% of victims [4].\n\nEntering into force in March 1999, the Ottawa Convention prohibited member states from using, stockpiling, producing, or transferring victim-activated mines [2, 16]. Heavier anti-vehicle mines aimed at tanks remained outside that ban, though humanitarian laws still restrict their use [10]. Because major powers—including Russia, China, and the United States (US)—never joined, frontline treaty members later confronted difficult choices over unilateral restraint [2, 3].",
                 "focusQuestion": "Why could middle powers and NGOs create a binding total ban without superpower approval, yet not bind superpower armies?"
             },
             {
@@ -847,7 +847,7 @@ export const GLOBAL_INSTITUTIONS_CASES_2026 = [
                 "perspectiveType": "independent",
                 "conceptInFocus": "Power",
                 "relatedTimelineDate": "2024-11-20",
-                "narration": "When Russia—a non-party holding the world's largest stockpile—built its 800-kilometer Surovikin Line across occupied Ukrainian territory using dense minefields in 2023, the battlefield revealed sharp asymmetry [3]. A non-party aggressor laid victim-activated traps freely against an invaded Ottawa Convention member [3, 6].\n\nGreat-power policy shifted alongside front-line pressure. In November 2024, Washington approved transferring 'non-persistent' battery-powered anti-personnel mines to Kyiv [13], and in December 2025 US defense officials reportedly lifted geographic bans on American use [14]. Because Ottawa defines anti-personnel mines strictly by person-activated triggers, critics argued battery fuzes fail in combat and contaminate fields anyway [10].",
+                "narration": "Full-scale war in Ukraine tested whether humanitarian bans survive when an adversary outside the treaty deploys mines at scale [3]. Non-party Russia holds the world's largest stockpile of anti-personnel mines [3]. In 2023, Russian forces built dense minefields along their 800-kilometer defensive line across occupied Ukraine [3]. That left an invaded treaty member defending front lines while an unrestrained neighbor used victim-activated weapons [3, 6].\n\nGreat-power policy shifted alongside battlefield pressure. In November 2024, Washington approved transferring 'non-persistent' anti-personnel mines to Ukraine [13]. Battery-timed or self-deactivating mines use timers built to shut down after hours or days rather than stay live indefinitely [10, 13]. By December 2025, US defense officials reportedly lifted geographic restrictions on American mine use [14]. Because Ottawa prohibits every person-triggered mine regardless of fuse timers, the International Committee of the Red Cross (ICRC) warned that combat failures still leave civilian hazards [10].",
                 "focusQuestion": "What happens to mutual restraint rules when a non-party uses banned weapons against a treaty member in full-scale war?"
             },
             {
@@ -857,8 +857,8 @@ export const GLOBAL_INSTITUTIONS_CASES_2026 = [
                 "perspectiveType": "independent",
                 "conceptInFocus": "Sovereignty",
                 "relatedTimelineDate": "2026-02-20",
-                "narration": "Bordering Russia and Belarus, five European members feared Article 20(3) would block treaty exit during war, since withdrawals pause once armed conflict begins [3, 6]. Estonia, Latvia, and Lithuania exited on 27 December 2025, followed by Finland on 10 January 2026 and Poland on 20 February 2026—while Norway remained inside Ottawa [2, 11].\n\nPoland linked withdrawal to its East Shield barrier, opening consultations for up to 14.7 million mines deployable within 48 hours of an emerging threat [1, 11]. Baltic Defence Line planning and Finland's 2027 output plans echoed deterrence priorities while every departing state affirmed Geneva Convention duties [3, 6, 7, 12].",
-                "focusQuestion": "When states follow Article 20 exit rules legally during peacetime, does withdrawal strengthen sovereign legitimacy or weaken collective security?"
+                "narration": "Bordering Russia and Belarus, five European states moved to exit the treaty before any conflict could reach their borders [3, 6]. Under Ottawa withdrawal rules, exit takes six months after formal notice, yet delays completely if the state is already fighting an armed conflict when that period expires [3, 6]. Acting during peacetime, Estonia, Latvia, and Lithuania exited in December 2025 [2]. Finland left in January 2026 and Poland followed a month later, while Norway remained inside the ban [2, 11].\n\nWarsaw linked departure to its planned East Shield border barrier [1, 11]. Poland consulted arms makers on up to 14.7 million mines and stated it could mine borders within 48 hours of an emerging threat [1, 11]. Baltic defense barriers and Finland's 2027 manufacturing plans reflected similar deterrence priorities, even as departing states affirmed that humanitarian Geneva Conventions still bind their forces [3, 6, 12].",
+                "focusQuestion": "When states follow legal peacetime withdrawal rules, does leaving strengthen sovereign legitimacy or weaken collective security?"
             },
             {
                 "nodeId": "Europe",
@@ -867,7 +867,7 @@ export const GLOBAL_INSTITUTIONS_CASES_2026 = [
                 "perspectiveType": "institutional",
                 "conceptInFocus": "Sovereignty",
                 "relatedTimelineDate": "2025-07-17",
-                "narration": "Because Article 20(3) postpones wartime withdrawal, Kyiv notified the UN in July 2025 that it was suspending treaty operation under the Vienna Convention on the Law of Treaties [3, 5, 8]. Ukraine argued unforeseen mass mine warfare by a non-party aggressor created exceptional hardship requiring urgent reciprocal defense measures [3, 5].\n\nTreaty guardians pushed back sharply. Switzerland objected, and Ottawa's December 2025 Meeting of States Parties concluded no suspension clause exists and insisted Ukraine remains bound [5]. While many treaty analysts reject Vienna Convention exits from multilateral humanitarian conventions, legal debate continues over Article 62 hardship thresholds during war [3, 5].",
+                "narration": "Fighting a full-scale invasion, Ukraine could not activate the treaty's peacetime withdrawal rule [3, 5]. In July 2025, Kyiv notified the UN that it was suspending treaty duties mid-war under the Vienna Convention on the Law of Treaties [3, 8]. Legal analysts examined whether mass Russian mine warfare constitutes an unforeseen fundamental change of circumstances [3, 5]. Treaty scholars and member states soon contested that argument [3, 5].\n\nMember states pushed back firmly against allowing any wartime suspension precedent [5]. Switzerland filed an official objection [5]. At their December 2025 summit, Ottawa members concluded the ban includes no suspension clause and insisted Ukraine's treaty obligations remain legally binding [5]. While treaty analysts stress humanitarian bans apply specifically during armed conflict, legal debate continues over whether extraordinary wartime hardship alters strict exit locks [3, 5].",
                 "focusQuestion": "Should international humanitarian treaties bind an invaded state under wartime pressure when the aggressor itself refuses to join?"
             },
             {
@@ -877,11 +877,11 @@ export const GLOBAL_INSTITUTIONS_CASES_2026 = [
                 "perspectiveType": "synthesis",
                 "conceptInFocus": "Interdependence",
                 "relatedTimelineDate": "2026-05-01",
-                "narration": "Even after five European exits, 162 states remain bound—with Lebanon acceding in May 2026 and 58 states and territories still living with mine contamination [2, 4, 15]. UN clearance trust-fund contributions simultaneously dropped from US$125 million to US$46 million, straining vital victim rehabilitation and survey support [4].\n\nInside the European Union, rearmament exposed tight interdependence: ICBL warned that Latvia's EUR 28.3 million EU-funded purchase plan could collide with Article 1(1)(c)'s ban on 22 remaining EU parties assisting prohibited weapons [1]. Meanwhile, the Red Cross questioned whether static mines beaten by cheap drones still justify lasting civilian danger [10].",
+                "narration": "Despite five European exits, global treaty participation remained broad [2, 15]. Some 162 states remain bound—including Lebanon, which acceded in May 2026 during active conflict [2, 15]. Human Rights Watch noted at least 15.79 square kilometers of Lebanese land held contamination by late 2024 [15]. Globally, at least 58 states and territories faced landmine contamination in 2025 [4]. Over recent years, contributions to the UN mine-action fund fell from 125 million to 46 million US dollars, squeezing victim care [4].\n\nAllied procurement also tested European Union (EU) interdependence [1]. Under Ottawa's non-assistance duty, remaining members cannot help finance banned mines [1]. The International Campaign to Ban Landmines (ICBL) warned that if Latvia's 28.3 million euro plan involved prohibited mines, shared EU defense funds could implicate 22 treaty parties [1]. Shared European Union budgets thus turn national departures into bloc-wide compliance tests [1].",
                 "focusQuestion": "When allies split inside one economic bloc over banned weapons, can shared funding rules still preserve global disarmament norms?"
             }
         ],
-        "background": "Anti-personnel mines shatter limbs and lock farmland decades after wars end, prompting civil society groups and Canada-led middle powers to launch the Ottawa Process in October 1996 after UN-hosted talks stalled [1, 16]. Adopted in Oslo in September 1997, the treaty entered into force on 1 March 1999, banning use, stockpiling, production, and transfer—aside from narrow Article 3 clearance and destruction exceptions—while requiring stockpile elimination within four years [2, 16].\n\nFor two decades the accord drove sharp reductions in mine transfers and production even without US, Russian, or Chinese ratification [3, 16]. After Russia's 2022 invasion turned minefields into front-line barriers, however, eastern NATO border states reconsidered unilateral restraint [3, 6]. By late 2026, five European exits, Ukraine's disputed suspension, and US policy shifts tested humanitarian rules backed by the UN, ICRC, and ICBL [1, 4, 10, 14].",
+        "background": "Anti-personnel mines shatter limbs and lock farmland long after wars end [1, 16]. When traditional disarmament talks at the United Nations (UN) stalled over loopholes, civil-society groups and Canada-led governments launched the Ottawa Process in October 1996 to pursue a total ban [1, 16]. Negotiators adopted the Ottawa Convention in Oslo in 1997, and it entered into force in March 1999 [2, 16]. Members banned using, stockpiling, producing, and transferring victim-activated mines while committing to destroy existing stockpiles within four years [2, 16]. Only narrow exceptions permitted transferring mines for destruction, or keeping and transferring minimum stocks to develop detection, clearance, and destruction methods [2, 16].\n\nOver two decades, treaty norms sharply reduced global production and trade even though Russia, China, and the United States (US) never ratified it [3, 16]. That consensus fractured after Russia invaded Ukraine in 2022 and built dense minefields along front lines [3, 6]. Five eastern North Atlantic Treaty Organization (NATO) members later exited during peacetime to rebuild border defenses [3, 6]. While the International Committee of the Red Cross (ICRC) and the International Campaign to Ban Landmines (ICBL) defended civilian safeguards, those exits showed how non-party warfare strains multilateral disarmament [1, 3, 10].",
         "backgroundSources": [
             "https://legal.un.org/avl/ha/cpusptam/cpusptam.html",
             "https://treaties.un.org/pages/ViewDetails.aspx?chapter=26&clang=_en&mtdsg_no=XXVI-5&src=TREATY",
@@ -918,25 +918,38 @@ export const GLOBAL_INSTITUTIONS_CASES_2026 = [
         ],
         "debate": [
             {
-                "claimBy": "Withdrawing European governments (Baltics, Finland, Poland)",
-                "claim": "Russia is not bound and has mass-deployed mines in Ukraine, so border democracies must leave during peacetime to deter invasion with East Shield and Baltic barriers while still respecting Geneva Convention rules.",
-                "counterBy": "ICRC, UN Human Rights Office, and ICBL coalition",
-                "counterClaim": "Civilians represent 86% of recorded victims (90% of known-status casualties), drone warfare undermines mine value without solving dud contamination, and five exits risk weakening disarmament norms.",
+                "claimBy": "Lithuanian and Polish treaty notifications (3 July and 26 August 2025) and Polish East Shield reporting (19 February 2026)",
+                "claim": "Russia is not bound and deployed extensive minefields in Ukraine. Border democracies exited during peacetime to deter invasion with East Shield and Baltic barriers while respecting the Geneva Conventions.",
+                "counterBy": "United Nations Human Rights Office (16 June 2026) and International Committee of the Red Cross (26 November 2025)",
+                "counterClaim": "Where victim status was known, civilians accounted for roughly 90% of casualties cited by United Nations officials. Humanitarian analysts warn five European withdrawals risk eroding disarmament norms without solving post-war contamination.",
                 "sourceUrls": [
                     "https://treaties.un.org/doc/Publication/CN/2025/CN.362.2025-Eng.pdf",
                     "https://treaties.un.org/doc/Publication/CN/2025/CN.421.2025-Eng.pdf",
+                    "https://www.reuters.com/business/aerospace-defense/poland-can-mine-border-within-48-hours-after-ottawa-convention-exit-pm-says-2026-02-19/",
                     "https://blogs.icrc.org/law-and-policy/2025/11/26/do-anti-personnel-mines-still-have-military-utility-in-modern-warfare/",
                     "https://www.ohchr.org/en/press-releases/2026/06/un-report-warns-about-persistent-use-anti-personnel-mines-urges-adherence"
                 ]
             },
             {
-                "claimBy": "Ukrainian legal officials justifying suspension",
-                "claim": "Full-scale aggression by a heavily mining non-party created an unforeseen fundamental change of circumstances under the Vienna Convention requiring temporary reciprocal defense measures.",
-                "counterBy": "Switzerland, Ottawa States Parties, and treaty scholars",
-                "counterClaim": "Humanitarian weapons treaties were built specifically for wartime, include no suspension clause, and explicitly postpone exits under Article 20(3) until hostilities conclude.",
+                "claimBy": "Ukrainian suspension note (18 July 2025) and legal commentary summarized by Robert Kolb (1 April 2026)",
+                "claim": "Kyiv notified the United Nations under the Vienna Convention on the Law of Treaties, with scholars examining fundamental-change arguments when an unrestrained aggressor uses mass mines.",
+                "counterBy": "Ottawa States Parties Meeting (December 2025) and treaty scholar Robert Kolb (1 April 2026)",
+                "counterClaim": "Humanitarian weapons bans are built specifically for war and include no suspension clause. Although states may submit notice mid-war, exit cannot take effect until fighting ends and waiting rules clear.",
                 "sourceUrls": [
                     "https://treaties.un.org/doc/Publication/CN/2025/CN.385.2025-Eng.pdf",
                     "https://lieber.westpoint.edu/ukraines-suspension-anti-personnel-mine-ban-convention/"
+                ]
+            },
+            {
+                "claimBy": "United States officials (20 November 2024) and Estonian defense analysts (15 June 2026)",
+                "claim": "Washington approved supplying battery-limited mines to help Ukraine slow advancing Russian forces. Eastern-flank defense planners separately see border barriers as vital deterrence against non-party aggression.",
+                "counterBy": "International Committee of the Red Cross (ICRC, 26 November 2025) and International Campaign to Ban Landmines (ICBL, 12 October 2026)",
+                "counterClaim": "Combat evidence shows self-destruct timers fail while drones reshape front lines. Campaigners add that remaining European Union parties cannot help fund banned mines, flagging Latvia's 28.3 million euro plan where mine types remain unclear.",
+                "sourceUrls": [
+                    "https://www.reuters.com/world/biden-approves-anti-personnel-mines-ukraine-us-official-says-2024-11-20/",
+                    "https://icds.ee/en/legality-and-reality-the-eastern-flank-and-the-ottawa-convention/",
+                    "https://blogs.icrc.org/law-and-policy/2025/11/26/do-anti-personnel-mines-still-have-military-utility-in-modern-warfare/",
+                    "https://icblcmc.org/our-impact/icbl-calls-on-global-leaders-to-prevent-renewed-production-of-antipersonnel-mines-by-poland-and-finland"
                 ]
             }
         ],
@@ -974,11 +987,13 @@ export const GLOBAL_INSTITUTIONS_CASES_2026 = [
             {
                 "stage": "The formal decision",
                 "rating": "MIXED",
-                "evidence": "Five European states completed lawful Article 20 withdrawals between Dec 2025 and Feb 2026, yet 162 states stayed in—with Lebanon acceding in May 2026—and States Parties rejected Ukraine's suspension.",
+                "evidence": "Five European states completed lawful Article 20 withdrawals between Dec 2025 and Feb 2026 (including Finland on 10 January 2026), yet 162 states stayed bound under Article 3 clearance/destruction exceptions and Article 1(1)(c) non-assistance duties—with Lebanon acceding in May 2026 (at least 15.79 sq km contaminated end-2024)—while States Parties rejected Ukraine's Vienna Convention unilateral suspension (with treaty scholar Robert Kolb separately examining Article 62 hardship arguments).",
                 "sourceUrls": [
                     "https://treaties.un.org/pages/ViewDetails.aspx?chapter=26&clang=_en&mtdsg_no=XXVI-5&src=TREATY",
                     "https://lieber.westpoint.edu/ukraines-suspension-anti-personnel-mine-ban-convention/",
-                    "https://www.hrw.org/news/2026/05/27/lebanon-joins-mine-ban-treaty"
+                    "https://www.hrw.org/news/2026/05/27/lebanon-joins-mine-ban-treaty",
+                    "https://legal.un.org/avl/ha/cpusptam/cpusptam.html",
+                    "https://icblcmc.org/our-impact/icbl-calls-on-global-leaders-to-prevent-renewed-production-of-antipersonnel-mines-by-poland-and-finland"
                 ]
             },
             {
@@ -1034,7 +1049,7 @@ export const GLOBAL_INSTITUTIONS_CASES_2026 = [
             },
             {
                 "date": "2026-02-20",
-                "label": "Poland's treaty withdrawal takes effect following Finland's January exit, clearing East Shield border-mining and 2026 production plans.",
+                "label": "Poland's treaty withdrawal takes effect following Finland's 10 January 2026 exit, clearing East Shield border-mining and 2026 production plans.",
                 "sourceUrl": "https://www.reuters.com/business/aerospace-defense/poland-can-mine-border-within-48-hours-after-ottawa-convention-exit-pm-says-2026-02-19/"
             },
             {
