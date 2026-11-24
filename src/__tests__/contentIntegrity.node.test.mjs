@@ -288,10 +288,10 @@ test('curated case studies remain balanced across 7 regions x 6 lenses, auditabl
         assert.deepEqual(tour.waypoints, caseStudy.waypoints);
     }
 
-    // Verify docs/CASE_STUDY_EDITORIAL_STANDARD.md 29-case baseline table stays in sync with CASE_STUDIES_2026
+    // Verify docs/CASE_STUDY_EDITORIAL_STANDARD.md 33-case baseline table stays in sync with CASE_STUDIES_2026
     const standardDoc = fs.readFileSync(path.join(REPO_ROOT, 'docs/CASE_STUDY_EDITORIAL_STANDARD.md'), 'utf8');
     const tableRows = [...standardDoc.matchAll(/^\|\s*\d+\s*\|\s*`([^`]+)`\s*\|\s*`([^`]+)`\s*\|\s*`([^`]+)`\s*\|\s*`([^`]+)`\s*\|\s*`([^`]+)`\s*\|$/gm)];
-    assert.equal(tableRows.length, 29, 'CASE_STUDY_EDITORIAL_STANDARD.md must list all 29 baseline cases');
+    assert.equal(tableRows.length, 33, 'CASE_STUDY_EDITORIAL_STANDARD.md must list all 33 active cases');
     const byId = new Map(ALL_CASE_STUDIES_2026.map(item => [item.id, item]));
     for (const [, id, , docRegion, docLens, docBroad] of tableRows) {
         const record = byId.get(id);
@@ -310,7 +310,7 @@ test('curated case studies remain balanced across 7 regions x 6 lenses, auditabl
     const stalenessReport = stalenessCli.analyzeCaseStaleness(CASE_STUDIES_2026, [], '2026-11-20');
     assert.equal(stalenessReport.overdueCount, 8, '7 remaining standard-sensitivity cases plus unre-reviewed Tuvalu stay in Group 2 update-in-progress after Syria Batch 1 renewal');
     assert.equal(stalenessReport.dueWithin14DaysCount, 10);
-    assert.equal(stalenessReport.freshCount, 11);
+    assert.equal(stalenessReport.freshCount, 15);
 
     const expectedGroup2Ids = [
         'amazon-indigenous-co-governance',

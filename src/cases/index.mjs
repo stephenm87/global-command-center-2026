@@ -61,6 +61,10 @@ const BASELINE_CASE_ORDER = [
     'moldova-transnistria-energy-eu-accession',
     'high-seas-bbnj-implementation',
     'who-pathogen-access-benefit-sharing',
+    'el-salvador-security-legitimacy-checks',
+    'argentina-abortion-law-budget-implementation',
+    'ottawa-mine-ban-treaty-exits',
+    'kenya-gen-z-finance-bill-protests',
 ];
 
 const BASELINE_INDEX = new Map(BASELINE_CASE_ORDER.map((id, index) => [id, index]));

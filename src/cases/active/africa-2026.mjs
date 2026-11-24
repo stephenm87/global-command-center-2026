@@ -2600,6 +2600,16 @@ export const AFRICA_CASES_2026 = [
                 "label": "Odipo Dev & Amnesty Kenya report 1,292 protests across Jan 2025–June 2026 following May fuel-hike deaths and 355 anniversary arrests.",
                 "sourceUrl": "https://www.amnestykenya.org/odipodev-and-aik-release-the-freedom-index-half-year-2026-report-exposing-rising-protests-in-kenya-and-continued-use-of-lethal-force-and-deepening-rights-crisis/"
             }
+        ],
+        "relatedCases": [
+            {
+                "caseId": "el-salvador-security-legitimacy-checks",
+                "note": "Both cases weigh performance and electoral mandates against constitutional checks: El Salvador swaps due-process rights for public safety approval, while Kenya's Gen Z protesters rejected IMF-linked taxes and abusive policing."
+            },
+            {
+                "caseId": "argentina-abortion-law-budget-implementation",
+                "note": "Compare extra-parliamentary youth protests reversing a Kenyan Finance Bill with federal budgetary cuts undermining an entrenched Argentine statute."
+            }
         ]
     }
 ];

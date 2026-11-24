@@ -1040,6 +1040,16 @@ export const GLOBAL_INSTITUTIONS_CASES_2026 = [
                 "label": "Lebanon deposits UN instrument of accession to become the 162nd State Party, entering into force on 1 November 2026.",
                 "sourceUrl": "https://www.hrw.org/news/2026/05/27/lebanon-joins-mine-ban-treaty"
             }
+        ],
+        "relatedCases": [
+            {
+                "caseId": "high-seas-bbnj-implementation",
+                "note": "Contrast a consensus-era humanitarian disarmament treaty now fractured by frontline security exits with a newer ocean-governance treaty navigating ratification and enforcement gaps."
+            },
+            {
+                "caseId": "sudan-displacement-regional-spillover",
+                "note": "Pair legal battles over treaty withdrawal against asymmetric warfare in Europe with acute civilian protection and cross-border humanitarian strain in an ongoing internal war."
+            }
         ]
     }
 ];

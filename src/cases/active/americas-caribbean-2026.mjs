@@ -1404,6 +1404,16 @@ export const AMERICAS_CARIBBEAN_CASES_2026 = [
                 "label": "Bukele registers with the Supreme Electoral Tribunal to seek an unprecedented third consecutive term in February 2027.",
                 "sourceUrl": "https://www.reuters.com/world/americas/el-salvadors-bukele-expected-seek-unprecedented-third-term-leader-2026-11-19/"
             }
+        ],
+        "relatedCases": [
+            {
+                "caseId": "kenya-gen-z-finance-bill-protests",
+                "note": "Compare El Salvador's sustained public approval for suspended due-process rights with Kenya's youth-led mobilization against tax hikes and police impunity."
+            },
+            {
+                "caseId": "haiti-security-legitimacy-haitian-ownership",
+                "note": "Contrast El Salvador's centralized military-police sweep under an elected president with Haiti's effort to rebuild policing sovereignty amid gang territorial control."
+            }
         ]
     },
     {
@@ -1846,6 +1856,16 @@ export const AMERICAS_CARIBBEAN_CASES_2026 = [
                 "date": "2026-11-03",
                 "label": "Federal Court No. 2 of La Plata holds a hearing in Asociación Civil La Ciega's collective lawsuit demanding federal medicine procurement.",
                 "sourceUrl": "https://www.cels.org.ar/web/2026/11/el-estado-dejo-de-comprar-medicamentos-esenciales-para-la-interrupcion-del-embarazo-reclamamos-una-respuesta-judicial/"
+            }
+        ],
+        "relatedCases": [
+            {
+                "caseId": "kenya-gen-z-finance-bill-protests",
+                "note": "Both cases expose the gap between formal statutory law and lived rights when austerity and executive discretion clash with constitutional guarantees."
+            },
+            {
+                "caseId": "who-pathogen-access-benefit-sharing",
+                "note": "Compare domestic abortion-medicine procurement battles under federal austerity with global negotiations over equitable medical supply chains and binding public-health rules."
             }
         ]
     }
