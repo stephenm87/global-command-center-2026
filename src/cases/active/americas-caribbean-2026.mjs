@@ -964,5 +964,446 @@ export const AMERICAS_CARIBBEAN_CASES_2026 = [
                 "focusQuestion": "What data and decision process would let communities on both sides evaluate scarcity and burden-sharing together?"
             }
         ]
+    },
+    {
+        "id": "el-salvador-security-legitimacy-checks",
+        "status": "active",
+        "briefingVersion": 2,
+        "title": "El Salvador: Safety, Power, and Checks on Rule",
+        "subtitle": "Can popular security results sustain state legitimacy once constitutional limits and watchdogs are dismantled?",
+        "coverageRegion": "Americas & Caribbean",
+        "regionTags": [
+            "Central America",
+            "Latin America",
+            "El Salvador"
+        ],
+        "issueLens": "Governance & Rights",
+        "broadCategory": "Governance & Rights",
+        "issueDimensions": [
+            "Performance vs. procedural legitimacy",
+            "State of exception",
+            "Executive concentration",
+            "Civil society and oversight"
+        ],
+        "actors": [
+            "Salvadoran presidency and Legislative Assembly",
+            "Salvadoran voters and families",
+            "Detainees, families, and rights monitors",
+            "International Monetary Fund",
+            "United States government"
+        ],
+        "nexusNodeIds": [
+            "LatinAmerica",
+            "Cartels",
+            "USA",
+            "UN_OPEC"
+        ],
+        "concepts": [
+            "Power",
+            "Sovereignty",
+            "Legitimacy",
+            "Interdependence"
+        ],
+        "ibThemes": [
+            "rights-and-justice",
+            "peace-and-conflict"
+        ],
+        "statusSummary": "As reviewed on 24 November 2026, President Nayib Bukele registered on 19 November to run for an unprecedented third consecutive term in February 2027 after lawmakers abolished presidential term limits in July 2025. El Salvador remains under a state of exception renewed 56 times since March 2022. Government statistics record a historic plunge in homicides alongside 90,000+ detentions documented by human rights monitors, and 87.8% of citizens rated Bukele's seventh year good or very good in a May 2026 Central American University survey. Even so, an October 2026 International Monetary Fund review linked its US$1.4 billion loan to stronger public asset-disclosure rules.",
+        "whyItMatters": "El Salvador separates two sources of state legitimacy: tangible gains in daily safety won genuine majority support even as independent courts, due process, civic watchdogs, and term limits were dismantled.",
+        "updatedAt": "2026-11-24",
+        "confidence": "high",
+        "uncertainty": "Independent researchers warn that official homicide drops omit prison deaths and some police killings, while fear of reprisals may shape polling answers even in well-sampled surveys. Meanwhile, 118,000 estimated prisoners strain fiscal budgets and the February 2027 vote will test how voters weigh security against rising economic strain.",
+        "sensitivity": "high",
+        "editorialCaution": "Keep three political levels separate: majority approval for a leader or safety policy does not verify legal due process, and high arrest counts show state capacity rather than individualized guilt. Attribute competing claims about crime figures, detentions, and motives.",
+        "featured": true,
+        "reviewCadenceDays": 14,
+        "reviewBy": "2026-12-08",
+        "coordinates": {
+            "latitude": 13.6929,
+            "longitude": -89.2182
+        },
+        "map": {
+            "mode": "regional",
+            "locations": [
+                {
+                    "label": "San Salvador",
+                    "latitude": 13.6929,
+                    "longitude": -89.2182,
+                    "role": "Seat of presidency, Legislative Assembly, Supreme Electoral Tribunal, and UCA polling"
+                },
+                {
+                    "label": "Tecoluca (CECOT)",
+                    "latitude": 13.533,
+                    "longitude": -88.784,
+                    "role": "Maximum-security Terrorism Confinement Center housing mass detainees and 2025 US deportees"
+                },
+                {
+                    "label": "Guatemala City",
+                    "latitude": 14.6349,
+                    "longitude": -90.5069,
+                    "role": "Regional exile base after Cristosal suspended in-country Salvadoran operations in July 2025"
+                },
+                {
+                    "label": "Washington, D.C.",
+                    "latitude": 38.9072,
+                    "longitude": -77.0369,
+                    "role": "IMF loan oversight headquarters, OAS rights commission seat, and US security diplomacy"
+                }
+            ]
+        },
+        "keyFigures": [
+            {
+                "value": "87.8%",
+                "label": "Rated Bukele's seventh year good or very good in the May 2026 UCA survey",
+                "asOf": "June 2026",
+                "sourceUrl": "https://uca.edu.sv/iudop/wp-content/uploads/2026/06/Boletin-Eva-7mo-Anio-Gobierno-24-Junio.pdf"
+            },
+            {
+                "value": "90,000+",
+                "label": "People detained under the emergency regime since March 2022",
+                "asOf": "July 2026",
+                "sourceUrl": "https://www.amnesty.org/en/latest/news/2026/07/el-salvador-el-costo-humano-del-regimen-de-excepcion-podria-constituir-crimenes-de-lesa-humanidad/"
+            },
+            {
+                "value": "US$1.4 billion",
+                "label": "40-month IMF Extended Fund Facility tied to governance and asset-disclosure benchmarks",
+                "asOf": "October 2026",
+                "sourceUrl": "https://www.imf.org/en/news/articles/2026/10/01/pr26316-el-salvador-imf-concludes-2nd-and-3rd-reviews-under-the-eff"
+            }
+        ],
+        "sources": [
+            {
+                "title": "Boletín de prensa: Evaluación del séptimo año de gobierno de Nayib Bukele",
+                "publisher": "Instituto Universitario de Opinión Pública (Iudop), Universidad Centroamericana José Simeón Cañas (UCA)",
+                "publishedAt": "2026-06-24",
+                "url": "https://uca.edu.sv/iudop/wp-content/uploads/2026/06/Boletin-Eva-7mo-Anio-Gobierno-24-Junio.pdf",
+                "perspectiveType": "local",
+                "perspective": "Nationally representative household polling inside El Salvador measuring citizen support for daily safety alongside economic complaints and views on legal checks",
+                "supports": "Documented 87.8% presidential approval, 68.9% support for extending emergency rule, 20.5% calling to improve investigations and restore rights, and 37.3% naming the economy the top national problem."
+            },
+            {
+                "title": "El Salvador: IACHR warns of possible impacts on the rule of law in light of indefinite presidential re-election",
+                "publisher": "Inter-American Commission on Human Rights (IACHR)",
+                "publishedAt": "2025-08-08",
+                "url": "https://www.oas.org/en/iachr/media_center/PReleases/2025/156.asp",
+                "perspectiveType": "institutional",
+                "perspective": "Regional human-rights legal assessment contrasting Inter-American democratic-charter standards with the Salvadoran government's sovereign defense of its constitutional amendments",
+                "supports": "Records how the January 2025 Article 248 change enabled July 31, 2025 indefinite reelection and calendar shifts, while quoting the state's claim that voters should decide continuity at the polls."
+            },
+            {
+                "title": "El Salvador's Bukele seeks unprecedented third term as leader",
+                "publisher": "Reuters",
+                "publishedAt": "2026-11-19",
+                "url": "https://www.reuters.com/world/americas/el-salvadors-bukele-expected-seek-unprecedented-third-term-leader-2026-11-19/",
+                "perspectiveType": "independent",
+                "perspective": "Independent reporting from San Salvador covering Bukele's November 2026 candidate registration, Nuevas Ideas legislative dominance, opposition challenges, and regional troop deployments",
+                "supports": "Confirms Bukele's 19 November 2026 registration for the February 2027 race, Nuevas Ideas holding 54 of 60 Congress seats, and the October 2026 deployment of over 2,000 troops to Haiti."
+            }
+        ],
+        "supplementalSources": [
+            {
+                "title": "World Report 2026: El Salvador",
+                "publisher": "Human Rights Watch",
+                "publishedAt": "2026-01-12",
+                "url": "https://www.hrw.org/world-report/2026/country-chapters/el-salvador",
+                "perspective": "Human rights documentation of prison overcrowding, 5-year pre-trial detention rules, classified asset filings, CECOT deportations, and exiled defenders"
+            },
+            {
+                "title": "El Salvador: The human cost of the state of exception could amount to crimes against humanity",
+                "publisher": "Amnesty International",
+                "publishedAt": "2026-07-15",
+                "url": "https://www.amnesty.org/en/latest/news/2026/07/el-salvador-el-costo-humano-del-regimen-de-excepcion-podria-constituir-crimenes-de-lesa-humanidad/",
+                "perspective": "Investigation citing police testimony on arrest quotas and at least 470 custody deaths after four years of emergency rule"
+            },
+            {
+                "title": "Cristosal suspende operaciones en El Salvador ante escalada represiva",
+                "publisher": "Cristosal",
+                "publishedAt": "2025-07-18",
+                "url": "https://cristosal.org/ES/cristosal-suspende-operaciones-en-el-salvador-ante-escalada-represiva/",
+                "perspective": "Local human-rights group statement explaining why it halted in-country work after 25 years and relocated to Guatemala and Honduras"
+            },
+            {
+                "title": "El Salvador: After a year, the authorities must release Ruth López",
+                "publisher": "Amnesty International",
+                "publishedAt": "2026-05-20",
+                "url": "https://www.amnesty.org/en/latest/news/2026/05/el-salvador-tras-un-ano-de-detencion-y-violaciones-de-sus-derechos-las-autoridades-deben-liberar-de-inmediato-a-ruth-lopez/",
+                "perspective": "Case record on anti-corruption lawyer Ruth López's May 2025 arrest, sealed charges, and incommunicado pre-trial detention"
+            },
+            {
+                "title": "El Salvador: Foreign Agents Law Targets Civil Society, Media",
+                "publisher": "Human Rights Watch",
+                "publishedAt": "2025-05-23",
+                "url": "https://www.hrw.org/news/2025/05/23/el-salvador-foreign-agents-law-targets-civil-society-media",
+                "perspective": "Legal analysis of the May 2025 Foreign Agents Law creating an Interior Ministry registry and a 30% tax on foreign funding"
+            },
+            {
+                "title": "Decreto No. 371: Ratificación del Acuerdo de Reforma Constitucional No. 3",
+                "publisher": "Asamblea Legislativa de El Salvador",
+                "publishedAt": "2025-08-01",
+                "url": "https://www.asamblea.gob.sv/sites/default/files/documents/decretos/572BD558-9522-4842-982A-D07901D64ACF.pdf",
+                "perspective": "Primary legislative decree amending constitutional Articles 75, 80, 152, and 154 and cutting short the 2024–2029 presidential term"
+            },
+            {
+                "title": "El Salvador: Constitutional Reform Modifies Electoral Rules",
+                "publisher": "Law Library of Congress",
+                "publishedAt": "2026-07-29",
+                "url": "https://www.loc.gov/item/global-legal-monitor/2026-07-29/el-salvador-constitutional-reform-modifies-electoral-rules/",
+                "perspective": "Legal summary tracking both the July 2025 term-limit repeal and April–May 2026 changes ending state party financing"
+            },
+            {
+                "title": "Nueva prórroga del régimen de excepción garantizará la continuidad del clima de seguridad en el país",
+                "publisher": "Asamblea Legislativa de El Salvador",
+                "publishedAt": "2026-10-21",
+                "url": "https://www.asamblea.gob.sv/node/14160",
+                "perspective": "Official parliamentary record of Extension 56 keeping emergency rules active through 26 November 2026 with 57 votes"
+            },
+            {
+                "title": "El año 2024 se posiciona como el más seguro de la historia de El Salvador",
+                "publisher": "Policía Nacional Civil de El Salvador",
+                "publishedAt": "2025-01-08",
+                "url": "https://www.pnc.gob.sv/el-2024-se-posiciona-como-el-mas-seguro-de-la-historia-de-el-salvador/",
+                "perspective": "Official police and prosecutorial data reporting 114 homicides (1.9 per 100,000 inhabitants) in 2024, down from 2,398 in 2019"
+            },
+            {
+                "title": "Asamblea aprueba Ley Anticorrupción para reforzar la transparencia del Estado",
+                "publisher": "Asamblea Legislativa de El Salvador",
+                "publishedAt": "2025-02-07",
+                "url": "https://www.asamblea.gob.sv/node/13467",
+                "perspective": "Parliamentary text describing the February 2025 Anticorruption Law and annual public asset-declaration rules"
+            },
+            {
+                "title": "Exsecretario privado de la presidencia y esposa fueron condenados civilmente a devolver al Estado más de $3.8 millones",
+                "publisher": "Fiscalía General de la República (FGR)",
+                "publishedAt": "2025-09-05",
+                "url": "https://www.fiscalia.gob.sv/exsecretario-privado-de-la-presidencia-y-esposa-fueron-condenados-civilmente-a-devolver-al-estado-mas-de-3-8-millones/",
+                "perspective": "Official prosecutorial release reporting a US$3.87 million civil enrichment judgment against a former official from the 2009–2014 administration"
+            },
+            {
+                "title": "IMF Executive Board Concludes the Second and Third Reviews Under the Extended Fund Facility for El Salvador (PR 26/316)",
+                "publisher": "International Monetary Fund",
+                "publishedAt": "2026-10-01",
+                "url": "https://www.imf.org/en/news/articles/2026/10/01/pr26316-el-salvador-imf-concludes-2nd-and-3rd-reviews-under-the-eff",
+                "perspective": "October 2026 multilateral loan review clearing US$138 million while urging stronger asset-declaration disclosures and private transfer of Chivo e-wallet"
+            },
+            {
+                "title": "El Salvador’s State of Exception and U.S. Interests (CRS Insight IN12510)",
+                "publisher": "U.S. Congressional Research Service",
+                "publishedAt": "2025-02-20",
+                "url": "https://www.congress.gov/crs-product/IN12510",
+                "perspective": "Nonpartisan U.S. legislative analysis covering 60% foreign-aid rule-of-law conditions, homicide data methodology disputes, and 2025 deportation cooperation"
+            }
+        ],
+        "waypoints": [
+            {
+                "nodeId": "LatinAmerica",
+                "title": "Safe Streets Build Majority Support",
+                "perspectiveLabel": "Everyday Salvadoran experience",
+                "perspectiveType": "local",
+                "conceptInFocus": "Legitimacy",
+                "relatedTimelineDate": "2026-06-24",
+                "narration": "At bus stops and open-air markets in San Salvador, shopkeepers no longer pay weekly extortion to street gangs. Under emergency measures in force since March 2022, police reported homicides dropping from 2,398 in 2019 to 114 in 2024, or 1.9 per 100,000 people [12].\n\nThat daily change produced strong performance legitimacy, meaning public acceptance earned by concrete results rather than formal procedures. In a May 2026 survey by the Central American University, 87.8% rated President Nayib Bukele's seventh year good or very good, and 77.4% named security the country's top positive shift [1]. Even so, 37.3% identified the economy as El Salvador's biggest problem, showing how results-based backing narrows when living costs stay high [1].",
+                "focusQuestion": "How durable is citizen support that rests on physical safety if jobs and living costs worsen?"
+            },
+            {
+                "nodeId": "Cartels",
+                "title": "Reclaiming Territory Without Due Process",
+                "perspectiveLabel": "State of exception and detainees",
+                "perspectiveType": "local",
+                "conceptInFocus": "Sovereignty",
+                "relatedTimelineDate": "2022-03-27",
+                "narration": "By deploying soldiers and police into neighborhoods long taxed by Mara Salvatrucha (MS-13) and Barrio 18, the state recovered practical control over its territory [11]. Lawmakers renewed that state of exception 56 times into November 2026, raising El Salvador's prison population toward 118,000, or roughly 1.9% of all residents [4, 11].\n\nA state of exception legally suspends constitutional protections called due process, including arrest warrants, timely access to defense lawyers, and short pre-trial detention limits [4, 5]. Active police officers told researchers that arrest quotas pushed mass roundups where detainees waited fifteen days before judges ratified entire lists [5]. Monitors documented at least 470 deaths in custody without reported convictions of state officers [4, 5].",
+                "focusQuestion": "Where does restoring practical sovereignty over gang neighborhoods cross into unchecked coercive power over ordinary citizens?"
+            },
+            {
+                "nodeId": "LatinAmerica",
+                "title": "Dismantling Courts, Watchdogs, and Term Limits",
+                "perspectiveLabel": "Constitutional and civic checks",
+                "perspectiveType": "institutional",
+                "conceptInFocus": "Power",
+                "relatedTimelineDate": "2025-07-31",
+                "narration": "Executive power expanded after Bukele's Nuevas Ideas party replaced top constitutional judges and the Attorney General in 2021, then changed Article 248 in January 2025 so one legislature could amend the constitution alone [2, 4]. On 31 July 2025, lawmakers abolished presidential term limits, lengthened future terms to six years, and moved the next vote to February 2027 [9].\n\nWhen Bukele registered for a third term on 19 November 2026, his party held 54 of 60 seats [3]. Prosecutors won a US$3.87 million restitution judgment against a 2009–2014 ex-official [14], yet Bukele's asset declaration stayed sealed [4]. Authorities jailed Cristosal anti-corruption lawyer Ruth López under seal and passed a 30% Foreign Agents tax that drove over 140 defenders and journalists abroad [4, 6, 7, 8].",
+                "focusQuestion": "If citizens voted for the ruling party's supermajority, why do constitutional checks on officials and watchdogs still matter?"
+            },
+            {
+                "nodeId": "USA",
+                "title": "Geopolitics, Deportees, and External Backing",
+                "perspectiveLabel": "United States and regional security ties",
+                "perspectiveType": "independent",
+                "conceptInFocus": "Sovereignty",
+                "relatedTimelineDate": "2025-05-20",
+                "narration": "Foreign criticism rarely stopped domestic consolidation when key partners valued El Salvador's security results. Although the United States Congress restricted 60% of security aid pending rule-of-law checks under earlier appropriations rules [16], Washington lowered its travel warning in late 2024 and partnered with Bukele on migration enforcement [4, 16].\n\nIn March and April 2025, Washington transferred 252 Venezuelans to El Salvador's Center for Terrorism Confinement (CECOT) before a July prisoner swap [4]. Meanwhile, regional governments studied Bukele's model, and El Salvador deployed over 2,000 troops to Haiti in October 2026 [3]. When powerful neighbors treat border and prison deals as strategic assets, external pressure over domestic rights weakens considerably.",
+                "focusQuestion": "How do strategic migration and security bargains change the cost for a government of ignoring human-rights criticism?"
+            },
+            {
+                "nodeId": "UN_OPEC",
+                "title": "Lenders, Transparency, and the 2027 Ballot",
+                "perspectiveLabel": "IMF conditions and global scrutiny",
+                "perspectiveType": "synthesis",
+                "conceptInFocus": "Interdependence",
+                "relatedTimelineDate": "2026-10-01",
+                "narration": "Even a dominant domestic presidency cannot escape external economic interdependence. Facing high public debt, San Salvador secured a 40-month, US$1.4 billion Extended Fund Facility loan from the International Monetary Fund (IMF) in February 2025 and won a US$138 million disbursement in October 2026 [15].\n\nIn return, the government agreed to wind down state involvement in Bitcoin and hand majority control of its Chivo e-wallet to a private operator [15]. Yet the IMF still flagged unfinished asset-disclosure and anti-corruption reforms as continuing priorities [15]. Separating state from regime and government clarifies the trade-off: safety rebuilt citizen loyalty at home, while missing legal checks left accountability dependent on one leader rather than durable institutions [1, 2, 3].",
+                "focusQuestion": "Can external lenders force transparency reforms when domestic voters and courts impose few limits on the executive?"
+            }
+        ],
+        "background": "For more than two decades after El Salvador's civil war ended in 1992, street gangs led by Mara Salvatrucha (MS-13) and Barrio 18 taxed neighborhood buses, markets, and clinics across the country [4, 16]. Successive governments alternated between heavy policing crackdowns and secret truces, yet homicides reached 105 per 100,000 residents in 2015 [4]. Voters rejected both traditional parties in 2019 by electing outsider Nayib Bukele.\n\nIn May 2021, Bukele's newly elected Nuevas Ideas legislative supermajority dismissed the Attorney General and all five judges of the Supreme Court's Constitutional Chamber [2, 4]. Those appointed judges soon issued Ruling 01/2021 allowing immediate presidential re-election [2]. After a weekend gang killing spree in March 2022, Congress enacted a 30-day state of exception suspending constitutional defense guarantees [11, 16]. Monthly renewals turned an emergency decree into El Salvador's permanent governing framework, cutting street crime sharply while removing nearly every domestic check [4, 5, 11].",
+        "backgroundSources": [
+            "https://www.oas.org/en/iachr/media_center/PReleases/2025/156.asp",
+            "https://www.hrw.org/world-report/2026/country-chapters/el-salvador",
+            "https://www.asamblea.gob.sv/node/14160",
+            "https://www.congress.gov/crs-product/IN12510"
+        ],
+        "keyTerms": [
+            {
+                "term": "Performance legitimacy",
+                "definition": "Public acceptance that a ruler or government earns by delivering concrete outcomes such as safer streets or economic relief, rather than through fair procedures or elections alone.",
+                "sourceUrl": "https://uca.edu.sv/iudop/wp-content/uploads/2026/06/Boletin-Eva-7mo-Anio-Gobierno-24-Junio.pdf"
+            },
+            {
+                "term": "Procedural legitimacy",
+                "definition": "Acceptance grounded in following transparent, lawful rules—such as independent courts, due process rights, public asset disclosures, and constitutional limits on holding power.",
+                "sourceUrl": "https://www.oas.org/en/iachr/media_center/PReleases/2025/156.asp"
+            },
+            {
+                "term": "State of exception",
+                "definition": "A constitutional emergency decree that temporarily suspends specific civil rights, including warrant requirements, immediate defense counsel, and normal pre-trial detention time limits.",
+                "sourceUrl": "https://www.asamblea.gob.sv/node/14160"
+            },
+            {
+                "term": "Foreign Agents Law",
+                "definition": "El Salvador's May 2025 statute requiring organizations receiving overseas funds to register with the Interior Ministry and pay a 30% tax on foreign donations and grants.",
+                "sourceUrl": "https://www.hrw.org/news/2025/05/23/el-salvador-foreign-agents-law-targets-civil-society-media"
+            },
+            {
+                "term": "Extended Fund Facility (EFF)",
+                "definition": "A medium-term International Monetary Fund lending program that ties phased loan disbursements to fiscal, financial, and governance policy commitments.",
+                "sourceUrl": "https://www.imf.org/en/news/articles/2026/10/01/pr26316-el-salvador-imf-concludes-2nd-and-3rd-reviews-under-the-eff"
+            }
+        ],
+        "debate": [
+            {
+                "claimBy": "Salvadoran government and legislative supporters",
+                "claim": "Ending gang control over daily life required sustained emergency tools, and allowing voters to choose whether to re-elect a leader reflects national sovereignty rather than an imposition.",
+                "counterBy": "Inter-American Commission and human-rights monitors",
+                "counterClaim": "Indefinite re-election and four-year suspension of due process dismantle constitutional checks, trap thousands of unconvicted detainees, and violate binding Inter-American human-rights treaties.",
+                "sourceUrls": [
+                    "https://www.oas.org/en/iachr/media_center/PReleases/2025/156.asp",
+                    "https://www.amnesty.org/en/latest/news/2026/07/el-salvador-el-costo-humano-del-regimen-de-excepcion-podria-constituir-crimenes-de-lesa-humanidad/"
+                ]
+            },
+            {
+                "claimBy": "Pro-government legislators on anti-corruption policy",
+                "claim": "The February 2025 Anticorruption Law and civil enrichment rulings such as the US$3.87 million restitution order show the state is breaking past political impunity.",
+                "counterBy": "Exiled watchdogs and IMF governance reviews",
+                "counterClaim": "Prosecutions targeted earlier administrations while officials' wealth disclosures stayed shielded, watchdogs like Ruth López were detained under seal, and a 30% tax pushed Cristosal abroad.",
+                "sourceUrls": [
+                    "https://www.asamblea.gob.sv/node/13467",
+                    "https://www.fiscalia.gob.sv/exsecretario-privado-de-la-presidencia-y-esposa-fueron-condenados-civilmente-a-devolver-al-estado-mas-de-3-8-millones/",
+                    "https://www.imf.org/en/news/articles/2026/10/01/pr26316-el-salvador-imf-concludes-2nd-and-3rd-reviews-under-the-eff",
+                    "https://www.amnesty.org/en/latest/news/2026/05/el-salvador-tras-un-ano-de-detencion-y-violaciones-de-sus-derechos-las-autoridades-deben-liberar-de-inmediato-a-ruth-lopez/"
+                ]
+            }
+        ],
+        "watchFor": [
+            {
+                "date": "2026-11-26",
+                "indicator": "Expiration date of State of Exception Extension 56, testing whether lawmakers convert emergency powers into permanent criminal law or pass Extension 57.",
+                "sourceUrl": "https://www.asamblea.gob.sv/node/14160"
+            },
+            {
+                "date": "2027-02-28",
+                "indicator": "Unified presidential, legislative, and municipal general elections held two years early after the July 2025 constitutional reform.",
+                "sourceUrl": "https://www.reuters.com/world/americas/el-salvadors-bukele-expected-seek-unprecedented-third-term-leader-2026-11-19/"
+            },
+            {
+                "date": "2027 Q1",
+                "indicator": "Next IMF Extended Fund Facility review assessing whether El Salvador enacts granular public asset-declaration disclosures and pension reforms.",
+                "sourceUrl": "https://www.imf.org/en/news/articles/2026/10/01/pr26316-el-salvador-imf-concludes-2nd-and-3rd-reviews-under-the-eff"
+            }
+        ],
+        "examPrompts": [
+            "Evaluate the claim that high public approval in El Salvador proves the state is legitimate despite the removal of constitutional checks.",
+            "Compare how domestic security demands and external financial interdependence have shaped executive power in El Salvador since 2021."
+        ],
+        "influenceCheck": [
+            {
+                "stage": "Setting the agenda",
+                "rating": "STRONG",
+                "evidence": "Decades of gang extortion and homicides created overwhelming public demand for decisive state intervention against criminal territorial control.",
+                "sourceUrls": [
+                    "https://uca.edu.sv/iudop/wp-content/uploads/2026/06/Boletin-Eva-7mo-Anio-Gobierno-24-Junio.pdf",
+                    "https://www.hrw.org/world-report/2026/country-chapters/el-salvador"
+                ]
+            },
+            {
+                "stage": "The formal decision",
+                "rating": "STRONG",
+                "evidence": "Nuevas Ideas supermajorities passed 56 emergency extensions, a February 2025 Anticorruption Law, the May 2025 Foreign Agents Law, and the July 2025 repeal of presidential term limits.",
+                "sourceUrls": [
+                    "https://www.asamblea.gob.sv/node/14160",
+                    "https://www.asamblea.gob.sv/sites/default/files/documents/decretos/572BD558-9522-4842-982A-D07901D64ACF.pdf",
+                    "https://www.hrw.org/news/2025/05/23/el-salvador-foreign-agents-law-targets-civil-society-media"
+                ]
+            },
+            {
+                "stage": "What changed in practice",
+                "rating": "MIXED",
+                "evidence": "Neighborhood safety improved markedly and 87.8% approved of Bukele's seventh year, yet 90,000+ detentions bypassed due process, watchdogs were jailed or exiled, and IMF asset-disclosure targets lagged.",
+                "sourceUrls": [
+                    "https://uca.edu.sv/iudop/wp-content/uploads/2026/06/Boletin-Eva-7mo-Anio-Gobierno-24-Junio.pdf",
+                    "https://www.amnesty.org/en/latest/news/2026/07/el-salvador-el-costo-humano-del-regimen-de-excepcion-podria-constituir-crimenes-de-lesa-humanidad/",
+                    "https://www.imf.org/en/news/articles/2026/10/01/pr26316-el-salvador-imf-concludes-2nd-and-3rd-reviews-under-the-eff"
+                ]
+            }
+        ],
+        "conceptLens": {
+            "power": "Executive alignment across the presidency, legislature, military, police, and courts removed domestic vetoes over mass detention, constitutional amendments, and civil-society taxes.",
+            "sovereignty": "The state regained de facto control over gang-taxed streets at home while rejecting Inter-American rights rulings as external interference.",
+            "legitimacy": "Results-based performance legitimacy soared on physical safety even as procedural legitimacy eroded through suspended trials, sealed corruption filings, and abolished term limits.",
+            "interdependence": "Domestic dominance did not eliminate external constraints: El Salvador relied on a US$1.4 billion IMF program requiring Bitcoin retrenchment and asset-disclosure reforms."
+        },
+        "essayBuilder": {
+            "prompt": "Evaluate the claim that high public approval in El Salvador proves the state is legitimate despite the removal of constitutional checks.",
+            "claim": "El Salvador demonstrates that performance legitimacy and procedural legitimacy must be evaluated separately, because majority consent for safer streets does not replace legal accountability over those who govern.",
+            "evidence": "In May 2026, UCA polling found 87.8% rating Bukele's seventh year good or very good as daily extortion ended, while Congress eliminated term limits in July 2025 and jailed or taxed civic watchdogs.",
+            "counterClaim": "Advocates argue that democratically elected supermajorities expressed popular sovereignty and rescued state authority where past constitutional alternation failed to protect citizens from gang murder.",
+            "judgment": "On balance, citizen approval strengthens government legitimacy in the short term, but hollowing out independent courts leaves both state and regime vulnerable if economic discontent or security abuses erode those results.",
+            "sourceUrls": [
+                "https://uca.edu.sv/iudop/wp-content/uploads/2026/06/Boletin-Eva-7mo-Anio-Gobierno-24-Junio.pdf",
+                "https://www.oas.org/en/iachr/media_center/PReleases/2025/156.asp",
+                "https://www.amnesty.org/en/latest/news/2026/07/el-salvador-el-costo-humano-del-regimen-de-excepcion-podria-constituir-crimenes-de-lesa-humanidad/"
+            ]
+        },
+        "timeline": [
+            {
+                "date": "2022-03-27",
+                "label": "Legislative Assembly enacts an initial 30-day state of exception after a deadly weekend of gang violence.",
+                "sourceUrl": "https://www.asamblea.gob.sv/node/14160"
+            },
+            {
+                "date": "2025-05-20",
+                "label": "Lawmakers pass the Foreign Agents Law imposing a 30% tax on overseas funding two days after arresting anti-corruption lawyer Ruth López.",
+                "sourceUrl": "https://www.hrw.org/news/2025/05/23/el-salvador-foreign-agents-law-targets-civil-society-media"
+            },
+            {
+                "date": "2025-07-31",
+                "label": "Congress adopts and ratifies Decree 371 abolishing presidential term limits, creating six-year terms, and moving the next presidential vote to 2027.",
+                "sourceUrl": "https://www.asamblea.gob.sv/sites/default/files/documents/decretos/572BD558-9522-4842-982A-D07901D64ACF.pdf"
+            },
+            {
+                "date": "2026-06-24",
+                "label": "UCA Public Opinion Institute reports 87.8% approval of Bukele's seventh year led by security, alongside 37.3% naming the economy the top problem.",
+                "sourceUrl": "https://uca.edu.sv/iudop/wp-content/uploads/2026/06/Boletin-Eva-7mo-Anio-Gobierno-24-Junio.pdf"
+            },
+            {
+                "date": "2026-10-01",
+                "label": "IMF completes combined Second and Third EFF Reviews releasing US$138 million while stressing stronger asset-declaration disclosures.",
+                "sourceUrl": "https://www.imf.org/en/news/articles/2026/10/01/pr26316-el-salvador-imf-concludes-2nd-and-3rd-reviews-under-the-eff"
+            },
+            {
+                "date": "2026-11-19",
+                "label": "Bukele registers with the Supreme Electoral Tribunal to seek an unprecedented third consecutive term in February 2027.",
+                "sourceUrl": "https://www.reuters.com/world/americas/el-salvadors-bukele-expected-seek-unprecedented-third-term-leader-2026-11-19/"
+            }
+        ]
     }
 ];
