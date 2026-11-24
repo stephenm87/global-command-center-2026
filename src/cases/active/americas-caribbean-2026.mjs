@@ -1008,11 +1008,11 @@ export const AMERICAS_CARIBBEAN_CASES_2026 = [
             "rights-and-justice",
             "peace-and-conflict"
         ],
-        "statusSummary": "As reviewed on 24 November 2026, President Nayib Bukele registered on 19 November to run for an unprecedented third consecutive term in February 2027 after lawmakers abolished presidential term limits in July 2025. El Salvador remains under a state of exception renewed 56 times since March 2022. Government statistics record a historic plunge in homicides alongside 90,000+ detentions documented by human rights monitors, and 87.8% of citizens rated Bukele's seventh year good or very good in a May 2026 Central American University survey. Even so, an October 2026 International Monetary Fund review linked its US$1.4 billion loan to stronger public asset-disclosure rules.",
-        "whyItMatters": "El Salvador separates two sources of state legitimacy: tangible gains in daily safety won genuine majority support even as independent courts, due process, civic watchdogs, and term limits were dismantled.",
+        "statusSummary": "As reviewed on 24 November 2026, President Nayib Bukele registered on 19 November to run for an unprecedented third consecutive term in February 2027 after lawmakers abolished presidential term limits in July 2025. El Salvador remains under a state of exception renewed 56 times since March 2022. Government statistics record a historic plunge in homicides alongside 90,000+ detentions documented by human rights monitors, and 87.8% of citizens rated Bukele's seventh year good or very good in a May 2026 Central American University survey. Meanwhile, an October 2026 International Monetary Fund review linked its US$1.4 billion loan to fiscal consolidation, pension rules, and stronger asset-disclosure measures.",
+        "whyItMatters": "El Salvador separates two sources of state legitimacy: tangible gains in daily safety won strong presidential approval even as independent courts, due process limits, civic watchdogs, and term limits were dismantled.",
         "updatedAt": "2026-11-24",
         "confidence": "high",
-        "uncertainty": "Independent researchers warn that official homicide drops omit prison deaths and some police killings, while fear of reprisals may shape polling answers even in well-sampled surveys. Meanwhile, 118,000 estimated prisoners strain fiscal budgets and the February 2027 vote will test how voters weigh security against rising economic strain.",
+        "uncertainty": "Independent researchers warn that official homicide drops omit prison deaths and some police killings, while fear of reprisals may shape polling answers even in well-sampled surveys. Meanwhile, Human Rights Watch estimated 118,000 prisoners in 2025—a detention surge straining budgets—while the February 2027 vote will test how voters weigh security against rising economic strain.",
         "sensitivity": "high",
         "editorialCaution": "Keep three political levels separate: majority approval for a leader or safety policy does not verify legal due process, and high arrest counts show state capacity rather than individualized guilt. Attribute competing claims about crime figures, detentions, and motives.",
         "featured": true,
@@ -1034,8 +1034,8 @@ export const AMERICAS_CARIBBEAN_CASES_2026 = [
                 {
                     "label": "Tecoluca (CECOT)",
                     "latitude": 13.533,
-                    "longitude": -88.784,
-                    "role": "Maximum-security Terrorism Confinement Center housing mass detainees and 2025 US deportees"
+                    "longitude": -88.8044,
+                    "role": "Maximum-security Terrorism Confinement Center housing mass detainees and briefly holding 252 Venezuelan deportees transferred from US custody in March–July 2025"
                 },
                 {
                     "label": "Guatemala City",
@@ -1104,7 +1104,7 @@ export const AMERICAS_CARIBBEAN_CASES_2026 = [
             {
                 "title": "World Report 2026: El Salvador",
                 "publisher": "Human Rights Watch",
-                "publishedAt": "2026-01-12",
+                "publishedAt": "2026-02-04",
                 "url": "https://www.hrw.org/world-report/2026/country-chapters/el-salvador",
                 "perspective": "Human rights documentation of prison overcrowding, 5-year pre-trial detention rules, classified asset filings, CECOT deportations, and exiled defenders"
             },
@@ -1176,7 +1176,7 @@ export const AMERICAS_CARIBBEAN_CASES_2026 = [
                 "publisher": "Fiscalía General de la República (FGR)",
                 "publishedAt": "2025-09-05",
                 "url": "https://www.fiscalia.gob.sv/exsecretario-privado-de-la-presidencia-y-esposa-fueron-condenados-civilmente-a-devolver-al-estado-mas-de-3-8-millones/",
-                "perspective": "Official prosecutorial release reporting a US$3.87 million civil enrichment judgment against a former official from the 2009–2014 administration"
+                "perspective": "Official prosecutorial release reporting a combined US$3.87 million civil judgment ($3.54 million and $332,687.59) against a 2009–2014 ex-official and spouse"
             },
             {
                 "title": "IMF Executive Board Concludes the Second and Third Reviews Under the Extended Fund Facility for El Salvador (PR 26/316)",
@@ -1190,7 +1190,7 @@ export const AMERICAS_CARIBBEAN_CASES_2026 = [
                 "publisher": "U.S. Congressional Research Service",
                 "publishedAt": "2025-02-20",
                 "url": "https://www.congress.gov/crs-product/IN12510",
-                "perspective": "Nonpartisan U.S. legislative analysis covering 60% foreign-aid rule-of-law conditions, homicide data methodology disputes, and 2025 deportation cooperation"
+                "perspective": "Nonpartisan U.S. legislative analysis covering 60% withholding on specified assistance accounts, homicide data methodology disputes, and 2025 deportation cooperation"
             }
         ],
         "waypoints": [
@@ -1201,7 +1201,7 @@ export const AMERICAS_CARIBBEAN_CASES_2026 = [
                 "perspectiveType": "local",
                 "conceptInFocus": "Legitimacy",
                 "relatedTimelineDate": "2026-06-24",
-                "narration": "At bus stops and open-air markets in San Salvador, shopkeepers no longer pay weekly extortion to street gangs. Under emergency measures in force since March 2022, police reported homicides dropping from 2,398 in 2019 to 114 in 2024, or 1.9 per 100,000 people [12].\n\nThat daily change produced strong performance legitimacy, meaning public acceptance earned by concrete results rather than formal procedures. In a May 2026 survey by the Central American University, 87.8% rated President Nayib Bukele's seventh year good or very good, and 77.4% named security the country's top positive shift [1]. Even so, 37.3% identified the economy as El Salvador's biggest problem, showing how results-based backing narrows when living costs stay high [1].",
+                "narration": "Across urban neighborhoods and bus routes in San Salvador, citizens and rights monitors reported steep declines in gang extortion and homicides [4, 12]. Under emergency decrees in force since March 2022, police reported homicides dropping from 2,398 in 2019 to 114 in 2024, or 1.9 per 100,000 people [12].\n\nThat tangible shift produced strong performance legitimacy, meaning public approval earned by daily results rather than formal procedures [1]. In a May 2026 Central American University survey, 87.8% rated President Nayib Bukele's seventh year good or very good, and 68.9% backed extending emergency rule [1]. Yet 71 in 100 respondents cited economic strains—led by 37.3% naming the economy broadly [1].",
                 "focusQuestion": "How durable is citizen support that rests on physical safety if jobs and living costs worsen?"
             },
             {
@@ -1211,7 +1211,7 @@ export const AMERICAS_CARIBBEAN_CASES_2026 = [
                 "perspectiveType": "local",
                 "conceptInFocus": "Sovereignty",
                 "relatedTimelineDate": "2022-03-27",
-                "narration": "By deploying soldiers and police into neighborhoods long taxed by Mara Salvatrucha (MS-13) and Barrio 18, the state recovered practical control over its territory [11]. Lawmakers renewed that state of exception 56 times into November 2026, raising El Salvador's prison population toward 118,000, or roughly 1.9% of all residents [4, 11].\n\nA state of exception legally suspends constitutional protections called due process, including arrest warrants, timely access to defense lawyers, and short pre-trial detention limits [4, 5]. Active police officers told researchers that arrest quotas pushed mass roundups where detainees waited fifteen days before judges ratified entire lists [5]. Monitors documented at least 470 deaths in custody without reported convictions of state officers [4, 5].",
+                "narration": "By deploying soldiers and police into areas long dominated by Mara Salvatrucha (MS-13) and Barrio 18, the state asserted territorial control [11]. Lawmakers renewed emergency decrees 56 times into November 2026 [11]; Human Rights Watch estimated 118,000 prisoners in 2025, or 1.9% of the population [4].\n\nUnder Decree 333, emergency rule suspended constitutional safeguards under Article 13 paragraph 2 covering pre-arraignment detention periods, alongside defense-counsel guarantees and communications privacy [4, 5]. Former police officers told Amnesty that arrest quotas pushed mass detentions where suspects waited fifteen days before judges validated lists [5]. Monitors logged at least 470 custody deaths with zero officer convictions [4, 5].",
                 "focusQuestion": "Where does restoring practical sovereignty over gang neighborhoods cross into unchecked coercive power over ordinary citizens?"
             },
             {
@@ -1221,7 +1221,7 @@ export const AMERICAS_CARIBBEAN_CASES_2026 = [
                 "perspectiveType": "institutional",
                 "conceptInFocus": "Power",
                 "relatedTimelineDate": "2025-07-31",
-                "narration": "Executive power expanded after Bukele's Nuevas Ideas party replaced top constitutional judges and the Attorney General in 2021, then changed Article 248 in January 2025 so one legislature could amend the constitution alone [2, 4]. On 31 July 2025, lawmakers abolished presidential term limits, lengthened future terms to six years, and moved the next vote to February 2027 [9].\n\nWhen Bukele registered for a third term on 19 November 2026, his party held 54 of 60 seats [3]. Prosecutors won a US$3.87 million restitution judgment against a 2009–2014 ex-official [14], yet Bukele's asset declaration stayed sealed [4]. Authorities jailed Cristosal anti-corruption lawyer Ruth López under seal and passed a 30% Foreign Agents tax that drove over 140 defenders and journalists abroad [4, 6, 7, 8].",
+                "narration": "Executive power expanded after Bukele's Nuevas Ideas party replaced top constitutional judges and the Attorney General in 2021, then changed Article 248 in January 2025 so one legislature could amend the constitution alone [2, 4]. On 31 July 2025, lawmakers abolished presidential term limits, set six-year terms, and moved the next presidential vote to 2027 [9].\n\nWhen Bukele registered for a third term on 19 November 2026, his party held 54 of 60 seats [3]. Prosecutors won a combined US$3.87 million judgment ($3.54 million and $332,687.59) against a 2009–2014 ex-official and spouse [14], while Bukele's filings stayed sealed [4]. Authorities detained lawyer Ruth López, lawmakers passed a 30% foreign-funding tax, and at least 140 defenders and journalists fled fearing reprisals [4, 6, 7, 8].",
                 "focusQuestion": "If citizens voted for the ruling party's supermajority, why do constitutional checks on officials and watchdogs still matter?"
             },
             {
@@ -1231,7 +1231,7 @@ export const AMERICAS_CARIBBEAN_CASES_2026 = [
                 "perspectiveType": "independent",
                 "conceptInFocus": "Sovereignty",
                 "relatedTimelineDate": "2025-05-20",
-                "narration": "Foreign criticism rarely stopped domestic consolidation when key partners valued El Salvador's security results. Although the United States Congress restricted 60% of security aid pending rule-of-law checks under earlier appropriations rules [16], Washington lowered its travel warning in late 2024 and partnered with Bukele on migration enforcement [4, 16].\n\nIn March and April 2025, Washington transferred 252 Venezuelans to El Salvador's Center for Terrorism Confinement (CECOT) before a July prisoner swap [4]. Meanwhile, regional governments studied Bukele's model, and El Salvador deployed over 2,000 troops to Haiti in October 2026 [3]. When powerful neighbors treat border and prison deals as strategic assets, external pressure over domestic rights weakens considerably.",
+                "narration": "Foreign criticism rarely slowed domestic consolidation when partners valued migration and security cooperation [4, 16]. Although the US Congress restricted 60% of specified assistance accounts pending rule-of-law criteria alongside separate Foreign Military Financing bans [16], Washington lowered its travel advisory in late 2024 and deepened bilateral enforcement ties [4, 16].\n\nIn March and April 2025, Washington transferred 252 Venezuelans to El Salvador's Center for Terrorism Confinement (CECOT) until a July prisoner exchange with Venezuela [4]. Meanwhile, regional governments studied Bukele's security model, and El Salvador deployed over 2,000 troops to Haiti in October 2026 [3]. Border and security bargains reduced external pressure on domestic rights [4, 16].",
                 "focusQuestion": "How do strategic migration and security bargains change the cost for a government of ignoring human-rights criticism?"
             },
             {
@@ -1265,7 +1265,7 @@ export const AMERICAS_CARIBBEAN_CASES_2026 = [
             },
             {
                 "term": "State of exception",
-                "definition": "A constitutional emergency decree that temporarily suspends specific civil rights, including warrant requirements, immediate defense counsel, and normal pre-trial detention time limits.",
+                "definition": "A constitutional emergency decree temporarily suspending specific guarantees, including Article 13 paragraph 2 pre-arraignment detention limits, legal defense access, and communications privacy.",
                 "sourceUrl": "https://www.asamblea.gob.sv/node/14160"
             },
             {
@@ -1311,12 +1311,12 @@ export const AMERICAS_CARIBBEAN_CASES_2026 = [
             },
             {
                 "date": "2027-02-28",
-                "indicator": "Unified presidential, legislative, and municipal general elections held two years early after the July 2025 constitutional reform.",
+                "indicator": "Unified general elections—bringing forward the presidential race by two years to coincide with legislative and municipal polls under Decree 371.",
                 "sourceUrl": "https://www.reuters.com/world/americas/el-salvadors-bukele-expected-seek-unprecedented-third-term-leader-2026-11-19/"
             },
             {
-                "date": "2027 Q1",
-                "indicator": "Next IMF Extended Fund Facility review assessing whether El Salvador enacts granular public asset-declaration disclosures and pension reforms.",
+                "date": "2027-03-31",
+                "indicator": "Next IMF Extended Fund Facility fourth review cycle checking asset-disclosure legislation and pension reforms following October 2026 reviews (exact 2027 review date unscheduled).",
                 "sourceUrl": "https://www.imf.org/en/news/articles/2026/10/01/pr26316-el-salvador-imf-concludes-2nd-and-3rd-reviews-under-the-eff"
             }
         ],
@@ -1347,7 +1347,7 @@ export const AMERICAS_CARIBBEAN_CASES_2026 = [
             {
                 "stage": "What changed in practice",
                 "rating": "MIXED",
-                "evidence": "Neighborhood safety improved markedly and 87.8% approved of Bukele's seventh year, yet 90,000+ detentions bypassed due process, watchdogs were jailed or exiled, and IMF asset-disclosure targets lagged.",
+                "evidence": "Neighborhood safety improved markedly and 87.8% approved of Bukele's seventh year, yet emergency decrees produced 90,000+ detentions under suspended judicial checks, watchdogs faced arrest or exile, and IMF asset-disclosure targets lagged.",
                 "sourceUrls": [
                     "https://uca.edu.sv/iudop/wp-content/uploads/2026/06/Boletin-Eva-7mo-Anio-Gobierno-24-Junio.pdf",
                     "https://www.amnesty.org/en/latest/news/2026/07/el-salvador-el-costo-humano-del-regimen-de-excepcion-podria-constituir-crimenes-de-lesa-humanidad/",
@@ -1357,14 +1357,14 @@ export const AMERICAS_CARIBBEAN_CASES_2026 = [
         ],
         "conceptLens": {
             "power": "Executive alignment across the presidency, legislature, military, police, and courts removed domestic vetoes over mass detention, constitutional amendments, and civil-society taxes.",
-            "sovereignty": "The state regained de facto control over gang-taxed streets at home while rejecting Inter-American rights rulings as external interference.",
-            "legitimacy": "Results-based performance legitimacy soared on physical safety even as procedural legitimacy eroded through suspended trials, sealed corruption filings, and abolished term limits.",
+            "sovereignty": "The state regained de facto control over gang-contested territory while defending term-limit amendments before the Inter-American Commission as sovereign self-determination.",
+            "legitimacy": "Results-based performance legitimacy rose sharply on physical safety even as procedural legitimacy weakened through extended pre-trial detention rules, sealed corruption filings, and abolished term limits.",
             "interdependence": "Domestic dominance did not eliminate external constraints: El Salvador relied on a US$1.4 billion IMF program requiring Bitcoin retrenchment and asset-disclosure reforms."
         },
         "essayBuilder": {
             "prompt": "Evaluate the claim that high public approval in El Salvador proves the state is legitimate despite the removal of constitutional checks.",
             "claim": "El Salvador demonstrates that performance legitimacy and procedural legitimacy must be evaluated separately, because majority consent for safer streets does not replace legal accountability over those who govern.",
-            "evidence": "In May 2026, UCA polling found 87.8% rating Bukele's seventh year good or very good as daily extortion ended, while Congress eliminated term limits in July 2025 and jailed or taxed civic watchdogs.",
+            "evidence": "In May 2026, UCA polling found 87.8% rating Bukele's seventh year good or very good as extortion declined, while Congress eliminated term limits in July 2025, taxed foreign-funded NGOs, and authorities jailed critics.",
             "counterClaim": "Advocates argue that democratically elected supermajorities expressed popular sovereignty and rescued state authority where past constitutional alternation failed to protect citizens from gang murder.",
             "judgment": "On balance, citizen approval strengthens government legitimacy in the short term, but hollowing out independent courts leaves both state and regime vulnerable if economic discontent or security abuses erode those results.",
             "sourceUrls": [
@@ -1381,7 +1381,7 @@ export const AMERICAS_CARIBBEAN_CASES_2026 = [
             },
             {
                 "date": "2025-05-20",
-                "label": "Lawmakers pass the Foreign Agents Law imposing a 30% tax on overseas funding two days after arresting anti-corruption lawyer Ruth López.",
+                "label": "Lawmakers pass the Foreign Agents Law imposing a 30% tax on overseas funding two days after state authorities arrest lawyer Ruth López amid US-brokered deportations.",
                 "sourceUrl": "https://www.hrw.org/news/2025/05/23/el-salvador-foreign-agents-law-targets-civil-society-media"
             },
             {
@@ -1408,11 +1408,11 @@ export const AMERICAS_CARIBBEAN_CASES_2026 = [
         "relatedCases": [
             {
                 "caseId": "kenya-gen-z-finance-bill-protests",
-                "note": "Compare El Salvador's sustained public approval for suspended due-process rights with Kenya's youth-led mobilization against tax hikes and police impunity."
+                "note": "Compare strong security approval alongside suspended protections in El Salvador with Kenya's tax and policing protests."
             },
             {
                 "caseId": "haiti-security-legitimacy-haitian-ownership",
-                "note": "Contrast El Salvador's centralized military-police sweep under an elected president with Haiti's effort to rebuild policing sovereignty amid gang territorial control."
+                "note": "Contrast El Salvador's centralized military-police sweep with Haiti's effort to rebuild sovereign policing amid gang control."
             }
         ]
     },
@@ -1445,8 +1445,7 @@ export const AMERICAS_CARIBBEAN_CASES_2026 = [
         ],
         "nexusNodeIds": [
             "LatinAmerica",
-            "UN_OPEC",
-            "USA"
+            "UN_OPEC"
         ],
         "concepts": [
             "Power",
@@ -1458,13 +1457,13 @@ export const AMERICAS_CARIBBEAN_CASES_2026 = [
             "rights-and-justice",
             "development-and-sustainability"
         ],
-        "statusSummary": "As reviewed on 24 November 2026, Argentina's 2020 abortion legalization statute, Law 27.610, remains legally in force because Congress never repealed it. Yet federal abortion pill deliveries fell from 106,737 treatments in 2023 to 0 in 2024 and 2025, contraceptive deliveries dropped 83% by 2025, and the national helpline logged 191 medication-stockout calls that year. On 3 November 2026, a La Plata federal court held a hearing on a collective lawsuit demanding that the Health Ministry resume national procurement.",
+        "statusSummary": "As reviewed on 24 November 2026, Argentina's 2020 abortion legalization statute, Law 27.610, remains legally in force because Congress never repealed it. Yet federal abortion pill deliveries fell from 106,737 treatments in 2023 to 0 in 2024 and January–September 2025, contraceptive deliveries dropped 83% by 2025, and the national helpline logged 191 medication-stockout calls that year. Ahead of a scheduled 3 November 2026 La Plata court hearing, civil-society petitioners demanded that the Health Ministry resume national procurement.",
         "whyItMatters": "Argentina separates formal legality from practical capacity: a democratically enacted statutory right can hollow out unevenly when the executive cuts federal supply lines and shifts unfunded obligations onto provinces.",
         "updatedAt": "2026-11-24",
         "confidence": "high",
-        "uncertainty": "No federal court ruling had been issued following the 3 November 2026 La Plata hearing by late November, and the Health Ministry stopped publishing annual Law 27.610 national implementation reports after 2023. Wait times and stockouts must therefore be reconstructed from provincial health reports, budget execution tables, and helpline records.",
-        "sensitivity": "standard",
-        "editorialCaution": "Keep three realities distinct: Law 27.610 guarantees free universal abortion nationwide on paper, the executive defends provincial procurement autonomy as fiscal reform, and unequal provincial wealth determines who actually receives timely care.",
+        "uncertainty": "Public federal court records had not logged a final judgment following the 3 November 2026 La Plata hearing date by late November, and the Health Ministry stopped publishing annual Law 27.610 implementation reports after 2023. Stockouts and wait times must therefore be reconstructed from provincial health records, open budget tables, and helpline logs.",
+        "sensitivity": "high",
+        "editorialCaution": "Keep patient identities generalized and separate legal categories clear: Law 27.610 permits voluntary termination (IVE) up to 14 weeks and causal termination (ILE) thereafter, while Article 10 grants conscientious objection solely to individual clinicians—not entire municipal hospitals.",
         "featured": false,
         "reviewCadenceDays": 30,
         "reviewBy": "2026-12-24",
@@ -1582,7 +1581,9 @@ export const AMERICAS_CARIBBEAN_CASES_2026 = [
             {
                 "title": "Abortion Law Reform in Argentina",
                 "publisher": "Guttmacher Institute",
-                "publishedAt": "2024-05-01",
+                "sourceType": "living-reference",
+                "dateLabel": "May 2024 (updated 2025)",
+                "reviewedAt": "2026-11-24",
                 "url": "https://www.guttmacher.org/fact-sheet/abortion-law-reform-argentina",
                 "perspective": "Facility-level empirical research across 223 public clinics measuring provincial availability gaps and conscientious objection rates"
             },
@@ -1603,7 +1604,9 @@ export const AMERICAS_CARIBBEAN_CASES_2026 = [
             {
                 "title": "From Data to Action: Monitoring Legal Abortion Implementation in Corrientes",
                 "publisher": "Equipo Latinoamericano de Justicia y Género (ELA)",
-                "publishedAt": "2026-06-01",
+                "sourceType": "living-reference",
+                "dateLabel": "2026",
+                "reviewedAt": "2026-11-24",
                 "url": "https://ela.org.ar/wp-content/uploads/2026/06/From-data-to-action.-Executive-summary-in-English.-Equipo-Latinoamericano-de-Justicia-y-Genero.pdf",
                 "perspective": "Subnational monitoring tracking provider shrinkage from 28 to 19 clinics and low patient awareness in Corrientes"
             },
@@ -1650,8 +1653,8 @@ export const AMERICAS_CARIBBEAN_CASES_2026 = [
                 "perspectiveLabel": "Frontline patients",
                 "perspectiveType": "local",
                 "conceptInFocus": "Legitimacy",
-                "relatedTimelineDate": "2025-12-30",
-                "narration": "At a public clinic in Tucumán in 2025, a 31-year-old mother of seven requesting a legal abortion was told the pharmacy had no pills and she would have to buy them herself for 170,000 pesos [1]. Across provincial hospitals, patients quoted between 112,000 and 300,000 pesos—roughly US$160—either borrowed money or waited weeks [1, 3].\n\nArgentina's national 0800 helpline logged 191 medication-stockout reports in 2025, with 46.1% coming from Salta [1]. Online barrier reports surged over 300% that year, including 69 from teenagers aged 14 to 19, while 65% of callers lacked basic directions on where to go [1]. When care depends on private cash or clinic tips, household debt replaces an enacted public guarantee.",
+                "relatedTimelineDate": "2026-05-28",
+                "narration": "At a public clinic in Tucumán in 2025, a patient requesting a legal abortion was told free pills were unavailable and pharmacy tablets cost 170,000 pesos [1]. Elsewhere, patients quoted 112,000 to 300,000 pesos—or roughly US$160 in one documented case—borrowed money or waited weeks [1, 3].\n\nArgentina's national 0800 helpline logged 191 medication-stockout records in 2025, with 46.1% from Salta [1]. Amnesty's online barrier form simultaneously jumped over 300%, including 69 adolescent cases aged 14–19, while 65% of online complainants lacked clear care-routing guidance [1]. Private household debt increasingly replaced a statutory public guarantee across affected provinces [1].",
                 "focusQuestion": "When a citizen holds a legal right on paper but must borrow money to use it, what breaks down: lawmaking or state delivery?"
             },
             {
@@ -1661,7 +1664,7 @@ export const AMERICAS_CARIBBEAN_CASES_2026 = [
                 "perspectiveType": "institutional",
                 "conceptInFocus": "Sovereignty",
                 "relatedTimelineDate": "2020-12-30",
-                "narration": "Argentina's green-kerchief coalition campaigned for fifteen years after 2005 and rebuilt support following a 38–31 Senate defeat in 2018 [15, 16]. After twelve hours of debate on 30 December 2020, the Senate approved Law 27.610 by 38 votes to 29 with one abstention [14].\n\nRather than merely decriminalizing private conduct, Law 27.610 guaranteed voluntary termination up to 14 weeks, required delivery within 10 calendar days, mandated free coverage including essential drugs, and criminalized unjustified obstruction under Penal Code Article 85 bis [2]. Public hospitals performed 283,000 abortions between 2021 and 2023 while abortion-related maternal deaths fell by half compared with the prior three years [3].",
+                "narration": "Argentina's green-kerchief coalition campaigned for fifteen years after 2005 and rebuilt support following a 38–31 Senate defeat in 2018 [15, 16]. After twelve hours of debate on 30 December 2020, the Senate approved Law 27.610 by 38 votes to 29 with one abstention [14].\n\nRather than merely decriminalizing private conduct, Law 27.610 guaranteed voluntary termination up to 14 weeks and mandated free care within 10 calendar days [2]. It also criminalized unjustified obstruction under Penal Code Article 85 bis [2]. Public health facilities delivered 283,000 abortions across 2021–2023 while abortion-related maternal deaths halved over post-law years [1, 3].",
                 "focusQuestion": "Why does writing positive funding and timeline duties into statute create stricter state obligations than decriminalization alone?"
             },
             {
@@ -1671,7 +1674,7 @@ export const AMERICAS_CARIBBEAN_CASES_2026 = [
                 "perspectiveType": "independent",
                 "conceptInFocus": "Power",
                 "relatedTimelineDate": "2024-10-21",
-                "narration": "When allies of President Javier Milei introduced a repeal bill in February 2024, Congress lacked votes to pass it and the bill was withdrawn [3]. Without touching the statute, federal deliveries of abortion pills dropped from 70,293 treatments in 2022 and 106,737 in 2023 to zero in 2024 and through September 2025 [7].\n\nOfficial records show the Health Ministry canceled a 2023 tender for 499,200 misoprostol and 96,000 mifepristone tablets in early 2025, while federal contraceptive deliveries fell 83% by 2025 [1]. At an October 2024 federal-provincial council meeting, national officials argued provinces should buy their own medicines to curb spending, whereas Milei publicly attacked the 'murderous abortion agenda' [4, 5].",
+                "narration": "When allies of President Javier Milei introduced a repeal bill in February 2024, Congress lacked votes to pass it and withdrew the measure [3]. Without altering Law 27.610, federal deliveries of abortion pills dropped from 70,293 treatments in 2022 and 106,737 in 2023 to zero in 2024 and January–September 2025 [7].\n\nAmnesty disclosures show the Health Ministry canceled a 2023 tender for 499,200 misoprostol and 96,000 mifepristone tablets in early 2025, while federal contraceptive deliveries fell 83% [1]. At an October 2024 council meeting, officials shifted drug purchases to provinces while Milei denounced the 'murderous abortion agenda' [4, 5].",
                 "focusQuestion": "Can executive spending and procurement choices alter how a democratic law operates when lawmakers leave the statute untouched?"
             },
             {
@@ -1680,8 +1683,8 @@ export const AMERICAS_CARIBBEAN_CASES_2026 = [
                 "perspectiveLabel": "Provincial health gaps",
                 "perspectiveType": "local",
                 "conceptInFocus": "Power",
-                "relatedTimelineDate": "2026-05-28",
-                "narration": "Even before federal cuts, a 223-clinic survey across three provinces found 88% of public facilities in Buenos Aires province offered abortion care compared with 40% in La Rioja and 9% in Chaco, partly because two-thirds of municipal hospitals had multiple conscientious objectors [8]. Once central purchasing stopped, poorer provinces lost bulk-buying leverage.\n\nProvinces fund over 75% of public health spending yet operate under centralized national tax rules, provincial ministers warned [1, 4]. By 2025, facility coverage ranged from 70–90% in wealthier jurisdictions down to 2% in lagging provinces [9]. In Corrientes, active providers fell from 28 to 19 [11], while San Isidro's municipal hospital required a court order to disclose restrictive internal rules [1].",
+                "relatedTimelineDate": "2025-12-30",
+                "narration": "Subnational disparities predated federal cuts. A 2022–2023 survey of 223 clinics found 88% of known providers in Buenos Aires province offered abortion care, versus 40% in La Rioja and 9% in Chaco across all sampled public facilities [8]. Two-thirds of municipal hospitals registered multiple individual objectors [8].\n\nProvinces fund over 75% of public health spending yet rely on central tax transfers, ministers warned [1, 4]. By 2025, facility coverage ranged from 70–90% down to 2% in lagging provinces [9]. In Corrientes, active clinics fell from 28 to 19 [11], while San Isidro's municipal hospital litigated before disclosing restrictive protocols [1].",
                 "focusQuestion": "Does delegating drug purchases in an unequal federation protect local autonomy or undermine equal national citizenship?"
             },
             {
@@ -1690,8 +1693,8 @@ export const AMERICAS_CARIBBEAN_CASES_2026 = [
                 "perspectiveLabel": "Domestic and global checks",
                 "perspectiveType": "synthesis",
                 "conceptInFocus": "Interdependence",
-                "relatedTimelineDate": "2026-11-03",
-                "narration": "Civic groups took the procurement freeze to Federal Court No. 2 of La Plata through a collective lawsuit brought by Asociación Civil La Ciega with CELS, Amnesty, and ELA [6, 10]. After appeals judges upheld collective standing in February 2026 [10], the trial judge convened a formal hearing on 3 November 2026, where plaintiffs argued the state's own files proved noncompliance [6].\n\nGlobal norms pulled in opposite directions during 2026. In February, the UN CEDAW Committee urged Argentina to restore budgets after closing 81 legal-aid centers [12], whereas in August Buenos Aires signed the non-binding Geneva Consensus Declaration stating there is no international right to abortion [13]. Together, these clashes show that domestic courts—not non-binding pledges—anchor whether national rights hold in practice.",
+                "relatedTimelineDate": "2026-11-02",
+                "narration": "Asociación Civil La Ciega, represented by CELS alongside third parties Amnesty and ELA, challenged the procurement halt in Federal Court No. 2 of La Plata [6, 10]. Appeals judges cleared collective standing by October 2025 before the government published formal notice in February 2026, setting a scheduled 3 November hearing [6, 10].\n\nGlobal human-rights reviews and diplomacy diverged during 2026. The UN CEDAW Committee urged Argentina to reverse sexual-health cuts after national authorities closed 81 Access to Justice legal-aid centers [12], whereas Argentina's national government signed the non-binding Geneva Consensus Declaration in August [13]. Legal petitioners maintain judicial rulings remain vital to statutory enforcement [6].",
                 "focusQuestion": "How effectively can judges and international human-rights treaties compel spending when an elected executive resists a statutory mandate?"
             }
         ],
@@ -1745,9 +1748,9 @@ export const AMERICAS_CARIBBEAN_CASES_2026 = [
             },
             {
                 "claimBy": "Conscientious-objection defenders and conservative municipalities",
-                "claim": "Individual clinicians and municipal clinics retain ethical discretion over counseling and whether to participate directly in pregnancy terminations.",
+                "claim": "Individual clinicians retain ethical discretion under Article 10 to decline direct participation while local authorities manage clinic routing.",
                 "counterBy": "Frontline public-health researchers and CEDAW reviewers",
-                "counterClaim": "Allowing unpublicized routing protocols, mandatory extra counseling, or staff-wide refusals breaches Law 27.610's 10-day rule and forces delays past 14 weeks.",
+                "counterClaim": "Law 27.610 limits objection to individual providers (with referral duties reserved to private and social-security institutions under Article 11), while unpublicized municipal delays erode timely access.",
                 "sourceUrls": [
                     "https://www.boletinoficial.gob.ar/detalleAviso/primera/239807/20210115",
                     "https://www.guttmacher.org/fact-sheet/abortion-law-reform-argentina",
@@ -1757,18 +1760,18 @@ export const AMERICAS_CARIBBEAN_CASES_2026 = [
         ],
         "watchFor": [
             {
-                "date": "2026-12-31",
-                "indicator": "Federal Court No. 2 of La Plata ruling following the 3 November 2026 hearing on whether the Health Ministry must resume nationwide misoprostol and mifepristone procurement.",
+                "date": "2027-02-01",
+                "indicator": "Federal Court No. 2 of La Plata docket checking whether the Health Ministry resumes nationwide misoprostol and mifepristone procurement (no ruling date announced as of November 2026).",
                 "sourceUrl": "https://www.cels.org.ar/web/2026/11/el-estado-dejo-de-comprar-medicamentos-esenciales-para-la-interrupcion-del-embarazo-reclamamos-una-respuesta-judicial/"
             },
             {
-                "date": "2027-01-01",
-                "indicator": "Execution of the 2027 national health budget for sexual-health procurement and Plan ENIA relative to 2023 baselines.",
+                "date": "2027-06-30",
+                "indicator": "Mid-year 2027 national health budget execution tracking sexual-health procurement and Plan ENIA transfers relative to 2023 baselines.",
                 "sourceUrl": "https://amnistia.org.ar/storage/uploads/352829af-4f55-4032-b58b-6a82b64fce79/Costo-de-la-Retirada.pdf"
             },
             {
                 "date": "2027-10-24",
-                "indicator": "Midterm parliamentary coalitions in Congress testing whether proponents of repeal or defenders of statutory enforcement gain seats.",
+                "indicator": "Argentina's scheduled 24 October 2027 presidential and concurrent congressional general elections determining the executive and legislative balance around Law 27.610.",
                 "sourceUrl": "https://www.theguardian.com/global-development/2025/may/28/argentina-womens-rights-javier-milei-testing-ground-eroding-abortion-rights-seek-reverse-landmark-legalisation-warning-amnesty"
             }
         ],
@@ -1809,14 +1812,14 @@ export const AMERICAS_CARIBBEAN_CASES_2026 = [
         ],
         "conceptLens": {
             "power": "Executive budget control and canceled tenders altered clinic supplies nationwide even though the president lacked congressional majorities to repeal Law 27.610.",
-            "sovereignty": "Buenos Aires asserted national policy discretion at home and signed the non-binding Geneva Consensus Declaration while domestic courts tested statutory bounds.",
+            "sovereignty": "Argentina's national government asserted spending discretion at home and signed the non-binding Geneva Consensus Declaration while domestic courts tested statutory bounds.",
             "legitimacy": "Law 27.610 retained procedural statutory validity from the 2020 vote, yet clinic stockouts and missing public data weakened citizens' trust in equal state delivery.",
             "interdependence": "Domestic federalism left provincial ministries dependent on central tax transfers and purchasing scale, while UN CEDAW monitoring scrutinized domestic funding cuts."
         },
         "essayBuilder": {
             "prompt": "Evaluate whether executive budget cuts and administrative decentralization can undermine a human right without formally repealing the law that created it.",
             "claim": "Executive budget and procurement decisions can substantially hollow out a positive statutory right in practice without repealing it, because hospital rights depend on continuous state supply and coordination.",
-            "evidence": "Even though Congress never repealed Law 27.610, federal abortion pill deliveries fell from 106,737 in 2023 to zero in 2024–2025, contraceptive supplies dropped 83%, and poorer provinces saw sharp access declines.",
+            "evidence": "Even though Congress never repealed Law 27.610, federal abortion pill deliveries fell from 106,737 in 2023 to zero in 2024 and Jan–Sep 2025, contraceptive supplies dropped 83%, and poorer provinces saw sharp declines.",
             "counterClaim": "Federal officials argue decentralizing medicine procurement respects provincial autonomy under Argentina's federation and stops forcing taxpayers to fund contested centralized programs.",
             "judgment": "Overall, rights that require clinical supplies survive in wealthier regions like Buenos Aires province yet erode for lower-income citizens elsewhere unless independent courts enforce national funding minimums.",
             "sourceUrls": [
@@ -1853,19 +1856,19 @@ export const AMERICAS_CARIBBEAN_CASES_2026 = [
                 "sourceUrl": "https://amnistia.org.ar/storage/uploads/352829af-4f55-4032-b58b-6a82b64fce79/Costo-de-la-Retirada.pdf"
             },
             {
-                "date": "2026-11-03",
-                "label": "Federal Court No. 2 of La Plata holds a hearing in Asociación Civil La Ciega's collective lawsuit demanding federal medicine procurement.",
+                "date": "2026-11-02",
+                "label": "CELS announces a scheduled 3 November hearing in Federal Court No. 2 of La Plata in Asociación Civil La Ciega's collective lawsuit for federal medicine supply.",
                 "sourceUrl": "https://www.cels.org.ar/web/2026/11/el-estado-dejo-de-comprar-medicamentos-esenciales-para-la-interrupcion-del-embarazo-reclamamos-una-respuesta-judicial/"
             }
         ],
         "relatedCases": [
             {
                 "caseId": "kenya-gen-z-finance-bill-protests",
-                "note": "Both cases expose the gap between formal statutory law and lived rights when austerity and executive discretion clash with constitutional guarantees."
+                "note": "Compare austerity and executive discretion undermining statutory rights in Argentina with tax protests in Kenya."
             },
             {
                 "caseId": "who-pathogen-access-benefit-sharing",
-                "note": "Compare domestic abortion-medicine procurement battles under federal austerity with global negotiations over equitable medical supply chains and binding public-health rules."
+                "note": "Contrast domestic abortion-pill procurement battles under austerity with global negotiations over medicine equity."
             }
         ]
     }

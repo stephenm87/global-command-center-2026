@@ -1437,11 +1437,16 @@
     transition: border-color .16s ease, background .16s ease;
 }
 
-.related-case-btn:hover,
-.related-case-btn:focus-visible {
+.related-case-btn:hover {
     border-color: var(--tour-color);
     background: color-mix(in srgb, var(--tour-color) 10%, var(--briefing-raised));
-    outline: none;
+}
+
+.related-case-btn:focus-visible {
+    border-color: #5eead4;
+    background: color-mix(in srgb, var(--tour-color) 10%, var(--briefing-raised));
+    outline: 3px solid rgba(94, 234, 212, .24);
+    outline-offset: 2px;
 }
 
 .related-case-btn strong {

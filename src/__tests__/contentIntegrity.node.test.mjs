@@ -79,7 +79,7 @@ test('curated case studies remain balanced across 7 regions x 6 lenses, auditabl
 
     assert.ok(broadCategorySet.has('Governance & Rights'), 'Option A promotes Governance & Rights into Broad_Category');
     assert.equal(CONTENT_REVIEW_DATE, EDITORIAL_SNAPSHOT_DATE, 'editorial snapshot should match the canonical baseline review date');
-    assert.ok(CASE_STUDIES_2026.length >= 29, 'active case library must retain >= 29 baseline cases');
+    assert.ok(CASE_STUDIES_2026.length >= 33, 'active case library must retain >= 33 curated cases');
     assert.equal(ALL_CASE_STUDIES_2026.length, CASE_STUDIES_2026.length + ARCHIVED_CASE_STUDIES_2026.length);
     assert.equal(allCaseIds.size, ALL_CASE_STUDIES_2026.length, 'case IDs must be globally unique across active and archived sets');
 
@@ -288,7 +288,7 @@ test('curated case studies remain balanced across 7 regions x 6 lenses, auditabl
         assert.deepEqual(tour.waypoints, caseStudy.waypoints);
     }
 
-    // Verify docs/CASE_STUDY_EDITORIAL_STANDARD.md 33-case baseline table stays in sync with CASE_STUDIES_2026
+    // Verify docs/CASE_STUDY_EDITORIAL_STANDARD.md 33-case catalog table stays in sync with CASE_STUDIES_2026
     const standardDoc = fs.readFileSync(path.join(REPO_ROOT, 'docs/CASE_STUDY_EDITORIAL_STANDARD.md'), 'utf8');
     const tableRows = [...standardDoc.matchAll(/^\|\s*\d+\s*\|\s*`([^`]+)`\s*\|\s*`([^`]+)`\s*\|\s*`([^`]+)`\s*\|\s*`([^`]+)`\s*\|\s*`([^`]+)`\s*\|$/gm)];
     assert.equal(tableRows.length, 33, 'CASE_STUDY_EDITORIAL_STANDARD.md must list all 33 active cases');
@@ -463,6 +463,25 @@ test('curated case studies remain balanced across 7 regions x 6 lenses, auditabl
             );
         }
     }
+    const activeCaseIds = new Set(CASE_STUDIES_2026.map(item => item.id));
+    for (const record of ALL_CASE_STUDIES_2026) {
+        if (record.relatedCases !== undefined) {
+            assert.ok(Array.isArray(record.relatedCases) && record.relatedCases.length > 0, `${record.id} relatedCases must be a non-empty array when set`);
+            const seenRelated = new Set();
+            for (const link of record.relatedCases) {
+                assertNonEmptyString(link?.caseId, `${record.id} relatedCases entry missing caseId`);
+                assert.notEqual(link.caseId, record.id, `${record.id} relatedCases cannot link to itself`);
+                if (record.status === 'active') {
+                    assert.ok(activeCaseIds.has(link.caseId), `${record.id} relatedCases target "${link.caseId}" must be an active case`);
+                } else {
+                    assert.ok(allCaseIds.has(link.caseId), `${record.id} relatedCases unknown caseId "${link.caseId}"`);
+                }
+                assert.ok(!seenRelated.has(link.caseId), `${record.id} relatedCases repeats "${link.caseId}"`);
+                seenRelated.add(link.caseId);
+                assertNonEmptyString(link?.note, `${record.id} relatedCases "${link.caseId}" missing note`);
+            }
+        }
+    }
     for (const record of CASE_STUDIES_2026) {
         for (const loc of record.map.locations) {
             assertNonEmptyString(loc.role, `${record.id} map location "${loc.label}" must document its role`);
@@ -629,18 +648,6 @@ test('curated case studies remain balanced across 7 regions x 6 lenses, auditabl
             }
         }
 
-        if (item.relatedCases !== undefined) {
-            assert.ok(Array.isArray(item.relatedCases) && item.relatedCases.length > 0, `${item.id} relatedCases must be a non-empty array when set`);
-            const seenRelated = new Set();
-            for (const link of item.relatedCases) {
-                assertNonEmptyString(link?.caseId, `${item.id} relatedCases entry missing caseId`);
-                assert.notEqual(link.caseId, item.id, `${item.id} relatedCases cannot link to itself`);
-                assert.ok(byId.has(link.caseId), `${item.id} relatedCases unknown caseId "${link.caseId}"`);
-                assert.ok(!seenRelated.has(link.caseId), `${item.id} relatedCases repeats "${link.caseId}"`);
-                seenRelated.add(link.caseId);
-                assertNonEmptyString(link?.note, `${item.id} relatedCases "${link.caseId}" missing note`);
-            }
-        }
 
         const times = computeBriefingReadingTimes(item);
         assert.ok(times.fullMinutes >= times.quickMinutes && times.quickMinutes >= 1);

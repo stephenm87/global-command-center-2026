@@ -560,11 +560,15 @@ export function CaseBriefingPrintContent({
                         <div className="gcc-print-subsection">
                             <h3>Compare with related briefings</h3>
                             <ul className="gcc-print-watch-list">
-                                {relatedLinks.map(link => (
-                                    <li key={link.caseId}>
-                                        <strong>{link.title}:</strong> {link.note}
-                                    </li>
-                                ))}
+                                {relatedLinks.map(link => {
+                                    const relatedUrl = buildCasePrintUrl(link.caseId, canonicalUrl);
+                                    return (
+                                        <li key={link.caseId}>
+                                            <strong>{link.title}:</strong> {link.note}{' '}
+                                            <span className="gcc-print-related-url">({relatedUrl})</span>
+                                        </li>
+                                    );
+                                })}
                             </ul>
                         </div>
                     )}

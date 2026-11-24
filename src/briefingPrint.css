@@ -165,10 +165,13 @@
     }
 
     .gcc-print-meta-url,
-    .gcc-print-source-url {
+    .gcc-print-source-url,
+    .gcc-print-related-url {
         max-width: 100%;
         overflow-wrap: anywhere;
         word-break: break-word;
+        font-size: 8.5pt;
+        color: #374151;
     }
 
     /* Sections */
