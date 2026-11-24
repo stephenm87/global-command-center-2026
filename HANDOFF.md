@@ -2,6 +2,12 @@
 
 Newest entry first. Each agent adds an entry before it stops. Keep entries short.
 
+## 2026-11-25 — Antigravity — PR #52 Myanmar Voice Standard & Batch 1 Rewrite
+- **Did (on `feat/briefings-batch-1`, PR #52; DO NOT MERGE):**
+  - **Recorded the Myanmar Reference Standard (`docs/BRIEFING_VOICE.md`):** Added `## Reference Model: Myanmar` quoting `myanmar-fragmented-sovereignty` (`src/cases/active/asia-pacific-2026.mjs`) and updated `## Section Blueprint & Budgets (v2)` for 120–160-word two-paragraph steps (`countWords`), dated sourced people scenes matching following figures in every step, inline Unit 1 concept definitions covering all four, `<=2` contextualized numbers per sentence, spelled-out abbreviations, zero article numbers in narration, attributed contested claims/approximate flags, 150–200-word 3-paragraph backgrounds (origin / authority or dispute development / cost to people), 3 debate pairs, and plain short step titles.
+  - **Rewrote Batch 1 Briefings to the Myanmar Standard (`src/cases/active/americas-caribbean-2026.mjs`, `src/cases/active/global-institutions-2026.mjs`, `src/cases/active/africa-2026.mjs`):** Rewrote all `20` steps (`122–146` `countWords` / `129–155` stripped) and `4` three-paragraph backgrounds (`156–177` `countWords` / `167–187` stripped), aligned Step 1/5 scenes and figures, preserved all `65` source URLs, research logs, `debate` pairs (`3` each), `keyFigures`, `timeline`, and `influenceCheck` entries with zero new claims.
+- **Reviewed & Verified:** Read-only Codex fact/citation check (`VERDICT: PASS` across all `65` URLs, `4` research logs, and Myanmar quotes) and read-only Claude Myanmar-benchmark check (`VERDICT: PASS`), `check_batch1_voice.mjs` (`0` failures/warnings), `npm test` (`98/98` pass), `npm run build` (`270` targets / `33` cases); pending PR #52 CI, Deploy Preview #52, and A4 PDF checks after push.
+
 ## 2026-11-24 — Antigravity — PR #52 Batch 1 Voice & Depth Writing Pass
 - **Did (on `feat/briefings-batch-1`, PR #52; DO NOT MERGE):**
   - **Voice, Structure & Debate Polish Across All 4 Batch 1 Briefings (`src/cases/active/americas-caribbean-2026.mjs`, `src/cases/active/global-institutions-2026.mjs`, `src/cases/active/africa-2026.mjs`):**
