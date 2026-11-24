@@ -1405,5 +1405,448 @@ export const AMERICAS_CARIBBEAN_CASES_2026 = [
                 "sourceUrl": "https://www.reuters.com/world/americas/el-salvadors-bukele-expected-seek-unprecedented-third-term-leader-2026-11-19/"
             }
         ]
+    },
+    {
+        "id": "argentina-abortion-law-budget-implementation",
+        "status": "active",
+        "briefingVersion": 2,
+        "title": "Argentina: Legal Rights Without Federal Supply",
+        "subtitle": "How does a democratic law lose practical force when the executive withholds funds and medicines without repealing it?",
+        "coverageRegion": "Americas & Caribbean",
+        "regionTags": [
+            "South America",
+            "Latin America",
+            "Argentina"
+        ],
+        "issueLens": "Governance & Rights",
+        "broadCategory": "Governance & Rights",
+        "issueDimensions": [
+            "Statutory rights vs. budget implementation",
+            "Fiscal federalism",
+            "Executive-legislative tension",
+            "Judicial enforcement"
+        ],
+        "actors": [
+            "National executive and Ministry of Health",
+            "Provincial health ministries (COFESA)",
+            "Patients and feminist support networks",
+            "Federal courts and rights litigants",
+            "National Congress and municipal clinics"
+        ],
+        "nexusNodeIds": [
+            "LatinAmerica",
+            "UN_OPEC",
+            "USA"
+        ],
+        "concepts": [
+            "Power",
+            "Sovereignty",
+            "Legitimacy",
+            "Interdependence"
+        ],
+        "ibThemes": [
+            "rights-and-justice",
+            "development-and-sustainability"
+        ],
+        "statusSummary": "As reviewed on 24 November 2026, Argentina's 2020 abortion legalization statute, Law 27.610, remains legally in force because Congress never repealed it. Yet federal abortion pill deliveries fell from 106,737 treatments in 2023 to 0 in 2024 and 2025, contraceptive deliveries dropped 83% by 2025, and the national helpline logged 191 medication-stockout calls that year. On 3 November 2026, a La Plata federal court held a hearing on a collective lawsuit demanding that the Health Ministry resume national procurement.",
+        "whyItMatters": "Argentina separates formal legality from practical capacity: a democratically enacted statutory right can hollow out unevenly when the executive cuts federal supply lines and shifts unfunded obligations onto provinces.",
+        "updatedAt": "2026-11-24",
+        "confidence": "high",
+        "uncertainty": "No federal court ruling had been issued following the 3 November 2026 La Plata hearing by late November, and the Health Ministry stopped publishing annual Law 27.610 national implementation reports after 2023. Wait times and stockouts must therefore be reconstructed from provincial health reports, budget execution tables, and helpline records.",
+        "sensitivity": "standard",
+        "editorialCaution": "Keep three realities distinct: Law 27.610 guarantees free universal abortion nationwide on paper, the executive defends provincial procurement autonomy as fiscal reform, and unequal provincial wealth determines who actually receives timely care.",
+        "featured": false,
+        "reviewCadenceDays": 30,
+        "reviewBy": "2026-12-24",
+        "coordinates": {
+            "latitude": -34.6037,
+            "longitude": -58.3816
+        },
+        "map": {
+            "mode": "regional",
+            "locations": [
+                {
+                    "label": "Buenos Aires",
+                    "latitude": -34.6037,
+                    "longitude": -58.3816,
+                    "role": "National Congress, Casa Rosada, and Health Ministry central procurement seat"
+                },
+                {
+                    "label": "La Plata",
+                    "latitude": -34.9205,
+                    "longitude": -57.9536,
+                    "role": "Federal Court No. 2 hearing the 2026 collective lawsuit for medicine supply"
+                },
+                {
+                    "label": "Salta",
+                    "latitude": -24.7821,
+                    "longitude": -65.4232,
+                    "role": "Province accounting for 46.1% of 2025 national helpline stockout calls"
+                },
+                {
+                    "label": "Corrientes",
+                    "latitude": -27.4692,
+                    "longitude": -58.8306,
+                    "role": "Province where active public providers fell from 28 to 19 after federal supply cuts"
+                }
+            ]
+        },
+        "keyFigures": [
+            {
+                "value": "106,737",
+                "label": "Federal abortion treatments delivered in 2023 before dropping to 0 in 2024 and Jan–Sep 2025",
+                "asOf": "December 2025",
+                "sourceUrl": "https://chequeado.com/el-explicador/a-5-anos-de-la-ley-de-aborto-el-gobierno-no-entrego-medicamentos-y-crecen-las-denuncias-por-barreras-de-acceso/"
+            },
+            {
+                "value": "191",
+                "label": "Medication-stockout complaints logged on the national 0800 sexual-health helpline in 2025",
+                "asOf": "May 2026",
+                "sourceUrl": "https://amnistia.org.ar/storage/uploads/352829af-4f55-4032-b58b-6a82b64fce79/Costo-de-la-Retirada.pdf"
+            },
+            {
+                "value": "83%",
+                "label": "Drop in federal contraceptive and condom distribution between 2023 and 2025",
+                "asOf": "May 2026",
+                "sourceUrl": "https://amnistia.org.ar/storage/uploads/352829af-4f55-4032-b58b-6a82b64fce79/Costo-de-la-Retirada.pdf"
+            }
+        ],
+        "sources": [
+            {
+                "title": "El costo de la retirada: Barreras, endeudamiento y desigualdad en el acceso al aborto en Argentina",
+                "publisher": "Amnistía Internacional Argentina",
+                "publishedAt": "2026-05-28",
+                "url": "https://amnistia.org.ar/storage/uploads/352829af-4f55-4032-b58b-6a82b64fce79/Costo-de-la-Retirada.pdf",
+                "perspectiveType": "local",
+                "perspective": "Patient testimonies, Salta field research, and freedom-of-information disclosures documenting household debt and clinic delays across Argentina",
+                "supports": "Documents the canceled 499,200 misoprostol and 96,000 mifepristone tender, 191 helpline stockouts (46.1% in Salta), 83% contraceptive cuts, and out-of-pocket fees."
+            },
+            {
+                "title": "Ley 27.610: Acceso a la Interrupción Voluntaria del Embarazo",
+                "publisher": "Boletín Oficial de la República Argentina",
+                "publishedAt": "2021-01-15",
+                "url": "https://www.boletinoficial.gob.ar/detalleAviso/primera/239807/20210115",
+                "perspectiveType": "institutional",
+                "perspective": "Primary statutory text enacted by Argentina's Congress setting universal access rules, provider duties, and criminal penalties for obstruction",
+                "supports": "Establishes legal voluntary abortion up to 14 weeks, a 10-day service window, free nationwide coverage, conscientious objection limits, and sanctions under Penal Code Article 85 bis."
+            },
+            {
+                "title": "'A testing ground': how Milei is eroding abortion rights in Argentina",
+                "publisher": "The Guardian",
+                "publishedAt": "2025-05-28",
+                "url": "https://www.theguardian.com/global-development/2025/may/28/argentina-womens-rights-javier-milei-testing-ground-eroding-abortion-rights-seek-reverse-landmark-legalisation-warning-amnesty",
+                "perspectiveType": "independent",
+                "perspective": "Independent international reporting inside Argentina connecting federal budget retrenchment to frontline public-hospital care",
+                "supports": "Confirms 283,000 public-sector abortions (2021–2023), maternal death reductions, withdrawal of a 2024 repeal bill, zero 2024 pill deliveries, and doctors warning of clandestine complications."
+            }
+        ],
+        "supplementalSources": [
+            {
+                "title": "Acta de la Reunión Ordinaria N°3/2024 del Consejo Federal de Salud (COFESA)",
+                "publisher": "Ministerio de Salud de la Nación",
+                "publishedAt": "2024-10-21",
+                "url": "https://www.argentina.gob.ar/sites/default/files/2024/05/acta_cofesa_n3.pdf",
+                "perspective": "Official federal-provincial council minutes setting out national cost-cutting policy alongside provincial objections over unitary fiscal rules"
+            },
+            {
+                "title": "Discurso del Presidente Javier Milei en la Gala Anual 2026 de la Fundación Faro",
+                "publisher": "Presidencia de la Nación (Casa Rosada)",
+                "publishedAt": "2026-10-23",
+                "url": "https://www.casarosada.gob.ar/informacion/discursos/51409-discurso-del-presidente-javier-milei-en-la-gala-anual-2026-de-la-fundacion-faro",
+                "perspective": "Executive policy address framing abortion policy as harmful to birth rates and family sustainability"
+            },
+            {
+                "title": "El Estado dejó de comprar medicamentos esenciales para la interrupción del embarazo: reclamamos una respuesta judicial",
+                "publisher": "Centro de Estudios Legales y Sociales (CELS)",
+                "publishedAt": "2026-11-02",
+                "url": "https://www.cels.org.ar/web/2026/11/el-estado-dejo-de-comprar-medicamentos-esenciales-para-la-interrupcion-del-embarazo-reclamamos-una-respuesta-judicial/",
+                "perspective": "Legal filing summary ahead of the 3 November 2026 La Plata hearing in the collective amparo lawsuit"
+            },
+            {
+                "title": "A 5 años de la ley de aborto: el Gobierno no entregó medicamentos y crecen las denuncias por barreras de acceso",
+                "publisher": "Chequeado",
+                "publishedAt": "2025-12-30",
+                "url": "https://chequeado.com/el-explicador/a-5-anos-de-la-ley-de-aborto-el-gobierno-no-entrego-medicamentos-y-crecen-las-denuncias-por-barreras-de-acceso/",
+                "perspective": "Fact-check auditing open federal budget records showing 70,293 treatments delivered in 2022, 106,737 in 2023, and zero in 2024 and Jan–Sep 2025"
+            },
+            {
+                "title": "Abortion Law Reform in Argentina",
+                "publisher": "Guttmacher Institute",
+                "publishedAt": "2024-05-01",
+                "url": "https://www.guttmacher.org/fact-sheet/abortion-law-reform-argentina",
+                "perspective": "Facility-level empirical research across 223 public clinics measuring provincial availability gaps and conscientious objection rates"
+            },
+            {
+                "title": "Argentina: Abortion Access Under Threat",
+                "publisher": "Human Rights Watch",
+                "publishedAt": "2025-09-26",
+                "url": "https://www.hrw.org/news/2025/09/26/reproductive-rights-abortion-access-under-threat-in-argentina",
+                "perspective": "Rights investigation documenting halted pill shipments, 64% early contraceptive cuts, Plan ENIA defunding, and wide provincial disparities"
+            },
+            {
+                "title": "Judge calls for collective lawsuit to guarantee access to abortions",
+                "publisher": "Buenos Aires Times",
+                "publishedAt": "2026-02-26",
+                "url": "https://www.batimes.com.ar/news/argentina/collective-amparo-to-guarantee-access-to-abortions.phtml",
+                "perspective": "Reporting on Federal Court No. 2 of La Plata publicizing Asociación Civil La Ciega's collective action after appeals-court clearance"
+            },
+            {
+                "title": "From Data to Action: Monitoring Legal Abortion Implementation in Corrientes",
+                "publisher": "Equipo Latinoamericano de Justicia y Género (ELA)",
+                "publishedAt": "2026-06-01",
+                "url": "https://ela.org.ar/wp-content/uploads/2026/06/From-data-to-action.-Executive-summary-in-English.-Equipo-Latinoamericano-de-Justicia-y-Genero.pdf",
+                "perspective": "Subnational monitoring tracking provider shrinkage from 28 to 19 clinics and low patient awareness in Corrientes"
+            },
+            {
+                "title": "UN women's rights committee publishes findings on Argentina",
+                "publisher": "Office of the UN High Commissioner for Human Rights (OHCHR)",
+                "publishedAt": "2026-02-23",
+                "url": "https://www.ohchr.org/en/press-releases/2026/02/un-womens-rights-committee-publishes-findings-argentina-czechia-el-salvador",
+                "perspective": "CEDAW Committee review criticizing budget cuts, closure of 81 Access to Justice Centres, and weakened consultation mechanisms"
+            },
+            {
+                "title": "Remarks at Signing Ceremony of the Geneva Consensus Declaration with Argentina",
+                "publisher": "U.S. Department of Health and Human Services",
+                "publishedAt": "2026-08-10",
+                "url": "https://www.hhs.gov/about/agencies/oga/news-events/statement-director-kozma-at-signing-geneva-consensus-declaration-with-argentina/index.html",
+                "perspective": "Diplomatic statement recording Argentina's August 2026 alignment with a non-binding declaration rejecting any international right to abortion"
+            },
+            {
+                "title": "Argentina abortion: Senate approves historic bill in boost for women's rights",
+                "publisher": "BBC News",
+                "publishedAt": "2020-12-30",
+                "url": "https://www.bbc.com/news/world-latin-america-55475036",
+                "perspective": "Contemporaneous parliamentary coverage recording the 38–29–1 Senate legalization vote"
+            },
+            {
+                "title": "Argentina senate rejects bill to legalise abortion",
+                "publisher": "The Guardian",
+                "publishedAt": "2018-08-09",
+                "url": "https://www.theguardian.com/world/2018/aug/09/argentina-senate-rejects-bill-legalise-abortion",
+                "perspective": "Context on the 2018 38–31 Senate defeat that spurred wider grassroots mobilization"
+            },
+            {
+                "title": "Clandestine No More: Legal, Safe, and Free Abortion in Argentina",
+                "publisher": "Georgetown Journal of International Affairs",
+                "publishedAt": "2021-02-16",
+                "url": "https://gjia.georgetown.edu/society-culture/clandestine-no-more-legal-safe-and-free-abortion-in-argentina/",
+                "perspective": "Scholarly analysis of how the 2005 Green Wave coalition, feminist networks, and companion support bills reshaped statutory design"
+            }
+        ],
+        "waypoints": [
+            {
+                "nodeId": "LatinAmerica",
+                "title": "A Legal Right Meets an Empty Pharmacy",
+                "perspectiveLabel": "Frontline patients",
+                "perspectiveType": "local",
+                "conceptInFocus": "Legitimacy",
+                "relatedTimelineDate": "2025-12-30",
+                "narration": "At a public clinic in Tucumán in 2025, a 31-year-old mother of seven requesting a legal abortion was told the pharmacy had no pills and she would have to buy them herself for 170,000 pesos [1]. Across provincial hospitals, patients quoted between 112,000 and 300,000 pesos—roughly US$160—either borrowed money or waited weeks [1, 3].\n\nArgentina's national 0800 helpline logged 191 medication-stockout reports in 2025, with 46.1% coming from Salta [1]. Online barrier reports surged over 300% that year, including 69 from teenagers aged 14 to 19, while 65% of callers lacked basic directions on where to go [1]. When care depends on private cash or clinic tips, household debt replaces an enacted public guarantee.",
+                "focusQuestion": "When a citizen holds a legal right on paper but must borrow money to use it, what breaks down: lawmaking or state delivery?"
+            },
+            {
+                "nodeId": "LatinAmerica",
+                "title": "Writing Universal Free Care into Law",
+                "perspectiveLabel": "Parliamentary mandate",
+                "perspectiveType": "institutional",
+                "conceptInFocus": "Sovereignty",
+                "relatedTimelineDate": "2020-12-30",
+                "narration": "Argentina's green-kerchief coalition campaigned for fifteen years after 2005 and rebuilt support following a 38–31 Senate defeat in 2018 [15, 16]. After twelve hours of debate on 30 December 2020, the Senate approved Law 27.610 by 38 votes to 29 with one abstention [14].\n\nRather than merely decriminalizing private conduct, Law 27.610 guaranteed voluntary termination up to 14 weeks, required delivery within 10 calendar days, mandated free coverage including essential drugs, and criminalized unjustified obstruction under Penal Code Article 85 bis [2]. Public hospitals performed 283,000 abortions between 2021 and 2023 while abortion-related maternal deaths fell by half compared with the prior three years [3].",
+                "focusQuestion": "Why does writing positive funding and timeline duties into statute create stricter state obligations than decriminalization alone?"
+            },
+            {
+                "nodeId": "LatinAmerica",
+                "title": "Zero Federal Pills Without Repealing Law",
+                "perspectiveLabel": "Executive budget policy",
+                "perspectiveType": "independent",
+                "conceptInFocus": "Power",
+                "relatedTimelineDate": "2024-10-21",
+                "narration": "When allies of President Javier Milei introduced a repeal bill in February 2024, Congress lacked votes to pass it and the bill was withdrawn [3]. Without touching the statute, federal deliveries of abortion pills dropped from 70,293 treatments in 2022 and 106,737 in 2023 to zero in 2024 and through September 2025 [7].\n\nOfficial records show the Health Ministry canceled a 2023 tender for 499,200 misoprostol and 96,000 mifepristone tablets in early 2025, while federal contraceptive deliveries fell 83% by 2025 [1]. At an October 2024 federal-provincial council meeting, national officials argued provinces should buy their own medicines to curb spending, whereas Milei publicly attacked the 'murderous abortion agenda' [4, 5].",
+                "focusQuestion": "Can executive spending and procurement choices alter how a democratic law operates when lawmakers leave the statute untouched?"
+            },
+            {
+                "nodeId": "LatinAmerica",
+                "title": "Federalism Splits Care by Postcode",
+                "perspectiveLabel": "Provincial health gaps",
+                "perspectiveType": "local",
+                "conceptInFocus": "Power",
+                "relatedTimelineDate": "2026-05-28",
+                "narration": "Even before federal cuts, a 223-clinic survey across three provinces found 88% of public facilities in Buenos Aires province offered abortion care compared with 40% in La Rioja and 9% in Chaco, partly because two-thirds of municipal hospitals had multiple conscientious objectors [8]. Once central purchasing stopped, poorer provinces lost bulk-buying leverage.\n\nProvinces fund over 75% of public health spending yet operate under centralized national tax rules, provincial ministers warned [1, 4]. By 2025, facility coverage ranged from 70–90% in wealthier jurisdictions down to 2% in lagging provinces [9]. In Corrientes, active providers fell from 28 to 19 [11], while San Isidro's municipal hospital required a court order to disclose restrictive internal rules [1].",
+                "focusQuestion": "Does delegating drug purchases in an unequal federation protect local autonomy or undermine equal national citizenship?"
+            },
+            {
+                "nodeId": "UN_OPEC",
+                "title": "Courts and Treaties Test Enforcement",
+                "perspectiveLabel": "Domestic and global checks",
+                "perspectiveType": "synthesis",
+                "conceptInFocus": "Interdependence",
+                "relatedTimelineDate": "2026-11-03",
+                "narration": "Civic groups took the procurement freeze to Federal Court No. 2 of La Plata through a collective lawsuit brought by Asociación Civil La Ciega with CELS, Amnesty, and ELA [6, 10]. After appeals judges upheld collective standing in February 2026 [10], the trial judge convened a formal hearing on 3 November 2026, where plaintiffs argued the state's own files proved noncompliance [6].\n\nGlobal norms pulled in opposite directions during 2026. In February, the UN CEDAW Committee urged Argentina to restore budgets after closing 81 legal-aid centers [12], whereas in August Buenos Aires signed the non-binding Geneva Consensus Declaration stating there is no international right to abortion [13]. Together, these clashes show that domestic courts—not non-binding pledges—anchor whether national rights hold in practice.",
+                "focusQuestion": "How effectively can judges and international human-rights treaties compel spending when an elected executive resists a statutory mandate?"
+            }
+        ],
+        "background": "After a century of restricting abortion to narrow health or rape exceptions, grassroots feminist organizing surged in Argentina after the National Campaign for Legal, Safe, and Free Abortion launched in 2005 [16]. Green bandanas became a continent-wide symbol even after the Senate voted 38–31 against a 2018 legalization bill following lower-house approval [15, 16]. Congress finally enacted Law 27.610 in December 2020 alongside maternal nutrition support Law 27.611 [14, 16].\n\nBetween 2021 and 2023, national procurement expanded public clinic access across the country and helped halve abortion-related maternal mortality [1, 3], though conscientious objection and provincial capacity gaps remained sharp [8]. That federal framework shifted abruptly after President Javier Milei took office in December 2023. Without congressional repeal of Law 27.610, national budget cuts, halted drug procurement, and near-elimination of Plan ENIA funding below 3% of 2023 levels turned an enacted federal right into a constitutional dispute before La Plata judges [1, 6, 7].",
+        "backgroundSources": [
+            "https://www.theguardian.com/world/2018/aug/09/argentina-senate-rejects-bill-legalise-abortion",
+            "https://www.bbc.com/news/world-latin-america-55475036",
+            "https://www.boletinoficial.gob.ar/detalleAviso/primera/239807/20210115",
+            "https://gjia.georgetown.edu/society-culture/clandestine-no-more-legal-safe-and-free-abortion-in-argentina/",
+            "https://www.guttmacher.org/fact-sheet/abortion-law-reform-argentina"
+        ],
+        "keyTerms": [
+            {
+                "term": "Law 27.610 (IVE)",
+                "definition": "Argentina's 2020 statute guaranteeing free voluntary abortion up to 14 weeks of pregnancy within 10 calendar days across public, social-security, and private providers.",
+                "sourceUrl": "https://www.boletinoficial.gob.ar/detalleAviso/primera/239807/20210115"
+            },
+            {
+                "term": "Collective amparo",
+                "definition": "A fast-track Argentine constitutional lawsuit brought by an organization on behalf of an affected public class to halt alleged state rights violations.",
+                "sourceUrl": "https://www.cels.org.ar/web/2026/11/el-estado-dejo-de-comprar-medicamentos-esenciales-para-la-interrupcion-del-embarazo-reclamamos-una-respuesta-judicial/"
+            },
+            {
+                "term": "Fiscal federalism",
+                "definition": "The division of taxing powers and spending responsibilities between central and provincial governments, which shapes whether local authorities can afford national mandates.",
+                "sourceUrl": "https://www.argentina.gob.ar/sites/default/files/2024/05/acta_cofesa_n3.pdf"
+            },
+            {
+                "term": "Conscientious objection",
+                "definition": "An individual doctor's legal right under Law 27.610 to opt out of performing an abortion on moral grounds, paired with a strict duty to refer patients without delay.",
+                "sourceUrl": "https://www.guttmacher.org/fact-sheet/abortion-law-reform-argentina"
+            },
+            {
+                "term": "CEDAW Concluding Observations",
+                "definition": "Periodic formal assessments by a United Nations expert committee reviewing whether a member state honors treaty duties against gender discrimination.",
+                "sourceUrl": "https://www.ohchr.org/en/press-releases/2026/02/un-womens-rights-committee-publishes-findings-argentina-czechia-el-salvador"
+            }
+        ],
+        "debate": [
+            {
+                "claimBy": "National executive and Health Ministry leadership",
+                "claim": "Ending central purchases eliminates wasteful bureaucracy and shifts drug procurement to provincial autonomy, while opposing what the president calls the 'abortion agenda' aligns policy with demographic preservation and fiscal balance.",
+                "counterBy": "Provincial health chiefs, rights monitors, and legal petitioners",
+                "counterClaim": "Because Law 27.610 guarantees universal free care across Argentina, withholding federal medicines violates statutory duties, hurts poorer provinces lacking purchasing scale, and shifts life-saving care onto private household debt.",
+                "sourceUrls": [
+                    "https://www.argentina.gob.ar/sites/default/files/2024/05/acta_cofesa_n3.pdf",
+                    "https://www.casarosada.gob.ar/informacion/discursos/51409-discurso-del-presidente-javier-milei-en-la-gala-anual-2026-de-la-fundacion-faro",
+                    "https://amnistia.org.ar/storage/uploads/352829af-4f55-4032-b58b-6a82b64fce79/Costo-de-la-Retirada.pdf",
+                    "https://www.cels.org.ar/web/2026/11/el-estado-dejo-de-comprar-medicamentos-esenciales-para-la-interrupcion-del-embarazo-reclamamos-una-respuesta-judicial/"
+                ]
+            },
+            {
+                "claimBy": "Conscientious-objection defenders and conservative municipalities",
+                "claim": "Individual clinicians and municipal clinics retain ethical discretion over counseling and whether to participate directly in pregnancy terminations.",
+                "counterBy": "Frontline public-health researchers and CEDAW reviewers",
+                "counterClaim": "Allowing unpublicized routing protocols, mandatory extra counseling, or staff-wide refusals breaches Law 27.610's 10-day rule and forces delays past 14 weeks.",
+                "sourceUrls": [
+                    "https://www.boletinoficial.gob.ar/detalleAviso/primera/239807/20210115",
+                    "https://www.guttmacher.org/fact-sheet/abortion-law-reform-argentina",
+                    "https://amnistia.org.ar/storage/uploads/352829af-4f55-4032-b58b-6a82b64fce79/Costo-de-la-Retirada.pdf"
+                ]
+            }
+        ],
+        "watchFor": [
+            {
+                "date": "2026-12-31",
+                "indicator": "Federal Court No. 2 of La Plata ruling following the 3 November 2026 hearing on whether the Health Ministry must resume nationwide misoprostol and mifepristone procurement.",
+                "sourceUrl": "https://www.cels.org.ar/web/2026/11/el-estado-dejo-de-comprar-medicamentos-esenciales-para-la-interrupcion-del-embarazo-reclamamos-una-respuesta-judicial/"
+            },
+            {
+                "date": "2027-01-01",
+                "indicator": "Execution of the 2027 national health budget for sexual-health procurement and Plan ENIA relative to 2023 baselines.",
+                "sourceUrl": "https://amnistia.org.ar/storage/uploads/352829af-4f55-4032-b58b-6a82b64fce79/Costo-de-la-Retirada.pdf"
+            },
+            {
+                "date": "2027-10-24",
+                "indicator": "Midterm parliamentary coalitions in Congress testing whether proponents of repeal or defenders of statutory enforcement gain seats.",
+                "sourceUrl": "https://www.theguardian.com/global-development/2025/may/28/argentina-womens-rights-javier-milei-testing-ground-eroding-abortion-rights-seek-reverse-landmark-legalisation-warning-amnesty"
+            }
+        ],
+        "examPrompts": [
+            "Evaluate whether executive budget cuts and administrative decentralization can undermine a human right without formally repealing the law that created it.",
+            "Assess the effectiveness of domestic courts and international treaties in compelling a national government to fulfill positive socio-economic rights, with reference to Argentina."
+        ],
+        "influenceCheck": [
+            {
+                "stage": "Setting the agenda",
+                "rating": "STRONG",
+                "evidence": "Years of Green Wave organizing pushed legal, free abortion onto Congress's agenda in 2018 and 2020, while post-2023 executive rhetoric reframed reproductive spending as fiscal waste.",
+                "sourceUrls": [
+                    "https://gjia.georgetown.edu/society-culture/clandestine-no-more-legal-safe-and-free-abortion-in-argentina/",
+                    "https://www.casarosada.gob.ar/informacion/discursos/51409-discurso-del-presidente-javier-milei-en-la-gala-anual-2026-de-la-fundacion-faro"
+                ]
+            },
+            {
+                "stage": "The formal decision",
+                "rating": "MIXED",
+                "evidence": "Congress kept Law 27.610 in force after a 2024 repeal bill stalled, yet executive officials canceled a 2023 tender for 499,200 misoprostol tablets and shifted purchases onto provinces.",
+                "sourceUrls": [
+                    "https://www.theguardian.com/global-development/2025/may/28/argentina-womens-rights-javier-milei-testing-ground-eroding-abortion-rights-seek-reverse-landmark-legalisation-warning-amnesty",
+                    "https://amnistia.org.ar/storage/uploads/352829af-4f55-4032-b58b-6a82b64fce79/Costo-de-la-Retirada.pdf",
+                    "https://www.argentina.gob.ar/sites/default/files/2024/05/acta_cofesa_n3.pdf"
+                ]
+            },
+            {
+                "stage": "What changed in practice",
+                "rating": "MIXED",
+                "evidence": "Wealthier provinces like Buenos Aires sustained high access, whereas federal pill deliveries fell to zero, 0800 helpline stockouts clustered in poorer northern provinces, and families paid out of pocket.",
+                "sourceUrls": [
+                    "https://chequeado.com/el-explicador/a-5-anos-de-la-ley-de-aborto-el-gobierno-no-entrego-medicamentos-y-crecen-las-denuncias-por-barreras-de-acceso/",
+                    "https://www.hrw.org/news/2025/09/26/reproductive-rights-abortion-access-under-threat-in-argentina",
+                    "https://ela.org.ar/wp-content/uploads/2026/06/From-data-to-action.-Executive-summary-in-English.-Equipo-Latinoamericano-de-Justicia-y-Genero.pdf"
+                ]
+            }
+        ],
+        "conceptLens": {
+            "power": "Executive budget control and canceled tenders altered clinic supplies nationwide even though the president lacked congressional majorities to repeal Law 27.610.",
+            "sovereignty": "Buenos Aires asserted national policy discretion at home and signed the non-binding Geneva Consensus Declaration while domestic courts tested statutory bounds.",
+            "legitimacy": "Law 27.610 retained procedural statutory validity from the 2020 vote, yet clinic stockouts and missing public data weakened citizens' trust in equal state delivery.",
+            "interdependence": "Domestic federalism left provincial ministries dependent on central tax transfers and purchasing scale, while UN CEDAW monitoring scrutinized domestic funding cuts."
+        },
+        "essayBuilder": {
+            "prompt": "Evaluate whether executive budget cuts and administrative decentralization can undermine a human right without formally repealing the law that created it.",
+            "claim": "Executive budget and procurement decisions can substantially hollow out a positive statutory right in practice without repealing it, because hospital rights depend on continuous state supply and coordination.",
+            "evidence": "Even though Congress never repealed Law 27.610, federal abortion pill deliveries fell from 106,737 in 2023 to zero in 2024–2025, contraceptive supplies dropped 83%, and poorer provinces saw sharp access declines.",
+            "counterClaim": "Federal officials argue decentralizing medicine procurement respects provincial autonomy under Argentina's federation and stops forcing taxpayers to fund contested centralized programs.",
+            "judgment": "Overall, rights that require clinical supplies survive in wealthier regions like Buenos Aires province yet erode for lower-income citizens elsewhere unless independent courts enforce national funding minimums.",
+            "sourceUrls": [
+                "https://www.boletinoficial.gob.ar/detalleAviso/primera/239807/20210115",
+                "https://chequeado.com/el-explicador/a-5-anos-de-la-ley-de-aborto-el-gobierno-no-entrego-medicamentos-y-crecen-las-denuncias-por-barreras-de-acceso/",
+                "https://www.argentina.gob.ar/sites/default/files/2024/05/acta_cofesa_n3.pdf",
+                "https://amnistia.org.ar/storage/uploads/352829af-4f55-4032-b58b-6a82b64fce79/Costo-de-la-Retirada.pdf"
+            ]
+        },
+        "timeline": [
+            {
+                "date": "2020-12-30",
+                "label": "Argentine Senate passes Law 27.610 by 38–29 with one abstention, legalizing free voluntary abortion up to 14 weeks.",
+                "sourceUrl": "https://www.bbc.com/news/world-latin-america-55475036"
+            },
+            {
+                "date": "2024-10-21",
+                "label": "Health Ministry tells provincial ministers at COFESA that provinces must assume responsibility and autonomy for medicine purchases.",
+                "sourceUrl": "https://www.argentina.gob.ar/sites/default/files/2024/05/acta_cofesa_n3.pdf"
+            },
+            {
+                "date": "2025-12-30",
+                "label": "Open budget audit confirms federal deliveries of abortion treatments fell 100% from 106,737 in 2023 to zero in 2024 and Jan–Sep 2025.",
+                "sourceUrl": "https://chequeado.com/el-explicador/a-5-anos-de-la-ley-de-aborto-el-gobierno-no-entrego-medicamentos-y-crecen-las-denuncias-por-barreras-de-acceso/"
+            },
+            {
+                "date": "2026-02-23",
+                "label": "UN CEDAW Committee criticizes budget cuts, closure of 81 legal-aid centers, and declining sexual and reproductive health safeguards.",
+                "sourceUrl": "https://www.ohchr.org/en/press-releases/2026/02/un-womens-rights-committee-publishes-findings-argentina-czechia-el-salvador"
+            },
+            {
+                "date": "2026-05-28",
+                "label": "Amnesty International reports a 300%+ jump in abortion access complaints, 191 helpline stockouts, and canceled 2023 pill tenders.",
+                "sourceUrl": "https://amnistia.org.ar/storage/uploads/352829af-4f55-4032-b58b-6a82b64fce79/Costo-de-la-Retirada.pdf"
+            },
+            {
+                "date": "2026-11-03",
+                "label": "Federal Court No. 2 of La Plata holds a hearing in Asociación Civil La Ciega's collective lawsuit demanding federal medicine procurement.",
+                "sourceUrl": "https://www.cels.org.ar/web/2026/11/el-estado-dejo-de-comprar-medicamentos-esenciales-para-la-interrupcion-del-embarazo-reclamamos-una-respuesta-judicial/"
+            }
+        ]
     }
 ];
