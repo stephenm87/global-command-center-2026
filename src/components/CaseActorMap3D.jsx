@@ -967,9 +967,11 @@ export default function CaseActorMap3D({
             : [];
 
         const reservedBoxes = [
-            { x0: 6, y0: height - 132, x1: 148, y1: height - 6 }, // Levels in view HUD
-            { x0: width - 250, y0: height - 40, x1: width - 6, y1: height - 6 }, // Desktop hint pill
+            { x0: 6, y0: height - (width < 480 ? 116 : 132), x1: width < 480 ? 114 : 148, y1: height - 6 },
         ];
+        if (width >= 480) {
+            reservedBoxes.push({ x0: width - 250, y0: height - 40, x1: width - 6, y1: height - 6 });
+        }
         if (floatingSlots.length > 0) {
             reservedBoxes.push({ x0: 8, y0: 4, x1: Math.min(width - 8, 250), y1: 22 });
         }
@@ -1120,9 +1122,21 @@ export default function CaseActorMap3D({
                 entry.btn.setAttribute('aria-pressed', String(isSel));
                 entry._onClick = () => onSelectRef.current?.('cluster', it.id);
                 entry.pop.setAttribute('aria-label', it.cluster.name);
+                const popW = 224;
                 const screenX = (it.proj?.x || 0) + (adj?.dx || 0);
-                const popLeft = Math.max(8 - screenX, Math.min(width - 232 - screenX, 10));
+                const screenY = (it.proj?.y || 0) + (adj?.dy || 0);
+                let popLeft = 16;
+                let popTop = -18;
+                if (screenX + 16 + popW <= width - 8) {
+                    popLeft = 16;
+                } else if (screenX - 16 - popW >= 8) {
+                    popLeft = -(popW + 16);
+                } else {
+                    popLeft = Math.max(8 - screenX, Math.min(width - popW - 8 - screenX, -popW / 2));
+                    popTop = screenY > height * 0.55 ? -168 : 20;
+                }
                 entry.pop.style.left = `${popLeft.toFixed(1)}px`;
+                entry.pop.style.top = `${popTop.toFixed(1)}px`;
                 entry.popTitle.textContent = it.cluster.name;
                 const memberKey = it.members.map(m => m.id).join(',');
                 if (entry.popMemberKey !== memberKey) {

@@ -1977,7 +1977,7 @@ export const AFRICA_CASES_2026 = [
                         { "id": "igad", "preferredSide": "bl" },
                         { "id": "somalia-fg", "preferredSide": "b" },
                         { "id": "israel", "preferredSide": "r" },
-                        { "id": "somaliland-authorities", "small": true },
+                        { "id": "somaliland-authorities", "preferredSide": "r" },
                         { "id": "un-security-council" }
                     ],
                     "connections": ["au-null-void", "igad-backs-somalia", "unsc-condemns"]
@@ -1991,12 +1991,27 @@ export const AFRICA_CASES_2026 = [
                     "cam": { "lat": 16.5, "lng": 37.5, "dist": 0.92, "tilt": 16 },
                     "bloc": true,
                     "quietLabels": true,
+                    "clusters": [
+                        {
+                            "id": "somaliland-local-actors",
+                            "name": "Somaliland: 2 actors",
+                            "note": "Tap or hover to list",
+                            "level": "local",
+                            "lat": 9.02,
+                            "lng": 45.7,
+                            "preferredSide": "tr",
+                            "memberIds": [
+                                "somaliland-authorities",
+                                "ssc-khaatumo"
+                            ]
+                        }
+                    ],
                     "actors": [
                         { "id": "somaliland-authorities", "preferredSide": "l" },
-                        { "id": "ssc-khaatumo", "small": true },
+                        { "id": "ssc-khaatumo" },
                         { "id": "somalia-fg", "preferredSide": "b" },
                         { "id": "israel", "preferredSide": "r" },
-                        { "id": "igad", "small": true },
+                        { "id": "igad", "preferredSide": "b" },
                         { "id": "african-union", "preferredSide": "l" },
                         { "id": "un-security-council" }
                     ],

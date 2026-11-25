@@ -655,11 +655,26 @@ export const ASIA_PACIFIC_CASES_2026 = [
                     "levels": ["local", "state", "regional"],
                     "cam": { "lat": 19.6, "lng": 107.2, "dist": 0.45, "tilt": 16 },
                     "bloc": true,
+                    "clusters": [
+                        {
+                            "id": "myanmar-step4-actors",
+                            "name": "Myanmar: 2 actors",
+                            "note": "Tap or hover to list",
+                            "level": "state",
+                            "lat": 20.9,
+                            "lng": 95.3,
+                            "preferredSide": "b",
+                            "memberIds": [
+                                "military-authorities",
+                                "sagaing-displaced"
+                            ]
+                        }
+                    ],
                     "actors": [
                         { "id": "asean", "preferredSide": "b", "note": "Manila, Nov 2026" },
                         { "id": "military-authorities", "preferredSide": "l" },
                         { "id": "india", "preferredSide": "t" },
-                        { "id": "sagaing-displaced", "small": true }
+                        { "id": "sagaing-displaced" }
                     ],
                     "connections": ["asean-ban", "sagaing-crosses"]
                 },
