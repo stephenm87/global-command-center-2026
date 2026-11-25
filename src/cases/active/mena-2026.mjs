@@ -1526,5 +1526,471 @@ export const MENA_CASES_2026 = [
                 "sourceUrl": "https://www.imo.org/en/mediacentre/pressbriefings/pages/imo-council-c138-urges-stronger-protection-of-seafarers-amid-threats-to-global-shipping-.aspx"
             }
         ]
+    },
+    {
+        "id": "iraq-post-isil-sovereignty-reconstruction",
+        "status": "active",
+        "briefingVersion": 2,
+        "title": "Post-ISIL Iraq: Territory, Aid, and Unfinished Sovereignty",
+        "subtitle": "Returnees, militia holdouts, and the exit of UN and coalition missions",
+        "coverageRegion": "Middle East & North Africa",
+        "regionTags": [
+            "Middle East",
+            "Iraq",
+            "Levant"
+        ],
+        "issueLens": "Governance & Rights",
+        "broadCategory": "Governance & Rights",
+        "issueDimensions": [
+            "Post-conflict reconstruction",
+            "Internal displacement",
+            "De jure vs. de facto sovereignty",
+            "Civil documentation",
+            "Security sector governance",
+            "Disputed internal territories"
+        ],
+        "actors": [
+            "Displaced families and returnees across liberated provinces",
+            "Federal Government of Iraq and Iraqi Security Forces",
+            "United Nations Development Programme (UNDP) and IOM Iraq",
+            "United States-led Operation Inherent Resolve Coalition",
+            "Popular Mobilization Forces (PMF) and Iran-aligned armed factions"
+        ],
+        "nexusNodeIds": [
+            "MiddleEast",
+            "UN_OPEC",
+            "USA",
+            "Hezbollah"
+        ],
+        "statusSummary": "More than 4.9 million Iraqis have returned or relocated since the war against the Islamic State of Iraq and the Levant (ISIL) ended, yet International Organization for Migration (IOM) data show more than one million remain internally displaced [7, 8]. On 31 December 2025 the United Nations closed its political mission in Iraq, and on 30 September 2026 United States forces withdrew from Erbil Air Base [2, 10]. In November 2026, Baghdad negotiated entry into militia-held Jurf al-Sakhar while postponing armed-faction disarmament to June 2027 [3].",
+        "whyItMatters": "Post-ISIL Iraq shows why international recognition, retaking cities by force, and governing all territory fairly are distinct steps. Ending foreign missions restored legal authority to Baghdad, while over one million still-displaced citizens and armed faction holdouts test everyday state legitimacy [3, 6, 8].",
+        "updatedAt": "2026-11-25",
+        "confidence": "medium",
+        "uncertainty": "Displacement severity varies sharply by district, civil-registry records lag, and whether negotiated deployments such as Jurf al-Sakhar disarm armed factions or institutionalize them remains contested.",
+        "sensitivity": "high",
+        "editorialCaution": "Returns, displacement barriers, and security incidents reflect localized ethno-sectarian and political dynamics across federal Iraq, disputed territories, and the Kurdistan Region; avoid conflating civilian returnees or local communities with armed factions.",
+        "featured": true,
+        "reviewCadenceDays": 14,
+        "reviewBy": "2026-12-09",
+        "coordinates": {
+            "latitude": 36.3489,
+            "longitude": 43.1577
+        },
+        "map": {
+            "mode": "regional",
+            "locations": [
+                {
+                    "label": "Mosul",
+                    "latitude": 36.3489,
+                    "longitude": 43.1577,
+                    "role": "Iraq's second-largest city; seized by ISIL in June 2014 and retaken in July 2017 after fighting that uprooted over 800,000 residents"
+                },
+                {
+                    "label": "Tuz Khurmatu",
+                    "latitude": 34.8881,
+                    "longitude": 44.6326,
+                    "role": "Disputed Salah al-Din district where 33,856 residents remain displaced and 18 villages report zero returns"
+                },
+                {
+                    "label": "Amriyat Al-Fallujah",
+                    "latitude": 33.1786,
+                    "longitude": 43.8908,
+                    "role": "Anbar town where IOM restored 64 houses, three electricity networks, water treatment, and a health clinic for returning families"
+                },
+                {
+                    "label": "Baghdad",
+                    "latitude": 33.3152,
+                    "longitude": 44.3661,
+                    "role": "Federal capital where Iraq marked 'Sovereignty Days' after UN political oversight and US base deployments ended"
+                },
+                {
+                    "label": "Erbil",
+                    "latitude": 36.1911,
+                    "longitude": 44.0092,
+                    "role": "Capital of Iraq's Kurdistan Region and final hub for roughly 1,500 US-led Coalition forces withdrawn on 30 September 2026"
+                },
+                {
+                    "label": "Jurf al-Sakhar",
+                    "latitude": 32.8936,
+                    "longitude": 44.1856,
+                    "role": "Town southwest of Baghdad held by Kataib Hezbollah since 2014; entered by joint Iraqi forces under a November 2026 compromise"
+                }
+            ]
+        },
+        "sources": [
+            {
+                "title": "Returning Home Is Only the Beginning",
+                "publisher": "International Organization for Migration (IOM Iraq)",
+                "publishedAt": "2026-10-22",
+                "url": "https://iraq.iom.int/stories/returning-home-only-beginning",
+                "perspectiveType": "local",
+                "perspective": "Testimony from returning families and local service directors in Amriyat Al-Fallujah, Anbar",
+                "supports": "Supports accounts of families returning after a decade in tents, IOM reconstruction of 64 houses, power grids, water plants, and a primary health centre, plus farmer concerns over unemployment and climate strain."
+            },
+            {
+                "title": "U.S. Forces End Operation Inherent Resolve Mission in Iraq",
+                "publisher": "U.S. Central Command (CENTCOM)",
+                "publishedAt": "2026-09-30",
+                "url": "https://www.centcom.mil/MEDIA/PUBLIC-RELEASES/Article/4614532/us-forces-end-operation-inherent-resolve-mission-in-iraq/",
+                "perspectiveType": "institutional",
+                "perspective": "Official coalition military statement on ending Operation Inherent Resolve in Iraq",
+                "supports": "Supports the 30 September 2026 withdrawal of forces and equipment from Erbil Air Base, the roughly 1,500-troop hub figure, relocation of the headquarters to Jordan for Syria, and transition of security responsibility to Baghdad."
+            },
+            {
+                "title": "What next for Iraq's push against militias following Jurf al-Sakhar deal?",
+                "publisher": "Al Jazeera",
+                "publishedAt": "2026-11-22",
+                "url": "https://www.aljazeera.com/news/2026/11/22/what-next-for-iraqs-push-against-militias-following-jurf-al-sakhar-deal",
+                "perspectiveType": "independent",
+                "perspective": "Independent reporting and strategy analysis on Baghdad's November 2026 Jurf al-Sakhar agreement",
+                "supports": "Supports the November 2026 Jurf al-Sakhar compromise deploying Iraqi army, federal police, and Popular Mobilization Forces brigades, Kataib Hezbollah's 12-year hold, Prime Minister Ali al-Zaidi's postponement of militia disarmament to June 2027, and analyst assessments."
+            }
+        ],
+        "supplementalSources": [
+            {
+                "title": "Funding Facility for Stabilization - 2025 Quarter Three report",
+                "publisher": "United Nations Development Programme (UNDP Iraq)",
+                "publishedAt": "2026-02-01",
+                "url": "https://www.undp.org/iraq/publications/funding-facility-stabilization-2025-quarter-three-report",
+                "perspective": "UN stabilization programme operational update during the 2024–2026 handover phase",
+                "supports": "Supports the completion of 3,447 infrastructure projects across five liberated governorates through Q3 2025 and the 2024–2026 transition phase."
+            },
+            {
+                "title": "Funding Facility for Stabilization: Annual Progress Report (January–December 2024)",
+                "publisher": "United Nations Development Programme (UNDP Iraq)",
+                "publishedAt": "2025-07-15",
+                "url": "https://www.undp.org/sites/g/files/zskgke326/files/2025-07/ffs_annual_progress_report_2024_final.pdf",
+                "perspective": "Official UNDP annual financial and engineering report on post-ISIL reconstruction",
+                "supports": "Supports cumulative multi-donor revenue of US$1.52 billion through 2024, 38,138 rehabilitated housing units, Northern Technical University laboratory repairs, and the Government-approved Exit Strategy through December 2026."
+            },
+            {
+                "title": "Prospects for Resolving Displacement in Areas of Limited and No Return in Tuz Khurmatu District",
+                "publisher": "IOM Iraq and Social Inquiry",
+                "publishedAt": "2024-12-23",
+                "url": "https://iraqdtm.iom.int/files/DurableSolutions/202412233553183_PROSPECTS%20FOR%20RESOLVING%20DISPLACEMENT%20IN%20AREAS%20IF%20LIMITED%20AND%20NO%20RETURN%20IN%20TUZ%20KHURMATU.pdf",
+                "perspective": "District-level qualitative research with Kurdish, Sunni Arab, and Sunni Turkmen displaced groups",
+                "supports": "Supports Tuz Khurmatu's 65% return rate, 33,856 still-displaced residents, 18 villages with zero returns, and barriers including missing civil IDs, destroyed houses, compensation backlogs, and militia/disputed-territory blocks."
+            },
+            {
+                "title": "Displacement Index: Findings: Round 11 (January 2025)",
+                "publisher": "International Organization for Migration (IOM Iraq)",
+                "publishedAt": "2025-01-31",
+                "url": "https://iraqdtm.iom.int/files/DisplacementIndex/20253134128682_IOM_DTM_DI_11.pdf",
+                "perspective": "Nationwide displacement severity survey covering 18 governorates",
+                "supports": "Supports the national estimate of around 1.03 million internally displaced people, including 918,630 out-of-camp displaced residents assessed across 2,486 locations."
+            },
+            {
+                "title": "PRESS RELEASE: Iraq, IOM Chart Path to Recovery, Development, and Safe Migration",
+                "publisher": "United Nations in Iraq",
+                "publishedAt": "2026-09-22",
+                "url": "https://iraq.un.org/en/323148-press-release-iraq-iom-chart-path-recovery-development-and-safe-migration",
+                "perspective": "Joint UN and IOM statement on Iraq's 2025–2029 recovery and migration strategy",
+                "supports": "Supports the figure of more than 4.9 million people returned or relocated since the conflict with ISIL ended alongside more than one million still internally displaced."
+            },
+            {
+                "title": "Iraq, December 2025 Monthly Forecast",
+                "publisher": "Security Council Report",
+                "publishedAt": "2025-11-30",
+                "url": "https://www.securitycouncilreport.org/monthly-forecast/2025-12/iraq-26.php",
+                "perspective": "Independent UN Security Council monitoring brief on UNAMI's closure",
+                "supports": "Supports UNAMI's 2003 establishment, its scheduled 31 December 2025 closure under Resolution 2732, and the transfer of responsibilities to Iraqi authorities and the UN Country Team."
+            },
+            {
+                "title": "UNAMI Mandate (Resolution 2732)",
+                "publisher": "United Nations in Iraq",
+                "publishedAt": null,
+                "sourceType": "living-reference",
+                "reviewedAt": "2026-11-25",
+                "url": "https://iraq.un.org/en/133480-unami-mandate",
+                "perspective": "Official archived mandate page recording UNAMI's conclusion on 31 December 2025",
+                "supports": "Supports official confirmation that UNAMI concluded its mandate on 31 December 2025 and transferred UN coordination to the Resident Coordinator."
+            },
+            {
+                "title": "How does Iraq's security change after US forces withdraw?",
+                "publisher": "Al Jazeera (with AP and Reuters)",
+                "publishedAt": "2026-09-30",
+                "url": "https://www.aljazeera.com/news/2026/9/30/how-does-iraqs-security-change-after-us-forces-withdraw",
+                "perspective": "Independent reporting on Iraq's post-withdrawal security environment and Kurdistan air-defense concerns",
+                "supports": "Supports the four 'Sovereignty Days' national holiday, Kurdish officials' report of over 1,000 drone and missile attacks in 2026, air-defense gaps, ISIL's weakened state, and the June 2027 disarmament extension."
+            },
+            {
+                "title": "How the battle for Mosul unfolded",
+                "publisher": "BBC News",
+                "publishedAt": "2017-07-05",
+                "url": "https://www.bbc.com/news/world-middle-east-37702442",
+                "perspective": "International conflict reporting on the fall and recapture of Mosul",
+                "supports": "Supports ISIL's June 2014 seizure of Mosul, the October 2016–July 2017 recapture offensive, over 800,000 residents displaced from Mosul, and UN estimates of over US$1 billion in basic infrastructure damage."
+            },
+            {
+                "title": "Iraq Crisis Response Plan 2026",
+                "publisher": "International Organization for Migration (IOM)",
+                "publishedAt": null,
+                "sourceType": "living-reference",
+                "updatedAt": "2026-06-17",
+                "reviewedAt": "2026-11-25",
+                "url": "https://crisisresponse.iom.int/response/iraq-crisis-response-plan-2026",
+                "perspective": "Operational IOM response appeal for 2026 recovery and durable solutions",
+                "supports": "Supports the figure of 112,845 displaced people still living in camps alongside out-of-camp populations and nearly 610,000 returnees facing severe living conditions."
+            }
+        ],
+        "waypoints": [
+            {
+                "nodeId": "MiddleEast",
+                "title": "Returning to Ruined Cities",
+                "perspectiveLabel": "Displaced Iraqi families and returnees",
+                "perspectiveType": "local",
+                "conceptInFocus": "Sovereignty",
+                "relatedTimelineDate": "2017-07",
+                "narration": "In October 2026, Waiza waited outside her front door in Amriyat Al-Fallujah as grandchildren played inside a rebuilt house [1]. War between 2014 and 2016 had uprooted her family with not even a sleeping mat to carry [1]. Earlier, the extremist group Islamic State of Iraq and the Levant (ISIL) had seized Mosul and wide northern provinces [12]. Iraqi forces and coalition airstrikes retook Mosul in July 2017 after grueling urban battles [12]. Fighting displaced over 800,000 Mosul residents and caused over US$1 billion in infrastructure damage [12].\n\nWinning territory back by force did not automatically make ruined neighborhoods safe or livable again [1, 12]. Sovereignty—supreme political authority within borders—divides into legal standing abroad and practical administration at home [6]. Baghdad never lost its United Nations seat, yet families returned only once clinics, power lines, and water pipes worked reliably again [1].",
+                "focusQuestion": "Why does recapturing a city militarily not immediately restore full sovereignty for the families who fled it?"
+            },
+            {
+                "nodeId": "UN_OPEC",
+                "title": "Rebuilding Through Pooled Aid",
+                "perspectiveLabel": "UNDP and international stabilization donors",
+                "perspectiveType": "institutional",
+                "conceptInFocus": "Interdependence",
+                "relatedTimelineDate": "2025-09",
+                "narration": "In July 2025, engineering students in Ninewa worked inside newly equipped laboratories at Northern Technical University after United Nations repairs [5]. Following the war against ISIL, Baghdad partnered with the United Nations Development Programme (UNDP) to stabilize five liberated provinces [4, 5]. International donors pooled US$1.52 billion to repair clinics, power grids, schools, and 38,138 damaged family homes [5]. By late 2025, reconstruction crews had completed 3,447 local projects ahead of an agreed national handover [4, 5].\n\nAcross Iraq, repaired neighborhoods helped more than 4.9 million citizens return or relocate from temporary shelter [8]. Interdependence—mutual reliance across borders for resources and stability—meant federal ministries depended on outside money and technical engineers to restore everyday life [4, 5]. As external stabilization grants end in late 2026, Iraqi ministries and local councils must finance, maintain, and staff those facilities themselves [1, 4, 5].",
+                "focusQuestion": "How do Iraq's five-province UNDP totals both demonstrate recovery and depend on continuing outside money and skills?"
+            },
+            {
+                "nodeId": "MiddleEast",
+                "title": "Barriers Hidden Inside Districts",
+                "perspectiveLabel": "Minority and still-displaced communities in Tuz Khurmatu",
+                "perspectiveType": "local",
+                "conceptInFocus": "Legitimacy",
+                "relatedTimelineDate": "2024-12",
+                "narration": "In December 2024, displaced Kurdish, Sunni Arab, and Sunni Turkmen residents from Tuz Khurmatu told field researchers why returning home stayed out of reach [6]. Some families lacked valid identity documents needed to pass checkpoints and enroll children in local schools [6]. Others pointed to leveled houses, stalled war-compensation claims, and armed groups blocking eighteen rural villages [6]. In Tuz Khurmatu alone, 33,856 residents remained uprooted alongside roughly 1.03 million displaced citizens across Iraq [6, 7].\n\nNational recovery totals hide sharp district barriers that trap families between war rubble and distrusted armed groups [6, 7]. Legitimacy—citizens' belief that public authority is rightful and fair—erodes when civil registries, courts, and security checkpoints treat communities unequally [6]. Even where utilities return in towns like Amriyat Al-Fallujah, farmers such as Hussein still confront scarce rural jobs and climate strain [1, 8].",
+                "focusQuestion": "Why do missing identity cards, slow compensation payments, and disputed districts matter as much as bricks and mortar?"
+            },
+            {
+                "nodeId": "USA",
+                "title": "Foreign Missions Pack Up",
+                "perspectiveLabel": "US-led Coalition and UN mission transitions",
+                "perspectiveType": "institutional",
+                "conceptInFocus": "Sovereignty",
+                "relatedTimelineDate": "2026-09-30",
+                "narration": "On 30 September 2026, Iraqi military convoys paraded past crowds in Baghdad under Sovereignty Days banners as United States troops finished leaving Erbil Air Base [2, 11]. That departure closed Operation Inherent Resolve inside Iraq, withdrawing roughly 1,500 coalition personnel from their final northern hub [2]. Coalition commanders shifted their regional headquarters next door to Jordan to keep targeting ISIL cells inside Syria [2]. Months earlier, the United Nations had ended its political mission in Baghdad after more than two decades [9, 10].\n\nClosing foreign military and political missions returned full formal jurisdiction over bases, airspace, and Iraqi elections to Baghdad [2, 10]. Yet Kurdish leaders warned that losing United States air defenses left northern cities exposed after over 1,000 drone and missile attacks in 2026 [11]. Legal authority at the border returned faster than unified air protection or lasting regional calm [11].",
+                "focusQuestion": "What changed legally when UNAMI and coalition troops departed, and what security vulnerabilities remained?"
+            },
+            {
+                "nodeId": "Hezbollah",
+                "title": "Competing Guns After Exit",
+                "perspectiveLabel": "Federal authority vs. autonomous armed factions",
+                "perspectiveType": "synthesis",
+                "conceptInFocus": "Power",
+                "relatedTimelineDate": "2026-11-19",
+                "narration": "On 20 November 2026, Iraqi army soldiers and federal police entered Jurf al-Sakhar, southwest of Baghdad, under a tense negotiated deal [3]. For twelve years after pushing ISIL from the town, the Iran-aligned faction Kataib Hezbollah had kept regular state authorities locked out [3]. Under anti-corruption probes and regional pipeline strikes, Prime Minister Ali al-Zaidi secured an Iranian-brokered pullback agreement [3]. Soon after, Baghdad postponed its armed-faction disarmament deadline until June 2027 because militias refused to surrender heavy weapons [3, 11].\n\nMilitary campaigns cleared ISIL from Iraqi cities, yet bargaining with armed holdouts shows how divided domestic authority remains [3]. Power—the ability to shape events and compel obedience—still splinters among Baghdad ministries, Kurdish forces, and autonomous militias inside state uniform [3, 11]. Until civilian institutions control weapons and services evenly nationwide, post-war sovereignty stays unfinished [3, 6].",
+                "focusQuestion": "Does integrating militia brigades alongside regular troops strengthen Iraq's state authority or institutionalize divided power?"
+            }
+        ],
+        "concepts": [
+            "Power",
+            "Sovereignty",
+            "Legitimacy",
+            "Interdependence"
+        ],
+        "ibThemes": [
+            "peace-and-conflict",
+            "rights-and-justice"
+        ],
+        "background": "In June 2014, the extremist group ISIL captured Mosul, Iraq's second-largest city, and overran wide northern and western provinces [12]. For three years, Baghdad retained formal international recognition and its United Nations seat, while militants governed millions of residents at gunpoint [6, 12]. That divide separated legal sovereignty on paper from daily territorial control [6].\n\nBacked by a US-led military coalition, Iraqi forces and allied fighters retook Mosul in July 2017 after grueling urban combat [12]. War shattered bridges, water treatment plants, power networks, clinics, and tens of thousands of homes across five liberated provinces [4, 5, 12]. Around six million Iraqis fled inside the country during the conflict [6].\n\nUnited Nations agencies worked with Iraqi ministries to pool international funds, clear neighborhoods, and restore core public utilities [4, 5, 8]. Over 4.9 million citizens later returned or relocated [8]. Deep barriers still keep more than one million uprooted across damaged districts [7, 13]. By late 2026, Baghdad had ended international political oversight and US base deployments while struggling to bring armed factions under central command [2, 3, 10].",
+        "backgroundSources": [
+            "https://www.bbc.com/news/world-middle-east-37702442",
+            "https://www.undp.org/sites/g/files/zskgke326/files/2025-07/ffs_annual_progress_report_2024_final.pdf",
+            "https://iraqdtm.iom.int/files/DurableSolutions/202412233553183_PROSPECTS%20FOR%20RESOLVING%20DISPLACEMENT%20IN%20AREAS%20IF%20LIMITED%20AND%20NO%20RETURN%20IN%20TUZ%20KHURMATU.pdf",
+            "https://iraq.un.org/en/323148-press-release-iraq-iom-chart-path-recovery-development-and-safe-migration",
+            "https://www.centcom.mil/MEDIA/PUBLIC-RELEASES/Article/4614532/us-forces-end-operation-inherent-resolve-mission-in-iraq/",
+            "https://www.aljazeera.com/news/2026/11/22/what-next-for-iraqs-push-against-militias-following-jurf-al-sakhar-deal"
+        ],
+        "keyTerms": [
+            {
+                "term": "De jure vs. de facto sovereignty",
+                "definition": "The difference between lawful international recognition as a state and actual administrative control over territory, courts, and basic public services on the ground.",
+                "sourceUrl": "https://iraqdtm.iom.int/files/DurableSolutions/202412233553183_PROSPECTS%20FOR%20RESOLVING%20DISPLACEMENT%20IN%20AREAS%20IF%20LIMITED%20AND%20NO%20RETURN%20IN%20TUZ%20KHURMATU.pdf"
+            },
+            {
+                "term": "Internally displaced person (IDP)",
+                "definition": "A person forced to flee their home by war or disaster who remains inside their own country's borders; around 1.03 million Iraqis remain internally displaced.",
+                "sourceUrl": "https://iraqdtm.iom.int/files/DisplacementIndex/20253134128682_IOM_DTM_DI_11.pdf"
+            },
+            {
+                "term": "Funding Facility for Stabilization (FFS)",
+                "definition": "A pooled UNDP-managed reconstruction fund supported by over 30 donors that completed 3,447 infrastructure and housing projects across five liberated provinces ahead of a December 2026 handover.",
+                "sourceUrl": "https://www.undp.org/iraq/publications/funding-facility-stabilization-2025-quarter-three-report"
+            },
+            {
+                "term": "Durable solutions",
+                "definition": "Safe, voluntary return, local integration, or settlement elsewhere backed by housing, civil identity documents, livelihoods, and community reconciliation.",
+                "sourceUrl": "https://iraqdtm.iom.int/files/DurableSolutions/202412233553183_PROSPECTS%20FOR%20RESOLVING%20DISPLACEMENT%20IN%20AREAS%20IF%20LIMITED%20AND%20NO%20RETURN%20IN%20TUZ%20KHURMATU.pdf"
+            },
+            {
+                "term": "Popular Mobilization Forces (PMF)",
+                "definition": "State-recognized umbrella of armed brigades formed in 2014 against ISIL, several of whose powerful factions maintain autonomous political and Iranian links.",
+                "sourceUrl": "https://www.aljazeera.com/news/2026/11/22/what-next-for-iraqs-push-against-militias-following-jurf-al-sakhar-deal"
+            }
+        ],
+        "debate": [
+            {
+                "claimBy": "U.S. Central Command and Baghdad officials (30 September 2026)",
+                "claim": "Ending Operation Inherent Resolve and UNAMI transferred primary security and governance back to capable Iraqi institutions after defeating ISIL's territorial hold [2, 11].",
+                "counterBy": "Kurdistan Region Prime Minister Masrour Barzani and Iraq analysts (September–November 2026)",
+                "counterClaim": "Withdrawing foreign air defenses and delaying militia disarmament left northern cities exposed after over 1,000 strikes and kept armed factions active outside central command [3, 11].",
+                "sourceUrls": [
+                    "https://www.centcom.mil/MEDIA/PUBLIC-RELEASES/Article/4614532/us-forces-end-operation-inherent-resolve-mission-in-iraq/",
+                    "https://www.aljazeera.com/news/2026/9/30/how-does-iraqs-security-change-after-us-forces-withdraw",
+                    "https://www.aljazeera.com/news/2026/11/22/what-next-for-iraqs-push-against-militias-following-jurf-al-sakhar-deal"
+                ]
+            },
+            {
+                "claimBy": "Arab Perspectives Institute director Zeidon Alkinani (Al Jazeera, 22 November 2026)",
+                "claim": "Negotiating Baghdad's November 2026 entry into Jurf al-Sakhar avoided armed clashes and marked a step toward restoring federal authority [3].",
+                "counterBy": "Security analyst Tallha Abdulrazaq (Al Jazeera, 22 November 2026)",
+                "counterClaim": "Sending pro-militia Popular Mobilization Forces brigades under federal orders risks swapping militia control for militias in uniform without dismantling autonomous weapons sites [3].",
+                "sourceUrls": [
+                    "https://www.aljazeera.com/news/2026/11/22/what-next-for-iraqs-push-against-militias-following-jurf-al-sakhar-deal"
+                ]
+            },
+            {
+                "claimBy": "UNDP Iraq and Government of Iraq stabilization reports (2025–2026)",
+                "claim": "Completing 3,447 infrastructure projects and supporting over 4.9 million returns shows federal reconstruction restored essential services across liberated provinces [4, 8].",
+                "counterBy": "IOM Iraq and Tuz Khurmatu focus-group participants (December 2024)",
+                "counterClaim": "Broad provincial totals overlook 1.03 million still-displaced citizens shut out of eighteen villages by rubble, missing identity papers, compensation backlogs, and militia distrust [6, 7].",
+                "sourceUrls": [
+                    "https://www.undp.org/iraq/publications/funding-facility-stabilization-2025-quarter-three-report",
+                    "https://iraq.un.org/en/323148-press-release-iraq-iom-chart-path-recovery-development-and-safe-migration",
+                    "https://iraqdtm.iom.int/files/DurableSolutions/202412233553183_PROSPECTS%20FOR%20RESOLVING%20DISPLACEMENT%20IN%20AREAS%20IF%20LIMITED%20AND%20NO%20RETURN%20IN%20TUZ%20KHURMATU.pdf",
+                    "https://iraqdtm.iom.int/files/DisplacementIndex/20253134128682_IOM_DTM_DI_11.pdf"
+                ]
+            }
+        ],
+        "watchFor": [
+            {
+                "date": "31 December 2026",
+                "indicator": "Scheduled completion of UNDP's Funding Facility for Stabilization transition phase and final handover of stabilized infrastructure to Iraqi ministries.",
+                "sourceUrl": "https://www.undp.org/sites/g/files/zskgke326/files/2025-07/ffs_annual_progress_report_2024_final.pdf"
+            },
+            {
+                "date": "June 2027",
+                "indicator": "Baghdad's revised deadline for non-state and Iran-aligned armed factions to place weapons under federal state command.",
+                "sourceUrl": "https://www.aljazeera.com/news/2026/11/22/what-next-for-iraqs-push-against-militias-following-jurf-al-sakhar-deal"
+            },
+            {
+                "date": "Quarterly / 2027",
+                "indicator": "IOM Displacement Tracking Matrix updates on whether the ~1.03 million internally displaced population shrinks in zero-return districts such as Tuz Khurmatu and Sinjar.",
+                "sourceUrl": "https://iraqdtm.iom.int/files/DisplacementIndex/20253134128682_IOM_DTM_DI_11.pdf"
+            }
+        ],
+        "examPrompts": [
+            "To what extent does regaining military control of territory restore effective state sovereignty after internal conflict?",
+            "Evaluate the view that international stabilization aid can rebuild infrastructure faster than it can build domestic political legitimacy."
+        ],
+        "influenceCheck": [
+            {
+                "stage": "Setting the agenda",
+                "rating": "STRONG",
+                "evidence": "After Mosul's 2017 liberation, Baghdad and the United Nations rapidly mobilized over 30 donors behind neighborhood stabilization so millions displaced by war could return.",
+                "sourceUrls": [
+                    "https://www.undp.org/sites/g/files/zskgke326/files/2025-07/ffs_annual_progress_report_2024_final.pdf",
+                    "https://www.bbc.com/news/world-middle-east-37702442"
+                ]
+            },
+            {
+                "stage": "The formal decision",
+                "rating": "STRONG",
+                "evidence": "Iraqi authorities co-governed the UNDP stabilization handover, ended UNAMI's 22-year mandate on 31 December 2025, closed US bases on 30 September 2026, and negotiated Jurf al-Sakhar deployment.",
+                "sourceUrls": [
+                    "https://iraq.un.org/en/133480-unami-mandate",
+                    "https://www.centcom.mil/MEDIA/PUBLIC-RELEASES/Article/4614532/us-forces-end-operation-inherent-resolve-mission-in-iraq/",
+                    "https://www.aljazeera.com/news/2026/11/22/what-next-for-iraqs-push-against-militias-following-jurf-al-sakhar-deal"
+                ]
+            },
+            {
+                "stage": "What changed in practice",
+                "rating": "MIXED",
+                "evidence": "More than 4.9 million citizens returned and 3,447 projects rebuilt vital utilities, yet over one million remain internally displaced, 18 villages in Tuz Khurmatu stay closed, and militia disarmament slid to June 2027.",
+                "sourceUrls": [
+                    "https://iraq.un.org/en/323148-press-release-iraq-iom-chart-path-recovery-development-and-safe-migration",
+                    "https://www.undp.org/iraq/publications/funding-facility-stabilization-2025-quarter-three-report",
+                    "https://iraqdtm.iom.int/files/DurableSolutions/202412233553183_PROSPECTS%20FOR%20RESOLVING%20DISPLACEMENT%20IN%20AREAS%20IF%20LIMITED%20AND%20NO%20RETURN%20IN%20TUZ%20KHURMATU.pdf",
+                    "https://www.aljazeera.com/news/2026/11/22/what-next-for-iraqs-push-against-militias-following-jurf-al-sakhar-deal"
+                ]
+            }
+        ],
+        "conceptLens": {
+            "power": "Coalition airpower and Iraqi forces broke ISIL's territorial hold, while donor funds rebuilt grids and domestic political bargaining still determines whether armed factions disarm.",
+            "sovereignty": "Baghdad kept de jure UN recognition throughout the crisis, regained territorial control in 2017, and ended UNAMI and US base deployments by late 2026, yet still lacks undivided monopoly over force and services.",
+            "legitimacy": "Lasting state acceptance in formerly occupied districts hinges on civil ID documents, compensation payments, working clinics, and impartial security across Sunni, Shia, Kurdish, and Turkmen communities.",
+            "interdependence": "Baghdad relied on an international military coalition to defeat ISIL and over 30 donors through UNDP to rebuild electricity, water, and university facilities."
+        },
+        "essayBuilder": {
+            "prompt": "To what extent does regaining military control of territory restore effective state sovereignty after internal conflict?",
+            "claim": "In post-ISIL Iraq, military victory and the 2025–2026 withdrawal of foreign missions restored formal legal and territorial sovereignty, but full domestic authority remains incomplete.",
+            "evidence": "Iraqi forces backed by a US-led coalition recaptured Mosul in July 2017, and UNDP's US$1.52 billion stabilization fund finished 3,447 infrastructure projects helping over 4.9 million people return ahead of UNAMI's December 2025 closure and US Erbil exit on 30 September 2026.",
+            "counterClaim": "However, IOM Displacement Index data show around 1.03 million Iraqis still displaced, 18 Tuz Khurmatu villages blocked from returns by destroyed homes, missing IDs, and militia tensions, and Prime Minister Ali al-Zaidi forced to extend militia disarmament to June 2027.",
+            "judgment": "On balance, military reconquest is only the first step toward effective sovereignty: holding UN recognition and closing foreign bases cannot substitute for civil administration, impartial security, and undivided state command over armed groups.",
+            "sourceUrls": [
+                "https://www.centcom.mil/MEDIA/PUBLIC-RELEASES/Article/4614532/us-forces-end-operation-inherent-resolve-mission-in-iraq/",
+                "https://iraq.un.org/en/323148-press-release-iraq-iom-chart-path-recovery-development-and-safe-migration",
+                "https://iraqdtm.iom.int/files/DurableSolutions/202412233553183_PROSPECTS%20FOR%20RESOLVING%20DISPLACEMENT%20IN%20AREAS%20IF%20LIMITED%20AND%20NO%20RETURN%20IN%20TUZ%20KHURMATU.pdf",
+                "https://www.aljazeera.com/news/2026/11/22/what-next-for-iraqs-push-against-militias-following-jurf-al-sakhar-deal"
+            ]
+        },
+        "keyFigures": [
+            {
+                "value": ">4.9M",
+                "unit": "citizens",
+                "label": "Returned or relocated since post-ISIL recovery began",
+                "asOf": "2026-09",
+                "sourceUrl": "https://iraq.un.org/en/323148-press-release-iraq-iom-chart-path-recovery-development-and-safe-migration"
+            },
+            {
+                "value": "~1.03M",
+                "unit": "people",
+                "label": "Remain internally displaced across Iraq",
+                "asOf": "2025-01",
+                "sourceUrl": "https://iraqdtm.iom.int/files/DisplacementIndex/20253134128682_IOM_DTM_DI_11.pdf"
+            },
+            {
+                "value": "3,447",
+                "unit": "projects",
+                "label": "Completed under UNDP Funding Facility for Stabilization through Q3 2025",
+                "asOf": "2025-Q3",
+                "sourceUrl": "https://www.undp.org/iraq/publications/funding-facility-stabilization-2025-quarter-three-report"
+            }
+        ],
+        "timeline": [
+            {
+                "date": "2017-07",
+                "label": "Iraqi forces backed by the US-led coalition retake Mosul after an eight-month offensive.",
+                "sourceUrl": "https://www.bbc.com/news/world-middle-east-37702442"
+            },
+            {
+                "date": "2024-12",
+                "label": "IOM finds 33,856 displaced residents and 18 zero-return villages in Tuz Khurmatu due to destroyed homes, missing IDs, and militias.",
+                "sourceUrl": "https://iraqdtm.iom.int/files/DurableSolutions/202412233553183_PROSPECTS%20FOR%20RESOLVING%20DISPLACEMENT%20IN%20AREAS%20IF%20LIMITED%20AND%20NO%20RETURN%20IN%20TUZ%20KHURMATU.pdf"
+            },
+            {
+                "date": "2025-09",
+                "label": "UNDP stabilization reports 3,447 completed infrastructure projects across five liberated governorates.",
+                "sourceUrl": "https://www.undp.org/iraq/publications/funding-facility-stabilization-2025-quarter-three-report"
+            },
+            {
+                "date": "2025-12-31",
+                "label": "United Nations Assistance Mission for Iraq (UNAMI) concludes its political mandate after 22 years.",
+                "sourceUrl": "https://iraq.un.org/en/133480-unami-mandate"
+            },
+            {
+                "date": "2026-09-30",
+                "label": "US forces finish withdrawing from Erbil Air Base, ending Operation Inherent Resolve in Iraq.",
+                "sourceUrl": "https://www.centcom.mil/MEDIA/PUBLIC-RELEASES/Article/4614532/us-forces-end-operation-inherent-resolve-mission-in-iraq/"
+            },
+            {
+                "date": "2026-11-19",
+                "label": "Baghdad reaches a negotiated deal for Iraqi Army, police, and PMF units to enter militia-held Jurf al-Sakhar.",
+                "sourceUrl": "https://www.aljazeera.com/news/2026/11/22/what-next-for-iraqs-push-against-militias-following-jurf-al-sakhar-deal"
+            }
+        ]
     }
 ];
