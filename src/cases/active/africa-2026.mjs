@@ -3106,6 +3106,10 @@ export const AFRICA_CASES_2026 = [
             {
                 "caseId": "argentina-abortion-law-budget-implementation",
                 "note": "Compare Argentina's federal budget cuts to legal abortion access with South Africa's US donor cuts testing constitutional HIV care."
+            },
+            {
+                "caseId": "vanuatu-pacific-icj-climate-opinion",
+                "note": "Compare enforceable South African constitutional court rulings with the non-binding ICJ climate advisory opinion."
             }
         ]
     }
