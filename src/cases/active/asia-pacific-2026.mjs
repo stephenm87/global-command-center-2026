@@ -2086,10 +2086,10 @@ export const ASIA_PACIFIC_CASES_2026 = [
             "mode": "regional",
             "locations": [
                 {
-                    "label": "Colombo & Sri Jayewardenepura Kotte",
+                    "label": "Colombo metro",
                     "latitude": 6.9271,
                     "longitude": 79.8612,
-                    "role": "Capital and financial hub where fuel queues formed in 2022, alongside Parliament in Sri Jayewardenepura Kotte where Budget 2027 passed second reading in November 2026"
+                    "role": "Commercial capital where fuel queues formed in 2022, alongside Parliament in neighboring Sri Jayewardenepura Kotte where Budget 2027 passed second reading"
                 },
                 {
                     "label": "Kurunegala",

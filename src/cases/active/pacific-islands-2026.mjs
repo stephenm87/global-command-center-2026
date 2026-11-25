@@ -727,7 +727,7 @@ export const PACIFIC_ISLANDS_CASES_2026 = [
             },
             {
                 "caseId": "south-africa-hiv-constitutional-court-pepfar",
-                "note": "Contrast domestic constitutional court orders in Pretoria with non-binding ICJ advisory authority."
+                "note": "Contrast domestic constitutional court orders in Johannesburg with non-binding ICJ advisory authority."
             }
         ]
     }
