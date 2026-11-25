@@ -2,6 +2,13 @@
 
 Newest entry first. Each agent adds an entry before it stops. Keep entries short.
 
+## 2026-11-25 — Antigravity — Guided Briefings Batch 2 & Batch 1 Fixes (`feat/briefings-batch-2`)
+- **Did (on `feat/briefings-batch-2`, branched from `main` `2a0cf3d`; DO NOT MERGE):**
+  - **Batch 1 Small Fixes (`c9d06f4`):** Restored `Félix Ulloa` accents in `el-salvador-security-legitimacy-checks`, rephrased consecutive `"was told"` sentences in `argentina-abortion-law-budget-implementation` Step 1, and rewrote `ottawa-mine-ban-treaty-exits` Step 1 around Mines Advisory Group's February 2025 Lebanon clearance scene with Salim Hazra (`[17]`) before the June 2026 Geneva warning.
+  - **Four New Full `briefingVersion: 2` Briefings (`1aa9a35`, `0f37d18`, `126a3a3`, `98f9631`):** Added Case 18 Iraq (`iraq-post-isil-sovereignty-reconstruction`), Case 04 Sri Lanka (`sri-lanka-imf-debt-sovereignty`), Case 03 South Africa (`south-africa-hiv-constitutional-court-pepfar`), and Case 02 Vanuatu/ICJ (`vanuatu-pacific-icj-climate-opinion`) to the Myanmar voice standard (`actorMap: undefined`), with reciprocal `relatedCases` across Vanuatu, Tuvalu, Pacific seabed governance, South Africa, Kenya, and Argentina.
+  - **Catalog, Manifest, Docs & Tests:** Registered all 4 Batch 2 cases in `src/cases/index.mjs`, regenerated `netlify/functions/source-health-targets.json` (`322` targets across `37` active cases), and updated `docs/CASE_STUDY_EDITORIAL_STANDARD.md`, `docs/KNOWN_ISSUES.md`, and `src/__tests__/contentIntegrity.node.test.mjs`.
+- **Reviewed & Verified So Far:** `check_batch2_voice.mjs` (`0` failures across Batch 2 + edited Batch 1 cases), `npm test` (`99/99` pass), `npm run build` (`vite build` succeeds in `19.66s`), `npm run content:staleness` (`37` active cases); running read-only Codex fact audit, opening PR, and completing Deploy Preview + A4 PDF QA next.
+
 ## 2026-11-25 — Antigravity — PR #51 Merged & Live Production Verified
 - **Merged:** PR #51 (`feat/actor-map-polish`, head `c15bd91`) squash-merged into `main` as `c0700cd`; production Netlify deploy `6b064475858baaa63b785619` (`ready`, `error_message: null`, `secretsScanMatches: []`). PR #47 and PR #49 left untouched.
 - **Live QA (`https://globalcommandcenter2026.netlify.app`):** Verified Somaliland (`somaliland-recognition-red-sea-order`, `step=3` and `step=all`) and Myanmar (`myanmar-fragmented-sovereignty`, `step=4` and `step=all`) at `1440px` and `390px` with `0` console/page errors, `0` sideways scrolling (`1440/1440`, `390/390`), `IGAD` labelled on Somaliland `step=all` (Step 3 actors exclude `igad`), and cluster taps opening popover, inspector, and side actor lists (`Somaliland: 2 actors`, `Myanmar: 2 actors`, `Myanmar: 6 actors`).
