@@ -2,6 +2,10 @@
 
 Newest entry first. Each agent adds an entry before it stops. Keep entries short.
 
+## 2026-11-26 — Antigravity — PR #55 Merged & Live Production Verified
+- **Merged:** PR #55 (`feat/briefings-batch-2`, head `e4a127e`) squash-merged into `main` as `51cff43` (`feat(briefings): add batch 2 guided briefings and batch 1 fixes`; branch retained); production Netlify deploy `6b0764a83a2a5c8f1c430add` (`ready`, `error_message: null`, `secretsScanMatches: []`). PR #47 and PR #49 left untouched.
+- **Live QA (`https://globalcommandcenter2026.netlify.app`):** Verified all 4 Batch 2 briefings (`iraq-post-isil-sovereignty-reconstruction`, `sri-lanka-imf-debt-sovereignty`, `south-africa-hiv-constitutional-court-pepfar`, `vanuatu-pacific-icj-climate-opinion`) at `step=1` and `step=all` across `1440px` and `390px` (`0` console/page errors, `0` sideways scrolling `1440/1440` & `390/390`, `12/12` working `"Compare with related briefings"` links), confirmed revised `ottawa-mine-ban-treaty-exits` Step 1 (`Salim Hazra` / `13 villages in Lebanon`) live, verified `myanmar-fragmented-sovereignty` and `somaliland-recognition-red-sea-order` render actor maps normally (`0` console errors), and confirmed `37` active briefings in the library (`Showing 37 of 37 cases`).
+
 ## 2026-11-25 — Antigravity — PR #55 Review Fix Round (`PR #55`, `feat/briefings-batch-2`)
 - **Did (open PR #55 `https://github.com/stephenm87/global-command-center-2026/pull/55`; DO NOT MERGE):**
   - **Accuracy & Timeline Alignment:** Fixed Sri Lanka Step 1 (`16-litre` weekly petrol quota raised to `twenty` litres, monthly Mahiyangana trip, one son waiting five days for diesel, national Step 4 displacement, March 2027 EFF expiry and Wijewardena conditional bond estimate), South Africa `18 June 2026` US exit announcement (vs. `19 June` BBC report) and SAFLII party roles (`Siphokazi Mthathi`, `Dr. Haroon Saloojee`, TAC, Children's Rights Centre), and Iraq Step 1 chronological order plus `19 November 2026` Jurf al-Sakhar deal (`20 November` joint entry with two PMF brigades).
