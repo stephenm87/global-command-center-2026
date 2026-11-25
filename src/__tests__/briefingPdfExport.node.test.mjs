@@ -440,8 +440,13 @@ test('Print Where section includes actor connections table only for cases with a
         }
     }
 
-    const nonPilotTours = GUIDED_TOURS.filter(item => !expectedCounts[item.id]);
-    assert.equal(nonPilotTours.length, 27, 'Expected all 27 remaining briefings to lack actorMap connections');
+    const pilotIds = new Set(Object.keys(expectedCounts));
+    const nonPilotTours = GUIDED_TOURS.filter(item => !pilotIds.has(item.id));
+    assert.equal(
+        nonPilotTours.length,
+        GUIDED_TOURS.length - pilotIds.size,
+        'Expected every remaining briefing outside the two pilot cases to be checked',
+    );
     for (const tour of nonPilotTours) {
         assert.deepEqual(collectActorMapConnections(tour), []);
         const markup = renderToStaticMarkup(React.createElement(CaseBriefingPrintContent, {
