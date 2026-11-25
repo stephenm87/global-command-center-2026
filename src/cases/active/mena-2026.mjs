@@ -1716,10 +1716,10 @@ export const MENA_CASES_2026 = [
             {
                 "title": "How the battle for Mosul unfolded",
                 "publisher": "BBC News",
-                "publishedAt": "2017-07-05",
+                "publishedAt": "2017-07-10",
                 "url": "https://www.bbc.com/news/world-middle-east-37702442",
                 "perspective": "International conflict reporting on the fall and recapture of Mosul",
-                "supports": "Supports ISIL's June 2014 seizure of Mosul, the October 2016–July 2017 recapture offensive, over 800,000 residents displaced from Mosul, and UN estimates of over US$1 billion in basic infrastructure damage."
+                "supports": "Supports ISIL's June 2014 seizure of Mosul, the October 2016–July 2017 recapture offensive, over 800,000 residents displaced from Mosul, and UN estimates of over US$1 billion needed to rebuild basic infrastructure."
             },
             {
                 "title": "Iraq Crisis Response Plan 2026",
@@ -1741,7 +1741,7 @@ export const MENA_CASES_2026 = [
                 "perspectiveType": "local",
                 "conceptInFocus": "Sovereignty",
                 "relatedTimelineDate": "2017-07",
-                "narration": "In October 2026, Waiza waited outside her front door in Amriyat Al-Fallujah as grandchildren played inside a rebuilt house [1]. War between 2014 and 2016 had uprooted her family with not even a sleeping mat to carry [1]. Earlier, the extremist group Islamic State of Iraq and the Levant (ISIL) had seized Mosul and wide northern provinces [12]. Iraqi forces and coalition airstrikes retook Mosul in July 2017 after grueling urban battles [12]. Fighting displaced over 800,000 Mosul residents and caused over US$1 billion in infrastructure damage [12].\n\nWinning territory back by force did not automatically make ruined neighborhoods safe or livable again [1, 12]. Sovereignty—supreme political authority within borders—divides into legal standing abroad and practical administration at home [6]. Baghdad never lost its United Nations seat, yet families returned only once clinics, power lines, and water pipes worked reliably again [1].",
+                "narration": "In October 2026, Waiza stood smiling at the door of her rebuilt house in Amriyat Al-Fallujah with her grandchildren around her [1]. War between 2014 and 2016 had uprooted her family with not even a sleeping mat to carry [1]. Earlier, the extremist group Islamic State of Iraq and the Levant (ISIL) had seized Mosul and wide northern provinces [12]. Iraqi forces and coalition airstrikes retook Mosul in July 2017 after grueling urban combat [12]. Fighting displaced over 800,000 Mosul residents and left over US$1 billion in basic rebuild needs [12].\n\nWinning territory back militarily did not immediately restore ruined neighborhoods or essential services [1, 12]. Sovereignty—supreme political authority within borders—divides into legal standing abroad and practical administration at home [6]. Baghdad never lost its United Nations seat, yet families returned only once clinics, power lines, and water pipes worked reliably again [1].",
                 "focusQuestion": "Why does recapturing a city militarily not immediately restore full sovereignty for the families who fled it?"
             },
             {
@@ -1751,7 +1751,7 @@ export const MENA_CASES_2026 = [
                 "perspectiveType": "institutional",
                 "conceptInFocus": "Interdependence",
                 "relatedTimelineDate": "2025-09",
-                "narration": "In July 2025, engineering students in Ninewa worked inside newly equipped laboratories at Northern Technical University after United Nations repairs [5]. Following the war against ISIL, Baghdad partnered with the United Nations Development Programme (UNDP) to stabilize five liberated provinces [4, 5]. International donors pooled US$1.52 billion to repair clinics, power grids, schools, and 38,138 damaged family homes [5]. By late 2025, reconstruction crews had completed 3,447 local projects ahead of an agreed national handover [4, 5].\n\nAcross Iraq, repaired neighborhoods helped more than 4.9 million citizens return or relocate from temporary shelter [8]. Interdependence—mutual reliance across borders for resources and stability—meant federal ministries depended on outside money and technical engineers to restore everyday life [4, 5]. As external stabilization grants end in late 2026, Iraqi ministries and local councils must finance, maintain, and staff those facilities themselves [1, 4, 5].",
+                "narration": "In November 2024, engineering students in Ninewa studied inside re-equipped laboratories at Northern Technical University after United Nations repairs [5]. Following the ISIL conflict, Baghdad partnered with the United Nations Development Programme (UNDP) across five liberated provinces [4, 5]. Donors pooled US$1.52 billion to repair clinics, power grids, schools, and 38,138 damaged family homes [5]. By late 2025, stabilization crews had finished 3,447 community infrastructure projects ahead of an agreed national handover [4].\n\nNationwide, United Nations agencies logged more than 4.9 million Iraqis returning or relocating, though stabilization grants rebuilt select damaged districts [4, 8]. Interdependence—mutual cross-border reliance for resources and shared stability—meant federal ministries depended on outside money and engineers [5]. As external stabilization grants end by late 2026, Iraqi ministries and local councils must finance, maintain, and staff facilities themselves [1, 5].",
                 "focusQuestion": "How do Iraq's five-province UNDP totals both demonstrate recovery and depend on continuing outside money and skills?"
             },
             {
@@ -1761,7 +1761,7 @@ export const MENA_CASES_2026 = [
                 "perspectiveType": "local",
                 "conceptInFocus": "Legitimacy",
                 "relatedTimelineDate": "2024-12",
-                "narration": "In December 2024, displaced Kurdish, Sunni Arab, and Sunni Turkmen residents from Tuz Khurmatu told field researchers why returning home stayed out of reach [6]. Some families lacked valid identity documents needed to pass checkpoints and enroll children in local schools [6]. Others pointed to leveled houses, stalled war-compensation claims, and armed groups blocking eighteen rural villages [6]. In Tuz Khurmatu alone, 33,856 residents remained uprooted alongside roughly 1.03 million displaced citizens across Iraq [6, 7].\n\nNational recovery totals hide sharp district barriers that trap families between war rubble and distrusted armed groups [6, 7]. Legitimacy—citizens' belief that public authority is rightful and fair—erodes when civil registries, courts, and security checkpoints treat communities unequally [6]. Even where utilities return in towns like Amriyat Al-Fallujah, farmers such as Hussein still confront scarce rural jobs and climate strain [1, 8].",
+                "narration": "Between April and May 2024, displaced Kurdish, Sunni Arab, and Sunni Turkmen residents from Tuz Khurmatu told researchers why returning home stayed out of reach [6]. Some families lacked valid identity documents needed to pass checkpoints and enroll children in local schools. Others pointed to leveled houses, stalled war-compensation claims, and armed groups blocking eighteen rural villages. In Tuz Khurmatu alone, 33,856 residents stayed uprooted alongside roughly 1.03 million displaced citizens nationwide [6, 7].\n\nNational recovery totals hide sharp local barriers trapping families between war rubble and distrusted armed groups [6, 7]. Legitimacy—citizens' belief that public authority acts fairly—erodes when registries, courts, and checkpoints treat groups unequally. Even where water and clinics return in Amriyat Al-Fallujah, farmers such as Hussein confront scarce work and climate strain [1, 8].",
                 "focusQuestion": "Why do missing identity cards, slow compensation payments, and disputed districts matter as much as bricks and mortar?"
             },
             {
@@ -1771,8 +1771,8 @@ export const MENA_CASES_2026 = [
                 "perspectiveType": "institutional",
                 "conceptInFocus": "Sovereignty",
                 "relatedTimelineDate": "2026-09-30",
-                "narration": "On 30 September 2026, Iraqi military convoys paraded past crowds in Baghdad under Sovereignty Days banners as United States troops finished leaving Erbil Air Base [2, 11]. That departure closed Operation Inherent Resolve inside Iraq, withdrawing roughly 1,500 coalition personnel from their final northern hub [2]. Coalition commanders shifted their regional headquarters next door to Jordan to keep targeting ISIL cells inside Syria [2]. Months earlier, the United Nations had ended its political mission in Baghdad after more than two decades [9, 10].\n\nClosing foreign military and political missions returned full formal jurisdiction over bases, airspace, and Iraqi elections to Baghdad [2, 10]. Yet Kurdish leaders warned that losing United States air defenses left northern cities exposed after over 1,000 drone and missile attacks in 2026 [11]. Legal authority at the border returned faster than unified air protection or lasting regional calm [11].",
-                "focusQuestion": "What changed legally when UNAMI and coalition troops departed, and what security vulnerabilities remained?"
+                "narration": "On 30 September 2026, Iraqi military convoys paraded past crowds in Baghdad under Sovereignty Days banners as United States troops finished leaving Erbil Air Base [2, 11]. That departure ended Operation Inherent Resolve inside Iraq, withdrawing most of roughly 1,500 coalition personnel from their final northern hub [2]. Coalition commanders shifted regional headquarters to Jordan to continue operations in Syria. Months earlier, the United Nations had concluded its Baghdad political mission after two decades [9, 10].\n\nClosing foreign military bases and political offices removed external missions long operating beside federal Iraqi authorities [2, 9]. Sovereignty—undivided governing control across national territory and airspace—requires defending cities independently after foreign partners leave. Kurdish leaders warned that losing United States air defenses left northern towns exposed after over 1,000 strikes in 2026 [11].",
+                "focusQuestion": "What changed in practice when UNAMI and coalition troops departed, and what security vulnerabilities remained?"
             },
             {
                 "nodeId": "Hezbollah",
@@ -1781,7 +1781,7 @@ export const MENA_CASES_2026 = [
                 "perspectiveType": "synthesis",
                 "conceptInFocus": "Power",
                 "relatedTimelineDate": "2026-11-19",
-                "narration": "On 20 November 2026, Iraqi army soldiers and federal police entered Jurf al-Sakhar, southwest of Baghdad, under a tense negotiated deal [3]. For twelve years after pushing ISIL from the town, the Iran-aligned faction Kataib Hezbollah had kept regular state authorities locked out [3]. Under anti-corruption probes and regional pipeline strikes, Prime Minister Ali al-Zaidi secured an Iranian-brokered pullback agreement [3]. Soon after, Baghdad postponed its armed-faction disarmament deadline until June 2027 because militias refused to surrender heavy weapons [3, 11].\n\nMilitary campaigns cleared ISIL from Iraqi cities, yet bargaining with armed holdouts shows how divided domestic authority remains [3]. Power—the ability to shape events and compel obedience—still splinters among Baghdad ministries, Kurdish forces, and autonomous militias inside state uniform [3, 11]. Until civilian institutions control weapons and services evenly nationwide, post-war sovereignty stays unfinished [3, 6].",
+                "narration": "On 20 November 2026, Iraqi army soldiers and federal police entered Jurf al-Sakhar, southwest of Baghdad, under a tense compromise [3]. For twelve years after driving out ISIL, the Iran-aligned faction Kataib Hezbollah had kept regular state forces barred from the town [3]. Amid anti-corruption probes and regional pipeline strikes, Prime Minister Ali al-Zaidi secured an accord reported as Iranian-brokered [3]. Armed factions still kept heavy weapons while Baghdad held its postponed June 2027 disarmament deadline in place [3, 11].\n\nClearing ISIL from cities did not settle how federal ministries bargain with armed holdouts inside Iraq [3]. Power—the ability to shape choices and compel obedience—still splinters among Baghdad commanders, Kurdish forces, and autonomous militias [3, 11]. Until elected institutions command weapons evenly nationwide, Iraq's post-war sovereignty stays incomplete [6].",
                 "focusQuestion": "Does integrating militia brigades alongside regular troops strengthen Iraq's state authority or institutionalize divided power?"
             }
         ],
@@ -1798,11 +1798,15 @@ export const MENA_CASES_2026 = [
         "background": "In June 2014, the extremist group ISIL captured Mosul, Iraq's second-largest city, and overran wide northern and western provinces [12]. For three years, Baghdad retained formal international recognition and its United Nations seat, while militants governed millions of residents at gunpoint [6, 12]. That divide separated legal sovereignty on paper from daily territorial control [6].\n\nBacked by a US-led military coalition, Iraqi forces and allied fighters retook Mosul in July 2017 after grueling urban combat [12]. War shattered bridges, water treatment plants, power networks, clinics, and tens of thousands of homes across five liberated provinces [4, 5, 12]. Around six million Iraqis fled inside the country during the conflict [6].\n\nUnited Nations agencies worked with Iraqi ministries to pool international funds, clear neighborhoods, and restore core public utilities [4, 5, 8]. Over 4.9 million citizens later returned or relocated [8]. Deep barriers still keep more than one million uprooted across damaged districts [7, 13]. By late 2026, Baghdad had ended international political oversight and US base deployments while struggling to bring armed factions under central command [2, 3, 10].",
         "backgroundSources": [
             "https://www.bbc.com/news/world-middle-east-37702442",
+            "https://www.undp.org/iraq/publications/funding-facility-stabilization-2025-quarter-three-report",
             "https://www.undp.org/sites/g/files/zskgke326/files/2025-07/ffs_annual_progress_report_2024_final.pdf",
             "https://iraqdtm.iom.int/files/DurableSolutions/202412233553183_PROSPECTS%20FOR%20RESOLVING%20DISPLACEMENT%20IN%20AREAS%20IF%20LIMITED%20AND%20NO%20RETURN%20IN%20TUZ%20KHURMATU.pdf",
+            "https://iraqdtm.iom.int/files/DisplacementIndex/20253134128682_IOM_DTM_DI_11.pdf",
             "https://iraq.un.org/en/323148-press-release-iraq-iom-chart-path-recovery-development-and-safe-migration",
+            "https://iraq.un.org/en/133480-unami-mandate",
             "https://www.centcom.mil/MEDIA/PUBLIC-RELEASES/Article/4614532/us-forces-end-operation-inherent-resolve-mission-in-iraq/",
-            "https://www.aljazeera.com/news/2026/11/22/what-next-for-iraqs-push-against-militias-following-jurf-al-sakhar-deal"
+            "https://www.aljazeera.com/news/2026/11/22/what-next-for-iraqs-push-against-militias-following-jurf-al-sakhar-deal",
+            "https://crisisresponse.iom.int/response/iraq-crisis-response-plan-2026"
         ],
         "keyTerms": [
             {
@@ -1854,9 +1858,9 @@ export const MENA_CASES_2026 = [
             },
             {
                 "claimBy": "UNDP Iraq and Government of Iraq stabilization reports (2025–2026)",
-                "claim": "Completing 3,447 infrastructure projects and supporting over 4.9 million returns shows federal reconstruction restored essential services across liberated provinces [4, 8].",
-                "counterBy": "IOM Iraq and Tuz Khurmatu focus-group participants (December 2024)",
-                "counterClaim": "Broad provincial totals overlook 1.03 million still-displaced citizens shut out of eighteen villages by rubble, missing identity papers, compensation backlogs, and militia distrust [6, 7].",
+                "claim": "Completing 3,447 infrastructure projects across five liberated provinces restored power grids, clinics, schools, and local utilities after ISIL retreated [4, 5].",
+                "counterBy": "IOM Iraq and Tuz Khurmatu focus-group participants (April–December 2024)",
+                "counterClaim": "Aggregate progress overlooks 1.03 million still-displaced citizens nationally, while Tuz Khurmatu residents report destroyed homes, missing identity papers, and militia blocks [6, 7].",
                 "sourceUrls": [
                     "https://www.undp.org/iraq/publications/funding-facility-stabilization-2025-quarter-three-report",
                     "https://iraq.un.org/en/323148-press-release-iraq-iom-chart-path-recovery-development-and-safe-migration",
@@ -1927,7 +1931,7 @@ export const MENA_CASES_2026 = [
         "essayBuilder": {
             "prompt": "To what extent does regaining military control of territory restore effective state sovereignty after internal conflict?",
             "claim": "In post-ISIL Iraq, military victory and the 2025–2026 withdrawal of foreign missions restored formal legal and territorial sovereignty, but full domestic authority remains incomplete.",
-            "evidence": "Iraqi forces backed by a US-led coalition recaptured Mosul in July 2017, and UNDP's US$1.52 billion stabilization fund finished 3,447 infrastructure projects helping over 4.9 million people return ahead of UNAMI's December 2025 closure and US Erbil exit on 30 September 2026.",
+            "evidence": "Iraqi forces backed by a US-led coalition recaptured Mosul in July 2017, UNDP's US$1.52 billion stabilization fund finished 3,447 infrastructure projects across five provinces, and over 4.9 million citizens nationwide returned or relocated ahead of UNAMI's December 2025 closure and US Erbil exit on 30 September 2026.",
             "counterClaim": "However, IOM Displacement Index data show around 1.03 million Iraqis still displaced, 18 Tuz Khurmatu villages blocked from returns by destroyed homes, missing IDs, and militia tensions, and Prime Minister Ali al-Zaidi forced to extend militia disarmament to June 2027.",
             "judgment": "On balance, military reconquest is only the first step toward effective sovereignty: holding UN recognition and closing foreign bases cannot substitute for civil administration, impartial security, and undivided state command over armed groups.",
             "sourceUrls": [

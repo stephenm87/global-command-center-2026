@@ -344,7 +344,7 @@ export const PACIFIC_ISLANDS_CASES_2026 = [
             "USA"
         ],
         "statusSummary": "Pacific Small Island Developing States emit only 0.03% of global greenhouse gases yet face rising seas that threaten low-lying islands [7]. Championing a student campaign from Vanuatu, the General Assembly sought an International Court of Justice ruling where 96 states and eleven organizations testified [2, 5, 6]. Following July 2025's unanimous opinion, the Assembly backed Vanuatu's follow-up text 141–8–28 in May 2026, before COP31 ended in November without a climate pact [2, 3, 8].",
-        "whyItMatters": "Vanuatu's campaign shows how small island states emitting 0.03% of global pollution can use international courts and UN coalitions to establish legal duties on climate harm—while May 2026 US/producer dissent and November 2026 COP31 failure expose the gap between legal clarity and enforcement [2, 3, 7, 8].",
+        "whyItMatters": "Vanuatu's campaign shows how small island states emitting 0.03% of global greenhouse gas emissions can use international courts and UN coalitions to establish legal duties on climate harm—while May 2026 US/producer dissent and November 2026 COP31 failure expose the gap between legal clarity and enforcement [2, 4, 7, 8].",
         "updatedAt": "2026-11-25",
         "confidence": "high",
         "uncertainty": "How domestic courts and the UN Secretary-General's eighty-second-session compliance report will operationalize non-binding ICJ reparation standards after COP31's Antalya deadlock remains unsettled.",
@@ -421,7 +421,7 @@ export const PACIFIC_ISLANDS_CASES_2026 = [
                 "publisher": "United Nations Meetings Coverage",
                 "publishedAt": "2026-05-20",
                 "url": "https://press.un.org/en/2026/ga12760.doc.htm",
-                "perspective": "Official verbatim UNGA plenary coverage of draft A/80/L.65",
+                "perspective": "Official UN General Assembly plenary meeting summary of draft A/80/L.65",
                 "supports": "Supports the exact 141–8–28 vote tally (with Belarus, Iran, Israel, Liberia, Russia, Saudi Arabia, United States, and Yemen against), rejected amendments (53–91–20), Fiji's maritime-zone continuity statement, and the requested UNSG compliance report."
             },
             {
@@ -465,7 +465,7 @@ export const PACIFIC_ISLANDS_CASES_2026 = [
                 "perspectiveType": "local",
                 "conceptInFocus": "Power",
                 "relatedTimelineDate": "2019",
-                "narration": "In late 2019, a circle of 27 law students at the University of the South Pacific in Port Vila gathered to challenge climate inaction [5]. Living with king tides flooding island homes and cyclones erasing infrastructure, campaigners including Vishal Prasad tired of broken summit promises [5]. Their region generated only 0.03% of global greenhouse gases, yet warming oceans threatened low-lying nations [7]. Instead of lobbying another talk shop, students urged Pacific leaders to carry climate harm before the world's highest court [5, 6].\n\nYouth activists lacking military or fossil-fuel wealth sought leverage through international law [5, 6]. Power—the ability to reshape other actors' choices and agendas—need not depend on coercion or size [5, 6]. By framing emissions as a legal duty, Vanuatu's grassroots movement pulled reluctant emitters onto unfamiliar terrain [4, 5].",
+                "narration": "In late 2019, a circle of 27 law students at the University of the South Pacific in Port Vila gathered to challenge climate inaction [5]. Living with king tides flooding island homes and cyclones erasing infrastructure, campaigners including Vishal Prasad tired of broken summit promises [5]. Their region generated only 0.03% of global greenhouse gases, yet warming oceans threatened low-lying nations [7]. Instead of lobbying another talk shop, students urged Pacific leaders to carry climate harm before the world's highest court [5, 6].\n\nYouth activists lacking military or fossil-fuel wealth sought leverage through international law [5]. Power—the ability to reshape other actors' choices and agendas—need not depend on coercion or size. By framing emissions as a legal duty, Vanuatu's grassroots movement pulled reluctant emitters onto unfamiliar terrain.",
                 "focusQuestion": "How can 27 university students in a small island state bring major global emitters before the International Court of Justice?"
             },
             {
@@ -475,7 +475,7 @@ export const PACIFIC_ISLANDS_CASES_2026 = [
                 "perspectiveType": "institutional",
                 "conceptInFocus": "Sovereignty",
                 "relatedTimelineDate": "2023-03-29",
-                "narration": "On 29 March 2023, diplomats cheered inside New York's General Assembly hall after adopting Vanuatu's request for an International Court of Justice climate opinion [2, 6]. Vanuatu's foreign ministry had spent eighteen months building cross-regional backing after championing the youth proposal in 2021 [4, 6]. In all, 132 nations co-sponsored the request and no state forced a recorded vote against it [6]. That solidarity opened historic winter hearings in The Hague where 96 states and eleven international organizations testified [2].\n\nCollective diplomacy let small island nations lock formal legal questions onto the United Nations docket ahead of major emitters [4, 6]. Sovereignty—supreme state authority over territory and people—also encompasses defending unchanging ocean borders despite rising seas [3]. Pacific delegations insisted that eroding coastlines must never erase maritime rights or recognized statehood [3].",
+                "narration": "On 29 March 2023, diplomats cheered inside New York's General Assembly hall after adopting Vanuatu's request for an International Court of Justice climate opinion [2, 6]. Vanuatu's foreign ministry had spent eighteen months building cross-regional backing after championing the youth proposal in 2021 [3, 6]. In all, 132 nations co-sponsored the request and no state forced a recorded vote against it [6]. That solidarity opened historic winter hearings in The Hague where 96 states and eleven international organizations testified [2].\n\nCollective diplomacy let small island nations lock formal legal questions onto the United Nations docket ahead of major emitters [6]. Sovereignty—supreme state authority over territory and people—also encompasses defending unchanging ocean borders despite rising seas [4]. Pacific delegations insisted that eroding coastlines must never erase maritime rights or recognized statehood.",
                 "focusQuestion": "Why did Pacific diplomats connect the ICJ climate referral directly to preserving statehood and maritime boundaries?"
             },
             {
@@ -485,7 +485,7 @@ export const PACIFIC_ISLANDS_CASES_2026 = [
                 "perspectiveType": "institutional",
                 "conceptInFocus": "Interdependence",
                 "relatedTimelineDate": "2025-07-23",
-                "narration": "On 23 July 2025, judges at the Peace Palace in The Hague delivered a unanimous advisory opinion on state climate obligations [2]. Only four earlier advisory rulings in court history had achieved complete unanimity across the bench [2]. Judges concluded that treaties and customary law require states to regulate private emitters with due diligence to protect the climate system [2]. Breaching those obligations constitutes a wrongful act that can trigger duties to halt harm and make full reparation [2].\n\nFossil-fuel licensing in distant economies sends rising water onto Pacific shores across one shared global atmosphere [2, 3]. Interdependence—mutual cross-border vulnerability connecting states—means national pollution choices carry direct duties under ocean and human rights law [2, 3]. Judges rejected claims that climate treaties shield polluters from wider legal responsibility [2, 4].",
+                "narration": "On 23 July 2025, judges at the Peace Palace in The Hague delivered a unanimous advisory opinion on state climate obligations. All fourteen participating judges concurred, marking a rare fully unanimous ruling across the full bench. Judges concluded that treaties and customary law require states to regulate private emitters with due diligence to protect the climate system. Breaching those legal duties constitutes a wrongful act that can trigger duties to halt harm and make full reparation [2].\n\nFossil-fuel licensing in distant industrialized economies sends rising water onto Pacific shores across one shared global atmosphere. Interdependence—mutual cross-border vulnerability connecting states—means national pollution choices carry direct duties under ocean and human rights law [2, 4]. Judges rejected claims that climate treaties shield polluters from wider legal accountability [2].",
                 "focusQuestion": "Why did the ICJ rule that existing human rights, ocean, and customary laws bind states alongside climate treaties?"
             },
             {
@@ -495,7 +495,7 @@ export const PACIFIC_ISLANDS_CASES_2026 = [
                 "perspectiveType": "independent",
                 "conceptInFocus": "Sovereignty",
                 "relatedTimelineDate": "2026-05-20",
-                "narration": "On 20 May 2026, Vanuatu's Ambassador Odo Tevi warned the General Assembly that United Nations credibility hung in the balance [1, 4]. Member states then approved Vanuatu's follow-up climate resolution by 141 votes to eight, defeating hostile amendments from oil exporters [3, 4]. The United States, Russia, Saudi Arabia, and five other states voted against the text while rejecting its authority [3, 4]. Washington argued a non-binding advisory opinion could never restrict sovereign national energy decisions [3, 4].\n\nThat vote exposed colliding claims over autonomy whenever major fossil-fuel exporters guard domestic oil and gas policies [3, 4]. Sovereignty—national independence from external interference—was invoked by producers to resist climate courts and by islands seeking survival [3, 4]. Even without enforcement troops, General Assembly backing strengthens litigants bringing climate claims inside domestic courts worldwide [4, 6].",
+                "narration": "On 20 May 2026, Vanuatu's Ambassador Odo Tevi warned the General Assembly that United Nations credibility on climate action hung in the balance [1, 3]. Member states then approved Vanuatu's follow-up climate resolution by 141 votes to eight, defeating hostile amendments from major oil exporters [3, 4]. Eight dissenting states—including the United States, Russia, and Saudi Arabia—voted against the adopted text [3, 4]. Washington argued a non-binding advisory opinion could never constrain sovereign national energy policies [3, 4].\n\nThat divided vote exposed colliding claims over national autonomy whenever fossil-fuel exporters guard domestic oil and gas development [3, 4]. Sovereignty—national independence from external interference—was invoked both by oil producers resisting climate rulings and by island states defending survival. Even without international police forces, Assembly backing helps litigants pressing climate cases inside national courts [6].",
                 "focusQuestion": "Why did the United States and Saudi Arabia oppose welcoming a non-binding ICJ opinion in the General Assembly?"
             },
             {
@@ -505,7 +505,7 @@ export const PACIFIC_ISLANDS_CASES_2026 = [
                 "perspectiveType": "synthesis",
                 "conceptInFocus": "Legitimacy",
                 "relatedTimelineDate": "2026-11-22",
-                "narration": "On 22 November 2026, United Nations climate talks in Antalya closed after overtime discussions failed to produce any final consensus pact [8]. Co-presidents could not bridge deep fossil-fuel disputes as the European Union, Panama, and the Marshall Islands rejected weakened draft text [8]. Island delegates warned that retreating from transition pledges abandoned vulnerable communities enduring floods and rising heat [8]. Vanuatu's unanimous court victory now collides with stalemated diplomacy ahead of next talks in Addis Ababa, Ethiopia [1, 8].\n\nRepeated summit breakdowns erode trust in slow consensus talks while raising the global profile of legal accountability [4, 8]. Legitimacy—the belief that global rules and institutions govern fairly—weakens whenever major polluters block collective rescue plans [4, 8]. Court rulings gain practical force only if domestic judges, parliaments, and voters compel real emissions cuts [4, 6].",
+                "narration": "On 22 November 2026, United Nations climate talks in Antalya closed after overtime discussions failed to produce any final consensus pact [8]. Co-presidents could not bridge deep fossil-fuel disputes as the European Union, Panama, and the Marshall Islands rejected weakened draft text. Island delegates warned that retreating from transition pledges abandoned vulnerable communities enduring floods and rising heat [8]. Vanuatu's unanimous court victory now collides with stalemated diplomacy ahead of next talks in Addis Ababa, Ethiopia [1, 8].\n\nRepeated summit breakdowns erode trust in slow consensus talks while raising the global profile of legal accountability [3, 8]. Legitimacy—the belief that global rules and institutions govern fairly—weakens whenever major polluters block collective rescue plans. Court rulings gain practical force only if national courts, parliaments, and voters compel emissions cuts [6].",
                 "focusQuestion": "When annual UN climate summits deadlock as at COP31, what real power do advisory court opinions retain?"
             }
         ],
@@ -519,13 +519,15 @@ export const PACIFIC_ISLANDS_CASES_2026 = [
             "development-and-sustainability",
             "rights-and-justice"
         ],
-        "background": "Low-lying Pacific Small Island Developing States contribute just 0.03% of global greenhouse emissions while confronting worsening cyclones, king tides, and salt intrusion [5, 7]. Unable to secure deeper emissions cuts through annual climate conferences alone, 27 law students in Vanuatu launched a 2019 campaign seeking legal clarity from the International Court of Justice [5]. Vanuatu's government adopted that proposal and built a cross-regional coalition at the United Nations [1, 6].\n\nIn March 2023, the General Assembly asked the world court to clarify states' climate duties and legal consequences for harming vulnerable islands [2, 6]. Record oral hearings followed in The Hague before judges issued a unanimous advisory opinion in July 2025 [2]. The bench ruled that climate treaties, ocean law, and human rights bind states to act with due diligence and prevent significant environmental harm [2].\n\nIn May 2026, the General Assembly endorsed Vanuatu's follow-up text overwhelmingly, though major oil producers and the United States dissented [3, 4]. Six months later, November climate talks in Antalya ended without an agreement over fossil fuels [8]. Vanuatu's legal push now tests whether court authority can move domestic courts and diplomacy beyond stalled summits [4, 8].",
+        "background": "Low-lying Pacific Small Island Developing States contribute just 0.03% of global greenhouse emissions while confronting worsening cyclones, king tides, and salt intrusion [5, 7]. Unable to secure deeper emissions cuts through annual climate conferences alone, 27 law students in Vanuatu launched a 2019 campaign seeking legal clarity from the International Court of Justice [5]. Vanuatu's government adopted that proposal and built a cross-regional coalition at the United Nations [1, 6].\n\nIn March 2023, the General Assembly asked the world court to clarify states' climate duties and legal consequences for harming vulnerable islands [2, 6]. Record oral hearings followed in The Hague before judges issued a unanimous advisory opinion in July 2025 [2]. The bench ruled that climate treaties, ocean law, and human rights bind states to act with due diligence and prevent significant environmental harm [2].\n\nIn May 2026, the General Assembly endorsed Vanuatu's follow-up text overwhelmingly, though major oil producers and the United States dissented [3, 4]. Six months later, November climate talks in Antalya ended without an agreement over fossil fuels [8]. Vanuatu's legal push now tests whether court authority can move domestic courts and diplomacy beyond stalled summits [3, 8].",
         "backgroundSources": [
-            "https://unfccc.int/news/new-report-reveals-pacific-leadership-on-climate-ahead-of-ndc-30-deadline",
+            "https://pmo.gov.vu/en/public-information/press-release/1162-un-general-assembly-adopts-resolution-on-icj-advisory-opinion-on-climate-change.html",
+            "https://www.icj-cij.org/sites/default/files/case-related/187/187-20250723-pre-01-00-en.pdf",
+            "https://healthpolicy-watch.news/un-backs-landmark-icj-climate-crisis-ruling-defying-us-and-petrostates/",
+            "https://press.un.org/en/2026/ga12760.doc.htm",
             "https://www.amnesty.org/en/latest/campaigns/2026/05/how-students-from-the-pacific-took-the-fight-against-climate-change-to-the-worlds-top-court/",
             "https://news.un.org/en/story/2024/12/1157671",
-            "https://www.icj-cij.org/sites/default/files/case-related/187/187-20250723-pre-01-00-en.pdf",
-            "https://press.un.org/en/2026/ga12760.doc.htm",
+            "https://unfccc.int/news/new-report-reveals-pacific-leadership-on-climate-ahead-of-ndc-30-deadline",
             "https://news.un.org/en/story/2026/11/1168855"
         ],
         "keyTerms": [
@@ -558,24 +560,35 @@ export const PACIFIC_ISLANDS_CASES_2026 = [
         "debate": [
             {
                 "claimBy": "Vanuatu Ambassador Odo Tevi & Climate Minister Ralph Regenvanu (May 2026)",
-                "claim": "The ICJ clarified binding international law rather than inventing new rules, confirming climate action and maritime-zone survival are legal duties backed by 141 states [1, 3].",
+                "claim": "The ICJ clarified binding international law rather than inventing new rules, confirming climate action and maritime-zone survival are legal duties backed by 141 states [1, 3, 4].",
                 "counterBy": "United States Ambassador Tammy Bruce & Saudi Arabia (UNGA, 20 May 2026)",
                 "counterClaim": "Advisory opinions are non-binding, treaty duties stay confined to UNFCCC and Paris agreements, and enforcing broader claims infringes sovereign energy policy [3, 4].",
                 "sourceUrls": [
                     "https://pmo.gov.vu/en/public-information/press-release/1162-un-general-assembly-adopts-resolution-on-icj-advisory-opinion-on-climate-change.html",
-                    "https://press.un.org/en/2026/ga12760.doc.htm",
-                    "https://healthpolicy-watch.news/un-backs-landmark-icj-climate-crisis-ruling-defying-us-and-petrostates/"
+                    "https://healthpolicy-watch.news/un-backs-landmark-icj-climate-crisis-ruling-defying-us-and-petrostates/",
+                    "https://press.un.org/en/2026/ga12760.doc.htm"
                 ]
             },
             {
                 "claimBy": "PISFCC Director Vishal Prasad & Amnesty International (May 2026)",
-                "claim": "Mobilizing from Port Vila classrooms to 96-state hearings and UNGA endorsement proves international law gives frontline communities an authoritative benchmark to hold polluters accountable [4, 5].",
-                "counterBy": "COP31 Antalya closing plenary outcome (UN News, 22 November 2026)",
-                "counterClaim": "Even after unanimous legal guidance, consensual climate summits ended without a pact in November 2026 when fossil-fuel divisions blocked action [8].",
+                "claim": "Mobilizing from Port Vila classrooms to 96-state hearings and UNGA endorsement proves international law gives frontline communities an authoritative benchmark to hold polluters accountable [3, 5].",
+                "counterBy": "Fossil-fuel-exporting delegations at COP31 Antalya (UN News, 22 November 2026)",
+                "counterClaim": "Negotiators protecting fossil-fuel economies blocked stronger phaseout language after two weeks and overtime talks, ending COP31 without a consensus pact [8].",
                 "sourceUrls": [
                     "https://www.amnesty.org/en/latest/campaigns/2026/05/how-students-from-the-pacific-took-the-fight-against-climate-change-to-the-worlds-top-court/",
                     "https://healthpolicy-watch.news/un-backs-landmark-icj-climate-crisis-ruling-defying-us-and-petrostates/",
                     "https://news.un.org/en/story/2026/11/1168855"
+                ]
+            },
+            {
+                "claimBy": "Fiji, speaking for Pacific Small Island Developing States (UNGA, 20 May 2026)",
+                "claim": "Sea-level rise does not diminish maritime zones or statehood, and ICJ due-diligence rules carry authoritative weight for future litigation [4, 6].",
+                "counterBy": "Saudi Arabia & dissenting oil-producing delegations (UNGA, 20 May 2026)",
+                "counterClaim": "Citing ICJ advisory text inside UN climate decisions crosses political red lines outside negotiated consensus treaties [3, 4].",
+                "sourceUrls": [
+                    "https://press.un.org/en/2026/ga12760.doc.htm",
+                    "https://news.un.org/en/story/2024/12/1157671",
+                    "https://healthpolicy-watch.news/un-backs-landmark-icj-climate-crisis-ruling-defying-us-and-petrostates/"
                 ]
             }
         ],
@@ -632,8 +645,8 @@ export const PACIFIC_ISLANDS_CASES_2026 = [
         "conceptLens": {
             "power": "Pacific student activists and Vanuatu converted discursive, legal, and coalition-building power into record participation without military or economic leverage.",
             "sovereignty": "Island states won UNGA affirmation that sea-level rise preserves statehood and maritime zones, while the US and Saudi Arabia invoked sovereignty to oppose external energy constraints.",
-            "legitimacy": "A rare unanimous 15–0 ICJ ruling and 141-state General Assembly endorsement lent high legal legitimacy even as non-compliance exposes limits to UN enforcement.",
-            "interdependence": "Pacific islands emitting 0.03% of global gases depend legally and materially on emissions and licensing choices across major fossil-fuel economies."
+            "legitimacy": "A rare unanimous 14-judge ICJ ruling and 141-state General Assembly endorsement lent high legal legitimacy even as non-compliance exposes limits to UN enforcement.",
+            "interdependence": "Pacific islands emitting 0.03% of global greenhouse gas emissions depend legally and materially on emissions and licensing choices across major fossil-fuel economies."
         },
         "essayBuilder": {
             "prompt": "Evaluate the effectiveness of non-binding ICJ advisory opinions when multilateral climate negotiations deadlock over national sovereignty.",
@@ -665,8 +678,8 @@ export const PACIFIC_ISLANDS_CASES_2026 = [
             },
             {
                 "value": "141–8–28",
-                "unit": "UNGA vote",
-                "label": "May 2026 General Assembly margin adopting Vanuatu's ICJ climate follow-up resolution",
+                "unit": "recorded vote",
+                "label": "May 2026 General Assembly vote tally (for, against, abstaining) adopting Vanuatu's ICJ climate resolution",
                 "asOf": "2026-05",
                 "sourceUrl": "https://press.un.org/en/2026/ga12760.doc.htm"
             }
