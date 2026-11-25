@@ -2,6 +2,10 @@
 
 Newest entry first. Each agent adds an entry before it stops. Keep entries short.
 
+## 2026-11-25 — Antigravity — PR #52 Merged & Live Production Verified
+- **Merged:** PR #52 (`feat/briefings-batch-1`, head `f75293f`) squash-merged into `main` as `61e9188` (`feat(briefings): add batch 1 guided briefings and Myanmar voice standard`; branch retained); production Netlify deploy `6b063d2278601dc9ad99173e` (`ready`, `error_message: null`, `secretsScanMatches: []`).
+- **Live QA (`https://globalcommandcenter2026.netlify.app`):** Verified all 4 Batch 1 briefings (`el-salvador-security-legitimacy-checks`, `argentina-abortion-law-budget-implementation`, `ottawa-mine-ban-treaty-exits`, `kenya-gen-z-finance-bill-protests`) at `step=1` and `step=all` across `1440px` and `390px` viewports with `0` console/page errors, `0` horizontal overflow (`1440/1440`, `390/390`), working `"Compare with related briefings"` navigation on all 4 briefings, and normal loading on Myanmar (`step=1` + `step=all`), Sudan, and Haiti; checking/rebasing PR #51 next.
+
 ## 2026-11-25 — Antigravity — PR #52 Batch 1 Currency, Abbreviation & Step 1 Polish
 - **Did (on `feat/briefings-batch-1`, PR #52; DO NOT MERGE):**
   - **Voice Guide Currency, Abbreviation & Citation Polish (`docs/BRIEFING_VOICE.md`):** Documented Myanmar conventions (`US$890 million`, `the US`, `GDP`, first-use expansion for `OCHA`/`KNCHR`/`UCA`, and cite once per point rather than after every sentence) in `Six Rules of the Voice` and `Reference Model: Myanmar`.
