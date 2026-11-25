@@ -2,6 +2,11 @@
 
 Newest entry first. Each agent adds an entry before it stops. Keep entries short.
 
+## 2026-11-25 — Antigravity — PR #51 Merged & Live Production Verified
+- **Merged:** PR #51 (`feat/actor-map-polish`, head `c15bd91`) squash-merged into `main` as `c0700cd`; production Netlify deploy `6b064475858baaa63b785619` (`ready`, `error_message: null`, `secretsScanMatches: []`). PR #47 and PR #49 left untouched.
+- **Live QA (`https://globalcommandcenter2026.netlify.app`):** Verified Somaliland (`somaliland-recognition-red-sea-order`, `step=3` and `step=all`) and Myanmar (`myanmar-fragmented-sovereignty`, `step=4` and `step=all`) at `1440px` and `390px` with `0` console/page errors, `0` sideways scrolling (`1440/1440`, `390/390`), `IGAD` labelled on Somaliland `step=all` (Step 3 actors exclude `igad`), and cluster taps opening popover, inspector, and side actor lists (`Somaliland: 2 actors`, `Myanmar: 2 actors`, `Myanmar: 6 actors`).
+- **PDF QA (`Save as PDF`, A4):** Verified `Actor connections` table in `Where` intact on Page 2 without awkward page splits for Somaliland (`12` pp, `9` rows) and Myanmar (`9` pp, `8` rows), and confirmed Kenya (`kenya-gen-z-finance-bill-protests`, `11` pp) has no table (`0` rows).
+
 ## 2026-11-25 — Antigravity — PR #52 Merged & Live Production Verified
 - **Merged:** PR #52 (`feat/briefings-batch-1`, head `f75293f`) squash-merged into `main` as `61e9188` (`feat(briefings): add batch 1 guided briefings and Myanmar voice standard`; branch retained); production Netlify deploy `6b063d2278601dc9ad99173e` (`ready`, `error_message: null`, `secretsScanMatches: []`).
 - **Live QA (`https://globalcommandcenter2026.netlify.app`):** Verified all 4 Batch 1 briefings (`el-salvador-security-legitimacy-checks`, `argentina-abortion-law-budget-implementation`, `ottawa-mine-ban-treaty-exits`, `kenya-gen-z-finance-bill-protests`) at `step=1` and `step=all` across `1440px` and `390px` viewports with `0` console/page errors, `0` horizontal overflow (`1440/1440`, `390/390`), working `"Compare with related briefings"` navigation on all 4 briefings, and normal loading on Myanmar (`step=1` + `step=all`), Sudan, and Haiti; checking/rebasing PR #51 next.
