@@ -2,6 +2,12 @@
 
 Newest entry first. Each agent adds an entry before it stops. Keep entries short.
 
+## 2026-11-25 — Antigravity — PR #55 Review Fix Round (`PR #55`, `feat/briefings-batch-2`)
+- **Did (open PR #55 `https://github.com/stephenm87/global-command-center-2026/pull/55`; DO NOT MERGE):**
+  - **Accuracy & Timeline Alignment:** Fixed Sri Lanka Step 1 (`16-litre` weekly petrol quota raised to `twenty` litres, monthly Mahiyangana trip, one son waiting five days for diesel, national Step 4 displacement, March 2027 EFF expiry and Wijewardena conditional bond estimate), South Africa `18 June 2026` US exit announcement (vs. `19 June` BBC report) and SAFLII party roles (`Siphokazi Mthathi`, `Dr. Haroon Saloojee`, TAC, Children's Rights Centre), and Iraq Step 1 chronological order plus `19 November 2026` Jurf al-Sakhar deal (`20 November` joint entry with two PMF brigades).
+  - **Vanuatu Sources & Cross-Case Links:** Expanded Vanuatu from `8` to `14` verified sources (adding `[9]` full ICJ Opinion PDF, `[10]` USUN Tammy Bruce EOV, `[11]` `A/RES/80/263`, `[12]` OHCHR, `[13]` UNEP, `[14]` ICJ Request Res `77/276`) and logged them in `~/Documents/agent-prompts/reports/research/vanuatu-pacific-icj-climate-opinion.md`; added `3` reciprocal `relatedCases` each on Iraq (`Syria`, `Sudan`, `Myanmar`) and Sri Lanka (`Kenya`, `Zambia`, `Argentina`), and smoothed clipped prose across all four briefings.
+- **Verified:** Three read-only `codex exec` fact/voice/citation audits resolved across steps and metadata (`>60,000` clinic registration framing, Tuz Khurmatu origin/18-location precision, UNDP/UNSC/PUCSL attributions, expanded acronyms, `<= 2`-number sentences, and matched essay/debate URLs), `npm run sources:manifest` (`328` targets across `37` cases), `check_batch2_voice.mjs` (`0` failures across all 20 steps), `npm test` (`99/99`), and `npm run build`. Leaving PR #47 and PR #49 untouched.
+
 ## 2026-11-25 — Antigravity — Guided Briefings Batch 2 & Batch 1 Fixes (`PR #55`, `feat/briefings-batch-2`)
 - **Did (opened as PR #55 `https://github.com/stephenm87/global-command-center-2026/pull/55`; DO NOT MERGE):**
   - **Batch 1 Small Fixes (`c9d06f4`, `6a2f4e2`):** Restored `Félix Ulloa` accents in `el-salvador-security-legitimacy-checks`, rephrased consecutive `"was told"` sentences and aligned `"191 helpline records"` in `argentina-abortion-law-budget-implementation` Step 1, and rewrote `ottawa-mine-ban-treaty-exits` Step 1 around Mines Advisory Group's February 2025 Lebanon clearance scene with Salim Hazra (`[17]`) before the June 2026 Geneva warning.

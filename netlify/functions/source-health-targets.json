@@ -2,7 +2,7 @@
   "schemaVersion": 1,
   "caseStudyCount": 37,
   "staticPageCount": 1,
-  "targetCount": 322,
+  "targetCount": 328,
   "targets": [
     {
       "id": "sudan-displacement-regional-spillover:core:0",
@@ -3520,6 +3520,72 @@
       "kind": "primary",
       "lifecycle": "active",
       "url": "https://news.un.org/en/story/2026/11/1168855"
+    },
+    {
+      "id": "vanuatu-pacific-icj-climate-opinion:supplemental:5",
+      "caseStudyId": "vanuatu-pacific-icj-climate-opinion",
+      "caseStudyTitle": "Vanuatu, the Pacific, and the ICJ Climate Opinion",
+      "sourceTitle": "Obligations of States in respect of Climate Change (Advisory Opinion of 23 July 2025)",
+      "publisher": "International Court of Justice (ICJ)",
+      "group": "supplemental",
+      "kind": "primary",
+      "lifecycle": "active",
+      "url": "https://www.icj-cij.org/sites/default/files/case-related/187/187-20250723-adv-01-00-en.pdf"
+    },
+    {
+      "id": "vanuatu-pacific-icj-climate-opinion:supplemental:6",
+      "caseStudyId": "vanuatu-pacific-icj-climate-opinion",
+      "caseStudyTitle": "Vanuatu, the Pacific, and the ICJ Climate Opinion",
+      "sourceTitle": "Explanation of Vote on a UN General Assembly Resolution on the ICJ Climate Opinion",
+      "publisher": "United States Mission to the United Nations",
+      "group": "supplemental",
+      "kind": "primary",
+      "lifecycle": "active",
+      "url": "https://usun.usmission.gov/explanation-of-vote-on-a-un-general-assembly-resolution-entitled-advisory-opinion-of-the-international-court-of-justice-on-the-obligations-of-states-in-respect-of-climate-change/"
+    },
+    {
+      "id": "vanuatu-pacific-icj-climate-opinion:supplemental:7",
+      "caseStudyId": "vanuatu-pacific-icj-climate-opinion",
+      "caseStudyTitle": "Vanuatu, the Pacific, and the ICJ Climate Opinion",
+      "sourceTitle": "General Assembly Resolution 80/263: Advisory opinion of the ICJ on the obligations of States in respect of climate change",
+      "publisher": "United Nations Digital Library",
+      "group": "supplemental",
+      "kind": "primary",
+      "lifecycle": "active",
+      "url": "https://digitallibrary.un.org/record/4118331/files/A_RES_80_263-EN.pdf"
+    },
+    {
+      "id": "vanuatu-pacific-icj-climate-opinion:supplemental:8",
+      "caseStudyId": "vanuatu-pacific-icj-climate-opinion",
+      "caseStudyTitle": "Vanuatu, the Pacific, and the ICJ Climate Opinion",
+      "sourceTitle": "UN experts urge states to support General Assembly resolution operationalising ICJ Advisory Opinion",
+      "publisher": "OHCHR (Office of the UN High Commissioner for Human Rights)",
+      "group": "supplemental",
+      "kind": "primary",
+      "lifecycle": "active",
+      "url": "https://www.ohchr.org/en/press-releases/2026/03/un-experts-urge-states-support-general-assembly-resolution-operationalising"
+    },
+    {
+      "id": "vanuatu-pacific-icj-climate-opinion:supplemental:9",
+      "caseStudyId": "vanuatu-pacific-icj-climate-opinion",
+      "caseStudyTitle": "Vanuatu, the Pacific, and the ICJ Climate Opinion",
+      "sourceTitle": "The UN General Assembly recently backed a landmark court opinion on climate change. Here's why that's important.",
+      "publisher": "UN Environment Programme (UNEP)",
+      "group": "supplemental",
+      "kind": "primary",
+      "lifecycle": "active",
+      "url": "https://www.unep.org/en/news-and-stories/story/un-general-assembly-recently-backed-landmark-court-opinion-climate-change"
+    },
+    {
+      "id": "vanuatu-pacific-icj-climate-opinion:supplemental:10",
+      "caseStudyId": "vanuatu-pacific-icj-climate-opinion",
+      "caseStudyTitle": "Vanuatu, the Pacific, and the ICJ Climate Opinion",
+      "sourceTitle": "Request for Advisory Opinion transmitted pursuant to UNGA Resolution 77/276",
+      "publisher": "International Court of Justice (ICJ)",
+      "group": "supplemental",
+      "kind": "primary",
+      "lifecycle": "active",
+      "url": "https://www.icj-cij.org/sites/default/files/case-related/187/187-20230412-app-01-00-en.pdf"
     },
     {
       "id": "context-cards:citation:0",

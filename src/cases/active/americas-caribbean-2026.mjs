@@ -1907,6 +1907,10 @@ export const AMERICAS_CARIBBEAN_CASES_2026 = [
             {
                 "caseId": "who-pathogen-access-benefit-sharing",
                 "note": "Contrast domestic abortion-pill procurement battles under austerity with global negotiations over medicine equity."
+            },
+            {
+                "caseId": "sri-lanka-imf-debt-sovereignty",
+                "note": "Compare austerity squeezing public clinic supplies in Argentina with IMF-linked household pressures in Sri Lanka."
             }
         ]
     }

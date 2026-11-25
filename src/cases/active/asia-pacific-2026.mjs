@@ -729,7 +729,13 @@ export const ASIA_PACIFIC_CASES_2026 = [
                     ]
                 }
             ]
-        }
+        },
+        "relatedCases": [
+            {
+                "caseId": "iraq-post-isil-sovereignty-reconstruction",
+                "note": "Compare Myanmar's fragmented armed territorial control with Baghdad's post-ISIL struggle to assert authority over militias."
+            }
+        ]
     },
     {
         "id": "south-china-sea-arbitral-award-ten-years",
@@ -2068,7 +2074,7 @@ export const ASIA_PACIFIC_CASES_2026 = [
             "UN_OPEC",
             "MiddleEast"
         ],
-        "statusSummary": "After defaulting in May 2022, Sri Lanka restructured US$12.5 billion in international bonds and pushed gross reserves back to US$6.9 billion under a US$3 billion IMF bailout [2, 4, 7]. Yet revised World Bank estimates place 2025 poverty at 16.9%, above pre-crisis levels, after Cyclone Ditwah caused 646 deaths and Middle East war fuel spikes hit prices [11, 13, 15]. On 20 November 2026, Parliament backed Budget 2027's second reading by 157 votes to 60 ahead of March 2027 program expiry [1, 16].",
+        "statusSummary": "After defaulting in May 2022, Sri Lanka completed a US$12.5 billion international bond restructuring [4, 7]. Gross reserves reached US$6.9 billion under a US$3 billion IMF bailout [2, 7]. Yet Cyclone Ditwah caused 646 deaths, and World Bank revisions put recent poverty at 16.9% [11, 13]. In November 2026, Parliament passed the budget's second reading by 157 votes to 60 [1, 16].",
         "whyItMatters": "Sri Lanka tests whether a bankrupt democracy can fix foreign debt without trapping citizens in falling living standards or surrendering fiscal policy to lenders and bond markets. Its March 2027 IMF exit will show if recovered reserves can fund welfare and cyclone reconstruction without sliding back into expensive debt [1, 13, 15].",
         "updatedAt": "2026-11-25",
         "confidence": "high",
@@ -2137,7 +2143,7 @@ export const ASIA_PACIFIC_CASES_2026 = [
                 "url": "https://www.aljazeera.com/news/2022/7/27/how-can-we-cope-ask-sri-lankans-as-govt-limits-fuel-imports",
                 "perspectiveType": "independent",
                 "perspective": "On-the-ground independent reporting of ordinary households and workers during Sri Lanka's 2022 fuel crisis",
-                "supports": "Supports eyewitness accounts from Kurunegala NGO director Sumika Perera (sons waiting days in diesel queues, schoolchildren fainting from skipped meals) and Colombo taxi driver Chandana Vijith Kumara (20-litre petrol caps and months away from family)."
+                "supports": "Supports eyewitness accounts from Kurunegala NGO director Sumika Perera (one son waiting five days in diesel queues, schoolchildren fainting from skipped meals) and Colombo taxi driver Chandana Vijith Kumara (16-to-20-litre petrol caps and months away from family)."
             }
         ],
         "supplementalSources": [
@@ -2186,8 +2192,8 @@ export const ASIA_PACIFIC_CASES_2026 = [
                 "publisher": "PublicFinance.lk",
                 "publishedAt": "2026-08-05",
                 "url": "https://publicfinance.lk/en/topics/sri-lanka-exempts-more-businesses-from-vat-than-most-countries-in-the-world-1785916516",
-                "perspective": "Sri Lankan public-finance research on VAT rate progression and June 2026 parliamentary retreat on tax thresholds",
-                "supports": "Supports VAT climbing from 8% (2020–2022) to 15% (2023) and 18% (2024–2025), and Parliament's 23 June 2026 withdrawal of a proposed LKR 60M-to-36M VAT registration threshold cut."
+                "perspective": "Sri Lankan public-finance research on VAT rate progression and the government's June 2026 withdrawal of a proposed tax threshold",
+                "supports": "Supports VAT climbing from 8% (2020–2022) to 15% (2023) and 18% (2024–2025), and the government's 23 June 2026 announcement in Parliament withdrawing a proposed LKR 60M-to-36M VAT registration threshold cut."
             },
             {
                 "title": "IMF Executive Board Completes the Fourth Review Under the Extended Fund Facility with Sri Lanka",
@@ -2262,7 +2268,7 @@ export const ASIA_PACIFIC_CASES_2026 = [
                 "perspectiveType": "local",
                 "conceptInFocus": "Legitimacy",
                 "relatedTimelineDate": "2022-05",
-                "narration": "In July 2022, Sumika Perera spoke from Kurunegala of watching her sons queue days for diesel while teachers reported children fainting from skipped meals [3]. In Colombo, taxi driver Chandana Vijith Kumara scraped by on twenty litres of weekly petrol while missing family visits for weeks [3]. Sri Lanka had defaulted on foreign debt in May after running short of dollars for fuel, food, and medicine [4, 15]. Mass street protests then forced President Gotabaya Rajapaksa from office [15].\n\nWhen a state fails to secure everyday fuel and groceries, public trust fractures swiftly. Legitimacy—citizens' belief that elected rulers hold authority rightfully—depends on daily competence alongside election wins [6]. Even before International Monetary Fund (IMF) conditions began, sovereign bankruptcy had already stripped Colombo of everyday economic independence [4, 15].",
+                "narration": "In July 2022, Sumika Perera spoke from Kurunegala of her son waiting five days for diesel while teachers reported children fainting from skipped meals [3]. In Colombo, fuel queues kept taxi driver Chandana Vijith Kumara from his monthly trip home to Mahiyangana, and a 16-litre weekly petrol quota—later raised to twenty litres—remained inadequate for work [3]. Sri Lanka had defaulted on its foreign debt in May after running short of dollars for fuel, food, and medicine [4, 15]. Mass street protests then forced President Gotabaya Rajapaksa from office [15].\n\nWhen a state fails to secure everyday fuel and groceries, public trust fractures swiftly. Legitimacy—citizens' belief that elected rulers hold authority rightfully—depends on daily competence alongside election wins [6]. Even before International Monetary Fund (IMF) conditions began, sovereign bankruptcy had already stripped Colombo of everyday economic independence [4, 15].",
                 "focusQuestion": "How did foreign-exchange exhaustion and fuel shortages shatter state legitimacy before the IMF bailout even began?"
             },
             {
@@ -2282,8 +2288,8 @@ export const ASIA_PACIFIC_CASES_2026 = [
                 "perspectiveType": "local",
                 "conceptInFocus": "Sovereignty",
                 "relatedTimelineDate": "2024-11",
-                "narration": "On 14 November 2024, voters handed newly elected President Anura Kumara Dissanayake a sweeping parliamentary majority behind promises to ease living costs [5, 6]. His coalition won 159 seats in Parliament while the Rajapaksa family party collapsed to three [6]. Days before September's presidential election, outgoing officials had sealed a US$12.5 billion international bond rework carrying a 27% nominal creditor loss [4, 5]. Once inaugurated, Dissanayake finalized that bond swap and honored IMF program targets [6, 7].\n\nChanging governing parties tested whether democratic election mandates can rewrite painful rescue bargains after sovereign default [5]. Sovereignty—supreme national authority over domestic policy—meets hard material limits when indebted governments need foreign credit and bondholder approval [4, 15]. Even so, domestic business pressure forced Parliament in June 2026 to withdraw a proposed lower VAT registration threshold [9].",
-                "focusQuestion": "Why did a government elected with 159 seats keep IMF primary-surplus and debt-rework commitments instead of tearing them up?"
+                "narration": "On 14 November 2024, voters handed newly elected President Anura Kumara Dissanayake a sweeping parliamentary majority behind promises to ease living costs [5, 6]. His coalition won 159 seats in Parliament while the Rajapaksa family party collapsed to three [6]. Days before September's presidential election, outgoing officials had sealed an agreement in principle for a US$12.5 billion international bond rework carrying a 27% nominal creditor loss [4, 5]. Once inaugurated, Dissanayake finalized that bond swap and pursued core IMF fiscal targets [6, 7].\n\nChanging governing parties tested whether democratic election mandates can rewrite painful rescue bargains after sovereign default [5]. Sovereignty—supreme national authority over domestic policy—meets hard material limits when indebted governments need foreign credit and bondholder approval [4, 15]. Even so, the government announced the withdrawal of a proposed lower VAT registration threshold in Parliament in June 2026 [9].",
+                "focusQuestion": "Why did a government elected with 159 seats keep IMF primary-surplus (when revenue exceeds spending before debt interest) and debt-rework commitments instead of tearing them up?"
             },
             {
                 "nodeId": "UN_OPEC",
@@ -2292,8 +2298,8 @@ export const ASIA_PACIFIC_CASES_2026 = [
                 "perspectiveType": "independent",
                 "conceptInFocus": "Interdependence",
                 "relatedTimelineDate": "2025-12",
-                "narration": "By early March 2026, more than 153,000 Sri Lankans across Badulla, Kandy, and nearby hill districts still relied on relief camps or host homes after Cyclone Ditwah [11]. Late-December counts recorded 646 confirmed fatalities alongside 173 missing nationwide [11]. World Bank assessors estimated direct physical storm damage at US$4.1 billion, even as national output later regained pre-crisis size [12, 14]. By 2025, household poverty nonetheless stood at 16.9%, well above pre-crash norms, as child stunting worsened [13].\n\nExternal shocks expose how national output growth hides fragile wages and household disaster vulnerability [13]. Interdependence—mutual vulnerability linking local livelihoods to global markets and climate hazards—meant floods and Middle East fuel spikes squeezed families swiftly [13, 15]. Healthy central-bank reserves offered little immediate relief where damaged roads and informal tenures slowed grants [2, 11].",
-                "focusQuestion": "How can Sri Lanka's GDP regain 2018 size while poverty stays stuck at 16.9% and rural child nutrition worsens?"
+                "narration": "By early March 2026, more than 153,000 Sri Lankans in camps, host homes, and rented rooms across the island still waited for permanent shelter after Cyclone Ditwah [11]. As of late December, disaster officials recorded 646 confirmed fatalities alongside 173 people missing nationwide [11]. World Bank assessors estimated direct physical storm damage at US$4.1 billion, even as national output later regained pre-crisis size [12, 14]. By 2025, household poverty nonetheless stood at 16.9%, well above pre-crash norms, as child stunting worsened [13].\n\nExternal shocks expose how national output growth hides fragile wages and household disaster vulnerability [13]. Interdependence—mutual vulnerability linking local livelihoods to global markets and climate hazards—meant floods and Middle East fuel spikes squeezed families swiftly [13, 15]. Healthy central-bank reserves offered little immediate relief where damaged roads and informal tenures slowed grants [2, 11].",
+                "focusQuestion": "How can Sri Lanka's GDP regain pre-crisis size while 2025 poverty was estimated at 16.9% and national child stunting worsened?"
             },
             {
                 "nodeId": "MiddleEast",
@@ -2302,7 +2308,7 @@ export const ASIA_PACIFIC_CASES_2026 = [
                 "perspectiveType": "synthesis",
                 "conceptInFocus": "Sovereignty",
                 "relatedTimelineDate": "2026-11",
-                "narration": "On 20 November 2026, Sri Lanka's Parliament passed the second reading of its upcoming national budget ahead of final votes [16]. Lawmakers backed the spending plan by 157 votes to 60 ahead of a final December ballot [16]. President Dissanayake framed the measure to prepare for graduating from IMF bailout oversight in March 2027 [1, 15]. Debt interest still consumes Rs. 2,643 billion, roughly 43% of projected revenue, squeezing social relief [1]. Meanwhile, Middle East shipping disruption pushed Colombo inflation to 8.3%, prompting targeted energy subsidies [15].\n\nGraduating from IMF oversight in 2027 would reduce lender conditions over domestic taxes and energy pricing [1]. Sovereignty—rightful national control over domestic policy—shrinks whenever heavy debt forces states to satisfy foreign creditors. Parliament kept lawmaking power throughout, yet borrowing yields near 11% or 12% still constrain budget choices [15].",
+                "narration": "On 20 November 2026, Sri Lanka's Parliament passed the second reading of its upcoming national budget ahead of final debates [16]. Lawmakers backed President Anura Kumara Dissanayake's government spending plan by 157 votes to 60 before the IMF program's scheduled end [1, 16]. Debt interest still consumes Rs. 2,643 billion, roughly 43% of projected revenue, leaving scarce room for household relief [1]. Meanwhile, Middle East shipping disruptions pushed Colombo inflation to 8.3%, prompting targeted fuel and power subsidies [15].\n\nGraduating from IMF oversight in March 2027 would reduce lender conditions over domestic taxes and energy pricing [1]. Sovereignty—a state's rightful control over domestic policymaking—shrinks whenever heavy debt compels governments to satisfy international creditors. Parliament kept its lawmaking power throughout, yet former central-bank deputy governor W. A. Wijewardena warned commercial bond borrowing could cost 11% or 12% [15].",
                 "focusQuestion": "Does ending the IMF bailout in March 2027 restore Sri Lanka's economic sovereignty, or swap multilateral conditions for expensive bond markets?"
             }
         ],
@@ -2381,7 +2387,7 @@ export const ASIA_PACIFIC_CASES_2026 = [
             },
             {
                 "claimBy": "PublicFinance.lk revenue analysis (August 2026)",
-                "claim": "Withdrawing the lower VAT registration threshold in June 2026 kept small firms untaxed and pressured the state toward narrow 18% consumption taxes [9].",
+                "claim": "Withdrawing the lower VAT registration threshold in June 2026 kept smaller firms exempt from registering for VAT and preserved reliance on 18% consumption taxes [9].",
                 "counterBy": "UN OCHA Ditwah SitRep & World Bank Poverty FAQ (March–October 2026)",
                 "counterClaim": "Estate and informal workers without formal housing or land documentation still risk exclusion from relief schemes as 2025 poverty remains at 16.9% [11, 13].",
                 "sourceUrls": [
@@ -2425,8 +2431,9 @@ export const ASIA_PACIFIC_CASES_2026 = [
             {
                 "stage": "The formal decision",
                 "rating": "MIXED",
-                "evidence": "Parliament—where Dissanayake's coalition won 159 of 225 seats—honored the US$12.5 billion bond rework, restored cost-recovery power tariffs in mid-2025, and backed Budget 2027 157–60, yet pulled back a lower VAT threshold in June 2026.",
+                "evidence": "Parliament—where Dissanayake's coalition won 159 of 225 seats—backed Budget 2027 157–60 after Dissanayake finalized the US$12.5 billion bond rework, while the utility regulator restored cost-recovery tariffs in June 2025 and the government withdrew a lower VAT threshold in June 2026.",
                 "sourceUrls": [
+                    "https://www.imf.org/en/news/articles/2025/02/28/pr25053-sri-lanka-imf-completes-the-3rd-rev-under-the-eff",
                     "https://www.imf.org/en/news/articles/2025/07/02/pr24235-sri-lanka-imf-executive-board-completes-the-fourth-review-under-the-eff",
                     "https://publicfinance.lk/en/topics/sri-lanka-exempts-more-businesses-from-vat-than-most-countries-in-the-world-1785916516",
                     "https://www.newswire.lk/2026/11/20/second-reading-of-budget-2027-passed-by-majority-of-97-votes/"
@@ -2445,19 +2452,22 @@ export const ASIA_PACIFIC_CASES_2026 = [
         ],
         "conceptLens": {
             "power": "The IMF shaped Sri Lanka's taxes and utility pricing through staged tranche reviews, while elected parliaments and protests still set political limits on VAT exemptions and relief.",
-            "sovereignty": "Sri Lanka retained formal lawmaking authority, yet insolvency compelled bondholders' terms, IMF benchmarks, and caution toward 11%–12% private bond yields.",
-            "legitimacy": "Fuel queues toppled the Rajapaksa presidency in 2022, voters handed Dissanayake's coalition 159 of 225 seats in 2024, and persistent 16.9% poverty plus energy inflation now test governing trust.",
+            "sovereignty": "Sri Lanka retained formal lawmaking authority, yet insolvency compelled bondholders' terms, IMF benchmarks, and caution toward former deputy governor W. A. Wijewardena's warning of 11%–12% commercial borrowing costs.",
+            "legitimacy": "Fuel queues toppled the Rajapaksa presidency in 2022, voters handed Dissanayake's coalition 159 of 225 seats in 2024, and a 2025 poverty estimate of 16.9% plus 2026 energy inflation now test governing trust.",
             "interdependence": "Domestic recovery hinges simultaneously on IMF disbursements, Cyclone Ditwah reconstruction, Middle East war shipping costs, and global debt markets."
         },
         "essayBuilder": {
             "prompt": "Evaluate the extent to which conditional multilateral bailouts constrain the economic sovereignty of indebted states.",
             "claim": "Sri Lanka's 2023–2027 IMF program substantially constrained domestic fiscal autonomy in practice while leaving constitutional authority intact.",
-            "evidence": "To reach roughly US$2.7 billion in cumulative IMF disbursements contingent on seventh-review Board approval and finish a US$12.5 billion bond exchange, governments raised VAT to 18%, enacted automatic power tariff adjustments, and kept surpluses after winning 159 of 225 seats.",
-            "counterClaim": "However, sovereign default—not the IMF alone—initially removed economic choice in May 2022, and domestic politics still forced adjustments such as cancelling a lower VAT registration threshold in June 2026 and adding fuel subsidies in late 2026.",
+            "evidence": "Cumulative IMF payouts would reach roughly US$2.7 billion upon seventh-review Board approval alongside the completed US$12.5 billion bond exchange. Governments also raised VAT to 18%, restored cost-recovery power tariffs through the regulator, and pursued fiscal targets after winning 159 seats.",
+            "counterClaim": "However, sovereign default—not the IMF alone—initially removed economic choice in May 2022, and the government still announced it would withdraw a proposed lower VAT registration threshold in June 2026 alongside targeted fuel subsidies late in the year.",
             "judgment": "On balance, conditional bailouts trade short-term fiscal discretion for external liquidity and creditor confidence, showing that indebted states share budget sovereignty with lenders long after election day.",
             "sourceUrls": [
                 "https://www.imf.org/en/news/articles/2026/10/04/pr26318-sri-lanka-imf-reaches-sla-on-7th-review-under-the-eff",
+                "https://www.imf.org/en/news/articles/2025/02/28/pr25053-sri-lanka-imf-completes-the-3rd-rev-under-the-eff",
                 "https://www.imf.org/en/news/articles/2025/07/02/pr24235-sri-lanka-imf-executive-board-completes-the-fourth-review-under-the-eff",
+                "https://asia.nikkei.com/economy/sri-lanka-approves-vat-hike-to-18-in-push-for-imf-targets",
+                "https://www.reuters.com/world/asia-pacific/sri-lankan-presidents-coalition-set-victory-snap-election-2024-11-15/",
                 "https://publicfinance.lk/en/topics/sri-lanka-exempts-more-businesses-from-vat-than-most-countries-in-the-world-1785916516",
                 "https://www.reuters.com/world/asia-pacific/sri-lanka-budget-faces-post-imf-test-energy-costs-bite-2026-11-06/"
             ]
@@ -2508,13 +2518,27 @@ export const ASIA_PACIFIC_CASES_2026 = [
             },
             {
                 "date": "2025-12",
-                "label": "Cyclone Ditwah kills 646 and affects roughly 2.2 million across all 25 districts; October 2026 World Bank revisions place 2025 poverty at 16.9%.",
+                "label": "Cyclone Ditwah kills 646, leaves 173 missing, and affects roughly 2.2 million Sri Lankans across all 25 districts.",
                 "sourceUrl": "https://www.unocha.org/publications/report/sri-lanka/sri-lanka-cyclone-ditwah-situation-report-no-09-06-march-2026"
             },
             {
                 "date": "2026-11",
                 "label": "Dissanayake presents Budget 2027, winning a 157–60 second-reading vote ahead of March 2027 IMF program expiry.",
                 "sourceUrl": "https://www.newswire.lk/2026/11/20/second-reading-of-budget-2027-passed-by-majority-of-97-votes/"
+            }
+        ],
+        "relatedCases": [
+            {
+                "caseId": "kenya-gen-z-finance-bill-protests",
+                "note": "Compare tax-hike backlash under Sri Lanka's IMF program with Kenya's youth-led protests against IMF-backed revenue bills."
+            },
+            {
+                "caseId": "zambia-electricity-reset-climate-access",
+                "note": "Contrast Sri Lanka's sovereign bond restructuring and utility pricing reforms with Zambia's debt and power-sector reset."
+            },
+            {
+                "caseId": "argentina-abortion-law-budget-implementation",
+                "note": "Compare household living-cost pressures under IMF austerity in Sri Lanka with federal health budget cuts in Argentina."
             }
         ]
     }
