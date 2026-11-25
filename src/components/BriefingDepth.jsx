@@ -285,7 +285,13 @@ function TimelineStrip({ events, updatedAt, reviewBy, activeWaypoint, sourceInde
     );
 }
 
-export function GoDeeper({ tour, activeWaypoint, sourceIndex, sourceByNumber, onJumpToSource }) {
+export function GoDeeper({ tour, activeWaypoint, sourceIndex, sourceByNumber, onJumpToSource, allTours = [], onSelectTour }) {
+    const relatedLinks = (Array.isArray(tour?.relatedCases) ? tour.relatedCases : [])
+        .map(link => {
+            const target = allTours.find(item => item.id === link.caseId);
+            return target ? { ...link, title: target.title } : null;
+        })
+        .filter(Boolean);
     const hasContent = Boolean(
         tour?.background
         || tour?.timeline?.length
@@ -294,6 +300,7 @@ export function GoDeeper({ tour, activeWaypoint, sourceIndex, sourceByNumber, on
         || tour?.watchFor?.length
         || tour?.examPrompts?.length
         || tour?.essayBuilder
+        || relatedLinks.length
     );
     const [open, setOpen] = useState(() => Boolean(readStoredJson(GO_DEEPER_STORAGE_KEY, false)));
     const panelId = useId();
@@ -317,7 +324,10 @@ export function GoDeeper({ tour, activeWaypoint, sourceIndex, sourceByNumber, on
                 onClick={toggle}
             >
                 <span>{open ? '▾' : '▸'} Go deeper</span>
-                <small>Background · timeline · key terms · the debate · what to watch · discussion questions</small>
+                <small>
+                    Background · timeline · key terms · the debate · what to watch · discussion questions
+                    {relatedLinks.length > 0 ? ' · related briefings' : ''}
+                </small>
             </button>
             <div id={panelId} className="go-deeper-panel" hidden={!open}>
                 {backgroundParagraphs.length > 0 && (
@@ -408,6 +418,32 @@ export function GoDeeper({ tour, activeWaypoint, sourceIndex, sourceByNumber, on
                                 <SourceLinks urls={tour.essayBuilder.sourceUrls} sourceIndex={sourceIndex} />
                             </div>
                         )}
+                    </section>
+                )}
+                {relatedLinks.length > 0 && (
+                    <section className="depth-block" aria-labelledby="depth-related-title">
+                        <h4 id="depth-related-title">Compare with related briefings</h4>
+                        <ul className="related-cases-list">
+                            {relatedLinks.map(link => (
+                                <li key={link.caseId}>
+                                    {onSelectTour ? (
+                                        <button
+                                            type="button"
+                                            className="related-case-btn"
+                                            onClick={() => onSelectTour(link.caseId)}
+                                        >
+                                            <strong>{link.title} →</strong>
+                                            <span>{link.note}</span>
+                                        </button>
+                                    ) : (
+                                        <div className="related-case-btn">
+                                            <strong>{link.title}</strong>
+                                            <span>{link.note}</span>
+                                        </div>
+                                    )}
+                                </li>
+                            ))}
+                        </ul>
                     </section>
                 )}
             </div>

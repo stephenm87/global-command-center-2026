@@ -321,6 +321,7 @@ export function normalizeCaseStudy(caseStudy) {
         ...(Array.isArray(caseStudy.influenceCheck) ? { influenceCheck: caseStudy.influenceCheck.map(item => ({ ...item, sourceUrls: [...(item.sourceUrls || [])] })) } : {}),
         ...(caseStudy.conceptLens ? { conceptLens: { ...caseStudy.conceptLens } } : {}),
         ...(caseStudy.essayBuilder ? { essayBuilder: { ...caseStudy.essayBuilder, sourceUrls: [...(caseStudy.essayBuilder.sourceUrls || [])] } } : {}),
+        ...(Array.isArray(caseStudy.relatedCases) ? { relatedCases: caseStudy.relatedCases.map(item => ({ ...item })) } : {}),
         ...(caseStudy.actorMap ? { actorMap: cloneActorMap(caseStudy.actorMap) } : {}),
     };
 }

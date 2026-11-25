@@ -79,7 +79,7 @@ test('curated case studies remain balanced across 7 regions x 6 lenses, auditabl
 
     assert.ok(broadCategorySet.has('Governance & Rights'), 'Option A promotes Governance & Rights into Broad_Category');
     assert.equal(CONTENT_REVIEW_DATE, EDITORIAL_SNAPSHOT_DATE, 'editorial snapshot should match the canonical baseline review date');
-    assert.ok(CASE_STUDIES_2026.length >= 29, 'active case library must retain >= 29 baseline cases');
+    assert.ok(CASE_STUDIES_2026.length >= 33, 'active case library must retain >= 33 curated cases');
     assert.equal(ALL_CASE_STUDIES_2026.length, CASE_STUDIES_2026.length + ARCHIVED_CASE_STUDIES_2026.length);
     assert.equal(allCaseIds.size, ALL_CASE_STUDIES_2026.length, 'case IDs must be globally unique across active and archived sets');
 
@@ -288,10 +288,10 @@ test('curated case studies remain balanced across 7 regions x 6 lenses, auditabl
         assert.deepEqual(tour.waypoints, caseStudy.waypoints);
     }
 
-    // Verify docs/CASE_STUDY_EDITORIAL_STANDARD.md 29-case baseline table stays in sync with CASE_STUDIES_2026
+    // Verify docs/CASE_STUDY_EDITORIAL_STANDARD.md 33-case catalog table stays in sync with CASE_STUDIES_2026
     const standardDoc = fs.readFileSync(path.join(REPO_ROOT, 'docs/CASE_STUDY_EDITORIAL_STANDARD.md'), 'utf8');
     const tableRows = [...standardDoc.matchAll(/^\|\s*\d+\s*\|\s*`([^`]+)`\s*\|\s*`([^`]+)`\s*\|\s*`([^`]+)`\s*\|\s*`([^`]+)`\s*\|\s*`([^`]+)`\s*\|$/gm)];
-    assert.equal(tableRows.length, 29, 'CASE_STUDY_EDITORIAL_STANDARD.md must list all 29 baseline cases');
+    assert.equal(tableRows.length, 33, 'CASE_STUDY_EDITORIAL_STANDARD.md must list all 33 active cases');
     const byId = new Map(ALL_CASE_STUDIES_2026.map(item => [item.id, item]));
     for (const [, id, , docRegion, docLens, docBroad] of tableRows) {
         const record = byId.get(id);
@@ -310,7 +310,7 @@ test('curated case studies remain balanced across 7 regions x 6 lenses, auditabl
     const stalenessReport = stalenessCli.analyzeCaseStaleness(CASE_STUDIES_2026, [], '2026-11-20');
     assert.equal(stalenessReport.overdueCount, 8, '7 remaining standard-sensitivity cases plus unre-reviewed Tuvalu stay in Group 2 update-in-progress after Syria Batch 1 renewal');
     assert.equal(stalenessReport.dueWithin14DaysCount, 10);
-    assert.equal(stalenessReport.freshCount, 11);
+    assert.equal(stalenessReport.freshCount, 15);
 
     const expectedGroup2Ids = [
         'amazon-indigenous-co-governance',
@@ -461,6 +461,25 @@ test('curated case studies remain balanced across 7 regions x 6 lenses, auditabl
                 !CONTESTED_CAPITAL_PATTERN.test(chunk),
                 `${item.id} uses a contested capital name in case text ("${chunk.slice(0, 90)}…"); name the state instead`,
             );
+        }
+    }
+    const activeCaseIds = new Set(CASE_STUDIES_2026.map(item => item.id));
+    for (const record of ALL_CASE_STUDIES_2026) {
+        if (record.relatedCases !== undefined) {
+            assert.ok(Array.isArray(record.relatedCases) && record.relatedCases.length > 0, `${record.id} relatedCases must be a non-empty array when set`);
+            const seenRelated = new Set();
+            for (const link of record.relatedCases) {
+                assertNonEmptyString(link?.caseId, `${record.id} relatedCases entry missing caseId`);
+                assert.notEqual(link.caseId, record.id, `${record.id} relatedCases cannot link to itself`);
+                if (record.status === 'active') {
+                    assert.ok(activeCaseIds.has(link.caseId), `${record.id} relatedCases target "${link.caseId}" must be an active case`);
+                } else {
+                    assert.ok(allCaseIds.has(link.caseId), `${record.id} relatedCases unknown caseId "${link.caseId}"`);
+                }
+                assert.ok(!seenRelated.has(link.caseId), `${record.id} relatedCases repeats "${link.caseId}"`);
+                seenRelated.add(link.caseId);
+                assertNonEmptyString(link?.note, `${record.id} relatedCases "${link.caseId}" missing note`);
+            }
         }
     }
     for (const record of CASE_STUDIES_2026) {
@@ -628,6 +647,7 @@ test('curated case studies remain balanced across 7 regions x 6 lenses, auditabl
                 assert.ok(baseMetricsText.includes(String(figure.value)), `${item.id} keyFigure value "${figure.value}" must appear verbatim in statusSummary/uncertainty`);
             }
         }
+
 
         const times = computeBriefingReadingTimes(item);
         assert.ok(times.fullMinutes >= times.quickMinutes && times.quickMinutes >= 1);

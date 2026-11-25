@@ -2157,5 +2157,476 @@ export const AFRICA_CASES_2026 = [
                 "focusQuestion": "Which regional rules can spread risk while preserving fair access to shared water and electricity?"
             }
         ]
+    },
+    {
+        "id": "kenya-gen-z-finance-bill-protests",
+        "status": "active",
+        "briefingVersion": 2,
+        "title": "Kenya Gen Z: Tax Revolts, Police Force & Debt Pressure",
+        "subtitle": "When leaderless youth forced Parliament to reject a tax bill, how far did street pressure transform fiscal and police accountability?",
+        "coverageRegion": "Africa",
+        "regionTags": [
+            "East Africa",
+            "Kenya",
+            "Nairobi",
+            "Mombasa"
+        ],
+        "issueLens": "Governance & Rights",
+        "broadCategory": "Governance & Rights",
+        "issueDimensions": [
+            "Taxation and social consent",
+            "Youth civic mobilization",
+            "Police force and impunity",
+            "IMF conditionality and debt"
+        ],
+        "actors": [
+            "Kenyan Gen Z protesters & civic groups",
+            "Presidency & National Assembly (William Ruto)",
+            "National Treasury, IMF & World Bank",
+            "Kenyan Judiciary, KNCHR & IPOA",
+            "ODM opposition in broad-based cabinet"
+        ],
+        "nexusNodeIds": [
+            "Africa",
+            "UN_OPEC"
+        ],
+        "concepts": [
+            "Legitimacy",
+            "Power",
+            "Sovereignty",
+            "Interdependence"
+        ],
+        "ibThemes": [
+            "rights-and-justice",
+            "development-and-sustainability"
+        ],
+        "statusSummary": "As reviewed on 24 November 2026, Kenya's fiscal and policing standoff remains unresolved more than two years after Gen Z protesters forced the rejection of the $2.7 billion 2024/25 Finance Bill. Across January 2025 to June 2026, local monitors recorded 1,292 protest events nationwide (up 29% in H1 2026) alongside May 2026 fuel-hike unrest and 355 arrests on 25 June 2026, while Kenya lacked a successor IMF lending program ahead of December 2026 Article IV consultations.",
+        "whyItMatters": "Kenya tests whether decentralized youth mobilization can enforce democratic consent over IMF-backed fiscal consolidation when formal parliaments pass disputed taxes while security forces enjoy near-impunity.",
+        "updatedAt": "2026-11-24",
+        "confidence": "high",
+        "uncertainty": "Cumulative casualty and prosecution totals stay disputed across overlapping monitors: KNCHR recorded at least 60 deaths in the 2024 unrest and IPOA registered 60 killings with only two cases placed before court by April 2025, alongside 65 IPOA-recorded deaths in June–July 2025 and four in May 2026. Whether Nairobi secures a new IMF deal before the August 2027 elections remains open.",
+        "sensitivity": "high",
+        "editorialCaution": "Distinguish constitutional stages—President Ruto withheld assent and referred reservations under Article 115(1)(b) on 26 June 2024 before the National Assembly voted to delete all clauses under Article 115(2) on 25 July 2024—from later selective taxes under the December 2024 Tax Laws (Amendment) Act, and keep monitor counts disaggregated.",
+        "featured": true,
+        "reviewCadenceDays": 14,
+        "reviewBy": "2026-12-08",
+        "coordinates": {
+            "latitude": -1.2921,
+            "longitude": 36.8219
+        },
+        "map": {
+            "mode": "regional",
+            "locations": [
+                {
+                    "label": "Nairobi",
+                    "latitude": -1.2921,
+                    "longitude": 36.8219,
+                    "role": "Parliament grounds, Treasury, and main focus of 2024–2026 tax, justice, and anniversary protests"
+                },
+                {
+                    "label": "Mombasa",
+                    "latitude": -4.0435,
+                    "longitude": 39.6682,
+                    "role": "Coastal port hub hit by anti-abduction arrests and May 2026 transport strike supply fears"
+                },
+                {
+                    "label": "Eldoret",
+                    "latitude": 0.5143,
+                    "longitude": 35.2698,
+                    "role": "Rift Valley rally center where KNCHR logged 16 arrests during December 2024 anti-abduction protests"
+                },
+                {
+                    "label": "Nakuru",
+                    "latitude": -0.3031,
+                    "longitude": 36.08,
+                    "role": "County protest corridor where security forces shot journalist Ruth Sarmwei with a rubber bullet in June 2025"
+                }
+            ]
+        },
+        "keyFigures": [
+            {
+                "value": "$2.7 billion",
+                "label": "Extra revenue sought under the rejected 2024/25 Finance Bill before its 25 July 2024 defeat",
+                "asOf": "July 2024",
+                "sourceUrl": "https://www.reuters.com/world/africa/kenyas-finance-bill-why-has-it-triggered-protests-2024-06-25/"
+            },
+            {
+                "value": "1,292",
+                "label": "Protest events documented nationwide across Kenya between January 2025 and June 2026 (+29% YoY in H1 2026)",
+                "asOf": "August 2026",
+                "sourceUrl": "https://www.amnestykenya.org/odipodev-and-aik-release-the-freedom-index-half-year-2026-report-exposing-rising-protests-in-kenya-and-continued-use-of-lethal-force-and-deepening-rights-crisis/"
+            },
+            {
+                "value": "60",
+                "label": "Killings from the 2024 protests registered by IPOA, with two cases in court and 22 inquiries completed by April 2025",
+                "asOf": "April 2025",
+                "sourceUrl": "https://www.hrw.org/world-report/2026/country-chapters/kenya"
+            }
+        ],
+        "sources": [
+            {
+                "title": "The Freedom Index Half Year 2026 Report: Rising Protests and Lethal Force in Kenya",
+                "publisher": "Amnesty International Kenya & Odipo Dev",
+                "publishedAt": "2026-08-10",
+                "url": "https://www.amnestykenya.org/odipodev-and-aik-release-the-freedom-index-half-year-2026-report-exposing-rising-protests-in-kenya-and-continued-use-of-lethal-force-and-deepening-rights-crisis/",
+                "perspectiveType": "local",
+                "perspective": "Kenyan human-rights and civic-data coalition tracking 1,292 nationwide protests, economic triggers, and documented police weapon incidents across 2025–2026",
+                "supports": "Documents 839 protests in 2025 and 453 in H1 2026 (+29% YoY), 65 June–July 2025 IPOA deaths, and live bullets ranking second in documented weapon incidents after tear gas."
+            },
+            {
+                "title": "National Assembly Rejects Finance Bill, 2024",
+                "publisher": "Parliament of Kenya",
+                "publishedAt": "2024-07-29",
+                "url": "https://www.parliament.go.ke/index.php/node/22244",
+                "perspectiveType": "institutional",
+                "perspective": "Official National Assembly record detailing the Article 115(1)(b) presidential memorandum and Article 115 clause-deletion vote",
+                "supports": "Confirms that on 25 July 2024 lawmakers voted by simple majority in Committee of the Whole House to delete every clause of Finance Bill 2024 after the president withheld assent."
+            },
+            {
+                "title": "Explainer: What's next after Kenya withdraws finance bill amid protests?",
+                "publisher": "Reuters",
+                "publishedAt": "2024-06-27",
+                "url": "https://www.reuters.com/world/africa/kenyas-finance-bill-why-has-it-triggered-protests-2024-06-25/",
+                "perspectiveType": "independent",
+                "perspective": "Financial and political reporting weighing Kenya's 68% headline debt-to-GDP ratio and IMF lender demands against citizen living-cost pressure",
+                "supports": "Establishes the $2.7 billion tax target, contested bread, oil, sugar, and 2.5% vehicle proposals, 68% debt-to-GDP against a 55% present-value benchmark, and June 26 withdrawal."
+            }
+        ],
+        "supplementalSources": [
+            {
+                "title": "World Report 2026: Kenya",
+                "publisher": "Human Rights Watch",
+                "publishedAt": "2026-02-04",
+                "url": "https://www.hrw.org/world-report/2026/country-chapters/kenya",
+                "perspective": "Investigative human-rights record covering Albert Ojwang's June 2025 custody death, IPOA April 2025 update (2 of 60 cases in court), 26/15 missing persons, and Kerugoya court rulings"
+            },
+            {
+                "title": "Statement on the Protests against Abductions and Enforced Disappearances in Kenya",
+                "publisher": "Kenya National Commission on Human Rights (KNCHR)",
+                "publishedAt": "2024-12-30",
+                "url": "https://www.knchr.org/Articles/ArtMID/2432/ArticleID/1214/Statement-on-the-Protests-against-Abductions-and-Enforced-Disappearances-in-Kenya",
+                "perspective": "Constitutional rights watchdog monitoring unmarked police abductions across four counties, 53 arrests across Nairobi, Eldoret, and Mombasa, and Article 37 assembly guarantees"
+            },
+            {
+                "title": "Kenya: Deaths during protests deeply concerning",
+                "publisher": "Office of the UN High Commissioner for Human Rights (OHCHR)",
+                "publishedAt": "2025-06-26",
+                "url": "https://www.ohchr.org/en/press-releases/2025/06/kenya-deaths-during-protests-deeply-concerning",
+                "perspective": "UN human-rights intervention underscoring strict necessity standards on lethal firearms use and prompt independent IPOA investigations"
+            },
+            {
+                "title": "Kenyan president sacks cabinet, bowing to pressure from protests",
+                "publisher": "Reuters",
+                "publishedAt": "2024-07-11",
+                "url": "https://www.reuters.com/world/africa/kenyan-president-ruto-address-nation-later-thursday-2024-07-11/",
+                "perspective": "Political reporting on Ruto dismissing almost his entire cabinet and balancing spending cuts with additional borrowing"
+            },
+            {
+                "title": "Kenya's Ruto names opponents to cabinet, protesters slam 'corrupt' deal",
+                "publisher": "Reuters",
+                "publishedAt": "2024-07-24",
+                "url": "https://www.reuters.com/world/africa/kenyas-president-ruto-make-address-nation-later-wednesday-2024-07-24/",
+                "perspective": "Reporting on four ODM allies (including John Mbadi as Finance Minister) joining cabinet and activist rejection of elite co-optation"
+            },
+            {
+                "title": "Kenya's William Ruto faces tough choices as tax laws derailed",
+                "publisher": "BBC News",
+                "publishedAt": "2024-08-07",
+                "url": "https://www.bbc.com/news/articles/c39kk4pdek2o",
+                "perspective": "Legal-fiscal analysis of the Court of Appeal striking down Finance Act 2023 ($78B debt; $3.8B cumulative lost revenue warning)"
+            },
+            {
+                "title": "Kenya enacts changes under the Tax Laws (Amendment) Act, 2024 and other legislation",
+                "publisher": "EY Global Tax News",
+                "publishedAt": "2025-01-14",
+                "url": "https://taxnews.ey.com/news/2025-0233-kenya-enacts-changes-under-the-tax-laws-amendment-act-2024-and-other-legislation",
+                "perspective": "Tax-law breakdown of the December 2024 statute enacting 15% MNE minimum top-up tax, SEP digital tax, and SHIF/Housing Levy deductions"
+            },
+            {
+                "title": "Kenya seeks new IMF deal after abandoning latest review",
+                "publisher": "Reuters",
+                "publishedAt": "2025-03-17",
+                "url": "https://www.reuters.com/world/africa/imf-has-received-formal-request-new-kenya-funding-programme-2025-03-17/",
+                "perspective": "Macroeconomic reporting on dropping the ninth review (~$480M left) of the $3.6B EFF/ECF deal and Kenya's 65.7% June 2024 debt-to-GDP ratio"
+            },
+            {
+                "title": "Finance Bill 2026: Legislating in Reverse",
+                "publisher": "Institute of Economic Affairs (IEA Kenya)",
+                "publishedAt": "2026-05-13",
+                "url": "https://ieakenya.or.ke/blog/finance-bill-2026-legislating-in-reverse/",
+                "perspective": "Kenyan economic policy analysis of 2020–2026 tax reversals and Constitution Article 201 openness and public-participation duties"
+            },
+            {
+                "title": "Four killed in protests over Kenya fuel price hikes as strike strands commuters",
+                "publisher": "Reuters",
+                "publishedAt": "2026-05-18",
+                "url": "https://www.reuters.com/world/africa/protests-erupt-over-kenya-fuel-price-hikes-strike-strands-commuters-2026-05-18/",
+                "perspective": "Documentation of May 2026 unrest after EPRA hiked pump prices up to 23.5% amid the Iran war, leaving four dead and over 30 injured"
+            },
+            {
+                "title": "Kenyan public transport operators call off strike after government cuts diesel price",
+                "publisher": "Reuters",
+                "publishedAt": "2026-05-22",
+                "url": "https://www.reuters.com/world/africa/kenya-cut-diesel-price-after-protests-against-soaring-energy-costs-2026-05-22/",
+                "perspective": "Coverage of President Ruto ordering a >4% (KSh 10/litre) diesel price cut to end a nationwide public-transport strike"
+            },
+            {
+                "title": "Kenya police disperse group marking deadly 2024 protests",
+                "publisher": "Reuters",
+                "publishedAt": "2026-06-25",
+                "url": "https://www.reuters.com/world/africa/kenyans-march-mark-anniversary-deadly-2024-anti-government-protests-2026-06-25/",
+                "perspective": "Field reporting from the second anniversary: razor wire around Parliament, tear gas, 355 arrests, and activist criticism of $15.5M victim funds without prosecutions"
+            },
+            {
+                "title": "Press Briefing Transcript: Julie Kozack, Director, Communications Department, October 29, 2026",
+                "publisher": "International Monetary Fund (IMF)",
+                "publishedAt": "2026-10-29",
+                "url": "https://www.imf.org/en/news/articles/2026/10/29/press-briefing-transcript-julie-kozack-director-communications-department-october-29-2026",
+                "perspective": "Official IMF guidance urging Kenya to broaden the tax base and cut exemptions rather than raise tax rates alongside targeted social protection"
+            },
+            {
+                "title": "Kenya in talks for fresh multilateral financing, central bank chief says",
+                "publisher": "Reuters",
+                "publishedAt": "2026-10-16",
+                "url": "https://www.reuters.com/world/africa/kenya-talks-fresh-multilateral-financing-central-bank-chief-says-2026-10-16/",
+                "perspective": "Monetary reporting confirming World Bank (~$400M expected) and AfDB financing talks plus an IMF Article IV visit scheduled for December 2026"
+            }
+        ],
+        "waypoints": [
+            {
+                "nodeId": "Africa",
+                "title": "Protesters Halt the Finance Bill",
+                "perspectiveLabel": "Gen Z street mobilization",
+                "perspectiveType": "local",
+                "conceptInFocus": "Legitimacy",
+                "relatedTimelineDate": "2024-07-25",
+                "narration": "On 25 June 2024, young demonstrators breached Parliament's gates in Nairobi moments after lawmakers approved Kenya's annual finance bill. The package sought US$2.7 billion in new taxes while news reports placed public debt at 68% of GDP—total national economic output. Dropping proposed bread and car levies on 18 June failed to quiet street anger [3]. Police and security forces killed at least 60 people during June and July according to the Kenya National Commission on Human Rights (KNCHR) [15].\n\nForced onto the defensive, President William Ruto declined to sign the bill [3]. Under Kenya's constitutional veto procedure, returning legislation with written reservations lets a simple parliamentary majority delete every clause. Lawmakers accepted Ruto's reservation on 25 July, turning street pressure into formal rejection [2]. The reversal showed that legitimacy—public acceptance of rightful authority—cannot rest on a parliamentary majority alone when citizens reject new taxes.",
+                "focusQuestion": "When voters view a tax package as regressive and unaccountable, does legislative approval still equal political legitimacy?"
+            },
+            {
+                "nodeId": "Africa",
+                "title": "Online Protests Meet Cabinet Bargains",
+                "perspectiveLabel": "Digital mobilization vs. co-optation",
+                "perspectiveType": "independent",
+                "conceptInFocus": "Power",
+                "relatedTimelineDate": "2024-07-24",
+                "narration": "On 11 July 2024, President Ruto dismissed nearly his entire cabinet on television after weeks of deadly street protests. Even though Ruto had rejected the finance bill, demonstrators kept demanding resignations and accountability [7]. Unlike older Kenyan campaigns led by party elders, Gen Z activists mobilized online across ethnic divides. Because protesters organized without party brokers, the presidency could not end unrest through quiet backroom deals [8].\n\nRuto turned to coalition politics to steady his administration. On 24 July, he nominated four allies of opposition leader Raila Odinga from the Orange Democratic Movement (ODM), tapping John Mbadi for finance. Activist Boniface Mwangi dismissed the pact as co-optation—pulling rivals into office without reform [8]. Appellate judges soon voided the 2023 finance law over procedural flaws, and budget officials warned losing both measures threatened a US$3.8 billion shortfall [8, 9]. Street mobilization and court rulings thus constrained executive power—a president's capacity to enact fiscal policy.",
+                "focusQuestion": "How do leaderless digital movements maintain leverage when presidents respond with cross-party cabinet bargains?"
+            },
+            {
+                "nodeId": "UN_OPEC",
+                "title": "Debt Targets Constrain Tax Policy",
+                "perspectiveLabel": "IMF conditionality and selective taxation",
+                "perspectiveType": "independent",
+                "conceptInFocus": "Interdependence",
+                "relatedTimelineDate": "2025-03-17",
+                "narration": "In March 2025, Kenyan Treasury and International Monetary Fund (IMF) negotiators agreed to drop an expiring program's final review, forgoing a potential disbursement of roughly US$480 million. Earlier Treasury data had placed mid-2024 public debt at 65.7% of GDP, just below news estimates [11]. To replace the vetoed bill after canceling bread and car levies, Ruto signed a revised tax statute in December 2024 [3, 10]. That law imposed a top-up when large multinationals pay below a 15% effective tax rate, replaced earlier digital rules, and made health and housing levies tax-deductible.\n\nDropping that review ended work on the outgoing program ahead of its April close, even as Nairobi pursued a new IMF facility. Looking toward 2026 financing, officials also sought around US$400 million from the World Bank alongside African Development Bank (AfDB) talks [11, 17]. External debt conditions sharply narrowed Kenya's domestic tax choices, illustrating interdependence—reliance on global creditors whose terms bind sovereign budgets.",
+                "focusQuestion": "How tightly do sovereign bond markets and IMF targets constrain a democratic government's domestic tax choices?"
+            },
+            {
+                "nodeId": "Africa",
+                "title": "Abusive Policing Erodes Trust",
+                "perspectiveLabel": "Rights watchdogs and judicial checks",
+                "perspectiveType": "local",
+                "conceptInFocus": "Legitimacy",
+                "relatedTimelineDate": "2025-06-25",
+                "narration": "In June 2025, citizens rallied nationwide after teacher and blogger Albert Ojwang died from alleged torture in custody following a 7 June arrest. Protesters were already angry over stalled justice for earlier police killings. An April 2025 update from the Independent Policing Oversight Authority (IPOA) listed 60 earlier protest killings. Just two cases had reached court, while rights groups counted at least 26 missing [4]. Anti-abduction marches in December 2024 also brought 53 arbitrary arrests logged by KNCHR [5].\n\nLethal policing continued outpacing state remedies. June and July 2025 marches brought 65 more IPOA-logged deaths alongside broadcast blackouts cutting live television coverage [1, 4]. United Nations human-rights monitors pressed for independent investigations [6]. When Ruto appointed a victim compensation panel, the Kerugoya High Court quashed it and assigned compensation administration to KNCHR [4]. Compensation alone cannot rebuild legitimacy—public belief that state authority is rightful—while fatal police shootings seldom reach trial.",
+                "focusQuestion": "Can monetary compensation funds restore state legitimacy if independent oversight bodies rarely prosecute lethal policing?"
+            },
+            {
+                "nodeId": "UN_OPEC",
+                "title": "Fuel Strikes Test Fiscal Rules",
+                "perspectiveLabel": "Fiscal rules vs. 2026 cost-of-living rallies",
+                "perspectiveType": "synthesis",
+                "conceptInFocus": "Sovereignty",
+                "relatedTimelineDate": "2026-08-10",
+                "narration": "In May 2026, nationwide fuel-price rallies killed four people across Kenya while transport strikes gridlocked Nairobi commuter corridors [13]. Days later, transport operators called off a planned strike resumption after securing a diesel cut above 4% [14]. From January 2025 onward, continuous tracking captured widespread unrest beyond youth demonstrations. Through June 2026, Amnesty International Kenya and Odipo Dev documented 1,292 protests nationwide. First-half rallies jumped 29% year-on-year, with live ammunition trailing only tear gas in recorded police weapons use [1].\n\nForce and budget rules clashed again on June's second protest anniversary. Police arrested 355 people nationwide during anniversary events [15]. Ahead of late-2026 talks, IMF staff recommended cutting tax exemptions instead of raising tax rates [16, 17]. Analysts at the Institute of Economic Affairs (IEA Kenya) urged multi-year tax laws following constitutional consultation duties [12]. Standoffs over tax policy keep testing sovereignty—a state's legal taxing authority constrained by street resistance.",
+                "focusQuestion": "What institutional reforms could align Kenya's constitutional rules on open, participatory budgets with its post-2024 fiscal reality?"
+            }
+        ],
+        "background": "Kenya's 2010 constitution guarantees peaceful assembly and requires public budgets to uphold openness, accountability, and genuine citizen consultation [5, 12]. Heavy domestic and foreign borrowing lifted total public debt past 65% of GDP—total national economic output—alongside lenders' 55% present-value sustainability benchmark measuring long-term debt in today's money [3, 11]. Successive administrations still relied on yearly tax hikes rather than deep spending cuts.\n\nPublic anger erupted in June 2024 after tax proposals targeted bread, cooking oil, and cars without cutting high-profile spending [3]. A multi-ethnic Gen Z movement organized online, breached Parliament, and pressured President William Ruto into withholding assent before lawmakers deleted every clause [2, 8]. Ruto then enacted revised taxes in December 2024 without the bread and car levies [10].\n\nCitizens carry lasting fiscal and human burdens. Unresolved protest killings, unmarked abductions, and stalled International Monetary Fund (IMF) talks left debt and accountability disputes open [4, 11, 17]. Surging fuel prices and deadly May 2026 marches kept Kenyans challenging state authority in the streets [1, 13].",
+        "backgroundSources": [
+            "https://www.parliament.go.ke/index.php/node/22244",
+            "https://www.reuters.com/world/africa/kenyas-finance-bill-why-has-it-triggered-protests-2024-06-25/",
+            "https://ieakenya.or.ke/blog/finance-bill-2026-legislating-in-reverse/",
+            "https://www.hrw.org/world-report/2026/country-chapters/kenya",
+            "https://www.amnestykenya.org/odipodev-and-aik-release-the-freedom-index-half-year-2026-report-exposing-rising-protests-in-kenya-and-continued-use-of-lethal-force-and-deepening-rights-crisis/"
+        ],
+        "keyTerms": [
+            {
+                "term": "Article 115 referral & rejection",
+                "definition": "Under Article 115(1)(b) Kenya's president may return a bill with reservations; under Article 115(2) MPs accept deletion by simple majority unless 233 override under 115(4).",
+                "sourceUrl": "https://www.parliament.go.ke/index.php/node/22244"
+            },
+            {
+                "term": "Article 201 public-finance principles",
+                "definition": "Constitutional mandate requiring openness, accountability, public participation, and prudent debt management in every Kenyan Finance Bill.",
+                "sourceUrl": "https://ieakenya.or.ke/blog/finance-bill-2026-legislating-in-reverse/"
+            },
+            {
+                "term": "Broad-based cabinet bargain",
+                "definition": "Executive strategy of bringing senior Raila Odinga ODM opposition figures into government—such as Finance Minister John Mbadi—to calm protest pressure.",
+                "sourceUrl": "https://www.reuters.com/world/africa/kenyas-president-ruto-make-address-nation-later-wednesday-2024-07-24/"
+            },
+            {
+                "term": "Broadening the tax base vs. raising rates",
+                "definition": "IMF fiscal recommendation prioritizing reduced exemptions and stronger compliance over higher statutory tax rates that fuel evasion and public backlash.",
+                "sourceUrl": "https://www.imf.org/en/news/articles/2026/10/29/press-briefing-transcript-julie-kozack-director-communications-department-october-29-2026"
+            }
+        ],
+        "debate": [
+            {
+                "claimBy": "International Monetary Fund spokesperson Julie Kozack (29 October 2026) and Reuters debt reporting (27 June 2024)",
+                "claim": "With public debt estimated near 68% of GDP against a 55% present-value benchmark—measuring long-term debt in today's money—fiscal consolidation is unavoidable. The lender urged broadening the tax base rather than raising rates.",
+                "counterBy": "Institute of Economic Affairs Kenya (13 May 2026) and street tax protesters (June 2024)",
+                "counterClaim": "Taxing everyday staples and repeatedly reversing finance rules breaks public trust. Economists urged three-year rate stability and adherence to constitutional open-budget consultation rules.",
+                "sourceUrls": [
+                    "https://www.reuters.com/world/africa/kenyas-finance-bill-why-has-it-triggered-protests-2024-06-25/",
+                    "https://ieakenya.or.ke/blog/finance-bill-2026-legislating-in-reverse/",
+                    "https://www.imf.org/en/news/articles/2026/10/29/press-briefing-transcript-julie-kozack-director-communications-department-october-29-2026"
+                ]
+            },
+            {
+                "claimBy": "President William Ruto and Kenyan police (reported by Reuters, 25 June 2026)",
+                "claim": "Ruto acknowledged excessive police actions and cited 2 billion Kenyan shillings—worth US$15.5 million—allocated for protest victims. Police deployed razor-wire roadblocks outside Parliament on the second anniversary.",
+                "counterBy": "Human Rights Watch (4 February 2026) and Kenya National Commission on Human Rights (KNCHR, 30 December 2024)",
+                "counterClaim": "Human Rights Watch cited just two cases reaching court out of 60 earlier protest killings. Monitors also logged 53 anti-abduction arrests in late 2024, while judges moved compensation under rights commissioners.",
+                "sourceUrls": [
+                    "https://www.hrw.org/world-report/2026/country-chapters/kenya",
+                    "https://www.knchr.org/Articles/ArtMID/2432/ArticleID/1214/Statement-on-the-Protests-against-Abductions-and-Enforced-Disappearances-in-Kenya",
+                    "https://www.ohchr.org/en/press-releases/2025/06/kenya-deaths-during-protests-deeply-concerning",
+                    "https://www.reuters.com/world/africa/kenyans-march-mark-anniversary-deadly-2024-anti-government-protests-2026-06-25/"
+                ]
+            },
+            {
+                "claimBy": "President William Ruto (11 and 24 July 2024 announcements)",
+                "claim": "Dismissing most cabinet ministers and nominating four opposition allies from the Orange Democratic Movement (ODM)—including John Mbadi to head the finance ministry—aimed to build a broad-based government.",
+                "counterBy": "Activist Boniface Mwangi and July protesters (reported by Reuters, 24 July 2024)",
+                "counterClaim": "Protesters kept demanding resignations and deeper accountability rather than power-sharing. Boniface Mwangi condemned the coalition bargain as a betrayal creating what he called a government of national looting.",
+                "sourceUrls": [
+                    "https://www.reuters.com/world/africa/kenyan-president-ruto-address-nation-later-thursday-2024-07-11/",
+                    "https://www.reuters.com/world/africa/kenyas-president-ruto-make-address-nation-later-wednesday-2024-07-24/",
+                    "https://taxnews.ey.com/news/2025-0233-kenya-enacts-changes-under-the-tax-laws-amendment-act-2024-and-other-legislation"
+                ]
+            }
+        ],
+        "watchFor": [
+            {
+                "date": "2026-12-31",
+                "indicator": "December 2026 IMF Article IV consultation mission in Nairobi assessing debt sustainability, tax exemptions, and program talks (exact mission dates unannounced).",
+                "sourceUrl": "https://www.reuters.com/world/africa/kenya-talks-fresh-multilateral-financing-central-bank-chief-says-2026-10-16/"
+            },
+            {
+                "date": "2027-06-30",
+                "indicator": "FY2027/28 statutory Finance Bill deadline checking deficit targets, exemption cuts, and whether victim compensation proceeds under KNCHR.",
+                "sourceUrl": "https://ieakenya.or.ke/blog/finance-bill-2026-legislating-in-reverse/"
+            },
+            {
+                "date": "2027-08-10",
+                "indicator": "Constitutional August 2027 general election cycle tracking fiscal promises, voter turnout, and court outcomes in IPOA-investigated protest cases.",
+                "sourceUrl": "https://www.reuters.com/world/africa/kenya-cut-diesel-price-after-protests-against-soaring-energy-costs-2026-05-22/"
+            }
+        ],
+        "examPrompts": [
+            "Evaluate the extent to which grassroots youth movements in sovereign states can alter fiscal policy and executive accountability when opposed by external debt pressures and security forces.",
+            "To what extent does democratic electoral legitimacy suffice to legitimize taxation when citizens reject legislative bills through extra-parliamentary protest?"
+        ],
+        "influenceCheck": [
+            {
+                "stage": "Setting the agenda",
+                "rating": "STRONG",
+                "evidence": "Amid a 2020–2026 Finance Bill reversal cycle later documented by IEA Kenya, digital Gen Z campaigns in 2024 turned proposed bread, cooking-oil, sugar, and 2.5% motor vehicle levies into a cross-ethnic reckoning over state waste and Article 37/Article 201 rights, preceding 1,292 nationwide protest events across Jan 2025–June 2026.",
+                "sourceUrls": [
+                    "https://www.reuters.com/world/africa/kenyas-finance-bill-why-has-it-triggered-protests-2024-06-25/",
+                    "https://www.knchr.org/Articles/ArtMID/2432/ArticleID/1214/Statement-on-the-Protests-against-Abductions-and-Enforced-Disappearances-in-Kenya",
+                    "https://ieakenya.or.ke/blog/finance-bill-2026-legislating-in-reverse/",
+                    "https://www.amnestykenya.org/odipodev-and-aik-release-the-freedom-index-half-year-2026-report-exposing-rising-protests-in-kenya-and-continued-use-of-lethal-force-and-deepening-rights-crisis/"
+                ]
+            },
+            {
+                "stage": "The formal decision",
+                "rating": "STRONG",
+                "evidence": "Street pressure pushed Ruto to refer the bill under Article 115(1)(b) on 26 June 2024, Parliament to delete all clauses under Article 115(2) on 25 July 2024 (while appellate judges voided the 2023 Act on 31 July 2024), and government to cut diesel >4% after May 2026 transport strikes.",
+                "sourceUrls": [
+                    "https://www.reuters.com/world/africa/kenyas-finance-bill-why-has-it-triggered-protests-2024-06-25/",
+                    "https://www.parliament.go.ke/index.php/node/22244",
+                    "https://www.bbc.com/news/articles/c39kk4pdek2o",
+                    "https://www.reuters.com/world/africa/kenya-cut-diesel-price-after-protests-against-soaring-energy-costs-2026-05-22/"
+                ]
+            },
+            {
+                "stage": "What changed in practice",
+                "rating": "MIXED",
+                "evidence": "Selective measures returned via the December 2024 Tax Laws (Amendment) Act, IMF lending stalled without a new deal ahead of August 2027 elections, Dec 2024 anti-abduction marches across four counties brought 53 arrests (24 Nairobi, 16 Eldoret, 13 Mombasa), and only two of 60 2024 killings registered by IPOA reached court by April 2025.",
+                "sourceUrls": [
+                    "https://taxnews.ey.com/news/2025-0233-kenya-enacts-changes-under-the-tax-laws-amendment-act-2024-and-other-legislation",
+                    "https://www.knchr.org/Articles/ArtMID/2432/ArticleID/1214/Statement-on-the-Protests-against-Abductions-and-Enforced-Disappearances-in-Kenya",
+                    "https://www.hrw.org/world-report/2026/country-chapters/kenya",
+                    "https://www.reuters.com/world/africa/kenya-talks-fresh-multilateral-financing-central-bank-chief-says-2026-10-16/",
+                    "https://www.reuters.com/world/africa/kenya-cut-diesel-price-after-protests-against-soaring-energy-costs-2026-05-22/"
+                ]
+            }
+        ],
+        "conceptLens": {
+            "power": "Informal civic power forced a formal executive retreat on Finance Bill 2024, yet coercive police force and structural debt constraints shaped every concession afterward.",
+            "sovereignty": "Constitutional checks by Parliament and courts reasserted Article 115 and Article 201 domestic limits, even as external IMF and World Bank negotiations narrowed fiscal autonomy.",
+            "legitimacy": "Having won a 2022 mandate did not shield Ruto once citizens judged tax hikes and lethal policing broke the social contract; restoring consent requires visible prosecution and transparency.",
+            "interdependence": "Sovereign bond pricing, IMF program abandonment, and 2026 Middle East fuel-price shocks rapidly transmitted global pressures straight onto Kenyan household budgets and streets."
+        },
+        "essayBuilder": {
+            "prompt": "Evaluate the extent to which grassroots youth movements in sovereign states can alter fiscal policy and executive accountability when opposed by external debt pressures and security forces.",
+            "claim": "Leaderless youth movements can veto highly visible fiscal policies and compel cabinet or judicial checks, yet structural debt dependence and coercive security impunity constrain lasting transformation.",
+            "evidence": "Kenya's Gen Z movement forced President Ruto to pull the $2.7 billion 2024 Finance Bill—formally rejected by Parliament on 25 July 2024—and triggered cabinet dismissals, before transport strikes later extracted a >4% diesel cut in May 2026.",
+            "counterClaim": "Nevertheless, Treasury revived multinational top-up and digital taxes in December 2024, IMF program talks stalled over debt pressures, and IPOA reported just two out of 60 registered 2024 killings in court by April 2025.",
+            "judgment": "Overall, street mobilization effectively sets agendas and blocks overtly regressive bills, while institutional change in budgeting and policing depends on sustained judicial rulings, electoral pressure, and oversight enforcement.",
+            "sourceUrls": [
+                "https://www.parliament.go.ke/index.php/node/22244",
+                "https://www.reuters.com/world/africa/kenyas-finance-bill-why-has-it-triggered-protests-2024-06-25/",
+                "https://taxnews.ey.com/news/2025-0233-kenya-enacts-changes-under-the-tax-laws-amendment-act-2024-and-other-legislation",
+                "https://www.hrw.org/world-report/2026/country-chapters/kenya"
+            ]
+        },
+        "timeline": [
+            {
+                "date": "2024-07-24",
+                "label": "After firing nearly his entire cabinet, President Ruto nominates four ODM opposition allies—including Finance Minister John Mbadi—in a broad-based cabinet.",
+                "sourceUrl": "https://www.reuters.com/world/africa/kenyas-president-ruto-make-address-nation-later-wednesday-2024-07-24/"
+            },
+            {
+                "date": "2024-07-25",
+                "label": "National Assembly agrees with presidential reservations under Article 115 and deletes all clauses to reject Finance Bill 2024.",
+                "sourceUrl": "https://www.parliament.go.ke/index.php/node/22244"
+            },
+            {
+                "date": "2024-12-11",
+                "label": "Ruto signs the Tax Laws (Amendment) Act, 2024, enacting a 15% MNE top-up tax (>=EUR 750M turnover), digital SEP levy, and health/housing deductions.",
+                "sourceUrl": "https://taxnews.ey.com/news/2025-0233-kenya-enacts-changes-under-the-tax-laws-amendment-act-2024-and-other-legislation"
+            },
+            {
+                "date": "2025-03-17",
+                "label": "Kenya and the IMF abandon the ninth review (~US$480M) of the US$3.6 billion EFF/ECF deal while opening talks for a successor program.",
+                "sourceUrl": "https://www.reuters.com/world/africa/imf-has-received-formal-request-new-kenya-funding-programme-2025-03-17/"
+            },
+            {
+                "date": "2025-06-25",
+                "label": "First-anniversary and Albert Ojwang protests draw lethal police force, with 65 June–July deaths logged by IPOA and TV blackouts.",
+                "sourceUrl": "https://www.amnestykenya.org/odipodev-and-aik-release-the-freedom-index-half-year-2026-report-exposing-rising-protests-in-kenya-and-continued-use-of-lethal-force-and-deepening-rights-crisis/"
+            },
+            {
+                "date": "2026-08-10",
+                "label": "Odipo Dev & Amnesty Kenya report 1,292 protests across Jan 2025–June 2026 following May fuel-hike deaths and 355 anniversary arrests.",
+                "sourceUrl": "https://www.amnestykenya.org/odipodev-and-aik-release-the-freedom-index-half-year-2026-report-exposing-rising-protests-in-kenya-and-continued-use-of-lethal-force-and-deepening-rights-crisis/"
+            }
+        ],
+        "relatedCases": [
+            {
+                "caseId": "el-salvador-security-legitimacy-checks",
+                "note": "Compare public consent for suspended due process in El Salvador with Kenya's tax and policing protests."
+            },
+            {
+                "caseId": "argentina-abortion-law-budget-implementation",
+                "note": "Contrast street protests halting a Kenyan bill with federal budget cuts eroding an Argentine law."
+            }
+        ]
     }
 ];

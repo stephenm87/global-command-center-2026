@@ -86,6 +86,7 @@ export function projectGuidedTour(caseStudy) {
         influenceCheck: Array.isArray(caseStudy.influenceCheck) ? caseStudy.influenceCheck.map(item => ({ ...item, sourceUrls: [...(item.sourceUrls || [])] })) : undefined,
         conceptLens: caseStudy.conceptLens ? { ...caseStudy.conceptLens } : undefined,
         essayBuilder: caseStudy.essayBuilder ? { ...caseStudy.essayBuilder, sourceUrls: [...(caseStudy.essayBuilder.sourceUrls || [])] } : undefined,
+        relatedCases: Array.isArray(caseStudy.relatedCases) ? caseStudy.relatedCases.map(item => ({ ...item })) : undefined,
         actorMap: caseStudy.actorMap || undefined,
         sources: caseStudy.sources.map(source => ({ ...source })),
         supplementalSources: caseStudy.supplementalSources.map(source => ({ ...source })),

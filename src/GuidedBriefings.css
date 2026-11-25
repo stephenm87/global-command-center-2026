@@ -1412,3 +1412,51 @@
     border-color: var(--tour-color);
     background: color-mix(in srgb, var(--tour-color) 9%, var(--briefing-raised));
 }
+
+.related-cases-list {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    gap: 10px;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+.related-case-btn {
+    display: grid;
+    gap: 4px;
+    width: 100%;
+    padding: 12px 14px;
+    border: 1px solid var(--briefing-border);
+    border-left: 3px solid var(--tour-color);
+    border-radius: 9px;
+    background: var(--briefing-raised);
+    color: var(--briefing-text);
+    text-align: left;
+    cursor: pointer;
+    transition: border-color .16s ease, background .16s ease;
+}
+
+.related-case-btn:hover {
+    border-color: var(--tour-color);
+    background: color-mix(in srgb, var(--tour-color) 10%, var(--briefing-raised));
+}
+
+.related-case-btn:focus-visible {
+    border-color: #5eead4;
+    background: color-mix(in srgb, var(--tour-color) 10%, var(--briefing-raised));
+    outline: 3px solid rgba(94, 234, 212, .24);
+    outline-offset: 2px;
+}
+
+.related-case-btn strong {
+    color: var(--tour-text-color, var(--tour-color));
+    font-size: 0.95rem;
+    font-weight: 700;
+}
+
+.related-case-btn span {
+    color: #c7d4d9;
+    font-size: var(--briefing-secondary-size);
+    line-height: 1.5;
+}
