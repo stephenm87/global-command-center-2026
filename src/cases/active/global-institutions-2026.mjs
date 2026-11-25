@@ -827,6 +827,13 @@ export const GLOBAL_INSTITUTIONS_CASES_2026 = [
                 "reviewedAt": "2026-11-24",
                 "url": "https://legal.un.org/avl/ha/cpusptam/cpusptam.html",
                 "perspective": "Historical record of how Canada's 1996 Ottawa Process bypassed deadlocked UN forums to achieve a total prohibition in Oslo"
+            },
+            {
+                "title": "MAG reaches over four million people in Lebanon through German-funded project",
+                "publisher": "Mines Advisory Group (MAG US)",
+                "publishedAt": "2025-04-17",
+                "url": "https://www.mag-us.org/whats-happening/mag-reaches-over-four-million-people-in-lebanon/",
+                "perspective": "Field documentation of two-year mine and cluster clearance completed in February 2025 across 13 Lebanese villages and safe grazing in West Bekaa"
             }
         ],
         "waypoints": [
@@ -837,7 +844,7 @@ export const GLOBAL_INSTITUTIONS_CASES_2026 = [
                 "perspectiveType": "local",
                 "conceptInFocus": "Legitimacy",
                 "relatedTimelineDate": "1999-03-01",
-                "narration": "In 2023, United Nations (UN) peacekeepers estimated mine and cluster contamination affected at least 200,000 people in Lebanon despite ongoing annual clearance [15]. On 16 June 2026, UN human-rights officials in Geneva warned governments that anti-personnel mines still harm civilians long after fighting ends. Global monitors cited there logged 6,270 confirmed deaths and injuries from mines and explosive remnants in 2024. Where casualty status was known, roughly 90% were civilians [4].\n\nGovernments adopted the treaty after earlier UN talks tightened limits yet fell short of a full ban, and 122 states signed in Ottawa in December 1997 [16]. Entering force in March 1999, it outlawed using, stockpiling, producing, or transferring anti-personnel mines while leaving anti-vehicle mines under separate rules [2, 10]. Russia, China, and the US never ratified the pact [2, 3]. Even so, wide compliance built legitimacy—shared conviction that rules protecting civilians are rightful.",
+                "narration": "In February 2025, Mines Advisory Group deminers finished clearing mines and unexploded munitions across 13 villages in Lebanon, letting West Bekaa resident Salim Hazra graze sheep safely [17]. Yet on 16 June 2026, United Nations (UN) human-rights officials in Geneva warned governments that anti-personnel mines still kill civilians decades after wars end [4]. Global monitors cited there had logged 6,270 confirmed deaths and injuries in 2024 [4]. Where casualty status was known, roughly 90% were civilians [4].\n\nGovernments forged the treaty after earlier UN talks fell short of a total ban, with 122 states signing in Ottawa in December 1997 [16]. Taking effect in March 1999, it outlawed using, stockpiling, producing, or transferring anti-personnel mines while leaving anti-vehicle mines under separate rules [2, 10]. Russia, China, and the US never ratified the pact [2, 3]. Even so, broad adherence built legitimacy—shared conviction that rules protecting civilians are rightful.",
                 "focusQuestion": "Why could middle powers and NGOs create a binding total ban without superpower approval, yet not bind superpower armies?"
             },
             {

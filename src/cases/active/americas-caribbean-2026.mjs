@@ -1201,7 +1201,7 @@ export const AMERICAS_CARIBBEAN_CASES_2026 = [
                 "perspectiveType": "local",
                 "conceptInFocus": "Legitimacy",
                 "relatedTimelineDate": "2026-06-24",
-                "narration": "On 19 November 2026, President Nayib Bukele registered for a third consecutive term in San Salvador alongside Vice President Felix Ulloa [3]. His bid leaned on sharp drops in gang extortion and street violence under emergency rules enacted in 2022 [3, 4]. Police recorded 2,398 homicides nationwide in 2019. By 2024, official tallies fell to 114 murders [12], though independent researchers warn counts omit prison deaths and some police killings [16].\n\nEveryday safety gains built broad public support across the country. In a May 2026 nationwide Central American University (UCA) survey, 87.8% rated Bukele's seventh year good or very good, and a clear majority favored keeping emergency rule [1]. Most respondents still named combined economic concerns—the economy generally, living costs, jobs, or poverty—as the main national problem. That gap tests whether legitimacy—acceptance as a rightful ruler—endures if financial strain grows.",
+                "narration": "On 19 November 2026, President Nayib Bukele registered for a third consecutive term in San Salvador alongside Vice President Félix Ulloa [3]. His bid leaned on sharp drops in gang extortion and street violence under emergency rules enacted in 2022 [3, 4]. Police recorded 2,398 homicides nationwide in 2019. By 2024, official tallies fell to 114 murders [12], though independent researchers warn counts omit prison deaths and some police killings [16].\n\nEveryday safety gains built broad public support across the country. In a May 2026 nationwide Central American University (UCA) survey, 87.8% rated Bukele's seventh year good or very good, and a clear majority favored keeping emergency rule [1]. Most respondents still named combined economic concerns—the economy generally, living costs, jobs, or poverty—as the main national problem. That gap tests whether legitimacy—acceptance as a rightful ruler—endures if financial strain grows.",
                 "focusQuestion": "How durable is citizen support that rests on physical safety if jobs and living costs worsen?"
             },
             {
@@ -1673,7 +1673,7 @@ export const AMERICAS_CARIBBEAN_CASES_2026 = [
                 "perspectiveType": "local",
                 "conceptInFocus": "Legitimacy",
                 "relatedTimelineDate": "2026-05-28",
-                "narration": "On 28 May 2026, Amnesty International documented a Tucumán patient who sought a legal abortion at a public clinic and was told free pills had run out. With clinic shelves empty, she was told medicine tablets would cost 170,000 pesos, while other cases reported borrowing money or waiting weeks without central supplies. During 2025, Argentina's national sexual-health helpline logged 191 medication-shortage calls led by Salta [1].\n\nStockouts broke the connection between written legal rights and everyday patient care. National law still guarantees free voluntary abortions across every province [2], yet missing supplies pushed public healthcare duties onto private household wallets while online access complaints surged [1]. Legitimacy—public acceptance that state rules work fairly in practice—erodes when equal statutory rights depend on clinic stock and household cash.",
+                "narration": "On 28 May 2026, Amnesty International documented a Tucumán patient who sought a legal abortion at a public clinic and was told free pills had run out. With clinic shelves empty, she learned pharmacy tablets cost 170,000 pesos, while other cases reported borrowing money or waiting weeks without central supplies. During 2025, Argentina's national sexual-health helpline logged 191 helpline records on medication shortages led by Salta [1].\n\nStockouts broke the connection between written legal rights and everyday patient care. National law still guarantees free voluntary abortions across every province [2], yet missing supplies pushed public healthcare duties onto private household wallets while online access complaints surged [1]. Legitimacy—public acceptance that state rules work fairly in practice—erodes when equal statutory rights depend on clinic stock and household cash.",
                 "focusQuestion": "When a citizen holds a legal right on paper but must borrow money to use it, what breaks down: lawmaking or state delivery?"
             },
             {
@@ -1907,6 +1907,10 @@ export const AMERICAS_CARIBBEAN_CASES_2026 = [
             {
                 "caseId": "who-pathogen-access-benefit-sharing",
                 "note": "Contrast domestic abortion-pill procurement battles under austerity with global negotiations over medicine equity."
+            },
+            {
+                "caseId": "sri-lanka-imf-debt-sovereignty",
+                "note": "Compare austerity squeezing public clinic supplies in Argentina with IMF-linked household pressures in Sri Lanka."
             }
         ]
     }

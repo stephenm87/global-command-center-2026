@@ -470,6 +470,12 @@ export const AFRICA_CASES_2026 = [
                 "asOf": "9 November 2026",
                 "sourceUrl": "https://data.unhcr.org/en/situations/sudansituation"
             }
+        ],
+        "relatedCases": [
+            {
+                "caseId": "iraq-post-isil-sovereignty-reconstruction",
+                "note": "Contrast Sudan's ongoing war displacement with Iraq's longer post-ISIL stabilization and return barriers."
+            }
         ]
     },
     {
@@ -2171,6 +2177,12 @@ export const AFRICA_CASES_2026 = [
                 "narration": "Kariba is jointly governed and Zambia trades within a regional electricity system, making climate resilience a cross-border coordination problem.",
                 "focusQuestion": "Which regional rules can spread risk while preserving fair access to shared water and electricity?"
             }
+        ],
+        "relatedCases": [
+            {
+                "caseId": "sri-lanka-imf-debt-sovereignty",
+                "note": "Compare Zambia's debt restructuring and utility reset with Sri Lanka's IMF-backed electricity and tax reforms."
+            }
         ]
     },
     {
@@ -2641,6 +2653,500 @@ export const AFRICA_CASES_2026 = [
             {
                 "caseId": "argentina-abortion-law-budget-implementation",
                 "note": "Contrast street protests halting a Kenyan bill with federal budget cuts eroding an Argentine law."
+            },
+            {
+                "caseId": "sri-lanka-imf-debt-sovereignty",
+                "note": "Compare Kenyan protests over IMF-backed tax hikes with voter and household pressures under Sri Lanka's IMF program."
+            }
+        ]
+    },
+    {
+        "id": "south-africa-hiv-constitutional-court-pepfar",
+        "status": "active",
+        "briefingVersion": 2,
+        "title": "South Africa's HIV Response: Constitutional Rights Meet Aid Cuts",
+        "subtitle": "From a 2002 court order forcing state treatment to the 2026–2027 United States HIV aid exit",
+        "coverageRegion": "Africa",
+        "regionTags": [
+            "Southern Africa",
+            "South Africa"
+        ],
+        "issueLens": "Health & Human Security",
+        "broadCategory": "Health & Society",
+        "issueDimensions": [
+            "Constitutional health rights",
+            "Civil society litigation",
+            "Foreign aid dependency",
+            "HIV prevention and marginalized populations",
+            "Pharmaceutical licensing and generic access"
+        ],
+        "actors": [
+            "South Africans living with or at risk of HIV and frontline clinic staff",
+            "Treatment Action Campaign (TAC) and community health monitors",
+            "Constitutional Court of South Africa and National Department of Health",
+            "United States President's Emergency Plan for AIDS Relief (PEPFAR), Global Fund, and Children's Investment Fund Foundation (CIFF)"
+        ],
+        "nexusNodeIds": [
+            "Africa",
+            "USA",
+            "UN_OPEC",
+            "BiotechHub"
+        ],
+        "statusSummary": "Home to roughly eight million people living with HIV, South Africa relies on domestic budgets to supply 6.3 million residents with antiretroviral therapy [1, 7, 12]. United States cuts removed grants worth 17% of the HIV program excluding domestic drug purchases [10, 14]. Twelve specialized clinics closed, leaving more than 60,000 patients needing to register at state facilities [14]. Following a June 2026 lenacapavir rollout and Washington's exit announcement, American staff funding ends in March 2027 [1, 2, 13, 14].",
+        "whyItMatters": "South Africa demonstrates both the strength of constitutional accountability—courts forced leaders in 2002 to turn medicine access into an enforceable duty—and the fragility of relying on a single foreign donor for clinic counselors, testing, and marginalized-group outreach even when domestic taxpayers buy the pills [4, 10, 14].",
+        "updatedAt": "2026-11-25",
+        "confidence": "high",
+        "uncertainty": "Whether domestic budget reallocations can register 60,000+ former specialized clinic patients and absorb ~US$400 million in annual HIV prevention, data, and clinical staffing losses by 31 March 2027—and prevent modeled 2025–2028 mortality surges—remains uncertain.",
+        "sensitivity": "high",
+        "editorialCaution": "Distinguish South Africa's domestically funded antiretroviral supply (roughly 6.3 million people on treatment out of ~7.9–8.15 million living with HIV) from PEPFAR-supported prevention, testing, research, and key-population clinics heavily disrupted in 2025–2026.",
+        "featured": true,
+        "reviewCadenceDays": 14,
+        "reviewBy": "2026-12-09",
+        "coordinates": {
+            "latitude": -25.7479,
+            "longitude": 28.2293
+        },
+        "map": {
+            "mode": "regional",
+            "locations": [
+                {
+                    "label": "Johannesburg & Pretoria",
+                    "latitude": -26.2041,
+                    "longitude": 28.0473,
+                    "role": "Seat of the Constitutional Court's 2002 nevirapine judgment, National Department of Health, and Hillbrow clinics shuttered by 2025 aid cuts"
+                },
+                {
+                    "label": "Secunda",
+                    "latitude": -26.55,
+                    "longitude": 29.1667,
+                    "role": "Mpumalanga town where 21-year-old Jane Mndebele received South Africa's first free lenacapavir prevention injection on 5 June 2026"
+                },
+                {
+                    "label": "Cape Town",
+                    "latitude": -33.9249,
+                    "longitude": 18.4241,
+                    "role": "City where TAC launched on St George's Cathedral steps in December 1998 and Western Cape public clinics first widened PMTCT care"
+                },
+                {
+                    "label": "Durban",
+                    "latitude": -29.8587,
+                    "longitude": 31.0218,
+                    "role": "Home to CAPRISA clinical research partnerships disrupted when US aid and NIH sub-grants halted in 2025"
+                }
+            ]
+        },
+        "sources": [
+            {
+                "title": "Lenacapavir marks a new era in South Africa's HIV prevention efforts",
+                "publisher": "SAnews (South African Government News Agency)",
+                "publishedAt": "2026-06-26",
+                "url": "https://www.sanews.gov.za/south-africa/lenacapavir-marks-new-era-south-africas-hiv-prevention-efforts",
+                "perspectiveType": "local",
+                "perspective": "South African National Department of Health operational brief by Acting Director-General Prof. Nicholas Crisp",
+                "supports": "Supports the 2025 figure of 8.15 million South Africans living with HIV (12.9% of population), the 5 June 2026 Secunda lenacapavir launch across 360 clinics in six provinces, and the one-million end-2027 reach target."
+            },
+            {
+                "title": "'I am excited': 21-year-old Jane Mndebele becomes the first South African to receive lenacapavir",
+                "publisher": "UNAIDS",
+                "publishedAt": "2026-06-19",
+                "url": "https://www.unaids.org/en/resources/presscentre/featurestories/2026/june/20260619_SA_lenacapavir_rollout",
+                "perspectiveType": "institutional",
+                "perspective": "United Nations AIDS agency feature documenting South Africa's national lenacapavir launch and financing",
+                "supports": "Supports 21-year-old Jane Mndebele's 5 June 2026 launch scene in Secunda, ~7.9 million living with HIV, ~150,000 new 2024 infections (>1,000 adolescent girls and young women weekly), R1.3 billion Global Fund/CIFF/government funding, and ~US$40/year generic pricing from 2027."
+            },
+            {
+                "title": "Wasted Investments, Looming Crisis: The Impact of U.S. Global Health Funding Cuts on HIV in South Africa",
+                "publisher": "Physicians for Human Rights (PHR), APHA, and Emthonjeni",
+                "publishedAt": null,
+                "sourceType": "living-reference",
+                "milestoneDate": "2026-04",
+                "milestoneLabel": "Report published",
+                "reviewedAt": "2026-11-25",
+                "url": "https://phr.org/our-work/resources/wasted-investments-looming-crisis-the-impact-of-u-s-global-health-funding-cuts-on-hiv-in-south-africa/",
+                "perspectiveType": "independent",
+                "perspective": "Independent human-rights investigation based on 40 oral histories with South African nurses, educators, and patients",
+                "supports": "Supports 17% PEPFAR budget share vs. 16.8% domestic budget allocation to health, US$100–150M annual direct NIH grant disruptions (~US$400M including sub-grants), and frontline breakdowns in clinic counseling and data collection."
+            }
+        ],
+        "supplementalSources": [
+            {
+                "title": "Minister of Health and Others v Treatment Action Campaign and Others (No 2) ([2002] ZACC 15)",
+                "publisher": "Constitutional Court of South Africa (via SAFLII)",
+                "publishedAt": "2002-07-05",
+                "url": "https://www.saflii.org/za/cases/ZACC/2002/15.html",
+                "perspective": "Official unanimous Constitutional Court judgment enforcing constitutional healthcare rights",
+                "supports": "Supports the 5 July 2002 unanimous order requiring Pretoria without delay to lift pilot-site restrictions (two sites per nine provinces) on nevirapine across all public clinics where testing and counseling exist."
+            },
+            {
+                "title": "About Treatment Action Campaign (TAC)",
+                "publisher": "Treatment Action Campaign",
+                "publishedAt": null,
+                "sourceType": "living-reference",
+                "updatedAt": "2026-06-15",
+                "reviewedAt": "2026-11-25",
+                "url": "https://www.tac.org.za/about/",
+                "perspective": "Grassroots activist organization history from 1998 founding through Ritshidze clinic monitoring",
+                "supports": "Supports TAC's December 1998 launch in Cape Town, the 2002 nevirapine ruling, 285 branches nationwide, and 2018 creation of the Ritshidze clinic monitoring system."
+            },
+            {
+                "title": "Eliminating Vertical Transmission of HIV in South Africa",
+                "publisher": "Diagnostics / National Institute for Communicable Diseases (NICD)",
+                "publishedAt": "2023-08-01",
+                "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC10416996/",
+                "perspective": "Peer-reviewed epidemiological baseline study of mother-to-child HIV transmission",
+                "supports": "Supports early six-week mother-to-child transmission falling from 25%–30% in 2001 to ~1.4% in 2016, over 4,000 public facilities reporting via DHIS, and achieving the WHO Bronze-tier impact target."
+            },
+            {
+                "title": "South Africa HIV Statistics Fact Sheet 2025",
+                "publisher": "UNAIDS (hosted via Bhekisisa)",
+                "publishedAt": null,
+                "sourceType": "living-reference",
+                "milestoneDate": "2025-07",
+                "milestoneLabel": "Fact sheet release",
+                "reviewedAt": "2026-11-25",
+                "url": "https://bhekisisa.org/wp-content/uploads/2025/07/2025-SA-Fact-sheet.pdf",
+                "perspective": "Official annual epidemiological indicators for treatment and vertical transmission in South Africa",
+                "supports": "Supports 6.3 million people accessing antiretroviral therapy by end-2024 (up from 1.4 million in 2010), 7.8 million living with HIV in 2024, 53,000 AIDS deaths in 2024 (81% below 2004 peak), 98% maternal ARV access, and 76% fewer child infections since 2010."
+            },
+            {
+                "title": "Inside the Pepfar waiver letters: What's in and out",
+                "publisher": "Bhekisisa Centre for Health Journalism",
+                "publishedAt": "2025-02-12",
+                "url": "https://bhekisisa.org/health-news-south-africa/2025-02-12-inside-the-pepfar-waiver-letters-whats-in-and-out/",
+                "perspective": "South African investigative health reporting on early-2025 US waiver rules",
+                "supports": "Supports the 24 January 2025 freeze, 7 February 2025 executive order halting aid, US$439.5M FY2025 allocation, 520,123 planned prevention-pill starts under PEPFAR, and waiver exceptions preserving pills mainly for eligible pregnant or breastfeeding women."
+            },
+            {
+                "title": "Impact of US funding cuts on HIV programmes in South Africa",
+                "publisher": "UNAIDS",
+                "publishedAt": "2025-04-22",
+                "url": "https://www.unaids.org/en/resources/presscentre/featurestories/2025/april/20250422_southafrica",
+                "perspective": "UN operational impact summary citing South Africa's Health Department assessment",
+                "supports": "Supports closures of key-population clinics, DREAMS youth outreach disruption, and Pretoria's ZAR 1.4 billion equipment and ZAR 1.78 billion staffing budget commitments."
+            },
+            {
+                "title": "The Fragility of Aid: The Fallout of HIV Funding Cuts in South Africa",
+                "publisher": "The Politic",
+                "publishedAt": "2025-10-20",
+                "url": "https://thepolitic.org/article/the-fragility-of-aid-the-fallout-of-hiv-funding-cuts-in-south-africa/",
+                "perspective": "Clinician, researcher, and NGO interviews documenting layoffs and clinic closures",
+                "supports": "Supports Anova Health Institute laying off 3,000 staff among ~8,000 US-funded health workers, Engage Hillbrow men's clinic closure, CAPRISA's stop-work orders, and domestic drug procurement vs. donor-funded detection."
+            },
+            {
+                "title": "South Africa May Be Excluded From Future US Grants For HIV Amid Political Row",
+                "publisher": "Health Policy Watch",
+                "publishedAt": "2025-11-21",
+                "url": "https://healthpolicy-watch.news/south-africa-may-be-excluded-from-future-us-grants-for-hiv-amid-political-row/",
+                "perspective": "Global health policy reporting on Bridge Plan limits and generic licensing demands",
+                "supports": "Supports the US$115 million six-month Bridge Plan (Oct 2025–Mar 2026), US refusal to supply bilateral lenacapavir doses to South Africa, and TAC Chair Sibongile Tshabalala's call for generic licensing."
+            },
+            {
+                "title": "US to stop funding HIV programmes in South Africa",
+                "publisher": "BBC News",
+                "publishedAt": "2026-06-19",
+                "url": "https://www.bbc.com/news/articles/cdr457lxr71o",
+                "perspective": "International news coverage of June 2026 State Department phase-out decision and diplomatic tensions",
+                "supports": "Supports the June 2026 permanent phased PEPFAR drawdown announcement (~US$400 million/year prior support), diplomatic disputes over land and Israel ICJ case, and Pretoria's domestic ARV procurement."
+            },
+            {
+                "title": "United States Pulls Funding for South Africa, Threatening HIV Defenses",
+                "publisher": "Think Global Health",
+                "publishedAt": "2026-06-29",
+                "url": "https://www.thinkglobalhealth.org/article/united-states-pulls-funding-for-south-africa-threatening-hiv-defenses",
+                "perspective": "Global health analysis featuring Melokuhle's front-line clinic testimony and bilateral MOU exclusion",
+                "supports": "Supports Melokuhle's clinic PrEP testing narrative, the 43% 2024–2025 drop in HIV spending, 18 June 2026 termination notice, and South Africa's exclusion from 32 bilateral AFGHS agreements."
+            },
+            {
+                "title": "What the end of PEPFAR funding could mean for South Africa's HIV response",
+                "publisher": "Harvard T.H. Chan School of Public Health",
+                "publishedAt": "2026-07-13",
+                "url": "https://hsph.harvard.edu/news/what-the-end-of-pepfar-funding-could-mean-for-south-africas-hiv-response/",
+                "perspective": "Public-health assessment by Prof. Roger Shapiro on clinic shifts and mortality projections",
+                "supports": "Supports 12 closed key-population clinics, >60,000 patients needing to register at state facilities, 30 Sept 2026 program end, 31 March 2027 personnel deadline, and 56,000–65,000 projected 2025–2028 deaths under no replacement."
+            }
+        ],
+        "waypoints": [
+            {
+                "nodeId": "Africa",
+                "title": "Courts Force Treatment Access",
+                "perspectiveLabel": "Treatment Action Campaign and Constitutional Court",
+                "perspectiveType": "local",
+                "conceptInFocus": "Legitimacy",
+                "relatedTimelineDate": "2002-07-05",
+                "narration": "On 5 July 2002, the Treatment Action Campaign—backed by deputy chair Siphokazi Mthathi's affidavit—joined pediatrician Haroon Saloojee and the Children's Rights Centre to win a Johannesburg Constitutional Court order expanding HIV medicine for mothers [4, 5]. Under President Thabo Mbeki's administration, the health ministry had restricted free nevirapine to pilot clinics despite manufacturer offers [4, 10]. Supporting doctors and mothers filed hospital evidence demanding wider public access [4, 5]. The judges ruled unanimously that barring a safe, free medicine breached constitutional duties to realize public health rights [4].\n\nThe court ordered national ministers to widen hospital access without writing health budgets themselves [4]. Legitimacy—citizens' belief that state authority acts rightfully and accountably—grew because open constitutional courts checked harmful official denial [5]. Activists paired street marches with medical evidence to turn legal victories into working hospital care.",
+                "focusQuestion": "How did civil society litigation in 2002 turn constitutional health rights into concrete medicine access across public hospitals?"
+            },
+            {
+                "nodeId": "Africa",
+                "title": "Sovereign Care Built at Scale",
+                "perspectiveLabel": "Domestic clinic expansion and vertical-transmission gains",
+                "perspectiveType": "local",
+                "conceptInFocus": "Sovereignty",
+                "relatedTimelineDate": "2016",
+                "narration": "In KwaNobuhle in the Eastern Cape, activist Anele Yawa joined the Treatment Action Campaign in 2002, years before branches later built structured clinic monitoring [5]. Expanded maternal HIV care lowered early infant transmission nationwide to approximately 1.4% by 2016 [6]. Across South Africa, daily antiretroviral therapy eventually reached 6.3 million patients while local taxpayers paid for nearly every tablet [7, 12]. By 2024, annual AIDS-related deaths had fallen 81% from their crisis peak [7].\n\nBuilding the world's largest public HIV treatment system anchored real sovereign capability inside ordinary neighborhood hospitals and rural clinics [2, 10]. Sovereignty—supreme governing authority inside state territory—expanded beyond passing parliamentary statutes to funding and delivering medicine directly [10]. Even so, leaving community counselors, testing staff, and data systems to external donors created a hidden vulnerability [3, 14].",
+                "focusQuestion": "If South Africa buys nearly all of its HIV tablets domestically, why did losing outside grants still shake clinics?"
+            },
+            {
+                "nodeId": "USA",
+                "title": "Waivers and Frozen Prevention",
+                "perspectiveLabel": "PEPFAR cuts, clinic layoffs, and frontline users",
+                "perspectiveType": "independent",
+                "conceptInFocus": "Power",
+                "relatedTimelineDate": "2025-02-07",
+                "narration": "Early in 2025, an HIV educator using the pseudonym Melokuhle walked into her busy clinic for prevention pills and found counseling stations gone [13]. An overworked nurse explained that clinic staff now gave rapid HIV tests only when patients explicitly asked [13]. Soon after freezing global aid in January, United States President Donald Trump cut South African grants in February 2025 [8, 12]. Limited waivers preserved preventive pills mainly for pregnant and breastfeeding women while cutting wider outreach, pushing the Anova Health Institute to lay off 3,000 staff [8, 10].\n\nWashington funded 17% of South Africa's HIV response excluding drug purchases yet paid for clinics, data teams, and educators [3, 14]. Power—the ability to reshape other actors' choices through financial leverage—allowed foreign officials to disrupt community outreach overnight [8]. Domestic court orders could not compel a foreign government to keep signing grant checks.",
+                "focusQuestion": "How can losing just 17% of program funding—excluded from antiretroviral drug purchases—cripple prevention and key-population services?"
+            },
+            {
+                "nodeId": "BiotechHub",
+                "title": "Twice-Yearly Shots Meet Aid Politics",
+                "perspectiveLabel": "Secunda lenacapavir launch and global co-financing",
+                "perspectiveType": "institutional",
+                "conceptInFocus": "Interdependence",
+                "relatedTimelineDate": "2026-06-05",
+                "narration": "On 5 June 2026, Jane Mndebele stepped onto a stage in Secunda as Health Minister Aaron Motsoaledi gave her South Africa's first lenacapavir injection under its new national prevention programme [2]. Health officials stocked the free twice-yearly prevention medicine across 360 public clinics in six high-burden provinces [1, 2]. Health planners aim to reach one million high-risk users during the initial rollout phase [1, 2]. When Washington withheld bilateral doses, South Africa co-financed starter supplies with the Global Fund and philanthropic donors ahead of expected US$40 annual generics in 2027 [2, 11].\n\nModern HIV prevention binds neighborhood public clinics tightly to international patents, pooled grants, and trials [2, 3]. Interdependence—mutual cross-border reliance on shared capacity—linked United States laboratory research, local trial volunteers, and multilateral funds [1, 2]. Abrupt United States cuts halted university clinical studies even as twice-yearly injections launched [3, 10].",
+                "focusQuestion": "What does South Africa's Secunda lenacapavir launch reveal about global health interdependence when bilateral aid breaks down?"
+            },
+            {
+                "nodeId": "USA",
+                "title": "Transition Toward Self-Reliance",
+                "perspectiveLabel": "Permanent PEPFAR drawdown and constitutional gaps",
+                "perspectiveType": "synthesis",
+                "conceptInFocus": "Legitimacy",
+                "relatedTimelineDate": "2027-03-31",
+                "narration": "On 18 June 2026, the United States State Department announced a permanent exit from HIV aid in South Africa after ending bilateral talks [12, 13]. While Washington signed health agreements elsewhere, disputes over land reform and foreign policy left South Africa excluded [12, 13]. Twelve specialized clinics for marginalized groups closed, leaving more than 60,000 displaced patients needing care at already strained state facilities [14]. Final United States support for critical health staff ends on 31 March 2027, leaving Pretoria to replace lost clinics [12, 14]. Total donor losses once programs close could near US$400 million yearly [14].\n\nGovernment modeling warns that unreplaced aid cuts could cause up to 65,000 additional deaths by 2028 [14]. Legitimacy—public trust that leaders protect vulnerable citizens fairly—weakens when stigma drives marginalized residents away from care [10]. Constitutional health promises hold only if state clinics keep community counselors staffed.",
+                "focusQuestion": "Can Pretoria absorb the ~US$400 million PEPFAR gap by March 2027 without losing high-risk groups to clinic stigma and congestion?"
+            }
+        ],
+        "concepts": [
+            "Power",
+            "Sovereignty",
+            "Legitimacy",
+            "Interdependence"
+        ],
+        "ibThemes": [
+            "rights-and-justice",
+            "development-and-sustainability"
+        ],
+        "background": "South Africa carries the world's largest HIV epidemic, with roughly eight million citizens living with the virus [1, 2]. Early in the post-apartheid era, national leaders questioned proven medicines and confined free nevirapine for mothers to eighteen pilot clinics [4, 10]. In July 2002, grassroots activists won a landmark Constitutional Court order forcing public hospitals to expand life-saving care [4, 5].\n\nClinic testing and activism then built a treatment network reaching 6.3 million patients by late 2024 [7, 10]. Tax revenues covered nearly all daily pills, lowering AIDS deaths sharply over two decades [7, 12]. Meanwhile, the United States PEPFAR program paid roughly US$400 million yearly for rural outreach, clinic counselors, data systems, and key-population care [3, 12].\n\nEarly in 2025, Washington froze grants, dismantled agency partners, and cut worker funding across South Africa amid bitter diplomatic disputes [8, 12, 13]. Despite Pretoria launching free lenacapavir prevention shots in June 2026, United States officials scheduled a full PEPFAR exit by March 2027 [1, 14]. Today, South Africa shows how domestic rights depend on both local budgets and volatile foreign partnerships [3, 12].",
+        "backgroundSources": [
+            "https://www.sanews.gov.za/south-africa/lenacapavir-marks-new-era-south-africas-hiv-prevention-efforts",
+            "https://www.unaids.org/en/resources/presscentre/featurestories/2026/june/20260619_SA_lenacapavir_rollout",
+            "https://phr.org/our-work/resources/wasted-investments-looming-crisis-the-impact-of-u-s-global-health-funding-cuts-on-hiv-in-south-africa/",
+            "https://www.saflii.org/za/cases/ZACC/2002/15.html",
+            "https://www.tac.org.za/about/",
+            "https://bhekisisa.org/wp-content/uploads/2025/07/2025-SA-Fact-sheet.pdf",
+            "https://bhekisisa.org/health-news-south-africa/2025-02-12-inside-the-pepfar-waiver-letters-whats-in-and-out/",
+            "https://thepolitic.org/article/the-fragility-of-aid-the-fallout-of-hiv-funding-cuts-in-south-africa/",
+            "https://www.bbc.com/news/articles/cdr457lxr71o",
+            "https://www.thinkglobalhealth.org/article/united-states-pulls-funding-for-south-africa-threatening-hiv-defenses",
+            "https://hsph.harvard.edu/news/what-the-end-of-pepfar-funding-could-mean-for-south-africas-hiv-response/"
+        ],
+        "keyTerms": [
+            {
+                "term": "Justiciable socio-economic right",
+                "definition": "A constitutional right—such as access to healthcare services under South Africa's Bill of Rights—that courts can enforce against the executive by ordering reasonable policy action.",
+                "sourceUrl": "https://www.saflii.org/za/cases/ZACC/2002/15.html"
+            },
+            {
+                "term": "Antiretroviral therapy (ART)",
+                "definition": "Daily combination medicines that suppress HIV viral loads, keep patients healthy, and prevent sexual and mother-to-child transmission; received by 6.3 million people in South Africa by late 2024.",
+                "sourceUrl": "https://bhekisisa.org/wp-content/uploads/2025/07/2025-SA-Fact-sheet.pdf"
+            },
+            {
+                "term": "Pre-exposure prophylaxis (PrEP) and lenacapavir",
+                "definition": "Preventive HIV medicine taken by HIV-negative people at risk, expanding in June 2026 to twice-yearly lenacapavir injections across 360 South African clinics.",
+                "sourceUrl": "https://www.unaids.org/en/resources/presscentre/featurestories/2026/june/20260619_SA_lenacapavir_rollout"
+            },
+            {
+                "term": "PEPFAR waiver and drawdown",
+                "definition": "Conditional 2025 US exemptions restricting aid to narrow lifesaving treatment, followed in June 2026 by a phased permanent termination of US HIV funding in South Africa by early 2027.",
+                "sourceUrl": "https://www.thinkglobalhealth.org/article/united-states-pulls-funding-for-south-africa-threatening-hiv-defenses"
+            },
+            {
+                "term": "Key populations",
+                "definition": "Marginalized groups at elevated HIV risk—including sex workers, LGBTQ+ communities, and people who inject drugs—frequently reliant on donor-funded drop-in clinics.",
+                "sourceUrl": "https://hsph.harvard.edu/news/what-the-end-of-pepfar-funding-could-mean-for-south-africas-hiv-response/"
+            }
+        ],
+        "debate": [
+            {
+                "claimBy": "US State Department & South African Health Ministry statements (BBC, 19 June 2026)",
+                "claim": "South Africa is an upper-middle-income country already purchasing its own antiretroviral drugs and pursuing a self-reliance plan to absorb its HIV response [1, 12].",
+                "counterBy": "Prof. Roger Shapiro, PHR, & South African clinicians (April–July 2026)",
+                "counterClaim": "Abruptly cutting 17% of HIV funding (excluding domestic antiretroviral purchases) closed specialized clinics and could cause up to 65,000 additional deaths without replacement [3, 14].",
+                "sourceUrls": [
+                    "https://www.sanews.gov.za/south-africa/lenacapavir-marks-new-era-south-africas-hiv-prevention-efforts",
+                    "https://www.bbc.com/news/articles/cdr457lxr71o",
+                    "https://phr.org/our-work/resources/wasted-investments-looming-crisis-the-impact-of-u-s-global-health-funding-cuts-on-hiv-in-south-africa/",
+                    "https://hsph.harvard.edu/news/what-the-end-of-pepfar-funding-could-mean-for-south-africas-hiv-response/"
+                ]
+            },
+            {
+                "claimBy": "SAnews & UNAIDS lenacapavir launch assessments (June 2026)",
+                "claim": "Global Fund grants, domestic funding across 360 clinics, and expected 2027 generic manufacturing can transform HIV prevention for young women [1, 2].",
+                "counterBy": "Treatment Action Campaign (TAC), Think Global Health, & Health Policy Watch (2025–2026)",
+                "counterClaim": "Launching new injections without community educators, clinic counselors, and broad generic licenses risks turning a breakthrough into an access bottleneck [2, 11, 13].",
+                "sourceUrls": [
+                    "https://www.sanews.gov.za/south-africa/lenacapavir-marks-new-era-south-africas-hiv-prevention-efforts",
+                    "https://www.unaids.org/en/resources/presscentre/featurestories/2026/june/20260619_SA_lenacapavir_rollout",
+                    "https://healthpolicy-watch.news/south-africa-may-be-excluded-from-future-us-grants-for-hiv-amid-political-row/",
+                    "https://www.thinkglobalhealth.org/article/united-states-pulls-funding-for-south-africa-threatening-hiv-defenses"
+                ]
+            },
+            {
+                "claimBy": "Treatment Action Campaign (TAC) & community health monitors (1998–2026)",
+                "claim": "Since the 2002 Constitutional Court ruling, grassroots pressure and 285 local branches forced durable public antiretroviral access across South Africa [4, 5].",
+                "counterBy": "Prof. Francois Venter & Bhekisisa waiver analysis (February–October 2025)",
+                "counterClaim": "Court rulings cannot shield outreach and research from foreign waivers that cut HIV counseling, testing, and marginalized-group clinics [8, 10].",
+                "sourceUrls": [
+                    "https://www.saflii.org/za/cases/ZACC/2002/15.html",
+                    "https://www.tac.org.za/about/",
+                    "https://bhekisisa.org/health-news-south-africa/2025-02-12-inside-the-pepfar-waiver-letters-whats-in-and-out/",
+                    "https://thepolitic.org/article/the-fragility-of-aid-the-fallout-of-hiv-funding-cuts-in-south-africa/"
+                ]
+            }
+        ],
+        "watchFor": [
+            {
+                "date": "31 March 2027",
+                "indicator": "Expiration of final US PEPFAR support for critical health personnel in South Africa and domestic budget replacement decisions.",
+                "sourceUrl": "https://hsph.harvard.edu/news/what-the-end-of-pepfar-funding-could-mean-for-south-africas-hiv-response/"
+            },
+            {
+                "date": "End of 2027",
+                "indicator": "Whether South Africa reaches its one-million lenacapavir target across 360 clinics alongside ~US$40/year generic supply.",
+                "sourceUrl": "https://www.unaids.org/en/resources/presscentre/featurestories/2026/june/20260619_SA_lenacapavir_rollout"
+            },
+            {
+                "date": "2027–2028",
+                "indicator": "Changes in new HIV infections among adolescent girls and young women (>1,000 weekly in 2024) and patient retention after clinic closures.",
+                "sourceUrl": "https://www.unaids.org/en/resources/presscentre/featurestories/2026/june/20260619_SA_lenacapavir_rollout"
+            }
+        ],
+        "examPrompts": [
+            "To what extent can constitutional courts and civil society movements secure socio-economic rights when implementation also depends on external donors?",
+            "Evaluate how health interdependence creates both scientific breakthroughs and political vulnerability for middle-income states."
+        ],
+        "influenceCheck": [
+            {
+                "stage": "Setting the agenda",
+                "rating": "STRONG",
+                "evidence": "TAC mobilization since 1998 and community monitoring put HIV treatment access, maternal prevention, and 2025 clinic staffing losses squarely on national and global agendas.",
+                "sourceUrls": [
+                    "https://www.tac.org.za/about/",
+                    "https://phr.org/our-work/resources/wasted-investments-looming-crisis-the-impact-of-u-s-global-health-funding-cuts-on-hiv-in-south-africa/"
+                ]
+            },
+            {
+                "stage": "The formal decision",
+                "rating": "STRONG",
+                "evidence": "The Constitutional Court ordered public-hospital nevirapine access where testing and counseling exist in July 2002, and Pretoria launched free lenacapavir rollout in June 2026 backed by R1.3 billion with Global Fund and CIFF partners.",
+                "sourceUrls": [
+                    "https://www.saflii.org/za/cases/ZACC/2002/15.html",
+                    "https://www.unaids.org/en/resources/presscentre/featurestories/2026/june/20260619_SA_lenacapavir_rollout"
+                ]
+            },
+            {
+                "stage": "What changed in practice",
+                "rating": "MIXED",
+                "evidence": "Domestic taxpayers buy nearly all antiretroviral pills nationwide (6.3 million treated in 2024) and early transmission fell to ~1.4% by 2016, yet 2025–2026 US aid cuts closed twelve specialized clinics and left over 60,000 patients needing to register at state facilities.",
+                "sourceUrls": [
+                    "https://bhekisisa.org/wp-content/uploads/2025/07/2025-SA-Fact-sheet.pdf",
+                    "https://pmc.ncbi.nlm.nih.gov/articles/PMC10416996/",
+                    "https://www.bbc.com/news/articles/cdr457lxr71o",
+                    "https://hsph.harvard.edu/news/what-the-end-of-pepfar-funding-could-mean-for-south-africas-hiv-response/"
+                ]
+            }
+        ],
+        "conceptLens": {
+            "power": "TAC and courts wielded constitutional power against executive denialism in 2002, while US funding withdrawals in 2025–2026 exercised structural donor power over outreach clinics and trials.",
+            "sovereignty": "South Africa exercises strong domestic fiscal sovereignty by paying for most antiretroviral tablets for 6.3 million patients, yet relies on donor-supported outreach and global generic licensing.",
+            "legitimacy": "State legitimacy expanded after 2002 court compliance saved newborn lives, but long clinic queues and closed marginalized-group services erode public trust.",
+            "interdependence": "US research funding, South African clinical trials, Global Fund co-financing, and Gilead generic agreements tightly interlink local care with global politics."
+        },
+        "essayBuilder": {
+            "prompt": "To what extent can constitutional courts and civil society movements secure socio-economic rights when implementation also depends on external donors?",
+            "claim": "Constitutional courts and mobilized activists can compel domestic policy change and budget prioritization, but they cannot shield public health systems from abrupt foreign aid withdrawals.",
+            "evidence": "After the Constitutional Court lifted pilot restrictions on maternal nevirapine in July 2002, domestic care expanded steadily. Treatment reached 6.3 million patients by 2024, early transmission fell to ~1.4% by 2016, and Secunda launched lenacapavir shots in June 2026.",
+            "counterClaim": "However, 2025–2026 US executive cuts stripped 17% of HIV budgets excluding drug purchases—closing twelve clinics and requiring over 60,000 patients to register at state facilities—while remaining US personnel support ends on 31 March 2027.",
+            "judgment": "Overall, domestic constitutional accountability secures core drug supply and institutional legitimacy, while durable health rights still require resilient local staffing and diversified multilateral partnerships.",
+            "sourceUrls": [
+                "https://www.sanews.gov.za/south-africa/lenacapavir-marks-new-era-south-africas-hiv-prevention-efforts",
+                "https://www.unaids.org/en/resources/presscentre/featurestories/2026/june/20260619_SA_lenacapavir_rollout",
+                "https://www.saflii.org/za/cases/ZACC/2002/15.html",
+                "https://pmc.ncbi.nlm.nih.gov/articles/PMC10416996/",
+                "https://bhekisisa.org/wp-content/uploads/2025/07/2025-SA-Fact-sheet.pdf",
+                "https://thepolitic.org/article/the-fragility-of-aid-the-fallout-of-hiv-funding-cuts-in-south-africa/",
+                "https://hsph.harvard.edu/news/what-the-end-of-pepfar-funding-could-mean-for-south-africas-hiv-response/"
+            ]
+        },
+        "keyFigures": [
+            {
+                "value": "6.3 million",
+                "unit": "patients",
+                "label": "South Africans accessing antiretroviral therapy by late 2024 out of 7.8 million living with HIV in 2024",
+                "asOf": "2024-12",
+                "sourceUrl": "https://bhekisisa.org/wp-content/uploads/2025/07/2025-SA-Fact-sheet.pdf"
+            },
+            {
+                "value": "17%",
+                "unit": "budget share",
+                "label": "Portion of South Africa's HIV response paid by PEPFAR excluding domestic drug procurement",
+                "asOf": "2025",
+                "sourceUrl": "https://phr.org/our-work/resources/wasted-investments-looming-crisis-the-impact-of-u-s-global-health-funding-cuts-on-hiv-in-south-africa/"
+            },
+            {
+                "value": "60,000+",
+                "unit": "patients affected",
+                "label": "More than 60,000 former specialized clinic patients needing to register at state facilities after 12 clinics closed",
+                "asOf": "2026-07",
+                "sourceUrl": "https://hsph.harvard.edu/news/what-the-end-of-pepfar-funding-could-mean-for-south-africas-hiv-response/"
+            }
+        ],
+        "timeline": [
+            {
+                "date": "2002-07-05",
+                "label": "Constitutional Court orders Pretoria to expand nevirapine access nationwide to prevent mother-to-child HIV transmission.",
+                "sourceUrl": "https://www.saflii.org/za/cases/ZACC/2002/15.html"
+            },
+            {
+                "date": "2016",
+                "label": "Early six-week mother-to-child HIV transmission drops to ~1.4% from 25%–30% in 2001 as clinic screening expands.",
+                "sourceUrl": "https://pmc.ncbi.nlm.nih.gov/articles/PMC10416996/"
+            },
+            {
+                "date": "2025-02-07",
+                "label": "Following January aid freeze, US executive order cuts funding to South Africa; limited PEPFAR waivers trigger major NGO layoffs.",
+                "sourceUrl": "https://bhekisisa.org/health-news-south-africa/2025-02-12-inside-the-pepfar-waiver-letters-whats-in-and-out/"
+            },
+            {
+                "date": "2026-06-05",
+                "label": "Health Minister Motsoaledi administers South Africa's first free lenacapavir shot in Secunda across a 360-clinic phase.",
+                "sourceUrl": "https://www.unaids.org/en/resources/presscentre/featurestories/2026/june/20260619_SA_lenacapavir_rollout"
+            },
+            {
+                "date": "2026-06-18",
+                "label": "US State Department announces permanent phased PEPFAR exit from South Africa after halting bilateral health talks (reported 19 June).",
+                "sourceUrl": "https://www.thinkglobalhealth.org/article/united-states-pulls-funding-for-south-africa-threatening-hiv-defenses"
+            },
+            {
+                "date": "2027-03-31",
+                "label": "US exit deadline ends final PEPFAR support for critical health staff, leaving Pretoria to cover an estimated ~US$400 million gap.",
+                "sourceUrl": "https://hsph.harvard.edu/news/what-the-end-of-pepfar-funding-could-mean-for-south-africas-hiv-response/"
+            }
+        ],
+        "relatedCases": [
+            {
+                "caseId": "kenya-gen-z-finance-bill-protests",
+                "note": "Contrast Kenyan street and judicial checks on taxes with South African constitutional litigation defending public clinic access."
+            },
+            {
+                "caseId": "argentina-abortion-law-budget-implementation",
+                "note": "Compare Argentina's federal budget cuts to legal abortion access with South Africa's US donor cuts testing constitutional HIV care."
+            },
+            {
+                "caseId": "vanuatu-pacific-icj-climate-opinion",
+                "note": "Compare enforceable South African constitutional court rulings with the non-binding ICJ climate advisory opinion."
             }
         ]
     }

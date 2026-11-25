@@ -2,7 +2,7 @@
 
 ## Purpose and current scope
 
-The case-study library is an educational editorial product, not a live intelligence service. Active regional modules live under `src/cases/active/*.mjs` (`33` active cases across `7` canonical regions; `29` baseline plus `4` Batch 1 additions) and retired historical snapshots live under `src/cases/archive/archived-2026.mjs`, re-exported through `src/caseStudies2026.js`. Every active case is available as a Guided Briefing and as an Editorial Cases globe item.
+The case-study library is an educational editorial product, not a live intelligence service. Active regional modules live under `src/cases/active/*.mjs` (`37` active cases across `7` canonical regions; `29` baseline plus `4` Batch 1 and `4` Batch 2 additions) and retired historical snapshots live under `src/cases/archive/archived-2026.mjs`, re-exported through `src/caseStudies2026.js`. Every active case is available as a Guided Briefing and as an Editorial Cases globe item.
 
 This standard applies whenever a case is added, materially revised, reviewed, or archived.
 
@@ -130,7 +130,7 @@ Guided Briefings search indexes case titles, subtitles, region tags, issue dimen
 
 The application performs a daily reachability check (`refresh-source-health` -> `refresh-source-health-background` when `CRON_SECRET` is configured, with a `36h` staleness safety fallback to the inline `24s` bounded check) for active core, supplemental, and alternate URLs. Archived snapshots (`status: 'archived'`) are excluded from daily link probing so their historical record stays frozen and live link-health badges are omitted; editors should attach durable institutional or repository `alternateUrls` before archiving. Sources and supplemental sources may declare `alternateUrls: [{ label, url }]` pointing to legitimate publisher, institutional, repository, or PDF mirrors. Run `npm run content:staleness` (or `--strict` in scheduled CI) to inspect overdue and upcoming `reviewBy` dates.
 
-## 33-Case Catalog Mapping (`7 Regions × 6 Issue Lenses`)
+## 37-Case Catalog Mapping (`7 Regions × 6 Issue Lenses`)
 
 | # | Case `id` | Module (`src/cases/active/`) | `coverageRegion` | `issueLens` | `broadCategory` |
 |---:|---|---|---|---|---|
@@ -167,3 +167,7 @@ The application performs a daily reachability check (`refresh-source-health` -> 
 | 31 | `argentina-abortion-law-budget-implementation` | `americas-caribbean-2026.mjs` | `Americas & Caribbean` | `Governance & Rights` | `Governance & Rights` |
 | 32 | `ottawa-mine-ban-treaty-exits` | `global-institutions-2026.mjs` | `Global / Transnational` | `Security & Diplomacy` | `Geopolitics & Conflict` |
 | 33 | `kenya-gen-z-finance-bill-protests` | `africa-2026.mjs` | `Africa` | `Governance & Rights` | `Governance & Rights` |
+| 34 | `iraq-post-isil-sovereignty-reconstruction` | `mena-2026.mjs` | `Middle East & North Africa` | `Governance & Rights` | `Governance & Rights` |
+| 35 | `sri-lanka-imf-debt-sovereignty` | `asia-pacific-2026.mjs` | `Asia-Pacific` | `Economy & Development` | `Economy & Trade` |
+| 36 | `south-africa-hiv-constitutional-court-pepfar` | `africa-2026.mjs` | `Africa` | `Health & Human Security` | `Health & Society` |
+| 37 | `vanuatu-pacific-icj-climate-opinion` | `pacific-islands-2026.mjs` | `Pacific Islands` | `Climate & Resources` | `Environment & Energy` |
