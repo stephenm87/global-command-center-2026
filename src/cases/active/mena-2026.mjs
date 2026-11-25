@@ -1562,7 +1562,7 @@ export const MENA_CASES_2026 = [
             "USA",
             "Hezbollah"
         ],
-        "statusSummary": "More than 4.9 million Iraqis have returned or relocated since the war against the Islamic State of Iraq and the Levant (ISIL) ended, yet International Organization for Migration (IOM) data show more than one million remain internally displaced [7, 8]. On 31 December 2025 the United Nations closed its political mission in Iraq, and on 30 September 2026 United States forces withdrew from Erbil Air Base [2, 10]. In November 2026, Baghdad negotiated entry into militia-held Jurf al-Sakhar while postponing armed-faction disarmament to June 2027 [3].",
+        "statusSummary": "More than 4.9 million Iraqis have returned or relocated alongside 3,447 completed stabilization projects since the war against the Islamic State of Iraq and the Levant (ISIL) ended, yet International Organization for Migration (IOM) data show around 1.03 million remain internally displaced [4, 7, 8]. On 31 December 2025 the United Nations closed its political mission in Iraq, and on 30 September 2026 United States forces withdrew from Erbil Air Base [2, 10]. In November 2026, Baghdad negotiated entry into militia-held Jurf al-Sakhar while postponing armed-faction disarmament to June 2027 [3].",
         "whyItMatters": "Post-ISIL Iraq shows why international recognition, retaking cities by force, and governing all territory fairly are distinct steps. Ending foreign missions restored legal authority to Baghdad, while over one million still-displaced citizens and armed faction holdouts test everyday state legitimacy [3, 6, 8].",
         "updatedAt": "2026-11-25",
         "confidence": "medium",
@@ -1939,14 +1939,14 @@ export const MENA_CASES_2026 = [
         },
         "keyFigures": [
             {
-                "value": ">4.9M",
+                "value": "4.9 million",
                 "unit": "citizens",
                 "label": "Returned or relocated since post-ISIL recovery began",
                 "asOf": "2026-09",
                 "sourceUrl": "https://iraq.un.org/en/323148-press-release-iraq-iom-chart-path-recovery-development-and-safe-migration"
             },
             {
-                "value": "~1.03M",
+                "value": "1.03 million",
                 "unit": "people",
                 "label": "Remain internally displaced across Iraq",
                 "asOf": "2025-01",
