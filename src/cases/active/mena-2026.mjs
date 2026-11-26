@@ -1531,6 +1531,12 @@ export const MENA_CASES_2026 = [
                 "label": "The IMO Council ends its 138th session, condemning Houthi attacks on merchant ships and crews.",
                 "sourceUrl": "https://www.imo.org/en/mediacentre/pressbriefings/pages/imo-council-c138-urges-stronger-protection-of-seafarers-amid-threats-to-global-shipping-.aspx"
             }
+        ],
+        "relatedCases": [
+            {
+                "caseId": "ilo-seafarers-global-wage-floor",
+                "note": "Contrast wartime Red Sea attacks on merchant crews with peacetime ILO minimum wage and abandonment rules at sea."
+            }
         ]
     },
     {
@@ -2017,6 +2023,10 @@ export const MENA_CASES_2026 = [
             {
                 "caseId": "myanmar-fragmented-sovereignty",
                 "note": "Compare Baghdad's struggle against autonomous militias after foreign exits with Myanmar's fragmented armed authority."
+            },
+            {
+                "caseId": "colombia-peace-accord-ten-year-test",
+                "note": "Compare Iraq's post-combat reconstruction and militia holdouts with Colombia's gap between guerrilla disarmament and rural state control."
             }
         ]
     }

@@ -588,6 +588,12 @@ export const EUROPE_EURASIA_CASES_2026 = [
                 "narration": "Guidelines and voluntary codes can support compliance, but enforcement practice, technical standards, and user understanding will shape real-world effects.",
                 "focusQuestion": "Which evidence would show that transparency rules change provider behavior or public understanding?"
             }
+        ],
+        "relatedCases": [
+            {
+                "caseId": "australia-meta-news-bargaining-tax",
+                "note": "Contrast Brussels' staggered AI transparency rules with Australia's pivot from platform conduct codes to advertising taxation."
+            }
         ]
     },
     {

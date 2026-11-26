@@ -153,6 +153,10 @@ export const PACIFIC_ISLANDS_CASES_2026 = [
             {
                 "caseId": "vanuatu-pacific-icj-climate-opinion",
                 "note": "Compare Tuvalu's bilateral statehood treaty with Vanuatu's UN General Assembly and ICJ climate-law campaign."
+            },
+            {
+                "caseId": "australia-meta-news-bargaining-tax",
+                "note": "Contrast Canberra's bilateral climate-mobility partnership in the Pacific with its sovereign tax confrontation against Meta."
             }
         ]
     },

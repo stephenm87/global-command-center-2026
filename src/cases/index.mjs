@@ -69,6 +69,9 @@ const BASELINE_CASE_ORDER = [
     'sri-lanka-imf-debt-sovereignty',
     'south-africa-hiv-constitutional-court-pepfar',
     'vanuatu-pacific-icj-climate-opinion',
+    'ilo-seafarers-global-wage-floor',
+    'colombia-peace-accord-ten-year-test',
+    'australia-meta-news-bargaining-tax',
 ];
 
 const BASELINE_INDEX = new Map(BASELINE_CASE_ORDER.map((id, index) => [id, index]));

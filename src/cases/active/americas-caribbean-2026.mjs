@@ -286,6 +286,12 @@ export const AMERICAS_CARIBBEAN_CASES_2026 = [
                 "narration": "The three governments frame the review differently while agreeing that negotiation and the agreement itself continue.",
                 "focusQuestion": "How should analysts separate a government's negotiating message from the agreement's legal status?"
             }
+        ],
+        "relatedCases": [
+            {
+                "caseId": "ilo-seafarers-global-wage-floor",
+                "note": "Compare regional USMCA trade tariff labor leverage with non-binding global ILO wage floors for seafarers."
+            }
         ]
     },
     {
@@ -638,6 +644,12 @@ export const AMERICAS_CARIBBEAN_CASES_2026 = [
                 "label": "Police stations and substations monitored by RNDDH across 107 visits",
                 "asOf": "12 June 2026 (covering June 2025 to June 2026)",
                 "sourceUrl": "https://web.rnddh.org/wp-content/uploads/2026/06/5-Rap-PNH-12Juin2026.ENG_.pdf"
+            }
+        ],
+        "relatedCases": [
+            {
+                "caseId": "colombia-peace-accord-ten-year-test",
+                "note": "Contrast Haiti's struggle to build sovereign policing amid gang control with post-accord rural security vacuums in Colombia."
             }
         ]
     },
@@ -1432,6 +1444,10 @@ export const AMERICAS_CARIBBEAN_CASES_2026 = [
             {
                 "caseId": "haiti-security-legitimacy-haitian-ownership",
                 "note": "Contrast El Salvador's centralized military-police sweep with Haiti's effort to rebuild sovereign policing amid gang control."
+            },
+            {
+                "caseId": "colombia-peace-accord-ten-year-test",
+                "note": "Compare El Salvador's centralized emergency crackdowns with Colombia's negotiated disarmament and uneven rural state presence."
             }
         ]
     },
@@ -1911,6 +1927,473 @@ export const AMERICAS_CARIBBEAN_CASES_2026 = [
             {
                 "caseId": "sri-lanka-imf-debt-sovereignty",
                 "note": "Compare austerity squeezing public clinic supplies in Argentina with IMF-linked household pressures in Sri Lanka."
+            }
+        ]
+    },
+    {
+        "id": "colombia-peace-accord-ten-year-test",
+        "status": "active",
+        "briefingVersion": 2,
+        "title": "Colombia: Ten Years After the Peace Accord",
+        "subtitle": "Disarmament succeeded rapidly, but rural land delivery, signatory safety, and voter trust trailed far behind",
+        "coverageRegion": "Americas & Caribbean",
+        "regionTags": [
+            "Latin America",
+            "Andes",
+            "Colombia",
+            "Caquetá"
+        ],
+        "issueLens": "Governance & Rights",
+        "broadCategory": "Governance & Rights",
+        "issueDimensions": [
+            "Peacebuilding and disarmament",
+            "Rural land reform",
+            "State capacity and vacuums",
+            "Transitional political inclusion",
+            "Signatory security and UN verification"
+        ],
+        "actors": [
+            "Colombian State, President Abelardo de la Espriella, and rural agencies",
+            "Former FARC-EP combatants and the Comunes party",
+            "United Nations Verification Mission in Colombia (UNVMC)",
+            "Breakaway armed dissident factions across coca corridors",
+            "Rural peasant communities and peace signatories"
+        ],
+        "nexusNodeIds": [
+            "LatinAmerica",
+            "UN_OPEC",
+            "USA",
+            "MilitantPMC"
+        ],
+        "statusSummary": "Following Colombia's 24 November 2016 Final Peace Agreement, more than 13,000 former rebels disarmed under United Nations verification in 2017 and over 11,000 remain in peaceful reintegration [1, 4, 7]. Yet the Kroc Institute calculates only 36% of commitments are fulfilled [4]. Outgoing-term rural allocations reached nearly 370,000 hectares of the 3 million target, Colombia's Ombudsman recorded 521 slain peace signatories, Comunes lost all congressional representation after March 2026, and on 30 October 2026 the UN Security Council narrowed verification to 31 October 2027 [2, 3, 4, 5].",
+        "whyItMatters": "Colombia exposes the gap between ending combat with one insurgent army and building durable civilian authority across remote territory. Legal quotas and treaties disarmed thousands of fighters, yet weak rural policing and voter distrust left half-built institutions under renewed strain [1, 3, 4].",
+        "updatedAt": "2026-11-26",
+        "confidence": "high",
+        "uncertainty": "How far the De la Espriella administration will restrict peace agencies after its 90-day rural-land review and whether removing UN verification of rural reform weakens land implementation ahead of the accord's 15-year horizon remain uncertain.",
+        "sensitivity": "standard",
+        "editorialCaution": "Keep disarmed Comunes members participating peacefully in legal reintegration strictly distinct from breakaway armed dissident groups (such as Segunda Marquetalia and FARC-EP factions) sanctioned for continuing violence [10].",
+        "featured": true,
+        "reviewCadenceDays": 30,
+        "reviewBy": "2026-12-26",
+        "coordinates": {
+            "latitude": 4.711,
+            "longitude": -74.0721
+        },
+        "map": {
+            "mode": "regional",
+            "locations": [
+                {
+                    "label": "Bogotá",
+                    "latitude": 4.711,
+                    "longitude": -74.0721,
+                    "role": "Capital where Santos and FARC-EP signed the revised Final Peace Agreement at Teatro Colón on 24 November 2016 and where Comunes lost its expired quota seats after 8 March 2026 elections"
+                },
+                {
+                    "label": "Miravalle, Caquetá",
+                    "latitude": 2.0942,
+                    "longitude": -74.9186,
+                    "role": "Southern reintegration village evacuated by 42 former-combatant households in August 2024 following death threats from armed dissident groups"
+                },
+                {
+                    "label": "Catatumbo, Norte de Santander",
+                    "latitude": 8.6414,
+                    "longitude": -72.9056,
+                    "role": "Contested northeastern border valley where breakaway armed factions and humanitarian displacement surged despite the 2016 accord"
+                }
+            ]
+        },
+        "sources": [
+            {
+                "title": "Ten years after its 2016 peace deal, Colombia faces a return to conflict",
+                "publisher": "Al Jazeera",
+                "publishedAt": "2026-11-24",
+                "url": "https://www.aljazeera.com/news/longform/2026/11/24/ten-years-after-its-2016-peace-deal-colombia-faces-a-return-to-conflict",
+                "perspectiveType": "independent",
+                "perspective": "Independent tenth-anniversary investigative feature centered on former fighter Jorge Suarez and Humberto de la Calle",
+                "supports": "Supports former rebel Jorge Suarez's testimony on disarming with >13,000 fighters after fighting since age 15, Kroc minimal-implementation findings, growth of armed groups from 15,000 to 28,000, and De la Espriella's quote."
+            },
+            {
+                "title": "United Nations Security Council Renews Mandate of Verification Mission in Colombia",
+                "publisher": "United Nations Verification Mission in Colombia (UNVMC)",
+                "publishedAt": "2026-10-30",
+                "url": "https://colombia.unmissions.org/en/press-releases/el-consejo-de-seguridad-de-las-naciones-unidas-renueva-el-mandato-de-la",
+                "perspectiveType": "institutional",
+                "perspective": "Official UN Security Council renewal release for Resolution 2833 through 31 October 2027",
+                "supports": "Supports the unanimous 30 October 2026 mandate extension focusing verification on former-combatant reintegration and security guarantees while discontinuing Comprehensive Rural Reform monitoring."
+            },
+            {
+                "title": "With FARC's Political Party Over, Colombia’s Peace Accord Faces Deadline",
+                "publisher": "The City Paper Bogotá",
+                "publishedAt": "2026-10-08",
+                "url": "https://thecitypaperbogota.com/news/with-farcs-political-party-over-colombias-peace-accord-faces-deadline/",
+                "perspectiveType": "local",
+                "perspective": "Local English-language Bogotá reporting on the expiry of Comunes' legal party status and JEP funding dispute",
+                "supports": "Supports Comunes losing legal recognition under CNE Resolution 4006 after roughly 114,000 Senate votes failed to clear the 3% threshold on 8 March 2026."
+            }
+        ],
+        "supplementalSources": [
+            {
+                "title": "Colombia's peace deal turns ten with 36% of its commitments fulfilled",
+                "publisher": "MercoPress",
+                "publishedAt": "2026-11-24",
+                "url": "https://en.mercopress.com/2026/11/24/colombia-s-peace-deal-turns-ten-with-36-of-its-commitments-fulfilled",
+                "perspective": "Regional news summary on the 10-year Kroc Institute, Ombudsman, and Comptroller assessments",
+                "supports": "Supports the 24 November 2016 Teatro Colón signing after the October referendum defeat, Kroc's 36% fulfillment metric, the Ombudsman count of 521 slain signatories, and De la Espriella's \"false peace\" criticism."
+            },
+            {
+                "title": "Colombia: Vote on Verification Mission Mandate Renewal",
+                "publisher": "Security Council Report (What's In Blue)",
+                "publishedAt": "2026-10-29",
+                "url": "https://www.securitycouncilreport.org/whatsinblue/2026/10/colombia-vote-on-verification-mission-mandate-renewal-5.php",
+                "perspective": "Independent UN diplomacy briefing detailing Bogotá's UNSC mandate negotiations",
+                "supports": "Supports Foreign Minister Omar Bula Escobar's UNSC remarks, nearly 370,000 hectares of rural land delivered, and Agriculture's August 90-day land-reform pause."
+            },
+            {
+                "title": "Firmantes de paz, amenazados por disidentes, ya abandonaron el ETCR de Miravalle en Caquetá",
+                "publisher": "El Colombiano",
+                "publishedAt": "2024-08-21",
+                "url": "https://www.elcolombiano.com/colombia/firmantes-de-paz-ya-abandonaron-miravalle-caqueta-por-amenza-disidencias-HA25253206",
+                "perspective": "Colombian national newspaper report on forced displacement from former guerrilla settlements",
+                "supports": "Supports 42 former-combatant households abandoning the Miravalle settlement in Caquetá in August 2024 due to dissident death threats."
+            },
+            {
+                "title": "UN Secretary General highlights the resilience of Colombian institutions and society",
+                "publisher": "United Nations Verification Mission in Colombia (UNVMC)",
+                "publishedAt": "2026-10-08",
+                "url": "https://colombia.unmissions.org/en/news/secretario-general-de-la-onu-destaca-la-resiliencia-de-las-instituciones-y-la",
+                "perspective": "Official summary of Secretary-General report S/2026/759 ahead of UNSC renewal",
+                "supports": "Supports over 11,000 former fighters remaining in reintegration and 501 signatory killings individually verified by the UN mission."
+            },
+            {
+                "title": "Colombia’s 2026 Congressional Elections and the Road Ahead to the Presidential Race",
+                "publisher": "ABColombia",
+                "publishedAt": "2026-03-18",
+                "url": "https://www.abcolombia.org.uk/colombias-2026-congressional-elections-and-the-road-ahead-to-the-presidential-race/",
+                "perspective": "UK–Irish human rights coalition analysis of the 8 March 2026 congressional ballot",
+                "supports": "Supports Comunes winning zero seats once its eight-year transitional quota expired in March 2026."
+            },
+            {
+                "title": "Colombia: The First Ten Weeks of the De La Espriella Government",
+                "publisher": "ABColombia",
+                "publishedAt": "2026-11-09",
+                "url": "https://www.abcolombia.org.uk/colombia-the-first-ten-weeks-of-the-de-la-espriella-government/",
+                "perspective": "Human rights monitoring report covering post-August 2026 institutional and budget shifts",
+                "supports": "Supports the 21 June runoff margin (49.66% vs 48.70%), 7 August inauguration, closure of peace offices, 37% ARN and 17% JEP budget cuts, and 90-day land review."
+            },
+            {
+                "title": "Revocation of the Terrorist Designations of the Revolutionary Armed Forces of Colombia (FARC) and Additional Terrorist Designations",
+                "publisher": "U.S. Department of State",
+                "publishedAt": "2021-11-30",
+                "url": "https://2021-2025.state.gov/revocation-of-the-terrorist-designations-of-the-revolutionary-armed-forces-of-colombia-farc-and-additional-terrorist-designations/",
+                "perspective": "Official US diplomatic determination separating disarmed FARC from continuing armed factions",
+                "supports": "Supports Washington's 30 November 2021 revocation of FARC terrorist designations alongside new listings targeting Segunda Marquetalia and FARC-EP dissidents."
+            },
+            {
+                "title": "Marking Tenth Anniversary of Colombia’s Final Peace Agreement, Secretary-General Urges Renewed Commitment (SG/SM/23387)",
+                "publisher": "United Nations",
+                "publishedAt": "2026-11-24",
+                "url": "https://press.un.org/en/2026/sgsm23387.doc.htm",
+                "perspective": "Official tenth-anniversary diplomatic warning from Secretary-General António Guterres",
+                "supports": "Supports Guterres's warning that only five years remain inside the accord's 15-year implementation schedule."
+            },
+            {
+                "title": "Colombia: Ten years after peace deal, civilians see rising violence",
+                "publisher": "Norwegian Refugee Council (NRC)",
+                "publishedAt": "2026-11-23",
+                "url": "https://www.nrc.no/news/2026/colombia-ten-years-after-peace-deal-civilians-see-rising-violence",
+                "perspective": "Humanitarian agency assessment of rising rural violence and civilian aid needs",
+                "supports": "Supports humanitarian need climbing 40% from 5.8 million to 8.1 million people since 2020 and ICRC tallies rising from five to eight armed conflicts."
+            },
+            {
+                "title": "Colombia, October 2026 Monthly Forecast",
+                "publisher": "Security Council Report",
+                "publishedAt": "2026-10-01",
+                "url": "https://www.securitycouncilreport.org/monthly-forecast/2026-10/colombia-35.php",
+                "perspective": "Diplomatic preview of UNSC debates over rural reform and reintegration funding",
+                "supports": "Supports concerns over proposed budget cuts to the reintegration agency (ARN) and the transition into the De la Espriella presidency."
+            },
+            {
+                "title": "'The government wants to dismantle the peace agreement': former interior minister Cristo",
+                "publisher": "Justice for Colombia",
+                "publishedAt": "2026-10-26",
+                "url": "https://justiceforcolombia.org/the-goverment-wants-to-dismantle-the-peace-agreement-former-foreign-minister-juan-fernando-cristo/",
+                "perspective": "Interview with former interior minister and accord defender Juan Fernando Cristo",
+                "supports": "Supports domestic political pushback criticizing Foreign Minister Omar Bula Escobar's UN statements and efforts to strip rural reform from UN monitoring."
+            },
+            {
+                "title": "Colombia: La Via Campesina questions the exclusion of Comprehensive Rural Reform from the UN Mission’s verification mandate",
+                "publisher": "La Via Campesina",
+                "publishedAt": "2026-11-19",
+                "url": "https://viacampesina.org/en/2026/11/colombia-la-via-campesina-questions-the-exclusion-of-comprehensive-rural-reform-from-the-un-missions-verification-mandate/",
+                "perspective": "International peasant-movement statement defending rural land redistribution guarantees",
+                "supports": "Supports agrarian opposition arguing that ending UN verification of Comprehensive Rural Reform weakens land pledges for rural families."
+            },
+            {
+                "title": "Explanation of Vote: UN Verification Mission in Colombia",
+                "publisher": "Permanent Mission of Denmark to the United Nations",
+                "publishedAt": "2026-10-30",
+                "url": "https://dkonunsc.dk/statements/eov-un-verification-mission-in-colombia/",
+                "perspective": "UN Security Council elected-member explanation of vote supporting full accord delivery",
+                "supports": "Supports diplomatic calls linking rural reform and state presence to lasting peace alongside mid-year land-formalization figures."
+            }
+        ],
+        "waypoints": [
+            {
+                "nodeId": "LatinAmerica",
+                "title": "Trading Rifles for Rural Promises",
+                "perspectiveLabel": "Jorge Suarez, Teatro Colón, and disarmament",
+                "perspectiveType": "local",
+                "conceptInFocus": "Power",
+                "relatedTimelineDate": "2016-11-24",
+                "narration": "Jorge Suarez was born inside a rebel camp and began fighting in guerrilla ranks at age fifteen [1]. In October 2016, voters narrowly rejected an initial peace agreement. President Juan Manuel Santos and guerrilla commander Rodrigo Londoño then revised the accord and signed it on 24 November 2016 at Teatro Colón. Following that ceremony, Suarez and over 13,000 fellow fighters disarmed under United Nations monitoring while Bogotá promised sweeping rural land reform and temporary congressional seats [1, 3, 4].\n\nNeither Colombia's army nor the Revolutionary Armed Forces of Colombia (FARC-EP) could defeat the other across five decades of jungle and mountain war. Once former fighters surrendered their guns, however, they relied completely on Bogotá's budgets and rural protection [1, 9]. Power—the ability to compel rivals into material concessions—had let an undefeated insurgency trade rifles for parliamentary seats and agrarian pledges, yet left ex-rebels exposed after disarming.",
+                "focusQuestion": "Why could an undefeated rebel movement win sweeping rural pledges in 2016 yet struggle to enforce them after disarming?"
+            },
+            {
+                "nodeId": "MilitantPMC",
+                "title": "Vacuums Where the State Arrives Late",
+                "perspectiveLabel": "Miravalle displacement and stalled land delivery",
+                "perspectiveType": "local",
+                "conceptInFocus": "Sovereignty",
+                "relatedTimelineDate": "2024-08-20",
+                "narration": "On 20 August 2024, peace signatories like Carlos Zamudio packed their belongings into trucks and evacuated Caquetá's Miravalle settlement after receiving death threats from armed dissidents. Forty-two households abandoned years of local community work after militias broke away and rebuilt rural extortion rackets [1, 6]. Across Colombia, the outgoing administration delivered nearly 370,000 hectares of the promised 3 million [5]. Through November 2026, Colombia's Ombudsman recorded 521 murdered peace signatories [4, 7].\n\nDisarming a guerrilla army proved far faster than building rural roads, land registries, civil courts, and permanent police posts across mountain corridors. Armed factions now field around 28,000 fighters across contested hinterlands, widening civilian insecurity and humanitarian needs [1, 9, 12]. Sovereignty—supreme legal authority inside recognized borders—remained Colombia's under formal law while breakaway groups held practical control across isolated valleys.",
+                "focusQuestion": "How can Colombia hold legal sovereignty everywhere on paper while still failing to protect signatories and deliver land in remote valleys?"
+            },
+            {
+                "nodeId": "LatinAmerica",
+                "title": "Reserved Seats Without Voter Consent",
+                "perspectiveLabel": "March 2026 seat loss and June presidential shift",
+                "perspectiveType": "independent",
+                "conceptInFocus": "Legitimacy",
+                "relatedTimelineDate": "2026-03-08",
+                "narration": "On 8 March 2026, Colombia's Comunes party ran in congressional elections after its guaranteed transitional seat quota expired. The former rebels won roughly 114,000 Senate votes, falling well below the 3% threshold and losing every seat in Congress [3, 8]. Outspoken accord critic Abelardo de la Espriella then captured June's national presidential runoff election [9, 13].\n\nTemporary constitutional quotas had placed former guerrilla commanders inside Congress without winning wider public backing for ex-rebel political leadership [3, 4]. After taking office in August, President de la Espriella closed dedicated peace offices, cut reintegration funding, and halted rural land transfers [5, 9]. Electoral regulators canceled Comunes's legal party status in October, and in November the president dismissed the accord as a \"false peace\" [3, 4]. Legitimacy—public acceptance that political authority is rightfully exercised—could not be built through temporary seats alone.",
+                "focusQuestion": "Why did eight years of guaranteed parliamentary seats fail to earn Comunes lasting voter trust when quotas ended?"
+            },
+            {
+                "nodeId": "UN_OPEC",
+                "title": "Narrowed Outside Verification",
+                "perspectiveLabel": "October 2026 UN Security Council renewal",
+                "perspectiveType": "institutional",
+                "conceptInFocus": "Interdependence",
+                "relatedTimelineDate": "2026-10-30",
+                "narration": "On 30 October 2026, the United Nations Security Council unanimously extended its United Nations Verification Mission in Colombia. Running through 31 October 2027, that renewed mission dropped rural-reform monitoring at Bogotá's formal request to focus solely on ex-fighter reintegration and physical security guarantees [2, 5]. In November 2021, Washington had lifted formal terrorism sanctions on the disarmed movement while still blacklisting active breakaway armed factions [10].\n\nInternational observers had verified weapons destruction and confirmed 501 signatory killings through late September, furnishing credible evidence amid sharp domestic divisions [1, 7]. With only 36% of commitments fulfilled, United Nations Secretary-General António Guterres warned that just five years remained for implementation [4, 11]. Interdependence—mutual ties linking national peace outcomes with international monitoring, diplomacy, and external sanctions—kept outside scrutiny intact without replacing domestic policing.",
+                "focusQuestion": "What can outside UN monitors and US sanctions realistically accomplish when domestic ministries scale back implementation?"
+            }
+        ],
+        "concepts": [
+            "Power",
+            "Sovereignty",
+            "Legitimacy",
+            "Interdependence"
+        ],
+        "ibThemes": [
+            "peace-and-conflict",
+            "rights-and-justice"
+        ],
+        "background": "Across mountain and jungle valleys where courts, roads, and police rarely reached, the Revolutionary Armed Forces of Colombia (FARC-EP) fought Bogotá from 1964 onward [1, 4]. Neither side could prevail across fifty-two years of civil war [1, 4]. After citizens narrowly rejected an initial text in October, negotiators revised the settlement and signed the Final Peace Agreement on 24 November 2016 [4, 11].\n\nThe deal traded fast rebel disarmament under United Nations monitoring for ten years of structural transformation [1, 4]. Over 13,000 fighters disarmed under international observers in 2017, while Comunes gained temporary congressional quotas [1, 8]. Bogotá simultaneously pledged rural security guarantees, transitional courts, and 3 million hectares of farmland distribution [4, 5].\n\nTen years later, results diverged sharply between rapid demobilization and weak rural reach [1, 4]. Comunes lost every seat in March 2026, while outgoing-term land allocations reached almost 370,000 hectares by October [3, 5]. Colombia's Ombudsman recorded 521 slain signatories, and President Abelardo de la Espriella cut peace budgets while the United Nations narrowed verification [2, 4, 9].",
+        "backgroundSources": [
+            "https://www.aljazeera.com/news/longform/2026/11/24/ten-years-after-its-2016-peace-deal-colombia-faces-a-return-to-conflict",
+            "https://colombia.unmissions.org/en/press-releases/el-consejo-de-seguridad-de-las-naciones-unidas-renueva-el-mandato-de-la",
+            "https://thecitypaperbogota.com/news/with-farcs-political-party-over-colombias-peace-accord-faces-deadline/",
+            "https://en.mercopress.com/2026/11/24/colombia-s-peace-deal-turns-ten-with-36-of-its-commitments-fulfilled",
+            "https://www.securitycouncilreport.org/whatsinblue/2026/10/colombia-vote-on-verification-mission-mandate-renewal-5.php",
+            "https://www.abcolombia.org.uk/colombia-the-first-ten-weeks-of-the-de-la-espriella-government/"
+        ],
+        "keyTerms": [
+            {
+                "term": "Comunes (versus FARC dissidents)",
+                "definition": "The peaceful political party formed by disarmed former FARC-EP combatants—strictly distinct from armed dissident factions (such as Segunda Marquetalia, which abandoned the accord in 2019 and was newly sanctioned by the US in November 2021 alongside continuing FARC-EP dissidents).",
+                "sourceUrl": "https://2021-2025.state.gov/revocation-of-the-terrorist-designations-of-the-revolutionary-armed-forces-of-colombia-farc-and-additional-terrorist-designations/"
+            },
+            {
+                "term": "Negative peace versus positive peace",
+                "definition": "Ending direct organized combat and melting down guerrilla weapons (negative peace), compared with building rural courts, land titles, and physical protection across former conflict zones (positive peace).",
+                "sourceUrl": "https://www.aljazeera.com/news/longform/2026/11/24/ten-years-after-its-2016-peace-deal-colombia-faces-a-return-to-conflict"
+            },
+            {
+                "term": "De facto territorial control",
+                "definition": "Practical governing authority over roads, safety, and taxation on the ground, which breakaway armed groups seized in coca-growing valleys despite Bogotá retaining legal sovereignty.",
+                "sourceUrl": "https://www.elcolombiano.com/colombia/firmantes-de-paz-ya-abandonaron-miravalle-caqueta-por-amenza-disidencias-HA25253206"
+            },
+            {
+                "term": "Comprehensive Rural Reform",
+                "definition": "The peace accord pillar promising 3 million hectares of land distribution and formalizing existing land tenure on 7 million hectares—excluded from UN verification in October 2026 at Bogotá's request.",
+                "sourceUrl": "https://www.securitycouncilreport.org/whatsinblue/2026/10/colombia-vote-on-verification-mission-mandate-renewal-5.php"
+            }
+        ],
+        "debate": [
+            {
+                "claimBy": "President Abelardo de la Espriella & Foreign Minister Omar Bula Escobar (October–November 2026)",
+                "claim": "De la Espriella denounced a \"false peace,\" while Foreign Minister Bula told diplomats Colombian national institutions hold the legal instruments for rural reform without United Nations monitoring [1, 4, 5].",
+                "counterBy": "Former Chief Negotiator Humberto de la Calle & Juan Fernando Cristo (October–November 2026)",
+                "counterClaim": "Negotiators countered that more than 13,000 fighters disarmed peacefully, blaming stalled implementation and budget cuts on political resistance to rural transformation [1, 14].",
+                "sourceUrls": [
+                    "https://www.aljazeera.com/news/longform/2026/11/24/ten-years-after-its-2016-peace-deal-colombia-faces-a-return-to-conflict",
+                    "https://www.securitycouncilreport.org/whatsinblue/2026/10/colombia-vote-on-verification-mission-mandate-renewal-5.php",
+                    "https://justiceforcolombia.org/the-goverment-wants-to-dismantle-the-peace-agreement-former-foreign-minister-juan-fernando-cristo/"
+                ]
+            },
+            {
+                "claimBy": "Comunes Former Fighters & Peace Advocates (March–October 2026)",
+                "claim": "Signatories maintained that constitutional quotas integrated former rebels into electoral politics even after Comunes lost all representation on 8 March 2026 [3, 4, 8].",
+                "counterBy": "The City Paper Bogotá & Electoral Critics (8 October 2026)",
+                "counterClaim": "Critics noted that polling roughly 114,000 Senate votes below the 3% threshold cost Comunes its seats and formal legal party recognition [3, 8].",
+                "sourceUrls": [
+                    "https://thecitypaperbogota.com/news/with-farcs-political-party-over-colombias-peace-accord-faces-deadline/",
+                    "https://en.mercopress.com/2026/11/24/colombia-s-peace-deal-turns-ten-with-36-of-its-commitments-fulfilled",
+                    "https://www.abcolombia.org.uk/colombias-2026-congressional-elections-and-the-road-ahead-to-the-presidential-race/"
+                ]
+            },
+            {
+                "claimBy": "La Via Campesina & UN Council Member Denmark (October–November 2026)",
+                "claim": "Agrarian advocates warned excluding rural reform weakens land pledges, while Denmark stressed state presence and rural transformation alongside voting to extend the mission [15, 16].",
+                "counterBy": "Agriculture Ministry & De la Espriella Administration (August–October 2026)",
+                "counterClaim": "Ministers ordered a ninety-day land review citing alleged irregularities while armed factions expanded to roughly 28,000 fighters [5, 9].",
+                "sourceUrls": [
+                    "https://viacampesina.org/en/2026/11/colombia-la-via-campesina-questions-the-exclusion-of-comprehensive-rural-reform-from-the-un-missions-verification-mandate/",
+                    "https://dkonunsc.dk/statements/eov-un-verification-mission-in-colombia/",
+                    "https://www.abcolombia.org.uk/colombia-the-first-ten-weeks-of-the-de-la-espriella-government/"
+                ]
+            }
+        ],
+        "watchFor": [
+            {
+                "date": "2027 congressional budget cycle",
+                "indicator": "Whether deep cuts to Colombia's reintegration agency (ARN, -37%) and transitional tribunal (JEP, -17%) stall signatory livelihoods and protection.",
+                "sourceUrl": "https://www.abcolombia.org.uk/colombia-the-first-ten-weeks-of-the-de-la-espriella-government/"
+            },
+            {
+                "date": "Following the 90-day land review",
+                "indicator": "Whether Agriculture resumes peasant land transfers beyond ~370,000 hectares or leaves rural reform stalled without UN Verification Mission oversight.",
+                "sourceUrl": "https://www.securitycouncilreport.org/whatsinblue/2026/10/colombia-vote-on-verification-mission-mandate-renewal-5.php"
+            },
+            {
+                "date": "31 October 2027",
+                "indicator": "Expiry of UN Security Council Resolution 2833 and Secretary-General quarterly assessments on signatory killings and reintegration.",
+                "sourceUrl": "https://colombia.unmissions.org/en/press-releases/el-consejo-de-seguridad-de-las-naciones-unidas-renueva-el-mandato-de-la"
+            }
+        ],
+        "examPrompts": [
+            "Evaluate the extent to which negotiated peace accords can achieve lasting stability when disarmament moves faster than rural state capacity.",
+            "Compare how domestic voter legitimacy and international monitoring shape post-conflict implementation in Colombia and one other region."
+        ],
+        "influenceCheck": [
+            {
+                "stage": "Setting the agenda",
+                "rating": "STRONG",
+                "evidence": "A 52-year stalemate convinced Colombia and FARC-EP to center rural inequality, land reform, and political inclusion during the 2016 talks.",
+                "sourceUrls": [
+                    "https://www.aljazeera.com/news/longform/2026/11/24/ten-years-after-its-2016-peace-deal-colombia-faces-a-return-to-conflict",
+                    "https://en.mercopress.com/2026/11/24/colombia-s-peace-deal-turns-ten-with-36-of-its-commitments-fulfilled"
+                ]
+            },
+            {
+                "stage": "The formal decision",
+                "rating": "STRONG",
+                "evidence": "The revised 24 November 2016 Teatro Colón accord disarmed >13,000 fighters, created 10 temporary congressional seats, and launched UN verification and a 3 million-hectare land fund.",
+                "sourceUrls": [
+                    "https://en.mercopress.com/2026/11/24/colombia-s-peace-deal-turns-ten-with-36-of-its-commitments-fulfilled",
+                    "https://www.abcolombia.org.uk/colombias-2026-congressional-elections-and-the-road-ahead-to-the-presidential-race/"
+                ]
+            },
+            {
+                "stage": "What changed in practice",
+                "rating": "WEAK",
+                "evidence": "Over 11,000 signatories remain peaceful, yet Kroc reports just 36% of commitments fulfilled, land stands near 370,000 ha, Ombudsman lists 521 slain signatories (501 UN-verified through Sept 2026), Comunes won 0 seats (~114,000 Senate votes), and Resolution 2833 dropped UN rural monitoring.",
+                "sourceUrls": [
+                    "https://en.mercopress.com/2026/11/24/colombia-s-peace-deal-turns-ten-with-36-of-its-commitments-fulfilled",
+                    "https://colombia.unmissions.org/en/news/secretario-general-de-la-onu-destaca-la-resiliencia-de-las-instituciones-y-la",
+                    "https://thecitypaperbogota.com/news/with-farcs-political-party-over-colombias-peace-accord-faces-deadline/",
+                    "https://colombia.unmissions.org/en/press-releases/el-consejo-de-seguridad-de-las-naciones-unidas-renueva-el-mandato-de-la"
+                ]
+            }
+        ],
+        "conceptLens": {
+            "power": "Military stalemate forced concessions at Havana, yet disarming stripped ex-rebels of armed leverage once rural budgets shifted.",
+            "sovereignty": "Bogotá kept formal legal authority everywhere while armed dissidents captured de facto control across contested coca valleys.",
+            "legitimacy": "Guaranteed quotas gave Comunes seats for eight years, but losing all 10 seats on ~114,000 votes exposed missing public consent.",
+            "interdependence": "UN Security Council monitoring and US sanctions changes reinforced disarmament, yet could not build Colombian state capacity alone."
+        },
+        "essayBuilder": {
+            "prompt": "Evaluate the extent to which negotiated peace accords can achieve lasting stability when disarmament moves faster than rural state capacity.",
+            "claim": "Negotiated settlements reliably end organized rebel warfare and open political participation, yet lasting peace fails without rural state reach and democratic legitimacy.",
+            "evidence": "Colombia's 24 November 2016 Final Peace Agreement disarmed over 13,000 fighters (with more than 11,000 still in reintegration), drew UN Security Council verification, and prompted 2021 US terrorist delisting.",
+            "counterClaim": "At the ten-year mark, only 36% of accord commitments were fulfilled, rural allocations stood near 370,000 of 3 million hectares, 521 signatories were slain per the Ombudsman, and Comunes polled 0 seats before Bogotá pared back UN rural monitoring.",
+            "judgment": "Overall, Colombia proves negative peace (disarmament) is legally fast to sign, whereas positive peace requires sustained budgets, rural security, and citizen trust.",
+            "sourceUrls": [
+                "https://www.aljazeera.com/news/longform/2026/11/24/ten-years-after-its-2016-peace-deal-colombia-faces-a-return-to-conflict",
+                "https://en.mercopress.com/2026/11/24/colombia-s-peace-deal-turns-ten-with-36-of-its-commitments-fulfilled",
+                "https://2021-2025.state.gov/revocation-of-the-terrorist-designations-of-the-revolutionary-armed-forces-of-colombia-farc-and-additional-terrorist-designations/",
+                "https://www.securitycouncilreport.org/whatsinblue/2026/10/colombia-vote-on-verification-mission-mandate-renewal-5.php",
+                "https://colombia.unmissions.org/en/press-releases/el-consejo-de-seguridad-de-las-naciones-unidas-renueva-el-mandato-de-la"
+            ]
+        },
+        "keyFigures": [
+            {
+                "value": "36%",
+                "unit": "accord fulfillment",
+                "label": "Share of 2016 peace accord commitments fulfilled at ten years per Kroc Institute assessment cited by MercoPress",
+                "asOf": "24 November 2026",
+                "sourceUrl": "https://en.mercopress.com/2026/11/24/colombia-s-peace-deal-turns-ten-with-36-of-its-commitments-fulfilled"
+            },
+            {
+                "value": "370,000",
+                "unit": "hectares",
+                "label": "Approximate rural hectares delivered under the outgoing administration (~12% of 3 million target) ahead of August's 90-day land review",
+                "asOf": "29 October 2026",
+                "sourceUrl": "https://www.securitycouncilreport.org/whatsinblue/2026/10/colombia-vote-on-verification-mission-mandate-renewal-5.php"
+            },
+            {
+                "value": "521",
+                "unit": "killed signatories",
+                "label": "Peace signatories assassinated through November 2026 per Colombia's Ombudsman",
+                "asOf": "24 November 2026",
+                "sourceUrl": "https://en.mercopress.com/2026/11/24/colombia-s-peace-deal-turns-ten-with-36-of-its-commitments-fulfilled"
+            }
+        ],
+        "timeline": [
+            {
+                "date": "2016-11-24",
+                "label": "Santos and FARC-EP commander Rodrigo Londoño sign the revised Final Peace Agreement at Teatro Colón, clearing the way for over 13,000 fighters to disarm in 2017.",
+                "sourceUrl": "https://en.mercopress.com/2026/11/24/colombia-s-peace-deal-turns-ten-with-36-of-its-commitments-fulfilled"
+            },
+            {
+                "date": "2021-11-30",
+                "label": "US State Department revokes FARC's terrorist designations while blacklisting breakaway armed dissident groups Segunda Marquetalia and FARC-EP.",
+                "sourceUrl": "https://2021-2025.state.gov/revocation-of-the-terrorist-designations-of-the-revolutionary-armed-forces-of-colombia-farc-and-additional-terrorist-designations/"
+            },
+            {
+                "date": "2024-08-20",
+                "label": "Forty-two peace signatory households begin evacuating Caquetá's Miravalle settlement after receiving death threats from armed dissident factions.",
+                "sourceUrl": "https://www.elcolombiano.com/colombia/firmantes-de-paz-ya-abandonaron-miravalle-caqueta-por-amenza-disidencias-HA25253206"
+            },
+            {
+                "date": "2026-03-08",
+                "label": "Without its 10-seat quota, Comunes polls ~114,000 Senate votes below the 3% threshold, winning zero congressional seats ahead of October party deregistration.",
+                "sourceUrl": "https://thecitypaperbogota.com/news/with-farcs-political-party-over-colombias-peace-accord-faces-deadline/"
+            },
+            {
+                "date": "2026-08-07",
+                "label": "Abelardo de la Espriella takes office after winning June's presidential runoff by less than one percentage point, initiating a 90-day land review and budget cuts.",
+                "sourceUrl": "https://www.abcolombia.org.uk/colombia-the-first-ten-weeks-of-the-de-la-espriella-government/"
+            },
+            {
+                "date": "2026-10-30",
+                "label": "UN Security Council unanimously adopts Resolution 2833, extending UNVMC to 31 October 2027 without Comprehensive Rural Reform monitoring.",
+                "sourceUrl": "https://colombia.unmissions.org/en/press-releases/el-consejo-de-seguridad-de-las-naciones-unidas-renueva-el-mandato-de-la"
+            }
+        ],
+        "relatedCases": [
+            {
+                "caseId": "iraq-post-isil-sovereignty-reconstruction",
+                "note": "Compare fast formal victory alongside slow state rebuilding and militia holdouts in Iraq with Colombia's uneven rural reach."
+            },
+            {
+                "caseId": "el-salvador-security-legitimacy-checks",
+                "note": "Contrast El Salvador's centralized military-police sweep with Colombia's negotiated disarmament and local security vacuums."
+            },
+            {
+                "caseId": "haiti-security-legitimacy-haitian-ownership",
+                "note": "Compare rebuilding sovereign rural policing in Haiti with protecting disarmed peace signatories across Colombia."
             }
         ]
     }

@@ -2539,6 +2539,475 @@ export const ASIA_PACIFIC_CASES_2026 = [
             {
                 "caseId": "argentina-abortion-law-budget-implementation",
                 "note": "Compare household living-cost pressures under IMF austerity in Sri Lanka with federal health budget cuts in Argentina."
+            },
+            {
+                "caseId": "australia-meta-news-bargaining-tax",
+                "note": "Compare Sri Lanka's IMF-guided fiscal revenue pressures with Australia deploying domestic tax law against foreign tech platforms."
+            }
+        ]
+    },
+    {
+        "id": "australia-meta-news-bargaining-tax",
+        "status": "active",
+        "briefingVersion": 2,
+        "title": "Australia & Meta: Platform Power vs. Tax Sovereignty",
+        "subtitle": "How Australia turned to advertising taxes after Meta walked away from voluntary news deals",
+        "coverageRegion": "Asia-Pacific",
+        "regionTags": [
+            "Asia-Pacific",
+            "Australia",
+            "Canberra",
+            "Latrobe Valley"
+        ],
+        "issueLens": "Technology & Information",
+        "broadCategory": "Technology & Science",
+        "issueDimensions": [
+            "Platform feed control",
+            "Tax authority across borders",
+            "Digital journalism funding",
+            "Cross-border corporate regulation",
+            "Trade rules and digital levies"
+        ],
+        "actors": [
+            "Australian Parliament, Treasury, and Australian Taxation Office (ATO)",
+            "Meta Platforms (formerly Facebook)",
+            "Google and covered major search and social media platforms",
+            "Australian city, public, and Country Press regional newspapers"
+        ],
+        "nexusNodeIds": [
+            "AsiaPacific",
+            "USA",
+            "TechAIHub"
+        ],
+        "statusSummary": "Between 2021 and 2023, over thirty platform agreements paid around A$200 million a year to Australian newsrooms under Parliament's News Media Bargaining Code [5, 14]. Meta announced on 1 March 2024 it would close its Australian Facebook News tab in April and let expiring deals worth around A$70 million yearly lapse [4, 7, 15]. On 27 August 2026, two tax laws took effect charging major platforms 2.75% on Australian digital ads unless offset by commercial deals across eight news groups [1, 8, 9].",
+        "whyItMatters": "Australia's three-round clash with Facebook and later Meta shows how a tech giant can shut down a feature to escape conduct rules, forcing an elected parliament to tax money earned inside its own borders [1, 4, 9].",
+        "updatedAt": "2026-11-26",
+        "confidence": "high",
+        "uncertainty": "Whether Meta pays the 2.75% charge (which cannot be written off against corporate income tax), signs enough news deals across eight media groups before ATO tax bills arrive, or triggers US trade disputes under the Australia–US Free Trade Agreement remains undecided.",
+        "sensitivity": "standard",
+        "editorialCaution": "Distinguish Australia's 2021 News Media Bargaining Code (which pressured designated platforms carrying news into fee talks) from its August 2026 News Bargaining Incentive tax charge (which applies even when platforms drop news links); figures reflect Australian dollar thresholds.",
+        "featured": true,
+        "reviewCadenceDays": 30,
+        "reviewBy": "2026-12-26",
+        "coordinates": {
+            "latitude": -35.2809,
+            "longitude": 149.13
+        },
+        "map": {
+            "mode": "regional",
+            "locations": [
+                {
+                    "label": "Canberra",
+                    "latitude": -35.2809,
+                    "longitude": 149.13,
+                    "role": "Australian capital where Parliament and Treasury passed the 2021 Bargaining Code and the August 2026 News Bargaining Incentive tax"
+                },
+                {
+                    "label": "Morwell, Latrobe Valley",
+                    "latitude": -38.2356,
+                    "longitude": 146.3917,
+                    "role": "Victorian town home to the Latrobe Valley Express, whose manager Bruce Ellen condemned Facebook's 2021 news blackout"
+                },
+                {
+                    "label": "Sydney",
+                    "latitude": -33.8688,
+                    "longitude": 151.2093,
+                    "role": "Australian media and regulator hub where national broadcasters negotiated deals with Facebook in 2021 and clashed with Meta from 2024"
+                }
+            ]
+        },
+        "sources": [
+            {
+                "title": "News bargaining incentive",
+                "publisher": "Australian Taxation Office (ATO)",
+                "publishedAt": "2026-08-28",
+                "url": "https://www.ato.gov.au/about-ato/new-legislation/in-detail/businesses/news-bargaining-incentive",
+                "perspectiveType": "local",
+                "perspective": "Official Australian tax-office guidance following Royal Assent",
+                "supports": "Supports start date on 27 August 2026, coverage of firms above A$250 million in eligible Australian digital ad revenue, and non-deductible tax administration."
+            },
+            {
+                "title": "Changes to Sharing and Viewing News on Facebook in Australia",
+                "publisher": "Facebook Newsroom (by William Easton, now Meta Newsroom)",
+                "publishedAt": "2021-02-22",
+                "url": "https://about.fb.com/news/2021/02/changes-to-sharing-and-viewing-news-on-facebook-in-australia/",
+                "perspectiveType": "institutional",
+                "perspective": "First-hand platform defense of Facebook's February 2021 Australian blackout and post-amendment restoration",
+                "supports": "Supports Facebook's claim of 5.1 billion free referrals (~A$407 million), news being less than 4% of News Feed, and restoring news after legal changes."
+            },
+            {
+                "title": "'Grossly unfair': Meta slams Australia's bid to make platforms pay for news",
+                "publisher": "Al Jazeera",
+                "publishedAt": "2026-06-04",
+                "url": "https://www.aljazeera.com/economy/2026/6/4/grossly-unfair-meta-slams-australias-bid-to-make-platforms-pay-for-news",
+                "perspectiveType": "independent",
+                "perspective": "Independent international reporting on Meta's 2026 pushback, the Canada precedent, and AUSFTA trade objections",
+                "supports": "Supports Meta calling the proposed tax \"grossly unfair\" and \"economically incoherent\", citing US trade-treaty objections alongside Canada's 2023 news ban."
+            }
+        ],
+        "supplementalSources": [
+            {
+                "title": "Meta says it will stop funding news in Australia, prompting backlash",
+                "publisher": "Al Jazeera",
+                "publishedAt": "2024-03-01",
+                "url": "https://www.aljazeera.com/economy/2024/3/1/facebook-owner-meta-to-end-deals-funding-news-in-australia-germany-france",
+                "perspective": "Independent reporting on Meta's March 2024 exit announcement and Canberra's ministerial criticism",
+                "supports": "Supports Meta closing its Australian Facebook News tab, claiming an >80% usage drop, and Ministers Michelle Rowland and Stephen Jones calling it a \"dereliction\"."
+            },
+            {
+                "title": "Australia pressured Google and Facebook to pay for journalism. Is America next?",
+                "publisher": "Columbia Journalism Review (CJR)",
+                "publishedAt": "2022-03-09",
+                "url": "https://www.cjr.org/business_of_news/australia-pressured-google-and-facebook-to-pay-for-journalism-is-america-next.php",
+                "perspective": "In-depth journalism trade analysis featuring Latrobe Valley Express manager Bruce Ellen",
+                "supports": "Supports Facebook's February 2021 takedowns of bushfire, COVID-19, and sexual-violence support pages, Bruce Ellen's \"worst calculation\" quote, >A$200 million first-year deals, and SBS's exclusion by Facebook."
+            },
+            {
+                "title": "News media bargaining code",
+                "publisher": "Australian Competition and Consumer Commission (ACCC)",
+                "publishedAt": null,
+                "sourceType": "living-reference",
+                "reviewedAt": "2026-11-26",
+                "milestoneDate": "2021-03-02",
+                "url": "https://www.accc.gov.au/by-industry/digital-platforms-and-services/news-media-bargaining-code/news-media-bargaining-code",
+                "perspective": "Official regulator overview of platform designation and binding price arbitration",
+                "supports": "Supports the legal rule allowing Australia's Treasurer to designate platforms and require independent fee decisions when voluntary talks fail."
+            },
+            {
+                "title": "New plan to force tech giants, Meta and Google, to renew deals with Australian news publishers",
+                "publisher": "7NEWS Australia",
+                "publishedAt": "2024-12-12",
+                "url": "https://7news.com.au/news/new-plan-to-force-tech-giants-meta-and-google-to-renew-deals-with-australian-news-publishers-c-17053283",
+                "perspective": "Domestic Australian broadcast news report on Meta's ~A$70 million exit and tax plan",
+                "supports": "Supports the ~A$70 million yearly value of ending Meta deals (originally signed under Facebook) ahead of federal tax legislation."
+            },
+            {
+                "title": "News Media Bargaining Charge Bill 2026 (Act No. 78 of 2026)",
+                "publisher": "Parliament of Australia",
+                "publishedAt": "2026-08-26",
+                "url": "https://www.aph.gov.au/Parliamentary_Business/Bills_Legislation/Bills_Search_Results/Result?bId=r7524",
+                "perspective": "Official parliamentary legislative record from introduction to Royal Assent",
+                "supports": "Supports introduction on 13 August 2026, the House passing 19 August government amendments, Senate approval on 20 August, and Royal Assent on 26 August 2026."
+            },
+            {
+                "title": "Australia: Enactment of news media bargaining incentive law targeting large digital platforms",
+                "publisher": "KPMG TaxNewsFlash",
+                "publishedAt": null,
+                "sourceType": "living-reference",
+                "reviewedAt": "2026-11-26",
+                "dataThrough": "September 2026",
+                "url": "https://kpmg.com/us/en/taxnewsflash/news/2026/09/australia-enactment-news-media-bargaining-incentive-law-targeting-large-digital-platforms.html",
+                "perspective": "Technical tax summary on the final 2.75% rate, extra tax credits, and threshold rules",
+                "supports": "Supports the 2.75% rate, A$250 million domestic advertising threshold, eight-group minimum, 25% per-group cap, and 150%/200% tax-credit bonuses."
+            },
+            {
+                "title": "Meta's Response to Australia's Proposed News Bargaining Incentive",
+                "publisher": "Meta Newsroom",
+                "publishedAt": "2026-06-04",
+                "url": "https://about.fb.com/news/2026/06/metas-response-to-australias-proposed-news-bargaining-incentive/",
+                "perspective": "Official Meta policy response opposing the proposed tax structure",
+                "supports": "Supports Meta calling the draft levy a \"discriminatory, retroactive tax targeting a handful of foreign companies\"."
+            },
+            {
+                "title": "Facebook slammed over news takedown ahead of vaccine rollout",
+                "publisher": "Royal Australian College of General Practitioners (newsGP)",
+                "publishedAt": "2021-02-19",
+                "url": "https://www1.racgp.org.au/newsgp/professional/facebook-slammed-over-news-takedown-as-nation-prep",
+                "perspective": "Australian medical body reporting disruptions to doctor and state health pages during the 2021 blackout",
+                "supports": "Supports Dr. Bruce Willett and Health Minister Greg Hunt warning that public health and vaccine communications were swept up in Facebook's 2021 takedown."
+            },
+            {
+                "title": "Facebook's Australian news purge blocked fire departments, food banks, its own Facebook page, and much more",
+                "publisher": "Business Insider",
+                "publishedAt": "2021-02-18",
+                "url": "https://www.businessinsider.com/facebook-australia-news-ban-emergency-services-charities-government-accounts-crossfire-2021-2",
+                "perspective": "Same-day report from 18 February 2021 listing blocked Australian pages",
+                "supports": "Supports Facebook's Thursday 18 February 2021 AEDT launch of the blackout sweeping up state fire services, charities, and government health alerts."
+            },
+            {
+                "title": "NBI legislation finalised",
+                "publisher": "Australian Government Treasury Ministers (Daniel Mulino & Anika Wells)",
+                "publishedAt": "2026-08-03",
+                "url": "https://ministers.treasury.gov.au/ministers/daniel-mulino-2025/media-releases/nbi-legislation-finalised",
+                "perspective": "Ministerial statement describing public-interest news as essential civic infrastructure",
+                "supports": "Supports Canberra narrowing the tax base to Australian digital ads, covering LinkedIn, and doubling extra support for small regional papers."
+            },
+            {
+                "title": "News Media Bargaining (Administration) Bill 2026, second reading",
+                "publisher": "Senator Sarah Henderson",
+                "publishedAt": "2026-08-20",
+                "url": "https://sarahhenderson.com.au/news-media-bargaining-administration-bill-2026-second-reading/",
+                "perspective": "Senate speech recording the raise from 2.5% to 2.75% and over-30 historical deals",
+                "supports": "Supports Opposition backing for regional news protection and final passage requiring deals with at least eight corporate news groups."
+            },
+            {
+                "title": "Revisiting Australia's Facebook News Contracts Three Years On",
+                "publisher": "American Enterprise Institute (Bronwyn Howell)",
+                "publishedAt": "2024-08-09",
+                "url": "https://www.aei.org/domestic-policy/technology-and-innovation/revisiting-australias-facebook-news-contracts-three-years-on/",
+                "perspective": "Independent policy critique of 2021 deal concentration and Meta's pullout",
+                "supports": "Supports Google signing 23 deals and Facebook signing 13 (~A$70 million/year) later ended by Meta while questioning whether the 2021 code helped big companies most."
+            },
+            {
+                "title": "Australia passes law to levy tech giants that fail to pay for local news",
+                "publisher": "IBFD Tax Research Platform",
+                "publishedAt": "2026-08-21",
+                "url": "https://www.ibfd.org/news/australia-passes-law-levy-tech-giants-fail-pay-local-news",
+                "perspective": "International tax tracker tracing the April to August 2026 rate changes",
+                "supports": "Supports the rate rising from April's 2.25% draft to August's 2.5% bill and final 2.75% charge alongside a 25% per-group credit limit."
+            }
+        ],
+        "waypoints": [
+            {
+                "nodeId": "AsiaPacific",
+                "title": "Blackout Meets Parliamentary Resolve",
+                "perspectiveLabel": "February 2021 Facebook ban and Bruce Ellen",
+                "perspectiveType": "local",
+                "conceptInFocus": "Power",
+                "relatedTimelineDate": "2021-02-18",
+                "narration": "On 18 February 2021, Australians opened Facebook and saw blank pages after the company blocked local news ahead of a planned law [2, 12]. That eight-day ban also removed emergency bushfire warnings, health clinic updates, and support pages for victims of sexual violence [5, 11, 15]. Regional newspaper manager Bruce Ellen later called the shutdown \"the worst calculation they could ever have done,\" because public anger hardened political support for reform [5].\n\nControl over private software allowed a California company to cut off trusted public information across an entire democracy overnight. After ministers promised early warning before designating—or officially naming—a platform to require fee talks, Parliament passed the News Media Bargaining Code on 25 February 2021, and news returned to Facebook the next day [2, 6]. Power—the ability to make others change what they do—shifted between Facebook's control over feeds and Australia's elected lawmakers.",
+                "focusQuestion": "How did Facebook's control over news feeds disrupt emergency information yet help push Parliament to pass the 2021 law?"
+            },
+            {
+                "nodeId": "TechAIHub",
+                "title": "Private Deals on Unequal Feeds",
+                "perspectiveLabel": "Commercial deals under the 2021 bargaining code",
+                "perspectiveType": "independent",
+                "conceptInFocus": "Interdependence",
+                "relatedTimelineDate": "2021-08-05",
+                "narration": "On 5 August 2021, Australia's competition watchdog allowed Country Press Australia's small town newspapers to negotiate together with big tech firms after the code took effect in March [6, 14]. To avoid formal designation, Google and Facebook signed over thirty private deals paying about A$200 million a year to national and local newsrooms. However, public broadcaster Special Broadcasting Service (SBS) received money from Google while Facebook left it out [5].\n\nOnline sharing tied Australian newsrooms and US tech firms together, though news links formed under 4% of Facebook feeds [2]. Small local papers relied heavily on those feeds to reach readers [5, 15]. In October 2021, Facebook's parent company changed its name to Meta while the Facebook app kept its name [4]. Interdependence—when actors in different countries rely on one another—often gives stronger bargaining power to whichever side can walk away easily.",
+                "focusQuestion": "Why did mutual reliance between newsrooms and platforms still leave publishers weaker once pressure eased?"
+            },
+            {
+                "nodeId": "USA",
+                "title": "Walking Out of Publisher Deals",
+                "perspectiveLabel": "March 2024 News tab exit and Canada precedent",
+                "perspectiveType": "institutional",
+                "conceptInFocus": "Sovereignty",
+                "relatedTimelineDate": "2024-03-01",
+                "narration": "On 1 March 2024, Meta told Australian newsrooms and ministers it would close its Facebook News tab in April and stop renewing publisher contracts. Letting thirteen expiring deals lapse cut about A$70 million a year in payments to city broadcasters and regional newsrooms [4, 7, 15]. Regular users could still post news links, though Meta had already blocked all news in Canada in 2023 [10].\n\nMeta executives would not rule out blocking Australian news, as in Canada, if officials designated the company so an independent arbitrator sets fair news fees [7, 15]. Communications Minister Michelle Rowland and Assistant Treasurer Stephen Jones attacked the decision as failing public journalism and began preparing a new tax [4, 13]. Sovereignty—a government's highest legal authority inside its own borders—could not force an American company to keep a news product inside private software.",
+                "focusQuestion": "Why can a multinational company escape rules about news content simply by switching off a feature?"
+            },
+            {
+                "nodeId": "AsiaPacific",
+                "title": "Tax Sovereignty Over Advertising Dollars",
+                "perspectiveLabel": "August 2026 News Bargaining Incentive",
+                "perspectiveType": "synthesis",
+                "conceptInFocus": "Legitimacy",
+                "relatedTimelineDate": "2026-08-27",
+                "narration": "On 20 August 2026, Australia's Senate passed the News Bargaining Incentive (NBI), backed by Communications Minister Anika Wells and regional newspaper groups [13, 14]. Taking effect days later, the new tax charges 2.75% on tech companies earning over A$250 million in Australian digital ad sales. Covered companies run social sites with over 5 million monthly Australian users or search tools with over 10 million. Firms can lower their tax bill by signing paid news deals across eight media groups [1, 8, 9].\n\nLawmakers argued that taxing local ad sales fairly protects the community news reporting voters rely on [13, 14]. Meta criticized an earlier June proposal as an unfair, backward-looking tax breaching the Australia–United States Free Trade Agreement (AUSFTA) [3, 10, 16]. Legitimacy—whether the public and affected businesses accept rules as fair—remained disputed as platforms weighed paying the tax against signing new contracts.",
+                "focusQuestion": "Why does taxing local ad money close loopholes left by earlier rules, and why does Meta dispute its fairness?"
+            }
+        ],
+        "concepts": [
+            "Power",
+            "Sovereignty",
+            "Legitimacy",
+            "Interdependence"
+        ],
+        "ibThemes": [
+            "rights-and-justice",
+            "development-and-sustainability"
+        ],
+        "background": "For over a decade, Australian newspapers covering courts, floods, and council meetings watched print sales fall as readers moved onto smartphones [5, 6]. Google Search and Facebook absorbed digital ad money, leaving small local papers unable to bargain fairly alone. Removing journalism from feeds hurt local newsrooms far more than giant platforms [5, 15].\n\nIn February 2021, an eight-day Facebook news ban disrupted emergency pages across Australia [5, 11, 15]. After ministers promised early warning before designating platforms, Parliament passed the News Media Bargaining Code on 25 February and news pages returned [6]. Rather than face forced price rulings, Google and Facebook signed over thirty deals paying roughly A$200 million yearly [5, 6].\n\nMeta ended that calm on 1 March 2024 by announcing an April shutdown for its Australian News tab and letting contracts expire [4, 15]. Dropping thirteen deals removed around A$70 million yearly across affected newsrooms [7, 15]. Canberra responded on 27 August 2026 with twin News Bargaining Incentive tax laws [1, 8]. Groups earning over A$250 million in Australian ads owe a 2.75% charge [1, 9]. Firms reduce that tax only by funding news deals across eight media groups [8, 9].",
+        "backgroundSources": [
+            "https://www.ato.gov.au/about-ato/new-legislation/in-detail/businesses/news-bargaining-incentive",
+            "https://about.fb.com/news/2021/02/changes-to-sharing-and-viewing-news-on-facebook-in-australia/",
+            "https://www.aljazeera.com/economy/2026/6/4/grossly-unfair-meta-slams-australias-bid-to-make-platforms-pay-for-news",
+            "https://www.aljazeera.com/economy/2024/3/1/facebook-owner-meta-to-end-deals-funding-news-in-australia-germany-france",
+            "https://www.cjr.org/business_of_news/australia-pressured-google-and-facebook-to-pay-for-journalism-is-america-next.php",
+            "https://www.accc.gov.au/by-industry/digital-platforms-and-services/news-media-bargaining-code/news-media-bargaining-code"
+        ],
+        "keyTerms": [
+            {
+                "term": "Platform gatekeeping",
+                "definition": "A dominant technology company's private control over software feeds that lets it hide, demote, or block news links overnight.",
+                "sourceUrl": "https://www.cjr.org/business_of_news/australia-pressured-google-and-facebook-to-pay-for-journalism-is-america-next.php"
+            },
+            {
+                "term": "News Media Bargaining Code (2021)",
+                "definition": "Australia's 2021 law allowing ministers to designate—or officially name—major platforms so they must negotiate news fees with publishers or let an independent arbitrator choose between their final offers.",
+                "sourceUrl": "https://www.accc.gov.au/by-industry/digital-platforms-and-services/news-media-bargaining-code/news-media-bargaining-code"
+            },
+            {
+                "term": "Tax sovereignty",
+                "definition": "A government's legal authority to tax advertising sales earned from local audiences and businesses inside its own borders, including by foreign tech firms.",
+                "sourceUrl": "https://www.ato.gov.au/about-ato/new-legislation/in-detail/businesses/news-bargaining-incentive"
+            },
+            {
+                "term": "News Bargaining Incentive (NBI)",
+                "definition": "Canberra's August 2026 tax law charging large platforms 2.75% on Australian digital ad sales. Firms earning over A$250 million in local ads must fund paid news deals across eight media groups to lower their tax bill.",
+                "sourceUrl": "https://kpmg.com/us/en/taxnewsflash/news/2026/09/australia-enactment-news-media-bargaining-incentive-law-targeting-large-digital-platforms.html"
+            }
+        ],
+        "debate": [
+            {
+                "claimBy": "Meta Newsroom & Policy Leadership (4 June 2026)",
+                "claim": "Meta argued June's draft tax was unfair and backward-looking because it taxed past business and punished foreign tech companies for declining user interest in news [3, 10].",
+                "counterBy": "Australian Ministers Daniel Mulino & Anika Wells (3 August 2026)",
+                "counterClaim": "Canberra replied that platforms make money from Australian digital ads while newsrooms produce public reporting essential to democratic life [13, 14].",
+                "sourceUrls": [
+                    "https://www.aljazeera.com/economy/2026/6/4/grossly-unfair-meta-slams-australias-bid-to-make-platforms-pay-for-news",
+                    "https://about.fb.com/news/2026/06/metas-response-to-australias-proposed-news-bargaining-incentive/",
+                    "https://ministers.treasury.gov.au/ministers/daniel-mulino-2025/media-releases/nbi-legislation-finalised"
+                ]
+            },
+            {
+                "claimBy": "Facebook Regional Director William Easton (17–22 February 2021)",
+                "claim": "Easton argued publishers shared links voluntarily on Facebook because the site sent them 5.1 billion free clicks during the previous year [2].",
+                "counterBy": "Country Press Leader Bruce Ellen & Ministers (March 2022 & March 2024)",
+                "counterClaim": "Publishers and ministers replied that Facebook's 2021 blackout and Meta later ending 13 news deals proved unchecked corporate control over public news [4, 5, 15].",
+                "sourceUrls": [
+                    "https://about.fb.com/news/2021/02/changes-to-sharing-and-viewing-news-on-facebook-in-australia/",
+                    "https://www.cjr.org/business_of_news/australia-pressured-google-and-facebook-to-pay-for-journalism-is-america-next.php",
+                    "https://www.aljazeera.com/economy/2024/3/1/facebook-owner-meta-to-end-deals-funding-news-in-australia-germany-france"
+                ]
+            },
+            {
+                "claimBy": "Parliamentary Supporters & Treasury Ministers (August 2026)",
+                "claim": "Requiring deals across eight media groups and offering bigger tax breaks for funding small newsrooms helps spread journalism money beyond big chains [9, 13, 14].",
+                "counterBy": "Policy Economist Bronwyn Howell & Trade Critics (2024–2026)",
+                "counterClaim": "Critics warned earlier bargaining gave most money to large media chains and risked US trade disputes without guaranteeing better reporting [3, 15].",
+                "sourceUrls": [
+                    "https://ministers.treasury.gov.au/ministers/daniel-mulino-2025/media-releases/nbi-legislation-finalised",
+                    "https://sarahhenderson.com.au/news-media-bargaining-administration-bill-2026-second-reading/",
+                    "https://www.aei.org/domestic-policy/technology-and-innovation/revisiting-australias-facebook-news-contracts-three-years-on/"
+                ]
+            }
+        ],
+        "watchFor": [
+            {
+                "date": "2025–26 & 2026–27 ATO income years",
+                "indicator": "Whether Meta pays the 2.75% tax or signs paid contracts across at least eight Australian media groups to lower its bill. Extra tax credits give larger reductions when platforms fund smaller outlets instead of only big chains.",
+                "sourceUrl": "https://www.ato.gov.au/about-ato/new-legislation/in-detail/businesses/news-bargaining-incentive"
+            },
+            {
+                "date": "US Trade Representative & bilateral talks",
+                "indicator": "Whether US officials argue Australia's new ad tax unfairly targets American companies under the US–Australia trade deal [3].",
+                "sourceUrl": "https://www.aljazeera.com/economy/2026/6/4/grossly-unfair-meta-slams-australias-bid-to-make-platforms-pay-for-news"
+            },
+            {
+                "date": "Small and regional publisher renewals",
+                "indicator": "Whether more rural papers get paid deals when tax rules limit credits from one big media chain and give bigger tax breaks for funding small newsrooms.",
+                "sourceUrl": "https://kpmg.com/us/en/taxnewsflash/news/2026/09/australia-enactment-news-media-bargaining-incentive-law-targeting-large-digital-platforms.html"
+            }
+        ],
+        "examPrompts": [
+            "Evaluate how multinational technology platforms test state sovereignty when governments shift from regulating content rules to taxing advertising revenue.",
+            "Compare how domestic tax or competition laws force global companies into concessions across borders in Australia's platform standoff and one other case."
+        ],
+        "influenceCheck": [
+            {
+                "stage": "Setting the agenda",
+                "rating": "STRONG",
+                "evidence": "Falling print ad income and Facebook's 18 February 2021 blackout hitting fire, health, and sexual-violence support pages built strong political backing in Canberra.",
+                "sourceUrls": [
+                    "https://www.cjr.org/business_of_news/australia-pressured-google-and-facebook-to-pay-for-journalism-is-america-next.php",
+                    "https://www1.racgp.org.au/newsgp/professional/facebook-slammed-over-news-takedown-as-nation-prep"
+                ]
+            },
+            {
+                "stage": "The formal decision",
+                "rating": "STRONG",
+                "evidence": "Parliament passed the Bargaining Code on 25 February 2021 (in force 2 March) and later tightened the 2026 NBI from a 2.25% April draft (4 deals) and 2.5% August bill (6 deals) into two 26 August Acts applying a 2.75% charge with eight-group tax credits from 27 August 2026.",
+                "sourceUrls": [
+                    "https://www.aph.gov.au/Parliamentary_Business/Bills_Legislation/Bills_Search_Results/Result?bId=r7524",
+                    "https://www.ibfd.org/news/australia-passes-law-levy-tech-giants-fail-pay-local-news",
+                    "https://www.ato.gov.au/about-ato/new-legislation/in-detail/businesses/news-bargaining-incentive"
+                ]
+            },
+            {
+                "stage": "What changed in practice",
+                "rating": "MIXED",
+                "evidence": "Over 30 deals paid ~A$200M/year across 2021–2023 (signed under Google and Facebook in 2021), but Meta announced on 1 March 2024 it would drop ~A$70M/year across 13 deals and close its News tab in April; late 2026 tests whether Meta pays the 2.75% charge or funds eight news groups.",
+                "sourceUrls": [
+                    "https://www.aei.org/domestic-policy/technology-and-innovation/revisiting-australias-facebook-news-contracts-three-years-on/",
+                    "https://www.aljazeera.com/economy/2024/3/1/facebook-owner-meta-to-end-deals-funding-news-in-australia-germany-france",
+                    "https://kpmg.com/us/en/taxnewsflash/news/2026/09/australia-enactment-news-media-bargaining-incentive-law-targeting-large-digital-platforms.html"
+                ]
+            }
+        ],
+        "conceptLens": {
+            "power": "Facebook's 2021 blackout showed sudden corporate control over news feeds, which Canberra answered with binding laws and later tax penalties.",
+            "sovereignty": "Canberra could not force Meta to host news links globally, yet held full tax power over A$250M+ ad revenues earned inside Australia.",
+            "legitimacy": "Ministers justified taxes as protecting public journalism, while Meta called June's draft NBI an unfair, backward-looking tax before August's 2.75% enactment.",
+            "interdependence": "Australian newsrooms depended unequally on Facebook in 2021 and its renamed parent Meta in 2024, letting Meta quit deals when news fell under 4% of Feed posts."
+        },
+        "essayBuilder": {
+            "prompt": "Evaluate how multinational technology platforms test state sovereignty when governments shift from regulating content rules to taxing advertising revenue.",
+            "claim": "Even when global platforms switch off features to dodge content rules, elected governments still hold tax power whenever foreign companies earn large incomes inside their country.",
+            "evidence": "Australia's 2021 Bargaining Code pushed Google and Facebook to sign over 30 deals paying about A$200 million a year. However, Meta announced in March 2024 it would close its Australian News tab in April and let about A$70 million in yearly deals expire.",
+            "counterClaim": "Canberra answered in August 2026 with a 2.75% tax on large digital ad platforms making over A$250 million locally, even if they stop carrying news links. Platforms must fund eight news groups or pay, though Meta warns such rules break Australia–United States trade commitments.",
+            "judgment": "Overall, Australia shows that shutting down a feature can beat content rules, pushing governments to tax local ad sales—though success depends on trade limits and whether firms pay the tax or sign news deals to lower their bill.",
+            "sourceUrls": [
+                "https://www.cjr.org/business_of_news/australia-pressured-google-and-facebook-to-pay-for-journalism-is-america-next.php",
+                "https://www.aljazeera.com/economy/2024/3/1/facebook-owner-meta-to-end-deals-funding-news-in-australia-germany-france",
+                "https://www.ato.gov.au/about-ato/new-legislation/in-detail/businesses/news-bargaining-incentive",
+                "https://www.aljazeera.com/economy/2026/6/4/grossly-unfair-meta-slams-australias-bid-to-make-platforms-pay-for-news"
+            ]
+        },
+        "keyFigures": [
+            {
+                "value": "A$200 million",
+                "unit": "per year (2021–2023)",
+                "label": "Estimated annual publisher funding across 30+ Google and Facebook agreements (later under Meta) under the 2021 Code",
+                "asOf": "2021–2023 period",
+                "sourceUrl": "https://www.cjr.org/business_of_news/australia-pressured-google-and-facebook-to-pay-for-journalism-is-america-next.php"
+            },
+            {
+                "value": "A$70 million",
+                "unit": "per year forfeited",
+                "label": "Estimated annual Meta publisher payments (13 deals, originally signed under Facebook) slated to lapse alongside the March 2024 announcement shutting down Australia's Facebook News tab in April",
+                "asOf": "March–December 2024",
+                "sourceUrl": "https://7news.com.au/news/new-plan-to-force-tech-giants-meta-and-google-to-renew-deals-with-australian-news-publishers-c-17053283"
+            },
+            {
+                "value": "2.75%",
+                "unit": "statutory tax rate",
+                "label": "News Bargaining Incentive charge on >A$250M Australian digital ad sales (>5M social / >10M search users) unless offset across 8+ news groups",
+                "asOf": "Effective 27 August 2026",
+                "sourceUrl": "https://kpmg.com/us/en/taxnewsflash/news/2026/09/australia-enactment-news-media-bargaining-incentive-law-targeting-large-digital-platforms.html"
+            }
+        ],
+        "timeline": [
+            {
+                "date": "2021-02-18",
+                "label": "Facebook blocks Australian users from sharing or viewing news for eight days through 26 February, accidentally sweeping up bushfire, health, and sexual-violence support pages.",
+                "sourceUrl": "https://www.businessinsider.com/facebook-australia-news-ban-emergency-services-charities-government-accounts-crossfire-2021-2"
+            },
+            {
+                "date": "2021-08-05",
+                "label": "After Parliament passes the Bargaining Code (25 Feb, in force 2 Mar), the ACCC clears Country Press Australia's smaller regional outlets to bargain jointly with Google and Facebook.",
+                "sourceUrl": "https://www.accc.gov.au/by-industry/digital-platforms-and-services/news-media-bargaining-code/news-media-bargaining-code"
+            },
+            {
+                "date": "2024-03-01",
+                "label": "Meta announces it will close its Australian Facebook News tab in April and let ~A$70M in yearly publisher deals expire.",
+                "sourceUrl": "https://www.aljazeera.com/economy/2024/3/1/facebook-owner-meta-to-end-deals-funding-news-in-australia-germany-france"
+            },
+            {
+                "date": "2026-06-04",
+                "label": "Meta condemns Canberra's draft News Bargaining Incentive as an unfair, backward-looking tax breaching bilateral trade rules.",
+                "sourceUrl": "https://about.fb.com/news/2026/06/metas-response-to-australias-proposed-news-bargaining-incentive/"
+            },
+            {
+                "date": "2026-08-27",
+                "label": "Two News Media Bargaining tax laws take effect at 2.75% for firms above A$250M in Australian ad sales (with >5M social or >10M search users) unless offset across eight news groups.",
+                "sourceUrl": "https://www.ato.gov.au/about-ato/new-legislation/in-detail/businesses/news-bargaining-incentive"
+            }
+        ],
+        "relatedCases": [
+            {
+                "caseId": "eu-ai-act-transparency-implementation",
+                "note": "Compare Brussels' statutory AI disclosure deadlines with Canberra's shift from content bargaining codes to advertising taxes."
+            },
+            {
+                "caseId": "tuvalu-australia-falepili-union",
+                "note": "Contrast Canberra's bilateral climate-mobility partnership with its domestic tax standoff against a US tech multinational."
+            },
+            {
+                "caseId": "sri-lanka-imf-debt-sovereignty",
+                "note": "Compare external fiscal rules shaping sovereign tax choices in Sri Lanka with Australia taxing multinational digital ad money."
             }
         ]
     }
