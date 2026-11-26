@@ -3713,11 +3713,11 @@
       "caseStudyId": "ilo-seafarers-global-wage-floor",
       "caseStudyTitle": "ILO & Seafarers: The Global Wage Floor",
       "sourceTitle": "'It's a miracle we survived': the civilian crew trapped on a ship in Ukraine as bombs rained down",
-      "publisher": "Ruchi Kumar",
+      "publisher": "The Guardian (by Ruchi Kumar)",
       "group": "supplemental",
       "kind": "primary",
       "lifecycle": "active",
-      "url": "https://www.ruchikumar.com/2026/02/03/its-a-miracle-we-survived-the-civilian-crew-trapped-on-a-ship-in-ukraine-as-bombs-rained-down/"
+      "url": "https://www.theguardian.com/global-development/2026/feb/03/crew-ship-ukraine-cargo-seafarers-abandoned-war-zones"
     },
     {
       "id": "ilo-seafarers-global-wage-floor:supplemental:9",
@@ -3944,7 +3944,7 @@
       "caseStudyId": "australia-meta-news-bargaining-tax",
       "caseStudyTitle": "Australia & Meta: Platform Power vs. Tax Sovereignty",
       "sourceTitle": "Changes to Sharing and Viewing News on Facebook in Australia",
-      "publisher": "Meta Newsroom (William Easton)",
+      "publisher": "Facebook Newsroom (by William Easton, now Meta Newsroom)",
       "group": "core",
       "kind": "primary",
       "lifecycle": "active",

@@ -173,4 +173,4 @@ The application performs a daily reachability check (`refresh-source-health` -> 
 | 37 | `vanuatu-pacific-icj-climate-opinion` | `pacific-islands-2026.mjs` | `Pacific Islands` | `Climate & Resources` | `Environment & Energy` |
 | 38 | `ilo-seafarers-global-wage-floor` | `global-institutions-2026.mjs` | `Global / Transnational` | `Economy & Development` | `Economy & Trade` |
 | 39 | `colombia-peace-accord-ten-year-test` | `americas-caribbean-2026.mjs` | `Americas & Caribbean` | `Governance & Rights` | `Governance & Rights` |
-| 40 | `australia-meta-news-bargaining-tax` | `pacific-islands-2026.mjs` | `Pacific Islands` | `Technology & Information` | `Technology & Science` |
+| 40 | `australia-meta-news-bargaining-tax` | `asia-pacific-2026.mjs` | `Asia-Pacific` | `Technology & Information` | `Technology & Science` |
