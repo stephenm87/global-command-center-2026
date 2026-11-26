@@ -1178,7 +1178,7 @@ export const GLOBAL_INSTITUTIONS_CASES_2026 = [
                 "publishedAt": "2025-04-16",
                 "url": "https://www.ilo.org/resource/news/subcommittee-wages-seafarers-reaches-agreement-increase-seafarer-minimum",
                 "perspectiveType": "institutional",
-                "perspective": "Official ILO release featuring ILO Director Frank Hagemann and shipowner negotiator Pål Tangen",
+                "perspective": "Official ILO release featuring Frank Hagemann, Director of the ILO Sectoral Policies Department, and shipowner negotiator Pål Tangen",
                 "supports": "Supports the April 2025 Joint Maritime Commission agreement lifting monthly basic pay from US$673 to US$690 (2026), US$704 (2027), and US$715 (2028), plus Pål Tangen's shipowner statement."
             },
             {
@@ -1225,7 +1225,7 @@ export const GLOBAL_INSTITUTIONS_CASES_2026 = [
                 "publishedAt": "2025-04-11",
                 "url": "https://www.ilo.org/sites/default/files/2025-04/STCMLC-2025-Adopted%20amendments-EN_0.pdf",
                 "perspective": "Primary treaty text on shore leave without visas and non-discriminatory repatriation",
-                "supports": "Supports Standard A2.4.2 prohibiting visa barriers to routine shore leave, requiring written refusal reasons, and strengthening repatriation under Regulation 2.5."
+                "supports": "Supports Standard A2.4.2 prohibiting visa barriers to routine shore leave, requiring written refusal reasons on request, and strengthening repatriation under Regulation 2.5."
             },
             {
                 "title": "Introduction to IMO",
@@ -1305,7 +1305,7 @@ export const GLOBAL_INSTITUTIONS_CASES_2026 = [
                 "perspectiveType": "local",
                 "conceptInFocus": "Interdependence",
                 "relatedTimelineDate": "2025-07-16",
-                "narration": "On 16 July 2025 in southern Ukraine's port of Izmail, crew member Gaurav Joshi was patrolling the stranded cargo ship MT Nathan when a Russian drone exploded close to the hull [12]. After an ownership dispute, Joshi and fourteen crewmates from India, Egypt, and Turkey had already spent three months aboard without pay, fresh provisions, or owner support [12]. Port and immigration restrictions barred them from stepping ashore while blasts shook the harbor [12].\n\nMerchant vessels transport more than 80% of global trade volume yet operate through layered commercial chains spanning distant beneficial owners, open flag registries, and foreign managers [6, 8]. No national parliament can protect seafarers alone when companies shift ships to permissive foreign registries [6, 13]. Interdependence—mutual cross-border ties connecting global trade to seafarers' livelihoods—left 6,223 sailors reported abandoned across international ports in 2025 [8, 13].",
+                "narration": "On 16 July 2025 in southern Ukraine's port of Izmail, crew member Gaurav Joshi was patrolling the stranded cargo ship MT Nathan when a Russian drone exploded nearby [12]. After an ownership dispute, Joshi and fourteen crewmates from India, Egypt, and Turkey had already spent three months abandoned aboard without wages or owner support [12]. Harbor blasts shook their vessel while they remained trapped aboard in a war zone [12].\n\nMerchant fleets transport more than 80% of global trade volume through layered commercial chains spanning distant beneficial owners, foreign flag states, and overseas managers [6, 8]. No national parliament can protect seafarers alone when companies re-register vessels under permissive foreign flags [6, 13]. Interdependence—mutual cross-border ties connecting global trade to crew welfare—left 6,223 sailors abandoned in 2025 [8, 13].",
                 "focusQuestion": "Why does a ship owned, flagged, and crewed across different countries make wage protection so difficult for any one state?"
             },
             {
@@ -1315,17 +1315,17 @@ export const GLOBAL_INSTITUTIONS_CASES_2026 = [
                 "perspectiveType": "institutional",
                 "conceptInFocus": "Legitimacy",
                 "relatedTimelineDate": "2025-04-15",
-                "narration": "At Geneva's International Labour Organization on 15 April 2025, shipowner and union negotiators concluded intensive minimum-wage talks inside the Joint Maritime Commission [2, 4]. Norwegian Shipowners' Association spokesperson Pål Tangen and union negotiator Mark Dickinson balanced consumer inflation and currency swings across major crewing nations [2, 9]. Their bipartisan deal lifts an Able Seafarer's basic monthly floor to US$690 starting in January 2026 [2, 4]. Subsequent annual steps raise that floor to US$715 by January 2028, endorsed by the ILO Governing Body later that November [4, 5].\n\nMaritime shipping remains the sole global sector maintaining a recognized international minimum wage framework since 1958 [3, 9]. Legitimacy—acceptance that shared rules are fairly made—rests on employers and unions negotiating under a joint statistical formula rather than state edicts [2, 4]. Tangen said the outcome balanced crew welfare against global shipping sustainability [2, 9].",
+                "narration": "On 15 April 2025 in Geneva, shipowners and unions concluded bipartite wage talks inside the International Labour Organization (ILO) Joint Maritime Commission [2, 4]. Shipowner spokesperson Pål Tangen and union negotiator Mark Dickinson weighed living costs and currency swings across major crewing nations [2, 9]. Their settlement raises an Able Seafarer's basic monthly floor to US$690 starting in January 2026 for normal weekly hours [2, 4]. That benchmark covers a regular week up to 48 hours [4]. Follow-on annual steps lift the floor to US$715 by 2028 after formal Governing Body endorsement [4, 5].\n\nMaritime shipping remains the sole global sector maintaining an international minimum wage framework since 1958 [3, 9]. Legitimacy—acceptance that shared standards are fairly made—rests on shipowners and unions negotiating jointly under statistical formulas rather than unilateral state edicts [2, 4]. Tangen said the outcome balanced crew welfare against shipping sustainability [2, 9].",
                 "focusQuestion": "Why do global shipowners negotiate wage increases inside the ILO instead of walking away from voluntary talks?"
             },
             {
                 "nodeId": "AsiaPacific",
                 "title": "Benchmarks Versus Binding Contracts",
-                "perspectiveLabel": "Standard contracts and ITF union scales",
+                "perspectiveLabel": "Manila crew briefs and ITF union scales",
                 "perspectiveType": "independent",
                 "conceptInFocus": "Power",
                 "relatedTimelineDate": "2026-01-01",
-                "narration": "In early 2026, sailors reviewing standard employment contracts in crewing hubs like Manila needed distinct figures to understand take-home pay [10, 15]. The ILO figure of US$690 covers only basic weekly pay up to 48 hours for an experienced Able Seafarer [4, 15]. Under the International Transport Workers' Federation calculation adding guaranteed overtime and paid leave, minimum monthly earnings reach US$1,212 [10, 15]. By contrast, ships covered by a binding Uniform Total Crew Cost union contract pay US$1,950 monthly [11, 15].\n\nOrganized unions win higher shipboard pay where port inspectors and allied dockworkers can threaten costly cargo delays against underpaying fleet operators [1, 11]. Power—the ability to compel material concessions—enables federated maritime unions spanning 147 countries to turn Geneva benchmarks into binding vessel contracts covering global fleets [9, 11]. Uncovered crews still frequently earn near basic minimums or below [1, 15].",
+                "narration": "On 10 November 2026, Philippine maritime guidance ahead of upcoming annual pay adjustments compared standard crew contracts against International Transport Workers' Federation (ITF) scales [15]. Across Manila crewing agencies, the basic US$690 monthly figure covers only normal weekly working hours up to 48 [4, 15]. Adding guaranteed overtime and paid leave under the union's illustrative benchmark calculation yields US$1,212 monthly [10, 15]. Ships covered by a binding Uniform Total Crew Cost collective bargaining agreement pay US$1,950 monthly [11, 15].\n\nOrganized maritime unions spanning 147 countries lift real wages in port through vessel inspections and enforceable collective contracts against underpaying ship operators [1, 9, 11]. Power—the ability to compel material concessions—turns non-binding Geneva benchmarks into substantially higher monthly earnings where collective bargaining attaches [9, 11]. Uncovered crews still rely heavily on basic minimum contracts [1, 15].",
                 "focusQuestion": "How do seafarers' unions turn a non-binding Geneva pay floor into much higher binding monthly contracts?"
             },
             {
@@ -1335,7 +1335,7 @@ export const GLOBAL_INSTITUTIONS_CASES_2026 = [
                 "perspectiveType": "local",
                 "conceptInFocus": "Sovereignty",
                 "relatedTimelineDate": "2026-05-23",
-                "narration": "In May 2026, a sailor aboard the Turkish-owned cargo ship Lady Mina alerted union inspectors in Las Palmas after thirteen months on board without repatriation [14]. Canary Islands inspector Gonzalo Galan boarded the detained vessel and uncovered six abandoned crewmates owed US$68,000 alongside suspected forged wage-security papers [14]. Weeks earlier in Australian waters, union inspectors caught another foreign-flagged ship paying Able Seamen just US$400 monthly—less than half of ILO minimums [1].\n\nGeneva wage standards operate as international recommendations without an international policing fleet because ships answer legally to their sovereign flag states [4, 6]. Sovereignty—supreme legal authority over registered ships and national territory—splits pay oversight between lax open registries and port-state detentions [6, 14]. Stronger shore-leave and key-worker treaty amendments adopted in 2025 take effect in December 2027, leaving weak enforcement intact meanwhile [6, 7].",
+                "narration": "On 23 May 2026, stranded crew on Turkish-owned Lady Mina reported abandonment in Las Palmas, prompting an inspection by union officer Gonzalo Galan [14]. Following Galan's referral, Spanish maritime authorities detained the vessel, where six crew remained owed US$68,000 in July alongside suspected forged security certificates [14]. Weeks earlier in Australian waters, inspectors found Able Seamen aboard MSV ATN Glory paid US$400 monthly—below half the US$1,212 union ILO calculation [1, 10].\n\nGeneva benchmarks operate as non-binding guidance under the Maritime Labour Convention (MLC) because ships answer legally to sovereign flag states [4, 6]. Sovereignty—supreme legal authority over territory and registered vessels—splits enforcement between lax open registries and port detentions [6, 14]. Updated 2025 shore-leave and key-worker rules—requiring written refusal reasons on request—are expected in force in December 2027 [6, 7].",
                 "focusQuestion": "When a flag state fails to police wages, how far can port inspections and new treaty rules close the gap?"
             }
         ],
@@ -1349,7 +1349,7 @@ export const GLOBAL_INSTITUTIONS_CASES_2026 = [
             "rights-and-justice",
             "development-and-sustainability"
         ],
-        "background": "A single cargo ship routinely crosses four legal jurisdictions before unloading: owned in one country, registered under a permissive foreign flag, managed offshore, and crewed by Asian and European seafarers [8, 12, 13]. Because merchant fleets transport more than 80% of global trade by volume, no single parliament can regulate offshore crew pay alone without risking fleet re-registration elsewhere [6, 8].\n\nTo prevent a global race to the bottom, shipowners and unions have set joint minimum pay through the International Labour Organization since 1958 [3, 9]. Following spring Geneva talks, negotiators agreed to lift an Able Seafarer's basic monthly floor to US$690 starting in January 2026 [2, 4]. Scheduled annual increases lift that basic floor further to US$715 by 2028 under ILO Governing Body approval [4, 5].\n\nYet record ship abandonments hitting 6,223 sailors in 2025 expose severe enforcement limits across open registries [13]. While binding union agreements pay US$1,950 monthly and updated shore-leave treaty rules enter force in December 2027, non-union crews remain dependent on port detentions and flag-state compliance [6, 11, 14].",
+        "background": "A single cargo ship spans multiple legal jurisdictions across oceans: owned in one country, flagged under a permissive open foreign registry, managed offshore, and crewed by Asian and European sailors [8, 12, 13]. Because merchant fleets transport more than 80% of global trade volume, no single parliament can regulate offshore crew pay alone without risking fleet re-registration elsewhere [6, 8].\n\nTo prevent a global race to the bottom, shipowners coordinated by the International Chamber of Shipping (ICS) and maritime unions have negotiated joint floors through the International Labour Organization (ILO) since 1958 [3, 9]. Spring Geneva talks raised an Able Seafarer's basic monthly floor to US$690 in January 2026 [2, 4]. Further steps lift that basic pay to US$715 by 2028 [4, 5].\n\nYet record ship abandonments reaching 6,223 sailors in 2025 expose severe flag-state enforcement weaknesses across open registries [13]. Binding union contracts pay US$1,950 monthly while updated Maritime Labour Convention (MLC) shore-leave amendments are expected in December 2027, leaving non-union crews dependent on port detentions [6, 11, 14].",
         "backgroundSources": [
             "https://www.ilo.org/resource/news/subcommittee-wages-seafarers-reaches-agreement-increase-seafarer-minimum",
             "https://www.ilo.org/sites/default/files/2025-04/SWJMC-2025-Resolution-En.pdf",
@@ -1388,7 +1388,7 @@ export const GLOBAL_INSTITUTIONS_CASES_2026 = [
         ],
         "debate": [
             {
-                "claimBy": "Shipowners' Spokesperson Pål Tangen & ILO Director Frank Hagemann (15–16 April 2025)",
+                "claimBy": "Shipowners' Spokesperson Pål Tangen & Frank Hagemann (Director of the ILO Sectoral Policies Department, 15–16 April 2025)",
                 "claim": "Agreed steps lifting basic pay to US$715 by 2028 balance crew welfare against global shipping sustainability through shared bipartite dialogue [2, 9].",
                 "counterBy": "ITF Seafarers' Section Leaders & Inspectors (January 2026)",
                 "counterClaim": "Non-binding minimums carry no sea police, leaving 6,223 abandoned sailors owed US$25.8 million across global ports last year [4, 13].",
@@ -1400,7 +1400,7 @@ export const GLOBAL_INSTITUTIONS_CASES_2026 = [
             },
             {
                 "claimBy": "Maritime Union of Australia & ITF Inspectorate (14 May 2026)",
-                "claim": "Finding Able Seafarers paid US$400 monthly aboard MSV ATN Glory proves foreign-flagged vessels underpay crews unless unions secure binding contracts and port bans [1, 11].",
+                "claim": "Finding Able Seafarers paid US$400 monthly aboard MSV ATN Glory proves foreign-flagged vessels underpay crews unless unions secure binding contracts and port checks [1, 11].",
                 "counterBy": "International Chamber of Shipping & Pål Tangen (16 April 2025)",
                 "counterClaim": "Employers representing over 80% of the merchant fleet voluntarily back predictable wage schedules despite volatile markets and looming trade wars [3, 9].",
                 "sourceUrls": [
@@ -1411,9 +1411,9 @@ export const GLOBAL_INSTITUTIONS_CASES_2026 = [
             },
             {
                 "claimBy": "ILO Special Tripartite Committee (6 June 2025 Adoption Record)",
-                "claim": "Designating seafarers as key workers with visa-free shore leave from December 2027 strengthens crew protection worldwide [6, 7].",
+                "claim": "Recognizing seafarers as key workers with visa-free shore leave—expected to enter into force in December 2027—strengthens crew protection worldwide [6, 7].",
                 "counterBy": "ITF Las Palmas Inspector Gonzalo Galan & Coordinator Jacqueline Smith (9 July 2026)",
-                "counterClaim": "Even current MLC security mandates fail when owners leave ships with forged certificates and six months of unpaid wages [14].",
+                "counterClaim": "Even current Maritime Labour Convention security mandates fail when owners leave ships with forged certificates and six months of unpaid wages [14].",
                 "sourceUrls": [
                     "https://www.ilo.org/sites/default/files/2026-06/FAQ%20MLC%202006%20Sixth%20edition%202026-EN.pdf",
                     "https://www.ilo.org/sites/default/files/2025-04/STCMLC-2025-Adopted%20amendments-EN_0.pdf",
@@ -1424,7 +1424,7 @@ export const GLOBAL_INSTITUTIONS_CASES_2026 = [
         "watchFor": [
             {
                 "date": "1 January 2027",
-                "indicator": "Entry into effect of the second ILO step (US$704 Able Seafarer basic monthly pay; ITF Uniform TCC total rising to US$1,965).",
+                "indicator": "Second annual step lifting binding ITF Uniform TCC Able Seafarer total monthly pay to US$1,965 (alongside the ILO basic step to US$704).",
                 "sourceUrl": "https://www.itfseafarers.org/sites/default/files/node/resources/files/UNIFORM%20TCC%202026-2027%20FINAL.pdf"
             },
             {
@@ -1465,7 +1465,7 @@ export const GLOBAL_INSTITUTIONS_CASES_2026 = [
             {
                 "stage": "What changed in practice",
                 "rating": "MIXED",
-                "evidence": "While union Uniform TCC vessels pay US$1,950 monthly (above the US$1,212 ILO overtime-included total) and ITF recovered US$16.5M of US$25.8M owed to 6,223 abandoned sailors in 2025, 2026 inspections still exposed US$400 Able Seamen on MSV ATN Glory and forged certificates on Lady Mina.",
+                "evidence": "While union Uniform TCC vessels pay US$1,950 monthly (above the US$1,212 ILO overtime-included total) and ITF recovered US$16.5M of US$25.8M owed to 6,223 abandoned sailors in 2025, 2026 inspections still exposed US$400 Able Seamen on MSV ATN Glory (below half the union ILO scale) and forged certificates on Lady Mina.",
                 "sourceUrls": [
                     "https://www.itfseafarers.org/sites/default/files/node/resources/files/UNIFORM%20TCC%202026-2027%20FINAL.pdf",
                     "https://www.itfseafarers.org/en/news/seafarer-abandonment-crisis-thousands-left-behind-shippings-worst-year-record",
@@ -1540,7 +1540,7 @@ export const GLOBAL_INSTITUTIONS_CASES_2026 = [
             {
                 "date": "2026-01-01",
                 "label": "ILO US$690 basic wage floor (US$1,212 ITF total reading) and US$1,950 ITF Uniform TCC contract scale take effect.",
-                "sourceUrl": "https://www.itfseafarers.org/sites/default/files/node/resources/files/25En204REILORecommendedMinimumWages20262028Ax1.pdf"
+                "sourceUrl": "https://maritimematch.ph/captains-brief/ilo-minimum-wage-able-seafarer-2027"
             },
             {
                 "date": "2026-05-23",
