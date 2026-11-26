@@ -2539,6 +2539,10 @@ export const ASIA_PACIFIC_CASES_2026 = [
             {
                 "caseId": "argentina-abortion-law-budget-implementation",
                 "note": "Compare household living-cost pressures under IMF austerity in Sri Lanka with federal health budget cuts in Argentina."
+            },
+            {
+                "caseId": "australia-meta-news-bargaining-tax",
+                "note": "Compare Sri Lanka's IMF-guided fiscal revenue pressures with Australia deploying domestic tax law against foreign tech platforms."
             }
         ]
     }
