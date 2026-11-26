@@ -2023,6 +2023,10 @@ export const MENA_CASES_2026 = [
             {
                 "caseId": "myanmar-fragmented-sovereignty",
                 "note": "Compare Baghdad's struggle against autonomous militias after foreign exits with Myanmar's fragmented armed authority."
+            },
+            {
+                "caseId": "colombia-peace-accord-ten-year-test",
+                "note": "Compare Iraq's post-combat reconstruction and militia holdouts with Colombia's gap between guerrilla disarmament and rural state control."
             }
         ]
     }
