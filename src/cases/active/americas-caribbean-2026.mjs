@@ -151,8 +151,9 @@ export const AMERICAS_CARIBBEAN_CASES_2026 = [
     {
         "id": "usmca-2026-joint-review",
         "status": "active",
+        "briefingVersion": 2,
         "title": "USMCA After the 2026 Joint Review",
-        "subtitle": "Integration continues while annual bargaining replaces immediate extension",
+        "subtitle": "How North America's three economies bargain under annual reviews before 2036",
         "coverageRegion": "Americas & Caribbean",
         "regionTags": [
             "North America",
@@ -168,27 +169,37 @@ export const AMERICAS_CARIBBEAN_CASES_2026 = [
             "Industrial policy",
             "Supply-chain integration"
         ],
+        "concepts": [
+            "Sovereignty",
+            "Power",
+            "Interdependence",
+            "Legitimacy"
+        ],
+        "ibThemes": [
+            "development-and-sustainability",
+            "rights-and-justice"
+        ],
         "actors": [
-            "United States",
-            "Mexico",
-            "Canada",
-            "North American workers",
-            "Manufacturers and agricultural producers"
+            "United States Trade Representative",
+            "Government of Mexico",
+            "Government of Canada",
+            "North American autoworker unions",
+            "Agricultural coalitions and manufacturers"
         ],
         "nexusNodeIds": [
             "USA",
             "LatinAmerica"
         ],
-        "statusSummary": "The United States declined an immediate 16-year extension at the 1 July 2026 joint review, moving the agreement into annual joint reviews while Canadian and Mexican statements confirm USMCA remains in force through 2036. On 2 October 2026, USTR opened a formal public-comment and hearing process (closing 12 January 2027) in advance of the 2027 annual joint review.",
-        "whyItMatters": "USMCA makes it possible to examine how deeply integrated economies use recurring negotiations to balance shared production networks against national industrial and political priorities.",
-        "updatedAt": "2026-11-17",
+        "statusSummary": "At the 1 July 2026 joint review, the United States declined to extend the United States–Mexico–Canada Agreement (USMCA) for another 16 years, shifting the trade pact into annual reviews while the agreement remains in force until 2036 [2, 7, 14]. On 2 October 2026, U.S. trade officials opened public consultations closing 12 January 2027 ahead of the 1 July 2027 review deadline, even as US–Canada 50% tariff disputes and automaker plant sales strained continental unity [3, 4, 15].",
+        "whyItMatters": "USMCA shows how integrated neighbors use rolling treaty reviews, industrial tariffs, and labor rules to bargain over jobs, farm exports, and supply-chain security.",
+        "updatedAt": "2026-11-26",
         "confidence": "high",
-        "uncertainty": "Negotiations and public consultations remain active ahead of the 2027 annual review and each government frames the review differently. Failure to grant an immediate extension must not be described as termination of the agreement.",
+        "uncertainty": "Negotiations ahead of the 1 July 2027 review remain unsettled, and Washington withheld Section 301 excess-capacity determinations on Mexico in November 2026 while maintaining 50% tariffs on targeted Canadian goods [3, 15, 16]. Declining an immediate 16-year renewal does not end the pact, which stays in force unless terminated or allowed to expire in 2036, though separate tariffs still alter trade rates [2, 3, 14].",
         "sensitivity": "high",
-        "editorialCaution": "Negotiations remain active and each government frames the review differently. Failure to grant an immediate extension must not be described as termination of the agreement.",
+        "editorialCaution": "Distinguish non-renewal during the sixth-year review from treaty termination, and report labor, farm, and national government positions separately.",
         "featured": false,
         "reviewCadenceDays": 30,
-        "reviewBy": "2026-12-17",
+        "reviewBy": "2026-12-26",
         "coordinates": {
             "latitude": 38.8951,
             "longitude": -77.0364
@@ -197,100 +208,401 @@ export const AMERICAS_CARIBBEAN_CASES_2026 = [
             "mode": "regional",
             "locations": [
                 {
-                    "label": "Washington, DC",
+                    "label": "Washington, D.C., United States",
                     "latitude": 38.8951,
                     "longitude": -77.0364,
-                    "role": "United States trade-policy capital and USTR seat driving the July 2026 non-extension decision and October 2026 review consultation"
+                    "role": "Where USTR declined 16-year extension on 1 July 2026 and opened 2027 public comments in October"
                 },
                 {
-                    "label": "Ottawa",
-                    "latitude": 45.4215,
-                    "longitude": -75.6972,
-                    "role": "Canadian federal trade-negotiation capital where Global Affairs Canada leads provincial and national CUSMA review coordination"
+                    "label": "Detroit, Michigan, United States",
+                    "latitude": 42.3314,
+                    "longitude": -83.0458,
+                    "role": "United Auto Workers hub demanding North American wage floors and build-here-to-sell-here rules"
                 },
                 {
-                    "label": "Mexico City",
+                    "label": "Mexico City, Mexico",
                     "latitude": 19.4326,
                     "longitude": -99.1332,
-                    "role": "Mexican capital and Secretaría de Economía seat for the trilateral T-MEC / USMCA joint review emphasizing treaty continuity through 2036"
+                    "role": "Site of the 23 July 2026 third bilateral negotiating round with President Claudia Sheinbaum"
+                },
+                {
+                    "label": "Brampton, Ontario, Canada",
+                    "latitude": 43.7315,
+                    "longitude": -79.7624,
+                    "role": "Assembly plant Stellantis announced it sold to Roshel on 9 November 2026 amid US–Canada tariff conflict"
                 }
             ]
         },
         "sources": [
             {
-                "title": "Quinta Reunión de la Comisión de Libre Comercio del T-MEC: Proceso de Revisión Conjunta previsto en el artículo 34.7",
-                "publisher": "Secretaría de Economía de México",
+                "title": "NCGA Emphasizes USMCA Importance to Corn Growers, Calls for Renewal",
+                "publisher": "National Corn Growers Association (NCGA)",
                 "publishedAt": "2026-07-01",
-                "url": "https://www.gob.mx/se/prensa/quinta-reunion-de-la-comision-de-libre-comercio-del-t-mec-proceso-de-revision-conjunta-previsto-en-el-articulo-34-7?idiom=es-MX",
+                "url": "https://www.ncga.com/stay-informed/media/in-the-news/article/2026/07/ncga-emphasizes-usmca-importance-to-corn-growers-calls-for-renewal",
                 "perspectiveType": "local",
-                "perspective": "Mexican account of the joint review, continued term, and annual-review process",
-                "supports": "Mexico's regional-integration, industrial, and continued-agreement position"
+                "perspective": "Ohio corn grower and NCGA President Jed Bower reacting on 1 July 2026 to non-renewal and urging targeted fixes",
+                "supports": "Supports Jed Bower's 1 July 2026 statement identifying Mexico as top US corn buyer and Canada as top ethanol market, plus annual review rules through 2036."
             },
             {
-                "title": "American Farmers, Ranchers, Manufacturers, and Businesses Applaud President Trump for Not Rubber Stamping the USMCA",
-                "publisher": "Office of the United States Trade Representative",
-                "publishedAt": "2026-07-02",
-                "url": "https://www.ustr.gov/about/policy-offices/press-office/press-releases/2026/july/american-farmers-ranchers-manufacturers-and-businesses-applaud-president-trump-not-rubber-stamping",
+                "title": "Ambassador Greer Issues Statement on the USMCA Joint Review",
+                "publisher": "Office of the U.S. Trade Representative (USTR)",
+                "publishedAt": "2026-07-01",
+                "url": "https://ustr.gov/about/policy-offices/press-office/press-releases/2026/july/ambassador-greer-issues-statement-usmca-joint-review",
                 "perspectiveType": "institutional",
-                "perspective": "Official United States position explaining the decision not to extend immediately",
-                "supports": "The United States bargaining and economic-security rationale"
+                "perspective": "Official United States government statement on the 1 July 2026 Free Trade Commission virtual meeting",
+                "supports": "Supports Washington declining to renew USMCA in its current form on 1 July 2026 while keeping the agreement in force."
             },
             {
-                "title": "The United States Has Opted Not to Extend the USMCA",
-                "publisher": "Center for Strategic and International Studies",
-                "publishedAt": "2026-07-06",
-                "url": "https://www.csis.org/analysis/united-states-has-opted-not-extend-usmca",
+                "title": "USTR initiates next stage of USMCA review",
+                "publisher": "Supply Chain Dive",
+                "publishedAt": "2026-10-07",
+                "url": "https://www.supplychaindive.com/news/ustr-initiates-next-stage-of-usmca-review/832285/",
                 "perspectiveType": "independent",
-                "perspective": "Independent analysis of the legal timeline and economic costs of recurring review",
-                "supports": "The distinction between non-extension, annual review, and termination"
+                "perspective": "Independent supply-chain journalism reporting October 2026 public review steps and the August–September US–Canada tariff clash",
+                "supports": "Supports August 2026 50% US tariffs on US$20 billion in Canadian imports, Canada's September retaliation, Greer–Ebrard Milwaukee G20 sideline talk, and 1 July 2027 next review deadline."
             }
         ],
         "supplementalSources": [
             {
-                "title": "Minister LeBlanc updates provincial and territorial ministers responsible for International Trade on CUSMA Joint Review",
+                "title": "Sale of Brampton Assembly Plant a betrayal by Stellantis",
+                "publisher": "Unifor Auto Talks 2026",
+                "publishedAt": "2026-11-09",
+                "url": "https://autotalks.uniforautohub.ca/sale_of_brampton_assembly_plant_a_betrayal_by_stellantis",
+                "perspective": "First-hand Canadian autoworker union condemnation by Unifor National President Lana Payne and Vito Beato",
+                "supports": "Supports Stellantis's 9 November 2026 announcement of selling Brampton Assembly Plant to defense contractor Roshel and Unifor's opposition citing breached commitments."
+            },
+            {
+                "title": "Hundreds of UAW Members Speak Out for New Trade Deal as UAW Outlines Priorities for Worker-Centered Trade",
+                "publisher": "United Auto Workers (UAW)",
+                "publishedAt": "2025-11-04",
+                "url": "https://uaw.org/hundreds-of-uaw-members-speak-out-for-new-trade-deal-as-uaw-outlines-priorities-for-worker-centered-trade/",
+                "perspective": "First-hand U.S. autoworker union critique by UAW President Shawn Fain",
+                "supports": "Supports Shawn Fain citing 5 million manufacturing jobs lost and 90,000 plant closures since NAFTA and demanding a North American manufacturing wage floor."
+            },
+            {
+                "title": "Officials Must Use July 1 USMCA Six-Year Review Ministerial Meeting to Commit to Making Major, Necessary Improvements to Pact",
+                "publisher": "Office of Congresswoman Rosa DeLauro",
+                "publishedAt": "2026-06-30",
+                "url": "https://delauro.house.gov/media-center/press-releases/officials-must-use-july-1-usmca-six-year-review-ministerial-meeting",
+                "perspective": "Joint statement from U.S. lawmakers and industrial unions urging overhaul rather than extension as-is",
+                "supports": "Supports Rep. Rosa DeLauro and presidents of UAW, USW, IAM, and Carpenters citing Mexican manufacturing wages 88% below US manufacturing wages and rapid-response labor gains."
+            },
+            {
+                "title": "Statement by Minister LeBlanc following trilateral CUSMA joint review meeting",
                 "publisher": "Global Affairs Canada",
-                "publishedAt": "2026-07-03",
-                "url": "https://www.canada.ca/en/global-affairs/news/2026/07/minister-leblanc-updates-provincial-and-territorial-ministers-responsible-for-international-trade-on-cusma-joint-review.html",
-                "perspective": "Official Canadian account emphasizing continuity and Canadian priorities"
+                "publishedAt": "2026-07-01",
+                "url": "https://www.canada.ca/en/global-affairs/news/2026/07/statement-by-minister-leblanc-following-trilateral-cusma-joint-review-meeting.html",
+                "perspective": "Official Canadian government readout supporting full 16-year renewal and tariff relief",
+                "supports": "Supports Canada backing extension, C$3.5 billion daily US–Canada border trade in 2025, and US–Mexico–Canada engagement on steel, aluminum, auto, and lumber tariffs."
+            },
+            {
+                "title": "Quinta Reunión de la Comisión de Libre Comercio del T-MEC Proceso de Revisión Conjunta previsto en el artículo 34.7",
+                "publisher": "Secretaría de Economía (Gobierno de México)",
+                "publishedAt": "2026-07-01",
+                "url": "https://www.gob.mx/se/prensa/quinta-reunion-de-la-comision-de-libre-comercio-del-t-mec-proceso-de-revision-conjunta-previsto-en-el-articulo-34-7?idiom=es-MX",
+                "perspective": "Official Mexican government statement presenting President Claudia Sheinbaum's pro-extension letter",
+                "supports": "Supports Secretary Marcelo Ebrard presenting President Sheinbaum's extension support letter and over 80% of Mexican exports entering the United States duty-free."
+            },
+            {
+                "title": "American Farmers, Ranchers, Manufacturers, and Businesses Applaud President Trump for Not Rubber Stamping the USMCA",
+                "publisher": "Office of the U.S. Trade Representative (USTR)",
+                "publishedAt": "2026-07-02",
+                "url": "https://www.ustr.gov/about/policy-offices/press-office/press-releases/2026/july/american-farmers-ranchers-manufacturers-and-businesses-applaud-president-trump-not-rubber-stamping",
+                "perspective": "U.S. industry and agricultural statements backing tough review demands",
+                "supports": "Supports US dairy groups shipping over 40% of exports by value to Mexico and Canada alongside R-CALF CEO Bill Bullard backing bilateral renegotiation."
+            },
+            {
+                "title": "Joint Statement from Ambassador Jamieson Greer and Mexican Secretary of Economy Marcelo Ebrard",
+                "publisher": "Office of the U.S. Trade Representative (USTR)",
+                "publishedAt": "2026-07-23",
+                "url": "https://ustr.gov/about/policy-offices/press-office/press-releases/2026/july/joint-statement-ambassador-jamieson-greer-and-mexican-secretary-economy-marcelo-ebrard",
+                "perspective": "Bilateral U.S.–Mexico negotiating readout from Mexico City Round 3",
+                "supports": "Supports Ambassador Greer meeting President Claudia Sheinbaum in Mexico City on 23 July 2026 over autos, steel, labor, agriculture, and addressing non-party free-riding."
+            },
+            {
+                "title": "Report to Congress on the Operation of the United States-Mexico-Canada Agreement with Respect to Trade in Automotive Goods",
+                "publisher": "Office of the U.S. Trade Representative (USTR)",
+                "publishedAt": "2026-07-01",
+                "url": "https://ustr.gov/sites/default/files/files/agreements/FTA/USMCA/2026%20USMCA%20Autos%20Report%20to%20Congress_070126.pdf",
+                "perspective": "Official U.S. government economic report evaluating auto content rules and deficits",
+                "supports": "Supports 75% North American vehicle-value rules, 40%–45% US$16/hour average base wage rules, April 2025 25% auto duties, and US$138.2 billion US auto deficit with Mexico in 2024."
+            },
+            {
+                "title": "USMCA: Reviewing the Backbone of North American Agriculture Trade",
+                "publisher": "American Farm Bureau Federation",
+                "publishedAt": "2026-08-03",
+                "url": "https://www.fb.org/intel/policy/usmca-reviewing-the-backbone-of-north-american-agriculture-trade",
+                "perspective": "U.S. farm federation analysis of integrated livestock chains and dispute panels",
+                "supports": "Supports live Canadian hogs finishing in US plants before returning north, growth in US farm exports to Mexico and Canada, and USMCA's corn biotechnology panel ruling."
+            },
+            {
+                "title": "Trump says the U.S. doesn't need a trade deal with its neighbors. Farm groups push hard for renewal.",
+                "publisher": "Harvest Public Media / Illinois Public Media",
+                "publishedAt": "2026-07-06",
+                "url": "https://ipmnewsroom.org/trump-says-the-u-s-doesnt-need-a-trade-deal-with-its-neighbors-farm-groups-push-hard-for-renewal/",
+                "perspective": "Independent rural farm journalism covering nearly 160 trilateral agricultural organizations",
+                "supports": "Supports nearly 160 North American food and farm groups urging renewal and Purdue economist Joseph Balagtas estimating about US$700 in annual household grocery savings from tariff cuts."
+            },
+            {
+                "title": "USMCA 2026 Joint Review: United States declines to extend Agreement, triggering annual reviews",
+                "publisher": "White & Case LLP",
+                "publishedAt": "2026-07-02",
+                "url": "https://www.whitecase.com/insight-alert/usmca-2026-joint-review-united-states-declines-extend-agreement-triggering-annual",
+                "perspective": "Cross-border trade law analysis explaining extension clauses and expiry timeline",
+                "supports": "Supports legal distinction between declining 16-year extension and pact remaining in force until 1 July 2036 with annual joint reviews and bilateral extension timing."
             },
             {
                 "title": "USTR Seeks Public Comment on the 2027 Joint Review of USMCA",
-                "publisher": "Office of the United States Trade Representative",
+                "publisher": "Office of the U.S. Trade Representative (USTR)",
                 "publishedAt": "2026-10-02",
                 "url": "https://ustr.gov/about/policy-offices/press-office/press-releases/2026/october/ustr-seeks-public-comment-2027-joint-review-usmca",
-                "perspective": "Official USTR public-consultation and hearing notice for the 2027 annual joint review cycle (open through 12 January 2027)"
+                "perspective": "Official notice opening formal public input ahead of July 2027 annual review",
+                "supports": "Supports 2 October 2026 consultation opening with a 12 January 2027 written comment deadline."
+            },
+            {
+                "title": "USTR Makes Determinations and Proposes Actions in 14 Section 301 Investigations Relating to Structural Excess Capacity and Production in Manufacturing Sectors",
+                "publisher": "Office of the U.S. Trade Representative (USTR)",
+                "publishedAt": "2026-11-25",
+                "url": "https://ustr.gov/about/policy-offices/press-office/press-releases/2026/november/ustr-makes-determinations-and-proposes-actions-14-section-301-investigations-relating-structural",
+                "perspective": "Official November 2026 trade-remedy update showing Mexico excluded from new determinations",
+                "supports": "Supports Washington targeting 14 trading partners on manufacturing excess capacity in November 2026 while withholding determinations on Mexico."
+            }
+        ],
+        "background": "In 2020, the United States–Mexico–Canada Agreement (USMCA) replaced the older North American Free Trade Agreement (NAFTA) after tough renegotiations [7, 12]. Its rules tied neighbor economies together while tightening regional car-value thresholds and wage rules [6, 11]. Unlike open-ended treaties, negotiators added an expiry deadline: the pact terminates in 2036 unless all three governments agree in writing to extend it [12, 14].\n\nCross-border trade expanded rapidly as tariffs fell across linked supply chains. By 2025, US–Canada goods and services averaged C$3.5 billion daily [7]. Earlier US farm exports stood at US$8.9 billion in 1993 [12]. By 2024, agricultural shipments to both neighbors reached nearly US$60 billion [12]. Over 80% of Mexican exports still enter American ports duty-free [8].\n\nWorkers and rural communities now carry the cost of renewed trade friction [4, 5]. US automotive deficits with Mexico reached US$138.2 billion in 2024 [11]. Unions blamed Mexican manufacturing wages staying 88% below US manufacturing pay, whereas nearly 160 farm and food groups urged renewal to protect household food budgets [5, 6, 13].",
+        "backgroundSources": [
+            "https://uaw.org/hundreds-of-uaw-members-speak-out-for-new-trade-deal-as-uaw-outlines-priorities-for-worker-centered-trade/",
+            "https://delauro.house.gov/media-center/press-releases/officials-must-use-july-1-usmca-six-year-review-ministerial-meeting",
+            "https://www.canada.ca/en/global-affairs/news/2026/07/statement-by-minister-leblanc-following-trilateral-cusma-joint-review-meeting.html",
+            "https://www.fb.org/intel/policy/usmca-reviewing-the-backbone-of-north-american-agriculture-trade",
+            "https://www.gob.mx/se/prensa/quinta-reunion-de-la-comision-de-libre-comercio-del-t-mec-proceso-de-revision-conjunta-previsto-en-el-articulo-34-7?idiom=es-MX",
+            "https://ustr.gov/sites/default/files/files/agreements/FTA/USMCA/2026%20USMCA%20Autos%20Report%20to%20Congress_070126.pdf",
+            "https://ipmnewsroom.org/trump-says-the-u-s-doesnt-need-a-trade-deal-with-its-neighbors-farm-groups-push-hard-for-renewal/",
+            "https://autotalks.uniforautohub.ca/sale_of_brampton_assembly_plant_a_betrayal_by_stellantis",
+            "https://www.whitecase.com/insight-alert/usmca-2026-joint-review-united-states-declines-extend-agreement-triggering-annual"
+        ],
+        "keyTerms": [
+            {
+                "term": "Joint review and sunset clause",
+                "definition": "The treaty rule triggering annual reviews until 2036 after non-renewal on 1 July 2026, allowing all three heads of government to confirm a 16-year extension in writing at any point before expiry.",
+                "sourceUrl": "https://www.whitecase.com/insight-alert/usmca-2026-joint-review-united-states-declines-extend-agreement-triggering-annual"
+            },
+            {
+                "term": "Rules of origin",
+                "definition": "Minimum regional value requirements—such as 75% North American vehicle value for passenger cars and light trucks—needed for goods to cross borders duty-free.",
+                "sourceUrl": "https://ustr.gov/sites/default/files/files/agreements/FTA/USMCA/2026%20USMCA%20Autos%20Report%20to%20Congress_070126.pdf"
+            },
+            {
+                "term": "Labor value content rule",
+                "definition": "A requirement that 40% of passenger-car value and 45% of truck value come from North American plants paying an average hourly base wage of at least US$16.",
+                "sourceUrl": "https://ustr.gov/sites/default/files/files/agreements/FTA/USMCA/2026%20USMCA%20Autos%20Report%20to%20Congress_070126.pdf"
+            },
+            {
+                "term": "Facility-specific rapid response mechanism",
+                "definition": "A USMCA labor tool allowing individuals or enterprises to petition the U.S. government to investigate worker-rights denials at specific factories.",
+                "sourceUrl": "https://ustr.gov/sites/default/files/files/agreements/FTA/USMCA/2026%20USMCA%20Autos%20Report%20to%20Congress_070126.pdf"
+            }
+        ],
+        "debate": [
+            {
+                "claimBy": "Ambassador Jamieson Greer (USTR) & Bill Bullard (R-CALF CEO, 1–2 July 2026)",
+                "claim": "Withholding automatic extension avoids rubber-stamping deficits and lets Washington demand tougher factory rules and separate national deals [2, 9].",
+                "counterBy": "Minister Dominic LeBlanc (Canada) & Jed Bower (NCGA President, 1 July 2026)",
+                "counterClaim": "Refusing full renewal injects rolling yearly uncertainty that stalls factory investment and threatens reliable corn and ethanol buyers [1, 7].",
+                "sourceUrls": [
+                    "https://ustr.gov/about/policy-offices/press-office/press-releases/2026/july/ambassador-greer-issues-statement-usmca-joint-review",
+                    "https://www.ustr.gov/about/policy-offices/press-office/press-releases/2026/july/american-farmers-ranchers-manufacturers-and-businesses-applaud-president-trump-not-rubber-stamping",
+                    "https://www.ncga.com/stay-informed/media/in-the-news/article/2026/07/ncga-emphasizes-usmca-importance-to-corn-growers-calls-for-renewal",
+                    "https://www.canada.ca/en/global-affairs/news/2026/07/statement-by-minister-leblanc-following-trilateral-cusma-joint-review-meeting.html"
+                ]
+            },
+            {
+                "claimBy": "Shawn Fain (UAW President) & Lana Payne (Unifor National President, 2025–2026)",
+                "claim": "USMCA failed to stop corporations moving jobs south or shut plants, so unions demand wage floors and strict production rules [4, 5].",
+                "counterBy": "Purdue Economist Joseph Balagtas & Farm Bureau (2026)",
+                "counterClaim": "NAFTA and USMCA tariff cuts save US households about US$700 yearly while growing farm exports to nearly US$60 billion [12, 13].",
+                "sourceUrls": [
+                    "https://uaw.org/hundreds-of-uaw-members-speak-out-for-new-trade-deal-as-uaw-outlines-priorities-for-worker-centered-trade/",
+                    "https://autotalks.uniforautohub.ca/sale_of_brampton_assembly_plant_a_betrayal_by_stellantis",
+                    "https://www.fb.org/intel/policy/usmca-reviewing-the-backbone-of-north-american-agriculture-trade",
+                    "https://ipmnewsroom.org/trump-says-the-u-s-doesnt-need-a-trade-deal-with-its-neighbors-farm-groups-push-hard-for-renewal/"
+                ]
+            },
+            {
+                "claimBy": "U.S. & Mexican Trade Officials (23 July 2026 Mexico City Round)",
+                "claim": "Bilateral talks protect regional supply chains by tightening North American parts rules and addressing free-riding from non-party countries [10].",
+                "counterBy": "Rep. Rosa DeLauro & Industrial Union Presidents (30 June 2026)",
+                "counterClaim": "Extending weak continental labor enforcement lets multinational firms keep threatening offshoring to squeeze American workers [6].",
+                "sourceUrls": [
+                    "https://ustr.gov/about/policy-offices/press-office/press-releases/2026/july/joint-statement-ambassador-jamieson-greer-and-mexican-secretary-economy-marcelo-ebrard",
+                    "https://delauro.house.gov/media-center/press-releases/officials-must-use-july-1-usmca-six-year-review-ministerial-meeting"
+                ]
+            }
+        ],
+        "watchFor": [
+            {
+                "date": "12 January 2027",
+                "indicator": "Closing deadline for U.S. Trade Representative public comments ahead of the first annual USMCA review cycle.",
+                "sourceUrl": "https://ustr.gov/about/policy-offices/press-office/press-releases/2026/october/ustr-seeks-public-comment-2027-joint-review-usmca"
+            },
+            {
+                "date": "1 July 2027",
+                "indicator": "First mandatory annual joint review deadline where Washington, Ottawa, and Mexico City revisit extension and tariff relief.",
+                "sourceUrl": "https://www.supplychaindive.com/news/ustr-initiates-next-stage-of-usmca-review/832285/"
+            }
+        ],
+        "examPrompts": [
+            "To what extent does economic interdependence constrain a major state from using unilateral tariffs to reshape regional trade agreements?",
+            "Compare how sovereignty over national trade policy competes with workers' and farmers' demands for legitimate cross-border rules."
+        ],
+        "influenceCheck": [
+            {
+                "stage": "Setting the agenda",
+                "rating": "STRONG",
+                "evidence": "Rising US–Mexico auto deficits of US$138.2 billion in 2024 and union offshoring protests pushed factory origin rules and wage floors to the center of 2026 talks.",
+                "sourceUrls": [
+                    "https://ustr.gov/sites/default/files/files/agreements/FTA/USMCA/2026%20USMCA%20Autos%20Report%20to%20Congress_070126.pdf",
+                    "https://uaw.org/hundreds-of-uaw-members-speak-out-for-new-trade-deal-as-uaw-outlines-priorities-for-worker-centered-trade/"
+                ]
+            },
+            {
+                "stage": "The formal decision",
+                "rating": "MIXED",
+                "evidence": "On 1 July 2026 Washington refused a 16-year extension despite written support from Mexico and Canada, triggering annual reviews while keeping the pact in force through 2036.",
+                "sourceUrls": [
+                    "https://ustr.gov/about/policy-offices/press-office/press-releases/2026/july/ambassador-greer-issues-statement-usmca-joint-review",
+                    "https://www.canada.ca/en/global-affairs/news/2026/07/statement-by-minister-leblanc-following-trilateral-cusma-joint-review-meeting.html",
+                    "https://www.gob.mx/se/prensa/quinta-reunion-de-la-comision-de-libre-comercio-del-t-mec-proceso-de-revision-conjunta-previsto-en-el-articulo-34-7?idiom=es-MX"
+                ]
+            },
+            {
+                "stage": "What changed in practice",
+                "rating": "WEAK",
+                "evidence": "A third US–Mexico round met in July and officials conferred briefly at Milwaukee's G20 ministerial, yet 50% US–Canada tariffs erupted and Stellantis announced the Brampton sale on 9 November 2026.",
+                "sourceUrls": [
+                    "https://www.supplychaindive.com/news/ustr-initiates-next-stage-of-usmca-review/832285/",
+                    "https://autotalks.uniforautohub.ca/sale_of_brampton_assembly_plant_a_betrayal_by_stellantis"
+                ]
+            }
+        ],
+        "conceptLens": {
+            "power": "Washington uses 25% auto duties and 50% targeted tariffs on Canada to extract bilateral factory-content concessions despite trilateral rules.",
+            "sovereignty": "Withholding unanimous consent on 1 July 2026 let the United States force annual treaty reviews without formally leaving the pact.",
+            "legitimacy": "USMCA dispute panels satisfied corn growers on Mexican grain bans, but autoworker plant sales leave workers doubting the deal protects jobs.",
+            "interdependence": "C$3.5 billion in daily US–Canada border trade and cross-border hog and dairy supply chains limit how fast any government can wall off its market."
+        },
+        "essayBuilder": {
+            "prompt": "To what extent does economic interdependence constrain a major state from using unilateral tariffs to reshape regional trade agreements?",
+            "claim": "Deep North American production links prevent sudden collapse of regional free trade, yet unilateral tariff power still lets Washington rewrite negotiating terms.",
+            "evidence": "Although Washington declined 16-year renewal on 1 July 2026 and kept April 2025 25% auto duties in place, core treaty rules stay active through 2036 while bilateral Mexico talks continue.",
+            "counterClaim": "However, 50% August US tariffs on Canada drew September retaliation while Stellantis's November Brampton sale rattled workers, showing integration does not shield local towns from disruption.",
+            "judgment": "Overall, shared farm and auto supply chains stabilize baseline rules in the short term while leaving long-term investment hostage to annual political bargaining.",
+            "sourceUrls": [
+                "https://ustr.gov/about/policy-offices/press-office/press-releases/2026/july/ambassador-greer-issues-statement-usmca-joint-review",
+                "https://ustr.gov/sites/default/files/files/agreements/FTA/USMCA/2026%20USMCA%20Autos%20Report%20to%20Congress_070126.pdf",
+                "https://www.supplychaindive.com/news/ustr-initiates-next-stage-of-usmca-review/832285/",
+                "https://autotalks.uniforautohub.ca/sale_of_brampton_assembly_plant_a_betrayal_by_stellantis"
+            ]
+        },
+        "keyFigures": [
+            {
+                "value": "16 years",
+                "unit": "extension declined",
+                "label": "Full extension period Washington withheld on 1 July 2026, keeping USMCA in force under annual reviews until 2036",
+                "asOf": "1 July 2026",
+                "sourceUrl": "https://www.whitecase.com/insight-alert/usmca-2026-joint-review-united-states-declines-extend-agreement-triggering-annual"
+            },
+            {
+                "value": "50%",
+                "unit": "tariff rate",
+                "label": "US tariff rate applied to US$20 billion in Canadian imports in August 2026, triggering September retaliation",
+                "asOf": "August–September 2026",
+                "sourceUrl": "https://www.supplychaindive.com/news/ustr-initiates-next-stage-of-usmca-review/832285/"
+            },
+            {
+                "value": "12 January 2027",
+                "unit": "comment deadline",
+                "label": "Closing date for public comments opened on 2 October 2026 ahead of the 1 July 2027 review deadline",
+                "asOf": "Opened 2 October 2026",
+                "sourceUrl": "https://ustr.gov/about/policy-offices/press-office/press-releases/2026/october/ustr-seeks-public-comment-2027-joint-review-usmca"
+            }
+        ],
+        "timeline": [
+            {
+                "date": "2026-07-01",
+                "label": "At the sixth-year virtual joint review, the United States declines 16-year renewal while Canada and Mexico back extension, starting annual reviews toward 2036.",
+                "sourceUrl": "https://www.whitecase.com/insight-alert/usmca-2026-joint-review-united-states-declines-extend-agreement-triggering-annual"
+            },
+            {
+                "date": "2026-07-23",
+                "label": "US Trade Representative Jamieson Greer meets President Claudia Sheinbaum and Secretary Marcelo Ebrard in Mexico City during third bilateral negotiating round.",
+                "sourceUrl": "https://ustr.gov/about/policy-offices/press-office/press-releases/2026/july/joint-statement-ambassador-jamieson-greer-and-mexican-secretary-economy-marcelo-ebrard"
+            },
+            {
+                "date": "2026-09",
+                "label": "Canada imposes retaliatory duties in September after August 50% US tariffs on US$20 billion of Canadian goods stalled bilateral talks.",
+                "sourceUrl": "https://www.supplychaindive.com/news/ustr-initiates-next-stage-of-usmca-review/832285/"
+            },
+            {
+                "date": "2026-10-02",
+                "label": "USTR opens formal public consultation running through 12 January 2027 ahead of the 1 July 2027 annual joint review.",
+                "sourceUrl": "https://ustr.gov/about/policy-offices/press-office/press-releases/2026/october/ustr-seeks-public-comment-2027-joint-review-usmca"
+            },
+            {
+                "date": "2026-11-09",
+                "label": "Stellantis announces sale of Brampton Assembly Plant to Roshel, drawing sharp condemnation from Unifor National President Lana Payne and Local 1285.",
+                "sourceUrl": "https://autotalks.uniforautohub.ca/sale_of_brampton_assembly_plant_a_betrayal_by_stellantis"
             }
         ],
         "waypoints": [
             {
                 "nodeId": "USA",
-                "title": "No Immediate Extension",
-                "narration": "USTR says the United States declined to extend USMCA automatically while it seeks changes through further negotiation.",
-                "focusQuestion": "When does withholding certainty create useful leverage, and when does it impose excessive cost?"
-            },
-            {
-                "nodeId": "LatinAmerica",
-                "title": "The Agreement Continues",
-                "narration": "Canadian and Mexican official statements emphasize that USMCA remains in force through 2036 despite the absence of an immediate extension.",
-                "focusQuestion": "Why is the distinction between continuation and extension politically important?"
+                "title": "Renewal Halted, Pact Stays Binding",
+                "perspectiveLabel": "Washington virtual review and Ohio farms",
+                "perspectiveType": "local",
+                "conceptInFocus": "Sovereignty",
+                "relatedTimelineDate": "2026-07-01",
+                "narration": "On 1 July 2026, US Trade Representative Jamieson Greer met virtually with Mexican Economy Secretary Marcelo Ebrard and Canadian Minister Dominic LeBlanc and refused to renew USMCA unchanged [2, 7, 8]. That day, Ohio corn farmer Jed Bower urged governments to protect export access because Mexico buys the most US corn and Canada buys the most ethanol [1]. Meanwhile, Ebrard shared President Claudia Sheinbaum's extension support letter while over 80% of Mexican exports entered US ports duty-free [8].\n\nDeclining extension keeps the agreement binding until 2036 while triggering annual reviews [14]. In 2025, US–Canada cross-border commerce averaged C$3.5 billion daily, keeping businesses uneasy even after LeBlanc urged talks on steel, auto, and lumber tariffs [7]. Sovereignty—a country's supreme authority over its borders and trade law—allowed Washington to withhold long-term certainty and force rolling annual negotiations.",
+                "focusQuestion": "How can a single member withhold long-term treaty extension while leaving duty-free trade legally intact?"
             },
             {
                 "nodeId": "USA",
-                "title": "Industrial Bargaining",
-                "narration": "Official updates describe continuing talks over steel, aluminum, strategic sectors, and regional supply chains.",
-                "focusQuestion": "Who gains and who loses when trade rules are redesigned around economic security?"
+                "title": "Unions and Tariff Leverage",
+                "perspectiveLabel": "Washington labor warning and auto duties",
+                "perspectiveType": "institutional",
+                "conceptInFocus": "Power",
+                "relatedTimelineDate": "2026-07-01",
+                "narration": "On 30 June 2026 in Washington, Congresswoman Rosa DeLauro and industrial union chiefs urged ministers against renewing North America's trade deal as written [6]. Earlier, United Auto Workers President Shawn Fain cited 5 million manufacturing jobs lost alongside 90,000 plant closures since older trade rules began [5]. Unions stressed that Mexican manufacturing wages remain 88% below US manufacturing pay [6].\n\nMeanwhile, Washington used 25% duties imposed in April 2025 on imported cars and parts to demand tighter regional sourcing [11]. Existing treaty rules require passenger vehicles to include 75% regional content by value [11]. At least 40% of car value must come from factories averaging US$16 hourly base wages [11]. Even so, auto deficits with Mexico reached US$138.2 billion in 2024 [11]. Power—using rich-market access and tariffs to pressure trading partners—drove Washington's industrial demands.",
+                "focusQuestion": "How do import duties turn US consumer market size into bargaining power over factory location?"
             },
             {
                 "nodeId": "LatinAmerica",
-                "title": "Competing National Narratives",
-                "narration": "The three governments frame the review differently while agreeing that negotiation and the agreement itself continue.",
-                "focusQuestion": "How should analysts separate a government's negotiating message from the agreement's legal status?"
+                "title": "Linked Farms and Factory Lines",
+                "perspectiveLabel": "Mexico City bilateral talks and supply chains",
+                "perspectiveType": "independent",
+                "conceptInFocus": "Interdependence",
+                "relatedTimelineDate": "2026-07-23",
+                "narration": "On 23 July 2026 in Mexico City, Ambassador Jamieson Greer met Mexican President Claudia Sheinbaum and Economy Secretary Marcelo Ebrard during their third bilateral negotiating round [10]. Negotiators reviewed cars, steel, aluminum, farms, labor, and electronic payment systems while stressing shared security against free-riding—outside countries shipping cheap parts through partner territory to dodge duties [10]. In November 2026, Washington excluded Mexico while targeting other economies over excess factory capacity [16].\n\nIntegrated supply lines raise consumer and farm costs whenever borders tighten. Live Canadian hogs finish inside American processing plants before returning north as pork [12]. Dairy official Shawna Morris warned exporters send neighbors over 40% of foreign US dairy value [9]. Interdependence—mutual economic reliance linking cross-border farms and factories—limits how sharply governments can break regional commerce apart.",
+                "focusQuestion": "Why do cross-border livestock and factory chains constrain governments seeking rapid decoupling?"
+            },
+            {
+                "nodeId": "USA",
+                "title": "Brampton Announcement Tests Trust",
+                "perspectiveLabel": "Ontario plant sale and 2027 review",
+                "perspectiveType": "local",
+                "conceptInFocus": "Legitimacy",
+                "relatedTimelineDate": "2026-11-09",
+                "narration": "On 9 November 2026 in Brampton, Ontario, Unifor National President Lana Payne condemned automaker Stellantis for announcing a deal selling its assembly plant to defense contractor Roshel [4]. Union chief Vito Beato warned thousands of steady factory jobs were swapped for hundreds of uncertain military roles [4]. Earlier, 50% August US duties and Canadian September retaliation ordered by Prime Minister Mark Carney stalled bilateral talks [3].\n\nAhead of a July 2027 review deadline, Washington opened public comments due in January 2027 [3, 15]. Meanwhile, nearly 160 farm groups urged renewal as Purdue economist Joseph Balagtas estimated NAFTA and USMCA tariff cuts save US households about US$700 yearly [13]. Legitimacy—public trust that shared trade rules shield working families fairly—decides whether annual reviews stabilize commerce or fuel backlash.",
+                "focusQuestion": "Can rolling annual trade reviews build shared trust when factory announcements and tariff wars hit local towns?"
             }
         ],
         "relatedCases": [
             {
                 "caseId": "ilo-seafarers-global-wage-floor",
                 "note": "Compare regional USMCA trade tariff labor leverage with non-binding global ILO wage floors for seafarers."
+            },
+            {
+                "caseId": "eu-ai-act-transparency-implementation",
+                "note": "Contrast Washington's bilateral tariff leverage in North America with Brussels' single-market product rules."
             }
         ]
     },

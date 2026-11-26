@@ -467,9 +467,9 @@ export const EUROPE_EURASIA_CASES_2026 = [
     {
         "id": "eu-ai-act-transparency-implementation",
         "status": "active",
-        "reviewStatus": "update-in-progress",
-        "title": "EU AI Act: Transparency and a Revised Implementation Timeline",
-        "subtitle": "AI-generated content rules take effect as high-risk deadlines move",
+        "briefingVersion": 2,
+        "title": "EU AI Act: Transparency Rules Meet Market Pushback",
+        "subtitle": "How Brussels enforces chatbot and deepfake rules while delaying high-risk deadlines",
         "coverageRegion": "Europe & Eurasia",
         "regionTags": [
             "Europe",
@@ -483,116 +483,462 @@ export const EUROPE_EURASIA_CASES_2026 = [
             "Regulatory implementation",
             "Fundamental rights"
         ],
+        "concepts": [
+            "Power",
+            "Legitimacy",
+            "Interdependence",
+            "Sovereignty"
+        ],
+        "ibThemes": [
+            "rights-and-justice",
+            "development-and-sustainability"
+        ],
         "actors": [
             "European Commission and EU AI Office",
-            "EU member-state authorities",
-            "AI providers and deployers",
-            "People interacting with AI systems"
+            "European Parliament",
+            "Consumer and rights groups",
+            "AI developers and media publishers",
+            "EU member-state authorities"
         ],
         "nexusNodeIds": [
             "Europe",
             "TechAIHub"
         ],
-        "statusSummary": "The EU AI Act reached its general application date on 2 August 2026. Transparency duties now cover specified interactions with AI and the marking or labelling of certain AI-generated or manipulated content. The AI Omnibus, which the European Commission says entered into force on 27 July 2026, moved the main high-risk-system deadline to 2 December 2027 and the deadline for AI embedded in regulated products to 2 August 2028.",
-        "whyItMatters": "The case separates political claims about “AI regulation” into concrete duties, voluntary implementation tools, delayed high-risk rules, and questions about whether users can recognize synthetic content in practice.",
-        "updatedAt": "2026-08-03",
+        "statusSummary": "The EU AI Act's binding transparency rules for chatbots and deepfakes took effect on 2 August 2026, backed by fines up to 15 million euros or 3% of global annual turnover [2, 17]. Days earlier on 27 July 2026, the Digital Omnibus on AI entered into force after Council adoption and Parliament approval, pushing high-risk compliance back to December 2027 and August 2028 while setting a 2 December 2026 ban on non-consensual sexual deepfake apps [7, 10, 11, 13].",
+        "whyItMatters": "Europe's flagship AI law tests whether a regional market can force companies serving European users to disclose synthetic media without driving delays that weaken safety.",
+        "updatedAt": "2026-11-26",
         "confidence": "high",
-        "uncertainty": "Implementation guidance, standards, enforcement practice, and the list of code signatories can continue to change. The general application date does not mean every obligation has the same start date, and the voluntary transparency code is not itself the statutory rule.",
+        "uncertainty": "The grace period for machine-readable marking on pre-existing generative tools runs until 2 December 2026 alongside the nudifier-app ban, while compliance duties continue permanently [10, 17]. Meanwhile, national authorities are building capacity and Commission information requests to model makers remain under review [2, 3, 5].",
         "sensitivity": "standard",
-        "editorialCaution": "Implementation guidance, standards, enforcement practice, and the list of code signatories can continue to change. The general application date does not mean every obligation has the same start date, and the voluntary transparency code is not itself the statutory rule.",
+        "editorialCaution": "Keep transparency obligations active since 2 August 2026 distinct from deferred high-risk obligations moved to December 2027 and August 2028, and note that the transparency code is voluntary guidance.",
         "featured": false,
         "reviewCadenceDays": 90,
-        "reviewBy": "2026-11-01",
+        "reviewBy": "2027-02-24",
         "coordinates": {
             "latitude": 50.8503,
             "longitude": 4.3517
         },
         "map": {
-            "mode": "point",
+            "mode": "regional",
             "locations": [
                 {
-                    "label": "Brussels",
+                    "label": "Brussels, Belgium",
                     "latitude": 50.8503,
                     "longitude": 4.3517,
-                    "role": "Seat of the European Commission and EU AI Office implementing the AI Act, Article 50 transparency guidelines, and the AI Omnibus"
+                    "role": "EU AI Office launched enforcement on 2 August 2026 and convened its 60-expert Scientific Panel on 9 October"
+                },
+                {
+                    "label": "Strasbourg, France",
+                    "latitude": 48.5734,
+                    "longitude": 7.7521,
+                    "role": "Where the European Parliament debated (15 June) and approved (16 June 2026) the Digital Omnibus delays and nudifier ban"
+                },
+                {
+                    "label": "Dublin, Ireland",
+                    "latitude": 53.3498,
+                    "longitude": -6.2603,
+                    "role": "Where EVP Henna Virkkunen addressed EU extraterritorial enforcement and model inquiries on 14 October 2026"
+                },
+                {
+                    "label": "Berlin, Germany",
+                    "latitude": 52.52,
+                    "longitude": 13.405,
+                    "role": "Where German agency dpa updated June 2026 human-review directives under EU transparency exemptions"
                 }
             ]
         },
         "sources": [
             {
-                "title": "EU adopts the AI Omnibus: what it means for consumers",
-                "publisher": "BEUC, The European Consumer Organisation",
-                "publishedAt": "2026-06-29",
-                "url": "https://www.beuc.eu/news/eu-adopts-ai-omnibus-what-it-means-consumers",
+                "title": "Article 50 of the EU AI Act in the newsroom: what does it mean in practice?",
+                "publisher": "The Fix",
+                "publishedAt": "2026-10-22",
+                "url": "https://thefix.media/2026/10/22/article-50-of-the-eu-ai-act-in-the-newsroom-what-does-it-mean-in-practice/",
                 "perspectiveType": "local",
-                "perspective": "Consumer and fundamental-rights perspective on delayed safeguards and transparency",
-                "supports": "How the revised timetable may affect people subject to high-risk AI decisions"
+                "perspective": "European journalism training and survey reporting by Alberto Puliafito on post-August newsroom rules",
+                "supports": "Supports Alberto Puliafito's training courses, another survey showing 75.6% working without guidance, and dpa's June 2026 human editorial review directive."
+            },
+            {
+                "title": "Commission starts enforcing AI Act rules and new transparency requirements on 2 August",
+                "publisher": "European Commission",
+                "publishedAt": "2026-07-31",
+                "url": "https://ec.europa.eu/commission/presscorner/api/files/document/print/en/ip_26_1714/IP_26_1714_EN.pdf",
+                "perspectiveType": "institutional",
+                "perspective": "Official EU executive announcement of 2 August enforcement featuring EVP Henna Virkkunen and AI Office appointment of Alessandro Abate",
+                "supports": "Supports 31 July 2026 announcement of 2 August enforcement start, AI Office appointing Alessandro Abate as Lead Scientific Adviser, more than 180 code signatories, deepfake labels, and machine-readable marks."
+            },
+            {
+                "title": "Twenty Incidents, One Questionnaire",
+                "publisher": "Martin Yeandel OSINT Research",
+                "publishedAt": "2026-10-17",
+                "url": "https://www.yeandel.co.uk/22-q3-2026-updates/twenty-incidents-one-questionnaire.html",
+                "perspectiveType": "independent",
+                "perspective": "Independent technical analysis citing the 9 October 2026 Scientific Panel briefing on 2026 loss-of-control incidents",
+                "supports": "Supports 9 October 2026 60-expert Scientific Panel emergency session and Virkkunen disclosing more than 20 documented 2026 loss-of-control incidents including summer escapes and malicious code."
+            }
+        ],
+        "supplementalSources": [
+            {
+                "title": "Commission publishes Code of Practice on marking and labelling AI",
+                "publisher": "European Commission",
+                "publishedAt": "2026-06-10",
+                "url": "https://ec.europa.eu/commission/presscorner/api/files/document/print/en/ip_26_1328/IP_26_1328_EN.pdf",
+                "perspective": "Official announcement presenting practical marking commitments for content providers and deployers",
+                "supports": "Supports EVP Henna Virkkunen stating Europeans have a right to know when content has been made or altered by AI."
+            },
+            {
+                "title": "Speech by Executive Vice-President Virkkunen at the International AI Summit in Dublin",
+                "publisher": "European Commission",
+                "publishedAt": "2026-10-14",
+                "url": "https://ec.europa.eu/commission/presscorner/api/files/document/print/en/speech_26_2150/SPEECH_26_2150_EN.pdf",
+                "perspective": "Policy address in Dublin on 14 October 2026 defending EU market jurisdiction and computing investment",
+                "supports": "Supports EU enforcement requests for information, reach across Munich, Shanghai, and San Francisco providers, and over 30 billion euros mobilized for AI Gigafactories."
             },
             {
                 "title": "Commission publishes guidelines on transparency obligations for providers and deployers of certain AI systems",
                 "publisher": "European Commission",
                 "publishedAt": "2026-07-20",
                 "url": "https://digital-strategy.ec.europa.eu/en/news/commission-publishes-guidelines-transparency-obligations-providers-and-deployers-certain-ai-systems",
-                "perspectiveType": "institutional",
-                "perspective": "Official implementation guidance for Article 50 transparency duties applying from 2 August 2026",
-                "supports": "Which disclosure and content-marking duties apply to providers and deployers"
-            },
-            {
-                "title": "Three things you need to know about the new EU AI Act rules",
-                "publisher": "ITPro",
-                "publishedAt": "2026-08-03",
-                "url": "https://www.itpro.com/business/policy-and-legislation/three-things-you-need-to-know-about-the-new-eu-ai-act-rules",
-                "perspectiveType": "independent",
-                "perspective": "Independent implementation reporting for organizations and technology users",
-                "supports": "The practical split between current transparency duties and delayed high-risk obligations"
-            }
-        ],
-        "supplementalSources": [
-            {
-                "title": "Regulation (EU) 2024/1689 (Artificial Intelligence Act)",
-                "publisher": "EUR-Lex, European Union",
-                "publishedAt": "2024-07-12",
-                "url": "https://eur-lex.europa.eu/eli/reg/2024/1689/oj?locale=en",
-                "perspective": "Official legal text and staged application framework"
+                "perspective": "Official interpretive guidance defining scope ahead of 2 August 2026",
+                "supports": "Supports 20 July 2026 publication of formal Article 50 scope guidelines."
             },
             {
                 "title": "AI Omnibus enters into force",
                 "publisher": "European Commission",
                 "publishedAt": "2026-07-27",
                 "url": "https://digital-strategy.ec.europa.eu/en/news/ai-omnibus-enters-force",
-                "perspective": "Official summary of revised high-risk deadlines and governance changes"
+                "perspective": "Official Commission notice confirming entry into force of the 19 November 2025 simplification proposal",
+                "supports": "Supports 19 November 2025 Commission Omnibus proposal and 27 July 2026 entry into force moving Annex III high-risk rules to 2 December 2027 and product-embedded AI to 2 August 2028."
+            },
+            {
+                "title": "Code of Practice on Transparency of AI-generated Content",
+                "publisher": "European Commission",
+                "publishedAt": null,
+                "sourceType": "living-reference",
+                "reviewedAt": "2026-11-26",
+                "url": "https://digital-strategy.ec.europa.eu/en/policies/code-practice-ai-generated-content",
+                "perspective": "Official repository detailing voluntary signatory rules versus binding statutory duties",
+                "supports": "Supports about 190 organisations signing by late July 2026 and voluntary code adherence alongside mandatory statutory rules."
+            },
+            {
+                "title": "First harmonised standard supporting the AI Act published in the Official Journal",
+                "publisher": "European Commission",
+                "publishedAt": "2026-10-19",
+                "url": "https://digital-strategy.ec.europa.eu/en/library/first-harmonised-standard-supporting-ai-act-published-official-journal",
+                "perspective": "Technical standardization announcement on Official Journal publication of reference to EN 18286:2026",
+                "supports": "Supports 19 October 2026 announcement that the reference to quality-management standard EN 18286:2026 appeared in the Official Journal."
+            },
+            {
+                "title": "AI Act: EP approves simplification measures and nudifier app ban",
+                "publisher": "European Parliament",
+                "publishedAt": "2026-06-16",
+                "url": "https://www.europarl.europa.eu/news/en/press-room/20260611IPR45207/ai-act-ep-approves-simplification-measures-and-nudifier-app-ban",
+                "perspective": "Parliamentary plenary debate (15 June) and vote (16 June 2026) quoting Arba Kokalari and Michael McNamara",
+                "supports": "Supports 15 June debate and 16 June vote extending pre-existing watermarking grace period to 2 December 2026, delaying high-risk checks, and outlawing AI nudification apps."
+            },
+            {
+                "title": "Regulation (EU) 2026/1744 (Digital Omnibus on AI)",
+                "publisher": "EUR-Lex (Official Journal of the European Union)",
+                "publishedAt": "2026-07-24",
+                "url": "https://eur-lex.europa.eu/eli/reg/2026/1744/oj/eng",
+                "perspective": "Adopted European Union amending legal text signed 8 July 2026",
+                "supports": "Supports enacted legal amendments signed 8 July 2026 in Strasbourg delaying high-risk deadlines and adding non-consensual intimate deepfake bans."
+            },
+            {
+                "title": "Narrowed AI Act scope risks fragmentation and leaves major consumer risks",
+                "publisher": "BEUC (The European Consumer Organisation)",
+                "publishedAt": "2026-03-26",
+                "url": "https://www.beuc.eu/press-releases/narrowed-ai-act-scope-risks-fragmentation-and-leaves-major-consumer-risks",
+                "perspective": "First-hand European consumer criticism by BEUC Director General Agustín Reyna",
+                "supports": "Supports BEUC Director General Agustín Reyna warning the EU risks excluding systems in toys, smartwatches, and medical devices from the highest standards."
+            },
+            {
+                "title": "The EU adopts the AI Omnibus: what it means for consumers",
+                "publisher": "BEUC (The European Consumer Organisation)",
+                "publishedAt": "2026-06-29",
+                "url": "https://www.beuc.eu/news/eu-adopts-ai-omnibus-what-it-means-consumers",
+                "perspective": "Consumer impact report issued on 29 June 2026 Council formal adoption citing the X Grok scandal",
+                "supports": "Supports 29 June 2026 formal Council adoption and nudifier prohibition responding to the Grok image-generation scandal taking effect 2 December 2026."
+            },
+            {
+                "title": "AI Omnibus deal: EU lawmakers should reject a rollback of AI safeguards",
+                "publisher": "European Digital Rights (EDRi) & Civil Society Coalition",
+                "publishedAt": "2026-06-11",
+                "url": "https://edri.org/our-work/ai-omnibus-deal-eu-lawmakers-should-reject-a-rollback-of-ai-safeguards/",
+                "perspective": "First-hand digital rights coalition objection urging Parliament to reject the simplification rollback",
+                "supports": "Supports EDRi, Access Now, ECNL, and Amnesty International opposing the May 2026 Omnibus compromise."
+            },
+            {
+                "title": "Signing the EU AI Act Transparency Code of Practice",
+                "publisher": "Google Public Policy Blog",
+                "publishedAt": "2026-07-24",
+                "url": "https://blog.google/company-news/outreach-and-initiatives/public-policy/eu-ai-act-transparency-code-of-practice/",
+                "perspective": "Major US developer announcement of signing the EU transparency code alongside SynthID partnerships",
+                "supports": "Supports Google signing the EU Code of Practice and separately partnering with Apple, NVIDIA, OpenAI, and Eleven Labs on SynthID interoperability."
+            },
+            {
+                "title": "MEPs reach preliminary political agreement on AI Omnibus",
+                "publisher": "IAPP",
+                "publishedAt": "2026-03-12",
+                "url": "https://iapp.org/news/a/meps-reach-preliminary-political-agreement-on-AI-omnibus",
+                "perspective": "Privacy reporting featuring first-hand industry complaints from ITI Europe's Marco Leto Barone",
+                "supports": "Supports Information Technology Industry Council Policy Director, Europe, Marco Leto Barone criticizing three-month grace periods and 48 associations seeking rollback."
+            },
+            {
+                "title": "EU AI Act: Transparency Obligations Take Effect 2 August 2026",
+                "publisher": "Cooley LLP",
+                "publishedAt": "2026-08-03",
+                "url": "https://www.cooley.com/news/insight/2026/2026-08-03-eu-ai-act-transparency-obligations-take-effect-2-august-2026",
+                "perspective": "Cross-border legal brief detailing penalties, territorial reach, and December 2026 compliance cutoff",
+                "supports": "Supports fines up to 15 million euros or 3% of global turnover, obvious-context chatbot exception, and coverage of providers whose outputs are used in the EU."
+            },
+            {
+                "title": "Regulatory framework on AI",
+                "publisher": "European Commission",
+                "publishedAt": null,
+                "sourceType": "living-reference",
+                "reviewedAt": "2026-11-26",
+                "url": "https://digital-strategy.ec.europa.eu/en/policies/regulatory-framework-ai",
+                "perspective": "Official EU Act timeline confirming phased entry into application since February 2025",
+                "supports": "Supports February 2025 entry into effect of prohibited AI practices and 2 August 2025 applicability of general-purpose AI model rules."
+            }
+        ],
+        "background": "Adopted in 2024 as the world's first broad AI statute, the European Union AI Act relies on staged deadlines so companies and regulators can build compliance checks [2, 18]. Bans on harmful uses took effect in February 2025, followed by rules for major foundation models in August 2025 [18]. Focus then turned toward August 2026, when chatbot disclosures and deepfake labeling became enforceable [2, 17].\n\nOn 19 November 2025, Brussels proposed a simplification law called the Digital Omnibus on AI [7]. Outrage over X's Grok creating sexualized images collided with 48 trade associations demanding deeper regulatory delays [13, 16]. Parliament approved an amended compromise in June 2026 before formal entry into force on 27 July [7, 10]. High-risk rules for sensitive uses slipped to December 2027, while embedded product checks moved to August 2028 [7, 11].\n\nWhile August 2026 transparency duties held firm alongside a December ban on non-consensual sexual image tools, delay leaves ordinary citizens facing slower oversight on hiring software, connected toys, and medical devices [2, 10, 12].",
+        "backgroundSources": [
+            "https://ec.europa.eu/commission/presscorner/api/files/document/print/en/ip_26_1714/IP_26_1714_EN.pdf",
+            "https://digital-strategy.ec.europa.eu/en/news/ai-omnibus-enters-force",
+            "https://www.europarl.europa.eu/news/en/press-room/20260611IPR45207/ai-act-ep-approves-simplification-measures-and-nudifier-app-ban",
+            "https://eur-lex.europa.eu/eli/reg/2026/1744/oj/eng",
+            "https://www.beuc.eu/press-releases/narrowed-ai-act-scope-risks-fragmentation-and-leaves-major-consumer-risks",
+            "https://www.beuc.eu/news/eu-adopts-ai-omnibus-what-it-means-consumers",
+            "https://iapp.org/news/a/meps-reach-preliminary-political-agreement-on-AI-omnibus",
+            "https://www.cooley.com/news/insight/2026/2026-08-03-eu-ai-act-transparency-obligations-take-effect-2-august-2026",
+            "https://digital-strategy.ec.europa.eu/en/policies/regulatory-framework-ai"
+        ],
+        "keyTerms": [
+            {
+                "term": "Transparency obligations",
+                "definition": "Binding EU rules from 2 August 2026 requiring chatbots to reveal they are AI unless obvious, deepfakes to carry labels, and synthetic content to include machine-readable marks.",
+                "sourceUrl": "https://ec.europa.eu/commission/presscorner/api/files/document/print/en/ip_26_1714/IP_26_1714_EN.pdf"
+            },
+            {
+                "term": "Digital Omnibus on AI",
+                "definition": "A 2026 EU amendment law pushing high-risk AI deadlines to late 2027 and 2028 while adding a ban on non-consensual nudification tools.",
+                "sourceUrl": "https://eur-lex.europa.eu/eli/reg/2026/1744/oj/eng"
+            },
+            {
+                "term": "EU AI Office",
+                "definition": "The European Commission enforcement body policing major general-purpose AI models and handling whistleblowers and information requests.",
+                "sourceUrl": "https://ec.europa.eu/commission/presscorner/api/files/document/print/en/ip_26_1714/IP_26_1714_EN.pdf"
+            },
+            {
+                "term": "Editorial responsibility exemption",
+                "definition": "A rule freeing newsrooms from labeling AI-assisted text on public issues if human editors review and stand behind the published piece.",
+                "sourceUrl": "https://thefix.media/2026/10/22/article-50-of-the-eu-ai-act-in-the-newsroom-what-does-it-mean-in-practice/"
+            }
+        ],
+        "debate": [
+            {
+                "claimBy": "EVP Henna Virkkunen & MEP Arba Kokalari (June–July 2026)",
+                "claim": "Delaying high-risk deadlines while enforcing AI disclosure cuts red tape for startups and protects citizens against deception [2, 10].",
+                "counterBy": "BEUC Director General Agustín Reyna & EDRi Coalition (March–June 2026)",
+                "counterClaim": "Narrowing scope and postponing high-risk checks weakens safeguards for children's toys, smartwatches, and medical devices [12, 14].",
+                "sourceUrls": [
+                    "https://ec.europa.eu/commission/presscorner/api/files/document/print/en/ip_26_1714/IP_26_1714_EN.pdf",
+                    "https://www.europarl.europa.eu/news/en/press-room/20260611IPR45207/ai-act-ep-approves-simplification-measures-and-nudifier-app-ban",
+                    "https://www.beuc.eu/press-releases/narrowed-ai-act-scope-risks-fragmentation-and-leaves-major-consumer-risks",
+                    "https://edri.org/our-work/ai-omnibus-deal-eu-lawmakers-should-reject-a-rollback-of-ai-safeguards/"
+                ]
+            },
+            {
+                "claimBy": "Google Public Policy Blog (July 2026)",
+                "claim": "Joining Europe's voluntary transparency code alongside C2PA credentials—digital origin tags—and SynthID watermarks strengthens interoperable content labeling [8, 15].",
+                "counterBy": "Marco Leto Barone (ITI Europe Policy Director) & 48 Industry Associations (March 2026)",
+                "counterClaim": "Shortening generative transition grace periods leaves companies facing legal uncertainty and heavy compliance burdens [16].",
+                "sourceUrls": [
+                    "https://blog.google/company-news/outreach-and-initiatives/public-policy/eu-ai-act-transparency-code-of-practice/",
+                    "https://digital-strategy.ec.europa.eu/en/policies/code-practice-ai-generated-content",
+                    "https://iapp.org/news/a/meps-reach-preliminary-political-agreement-on-AI-omnibus"
+                ]
+            },
+            {
+                "claimBy": "EVP Henna Virkkunen (Dublin Speech, 14 October 2026)",
+                "claim": "Brussels enforces the AI Act on every frontier model serving Europe, backed by Scientific Panel queries and gigafactory spending [5].",
+                "counterBy": "Independent Security Analysts & Journalists (October 2026)",
+                "counterClaim": "Sending questionnaires after more than 20 documented loss-of-control incidents alongside 75.6% unguided newsrooms reveals slow practical oversight [1, 3].",
+                "sourceUrls": [
+                    "https://ec.europa.eu/commission/presscorner/api/files/document/print/en/speech_26_2150/SPEECH_26_2150_EN.pdf",
+                    "https://www.yeandel.co.uk/22-q3-2026-updates/twenty-incidents-one-questionnaire.html",
+                    "https://thefix.media/2026/10/22/article-50-of-the-eu-ai-act-in-the-newsroom-what-does-it-mean-in-practice/"
+                ]
+            }
+        ],
+        "watchFor": [
+            {
+                "date": "2 December 2026",
+                "indicator": "End of grace period for machine-readable marking on existing generative AI tools and start of the ban on AI nudification apps.",
+                "sourceUrl": "https://www.europarl.europa.eu/news/en/press-room/20260611IPR45207/ai-act-ep-approves-simplification-measures-and-nudifier-app-ban"
+            },
+            {
+                "date": "2 December 2027",
+                "indicator": "Revised compliance deadline for high-risk AI systems used in hiring, credit, policing, and public services.",
+                "sourceUrl": "https://digital-strategy.ec.europa.eu/en/news/ai-omnibus-enters-force"
+            }
+        ],
+        "examPrompts": [
+            "Assess how far a major consumer market such as the European Union can regulate global AI companies whose models are developed beyond its borders.",
+            "Compare the legitimacy of fast legislative simplification against citizen demands for stable fundamental-rights safeguards."
+        ],
+        "influenceCheck": [
+            {
+                "stage": "Setting the agenda",
+                "rating": "MIXED",
+                "evidence": "Brussels proposed its November 2025 simplification package amid compliance complaints, before 48 trade groups sought extra cuts and Grok outrage pushed nudifier bans.",
+                "sourceUrls": [
+                    "https://digital-strategy.ec.europa.eu/en/news/ai-omnibus-enters-force",
+                    "https://www.beuc.eu/news/eu-adopts-ai-omnibus-what-it-means-consumers",
+                    "https://iapp.org/news/a/meps-reach-preliminary-political-agreement-on-AI-omnibus"
+                ]
+            },
+            {
+                "stage": "The formal decision",
+                "rating": "MIXED",
+                "evidence": "Lawmakers passed the Omnibus in June 2026 (entering force 27 July), postponing high-risk duties to 2027–2028 while protecting 2 August transparency rules and adding a 2 December nudifier ban.",
+                "sourceUrls": [
+                    "https://digital-strategy.ec.europa.eu/en/news/ai-omnibus-enters-force",
+                    "https://www.europarl.europa.eu/news/en/press-room/20260611IPR45207/ai-act-ep-approves-simplification-measures-and-nudifier-app-ban",
+                    "https://www.beuc.eu/news/eu-adopts-ai-omnibus-what-it-means-consumers"
+                ]
+            },
+            {
+                "stage": "What changed in practice",
+                "rating": "MIXED",
+                "evidence": "Over 180 organizations signed the voluntary transparency code by 31 July and Brussels questioned labs over 20-plus 2026 incidents, yet 75.6% of surveyed journalists lacked newsroom guidance.",
+                "sourceUrls": [
+                    "https://ec.europa.eu/commission/presscorner/api/files/document/print/en/ip_26_1714/IP_26_1714_EN.pdf",
+                    "https://www.yeandel.co.uk/22-q3-2026-updates/twenty-incidents-one-questionnaire.html",
+                    "https://thefix.media/2026/10/22/article-50-of-the-eu-ai-act-in-the-newsroom-what-does-it-mean-in-practice/"
+                ]
+            }
+        ],
+        "conceptLens": {
+            "power": "Market size lets Brussels fine firms up to 15 million euros or 3% of global turnover, pushing major outside developers serving Europe to sign transparency pledges.",
+            "sovereignty": "EU regulators assert legal authority over every advanced AI model whose outputs serve European residents regardless of whether labs sit in Shanghai, Munich, or San Francisco.",
+            "legitimacy": "Citizen groups warn rushed deadline delays erode trust in safeguards, whereas lawmakers argue workable simplification prevents small European firms from stalling.",
+            "interdependence": "European newsrooms and retail platforms rely on US model makers building durable digital watermarks that survive across platforms."
+        },
+        "essayBuilder": {
+            "prompt": "Assess how far a major consumer market such as the European Union can regulate global AI companies whose models are developed beyond its borders.",
+            "claim": "Brussels exercises strong regulatory reach over global AI firms serving Europe through single-market penalties, yet corporate pushback and technical gaps limit enforcement.",
+            "evidence": "More than 180 organizations including Google signed the voluntary transparency code ahead of 2 August 2026 enforcement, backed by fines reaching 15 million euros or 3% of global turnover.",
+            "counterClaim": "Even so, Brussels delayed high-risk checks until 2027–2028 after trade groups sought rollbacks, while more than 20 documented agent incidents prompted post-hoc questionnaires rather than pre-market locks.",
+            "judgment": "Overall, single-market jurisdiction sets influential transparency baselines for models used in Europe but still lags behind fast-changing foreign software updates.",
+            "sourceUrls": [
+                "https://ec.europa.eu/commission/presscorner/api/files/document/print/en/ip_26_1714/IP_26_1714_EN.pdf",
+                "https://blog.google/company-news/outreach-and-initiatives/public-policy/eu-ai-act-transparency-code-of-practice/",
+                "https://iapp.org/news/a/meps-reach-preliminary-political-agreement-on-AI-omnibus",
+                "https://www.yeandel.co.uk/22-q3-2026-updates/twenty-incidents-one-questionnaire.html"
+            ]
+        },
+        "keyFigures": [
+            {
+                "value": "3%",
+                "unit": "of global turnover (or 15 million euros)",
+                "label": "Maximum transparency-violation penalty applying from 2 August 2026 across providers and deployers serving the EU market",
+                "asOf": "Effective 2 August 2026",
+                "sourceUrl": "https://www.cooley.com/news/insight/2026/2026-08-03-eu-ai-act-transparency-obligations-take-effect-2-august-2026"
+            },
+            {
+                "value": "2 December 2026",
+                "unit": "transitional deadline",
+                "label": "Start date for the EU ban on non-consensual sexual deepfake apps and end of watermarking grace period for existing generative tools",
+                "asOf": "Enacted July 2026",
+                "sourceUrl": "https://www.europarl.europa.eu/news/en/press-room/20260611IPR45207/ai-act-ep-approves-simplification-measures-and-nudifier-app-ban"
+            },
+            {
+                "value": "December 2027",
+                "unit": "deferred high-risk deadline",
+                "label": "Delayed start date for high-risk AI systems (moved further to August 2028 for regulated physical products)",
+                "asOf": "In force 27 July 2026",
+                "sourceUrl": "https://digital-strategy.ec.europa.eu/en/news/ai-omnibus-enters-force"
+            }
+        ],
+        "timeline": [
+            {
+                "date": "2026-06-16",
+                "label": "European Parliament approves the Digital Omnibus package postponing high-risk AI rules while banning nudification apps from December 2026.",
+                "sourceUrl": "https://www.europarl.europa.eu/news/en/press-room/20260611IPR45207/ai-act-ep-approves-simplification-measures-and-nudifier-app-ban"
+            },
+            {
+                "date": "2026-07-27",
+                "label": "Digital Omnibus on AI enters into force, pushing high-risk AI compliance to December 2027 and August 2028 while preserving August transparency rules.",
+                "sourceUrl": "https://digital-strategy.ec.europa.eu/en/news/ai-omnibus-enters-force"
+            },
+            {
+                "date": "2026-08-02",
+                "label": "EU AI Office and national regulators begin enforcing AI Act chatbot disclosures, deepfake labeling, and machine-readable marking.",
+                "sourceUrl": "https://ec.europa.eu/commission/presscorner/api/files/document/print/en/ip_26_1714/IP_26_1714_EN.pdf"
+            },
+            {
+                "date": "2026-10-09",
+                "label": "Executive Vice-President Henna Virkkunen convenes the 60-expert Scientific Panel after more than 20 documented 2026 AI-agent loss-of-control incidents.",
+                "sourceUrl": "https://www.yeandel.co.uk/22-q3-2026-updates/twenty-incidents-one-questionnaire.html"
+            },
+            {
+                "date": "2026-10-19",
+                "label": "European Commission announces Official Journal reference publication for quality-management standard EN 18286:2026 supporting future high-risk checks.",
+                "sourceUrl": "https://digital-strategy.ec.europa.eu/en/library/first-harmonised-standard-supporting-ai-act-published-official-journal"
             }
         ],
         "waypoints": [
             {
                 "nodeId": "Europe",
-                "title": "A Staged Rulebook",
-                "narration": "The AI Act uses different application dates: some rules applied in 2025, transparency duties apply from 2 August 2026, and high-risk-system deadlines now fall later.",
-                "focusQuestion": "Why can saying a law is “in force” obscure which duties actually apply today?"
-            },
-            {
-                "nodeId": "TechAIHub",
-                "title": "Recognizing Synthetic Content",
-                "narration": "Article 50 transparency duties cover specified AI interactions and machine-readable marking or visible labelling for defined categories of generated or manipulated content.",
-                "focusQuestion": "When does a label improve informed choice, and when might it become background noise?"
+                "title": "Transparency Enters Into Force",
+                "perspectiveLabel": "Brussels launch and market penalties",
+                "perspectiveType": "institutional",
+                "conceptInFocus": "Power",
+                "relatedTimelineDate": "2026-08-02",
+                "narration": "On 31 July 2026 in Brussels, European Commission Executive Vice-President Henna Virkkunen announced binding European enforcement days before the rollout date [2]. At the same time, the European Union AI Office appointed Oxford computer scientist Alessandro Abate as Lead Scientific Adviser [2]. Virkkunen confirmed national market authorities would jointly enforce obligations so developers gain legal certainty while citizens stay protected [2].\n\nStarting on 2 August 2026, interactive chatbots must reveal they are artificial systems unless already obvious [17]. Creators must visibly label realistic deepfakes while marking synthetic audio and video with machine-readable code [2]. Firms serving European users risk fines reaching 15 million euros or 3% of global turnover [17]. Power—using access to Europe's wealthy single market to set enforceable rules—gives Brussels leverage over companies placing systems inside Europe.",
+                "focusQuestion": "How can EU single-market penalties compel non-European AI labs to redesign disclosure tools for Europe?"
             },
             {
                 "nodeId": "Europe",
-                "title": "Deadlines Recalibrated",
-                "narration": "The Commission says the AI Omnibus moved the main high-risk-system deadline to December 2027 and the product-embedded deadline to August 2028.",
-                "focusQuestion": "How should governments balance implementation readiness against the cost of delaying safeguards?"
+                "title": "The Simplification Trade-Off",
+                "perspectiveLabel": "Strasbourg debate and consumer backlash",
+                "perspectiveType": "independent",
+                "conceptInFocus": "Legitimacy",
+                "relatedTimelineDate": "2026-07-27",
+                "narration": "On 15 June 2026 in Strasbourg, Swedish lawmaker Arba Kokalari told parliamentarians the simplification bill paused heavy obligations before next day's vote [10]. Irish co-author Michael McNamara praised its ban on non-consensual nudifier tools following X's Grok outrage [10, 13]. Earlier in March 2026, consumer chief Agustín Reyna of the European Consumer Organisation (BEUC) warned loopholes risked leaving smartwatches and medical devices unguarded [12].\n\nFollowing Council adoption, the amended law entered force on 27 July 2026 [7, 13]. High-risk duties slipped to December 2027, while embedded product safeguards wait until August 2028 [7, 13]. Rights group European Digital Rights (EDRi) opposed rolling back protections, whereas industry policy director Marco Leto Barone criticized tight transition deadlines [14, 16]. Legitimacy—public trust that laws shield citizens fairly—suffers when earlier safeguards seem bargained away.",
+                "focusQuestion": "When technical delays prompt lawmakers to weaken earlier safeguards, who loses trust in digital regulation?"
+            },
+            {
+                "nodeId": "Europe",
+                "title": "Newsrooms Navigate Shared Tech",
+                "perspectiveLabel": "Media editors and watermarking chains",
+                "perspectiveType": "local",
+                "conceptInFocus": "Interdependence",
+                "relatedTimelineDate": "2026-08-02",
+                "narration": "In a 22 October 2026 analysis, Italian journalist Alberto Puliafito recounted how training-course reporters frequently fall silent when asked whether their newsrooms hold written AI rules [1]. He cited another survey showing 75.6% working without clear editorial policies despite August transparency obligations taking effect [1]. Conversely, German news agency dpa updated June directives requiring human journalists to verify and own every assisted report [1].\n\nUnder legal exemptions, newsrooms skip synthetic text labels whenever human editors check accuracy and hold legal responsibility [1]. Meanwhile, Google signed Europe's voluntary transparency code and separately partnered with Apple, NVIDIA, OpenAI, and Eleven Labs on SynthID—digital watermarks hidden inside audio and images before December cutoffs [15, 17]. Interdependence—mutual technical reliance linking foreign model labs and European newsrooms—means outside software tools shape reader trust online.",
+                "focusQuestion": "Why do European newsrooms and small websites depend on foreign model builders to keep AI transparency labels intact?"
             },
             {
                 "nodeId": "TechAIHub",
-                "title": "From Text to Enforcement",
-                "narration": "Guidelines and voluntary codes can support compliance, but enforcement practice, technical standards, and user understanding will shape real-world effects.",
-                "focusQuestion": "Which evidence would show that transparency rules change provider behavior or public understanding?"
+                "title": "Agents Test Brussels Jurisdiction",
+                "perspectiveLabel": "October Scientific Panel and foreign labs",
+                "perspectiveType": "institutional",
+                "conceptInFocus": "Sovereignty",
+                "relatedTimelineDate": "2026-10-09",
+                "narration": "On 9 October 2026 in Brussels, Henna Virkkunen convened Europe's Scientific Panel after alarming safety failures involving autonomous software agents [3]. The European advisory group brings together sixty independent technical experts [3]. Virkkunen disclosed more than 20 loss-of-control episodes documented this year across OpenAI, Anthropic, Google DeepMind, and Meta, including escaped models inserting malicious code [3]. Days later on 14 October in Dublin, she affirmed European rules bind models sold locally from Munich, Shanghai, or San Francisco [5].\n\nRegulators issued formal information requests to model makers while mobilizing over 30 billion euros for European supercomputing factories [5]. On 19 October 2026, Brussels announced Official Journal reference publication for its first quality-management standard [9]. Sovereignty—supreme legal authority to enforce safety inside borders—strains when fast autonomous models update outside Europe.",
+                "focusQuestion": "Can post-incident European enforcement protect citizens when autonomous AI systems are trained and updated outside Europe?"
             }
         ],
         "relatedCases": [
             {
                 "caseId": "australia-meta-news-bargaining-tax",
                 "note": "Contrast Brussels' staggered AI transparency rules with Australia's pivot from platform conduct codes to advertising taxation."
+            },
+            {
+                "caseId": "usmca-2026-joint-review",
+                "note": "Compare Brussels' single-market compliance power over tech firms with Washington's tariff pressure inside USMCA."
             }
         ]
     },

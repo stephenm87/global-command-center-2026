@@ -2,9 +2,9 @@ export const GLOBAL_INSTITUTIONS_CASES_2026 = [
     {
         "id": "high-seas-bbnj-implementation",
         "status": "active",
-        "reviewStatus": "update-in-progress",
+        "briefingVersion": 2,
         "title": "High Seas: Implementing the BBNJ Agreement",
-        "subtitle": "From treaty entry into force to inclusive institutions, finance, and ocean protection",
+        "subtitle": "How the new ocean biodiversity treaty moves from entry into force to its first global summit",
         "coverageRegion": "Global / Transnational",
         "regionTags": [
             "Global",
@@ -20,131 +20,432 @@ export const GLOBAL_INSTITUTIONS_CASES_2026 = [
             "Benefit sharing",
             "Capacity building"
         ],
+        "concepts": [
+            "Sovereignty",
+            "Power",
+            "Legitimacy",
+            "Interdependence"
+        ],
+        "ibThemes": [
+            "development-and-sustainability",
+            "rights-and-justice"
+        ],
         "actors": [
             "BBNJ Agreement parties",
-            "Pacific small island developing states",
-            "Indigenous peoples and local communities",
-            "Ocean science networks",
-            "Existing maritime and sectoral bodies"
+            "Pacific Small Island Developing States",
+            "Major fishing nations and non-parties",
+            "Indigenous Peoples and local communities",
+            "Maritime and conservation bodies"
         ],
         "nexusNodeIds": [
             "UN_OPEC",
             "AsiaPacific",
-            "Africa"
+            "LatinAmerica"
         ],
-        "statusSummary": "The UN records that the BBNJ Agreement entered into force on 17 January 2026. IISD's independent summary of the third Preparatory Commission reports agreement on several institutional and financial preparations but unresolved provisions for COP1. Pacific small island developing states proposed stronger participation by Indigenous peoples and local communities, including an advisory mechanism, expert rosters, and opportunities to present concerns before recommendations are finalized.",
-        "whyItMatters": "The treaty's effect will depend on who participates, how benefits and capacity are shared, how institutions coordinate, and whether parties turn global rules into legitimate conservation decisions.",
-        "updatedAt": "2026-08-09",
+        "statusSummary": "The UN High Seas Treaty covering two-thirds of the world's ocean entered into force on 17 January 2026 and reached 100 parties in September 2026 ahead of its first Conference of the Parties scheduled from 11 to 22 January 2027 in New York [1, 2, 5, 11]. After March–April preparatory talks left voting rules and funding unresolved, Belgium and Chile merged their secretariat bids into a Valparaíso–Brussels offer on 6 November 2026, prompting formal Chinese objections supporting Xiamen on 12 November [3, 13, 14].",
+        "whyItMatters": "Nearly half of Earth's surface lies in international waters beyond national borders, making this treaty a live test of whether states can share conservation rules and ocean wealth fairly.",
+        "updatedAt": "2026-11-26",
         "confidence": "high",
-        "uncertainty": "COP1 decisions, participation rules, subsidiary-body design, finance, the secretariat seat, and future area-based measures remain subject to negotiation. Entry into force did not itself create a particular marine protected area.",
+        "uncertainty": "Final voting rules, permanent secretariat location, subsidiary scientific bodies, and future marine protected areas depend on decisions at the first Conference of the Parties in January 2027 [2, 3, 14]. Entry into force alone has not yet created any protected zone, and non-parties remain outside binding rules [15, 16].",
         "sensitivity": "standard",
-        "editorialCaution": "The agreement binds its parties and concerns areas beyond national jurisdiction; do not imply universal participation or automatic precedence over other competent bodies. Treat Indigenous peoples, local communities, coastal states, and small island states as distinct constituencies.",
+        "editorialCaution": "Distinguish treaty entry into force from future protected-area designations, and note that non-ratifiers are not bound by treaty obligations.",
         "featured": true,
         "reviewCadenceDays": 90,
-        "reviewBy": "2026-11-07",
+        "reviewBy": "2027-02-24",
         "map": {
             "mode": "global",
             "locations": [
                 {
                     "label": "United Nations Headquarters, New York",
-                    "latitude": 40.7505,
-                    "longitude": -73.9934,
-                    "role": "Preparatory Commission and COP institutional process"
+                    "latitude": 40.7489,
+                    "longitude": -73.968,
+                    "role": "Hosted PrepCom III from 23 March to 2 April 2026 and hosts COP1 from 11 to 22 January 2027"
                 },
                 {
                     "label": "Koror, Palau",
                     "latitude": 7.3419,
                     "longitude": 134.4793,
-                    "role": "Pacific small-island-state governance perspective"
+                    "role": "Home country of AOSIS Chair Ilana Seid and President Surangel Whipps Jr., pressing for predictable ocean finance"
                 },
                 {
-                    "label": "Suva, Fiji",
-                    "latitude": -18.1248,
-                    "longitude": 178.4501,
-                    "role": "Pacific regional capacity and community-participation perspective"
+                    "label": "Valparaíso, Chile",
+                    "latitude": -33.0472,
+                    "longitude": -71.6127,
+                    "role": "Proposed main headquarters under the 6 November 2026 joint Belgium–Chile secretariat bid"
                 },
                 {
-                    "label": "Cape Town, South Africa",
-                    "latitude": -33.9249,
-                    "longitude": 18.4241,
-                    "role": "African coastal science, capacity, and implementation perspective"
+                    "label": "Xiamen, China",
+                    "latitude": 24.4798,
+                    "longitude": 118.0894,
+                    "role": "Competing Chinese candidate city backed by Beijing's 12 November objection to splitting the secretariat"
                 }
             ]
         },
         "sources": [
             {
-                "title": "Proposals by the Pacific Small Island Developing States",
-                "publisher": "Pacific Small Island Developing States",
-                "publishedAt": "2026-03-25",
-                "url": "https://www.un.org/bbnjagreement/sites/default/files/2026-03/PSIDS_SubBodiesCorr_25March.pdf",
+                "title": "Pacific leaders welcome UN High Seas Treaty",
+                "publisher": "The New Atoll",
+                "publishedAt": "2026-01-17",
+                "url": "https://thenewatoll.com/2026/01/17/pacific-leaders-welcome-un-high-seas-treaty/",
                 "perspectiveType": "local",
-                "perspective": "Pacific small-island-state proposals for Indigenous, local-community, and traditional-knowledge participation in BBNJ institutions",
-                "supports": [
-                    "The proposal seeks an advisory mechanism and expert participation relating to Indigenous peoples, local communities, and traditional knowledge.",
-                    "It calls for affected communities to have an adequate opportunity to present concerns and alternatives before recommendations are finalized."
-                ]
+                "perspective": "Pacific Island reporting featuring Alliance of Small Island States Chair Ilana Seid of Palau",
+                "supports": "Supports AOSIS Chair Ilana Seid welcoming entry into force on 17 January 2026 and urging equitable implementation."
             },
             {
-                "title": "BBNJ Agreement",
-                "publisher": "United Nations, Division for Ocean Affairs and the Law of the Sea",
+                "title": "Agreement on Marine Biological Diversity of Areas beyond National Jurisdiction Portal",
+                "publisher": "United Nations",
                 "publishedAt": null,
                 "sourceType": "living-reference",
-                "reviewedAt": "2026-08-09",
-                "milestoneDate": "2026-01-17",
-                "milestoneLabel": "Agreement entered into force",
+                "reviewedAt": "2026-11-26",
                 "url": "https://www.un.org/bbnjagreement/en",
-                "perspectiveType": "institutional",
-                "perspective": "Official treaty portal and institutional record for adoption, parties, entry into force, and implementation preparations",
-                "supports": [
-                    "The BBNJ Agreement was adopted on 19 June 2023.",
-                    "It entered into force on 17 January 2026 after the required treaty threshold and waiting period."
+                "perspective": "Official UN treaty portal tracking entry into force, COP1 dates, and pre-collection notifications",
+                "supports": "Supports 19 June 2023 adoption, 17 January 2026 entry into force, 11–22 January 2027 COP1 schedule, and 2026 research notifications."
+            },
+            {
+                "title": "Summary of the Third Session of the Preparatory Commission for the Entry into Force of the BBNJ Agreement: 23 March – 2 April 2026",
+                "publisher": "Earth Negotiations Bulletin (IISD)",
+                "publishedAt": "2026-04-06",
+                "url": "https://enb.iisd.org/sites/default/files/2026-04/enb25262e.pdf",
+                "perspective": "Independent diplomatic observation of PrepCom III negotiations, state interventions, and unresolved brackets",
+                "supports": "Supports over 200 delegates meeting under Co-Chairs Janine Coye-Felson and Adam McCarthy, June 2024 organizational session, 88 total parties by April, Palau and Fiji closing remarks, and Russian/Japanese voting positions."
+            }
+        ],
+        "supplementalSources": [
+            {
+                "title": "Historic High Seas Treaty enters into force, launching a new era of global ocean governance",
+                "publisher": "AIDA Americas",
+                "publishedAt": "2026-01-17",
+                "url": "https://aida-americas.org/en/press/historic-high-seas-treaty-enters-into-force-launching-a-new-era-of-global-ocean-governance",
+                "perspective": "Latin American environmental law release quoting treaty president Rena Lee and Rebecca Hubbard",
+                "supports": "Supports Singapore Ambassador Rena Lee's 17 January 2026 multilateralism statement and immediate sanctuary-proposal and assessment powers from entry into force."
+            },
+            {
+                "title": "UN ‘high seas’ treaty clears ratification threshold, to enter into force in January",
+                "publisher": "UN News",
+                "publishedAt": "2025-09-20",
+                "url": "https://news.un.org/en/story/2025/09/1165901",
+                "perspective": "UN announcement when Morocco and Sierra Leone reached the 60-ratification trigger",
+                "supports": "Supports Morocco and Sierra Leone becoming the 60th and 61st parties on 19 September 2025 and treaty coverage of two-thirds of the ocean."
+            },
+            {
+                "title": "High Seas Treaty enters into force: a milestone for ocean conservation",
+                "publisher": "European Commission Oceans and Fisheries",
+                "publishedAt": "2026-01-16",
+                "url": "https://oceans-and-fisheries.ec.europa.eu/news/high-seas-treaty-enters-force-milestone-ocean-conservation-2026-01-16_en",
+                "perspective": "EU institutional statement on implementation aid and entry into force",
+                "supports": "Supports 81 parties entering force and the operational 40-million-euro EU Global Ocean Programme pledged by 16 January 2026."
+            },
+            {
+                "title": "China and Japan secure last-minute seat at writing rules for high seas treaty",
+                "publisher": "Climate Home News",
+                "publishedAt": "2026-01-20",
+                "url": "https://www.climatechangenews.com/2026/01/20/china-japan-secure-seat-bbnj-deep-sea-conservation-high-seas/",
+                "perspective": "Independent climate and ocean reporting on major fishing states joining before entry into force",
+                "supports": "Supports late ratifications by China, Japan, and Brazil giving major fishing nations seats ahead of COP1 rules writing, and Chile official Julio Cordano."
+            },
+            {
+                "title": "From entry - into force - into action: why this moment for the High Seas cannot be missed",
+                "publisher": "International Union for Conservation of Nature (IUCN)",
+                "publishedAt": "2026-03-24",
+                "url": "https://iucn.org/blog/202603/entry-force-action-why-moment-high-seas-cannot-be-missed",
+                "perspective": "Conservation briefing by Minna Epps citing Palau President Surangel Whipps Jr. on treaty financing",
+                "supports": "Supports Minna Epps quoting Palau President Surangel Whipps Jr.'s warning that finance cannot be an afterthought."
+            },
+            {
+                "title": "Advisory Mechanism on Indigenous Peoples, Local Communities, and Traditional Knowledge",
+                "publisher": "Pacific Small Island Developing States (PSIDS)",
+                "publishedAt": "2026-03-25",
+                "url": "https://www.un.org/bbnjagreement/sites/default/files/2026-03/PSIDS_SubBodiesCorr_25March.pdf",
+                "perspective": "Official Pacific island negotiating text on Indigenous traditional knowledge seats",
+                "supports": "Supports Pacific island states proposing Indigenous Peoples and traditional-knowledge experts on treaty scientific bodies."
+            },
+            {
+                "title": "Preparatory Commission Third Session (23 March – 2 April 2026) Documents",
+                "publisher": "United Nations DOALOS",
+                "publishedAt": null,
+                "sourceType": "living-reference",
+                "reviewedAt": "2026-11-26",
+                "url": "https://www.un.org/bbnjagreement/en/third-session-23-march-2-april-2026",
+                "perspective": "UN secretariat record of draft rules of procedure, finance papers, and secretariat bids",
+                "supports": "Supports competing secretariat bids tabled by Belgium, Chile, and China during PrepCom III."
+            },
+            {
+                "title": "The High Seas Treaty reaches 100 parties, cementing momentum ahead of its first conference",
+                "publisher": "High Seas Alliance",
+                "publishedAt": "2026-09-23",
+                "url": "https://highseasalliance.org/2026/09/23/the-high-seas-treaty-reaches-100-parties-cementing-momentum-ahead-of-its-first-conference/",
+                "perspective": "Global NGO coalition update quoting Rebecca Hubbard, Elle Lawless, and Susanna Fuller",
+                "supports": "Supports six states depositing ratifications in the week of 23 September 2026 to reach the 100-party milestone and Elle Lawless's Tasman Sea sanctuary call."
+            },
+            {
+                "title": "The countdown to the first High Seas COP begins: what happens, why it matters, and what's on the table",
+                "publisher": "High Seas Alliance",
+                "publishedAt": "2026-10-30",
+                "url": "https://highseasalliance.org/2026/10/30/the-countdown-to-the-first-high-seas-cop-begins-what-happens-why-it-matters-and-whats-on-the-table/",
+                "perspective": "Pre-COP1 analysis explaining party-only voting rules and the Clearing-House Mechanism",
+                "supports": "Supports non-ratifiers holding zero vote at COP1 and the Clearing-House Mechanism role in transparent data sharing."
+            },
+            {
+                "title": "Belgium and Chile decide to join their candidatures for the seat of the BBNJ Secretariat",
+                "publisher": "FPS Foreign Affairs Belgium",
+                "publishedAt": "2026-11-06",
+                "url": "https://diplomatie.belgium.be/en/news/belgium-and-chile-decide-join-their-candidatures-seat-bbnj-secretariat",
+                "perspective": "Joint European–South American diplomatic announcement on secretariat hosting",
+                "supports": "Supports 6 November 2026 joint bid placing the main secretariat in Valparaíso and the Clearing-House Mechanism infrastructure in Brussels."
+            },
+            {
+                "title": "Belgium-Chile BBNJ Bid Faces Legal Questions in New York 2026",
+                "publisher": "Brussels Morning",
+                "publishedAt": "2026-11-23",
+                "url": "https://brusselsmorning.com/belgium-chile-bbnj-bid-faces-legal-questions-in-new-york-2026/106863/",
+                "perspective": "First-hand Chinese government objection via Foreign Ministry spokesperson Mao Ning plus legal commentary",
+                "supports": "Supports Chinese Foreign Ministry spokesperson Mao Ning's 12 November 2026 objection alleging at least six non-conformities and Beijing's competing Xiamen bid."
+            },
+            {
+                "title": "Decades in the Making, the High Seas Treaty (BBNJ) Is Now Binding: What Happens Next?",
+                "publisher": "Earth Law Center",
+                "publishedAt": "2026-05-15",
+                "url": "https://www.earthlawcenter.org/blog-entries/2026/5/decades-in-the-making-the-high-seas-treaty-is-now-binding-what-happens-next",
+                "perspective": "Legal review highlighting state jurisdiction duties beyond borders and sector overlaps with seabed, shipping, and fisheries bodies",
+                "supports": "Supports obligations covering activities under a state's control in high-seas waters and non-ratifying states remaining outside treaty duties."
+            },
+            {
+                "title": "After 20 Years, an Agreement to Safeguard the 'High Seas' Takes Force",
+                "publisher": "World Resources Institute (WRI)",
+                "publishedAt": "2025-06-05",
+                "url": "https://www.wri.org/insights/high-seas-treaty-explainer",
+                "perspective": "Independent policy explainer originally published 5 June 2025 and updated 15 January 2026 on fragmented ocean rules",
+                "supports": "Supports less than 1% of high seas previously protected, non-ratifiers avoiding legal duties, and pharmaceutical/biotech interest in marine genetic resources."
+            }
+        ],
+        "background": "International ocean waters beyond coastal borders cover roughly two-thirds of the sea and nearly half of Earth's whole surface [5, 16]. Yet separate regional fishing bodies, shipping rules, and seabed panels governed activity piecemeal for decades [15, 16]. Strict marine protected sanctuaries covered less than 1% of open-ocean waters [16].\n\nAdopted in June 2023 after long United Nations negotiations, the High Seas Treaty lets countries designate ocean sanctuaries, mandate offshore impact checks, and share marine genetic breakthroughs [2, 16]. On 19 September 2025, Morocco and Sierra Leone became the sixtieth and final trigger ratifications [5]. Following the required waiting window, the treaty took binding legal force on 17 January 2026 [5]. European officials also confirmed an operational 40-million-euro support program [6].\n\nFor Pacific islanders and coastal fishers, delayed sanctuaries leave vital ocean food webs exposed while richer companies pursue deep-sea genetic medicine leads [1, 8, 16]. Disputes over voting rules, Indigenous seats, and headquarters sites now head straight into New York's January 2027 conference [3, 9, 14].",
+        "backgroundSources": [
+            "https://thenewatoll.com/2026/01/17/pacific-leaders-welcome-un-high-seas-treaty/",
+            "https://www.un.org/bbnjagreement/en",
+            "https://enb.iisd.org/sites/default/files/2026-04/enb25262e.pdf",
+            "https://news.un.org/en/story/2025/09/1165901",
+            "https://oceans-and-fisheries.ec.europa.eu/news/high-seas-treaty-enters-force-milestone-ocean-conservation-2026-01-16_en",
+            "https://iucn.org/blog/202603/entry-force-action-why-moment-high-seas-cannot-be-missed",
+            "https://www.un.org/bbnjagreement/sites/default/files/2026-03/PSIDS_SubBodiesCorr_25March.pdf",
+            "https://brusselsmorning.com/belgium-chile-bbnj-bid-faces-legal-questions-in-new-york-2026/106863/",
+            "https://www.earthlawcenter.org/blog-entries/2026/5/decades-in-the-making-the-high-seas-treaty-is-now-binding-what-happens-next",
+            "https://www.wri.org/insights/high-seas-treaty-explainer"
+        ],
+        "keyTerms": [
+            {
+                "term": "Areas beyond national jurisdiction",
+                "definition": "International high-seas waters and the deep seabed outside any coastal state's national borders or exclusive economic zone.",
+                "sourceUrl": "https://www.earthlawcenter.org/blog-entries/2026/5/decades-in-the-making-the-high-seas-treaty-is-now-binding-what-happens-next"
+            },
+            {
+                "term": "Preparatory Commission (PrepCom)",
+                "definition": "The transitional UN body that held a June 2024 organizational meeting and three substantive sessions through April 2026 to draft rules for COP1.",
+                "sourceUrl": "https://enb.iisd.org/sites/default/files/2026-04/enb25262e.pdf"
+            },
+            {
+                "term": "Clearing-House Mechanism",
+                "definition": "The treaty's shared online hub where countries notify marine genetic research and share impact assessments and sanctuary plans.",
+                "sourceUrl": "https://highseasalliance.org/2026/10/30/the-countdown-to-the-first-high-seas-cop-begins-what-happens-why-it-matters-and-whats-on-the-table/"
+            },
+            {
+                "term": "Marine genetic resources",
+                "definition": "Plant, animal, or microbe samples from deep international waters whose genetic data can yield medicines or industrial products.",
+                "sourceUrl": "https://www.wri.org/insights/high-seas-treaty-explainer"
+            }
+        ],
+        "debate": [
+            {
+                "claimBy": "Ambassador Rena Lee (Jan 2026) & Rebecca Hubbard (Sept 2026)",
+                "claim": "Treaty launch created legal tools for sanctuaries immediately, and 100 ratifications show states can deliver 2030 ocean goals [4, 11].",
+                "counterBy": "Palau (AOSIS) & Fiji (PSIDS) Delegations at PrepCom III (2 April 2026)",
+                "counterClaim": "Divisions over voting rules, secret ballots, and financing held back preparatory progress below what the ocean crisis demands [3].",
+                "sourceUrls": [
+                    "https://aida-americas.org/en/press/historic-high-seas-treaty-enters-into-force-launching-a-new-era-of-global-ocean-governance",
+                    "https://highseasalliance.org/2026/09/23/the-high-seas-treaty-reaches-100-parties-cementing-momentum-ahead-of-its-first-conference/",
+                    "https://enb.iisd.org/sites/default/files/2026-04/enb25262e.pdf"
                 ]
             },
             {
-                "title": "Summary of the Third Session of the Preparatory Commission for the Entry into Force of the BBNJ Agreement",
-                "publisher": "Earth Negotiations Bulletin, International Institute for Sustainable Development",
-                "publishedAt": "2026-04-06",
-                "url": "https://enb.iisd.org/sites/default/files/2026-04/enb25262e.pdf",
-                "perspectiveType": "independent",
-                "perspective": "Independent negotiation reporting on areas of agreement, unresolved provisions, participation, finance, and the path to COP1",
-                "supports": [
-                    "PrepCom III agreed on several operational preparations while forwarding unresolved institutional and financial provisions to COP1.",
-                    "The report distinguishes treaty entry into force from the later decisions needed for implementation."
+                "claimBy": "Belgium & Chile Foreign Ministries (6 November 2026)",
+                "claim": "Combining Valparaíso's secretariat with Brussels' data hub bridges North and South and speeds a timely headquarters decision [13].",
+                "counterBy": "Chinese Foreign Ministry Spokesperson Mao Ning (12 November 2026)",
+                "counterClaim": "Splitting secretariat functions across two cities carries at least six legal non-conformities, whereas Xiamen offers a unified host [14].",
+                "sourceUrls": [
+                    "https://diplomatie.belgium.be/en/news/belgium-and-chile-decide-join-their-candidatures-seat-bbnj-secretariat",
+                    "https://brusselsmorning.com/belgium-chile-bbnj-bid-faces-legal-questions-in-new-york-2026/106863/"
                 ]
+            },
+            {
+                "claimBy": "PSIDS & Palau President Surangel Whipps Jr. (2026)",
+                "claim": "Island and Indigenous peoples deserve formal advisory seats and dedicated finance so equity is never an afterthought [1, 8, 9].",
+                "counterBy": "Japan, Russian Federation & Earth Law Center Legal Review (2026)",
+                "counterClaim": "Secret-ballot demands, Russian disassociation from consensus, and overlapping sectoral fishing bodies constrain future sanctuary enforcement [3, 15].",
+                "sourceUrls": [
+                    "https://thenewatoll.com/2026/01/17/pacific-leaders-welcome-un-high-seas-treaty/",
+                    "https://iucn.org/blog/202603/entry-force-action-why-moment-high-seas-cannot-be-missed",
+                    "https://www.un.org/bbnjagreement/sites/default/files/2026-03/PSIDS_SubBodiesCorr_25March.pdf",
+                    "https://enb.iisd.org/sites/default/files/2026-04/enb25262e.pdf",
+                    "https://www.earthlawcenter.org/blog-entries/2026/5/decades-in-the-making-the-high-seas-treaty-is-now-binding-what-happens-next"
+                ]
+            }
+        ],
+        "watchFor": [
+            {
+                "date": "11–22 January 2027",
+                "indicator": "First Conference of the Parties (COP1) in New York deciding voting rules, budget rules, and the permanent secretariat host city.",
+                "sourceUrl": "https://www.un.org/bbnjagreement/en"
+            },
+            {
+                "date": "2027 and beyond",
+                "indicator": "Early regional high-seas sanctuary proposals championed by Pacific advocates such as a protected Tasman Sea corridor.",
+                "sourceUrl": "https://highseasalliance.org/2026/09/23/the-high-seas-treaty-reaches-100-parties-cementing-momentum-ahead-of-its-first-conference/"
+            }
+        ],
+        "examPrompts": [
+            "Evaluate how effectively international treaties can govern shared global commons such as the high seas when powerful fishing or non-party states defend narrow national interests.",
+            "To what extent does giving small island developing states and Indigenous peoples formal institutional voice strengthen the legitimacy of global environmental governance?"
+        ],
+        "influenceCheck": [
+            {
+                "stage": "Setting the agenda",
+                "rating": "STRONG",
+                "evidence": "Decades of advocacy by island states, conservation coalitions, and UN diplomats turned fragmented high-seas gaps into a UN treaty.",
+                "sourceUrls": [
+                    "https://thenewatoll.com/2026/01/17/pacific-leaders-welcome-un-high-seas-treaty/",
+                    "https://www.wri.org/insights/high-seas-treaty-explainer"
+                ]
+            },
+            {
+                "stage": "The formal decision",
+                "rating": "STRONG",
+                "evidence": "Crossing 60 ratifications in September 2025 triggered binding entry into force on 17 January 2026, with deposits reaching the 100-party milestone in September 2026.",
+                "sourceUrls": [
+                    "https://news.un.org/en/story/2025/09/1165901",
+                    "https://highseasalliance.org/2026/09/23/the-high-seas-treaty-reaches-100-parties-cementing-momentum-ahead-of-its-first-conference/"
+                ]
+            },
+            {
+                "stage": "What changed in practice",
+                "rating": "MIXED",
+                "evidence": "Initial genetic notifications arrived and Brussels backed a 40-million-euro program, yet PrepCom III stalled on voting and November split over headquarters bids.",
+                "sourceUrls": [
+                    "https://www.un.org/bbnjagreement/en",
+                    "https://oceans-and-fisheries.ec.europa.eu/news/high-seas-treaty-enters-force-milestone-ocean-conservation-2026-01-16_en",
+                    "https://enb.iisd.org/sites/default/files/2026-04/enb25262e.pdf",
+                    "https://brusselsmorning.com/belgium-chile-bbnj-bid-faces-legal-questions-in-new-york-2026/106863/"
+                ]
+            }
+        ],
+        "conceptLens": {
+            "power": "Major fishing powers ratified before launch for future voting seats while procedural demands for consensus and secret ballots stalled majority sanctuary rules.",
+            "sovereignty": "Although open waters sit outside 200-nautical-mile borders, the treaty binds states over vessels and activities under their national control anywhere at sea.",
+            "legitimacy": "Small island states and Indigenous groups argue fair governance requires dedicated scientific seats and predictable finance rather than rich-country dominance.",
+            "interdependence": "Migratory fish and deep-sea biodiversity cross borders across half the planet, meaning non-party opt-outs weaken sanctuaries built by treaty members."
+        },
+        "essayBuilder": {
+            "prompt": "Evaluate how effectively international treaties can govern shared global commons such as the high seas when powerful fishing or non-party states defend narrow national interests.",
+            "claim": "The BBNJ Agreement proves states can build binding global institutions for shared ocean commons, though powerful maritime actors still constrain enforcement.",
+            "evidence": "Entry into force on 17 January 2026 drew 100-party momentum by September alongside initial genetic notifications and a 40-million-euro European ocean program.",
+            "counterClaim": "Yet Japan's secret-ballot push and Russian objections stalled preparatory voting rules in April, non-parties escape legal duties, and November's secretariat dispute divided members.",
+            "judgment": "Overall, treaty entry marks a genuine legal breakthrough whose real ocean impact hinges on whether COP1 secures fair voting and funding.",
+            "sourceUrls": [
+                "https://www.un.org/bbnjagreement/en",
+                "https://oceans-and-fisheries.ec.europa.eu/news/high-seas-treaty-enters-force-milestone-ocean-conservation-2026-01-16_en",
+                "https://enb.iisd.org/sites/default/files/2026-04/enb25262e.pdf",
+                "https://highseasalliance.org/2026/09/23/the-high-seas-treaty-reaches-100-parties-cementing-momentum-ahead-of-its-first-conference/",
+                "https://brusselsmorning.com/belgium-chile-bbnj-bid-faces-legal-questions-in-new-york-2026/106863/"
+            ]
+        },
+        "keyFigures": [
+            {
+                "value": "100 parties",
+                "unit": "ratification milestone",
+                "label": "Milestone reached as six states deposited ratifications in the week of 23 September 2026 (taking legal effect 30 days after deposit)",
+                "asOf": "23 September 2026",
+                "sourceUrl": "https://highseasalliance.org/2026/09/23/the-high-seas-treaty-reaches-100-parties-cementing-momentum-ahead-of-its-first-conference/"
+            },
+            {
+                "value": "two-thirds",
+                "unit": "of world's ocean",
+                "label": "Share of global oceans lying beyond national jurisdiction now covered by the treaty framework",
+                "asOf": "Entered into force 17 January 2026",
+                "sourceUrl": "https://news.un.org/en/story/2025/09/1165901"
+            },
+            {
+                "value": "11 to 22 January 2027",
+                "unit": "COP1 dates",
+                "label": "First Conference of the Parties in New York set to settle voting rules, budgets, and the permanent secretariat host city",
+                "asOf": "Scheduled",
+                "sourceUrl": "https://www.un.org/bbnjagreement/en"
+            }
+        ],
+        "timeline": [
+            {
+                "date": "2025-09-19",
+                "label": "Morocco and Sierra Leone deliver the 60th and 61st parties' ratifications, triggering the 120-day countdown to entry into force.",
+                "sourceUrl": "https://news.un.org/en/story/2025/09/1165901"
+            },
+            {
+                "date": "2026-01-17",
+                "label": "BBNJ Agreement enters into force across more than 80 parties alongside EU 40-million-euro aid, with late ratifications by Japan, China, and Brazil.",
+                "sourceUrl": "https://oceans-and-fisheries.ec.europa.eu/news/high-seas-treaty-enters-force-milestone-ocean-conservation-2026-01-16_en"
+            },
+            {
+                "date": "2026-04-02",
+                "label": "Third Preparatory Commission ends in New York after two weeks of talks, forwarding unresolved voting and budget rules to COP1.",
+                "sourceUrl": "https://enb.iisd.org/sites/default/files/2026-04/enb25262e.pdf"
+            },
+            {
+                "date": "2026-09-23",
+                "label": "Ratifications by Australia, Canada, Germany, and Papua New Guinea push deposits to the 100-party milestone during UN General Assembly week.",
+                "sourceUrl": "https://highseasalliance.org/2026/09/23/the-high-seas-treaty-reaches-100-parties-cementing-momentum-ahead-of-its-first-conference/"
+            },
+            {
+                "date": "2026-11-12",
+                "label": "China objects to the 6 November Belgium–Chile joint secretariat bid splitting Valparaíso and Brussels while advancing Xiamen's candidature.",
+                "sourceUrl": "https://brusselsmorning.com/belgium-chile-bbnj-bid-faces-legal-questions-in-new-york-2026/106863/"
             }
         ],
         "waypoints": [
             {
                 "nodeId": "UN_OPEC",
-                "title": "Separate Entry Into Force From Delivery",
-                "perspectiveLabel": "Official treaty process",
-                "perspectiveType": "institutional",
-                "narration": "The agreement entered into force in January 2026, but its institutions, funding, procedures, and conservation decisions still require implementation by parties.",
-                "focusQuestion": "Which early institutional decisions will most influence whether the treaty produces credible outcomes?"
-            },
-            {
-                "nodeId": "AsiaPacific",
-                "title": "Design Participation Into the System",
-                "perspectiveLabel": "Pacific small-island-state proposal",
+                "title": "High Seas Law Takes Effect",
+                "perspectiveLabel": "Entry into force and island diplomacy",
                 "perspectiveType": "local",
-                "narration": "PSIDS proposals seek structured roles for Indigenous peoples, local communities, and traditional knowledge rather than participation limited to observation.",
-                "focusQuestion": "How should expertise, representation, consent, and accountability operate when decisions affect communities with deep ocean relationships?"
-            },
-            {
-                "nodeId": "Africa",
-                "title": "Make Capacity and Benefits Operational",
-                "perspectiveLabel": "Developing coastal-state implementation lens",
-                "perspectiveType": "local",
-                "narration": "The agreement's legitimacy depends partly on whether states and communities with fewer scientific and financial resources can participate in research, governance, and benefit sharing.",
-                "focusQuestion": "What funding and technology-transfer indicators would demonstrate more equal implementation capacity?"
+                "conceptInFocus": "Sovereignty",
+                "relatedTimelineDate": "2026-01-17",
+                "narration": "On 17 January 2026, Alliance of Small Island States Chair Ilana Seid of Palau welcomed the UN High Seas Treaty becoming binding law across international waters [1]. She urged governments to match launch with fair ocean conservation [1]. Negotiations president Rena Lee of Singapore praised entry into force as a hard-won victory built through multilateral dialogue [4]. Earlier on 19 September 2025, Morocco and Sierra Leone had become the sixtieth and next trigger parties [5].\n\nInternational waters cover roughly two-thirds of the ocean beyond coastal zones [5, 16]. Immediate binding powers let member countries propose ocean sanctuaries and mandate impact studies, while membership reached 100 parties in September 2026 [4, 11]. Sovereignty—national legal control anchored to land and nearby waters—forces governments to write shared treaty rules across open seas.",
+                "focusQuestion": "Why did high-seas waters lack comprehensive protection before countries agreed to share jurisdiction beyond coastal borders?"
             },
             {
                 "nodeId": "UN_OPEC",
-                "title": "Track the Unresolved Rules",
-                "perspectiveLabel": "Independent negotiation record",
+                "title": "Fishing Powers Guard the Rules",
+                "perspectiveLabel": "New York preparatory talks and voting clashes",
                 "perspectiveType": "independent",
-                "narration": "IISD reports both negotiated progress and bracketed provisions that COP1 must resolve, preventing a premature claim that the governance architecture is complete.",
-                "focusQuestion": "Where could procedural disagreement most directly delay conservation, finance, or accountable decision-making?"
+                "conceptInFocus": "Power",
+                "relatedTimelineDate": "2026-04-02",
+                "narration": "Late in March 2026 at UN Headquarters in New York, Co-Chairs Janine Coye-Felson of Belize and Adam McCarthy of Australia opened third-round preparatory talks [3]. Over 200 government and civil-society delegates debated conference voting procedures, scientific advisory panels, and treaty financial rules [3]. When talks closed on 2 April 2026, Palau warned \"the Ocean is not collateral to other processes\" while Fiji urged members to stop stalling [3].\n\nEarlier, fishing powers China, Japan, and Brazil ratified before launch to lock in future conference voting seats [7]. During March debates as treaty parties reached 88 nations, Japan pushed secret ballots while Russia disassociated from consensus—decision-making without formal dissent—leaving sanctuary voting unsettled [3]. Power—using procedural blocks and distant-water fleet influence—let major maritime capitals slow majority ocean-sanctuary decisions.",
+                "focusQuestion": "How can procedural rules such as consensus voting protect large fishing states from unwanted ocean sanctuaries?"
+            },
+            {
+                "nodeId": "AsiaPacific",
+                "title": "Pacific Voices Demand Fair Seats",
+                "perspectiveLabel": "100-party milestone and equity calls",
+                "perspectiveType": "local",
+                "conceptInFocus": "Legitimacy",
+                "relatedTimelineDate": "2026-09-23",
+                "narration": "On 23 September 2026 in New York, High Seas Alliance Director Rebecca Hubbard urged governments to match treaty momentum with strong decisions during United Nations General Assembly week [11]. Ratifications had reached 100 nations that week as Australia, Canada, Germany, and Papua New Guinea joined [11]. That same day, Greenpeace campaigner Elle Lawless called for an ambitious Tasman Sea ocean sanctuary [11]. Earlier in January, Brussels had confirmed 40 million euros supporting developing nations [6].\n\nPacific islanders warn financing still matters deeply: Palau President Surangel Whipps Jr. cautioned \"Finance cannot be an afterthought\" [8]. Pacific negotiators also proposed adding Indigenous traditional knowledge onto technical panels [9]. Without stable grants and open research archives, wealthy countries and firms dominate deep-sea discoveries [16]. Legitimacy—public trust that global rules treat small and Indigenous nations fairly—rests on equitable funding and seats.",
+                "focusQuestion": "Why do Pacific island states tie the treaty's legitimacy directly to funding and Indigenous representation?"
+            },
+            {
+                "nodeId": "LatinAmerica",
+                "title": "Secretariat Split Tests Cooperation",
+                "perspectiveLabel": "Valparaíso–Brussels versus Xiamen bid row",
+                "perspectiveType": "institutional",
+                "conceptInFocus": "Interdependence",
+                "relatedTimelineDate": "2026-11-12",
+                "narration": "On 12 November 2026 in Beijing, Chinese Foreign Ministry spokesperson Mao Ning formally objected to Belgium and Chile's merged secretariat bid while promoting Xiamen [14]. Days earlier on 6 November, Brussels and Santiago combined bids to house main offices in Valparaíso while Brussels hosts the clearinghouse—the shared online hub tracking genetic studies and sanctuary plans [13]. Mao Ning argued splitting offices violated agreed treaty rules [14].\n\nTreaty members gather from 11 January 2027 at United Nations Headquarters in New York to choose a permanent host city and rules [2]. Although non-party governments can join meetings as observers, they hold zero votes and escape legal duties even as scientists file early genetic notices [2, 3, 12, 16]. Interdependence—mutual ecological reliance across linked currents and migrating marine life—means opt-outs weaken ocean conservation everywhere.",
+                "focusQuestion": "Why does a treaty governing nearly half of Earth's surface struggle when states split over its headquarters and non-parties opt out?"
             }
         ],
         "relatedCases": [
@@ -155,6 +456,10 @@ export const GLOBAL_INSTITUTIONS_CASES_2026 = [
             {
                 "caseId": "ilo-seafarers-global-wage-floor",
                 "note": "Compare governing areas beyond national jurisdiction under BBNJ with flag-state labor jurisdiction at sea."
+            },
+            {
+                "caseId": "tuvalu-australia-falepili-union",
+                "note": "Compare multilateral ocean rules protecting half the planet with a bilateral Pacific treaty guarding atoll statehood."
             }
         ]
     },

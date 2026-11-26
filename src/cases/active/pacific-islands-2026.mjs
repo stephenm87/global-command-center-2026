@@ -2,9 +2,9 @@ export const PACIFIC_ISLANDS_CASES_2026 = [
     {
         "id": "tuvalu-australia-falepili-union",
         "status": "active",
-        "reviewStatus": "update-in-progress",
+        "briefingVersion": 2,
         "title": "Tuvalu–Australia Falepili Union",
-        "subtitle": "Climate mobility, continuing statehood, and a new security partnership",
+        "subtitle": "How rising tides, up to 280 annual visas, and security pacts test Pacific statehood and fairness",
         "coverageRegion": "Pacific Islands",
         "regionTags": [
             "Pacific",
@@ -19,25 +19,37 @@ export const PACIFIC_ISLANDS_CASES_2026 = [
             "Adaptation",
             "Asymmetric security partnership"
         ],
+        "concepts": [
+            "Sovereignty",
+            "Power",
+            "Interdependence",
+            "Legitimacy"
+        ],
+        "ibThemes": [
+            "development-and-sustainability",
+            "peace-and-conflict"
+        ],
         "actors": [
-            "Tuvalu",
-            "Australia",
-            "Tuvaluan citizens"
+            "Government of Tuvalu",
+            "Government of Australia",
+            "Tuvaluan families and diaspora workers",
+            "Tuvalu opposition critics",
+            "Pacific regional observers"
         ],
         "nexusNodeIds": [
             "AsiaPacific",
             "UN_OPEC"
         ],
-        "statusSummary": "The Falepili Union entered into force on 28 August 2024. The treaty recognizes Tuvalu's continuing statehood and sovereignty despite climate-related sea-level rise and establishes a permanent-residence mobility pathway. For the 2026–27 program year, Australia allocated up to 280 visa places. Registration closed on 1 June 2026, while the published selection period runs from 9 June 2026 through 30 June 2027.",
-        "whyItMatters": "The arrangement links climate adaptation, mobility, legal continuity of a threatened state, culture, and security cooperation without treating mobility participants as refugees.",
-        "updatedAt": "2026-08-10",
+        "statusSummary": "Entered into force on 28 August 2024, the Australia–Tuvalu Falepili Union closed registration for its second annual permanent-residency visa ballot of up to 280 places on 1 June 2026, following 8,750 registrants in 2025 [2, 5, 10]. In May 2026, reporting noted coastal engineering had expanded Tuvalu's landmass by more than 10% alongside more than A$110 million in immediate Australian commitments, while Prime Minister Albanese visited in October and Tuvaluan critics questioned Canberra's security clause and climate record [1, 3, 6].",
+        "whyItMatters": "The world's first bilateral climate-mobility treaty links permanent migration rights, enduring statehood recognition, coastal engineering, and strategic security leverage in a single bargain.",
+        "updatedAt": "2026-11-26",
         "confidence": "high",
-        "uncertainty": "The published selection window extends through 30 June 2027; registration having closed does not mean that all places have been filled. Annual allocations and administrative timing can change. The pathway is permanent-residence mobility, not formal refugee recognition, and claims about demographic or brain-drain effects need separate evidence.",
+        "uncertainty": "High initial ballot registration—more than half of Tuvalu's citizens in 2025—shows demand to keep options open, not immediate permanent departure by every registrant [10]. Selection windows for the 2026–27 intake run from 9 June 2026 through 30 June 2027, and long-term workforce loss remains contested [1, 5].",
         "sensitivity": "high",
-        "editorialCaution": "Describe the pathway as permanent-residence mobility rather than refugee status, preserve Tuvaluan agency, and distinguish registration, random selection, visa application, and actual migration.",
+        "editorialCaution": "Describe the Falepili Mobility Pathway as permanent-residence mobility rather than refugee status, highlight Tuvaluan constitutional leadership, and distinguish registration from actual departure.",
         "featured": false,
         "reviewCadenceDays": 30,
-        "reviewBy": "2026-09-09",
+        "reviewBy": "2026-12-26",
         "coordinates": {
             "latitude": -8.5211,
             "longitude": 179.1962
@@ -46,107 +58,384 @@ export const PACIFIC_ISLANDS_CASES_2026 = [
             "mode": "regional",
             "locations": [
                 {
-                    "label": "Funafuti",
+                    "label": "Funafuti, Tuvalu",
                     "latitude": -8.5211,
                     "longitude": 179.1962,
-                    "role": "Tuvaluan government, community, and climate-continuity reference point"
+                    "role": "Capital atoll where king tides seep upward, land reclamation reported 10% island landmass growth, and Albanese visited in October 2026"
                 },
                 {
-                    "label": "Canberra",
+                    "label": "Canberra, Australia",
                     "latitude": -35.2809,
                     "longitude": 149.13,
-                    "role": "Australian treaty and mobility-policy administration"
+                    "role": "Where Tuvalu opened its first High Commission in July 2025 and Australia administers up to 280 annual visas"
+                },
+                {
+                    "label": "Victoria, Australia",
+                    "latitude": -37.8136,
+                    "longitude": 144.9631,
+                    "role": "Destination region where Falepili visa recipients including Tuvaluan workers plan to settle"
                 }
             ]
         },
         "sources": [
             {
-                "title": "Hope in Tuvalu’s climate change response: Falepili to Digital Nation",
-                "publisher": "Development Policy Centre",
-                "publishedAt": "2026-02-20",
-                "url": "https://devpolicy.org/hope-in-tuvalus-climate-change-response-from-falepili-to-digital-nation-20260220/",
+                "title": "The majority of Tuvalu has applied to relocate to Australia to escape climate change. What happens now?",
+                "publisher": "ABC News Australia",
+                "publishedAt": "2026-05-21",
+                "url": "https://www.abc.net.au/news/2026-05-21/tuvalu-australia-falepili-visa-climate-migration-pacific/106674754",
                 "perspectiveType": "local",
-                "perspective": "Tuvalu-centered account of mobility, culture, state continuity, and local adaptation choices",
-                "supports": "Why Tuvaluan agency and cultural continuity should not be reduced to a climate-loss narrative"
+                "perspective": "On-island reporting from Funafuti featuring Tevaogali Elisala, Maina Talia, Stella Futiga, and Enele Sopoaga",
+                "supports": "Supports Tevaogali Elisala and Alfred, Minister Maina Talia, Stella Futiga's Victoria plan, 15cm rise, James Lewis reporting >10% landmass growth, and Enele Sopoaga's critique."
             },
             {
-                "title": "Pacific Engagement visa (subclass 192) – Treaty stream ballot registration",
+                "title": "Australia-Tuvalu Falepili Union treaty",
+                "publisher": "Australian Department of Foreign Affairs and Trade (DFAT)",
+                "publishedAt": null,
+                "sourceType": "living-reference",
+                "reviewedAt": "2026-11-26",
+                "url": "https://www.dfat.gov.au/geo/tuvalu/australia-tuvalu-falepili-union-treaty",
+                "perspectiveType": "institutional",
+                "perspective": "Official Australian government treaty summary, annual allocation rules, and ballot dates",
+                "supports": "Supports 9 November 2023 signature, 28 August 2024 entry into force, up to 280 places (agreed annually), 1 May to 1 June 2026 registration, and remittance pathway."
+            },
+            {
+                "title": "Whose security counts in the Pacific?",
+                "publisher": "University of Technology Sydney (reprinted from Crikey)",
+                "publishedAt": "2026-10-08",
+                "url": "https://www.uts.edu.au/news/2026/10/whose-security-counts-in-the-pacific",
+                "perspectiveType": "independent",
+                "perspective": "Independent analysis by Wanning Sun critiquing funding asymmetry and domestic rows over Pacific diplomacy",
+                "supports": "Supports breakdown of more than A$110 million immediate commitments, Dan Tehan calling the A$20 million meeting a farce, Wanning Sun's security-spending critique, and Sopoaga/Teo sovereignty worries."
+            }
+        ],
+        "supplementalSources": [
+            {
+                "title": "The Falepili Union: The Tuvalu–Australia Treaty Explained",
+                "publisher": "Office of the Ambassador to UNESCO and Special Envoy to the Commonwealth",
+                "publishedAt": null,
+                "sourceType": "living-reference",
+                "reviewedAt": "2026-11-23",
+                "url": "https://tuvalumission.tv/falepili-union.html",
+                "perspective": "Official Tuvaluan explanation emphasizing dignity, choice to stay, and non-refugee status",
+                "supports": "Supports Tuvalu framing Falepili around mutual neighbourly care, voluntary return freedom, and distinction from refugee status."
+            },
+            {
+                "title": "Pacific Engagement visa (subclass 192) – Treaty stream – Ballot country status",
                 "publisher": "Australian Department of Home Affairs",
                 "publishedAt": null,
                 "sourceType": "living-reference",
-                "updatedAt": "2026-04-16",
-                "reviewedAt": "2026-08-10",
-                "url": "https://immi.homeaffairs.gov.au/visas/getting-a-visa/visa-listing/pacific-engagement/subclass-192-treaty-stream/ballot-registration",
-                "perspectiveType": "institutional",
-                "perspective": "Official eligibility, allocation, and 2026 ballot information",
-                "supports": "The pathway's legal status, annual allocation, and administrative operation"
+                "reviewedAt": "2026-11-26",
+                "url": "https://immi.homeaffairs.gov.au/visas/getting-a-visa/visa-listing/pacific-engagement/subclass-192-treaty-stream/ballot-registration/ballot-country-status",
+                "perspective": "Official Australian immigration ballot notice",
+                "supports": "Supports 1 May to 1 June 2026 registration window and 9 June 2026 to 30 June 2027 selection period for the second Tuvalu ballot."
+            },
+            {
+                "title": "Tuvalu country brief",
+                "publisher": "Australian Department of Foreign Affairs and Trade (DFAT)",
+                "publishedAt": null,
+                "sourceType": "living-reference",
+                "reviewedAt": "2026-11-26",
+                "url": "https://www.dfat.gov.au/geo/tuvalu/tuvalu-country-brief",
+                "perspective": "Official bilateral diplomatic record through October 2026",
+                "supports": "Supports Tuvalu's ~9,492 population, July 2025 Canberra High Commission opening, and October 2026 visit by PM Albanese and Minister for Climate Change and Energy Chris Bowen."
+            },
+            {
+                "title": "Tuvalu Development Cooperation Factsheet",
+                "publisher": "Australian Department of Foreign Affairs and Trade (DFAT)",
+                "publishedAt": null,
+                "sourceType": "living-reference",
+                "reviewedAt": "2026-11-26",
+                "url": "https://www.dfat.gov.au/sites/default/files/development-cooperation-fact-sheet-tuvalu.pdf",
+                "perspective": "Official May 2026 aid ledger tracking Australian development flows",
+                "supports": "Supports A$60.8 million total Australian ODA in 2024–25 and A$46.0 million total estimated ODA (A$26.0 million Country Programs) for 2026–27."
+            },
+            {
+                "title": "Tuvalu: One in three citizens apply for climate change visa",
+                "publisher": "BBC News",
+                "publishedAt": "2025-06-27",
+                "url": "https://www.bbc.com/news/articles/cvg9750vvwxo",
+                "perspective": "International coverage quoting Tuvalu Prime Minister Feleti Teo on statehood guarantees",
+                "supports": "Supports Prime Minister Feleti Teo praising legal recognition of future statehood and sovereignty, A$25 ballot fee, and healthcare and study benefits."
+            },
+            {
+                "title": "Earth Day: The battle to save a drowning Pacific island nation",
+                "publisher": "UN News",
+                "publishedAt": "2026-04-22",
+                "url": "https://news.un.org/en/story/2026/04/1167353",
+                "perspective": "UN reporting featuring UNDP Pacific official Tuya Altangerel on reclamation engineering",
+                "supports": "Supports US$55 million UN coastal project costs, phase two plan adding eight hectares along Fongafale where 60% of citizens live, and less than 5-meter peak elevation."
+            },
+            {
+                "title": "Mobility provisions in recent Australia-Pacific bilateral agreements",
+                "publisher": "Devpolicy Blog (ANU Development Policy Centre)",
+                "publishedAt": "2026-09-11",
+                "url": "https://devpolicy.org/mobility-provisions-in-recent-australia-pacific-bilateral-agreements-20260911/",
+                "perspective": "Independent comparative policy analysis across six Pacific–Australia treaties",
+                "supports": "Supports 8,750 registrants in first ballot at A$25 each and absence of provisions for people forced to move suddenly after disasters."
+            },
+            {
+                "title": "Hope in Tuvalu's climate change response: Falepili to Digital Nation",
+                "publisher": "Devpolicy Blog (ANU Development Policy Centre)",
+                "publishedAt": "2026-02-20",
+                "url": "https://devpolicy.org/hope-in-tuvalus-climate-change-response-from-falepili-to-digital-nation-20260220/",
+                "perspective": "Pacific scholars challenging external narratives of inevitable island disappearance",
+                "supports": "Supports Funafuti Digital Nation consultations in late 2025 and January 2026 and criticism of deterministic media headlines."
+            },
+            {
+                "title": "Australia-Tuvalu mobility pathway: does it address the climate crisis?",
+                "publisher": "Devpolicy Blog (ANU Development Policy Centre)",
+                "publishedAt": "2025-07-01",
+                "url": "https://devpolicy.org/australia-tuvalu-mobility-pathway-20250701/",
+                "perspective": "First-hand policy critique flagging travel costs and Australia's emissions profile",
+                "supports": "Supports US$1,600 round-trip airfares hindering easy circular travel and critique over Australia's 4.5% global carbon emissions role."
+            },
+            {
+                "title": "Australia-Tuvalu Falepili Union: The First Bilateral Climate Mobility Treaty",
+                "publisher": "Carnegie Endowment for International Peace",
+                "publishedAt": "2025-09-09",
+                "url": "https://carnegieendowment.org/research/2025/09/australia-tuvalu-falepili-union-the-first-bilateral-climate-mobility-treaty",
+                "perspective": "Global climate-governance research tracing August 2023 proposal, October 2023 constitutional amendment, and 18 July 2025 close",
+                "supports": "Supports August 2023 Falepili proposal, October 2023 constitutional statehood and baseline coordinates amendment, and 18 July 2025 first ballot closing."
+            },
+            {
+                "title": "Friends to all: Falepili Union Treaty sets Tuvalu's security, Australia must deliver",
+                "publisher": "ASPI The Strategist",
+                "publishedAt": "2025-08-12",
+                "url": "https://www.aspistrategist.org.au/friends-to-all-falepili-union-treaty-sets-tuvalus-security-australia-must-deliver/",
+                "perspective": "Australian strategic analysis examining mutual-agreement security clauses and Pacific defense ties",
+                "supports": "Supports treaty mutual-agreement requirement on outside security deals and Tuvalu retaining diplomatic ties with Taiwan."
             },
             {
                 "title": "An Unthinkable Question: Tuvalu and the Falepili Union",
                 "publisher": "Victoria University of Wellington Law Review",
                 "publishedAt": "2026-06-15",
                 "url": "https://ojs.victoria.ac.nz/vuwlr/article/view/10760",
-                "perspectiveType": "independent",
-                "perspective": "Independent legal analysis of mobility, security, sovereignty, and continuing statehood",
-                "supports": "The treaty's legal innovations and tensions between protection and asymmetric security commitments"
+                "perspective": "Legal scholarship centering Tuvaluan agency in proposing and shaping the treaty",
+                "supports": "Supports evidence that Tuvalu initiated and aligned the Falepili Union with its long-standing constitutional and foreign-policy goals."
             }
         ],
-        "supplementalSources": [
+        "background": "Spread across low coral atolls and reef islands with roughly 9,492 residents, Tuvalu sits less than five meters above ocean waves [6, 9]. Surrounding seas have climbed by about 15 centimeters over recent decades [1]. King tides increasingly surge upward through porous coral rock beneath coastal homes, gardens, and Funafuti's lone international runway [1].\n\nAfter proposing a pact in August 2023, Tuvalu amended its constitution in October 2023 to fix statehood, sovereignty, and maritime baseline coordinates permanently [13]. Weeks later, Tuvalu and Australia signed the Falepili Union, taking legal force on 28 August 2024 [2, 13]. Tuvalu later opened its first diplomatic High Commission in Canberra during July 2025 [6].\n\nNamed after a Tuvaluan principle meaning good neighborliness, the treaty blends up to 280 annual visas, statehood guarantees, and over A$110 million in immediate commitments with mutual vetoes on outside defense ties [2, 3, 4, 14]. For island families on Funafuti, migration brings painful trade-offs between household security, fair wages abroad, and keeping skilled clinics and public offices staffed back home [1, 3].",
+        "backgroundSources": [
+            "https://www.abc.net.au/news/2026-05-21/tuvalu-australia-falepili-visa-climate-migration-pacific/106674754",
+            "https://www.dfat.gov.au/geo/tuvalu/australia-tuvalu-falepili-union-treaty",
+            "https://www.uts.edu.au/news/2026/10/whose-security-counts-in-the-pacific",
+            "https://tuvalumission.tv/falepili-union.html",
+            "https://www.dfat.gov.au/geo/tuvalu/tuvalu-country-brief",
+            "https://news.un.org/en/story/2026/04/1167353",
+            "https://carnegieendowment.org/research/2025/09/australia-tuvalu-falepili-union-the-first-bilateral-climate-mobility-treaty",
+            "https://www.aspistrategist.org.au/friends-to-all-falepili-union-treaty-sets-tuvalus-security-australia-must-deliver/"
+        ],
+        "keyTerms": [
             {
-                "title": "Australia–Tuvalu Falepili Union treaty",
-                "publisher": "Australian Department of Foreign Affairs and Trade",
-                "publishedAt": null,
-                "sourceType": "living-reference",
-                "reviewedAt": "2026-08-10",
-                "milestoneDate": "2024-08-28",
-                "milestoneLabel": "Treaty entered into force",
-                "url": "https://www.dfat.gov.au/geo/tuvalu/australia-tuvalu-falepili-union-treaty",
-                "perspective": "Current official treaty and implementation overview"
+                "term": "Falepili",
+                "definition": "A Tuvaluan principle of good neighborliness, mutual respect, and shared duty to protect neighbors in hard times.",
+                "sourceUrl": "https://tuvalumission.tv/falepili-union.html"
             },
             {
-                "title": "Treaty stream ballot country status",
-                "publisher": "Australian Department of Home Affairs",
-                "publishedAt": null,
-                "sourceType": "living-reference",
-                "reviewedAt": "2026-08-10",
-                "milestoneDate": "2027-06-30",
-                "milestoneLabel": "Published 2026–27 selection period ends",
-                "url": "https://immi.homeaffairs.gov.au/visas/getting-a-visa/visa-listing/pacific-engagement/subclass-192-treaty-stream/ballot-registration/ballot-country-status",
-                "perspective": "Official status and timing for the Tuvalu Treaty stream ballot"
+                "term": "Continuing statehood",
+                "definition": "Legal recognition that a nation keeps its UN seat, sovereignty, and constitutional baseline coordinates even if rising seas swallow physical territory.",
+                "sourceUrl": "https://carnegieendowment.org/research/2025/09/australia-tuvalu-falepili-union-the-first-bilateral-climate-mobility-treaty"
+            },
+            {
+                "term": "Mobility with dignity",
+                "definition": "Permanent residency access with healthcare, schooling, and return travel rights so Tuvaluans move by choice rather than as refugees.",
+                "sourceUrl": "https://www.dfat.gov.au/geo/tuvalu/australia-tuvalu-falepili-union-treaty"
+            },
+            {
+                "term": "Mutual security agreement clause",
+                "definition": "The treaty condition requiring Tuvalu and Australia to mutually approve any future Tuvaluan defense or security pact with another country.",
+                "sourceUrl": "https://www.aspistrategist.org.au/friends-to-all-falepili-union-treaty-sets-tuvalus-security-australia-must-deliver/"
+            }
+        ],
+        "debate": [
+            {
+                "claimBy": "Prime Minister Feleti Teo & Climate Minister Maina Talia (2025–2026)",
+                "claim": "The pact secures rare legal recognition of permanent statehood while letting families stay on reclaimed land or work abroad and return [1, 8].",
+                "counterBy": "Former Prime Minister Enele Sopoaga (May 2026)",
+                "counterClaim": "The agreement acts in an interventionist way over foreign security ties while Australia refuses binding greenhouse gas reductions [1, 3].",
+                "sourceUrls": [
+                    "https://www.bbc.com/news/articles/cvg9750vvwxo",
+                    "https://www.abc.net.au/news/2026-05-21/tuvalu-australia-falepili-visa-climate-migration-pacific/106674754",
+                    "https://www.uts.edu.au/news/2026/10/whose-security-counts-in-the-pacific"
+                ]
+            },
+            {
+                "claimBy": "Australian High Commissioner David Charlton & DFAT (2026)",
+                "claim": "Opening a Canberra High Commission alongside A$46 million in total estimated yearly Australian aid builds a genuine two-way mobility pathway [1, 6, 7].",
+                "counterBy": "Devpolicy Researchers & Enele Sopoaga (2025–2026)",
+                "counterClaim": "Costly US$1,600 return airfares hinder easy visits home while departing working-age adults risk hollowing out Tuvalu's local workforce [1, 12].",
+                "sourceUrls": [
+                    "https://www.abc.net.au/news/2026-05-21/tuvalu-australia-falepili-visa-climate-migration-pacific/106674754",
+                    "https://www.dfat.gov.au/geo/tuvalu/tuvalu-country-brief",
+                    "https://www.dfat.gov.au/sites/default/files/development-cooperation-fact-sheet-tuvalu.pdf",
+                    "https://devpolicy.org/australia-tuvalu-mobility-pathway-20250701/"
+                ]
+            },
+            {
+                "claimBy": "Australian Leaders Anthony Albanese & Chris Bowen (October 2026)",
+                "claim": "Visiting Funafuti and investing A$20 million to co-host a pre-COP climate meeting backs Pacific partners facing sea-level rise [3, 6].",
+                "counterBy": "Shadow Energy Spokesman Dan Tehan & Analyst Wanning Sun (October 2026)",
+                "counterClaim": "Tehan questioned whether taxpayers get value from the meeting, while Sun argued security spending escapes comparable scrutiny [3].",
+                "sourceUrls": [
+                    "https://www.dfat.gov.au/geo/tuvalu/tuvalu-country-brief",
+                    "https://www.uts.edu.au/news/2026/10/whose-security-counts-in-the-pacific"
+                ]
+            }
+        ],
+        "watchFor": [
+            {
+                "date": "Through 30 June 2027",
+                "indicator": "Ongoing selection rounds under the 2026–27 ballot as Home Affairs processes invites up to the 280-place annual cap.",
+                "sourceUrl": "https://immi.homeaffairs.gov.au/visas/getting-a-visa/visa-listing/pacific-engagement/subclass-192-treaty-stream/ballot-registration/ballot-country-status"
+            },
+            {
+                "date": "Ongoing",
+                "indicator": "Progress on Funafuti phase-two coastal land reclamation adding eight hectares along Fongafale where 60% of citizens live.",
+                "sourceUrl": "https://news.un.org/en/story/2026/04/1167353"
+            }
+        ],
+        "examPrompts": [
+            "To what extent does the Australia–Tuvalu Falepili Union protect Tuvaluan sovereignty rather than deepen dependence on a larger regional power?",
+            "Evaluate whether bilateral mobility visas offer a legitimate and sufficient response for communities facing climate-driven displacement."
+        ],
+        "influenceCheck": [
+            {
+                "stage": "Setting the agenda",
+                "rating": "STRONG",
+                "evidence": "Tuvalu's October 2023 constitutional reform and diplomacy turned island continuity and dignified mobility into formal international law.",
+                "sourceUrls": [
+                    "https://carnegieendowment.org/research/2025/09/australia-tuvalu-falepili-union-the-first-bilateral-climate-mobility-treaty",
+                    "https://ojs.victoria.ac.nz/vuwlr/article/view/10760"
+                ]
+            },
+            {
+                "stage": "The formal decision",
+                "rating": "STRONG",
+                "evidence": "The Falepili Union entered into force in August 2024 with Australia legally recognizing enduring statehood and creating up to 280 yearly permanent visas.",
+                "sourceUrls": [
+                    "https://www.dfat.gov.au/geo/tuvalu/australia-tuvalu-falepili-union-treaty",
+                    "https://www.bbc.com/news/articles/cvg9750vvwxo"
+                ]
+            },
+            {
+                "stage": "What changed in practice",
+                "rating": "MIXED",
+                "evidence": "Two visa ballots ran by June 2026 and reclaimed land surpassed 10% landmass expansion, yet security conditions stirred backlash and active workers plan migration.",
+                "sourceUrls": [
+                    "https://www.abc.net.au/news/2026-05-21/tuvalu-australia-falepili-visa-climate-migration-pacific/106674754",
+                    "https://www.uts.edu.au/news/2026/10/whose-security-counts-in-the-pacific"
+                ]
+            }
+        ],
+        "conceptLens": {
+            "power": "Australia pairs more than A$110 million in commitments and up to 280 annual visas with joint approval over Tuvalu's outside security deals.",
+            "sovereignty": "Constitutional baseline coordinates and treaty recognition affirm Tuvalu keeps sovereign statehood even if seawater submerges land.",
+            "legitimacy": "Leaders champion non-refugee dignity and home adaptation, while critics point out Australia's fossil-fuel emissions undermine climate trust.",
+            "interdependence": "Potential diaspora remittances, Victoria migration ties, and international adaptation aid link Tuvalu's island economy directly to Australia."
+        },
+        "essayBuilder": {
+            "prompt": "To what extent does the Australia–Tuvalu Falepili Union protect Tuvaluan sovereignty rather than deepen dependence on a larger regional power?",
+            "claim": "The Falepili Union sets a historic benchmark for permanent statehood and dignified mobility, yet Australian security oversight leaves an unequal bargain.",
+            "evidence": "Australia legally recognizes Tuvalu's enduring sovereignty, opens up to 280 annual visas, and backs more than A$110 million in immediate commitments including Funafuti land reclamation.",
+            "counterClaim": "However, treaty rules hand Canberra a say over Tuvalu's outside security deals while young working adults plan moves to Australia.",
+            "judgment": "Overall, Tuvalu won real legal protections it initiated itself, though long-term independence depends on global emissions cuts and keeping skilled citizens home.",
+            "sourceUrls": [
+                "https://www.bbc.com/news/articles/cvg9750vvwxo",
+                "https://www.abc.net.au/news/2026-05-21/tuvalu-australia-falepili-visa-climate-migration-pacific/106674754",
+                "https://www.uts.edu.au/news/2026/10/whose-security-counts-in-the-pacific",
+                "https://ojs.victoria.ac.nz/vuwlr/article/view/10760"
+            ]
+        },
+        "keyFigures": [
+            {
+                "value": "280",
+                "unit": "annual visa cap",
+                "label": "Up to 280 permanent-residence places allocated yearly by ballot, with second registration closing 1 June 2026 and selection running 9 June 2026 to 30 June 2027",
+                "asOf": "2026–27 program year",
+                "sourceUrl": "https://immi.homeaffairs.gov.au/visas/getting-a-visa/visa-listing/pacific-engagement/subclass-192-treaty-stream/ballot-registration/ballot-country-status"
+            },
+            {
+                "value": "8,750",
+                "unit": "2025 ballot registrants",
+                "label": "Citizens who registered for the first Falepili visa ballot in 2025—over half of Tuvalu's eligible population worldwide before random invitations",
+                "asOf": "2025 inaugural ballot",
+                "sourceUrl": "https://devpolicy.org/mobility-provisions-in-recent-australia-pacific-bilateral-agreements-20260911/"
+            },
+            {
+                "value": "A$110 million",
+                "unit": "Australian commitments",
+                "label": "More than A$110 million in immediate commitments across coastal reclamation, budget support, an undersea cable, and security infrastructure",
+                "asOf": "Reported May–October 2026",
+                "sourceUrl": "https://www.uts.edu.au/news/2026/10/whose-security-counts-in-the-pacific"
+            }
+        ],
+        "timeline": [
+            {
+                "date": "2023-10",
+                "label": "After proposing the Falepili Union in August 2023, Tuvalu amends its constitution so statehood and baseline coordinates endure perpetually.",
+                "sourceUrl": "https://carnegieendowment.org/research/2025/09/australia-tuvalu-falepili-union-the-first-bilateral-climate-mobility-treaty"
+            },
+            {
+                "date": "2024-08-28",
+                "label": "Australia–Tuvalu Falepili Union Treaty formally enters into force across mobility, adaptation, and security.",
+                "sourceUrl": "https://www.dfat.gov.au/geo/tuvalu/australia-tuvalu-falepili-union-treaty"
+            },
+            {
+                "date": "2025-07-18",
+                "label": "First annual visa ballot closes after 8,750 registrants compete for random invitations under the 280-visa pathway.",
+                "sourceUrl": "https://carnegieendowment.org/research/2025/09/australia-tuvalu-falepili-union-the-first-bilateral-climate-mobility-treaty"
+            },
+            {
+                "date": "2026-06-01",
+                "label": "Registration closes for the second annual Falepili visa ballot, opening selection rounds from 9 June 2026 through 30 June 2027.",
+                "sourceUrl": "https://immi.homeaffairs.gov.au/visas/getting-a-visa/visa-listing/pacific-engagement/subclass-192-treaty-stream/ballot-registration/ballot-country-status"
+            },
+            {
+                "date": "2026-10",
+                "label": "Australian Prime Minister Anthony Albanese and Minister for Climate Change and Energy Chris Bowen visit Tuvalu for pre-COP talks.",
+                "sourceUrl": "https://www.dfat.gov.au/geo/tuvalu/tuvalu-country-brief"
             }
         ],
         "waypoints": [
             {
                 "nodeId": "AsiaPacific",
-                "title": "Continuing Statehood",
-                "perspectiveLabel": "Tuvalu and Australia treaty framework",
-                "perspectiveType": "institutional",
-                "narration": "Australia says the treaty legally recognizes Tuvalu's continuing statehood and sovereignty despite climate-related sea-level rise.",
-                "focusQuestion": "Can statehood remain legally continuous if habitable territory is severely reduced?"
-            },
-            {
-                "nodeId": "AsiaPacific",
-                "title": "Mobility With Dignity",
-                "perspectiveLabel": "Tuvaluan agency and community continuity",
+                "title": "Seawalls Leak, Statehood Endures",
+                "perspectiveLabel": "Funafuti family choice and treaty continuity",
                 "perspectiveType": "local",
-                "narration": "The pathway offers permanent residence in Australia to selected Tuvaluan citizens and their eligible families; it is not refugee status.",
-                "focusQuestion": "How can mobility policy preserve choice, culture, and connection to home?"
+                "conceptInFocus": "Sovereignty",
+                "relatedTimelineDate": "2026-06-01",
+                "narration": "Reported on 21 May 2026 in Funafuti, Tuvalu, mother Tevaogali Elisala held young son Alfred on her knee while weighing relocation under Australia's residency ballot. \"I don't want to leave,\" she said, noting seawalls fail because rising ocean water bubbles upward through coral rock. Regular king tides already surge across ground and flood Tuvalu's lone international runway [1].\n\nActive since August 2024, the Falepili Union allocates up to 280 Australian permanent resident visas annually through random selection [2]. Its inaugural 2025 draw drew 8,750 registrants invited upon selection to apply [10]. Earlier constitutional reform fixed Tuvalu's ocean baselines, while Prime Minister Feleti Teo praised Australia for legally recognizing future statehood and sovereignty [8, 13]. Sovereignty—continuing legal recognition of statehood and ocean rights—now endures in law even if land recedes.",
+                "focusQuestion": "How can legal treaties protect a microstate's sovereign borders even as rising seas erode physical land?"
             },
             {
                 "nodeId": "AsiaPacific",
-                "title": "A Limited Annual Pathway",
-                "perspectiveLabel": "Australian Department of Home Affairs",
-                "perspectiveType": "institutional",
-                "narration": "Australia allocated up to 280 places for the 2026–27 program year. Registration closed on 1 June 2026, and the published selection period continues through 30 June 2027.",
-                "focusQuestion": "What does a fair allocation process look like when demand exceeds available places?"
+                "title": "Security Strings Behind the Ballot",
+                "perspectiveLabel": "May critique and second visa ballot",
+                "perspectiveType": "independent",
+                "conceptInFocus": "Power",
+                "relatedTimelineDate": "2026-06-01",
+                "narration": "In May 2026 as Australia and Tuvalu conducted registration for their second annual visa ballot, former Tuvalu Prime Minister Enele Sopoaga condemned the agreement as \"interventionist\" and \"imperialistic\" [1, 5]. He charged that economic job offers whitewashed Australia's refusal to commit any reduction in greenhouse gases warming low-lying islands [1]. Independent analysts added that sitting Prime Minister Feleti Teo had earlier raised concerns over treaty clauses constraining national sovereignty [3].\n\nAlongside migration places, Australia pledged over A$110 million covering coastal adaptation, an undersea cable, budget support, and a new security coordination center [3]. Treaty rules require mutual agreement before Tuvalu makes third-party defense arrangements while Funafuti maintains formal ties with Taiwan [3, 14]. Power—combining urgent climate finance and migration access with security oversight—tilts bilateral bargaining heavily toward Canberra.",
+                "focusQuestion": "Why did Tuvaluan opposition leaders call the security clauses an unequal restriction on foreign policy?"
+            },
+            {
+                "nodeId": "AsiaPacific",
+                "title": "Rebuilding Land While Workers Depart",
+                "perspectiveLabel": "Fongafale dredging and Victoria migration",
+                "perspectiveType": "local",
+                "conceptInFocus": "Interdependence",
+                "relatedTimelineDate": "2026-06-01",
+                "narration": "On Funafuti's shoreline in May 2026, Tuvalu Climate Change Minister Maina Talia stood on pumped lagoon sand where surf once struck his house, saying new land gives children assurance of a future [1]. Elsewhere on the atoll, national broadcaster camera operator Stella Futiga prepared to leave media work for aged care in Victoria, Australia [1]. She hoped moving would bring \"a better life for our daughter\" [1].\n\nAustralian coastal engineer James Lewis reported reclamation expanded Tuvalu's landmass by more than 10% alongside nearly US$55 million in adaptation costs [1, 9]. Yet Sopoaga warned departures among adults aged 18 to 45 threaten essential services [1]. Annual island incomes average slightly over A$22,000, while DFAT notes the visa enables diaspora remittances [1, 2]. Interdependence—mutual ties linking island households seeking remittances abroad with strained local offices back home—shapes both countries.",
+                "focusQuestion": "How can outward migration simultaneously finance family resilience and hollow out an island's local workforce?"
             },
             {
                 "nodeId": "UN_OPEC",
-                "title": "A Wider Legal Precedent",
-                "perspectiveLabel": "International-law implications",
-                "perspectiveType": "synthesis",
-                "narration": "The bilateral recognition of continuing statehood raises broader questions for international responses to sea-level rise.",
-                "focusQuestion": "Should international law adopt a general rule protecting statehood and maritime rights as seas rise?"
+                "title": "Fairness Tests Beyond One Ballot",
+                "perspectiveLabel": "October summit visit and policy gaps",
+                "perspectiveType": "institutional",
+                "conceptInFocus": "Legitimacy",
+                "relatedTimelineDate": "2026-10",
+                "narration": "In October 2026, Australian Prime Minister Anthony Albanese and Minister for Climate Change and Energy Chris Bowen visited Funafuti for a pre-COP regional climate meeting amid sharp debate [3, 6]. Opposition spokesman Dan Tehan ridiculed the A$20 million meeting as a \"farce\" questioning taxpayer value [3]. In Tuvalu, Minister Maina Talia rejected calling islanders \"climate migrants,\" while official explainers emphasize voluntary return freedom and distinct non-refugee status [1, 4].\n\nHigh Commissioner David Charlton stressed two-way visits alongside A$46 million in total estimated Australian development aid [1, 7]. Yet researchers warn US$1,600 return airfares make frequent travel hard and note bilateral pacts omit people displaced suddenly after disasters [10, 12]. Legitimacy—public trust that rich countries act as fair climate partners rather than strategic patrons—depends on pairing mobility with deep emissions cuts.",
+                "focusQuestion": "Why do scholars say 280 voluntary visas cannot replace disaster assistance or global emissions cuts?"
             }
         ],
         "relatedCases": [
@@ -157,6 +446,10 @@ export const PACIFIC_ISLANDS_CASES_2026 = [
             {
                 "caseId": "australia-meta-news-bargaining-tax",
                 "note": "Contrast Canberra's bilateral climate-mobility partnership in the Pacific with its sovereign tax confrontation against Meta."
+            },
+            {
+                "caseId": "high-seas-bbnj-implementation",
+                "note": "Compare a bilateral Pacific survival treaty with UN multilateral rules governing ocean ecosystems beyond national borders."
             }
         ]
     },
