@@ -476,7 +476,7 @@ export const AMERICAS_CARIBBEAN_CASES_2026 = [
             },
             {
                 "stage": "What changed in practice",
-                "rating": "LIMITED",
+                "rating": "WEAK",
                 "evidence": "Bilateral US–Mexico rounds progressed in July and October, yet US–Canada 50% tariffs erupted in August–September and Stellantis sold its Brampton plant on 9 November 2026.",
                 "sourceUrls": [
                     "https://www.supplychaindive.com/news/ustr-initiates-next-stage-of-usmca-review/832285/",
