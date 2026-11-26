@@ -308,29 +308,26 @@ test('curated case studies remain balanced across 7 regions x 6 lenses, auditabl
     assert.throws(() => stalenessCli.parseCliArgs(['--as-of=not-a-date']), RangeError);
     assert.throws(() => stalenessCli.parseCliArgs(['--as-of=2026-02-30']), RangeError);
     const stalenessReport = stalenessCli.analyzeCaseStaleness(CASE_STUDIES_2026, [], '2026-11-20');
-    assert.equal(stalenessReport.overdueCount, 8, '7 remaining standard-sensitivity cases plus unre-reviewed Tuvalu stay in Group 2 update-in-progress after Syria Batch 1 renewal');
+    assert.equal(stalenessReport.overdueCount, 5, '5 remaining standard-sensitivity cases stay in Group 2 update-in-progress after Upgrade 1 renewal');
     assert.equal(stalenessReport.dueWithin14DaysCount, 10);
-    assert.equal(stalenessReport.freshCount, 22);
+    assert.equal(stalenessReport.freshCount, 25);
 
     const expectedGroup2Ids = [
         'amazon-indigenous-co-governance',
-        'eu-ai-act-transparency-implementation',
-        'high-seas-bbnj-implementation',
         'mekong-energy-food-bargain',
         'moldova-transnistria-energy-eu-accession',
         'mongolia-coal-critical-minerals-transition',
-        'tuvalu-australia-falepili-union',
         'zambia-electricity-reset-climate-access',
     ];
     assert.deepEqual(
         stalenessReport.overdue.map(item => item.id).sort(),
         expectedGroup2Ids,
-        'overdue cases at 2026-11-20 must match the exact 8 remaining Group 2 cases',
+        'overdue cases at 2026-11-20 must match the exact 5 remaining Group 2 cases',
     );
     assert.deepEqual(
         CASE_STUDIES_2026.filter(item => item.reviewStatus === 'update-in-progress').map(item => item.id).sort(),
         expectedGroup2Ids,
-        'explicit reviewStatus: update-in-progress must be set on and only on the 8 remaining Group 2 cases',
+        'explicit reviewStatus: update-in-progress must be set on and only on the 5 remaining Group 2 cases',
     );
 
     for (const item of CASE_STUDIES_2026) {
