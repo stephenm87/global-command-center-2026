@@ -1531,6 +1531,12 @@ export const MENA_CASES_2026 = [
                 "label": "The IMO Council ends its 138th session, condemning Houthi attacks on merchant ships and crews.",
                 "sourceUrl": "https://www.imo.org/en/mediacentre/pressbriefings/pages/imo-council-c138-urges-stronger-protection-of-seafarers-amid-threats-to-global-shipping-.aspx"
             }
+        ],
+        "relatedCases": [
+            {
+                "caseId": "ilo-seafarers-global-wage-floor",
+                "note": "Contrast wartime Red Sea attacks on merchant crews with peacetime ILO minimum wage and abandonment rules at sea."
+            }
         ]
     },
     {

@@ -146,6 +146,16 @@ export const GLOBAL_INSTITUTIONS_CASES_2026 = [
                 "narration": "IISD reports both negotiated progress and bracketed provisions that COP1 must resolve, preventing a premature claim that the governance architecture is complete.",
                 "focusQuestion": "Where could procedural disagreement most directly delay conservation, finance, or accountable decision-making?"
             }
+        ],
+        "relatedCases": [
+            {
+                "caseId": "ottawa-mine-ban-treaty-exits",
+                "note": "Compare treaty ratification hurdles on the high seas against five European states leaving the Ottawa Convention."
+            },
+            {
+                "caseId": "ilo-seafarers-global-wage-floor",
+                "note": "Compare governing areas beyond national jurisdiction under BBNJ with flag-state labor jurisdiction at sea."
+            }
         ]
     },
     {
@@ -1073,6 +1083,483 @@ export const GLOBAL_INSTITUTIONS_CASES_2026 = [
             {
                 "caseId": "sudan-displacement-regional-spillover",
                 "note": "Compare peacetime treaty withdrawal against acute civilian protection failures in internal war."
+            }
+        ]
+    },
+    {
+        "id": "ilo-seafarers-global-wage-floor",
+        "status": "active",
+        "briefingVersion": 2,
+        "title": "ILO & Seafarers: The Global Wage Floor",
+        "subtitle": "How joint maritime bargaining sets a pay floor without a global sea police force",
+        "coverageRegion": "Global / Transnational",
+        "regionTags": [
+            "Global",
+            "Geneva",
+            "Maritime",
+            "High Seas"
+        ],
+        "issueLens": "Economy & Development",
+        "broadCategory": "Economy & Trade",
+        "issueDimensions": [
+            "Global labor standards",
+            "Maritime governance",
+            "Flag-of-convenience registries",
+            "Collective bargaining"
+        ],
+        "actors": [
+            "International Labour Organization (ILO) Joint Maritime Commission",
+            "International Transport Workers' Federation (ITF) seafarer unions",
+            "International Chamber of Shipping (ICS) shipowners",
+            "Flag states and port state control authorities"
+        ],
+        "nexusNodeIds": [
+            "Europe",
+            "UN_OPEC",
+            "AsiaPacific",
+            "Africa"
+        ],
+        "statusSummary": "Over 80% of world goods trade travels by sea across multinational ownership and flag-state chains [6, 8]. Joint negotiations at the International Labour Organization lifted the monthly Able Seafarer basic wage floor to US$690 starting 1 January 2026 (reaching US$715 by 2028) [2, 4, 5]. While union contracts lift pay to US$1,950 monthly, record 6,223 abandoned seafarers in 2025 show flag-state enforcement still lags [11, 13, 14].",
+        "whyItMatters": "Ocean shipping carries over 80% of global trade and holds the world's only international minimum wage floor, yet decentralized flag-state law means unions, port inspections, and national laws decide whether crews actually get paid [4, 8, 14].",
+        "updatedAt": "2026-11-26",
+        "confidence": "high",
+        "uncertainty": "Whether port authorities detain underpaying ships more aggressively and how member states implement the June 2025 shore-leave and key-worker amendments ahead of their expected December 2027 entry into force remain open tests.",
+        "sensitivity": "standard",
+        "editorialCaution": "Distinguish the non-binding ILO recommended basic pay for an Able Seafarer under Guideline B2.2.4 from ITF-calculated overtime packages and binding ITF Uniform TCC collective bargaining contracts; do not treat the January 2026 basic floor as an automatic raise across every vessel.",
+        "featured": true,
+        "reviewCadenceDays": 30,
+        "reviewBy": "2026-12-26",
+        "coordinates": {
+            "latitude": 46.2298,
+            "longitude": 6.1342
+        },
+        "map": {
+            "mode": "global",
+            "locations": [
+                {
+                    "label": "Geneva (ILO Headquarters)",
+                    "latitude": 46.2298,
+                    "longitude": 6.1342,
+                    "role": "Seat of the Joint Maritime Commission wage talks and 355th Governing Body decision"
+                },
+                {
+                    "label": "Izmail, Ukraine",
+                    "latitude": 45.3492,
+                    "longitude": 28.8408,
+                    "role": "Southern Ukrainian port where MT Nathan crew member Gaurav Joshi was stranded unpaid in July 2025"
+                },
+                {
+                    "label": "Manila, Philippines",
+                    "latitude": 14.5995,
+                    "longitude": 120.9842,
+                    "role": "Major crewing hub where seafarers compare standard contracts against ILO and ITF floors"
+                },
+                {
+                    "label": "Las Palmas, Canary Islands",
+                    "latitude": 28.1235,
+                    "longitude": -15.4363,
+                    "role": "Atlantic port where Spanish authorities detained Lady Mina in July 2026 over US$68,000 in unpaid crew wages"
+                }
+            ]
+        },
+        "sources": [
+            {
+                "title": "Exploitation Exposed: Flag of Convenience Ship Found Paying Seafarers Less than Half of ILO Standard",
+                "publisher": "Maritime Union of Australia / ITF Australian Inspectorate",
+                "publishedAt": "2026-05-14",
+                "url": "https://www.mua.org.au/MUA/Content/News_Articles/2026/flags-convenience-ship-found-paying-seafarers-less-than-half-ILO-standard.aspx",
+                "perspectiveType": "local",
+                "perspective": "On-port Australian union inspectorate report by Matt Purcell documenting crew wage underpayment on MSV ATN Glory",
+                "supports": "Supports Indian and Vietnamese seafarers aboard MSV ATN Glory paid US$400 monthly for Able Seamen—less than half of ILO minimum standards—while highlighting 2025 ITF wage recoveries."
+            },
+            {
+                "title": "Subcommittee on Wages of Seafarers reaches agreement to increase seafarer minimum wage following negotiations",
+                "publisher": "International Labour Organization (ILO)",
+                "publishedAt": "2025-04-16",
+                "url": "https://www.ilo.org/resource/news/subcommittee-wages-seafarers-reaches-agreement-increase-seafarer-minimum",
+                "perspectiveType": "institutional",
+                "perspective": "Official ILO release featuring ILO Director Frank Hagemann and shipowner negotiator Pål Tangen",
+                "supports": "Supports the April 2025 Joint Maritime Commission agreement lifting monthly basic pay from US$673 to US$690 (2026), US$704 (2027), and US$715 (2028), plus Pål Tangen's shipowner statement."
+            },
+            {
+                "title": "Under New Agreement, Global Seafarer Minimum Wage Set to Rise to $690 Per Month by 2026",
+                "publisher": "gCaptain",
+                "publishedAt": "2025-04-16",
+                "url": "https://gcaptain.com/under-new-agreement-global-seafarer-minimum-wage-set-to-rise-to-690-per-month-by-2026/",
+                "perspectiveType": "independent",
+                "perspective": "Independent maritime journalism on April 2025 Geneva wage talks, 1958 origin, and global fleet context",
+                "supports": "Supports maritime transport's unique 1958 minimum wage system, the April 14–15 negotiation dates, trade-tension risks across nearly two million seafarers, and union/employer balance."
+            }
+        ],
+        "supplementalSources": [
+            {
+                "title": "Resolution concerning the ILO minimum monthly basic pay or wage for able seafarers (SWJMC/2025/Resolution)",
+                "publisher": "International Labour Organization (ILO)",
+                "publishedAt": "2025-04-15",
+                "url": "https://www.ilo.org/sites/default/files/2025-04/SWJMC-2025-Resolution-En.pdf",
+                "perspective": "Adopted primary text from the 14–15 April 2025 Geneva Subcommittee meeting",
+                "supports": "Supports the Guideline B2.2.4 legal basis, 48-hour normal weekly limit, exact three-year dollar schedule, and explicit protection for stronger collective bargaining agreements."
+            },
+            {
+                "title": "Decision concerning the sectoral meetings held in 2025 and proposals for sectoral work in 2026–27 (GB.355/POL/3/Decision)",
+                "publisher": "ILO Governing Body (355th Session)",
+                "publishedAt": "2025-11-20",
+                "url": "https://www.ilo.org/resource/record-decisions/gb/355/decision-concerning-sectoral-meetings-held-2025-and-proposals-sectoral-work",
+                "perspective": "Official ILO Governing Body executive authorization",
+                "supports": "Supports formal Governing Body endorsement on 20 November 2025 authorizing notification of the revised wage figure to ILO member states and scheduling a 2028 review."
+            },
+            {
+                "title": "Maritime Labour Convention, 2006, as amended: Frequently Asked Questions (Sixth edition)",
+                "publisher": "International Labour Organization (ILO)",
+                "publishedAt": null,
+                "sourceType": "living-reference",
+                "reviewedAt": "2026-11-26",
+                "dataThrough": "June 2026",
+                "url": "https://www.ilo.org/sites/default/files/2026-06/FAQ%20MLC%202006%20Sixth%20edition%202026-EN.pdf",
+                "perspective": "Official ILO legal guidance on flag-state implementation and MLC amendment entry-into-force dates",
+                "supports": "Supports flag-state implementation responsibility, non-binding Guideline B2.2.4 status, and expected 23 December 2027 entry into force for the 2025 MLC amendments."
+            },
+            {
+                "title": "Fifth meeting of the Special Tripartite Committee of the MLC, 2006: Adopted amendments (STCMLC/2025)",
+                "publisher": "International Labour Organization (ILO)",
+                "publishedAt": "2025-04-11",
+                "url": "https://www.ilo.org/sites/default/files/2025-04/STCMLC-2025-Adopted%20amendments-EN_0.pdf",
+                "perspective": "Primary treaty text on shore leave without visas and non-discriminatory repatriation",
+                "supports": "Supports Standard A2.4.2 prohibiting visa barriers to routine shore leave, requiring written refusal reasons, and strengthening repatriation under Regulation 2.5."
+            },
+            {
+                "title": "Introduction to IMO",
+                "publisher": "International Maritime Organization (IMO)",
+                "publishedAt": null,
+                "sourceType": "living-reference",
+                "reviewedAt": "2026-11-26",
+                "url": "https://www.imo.org/en/about/pages/default.aspx",
+                "perspective": "UN specialized maritime agency overview of international shipping volume and standards",
+                "supports": "Supports international shipping transporting more than 80 per cent of global trade."
+            },
+            {
+                "title": "Agreement reached on new global minimum wage for seafarers",
+                "publisher": "International Transport Workers' Federation (ITF)",
+                "publishedAt": "2025-04-16",
+                "url": "https://www.itfseafarers.org/en/news/agreement-reached-new-global-minimum-wage-seafarers",
+                "perspective": "Joint union release featuring Mark Dickinson (Nautilus International), Pål Tangen, ICS, and ITF",
+                "supports": "Supports union spokesperson Mark Dickinson citing 90% of delivered goods, 147-country ITF reach, ICS covering over 80% of the world merchant fleet, and Tangen's sustainability defense."
+            },
+            {
+                "title": "ITF ILO Minimum Wage Scale 2026–2028 (Annex 1 to E-Circular 204/S/SS/2025)",
+                "publisher": "International Transport Workers' Federation (ITF)",
+                "publishedAt": null,
+                "sourceType": "living-reference",
+                "reviewedAt": "2026-11-26",
+                "dataThrough": "2026–2028 schedule",
+                "url": "https://www.itfseafarers.org/sites/default/files/node/resources/files/25En204REILORecommendedMinimumWages20262028Ax1.pdf",
+                "perspective": "Union calculation table translating the ILO basic floor into monthly take-home totals",
+                "supports": "Supports adding 104 guaranteed overtime hours and leave pay onto US$690 basic pay to yield a US$1,212 monthly ILO-scale total in 2026 (US$1,237 in 2027)."
+            },
+            {
+                "title": "ITF Total Crew Cost (TCC) Collective Bargaining Agreement 2026–2027 (Final)",
+                "publisher": "International Transport Workers' Federation (ITF)",
+                "publishedAt": "2026-01-01",
+                "url": "https://www.itfseafarers.org/sites/default/files/node/resources/files/UNIFORM%20TCC%202026-2027%20FINAL.pdf",
+                "perspective": "Binding union collective bargaining contract scale for Flag of Convenience ships",
+                "supports": "Supports Able Seafarer Uniform TCC contract pay totaling US$1,950 monthly in 2026 (US$923 basic) and US$1,965 in 2027."
+            },
+            {
+                "title": "'It's a miracle we survived': the civilian crew trapped on a ship in Ukraine as bombs rained down",
+                "publisher": "Ruchi Kumar",
+                "publishedAt": "2026-02-03",
+                "url": "https://www.ruchikumar.com/2026/02/03/its-a-miracle-we-survived-the-civilian-crew-trapped-on-a-ship-in-ukraine-as-bombs-rained-down/",
+                "perspective": "First-hand investigative reporting from Izmail featuring stranded MT Nathan crew member Gaurav Joshi",
+                "supports": "Supports 16 July 2025 drone blast near MT Nathan after three months of abandonment without wages or owner support following an ownership dispute."
+            },
+            {
+                "title": "Seafarer abandonment crisis: thousands left behind in shipping's worst year on record",
+                "publisher": "International Transport Workers' Federation (ITF)",
+                "publishedAt": "2026-01-22",
+                "url": "https://www.itfseafarers.org/en/news/seafarer-abandonment-crisis-thousands-left-behind-shippings-worst-year-record",
+                "perspective": "Annual abandonment submission prepared ahead of IMO Legal Committee review",
+                "supports": "Supports record 2025 totals of 6,223 abandoned seafarers across 410 ships owed US$25.8 million, with US$16.5 million recovered and Indian crews worst hit."
+            },
+            {
+                "title": "Abandoned and unpaid: seafarers left stranded, owed $68,000 in Las Palmas",
+                "publisher": "International Transport Workers' Federation (ITF)",
+                "publishedAt": "2026-07-09",
+                "url": "https://www.itfseafarers.org/en/news/abandoned-and-unpaid-seafarers-left-stranded-owed-68000-las-palmas",
+                "perspective": "Canary Islands port-inspection enforcement record by ITF Inspector Gonzalo Galan",
+                "supports": "Supports 23 May 2026 Lady Mina distress report, detention in Las Palmas, six abandoned crew owed US$68,000, and suspected forged MLC financial-security certificates."
+            },
+            {
+                "title": "New ILO Minimum Wage for Seafarers: US$704 from 1 January 2027",
+                "publisher": "Maritime Match",
+                "publishedAt": "2026-11-10",
+                "url": "https://maritimematch.ph/captains-brief/ilo-minimum-wage-able-seafarer-2027",
+                "perspective": "Filipino seafarer contract guide linking Geneva benchmarks to national Department of Migrant Workers contracts",
+                "supports": "Supports Manila crew-contract reliance on ILO Guideline B2.2.4 where no union agreement attaches and clarifies US$1,212 vs US$1,950 pay tiers."
+            }
+        ],
+        "waypoints": [
+            {
+                "nodeId": "Europe",
+                "title": "Stranded Without Pay at Sea",
+                "perspectiveLabel": "MT Nathan abandonment and global shipping",
+                "perspectiveType": "local",
+                "conceptInFocus": "Interdependence",
+                "relatedTimelineDate": "2025-07-16",
+                "narration": "On 16 July 2025 in southern Ukraine's port of Izmail, crew member Gaurav Joshi was patrolling the stranded cargo ship MT Nathan when a Russian drone exploded close to the hull [12]. After an ownership dispute, Joshi and fourteen crewmates from India, Egypt, and Turkey had already spent three months aboard without pay, fresh provisions, or owner support [12]. Port and immigration restrictions barred them from stepping ashore while blasts shook the harbor [12].\n\nMerchant vessels transport more than 80% of global trade volume yet operate through layered commercial chains spanning distant beneficial owners, open flag registries, and foreign managers [6, 8]. No national parliament can protect seafarers alone when companies shift ships to permissive foreign registries [6, 13]. Interdependence—mutual cross-border ties connecting global trade to seafarers' livelihoods—left 6,223 sailors reported abandoned across international ports in 2025 [8, 13].",
+                "focusQuestion": "Why does a ship owned, flagged, and crewed across different countries make wage protection so difficult for any one state?"
+            },
+            {
+                "nodeId": "UN_OPEC",
+                "title": "Joint Bargaining Sets the Floor",
+                "perspectiveLabel": "ILO Joint Maritime Commission Geneva talks",
+                "perspectiveType": "institutional",
+                "conceptInFocus": "Legitimacy",
+                "relatedTimelineDate": "2025-04-15",
+                "narration": "At Geneva's International Labour Organization on 15 April 2025, shipowner and union negotiators concluded intensive minimum-wage talks inside the Joint Maritime Commission [2, 4]. Norwegian Shipowners' Association spokesperson Pål Tangen and union negotiator Mark Dickinson balanced consumer inflation and currency swings across major crewing nations [2, 9]. Their bipartisan deal lifts an Able Seafarer's basic monthly floor to US$690 starting in January 2026 [2, 4]. Subsequent annual steps raise that floor to US$715 by January 2028, endorsed by the ILO Governing Body later that November [4, 5].\n\nMaritime shipping remains the sole global sector maintaining a recognized international minimum wage framework since 1958 [3, 9]. Legitimacy—acceptance that shared rules are fairly made—rests on employers and unions negotiating under a joint statistical formula rather than state edicts [2, 4]. Tangen said the outcome balanced crew welfare against global shipping sustainability [2, 9].",
+                "focusQuestion": "Why do global shipowners negotiate wage increases inside the ILO instead of walking away from voluntary talks?"
+            },
+            {
+                "nodeId": "AsiaPacific",
+                "title": "Benchmarks Versus Binding Contracts",
+                "perspectiveLabel": "Standard contracts and ITF union scales",
+                "perspectiveType": "independent",
+                "conceptInFocus": "Power",
+                "relatedTimelineDate": "2026-01-01",
+                "narration": "In early 2026, sailors reviewing standard employment contracts in crewing hubs like Manila needed distinct figures to understand take-home pay [10, 15]. The ILO figure of US$690 covers only basic weekly pay up to 48 hours for an experienced Able Seafarer [4, 15]. Under the International Transport Workers' Federation calculation adding guaranteed overtime and paid leave, minimum monthly earnings reach US$1,212 [10, 15]. By contrast, ships covered by a binding Uniform Total Crew Cost union contract pay US$1,950 monthly [11, 15].\n\nOrganized unions win higher shipboard pay where port inspectors and allied dockworkers can threaten costly cargo delays against underpaying fleet operators [1, 11]. Power—the ability to compel material concessions—enables federated maritime unions spanning 147 countries to turn Geneva benchmarks into binding vessel contracts covering global fleets [9, 11]. Uncovered crews still frequently earn near basic minimums or below [1, 15].",
+                "focusQuestion": "How do seafarers' unions turn a non-binding Geneva pay floor into much higher binding monthly contracts?"
+            },
+            {
+                "nodeId": "Africa",
+                "title": "Flag Sovereignty Meets Port Inspections",
+                "perspectiveLabel": "Lady Mina and MSV ATN Glory inspections",
+                "perspectiveType": "local",
+                "conceptInFocus": "Sovereignty",
+                "relatedTimelineDate": "2026-05-23",
+                "narration": "In May 2026, a sailor aboard the Turkish-owned cargo ship Lady Mina alerted union inspectors in Las Palmas after thirteen months on board without repatriation [14]. Canary Islands inspector Gonzalo Galan boarded the detained vessel and uncovered six abandoned crewmates owed US$68,000 alongside suspected forged wage-security papers [14]. Weeks earlier in Australian waters, union inspectors caught another foreign-flagged ship paying Able Seamen just US$400 monthly—less than half of ILO minimums [1].\n\nGeneva wage standards operate as international recommendations without an international policing fleet because ships answer legally to their sovereign flag states [4, 6]. Sovereignty—supreme legal authority over registered ships and national territory—splits pay oversight between lax open registries and port-state detentions [6, 14]. Stronger shore-leave and key-worker treaty amendments adopted in 2025 take effect in December 2027, leaving weak enforcement intact meanwhile [6, 7].",
+                "focusQuestion": "When a flag state fails to police wages, how far can port inspections and new treaty rules close the gap?"
+            }
+        ],
+        "concepts": [
+            "Power",
+            "Sovereignty",
+            "Legitimacy",
+            "Interdependence"
+        ],
+        "ibThemes": [
+            "rights-and-justice",
+            "development-and-sustainability"
+        ],
+        "background": "A single cargo ship routinely crosses four legal jurisdictions before unloading: owned in one country, registered under a permissive foreign flag, managed offshore, and crewed by Asian and European seafarers [8, 12, 13]. Because merchant fleets transport more than 80% of global trade by volume, no single parliament can regulate offshore crew pay alone without risking fleet re-registration elsewhere [6, 8].\n\nTo prevent a global race to the bottom, shipowners and unions have set joint minimum pay through the International Labour Organization since 1958 [3, 9]. Following spring Geneva talks, negotiators agreed to lift an Able Seafarer's basic monthly floor to US$690 starting in January 2026 [2, 4]. Scheduled annual increases lift that basic floor further to US$715 by 2028 under ILO Governing Body approval [4, 5].\n\nYet record ship abandonments hitting 6,223 sailors in 2025 expose severe enforcement limits across open registries [13]. While binding union agreements pay US$1,950 monthly and updated shore-leave treaty rules enter force in December 2027, non-union crews remain dependent on port detentions and flag-state compliance [6, 11, 14].",
+        "backgroundSources": [
+            "https://www.ilo.org/resource/news/subcommittee-wages-seafarers-reaches-agreement-increase-seafarer-minimum",
+            "https://www.ilo.org/sites/default/files/2025-04/SWJMC-2025-Resolution-En.pdf",
+            "https://www.ilo.org/resource/record-decisions/gb/355/decision-concerning-sectoral-meetings-held-2025-and-proposals-sectoral-work",
+            "https://www.ilo.org/sites/default/files/2026-06/FAQ%20MLC%202006%20Sixth%20edition%202026-EN.pdf",
+            "https://www.imo.org/en/about/pages/default.aspx",
+            "https://www.itfseafarers.org/sites/default/files/node/resources/files/UNIFORM%20TCC%202026-2027%20FINAL.pdf",
+            "https://www.itfseafarers.org/en/news/seafarer-abandonment-crisis-thousands-left-behind-shippings-worst-year-record"
+        ],
+        "keyTerms": [
+            {
+                "term": "Flag of convenience",
+                "definition": "A commercial practice where shipowners register vessels under foreign open registries with lower fees and weaker labor oversight than the owner's home state.",
+                "sourceUrl": "https://www.mua.org.au/MUA/Content/News_Articles/2026/flags-convenience-ship-found-paying-seafarers-less-than-half-ILO-standard.aspx"
+            },
+            {
+                "term": "ILO Joint Maritime Commission (JMC)",
+                "definition": "The bipartite UN forum where global shipowners coordinated by ICS and unions coordinated by the ITF periodically update Able Seafarer basic wages.",
+                "sourceUrl": "https://www.itfseafarers.org/en/news/agreement-reached-new-global-minimum-wage-seafarers"
+            },
+            {
+                "term": "MLC Guideline B2.2.4",
+                "definition": "The non-binding Maritime Labour Convention provision under which the ILO notifies Member States of recommended Able Seafarer monthly basic wages for up to 48 weekly hours.",
+                "sourceUrl": "https://www.ilo.org/sites/default/files/2025-04/SWJMC-2025-Resolution-En.pdf"
+            },
+            {
+                "term": "ITF Uniform TCC agreement",
+                "definition": "A binding union collective bargaining agreement setting total crew pay (US$1,950 monthly for an Able Seafarer in 2026), far exceeding the ILO basic floor.",
+                "sourceUrl": "https://www.itfseafarers.org/sites/default/files/node/resources/files/UNIFORM%20TCC%202026-2027%20FINAL.pdf"
+            },
+            {
+                "term": "Seafarer abandonment",
+                "definition": "Failure by a shipowner to pay contractual wages for at least two months, supply essentials, or repatriate crew—requiring MLC financial-security guarantees.",
+                "sourceUrl": "https://www.itfseafarers.org/en/news/abandoned-and-unpaid-seafarers-left-stranded-owed-68000-las-palmas"
+            }
+        ],
+        "debate": [
+            {
+                "claimBy": "Shipowners' Spokesperson Pål Tangen & ILO Director Frank Hagemann (15–16 April 2025)",
+                "claim": "Agreed steps lifting basic pay to US$715 by 2028 balance crew welfare against global shipping sustainability through shared bipartite dialogue [2, 9].",
+                "counterBy": "ITF Seafarers' Section Leaders & Inspectors (January 2026)",
+                "counterClaim": "Non-binding minimums carry no sea police, leaving 6,223 abandoned sailors owed US$25.8 million across global ports last year [4, 13].",
+                "sourceUrls": [
+                    "https://www.ilo.org/resource/news/subcommittee-wages-seafarers-reaches-agreement-increase-seafarer-minimum",
+                    "https://www.itfseafarers.org/en/news/agreement-reached-new-global-minimum-wage-seafarers",
+                    "https://www.itfseafarers.org/en/news/seafarer-abandonment-crisis-thousands-left-behind-shippings-worst-year-record"
+                ]
+            },
+            {
+                "claimBy": "Maritime Union of Australia & ITF Inspectorate (14 May 2026)",
+                "claim": "Finding Able Seafarers paid US$400 monthly aboard MSV ATN Glory proves foreign-flagged vessels underpay crews unless unions secure binding contracts and port bans [1, 11].",
+                "counterBy": "International Chamber of Shipping & Pål Tangen (16 April 2025)",
+                "counterClaim": "Employers representing over 80% of the merchant fleet voluntarily back predictable wage schedules despite volatile markets and looming trade wars [3, 9].",
+                "sourceUrls": [
+                    "https://www.mua.org.au/MUA/Content/News_Articles/2026/flags-convenience-ship-found-paying-seafarers-less-than-half-ILO-standard.aspx",
+                    "https://gcaptain.com/under-new-agreement-global-seafarer-minimum-wage-set-to-rise-to-690-per-month-by-2026/",
+                    "https://www.itfseafarers.org/en/news/agreement-reached-new-global-minimum-wage-seafarers"
+                ]
+            },
+            {
+                "claimBy": "ILO Special Tripartite Committee (6 June 2025 Adoption Record)",
+                "claim": "Designating seafarers as key workers with visa-free shore leave from December 2027 strengthens crew protection worldwide [6, 7].",
+                "counterBy": "ITF Las Palmas Inspector Gonzalo Galan & Coordinator Jacqueline Smith (9 July 2026)",
+                "counterClaim": "Even current MLC security mandates fail when owners leave ships with forged certificates and six months of unpaid wages [14].",
+                "sourceUrls": [
+                    "https://www.ilo.org/sites/default/files/2026-06/FAQ%20MLC%202006%20Sixth%20edition%202026-EN.pdf",
+                    "https://www.ilo.org/sites/default/files/2025-04/STCMLC-2025-Adopted%20amendments-EN_0.pdf",
+                    "https://www.itfseafarers.org/en/news/abandoned-and-unpaid-seafarers-left-stranded-owed-68000-las-palmas"
+                ]
+            }
+        ],
+        "watchFor": [
+            {
+                "date": "1 January 2027",
+                "indicator": "Entry into effect of the second ILO step (US$704 Able Seafarer basic monthly pay; ITF Uniform TCC total rising to US$1,965).",
+                "sourceUrl": "https://www.itfseafarers.org/sites/default/files/node/resources/files/UNIFORM%20TCC%202026-2027%20FINAL.pdf"
+            },
+            {
+                "date": "23 December 2027",
+                "indicator": "Expected tacit-acceptance entry into force of the 2025 MLC amendments on visa-free shore leave, written refusal reasons, and key-worker status.",
+                "sourceUrl": "https://www.ilo.org/sites/default/files/2026-06/FAQ%20MLC%202006%20Sixth%20edition%202026-EN.pdf"
+            },
+            {
+                "date": "First half of 2028",
+                "indicator": "Scheduled reconvening of the ILO JMC Wage Subcommittee approved under GB.355/POL/3 to reset post-2028 minimum wages.",
+                "sourceUrl": "https://www.ilo.org/resource/record-decisions/gb/355/decision-concerning-sectoral-meetings-held-2025-and-proposals-sectoral-work"
+            }
+        ],
+        "examPrompts": [
+            "To what extent can international institutions such as the ILO protect mobile workers when legal enforcement remains divided across sovereign flag and port states?",
+            "Compare how trade-linked labor clauses and bipartite global benchmarks convert international norms into enforceable pay for workers across borders."
+        ],
+        "influenceCheck": [
+            {
+                "stage": "Setting the agenda",
+                "rating": "STRONG",
+                "evidence": "Post-2022 inflation, exchange-rate shifts across crewing nations, and trade tensions brought ICS shipowners and ITF unions back to the Geneva ILO table in April 2025.",
+                "sourceUrls": [
+                    "https://www.ilo.org/resource/news/subcommittee-wages-seafarers-reaches-agreement-increase-seafarer-minimum",
+                    "https://www.itfseafarers.org/en/news/agreement-reached-new-global-minimum-wage-seafarers"
+                ]
+            },
+            {
+                "stage": "The formal decision",
+                "rating": "STRONG",
+                "evidence": "JMC negotiators adopted the US$690 (Jan 2026), US$704 (Jan 2027), and US$715 (Jan 2028) schedule (up from US$673), formally authorized by the ILO's 355th Governing Body on 20 November 2025 alongside June 2025 MLC amendments due in force 23 December 2027.",
+                "sourceUrls": [
+                    "https://www.ilo.org/sites/default/files/2025-04/SWJMC-2025-Resolution-En.pdf",
+                    "https://www.ilo.org/resource/record-decisions/gb/355/decision-concerning-sectoral-meetings-held-2025-and-proposals-sectoral-work",
+                    "https://www.ilo.org/sites/default/files/2026-06/FAQ%20MLC%202006%20Sixth%20edition%202026-EN.pdf"
+                ]
+            },
+            {
+                "stage": "What changed in practice",
+                "rating": "MIXED",
+                "evidence": "While union Uniform TCC vessels pay US$1,950 monthly (above the US$1,212 ILO overtime-included total) and ITF recovered US$16.5M of US$25.8M owed to 6,223 abandoned sailors in 2025, 2026 inspections still exposed US$400 Able Seamen on MSV ATN Glory and forged certificates on Lady Mina.",
+                "sourceUrls": [
+                    "https://www.itfseafarers.org/sites/default/files/node/resources/files/UNIFORM%20TCC%202026-2027%20FINAL.pdf",
+                    "https://www.itfseafarers.org/en/news/seafarer-abandonment-crisis-thousands-left-behind-shippings-worst-year-record",
+                    "https://www.mua.org.au/MUA/Content/News_Articles/2026/flags-convenience-ship-found-paying-seafarers-less-than-half-ILO-standard.aspx",
+                    "https://www.itfseafarers.org/en/news/abandoned-and-unpaid-seafarers-left-stranded-owed-68000-las-palmas"
+                ]
+            }
+        ],
+        "conceptLens": {
+            "power": "Organized ITF port solidarity across 147 countries forces shipowners into binding US$1,950 collective deals, whereas uncovered crews rely on weaker benchmarks.",
+            "sovereignty": "Maritime law leaves vessels under permissive flag-state jurisdiction, restricting Geneva benchmarks unless port states inspect and detain offending ships.",
+            "legitimacy": "Bipartite ICS–ITF formula bargaining lends the US$690–US$715 scale industry-wide legitimacy rather than unilateral state imposition.",
+            "interdependence": "Carrying over 80% of global trade volume via multinational ownership, flagging, and crewing prevents any single state from regulating seafarer pay alone."
+        },
+        "essayBuilder": {
+            "prompt": "To what extent can international institutions such as the ILO protect mobile workers when legal enforcement remains divided across sovereign flag and port states?",
+            "claim": "Global tripartite institutions set legitimate industry-wide baselines across border-crossing sectors, yet binding pay and worker protection still rely on sovereign enforcement and organized labor leverage.",
+            "evidence": "Through the ILO Joint Maritime Commission and 355th Governing Body in 2025, shipowners and unions raised Able Seafarer basic pay from US$673 to US$690 in 2026 and US$715 by 2028, anchoring ITF totals of US$1,212 and binding US$1,950 contracts.",
+            "counterClaim": "However, Guideline B2.2.4 remains non-binding without a UN enforcement fleet, while record 2025 abandonments left 6,223 crew members stranded across 410 ships and 2026 port checks still caught underpaying foreign-flagged vessels.",
+            "judgment": "Overall, Geneva standards serve as vital reference floors rather than self-executing law, becoming effective in sailors' bank accounts only where union bargaining power and port-state detentions enforce compliance.",
+            "sourceUrls": [
+                "https://www.ilo.org/sites/default/files/2025-04/SWJMC-2025-Resolution-En.pdf",
+                "https://www.ilo.org/resource/record-decisions/gb/355/decision-concerning-sectoral-meetings-held-2025-and-proposals-sectoral-work",
+                "https://www.itfseafarers.org/sites/default/files/node/resources/files/UNIFORM%20TCC%202026-2027%20FINAL.pdf",
+                "https://www.itfseafarers.org/en/news/seafarer-abandonment-crisis-thousands-left-behind-shippings-worst-year-record"
+            ]
+        },
+        "keyFigures": [
+            {
+                "value": "US$690",
+                "unit": "per month",
+                "label": "ILO recommended Able Seafarer monthly basic wage from 1 Jan 2026 (up from US$673 in 2025; rising to US$704 in 2027 and US$715 in 2028)",
+                "asOf": "Effective 1 January 2026",
+                "sourceUrl": "https://www.ilo.org/sites/default/files/2025-04/SWJMC-2025-Resolution-En.pdf"
+            },
+            {
+                "value": "US$1,950",
+                "unit": "per month",
+                "label": "Binding 2026 ITF Uniform TCC Able Seafarer package (vs US$1,212 ILO overtime-included minimum interpretation)",
+                "asOf": "Effective 1 January 2026",
+                "sourceUrl": "https://www.itfseafarers.org/sites/default/files/node/resources/files/UNIFORM%20TCC%202026-2027%20FINAL.pdf"
+            },
+            {
+                "value": "6,223",
+                "unit": "abandoned seafarers",
+                "label": "Record seafarers abandoned across 410 ships in 2025, owed US$25.8 million (US$16.5 million recovered by ITF)",
+                "asOf": "Full-year 2025 (published Jan 2026)",
+                "sourceUrl": "https://www.itfseafarers.org/en/news/seafarer-abandonment-crisis-thousands-left-behind-shippings-worst-year-record"
+            }
+        ],
+        "timeline": [
+            {
+                "date": "2025-04-15",
+                "label": "ILO Joint Maritime Commission Subcommittee concludes Geneva talks agreeing to lift Able Seafarer basic wages from US$673 to US$690–US$715 across 2026–2028.",
+                "sourceUrl": "https://www.ilo.org/sites/default/files/2025-04/SWJMC-2025-Resolution-En.pdf"
+            },
+            {
+                "date": "2025-06-06",
+                "label": "International Labour Conference adopts 2025 MLC amendments on visa-free shore leave and key-worker status, expected in force on 23 December 2027.",
+                "sourceUrl": "https://www.ilo.org/sites/default/files/2026-06/FAQ%20MLC%202006%20Sixth%20edition%202026-EN.pdf"
+            },
+            {
+                "date": "2025-07-16",
+                "label": "Russian drone strike hits near stranded MT Nathan in Izmail, Ukraine, where Gaurav Joshi and 14 crewmates were abandoned unpaid for three months.",
+                "sourceUrl": "https://www.ruchikumar.com/2026/02/03/its-a-miracle-we-survived-the-civilian-crew-trapped-on-a-ship-in-ukraine-as-bombs-rained-down/"
+            },
+            {
+                "date": "2025-11-20",
+                "label": "ILO Governing Body 355th Session authorizes notifying Member States of the revised wage schedule under Guideline B2.2.4.",
+                "sourceUrl": "https://www.ilo.org/resource/record-decisions/gb/355/decision-concerning-sectoral-meetings-held-2025-and-proposals-sectoral-work"
+            },
+            {
+                "date": "2026-01-01",
+                "label": "ILO US$690 basic wage floor (US$1,212 ITF total reading) and US$1,950 ITF Uniform TCC contract scale take effect.",
+                "sourceUrl": "https://www.itfseafarers.org/sites/default/files/node/resources/files/25En204REILORecommendedMinimumWages20262028Ax1.pdf"
+            },
+            {
+                "date": "2026-05-23",
+                "label": "Stranded Lady Mina crew alert ITF inspectors in Las Palmas, leading to Spanish detention over US$68,000 unpaid wages and suspected forged papers.",
+                "sourceUrl": "https://www.itfseafarers.org/en/news/abandoned-and-unpaid-seafarers-left-stranded-owed-68000-las-palmas"
+            }
+        ],
+        "relatedCases": [
+            {
+                "caseId": "red-sea-yemen-humanitarian-economy",
+                "note": "Contrast wartime Red Sea risks to merchant crews with peacetime ILO minimum wage and flag-state enforcement."
+            },
+            {
+                "caseId": "high-seas-bbnj-implementation",
+                "note": "Compare governing areas beyond national jurisdiction under the High Seas Treaty with flag-state labor jurisdiction at sea."
+            },
+            {
+                "caseId": "usmca-2026-joint-review",
+                "note": "Contrast USMCA trade-tariff labor enforcement with bipartite global ILO wage guidelines."
             }
         ]
     }

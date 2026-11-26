@@ -286,6 +286,12 @@ export const AMERICAS_CARIBBEAN_CASES_2026 = [
                 "narration": "The three governments frame the review differently while agreeing that negotiation and the agreement itself continue.",
                 "focusQuestion": "How should analysts separate a government's negotiating message from the agreement's legal status?"
             }
+        ],
+        "relatedCases": [
+            {
+                "caseId": "ilo-seafarers-global-wage-floor",
+                "note": "Compare regional USMCA trade tariff labor leverage with non-binding global ILO wage floors for seafarers."
+            }
         ]
     },
     {
