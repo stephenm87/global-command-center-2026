@@ -2,6 +2,14 @@
 
 Newest entry first. Each agent adds an entry before it stops. Keep entries short.
 
+## 2026-11-26 — Antigravity — Briefings Upgrade Batch 1 (`feat/briefings-upgrade-1`; DO NOT MERGE)
+- **Upgraded to Full `briefingVersion: 2` (`05c48b5`, `c54eb8e`, `1ad42bc`, `78c70eb`, `49589f0`):** Rebuilt four thin briefings cleanly in place under their original IDs to November 2026 Myanmar voice depth (`120–130`w two-paragraph steps, `151–159`w three-paragraph background, three debate pairs, `actorMap` omitted, `reviewStatus: "update-in-progress"` cleared on BBNJ/EU AI Act/Tuvalu):
+  - `usmca-2026-joint-review` (`src/cases/active/americas-caribbean-2026.mjs`, `16` HTTP-200 sources)
+  - `high-seas-bbnj-implementation` (`src/cases/active/global-institutions-2026.mjs`, `16` HTTP-200 sources)
+  - `eu-ai-act-transparency-implementation` (`src/cases/active/europe-eurasia-2026.mjs`, `18` HTTP-200 sources)
+  - `tuvalu-australia-falepili-union` (`src/cases/active/pacific-islands-2026.mjs`, `15` HTTP-200 sources)
+- **Catalog Sync, Codex Audit & Verification (`7fa2c95`, `3f20113`, `49589f0`):** Updated `src/__tests__/contentIntegrity.node.test.mjs` (`overdueCount: 5`, `dueWithin14DaysCount: 10`, `freshCount: 25`), `docs/KNOWN_ISSUES.md` (`422` tracked targets, `5` remaining Group 2 overdue cases), and `netlify/functions/source-health-targets.json`; resolved all four read-only `codex exec` fact/citation/voice audits and verified the other `36` cases untouched (`99/99` `npm test`, `npm run build` `9.96s`, voice checks passing). Pushed for Deploy Preview & A4 PDF QA (**do NOT merge**; PR #47 and PR #49 untouched).
+
 ## 2026-11-26 — Antigravity — PR #57 Merged & Live Production Verified
 - **Merged:** Final three-sentence fix commit (`743813d`) clarified Australia Step 2 (splitting small-paper reliance from the October 2021 Facebook-to-Meta parent rename), Australia Step 3 (executives "would not rule out" blocking news cited to `[7, 15]`), and ILO Step 3 (`"ITF Assistant National Coordinator Matt Purcell"`), verified `"over thirty private deals"` (`[14]`) and Guterres `"five years remaining"` (`[11]`), then squash-merged PR #57 (`feat/briefings-batch-3`, head `743813d`) into `main` as `606288e` (`feat(briefings): add batch 3 guided briefings (ILO, Colombia, Australia & Meta)`). Production Netlify deploy `6b07ac5a17cb2fd1e0d30f3d` (`ready`, `error_message: null`, `secretsScanMatches: []`). PR #47 and PR #49 left untouched.
 - **Live QA (`https://globalcommandcenter2026.netlify.app`):** Verified at `1440px` and `390px`: `40` briefings (`Showing 6 of 40 cases`), `ilo-seafarers-global-wage-floor`, `colombia-peace-accord-ten-year-test`, and `australia-meta-news-bargaining-tax` open at `step=1` and `step=all` with `0` horizontal overflow and `0` console/page errors; `Australia & Meta` appears under `Asia-Pacific` and not under `Pacific Islands`; all `9` outgoing and `9` incoming `relatedCases` transitions succeeded.
